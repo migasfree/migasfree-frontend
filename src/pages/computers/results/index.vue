@@ -145,25 +145,9 @@
       :total-rows="totalRecords"
       :is-loading.sync="isLoading"
       :line-numbers="false"
-      :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
-      :pagination-options="{
-        enabled: true,
-        mode: 'records',
-        perPage: serverParams.perPage,
-        perPageDropdown: [50, 100, 150],
-        dropdownAllowAll: false,
-        nextLabel: $t('vgt.next'),
-        prevLabel: $t('vgt.prev'),
-        rowsPerPageLabel: $t('vgt.rowPerPage'),
-        ofLabel: $t('vgt.of'),
-        pageLabel: $t('vgt.page'), // for 'pages' mode
-        allLabel: $t('vgt.all')
-      }"
-      :search-options="{
-        enabled: true,
-        skipDiacritics: true,
-        externalQuery: tableFilters.search
-      }"
+      :select-options="selectOptions"
+      :pagination-options="paginationOptions"
+      :search-options="searchOptions"
       style-class="vgt-table striped condensed"
       @on-page-change="onPageChange"
       @on-sort-change="onSortChange"
@@ -420,6 +404,32 @@ export default {
         syncEndDateRange: {
           selected: { from: null, to: null }
         }
+      },
+      selectOptions: { enabled: true, selectOnCheckboxOnly: true }
+    }
+  },
+  computed: {
+    paginationOptions() {
+      return {
+        enabled: true,
+        mode: 'records',
+        perPage: this.serverParams.perPage,
+        perPageDropdown: [50, 100, 150],
+        dropdownAllowAll: false,
+        nextLabel: this.$t('vgt.next'),
+        prevLabel: this.$t('vgt.prev'),
+        rowsPerPageLabel: this.$t('vgt.rowPerPage'),
+        ofLabel: this.$t('vgt.of'),
+        pageLabel: this.$t('vgt.page'), // for 'pages' mode
+        allLabel: this.$t('vgt.all')
+      }
+    },
+
+    searchOptions() {
+      return {
+        enabled: true,
+        skipDiacritics: true,
+        externalQuery: this.tableFilters.search
       }
     }
   },
