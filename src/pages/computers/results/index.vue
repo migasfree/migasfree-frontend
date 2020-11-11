@@ -192,7 +192,7 @@
           <MigasLink
             model="computers"
             :pk="props.row.id"
-            :icon="computerIcon(props.row.status)"
+            :icon="elementIcon(props.row.status)"
             :value="props.row.__str__ || ''"
             :tooltip="computerTooltip(props.row)"
           />
@@ -237,6 +237,7 @@ import SelectTree from 'components/ui/SelectTree'
 import DateRangeInput from 'components/ui/DateRangeInput'
 import CrudHeading from 'components/ui/CrudHeading'
 import MigasLink from 'components/MigasLink'
+import { elementMixin } from 'mixins/element'
 
 export default {
   components: {
@@ -247,6 +248,7 @@ export default {
     CrudHeading,
     MigasLink
   },
+  mixins: [elementMixin],
   data() {
     return {
       breadcrumbs: [
@@ -783,23 +785,6 @@ export default {
 
     remove(id) {
       console.log(id)
-    },
-
-    computerIcon(status) {
-      switch (status) {
-        case 'intended':
-          return 'mdi-heart-pulse'
-        case 'available':
-          return 'mdi-cart'
-        case 'in repair':
-          return 'mdi-wrench'
-        case 'reserved':
-          return 'mdi-lock-alert'
-        case 'unknown':
-          return 'mdi-crosshairs-question'
-        case 'unsubscribed':
-          return 'mdi-recycle-variant'
-      }
     },
 
     computerTooltip(info) {
