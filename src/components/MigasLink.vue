@@ -23,10 +23,12 @@
         v-for="(item, index) in relations"
         :key="index"
         v-close-popup
+        v-ripple
+        dense
         clickable
       >
         <q-item-section>
-          <q-chip outline color="primary">
+          <q-chip outline color="primary" size="md">
             <q-avatar color="primary" text-color="white">{{
               item.count
             }}</q-avatar>
