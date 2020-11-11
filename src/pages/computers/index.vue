@@ -1,0 +1,215 @@
+<template>
+  <q-page padding>
+    <q-breadcrumbs>
+      <q-breadcrumbs-el
+        v-for="(item, index) in breadcrumbs"
+        :key="index"
+        :icon="item.icon"
+        :to="item.href"
+        :label="item.text"
+      />
+    </q-breadcrumbs>
+
+    <div class="row">
+      <h2 class="text-h3">Ordenadores</h2>
+    </div>
+
+    <SearchFilter @search="search" />
+
+    <div class="row">
+      <div class="col-6">
+        <PieChart
+          title="Ordenadores por proyecto"
+          :data="pieData"
+          :url="byProjectUrl"
+          @getLink="goTo"
+        />
+      </div>
+
+      <div class="col-6">
+        <NestedPieChart
+          title="Ordenadores productivos"
+          :data="nestedPieData"
+          :url="productiveUrl"
+          @getLink="goTo"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <StackedBarChart
+          title="Nuevos ordenadores / mes"
+          :data="newMonthData"
+          @getLink="goTo"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <StackedBarChart
+          title="Ordenadores físicos que entran al sistema por año"
+          :data="entryYearData"
+          @getLink="goTo"
+        />
+      </div>
+    </div>
+  </q-page>
+</template>
+
+<script>
+import SearchFilter from 'components/ui/SearchFilter'
+import PieChart from 'components/chart/Pie'
+import NestedPieChart from 'components/chart/NestedPie'
+import StackedBarChart from 'components/chart/StackedBar'
+
+export default {
+  components: {
+    SearchFilter,
+    PieChart,
+    NestedPieChart,
+    StackedBarChart
+  },
+  data() {
+    return {
+      breadcrumbs: [
+        {
+          text: 'Dashboard',
+          href: '/',
+          icon: 'mdi-home'
+        },
+        {
+          text: 'Datos',
+          icon: 'mdi-database-search'
+        },
+        {
+          text: 'Ordenadores'
+        }
+      ],
+      pieData: {},
+      nestedPieData: {},
+      newMonthData: {},
+      entryYearData: {},
+      url: '/computer/results/?'
+    }
+  },
+  computed: {
+    byProjectUrl() {
+      return `${this.url}status_in=intended,reserved,unknown` // FIXME
+    },
+    productiveUrl() {
+      return `${this.url}status_in=intended,reserved,unknown`
+    }
+  },
+  async mounted() {
+    await this.$axios
+      .get('/api/v1/token/stats/computers/projects/')
+      .then((response) => {
+        console.log(response)
+        this.pieData = response.data
+      })
+      .catch((error) => {
+        console.log(error)
+        this.$store.dispatch(
+          'ui/notifyError',
+          error.response.data.detail || error.response.data
+        )
+      })
+
+    await this.$axios
+      .get('/api/v1/token/stats/computers/productive/platform/')
+      .then((response) => {
+        console.log(response)
+        this.nestedPieData = response.data
+      })
+      .catch((error) => {
+        console.log(error)
+        this.$store.dispatch(
+          'ui/notifyError',
+          error.response.data.detail || error.response.data
+        )
+      })
+
+    await this.$axios
+      .get('/api/v1/token/stats/computers/new/month/')
+      .then((response) => {
+        console.log(response)
+        const series = []
+
+        Object.entries(response.data.data).map(([key, val]) => {
+          series.push({
+            type: 'line',
+            smooth: true,
+            name: key,
+            data: val
+          })
+        })
+        this.newMonthData = {
+          xData: response.data.x_labels,
+          series
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        this.$store.dispatch(
+          'ui/notifyError',
+          error.response.data.detail || error.response.data
+        )
+      })
+
+    await this.$axios
+      .get('/api/v1/token/stats/computers/entry/year/')
+      .then((response) => {
+        console.log(response)
+        const series = []
+
+        Object.entries(response.data.data).map(([key, val]) => {
+          series.push({
+            type: 'line',
+            smooth: true,
+            name: key,
+            data: val
+          })
+        })
+        this.entryYearData = {
+          xData: response.data.x_labels,
+          series
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        this.$store.dispatch(
+          'ui/notifyError',
+          error.response.data.detail || error.response.data
+        )
+      })
+  },
+  methods: {
+    goTo(params) {
+      console.log(params)
+      if (params.data.project_id) {
+        this.$router.push(this.url + `project_id=${params.data.project_id}`)
+      }
+
+      if (params.data.created_at__lt) {
+        let url =
+          this.url +
+          `created_at__gte=${params.data.created_at__gte}` +
+          `&created_at__lt=${params.data.created_at__lt}`
+        if (params.data.project__id__exact) {
+          url += `&project_id=${params.data.project__id__exact}`
+        }
+        if (params.data.machine) {
+          url += `&machine=${params.data.machine}`
+        }
+        this.$router.push(url)
+      }
+    },
+
+    search(value) {
+      this.$router.push(this.url + `search=${value}`)
+    }
+  }
+}
+</script>

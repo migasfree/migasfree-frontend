@@ -1,0 +1,78 @@
+<template>
+  <q-input
+    outlined
+    dense
+    readonly
+    :value="dateView"
+    :label="label"
+    @click="$refs.qDateProxy.show()"
+  >
+    <template v-if="prependIcon" v-slot:before>
+      <q-icon :name="prependIcon" />
+    </template>
+
+    <template v-slot:append>
+      <q-icon name="mdi-calendar-multiselect" class="cursor-pointer">
+        <q-popup-proxy
+          ref="qDateProxy"
+          transition-show="scale"
+          transition-hide="scale"
+        >
+          <q-date
+            v-model="date"
+            range
+            mask="YYYY-MM-DD"
+            @input="dateSelected"
+          ></q-date>
+        </q-popup-proxy>
+      </q-icon>
+    </template>
+  </q-input>
+</template>
+
+<script>
+export default {
+  name: 'DateRangeInput',
+  props: {
+    label: {
+      type: String,
+      required: true
+    },
+    value: {
+      type: Object,
+      required: true
+    },
+    prependIcon: {
+      type: String,
+      required: false,
+      default: null
+    }
+  },
+  data() {
+    return {
+      date: this.value || {
+        from: null,
+        to: null
+      }
+    }
+  },
+  computed: {
+    dateView() {
+      if (this.date.to) {
+        return `${this.date.from} ~ ${this.date.to}`
+      }
+      return ''
+    }
+  },
+  methods: {
+    dateSelected() {
+      console.log(this.date, this.value)
+      this.$refs.qDateProxy.hide()
+      this.$emit('select', this.date)
+    },
+    reset() {
+      this.date = { from: null, to: null }
+    }
+  }
+}
+</script>
