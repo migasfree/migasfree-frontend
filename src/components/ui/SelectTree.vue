@@ -1,45 +1,36 @@
 <template>
-  <div>
-    <q-field
-      v-model="selected"
-      outlined
-      dense
-      stack-label
-      :label="placeholder"
-      :hint="hint"
-      :disable="disable"
-    >
-      <template v-slot:append>
-        <q-icon name="mdi-menu-down" />
-      </template>
+  <q-input
+    outlined
+    dense
+    readonly
+    :value="selected"
+    :label="placeholder"
+    :hint="hint"
+    :disable="disable"
+    @input="$refs.menu.show()"
+  >
+    <template v-slot:append>
+      <q-icon name="mdi-menu-down" class="cursor-pointer" />
+    </template>
 
-      <template v-if="prependIcon" v-slot:before>
-        <q-icon :name="prependIcon" />
-      </template>
+    <template v-if="prependIcon" v-slot:before>
+      <q-icon :name="prependIcon" />
+    </template>
 
-      <template v-if="selected" v-slot:control>
-        <div class="self-center full-width no-outline" tabindex="0">
-          <q-chip color="primary" text-color="white" dense>
-            {{ selected }}
-          </q-chip>
-        </div>
-      </template>
-
-      <q-popup-proxy ref="popup" :breakpoint="600" fit>
-        <q-tree
-          ref="tree"
-          class="q-ma-sm"
-          :nodes="options"
-          :node-key="nodeKey"
-          :label-key="labelKey"
-          :default-expand-all="defaultExpandAll"
-          :selected="selected"
-          @update:selected="nodeSelected"
-        >
-        </q-tree>
-      </q-popup-proxy>
-    </q-field>
-  </div>
+    <q-menu ref="menu" fit auto-close>
+      <q-tree
+        ref="tree"
+        class="q-ma-sm"
+        :nodes="options"
+        :node-key="nodeKey"
+        :label-key="labelKey"
+        :default-expand-all="defaultExpandAll"
+        :selected="selected"
+        @update:selected="nodeSelected"
+      >
+      </q-tree>
+    </q-menu>
+  </q-input>
 </template>
 
 <script>
@@ -98,7 +89,7 @@ export default {
     nodeSelected(value) {
       const node = this.$refs.tree.getNodeByKey(value)
       this.selected = node[this.labelKey]
-      this.$refs.popup.hide()
+      this.$refs.menu.hide()
       this.$emit('select', node)
     },
     reset() {
