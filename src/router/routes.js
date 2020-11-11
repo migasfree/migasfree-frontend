@@ -9,17 +9,17 @@ const routes = [
         component: () => import('pages/Dashboard.vue')
       },
       {
-        path: '/computer',
+        path: '/computers',
         name: 'computers-dashboard',
         component: () => import('pages/computers/index.vue')
       },
       {
-        path: '/computer/results',
+        path: '/computers/results',
         name: 'computers-list',
         component: () => import('pages/computers/results/index.vue')
       },
       {
-        path: '/computer/results/:id',
+        path: '/computers/results/:id',
         name: 'computer-detail',
         component: () => import('pages/computers/results/_id.vue')
       }
