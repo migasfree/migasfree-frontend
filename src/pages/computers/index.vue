@@ -1,14 +1,6 @@
 <template>
   <q-page padding>
-    <q-breadcrumbs>
-      <q-breadcrumbs-el
-        v-for="(item, index) in breadcrumbs"
-        :key="index"
-        :icon="item.icon"
-        :to="item.href"
-        :label="item.text"
-      />
-    </q-breadcrumbs>
+    <Breadcrumbs :items="breadcrumbs" />
 
     <div class="row">
       <h2 class="text-h3">Ordenadores</h2>
@@ -59,6 +51,7 @@
 </template>
 
 <script>
+import Breadcrumbs from 'components/ui/Breadcrumbs'
 import SearchFilter from 'components/ui/SearchFilter'
 import PieChart from 'components/chart/Pie'
 import NestedPieChart from 'components/chart/NestedPie'
@@ -66,6 +59,7 @@ import StackedBarChart from 'components/chart/StackedBar'
 
 export default {
   components: {
+    Breadcrumbs,
     SearchFilter,
     PieChart,
     NestedPieChart,
@@ -76,7 +70,7 @@ export default {
       breadcrumbs: [
         {
           text: 'Dashboard',
-          href: '/',
+          to: 'home',
           icon: 'mdi-home'
         },
         {
@@ -91,7 +85,7 @@ export default {
       nestedPieData: {},
       newMonthData: {},
       entryYearData: {},
-      url: '/computer/results/?'
+      url: '/computers/results/?'
     }
   },
   computed: {
