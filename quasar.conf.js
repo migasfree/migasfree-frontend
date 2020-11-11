@@ -68,6 +68,12 @@ module.exports = function(/* ctx */) {
           loader: 'eslint-loader',
           exclude: /node_modules/
         })
+      },
+
+      chainWebpack(chain) {
+        chain.resolve.alias.merge({
+          mixins: 'src/mixins'
+        })
       }
     },
 
