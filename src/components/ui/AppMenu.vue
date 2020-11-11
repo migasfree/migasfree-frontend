@@ -7,7 +7,7 @@
       :label="item.title"
     >
       <q-list v-for="option in item.options" :key="option.to">
-        <q-item clickable :to="{ name: option.to }">
+        <q-item clickable :to="{ name: option.to }" :inset-level="1">
           <q-item-section>{{ option.title }}</q-item-section>
         </q-item>
         <q-separator v-if="option.separatorAfter" />
