@@ -1,14 +1,6 @@
 <template>
   <q-page padding>
-    <q-breadcrumbs>
-      <q-breadcrumbs-el
-        v-for="(item, index) in breadcrumbs"
-        :key="index"
-        :icon="item.icon"
-        :to="item.href"
-        :label="item.text"
-      />
-    </q-breadcrumbs>
+    <Breadcrumbs :items="breadcrumbs" />
 
     <CrudHeading
       title="Ordenadores"
@@ -198,7 +190,7 @@
         </span>
         <span v-else-if="props.column.field == 'name'">
           <MigasLink
-            model="computer"
+            model="computers"
             :pk="props.row.id"
             :icon="computerIcon(props.row.status)"
             :value="props.row.__str__ || ''"
@@ -207,21 +199,21 @@
         </span>
         <span v-else-if="props.column.field == 'project.name'">
           <MigasLink
-            model="project"
+            model="projects"
             :pk="props.row.project.id"
             :value="props.row.project.name || ''"
           />
         </span>
         <span v-else-if="props.column.field == 'sync_user.name'">
           <MigasLink
-            model="user"
+            model="users"
             :pk="props.row.sync_user.id"
             :value="props.row.sync_user.name || ''"
           />
         </span>
         <span v-else-if="props.column.field == 'product'">
           <MigasLink
-            model="computer"
+            model="computers"
             :pk="props.row.id"
             :value="props.row.product || ''"
           />
@@ -239,6 +231,7 @@
 </template>
 
 <script>
+import Breadcrumbs from 'components/ui/Breadcrumbs'
 import SearchFilter from 'components/ui/SearchFilter'
 import SelectTree from 'components/ui/SelectTree'
 import DateRangeInput from 'components/ui/DateRangeInput'
@@ -247,6 +240,7 @@ import MigasLink from 'components/MigasLink'
 
 export default {
   components: {
+    Breadcrumbs,
     SearchFilter,
     SelectTree,
     DateRangeInput,
@@ -258,7 +252,7 @@ export default {
       breadcrumbs: [
         {
           text: 'Dashboard',
-          href: '/',
+          to: 'home',
           icon: 'mdi-home'
         },
         {
@@ -267,7 +261,7 @@ export default {
         },
         {
           text: 'Ordenadores',
-          href: '/computer'
+          to: 'computers-dashboard'
         },
         {
           text: 'Resultados'
