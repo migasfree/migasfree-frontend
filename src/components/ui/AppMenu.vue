@@ -6,8 +6,8 @@
       :icon="item.icon"
       :label="item.title"
     >
-      <q-list v-for="(option, indx) in item.options" :key="indx">
-        <q-item clickable :to="option.to">
+      <q-list v-for="option in item.options" :key="option.to">
+        <q-item clickable :to="{ name: option.to }">
           <q-item-section>{{ option.title }}</q-item-section>
         </q-item>
         <q-separator v-if="option.separatorAfter" />
@@ -26,61 +26,85 @@ export default {
           icon: 'mdi-cogs',
           title: 'Configuración',
           options: [
-            { title: 'Plataformas', to: '/platform' },
-            { title: 'Proyectos', to: '/project', separatorAfter: true },
-            { title: 'Fórmulas', to: '/formula' },
-            { title: 'Categorías de etiquetas', to: '/stamp' },
-            { title: 'Conjuntos de atributos', to: '/attribute-set' },
+            /* { title: 'Plataformas', to: 'platforms-dashboard' },
             {
-              title: 'Definiciones de fallas',
-              to: '/fault-definition',
+              title: 'Proyectos',
+              to: 'projects-dashboard',
               separatorAfter: true
             },
-            { title: 'Perfiles de usuario/a', to: '/user-profile' },
-            { title: 'Grupos', to: '/group' },
-            { title: 'Dominios', to: '/domain' },
-            { title: 'Ámbitos', to: '/scope' }
+            { title: 'Fórmulas', to: 'formulas-dashboard' },
+            { title: 'Categorías de etiquetas', to: 'stamps-dashboard' },
+            { title: 'Conjuntos de atributos', to: 'attribute-sets-dashboard' },
+            {
+              title: 'Definiciones de fallas',
+              to: 'fault-definitions-dashboard',
+              separatorAfter: true
+            },
+            { title: 'Perfiles de usuario/a', to: 'user-profiles-dashboard' },
+            { title: 'Grupos', to: 'groups-dashboard' },
+            { title: 'Dominios', to: 'domains-dashboard' },
+            { title: 'Ámbitos', to: 'scopes-dashboard' } */
           ]
         },
         {
           icon: 'mdi-printer-eye',
           title: 'Dispositivos',
           options: [
-            { title: 'Fabricantes', to: '/manufacturer' },
-            { title: 'Modelos', to: '/model' },
-            { title: 'Prestaciones', to: '/feature' },
-            { title: 'Dispositivos', to: '/device', separatorAfter: true },
-            { title: 'Reemplazo de Dispositivos', to: '/device/replacement' }
+            /* { title: 'Fabricantes', to: 'manufacturers-dashboard' },
+            { title: 'Modelos', to: 'models-dashboard' },
+            { title: 'Prestaciones', to: 'features-dashboard' },
+            {
+              title: 'Dispositivos',
+              to: 'devices-dashboard',
+              separatorAfter: true
+            },
+            { title: 'Reemplazo de Dispositivos', to: 'devices-replacement' } */
           ]
         },
         {
           icon: 'mdi-truck-delivery',
           title: 'Liberación',
           options: [
-            { title: 'Despliegues', to: '/deployment' },
-            { title: 'Calendarios', to: '/schedule', separatorAfter: true },
-            { title: 'Almacenes', to: '/store' },
-            { title: 'Información de Paquetes', to: '/package/info' },
-            { title: 'Paquetes', to: '/package', separatorAfter: true },
-            { title: 'Aplicaciones', to: '/application' },
-            { title: 'Políticas', to: '/policy' }
+            /* { title: 'Despliegues', to: 'deployments-dashboard' },
+            {
+              title: 'Calendarios',
+              to: 'schedules-dashboard',
+              separatorAfter: true
+            },
+            { title: 'Almacenes', to: 'stores-dashboard' },
+            { title: 'Información de Paquetes', to: 'packages-info' },
+            {
+              title: 'Paquetes',
+              to: 'packages-dashboard',
+              separatorAfter: true
+            },
+            { title: 'Aplicaciones', to: 'applications-dashboard' },
+            { title: 'Políticas', to: 'policies-dashboard' } */
           ]
         },
         {
           icon: 'mdi-database-search',
           title: 'Datos',
           options: [
-            { title: 'Ordenadores', to: '/computer' },
-            { title: 'Reemplazo de Ordenadores', to: '/computer/replacement' },
-            { title: 'Usuarios/as', to: '/user', separatorAfter: true },
-            { title: 'Atributos', to: '/attribute' },
-            { title: 'Etiquetas', to: '/tag', separatorAfter: true },
-            { title: 'Sincronizaciones', to: '/synchronization' },
-            { title: 'Errores', to: '/error' },
-            { title: 'Fallas', to: '/fault' },
-            { title: 'Registros de Estados', to: '/status-log' },
-            { title: 'Migraciones', to: '/migration', separatorAfter: true },
-            { title: 'Notificaciones', to: '/notification' }
+            { title: 'Ordenadores', to: 'computers-dashboard' },
+            /* { title: 'Reemplazo de Ordenadores', to: 'computers-replacement' },
+            {
+              title: 'Usuarios/as',
+              to: 'users-dashboard',
+              separatorAfter: true
+            },
+            { title: 'Atributos', to: 'attributes-dashboard' },
+            { title: 'Etiquetas', to: 'tags-dashboard', separatorAfter: true },
+            { title: 'Sincronizaciones', to: 'synchronizations-dashboard' },
+            { title: 'Errores', to: 'errors-dashboard' },
+            { title: 'Fallas', to: 'faults-dashboard' },
+            { title: 'Registros de Estados', to: 'status-logs-dashboard' },
+            {
+              title: 'Migraciones',
+              to: 'migrations-dashboard',
+              separatorAfter: true
+            },
+            { title: 'Notificaciones', to: 'notifications-dashboard' } */
           ]
         }
       ]
