@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <div class="row q-pa-md">
+      <div class="row q-pa-md q-gutter-md">
         <div class="col-md">
           <q-card>
             <q-card-section>
@@ -30,13 +30,15 @@
 
             <q-card-section>
               <div class="row q-pa-md">
-                <q-tooltip>full qualified domain name</q-tooltip>
+                <q-tooltip self="bottom middle"
+                  >full qualified domain name</q-tooltip
+                >
                 <q-icon name="mdi-information" /> {{ element.fqdn }}
               </div>
 
               <div class="row q-pa-md">
                 <div class="col-md">
-                  <q-tooltip>project</q-tooltip>
+                  <q-tooltip self="bottom middle">project</q-tooltip>
                   <q-icon name="mdi-sitemap" />
                   <MigasLink
                     model="projects"
@@ -45,7 +47,9 @@
                   />
                 </div>
                 <div class="col-md">
-                  <q-tooltip>Date of entry into the migasfree system</q-tooltip>
+                  <q-tooltip self="bottom middle"
+                    >Date of entry into the migasfree system</q-tooltip
+                  >
                   <q-icon name="mdi-calendar-plus" />
                   {{ showDate(element.created_at) }}
                 </div>
@@ -53,21 +57,24 @@
 
               <div class="row q-pa-md">
                 <div class="col-md">
-                  <q-tooltip>ip address</q-tooltip>
+                  <q-tooltip self="bottom middle">ip address</q-tooltip>
                   <q-icon name="mdi-ip-network" /> {{ element.ip_address }}
                 </div>
                 <div class="col-md">
-                  <q-tooltip>forwarded ip address</q-tooltip>
+                  <q-tooltip self="bottom middle"
+                    >forwarded ip address</q-tooltip
+                  >
                   <q-icon name="mdi-ip" /> {{ element.forwarded_ip_address }}
                 </div>
               </div>
             </q-card-section>
 
-            <q-card-actions>
+            <q-card-actions align="evenly">
               <q-btn-group>
                 <q-btn
                   icon="mdi-calendar-multiple"
                   label="Sucesos"
+                  no-caps
                   :to="{
                     name: 'computer-events',
                     params: { id: element.id }
@@ -76,6 +83,7 @@
                 <q-btn
                   icon="mdi-head-sync-outline"
                   label="Simular sincronización"
+                  no-caps
                   :to="{
                     name: 'computer-simulate',
                     params: { id: element.id }
@@ -84,6 +92,7 @@
                 <q-btn
                   icon="mdi-card-account-details-outline"
                   label="Identificación"
+                  no-caps
                   :to="{
                     name: 'computer-label',
                     params: { id: element.id }
@@ -99,20 +108,99 @@
             <q-card-section>
               <div class="text-h5">Hardware</div>
             </q-card-section>
+
+            <q-card-section>
+              <div class="row q-pa-md">
+                <div class="col-md-4">
+                  <q-icon
+                    :name="productIcon(element.product_system)"
+                    style="font-size: 6em;"
+                  >
+                    <q-badge floating transparent>
+                      {{ element.architecture }} bits
+                    </q-badge></q-icon
+                  >
+                </div>
+
+                <div class="col-md-8">
+                  <p>
+                    <MigasLink
+                      model="computers"
+                      :pk="element.id"
+                      :value="element.product || ''"
+                    />
+                  </p>
+                  <p>
+                    <q-tooltip self="bottom middle">UUID</q-tooltip>
+                    {{ element.uuid }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="row q-pa-md">
+                <div class="col-md">
+                  <p>
+                    <q-tooltip self="bottom middle">Procesador</q-tooltip>
+                    <q-icon :name="cpuIcon(element.architecture)" />
+                    {{ element.cpu }}
+                  </p>
+                </div>
+                <div class="col-md">
+                  <p>
+                    <q-tooltip self="bottom middle">RAM</q-tooltip>
+                    <q-icon name="mdi-memory" />
+                    {{ humanStorageSize(element.ram) }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="row q-pa-md">
+                <div class="col-md">
+                  <p>
+                    <q-tooltip self="bottom middle">Almacenamiento</q-tooltip>
+                    <q-icon name="mdi-harddisk" />
+                    {{ humanStorageSize(element.storage) }}
+                    ({{ element.disks }})
+                  </p>
+                </div>
+                <div class="col-md">
+                  <p>
+                    <q-tooltip self="bottom middle">Dirección MAC</q-tooltip>
+                    <q-icon name="mdi-swap-vertical" />
+                    {{ humanMacAddress(element.mac_address) }}
+                  </p>
+                </div>
+              </div>
+            </q-card-section>
+
+            <q-card-actions align="evenly">
+              <q-btn-group>
+                <q-input
+                  v-model="element.last_hardware_capture"
+                  outlined
+                  clearable
+                  type="date"
+                  label="Fecha de la última captura del hardware"
+                />
+                <q-btn color="primary" icon="mdi-content-save" />
+              </q-btn-group>
+            </q-card-actions>
           </q-card>
         </div>
       </div>
     </template>
 
-    {{ element }}
+    <pre>{{ element }}</pre>
   </q-page>
 </template>
 
 <script>
-import { date } from 'quasar'
+import { date, format } from 'quasar'
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import MigasLink from 'components/MigasLink'
 import { elementMixin } from 'mixins/element'
+
+const { humanStorageSize } = format
 
 export default {
   components: {
@@ -160,6 +248,7 @@ export default {
       })
   },
   methods: {
+    humanStorageSize,
     showDate(isoString) {
       return date.formatDate(Date.parse(isoString), 'YYYY-MM-DD HH:mm:ss')
     }
