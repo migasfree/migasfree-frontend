@@ -360,7 +360,17 @@
       </div>
 
       <div class="row q-pa-md q-gutter-md">
-        <div v-if="element.has_software" class="col-md"></div>
+        <div v-if="element.has_software_inventory" class="col-md">
+          <q-card>
+            <q-card-section>
+              <div class="text-h5">Software</div>
+            </q-card-section>
+          </q-card>
+        </div>
+      </div>
+
+      <div class="row q-pa-md">
+        <q-btn icon="mdi-delete" color="negative" label="Borrar" />
       </div>
     </template>
 
