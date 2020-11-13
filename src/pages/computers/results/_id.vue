@@ -116,6 +116,7 @@
                     :name="productIcon(element.product_system)"
                     style="font-size: 6em;"
                   >
+                    <q-tooltip>{{ element.product_system }}</q-tooltip>
                     <q-badge floating transparent>
                       {{ element.architecture }} bits
                     </q-badge></q-icon
@@ -175,16 +176,71 @@
 
             <q-card-actions align="evenly">
               <q-btn-group>
-                <q-input
+                <q-datetime-picker
                   v-model="element.last_hardware_capture"
+                  label="Fecha de la última captura del hardware"
+                  mode="datetime"
                   outlined
                   clearable
-                  type="date"
-                  label="Fecha de la última captura del hardware"
-                />
+                  landscape
+                  target="self"
+                  format24h
+                  :display-value="showDate(element.last_hardware_capture)"
+                ></q-datetime-picker>
                 <q-btn color="primary" icon="mdi-content-save" />
               </q-btn-group>
             </q-card-actions>
+          </q-card>
+        </div>
+      </div>
+
+      <div class="row q-pa-md q-gutter-md">
+        <div class="col-md">
+          <q-card>
+            <q-card-section>
+              <div class="text-h5">Situación actual</div>
+            </q-card-section>
+
+            <q-card-section>
+              <p>
+                <q-select
+                  v-model="element.status"
+                  outlined
+                  emit-value
+                  map-options
+                  label="Estado"
+                  :options="status.choices"
+                >
+                  <template v-slot:option="scope">
+                    <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                      <q-item-section avatar>
+                        <q-icon :name="scope.opt.icon" />
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label>{{ scope.opt.label }}</q-item-label>
+                        <q-item-label caption>{{
+                          scope.opt.description
+                        }}</q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </template>
+
+                  <template v-slot:selected-item="scope">
+                    <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                      <q-item-section avatar>
+                        <q-icon :name="scope.opt.icon" />
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label>{{ scope.opt.label }}</q-item-label>
+                        <q-item-label caption>{{
+                          scope.opt.description
+                        }}</q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+              </p>
+            </q-card-section>
           </q-card>
         </div>
       </div>
@@ -232,7 +288,11 @@ export default {
           text: 'Id'
         }
       ],
-      element: {}
+      element: {},
+      status: {
+        choices: [],
+        selected: null
+      }
     }
   },
   async mounted() {
@@ -245,6 +305,22 @@ export default {
       })
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error.response.data.detail)
+      })
+
+    await this.$axios
+      .get('/api/v1/token/computers/status/')
+      .then((response) => {
+        Object.entries(response.data.choices).map(([key, val]) => {
+          this.status.choices.push({
+            label: val,
+            value: key,
+            icon: this.elementIcon(key)
+          })
+        })
+        console.log(this.status)
+      })
+      .catch((error) => {
+        this.$store.dispatch('ui/notifyError', error.response.data)
       })
   },
   methods: {
