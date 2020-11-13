@@ -33,13 +33,13 @@
                 <q-tooltip self="bottom middle"
                   >full qualified domain name</q-tooltip
                 >
-                <q-icon name="mdi-information" /> {{ element.fqdn }}
+                <q-icon name="mdi-information" size="sm" /> {{ element.fqdn }}
               </div>
 
               <div class="row q-pa-md">
                 <div class="col-md">
                   <q-tooltip self="bottom middle">project</q-tooltip>
-                  <q-icon name="mdi-sitemap" />
+                  <q-icon name="mdi-sitemap" size="sm" />
                   <MigasLink
                     model="projects"
                     :pk="element.project.id"
@@ -50,7 +50,7 @@
                   <q-tooltip self="bottom middle"
                     >Date of entry into the migasfree system</q-tooltip
                   >
-                  <q-icon name="mdi-calendar-plus" />
+                  <q-icon name="mdi-calendar-plus" size="sm" />
                   {{ showDate(element.created_at) }}
                 </div>
               </div>
@@ -58,13 +58,15 @@
               <div class="row q-pa-md">
                 <div class="col-md">
                   <q-tooltip self="bottom middle">ip address</q-tooltip>
-                  <q-icon name="mdi-ip-network" /> {{ element.ip_address }}
+                  <q-icon name="mdi-ip-network" size="sm" />
+                  {{ element.ip_address }}
                 </div>
                 <div class="col-md">
                   <q-tooltip self="bottom middle"
                     >forwarded ip address</q-tooltip
                   >
-                  <q-icon name="mdi-ip" /> {{ element.forwarded_ip_address }}
+                  <q-icon name="mdi-ip" size="sm" />
+                  {{ element.forwarded_ip_address }}
                 </div>
               </div>
             </q-card-section>
@@ -106,7 +108,28 @@
         <div class="col-md">
           <q-card>
             <q-card-section>
-              <div class="text-h5">Hardware</div>
+              <div class="row">
+                <div class="col-md">
+                  <div class="text-h5">Hardware</div>
+                </div>
+
+                <div class="col-md">
+                  <q-btn-group class="float-right">
+                    <q-datetime-picker
+                      v-model="element.last_hardware_capture"
+                      label="Fecha de la última captura del hardware"
+                      mode="datetime"
+                      outlined
+                      clearable
+                      landscape
+                      target="self"
+                      format24h
+                      :display-value="showDate(element.last_hardware_capture)"
+                    ></q-datetime-picker>
+                    <q-btn color="primary" icon="mdi-content-save" />
+                  </q-btn-group>
+                </div>
+              </div>
             </q-card-section>
 
             <q-card-section>
@@ -142,14 +165,14 @@
                 <div class="col-md">
                   <p>
                     <q-tooltip self="bottom middle">Procesador</q-tooltip>
-                    <q-icon :name="cpuIcon(element.architecture)" />
+                    <q-icon :name="cpuIcon(element.architecture)" size="sm" />
                     {{ element.cpu }}
                   </p>
                 </div>
                 <div class="col-md">
                   <p>
                     <q-tooltip self="bottom middle">RAM</q-tooltip>
-                    <q-icon name="mdi-memory" />
+                    <q-icon name="mdi-memory" size="sm" />
                     {{ humanStorageSize(element.ram) }}
                   </p>
                 </div>
@@ -159,7 +182,7 @@
                 <div class="col-md">
                   <p>
                     <q-tooltip self="bottom middle">Almacenamiento</q-tooltip>
-                    <q-icon name="mdi-harddisk" />
+                    <q-icon name="mdi-harddisk" size="sm" />
                     {{ humanStorageSize(element.storage) }}
                     ({{ element.disks }})
                   </p>
@@ -167,29 +190,12 @@
                 <div class="col-md">
                   <p>
                     <q-tooltip self="bottom middle">Dirección MAC</q-tooltip>
-                    <q-icon name="mdi-swap-vertical" />
+                    <q-icon name="mdi-swap-vertical" size="sm" />
                     {{ humanMacAddress(element.mac_address) }}
                   </p>
                 </div>
               </div>
             </q-card-section>
-
-            <q-card-actions align="evenly">
-              <q-btn-group>
-                <q-datetime-picker
-                  v-model="element.last_hardware_capture"
-                  label="Fecha de la última captura del hardware"
-                  mode="datetime"
-                  outlined
-                  clearable
-                  landscape
-                  target="self"
-                  format24h
-                  :display-value="showDate(element.last_hardware_capture)"
-                ></q-datetime-picker>
-                <q-btn color="primary" icon="mdi-content-save" />
-              </q-btn-group>
-            </q-card-actions>
           </q-card>
         </div>
       </div>
@@ -209,7 +215,7 @@
                   emit-value
                   map-options
                   label="Estado"
-                  :options="status.choices"
+                  :options="status"
                 >
                   <template v-slot:option="scope">
                     <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
@@ -240,6 +246,56 @@
                   </template>
                 </q-select>
               </p>
+
+              <p>
+                <q-input
+                  v-model="element.comment"
+                  outlined
+                  type="textarea"
+                  label="Comentario"
+                />
+              </p>
+
+              <p>
+                <q-select
+                  v-model="element.tags"
+                  outlined
+                  use-input
+                  use-chips
+                  emit-value
+                  map-options
+                  multiple
+                  input-debounce="0"
+                  label="Etiquetas"
+                  :options="tags"
+                  @filter="filterTags"
+                  @filter-abort="abortFilterTags"
+                >
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-grey">
+                        No results
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+              </p>
+            </q-card-section>
+
+            <q-card-actions>
+              <q-btn
+                class="full-width"
+                color="primary"
+                icon="mdi-content-save"
+              />
+            </q-card-actions>
+          </q-card>
+        </div>
+
+        <div class="col-md">
+          <q-card>
+            <q-card-section>
+              <div class="text-h5">Sincronización</div>
             </q-card-section>
           </q-card>
         </div>
@@ -289,10 +345,8 @@ export default {
         }
       ],
       element: {},
-      status: {
-        choices: [],
-        selected: null
-      }
+      status: [],
+      tags: []
     }
   },
   async mounted() {
@@ -311,7 +365,7 @@ export default {
       .get('/api/v1/token/computers/status/')
       .then((response) => {
         Object.entries(response.data.choices).map(([key, val]) => {
-          this.status.choices.push({
+          this.status.push({
             label: val,
             value: key,
             icon: this.elementIcon(key)
@@ -327,6 +381,25 @@ export default {
     humanStorageSize,
     showDate(isoString) {
       return date.formatDate(Date.parse(isoString), 'YYYY-MM-DD HH:mm:ss')
+    },
+
+    filterTags(val, update, abort) {
+      // call abort() at any time if you can't retrieve data somehow
+      if (val.length < 3) {
+        abort()
+        return
+      }
+
+      /* update(() => {
+        const needle = val.toLowerCase()
+        this.tags = stringOptions.filter(
+          (v) => v.toLowerCase().indexOf(needle) > -1
+        )
+      }) */
+    },
+
+    abortFilterTags() {
+      // console.log('delayed filter aborted')
     }
   }
 }
