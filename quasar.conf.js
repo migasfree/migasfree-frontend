@@ -72,7 +72,8 @@ module.exports = function(/* ctx */) {
 
       chainWebpack(chain) {
         chain.resolve.alias.merge({
-          mixins: 'src/mixins'
+          mixins: 'src/mixins',
+          config: 'src/config'
         })
       }
     },
