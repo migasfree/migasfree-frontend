@@ -301,9 +301,10 @@
                 </div>
 
                 <div class="col-md">
-                  <UnsyncFrom
+                  <DateDiff
                     class="float-right"
-                    :from="new Date(element.sync_end_date)"
+                    :begin="new Date(element.sync_end_date)"
+                    tooltip="unsynchronized from"
                   />
                 </div>
               </div>
@@ -324,14 +325,50 @@
                     showDate(syncInfo.sync_end_date)
                   }}
                 </div>
+
+                <div class="col-md">
+                  <DateDiff
+                    v-if="syncInfo.sync_start_date"
+                    :begin="new Date(syncInfo.sync_start_date)"
+                    :end="new Date(syncInfo.sync_end_date)"
+                    tooltip="last sync time"
+                  />
+                </div>
+              </div>
+
+              <div class="row">
+                <q-icon name="mdi-account" size="sm" />
+                <MigasLink
+                  model="users"
+                  :pk="element.sync_user.id"
+                  :value="element.sync_user.name || ''"
+                />
+              </div>
+
+              <div class="row">
+                <MigasLink
+                  v-for="(item, index) in syncInfo.sync_attributes"
+                  :key="index"
+                  model="attributes"
+                  :pk="item.id"
+                  :value="`${item.property_att.prefix}-${item.value}`"
+                />
               </div>
             </q-card-section>
           </q-card>
         </div>
       </div>
+
+      <div class="row q-pa-md q-gutter-md">
+        <div v-if="element.has_software" class="col-md"></div>
+      </div>
     </template>
 
-    <pre>{{ element }} {{ syncInfo }}</pre>
+    <pre
+      >{{ element }} {{ syncInfo }} {{ softwareInventory }} {{
+        softwareHistory
+      }}</pre
+    >
   </q-page>
 </template>
 
@@ -339,7 +376,7 @@
 import { date, format } from 'quasar'
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import MigasLink from 'components/MigasLink'
-import UnsyncFrom from 'components/UnsyncFrom'
+import DateDiff from 'components/DateDiff'
 import { elementMixin } from 'mixins/element'
 
 const { humanStorageSize } = format
@@ -348,7 +385,7 @@ export default {
   components: {
     Breadcrumbs,
     MigasLink,
-    UnsyncFrom
+    DateDiff
   },
   mixins: [elementMixin],
   data() {
@@ -377,6 +414,8 @@ export default {
       ],
       element: {},
       syncInfo: {},
+      softwareInventory: [],
+      softwareHistory: [],
       status: [],
       tags: []
     }
@@ -388,6 +427,8 @@ export default {
         console.log(response)
         this.element = response.data
         this.breadcrumbs[4].text = this.element.__str__
+        this.loadSyncInfo()
+        this.loadSoftware()
       })
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error.response.data.detail)
@@ -408,19 +449,46 @@ export default {
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error.response.data)
       })
-
-    await this.$axios
-      .get(`/api/v1/token/computers/${this.$route.params.id}/sync/`)
-      .then((response) => {
-        console.log(response)
-        this.syncInfo = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error.response.data.detail)
-      })
   },
   methods: {
     humanStorageSize,
+
+    async loadSyncInfo() {
+      await this.$axios
+        .get(`/api/v1/token/computers/${this.$route.params.id}/sync/`)
+        .then((response) => {
+          console.log(response)
+          this.syncInfo = response.data
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error.response.data.detail)
+        })
+    },
+
+    async loadSoftware() {
+      if (this.element.has_software_inventory) {
+        await this.$axios
+          .get(this.element.software_inventory)
+          .then((response) => {
+            console.log(response)
+            this.softwareInventory = response.data
+          })
+          .catch((error) => {
+            this.$store.dispatch('ui/notifyError', error.response.data.detail)
+          })
+
+        await this.$axios
+          .get(this.element.software_history)
+          .then((response) => {
+            console.log(response)
+            this.softwareHistory = response.data
+          })
+          .catch((error) => {
+            this.$store.dispatch('ui/notifyError', error.response.data.detail)
+          })
+      }
+    },
+
     showDate(isoString) {
       return date.formatDate(Date.parse(isoString), 'YYYY-MM-DD HH:mm:ss')
     },
