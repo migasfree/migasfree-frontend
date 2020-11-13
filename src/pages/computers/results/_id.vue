@@ -295,14 +295,43 @@
         <div class="col-md">
           <q-card>
             <q-card-section>
-              <div class="text-h5">Sincronización</div>
+              <div class="row">
+                <div class="col-md">
+                  <div class="text-h5">Sincronización</div>
+                </div>
+
+                <div class="col-md">
+                  <UnsyncFrom
+                    class="float-right"
+                    :from="new Date(element.sync_end_date)"
+                  />
+                </div>
+              </div>
+            </q-card-section>
+
+            <q-card-section>
+              <div class="row">
+                <div class="col-md">
+                  <q-tooltip>sync start date</q-tooltip>
+                  <q-icon name="mdi-play" size="sm" />{{
+                    showDate(syncInfo.sync_start_date)
+                  }}
+                </div>
+
+                <div class="col-md">
+                  <q-tooltip>sync end date</q-tooltip>
+                  <q-icon name="mdi-stop" size="sm" />{{
+                    showDate(syncInfo.sync_end_date)
+                  }}
+                </div>
+              </div>
             </q-card-section>
           </q-card>
         </div>
       </div>
     </template>
 
-    <pre>{{ element }}</pre>
+    <pre>{{ element }} {{ syncInfo }}</pre>
   </q-page>
 </template>
 
@@ -310,6 +339,7 @@
 import { date, format } from 'quasar'
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import MigasLink from 'components/MigasLink'
+import UnsyncFrom from 'components/UnsyncFrom'
 import { elementMixin } from 'mixins/element'
 
 const { humanStorageSize } = format
@@ -317,7 +347,8 @@ const { humanStorageSize } = format
 export default {
   components: {
     Breadcrumbs,
-    MigasLink
+    MigasLink,
+    UnsyncFrom
   },
   mixins: [elementMixin],
   data() {
@@ -345,6 +376,7 @@ export default {
         }
       ],
       element: {},
+      syncInfo: {},
       status: [],
       tags: []
     }
@@ -375,6 +407,16 @@ export default {
       })
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error.response.data)
+      })
+
+    await this.$axios
+      .get(`/api/v1/token/computers/${this.$route.params.id}/sync/`)
+      .then((response) => {
+        console.log(response)
+        this.syncInfo = response.data
+      })
+      .catch((error) => {
+        this.$store.dispatch('ui/notifyError', error.response.data.detail)
       })
   },
   methods: {
