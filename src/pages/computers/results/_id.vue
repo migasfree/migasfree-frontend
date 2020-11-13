@@ -365,6 +365,51 @@
             <q-card-section>
               <div class="text-h5">Software</div>
             </q-card-section>
+
+            <q-card-section>
+              <div class="row">
+                <q-list class="overflow">
+                  <q-tooltip>Software inventory</q-tooltip>
+                  <q-item v-for="item in softwareInventory" :key="item.id">
+                    <MigasLink
+                      model="packages"
+                      :pk="item.id"
+                      :value="item.name"
+                    />
+                  </q-item>
+                </q-list>
+              </div>
+
+              <div class="row">
+                <q-tooltip>Software History</q-tooltip>
+                <div class="row">
+                  <q-toggle
+                    v-model="expandedHistory"
+                    label="Expandir historial"
+                    class="q-mb-md"
+                  />
+                </div>
+                <div class="row">
+                  <q-list style="width: 600px" class="overflow">
+                    <q-expansion-item
+                      v-for="(value, key) in softwareHistory"
+                      :key="key"
+                      v-model="expandedHistory"
+                      expand-separator
+                      :label="key"
+                    >
+                      <q-card>
+                        <q-card-section>
+                          <p v-for="(item, index) in value" :key="index">
+                            {{ item }}
+                          </p>
+                        </q-card-section>
+                      </q-card>
+                    </q-expansion-item>
+                  </q-list>
+                </div>
+              </div>
+            </q-card-section>
           </q-card>
         </div>
       </div>
@@ -373,12 +418,6 @@
         <q-btn icon="mdi-delete" color="negative" label="Borrar" />
       </div>
     </template>
-
-    <pre
-      >{{ element }} {{ syncInfo }} {{ softwareInventory }} {{
-        softwareHistory
-      }}</pre
-    >
   </q-page>
 </template>
 
@@ -388,6 +427,7 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import MigasLink from 'components/MigasLink'
 import DateDiff from 'components/DateDiff'
 import { elementMixin } from 'mixins/element'
+import { MIGASFREE_SECONDS_MESSAGE_ALERT } from 'config/app.conf'
 
 const { humanStorageSize } = format
 
@@ -422,10 +462,11 @@ export default {
           text: 'Id'
         }
       ],
+      expandedHistory: false,
       element: {},
       syncInfo: {},
       softwareInventory: [],
-      softwareHistory: [],
+      softwareHistory: {},
       status: [],
       tags: []
     }
@@ -524,3 +565,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.overflow {
+  max-height: 15em;
+  overflow: auto;
+}
+</style>
