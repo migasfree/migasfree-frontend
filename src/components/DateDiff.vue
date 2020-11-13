@@ -1,6 +1,6 @@
 <template>
   <q-chip v-if="diff" icon="mdi-timer" :color="appearance" text-color="white">
-    <q-tooltip>unsynchronized from</q-tooltip>
+    <q-tooltip v-if="tooltip">{{ tooltip }}</q-tooltip>
     {{ diff }}
   </q-chip>
 </template>
@@ -9,13 +9,24 @@
 import { date } from 'quasar'
 
 export default {
-  name: 'UnsyncFrom',
+  name: 'DateDiff',
   props: {
-    from: {
+    begin: {
       type: Date,
       default: function() {
-        return new Date()
+        return new Date(Date.now())
       }
+    },
+    end: {
+      type: Date,
+      default: function() {
+        return new Date(Date.now())
+      }
+    },
+    tooltip: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data() {
@@ -25,10 +36,10 @@ export default {
     }
   },
   created() {
-    const now = Date.now()
-    const diffDays = date.getDateDiff(now, this.from, 'days')
+    console.log(this.begin, this.end)
+    const diffDays = date.getDateDiff(this.end, this.begin, 'days')
     const diffSeconds = new Date(
-      date.getDateDiff(now, this.from, 'seconds') * 1000
+      date.getDateDiff(this.end, this.begin, 'seconds') * 1000
     )
       .toISOString()
       .substr(11, 8)
@@ -39,7 +50,8 @@ export default {
       this.appearance = 'negative'
     }
 
-    this.diff = `${diffDays} days, ${diffSeconds}`
+    if (diffDays) this.diff = `${diffDays} days, ${diffSeconds}`
+    else this.diff = diffSeconds
   }
 }
 </script>
