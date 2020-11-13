@@ -1,0 +1,3 @@
+export default {
+  MIGASFREE_SECONDS_MESSAGE_ALERT: 1800
+}
