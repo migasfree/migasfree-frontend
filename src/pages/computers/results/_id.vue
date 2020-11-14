@@ -311,16 +311,16 @@
             </q-card-section>
 
             <q-card-section>
-              <div class="row">
+              <div class="row q-pa-md">
                 <div class="col-md">
-                  <q-tooltip>sync start date</q-tooltip>
+                  <q-tooltip self="bottom middle">sync start date</q-tooltip>
                   <q-icon name="mdi-play" size="sm" />{{
                     showDate(syncInfo.sync_start_date)
                   }}
                 </div>
 
                 <div class="col-md">
-                  <q-tooltip>sync end date</q-tooltip>
+                  <q-tooltip self="bottom middle">sync end date</q-tooltip>
                   <q-icon name="mdi-stop" size="sm" />{{
                     showDate(syncInfo.sync_end_date)
                   }}
@@ -336,7 +336,8 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row q-pa-md">
+                <q-tooltip self="bottom middle">User</q-tooltip>
                 <q-icon name="mdi-account" size="sm" />
                 <MigasLink
                   model="users"
@@ -345,14 +346,28 @@
                 />
               </div>
 
-              <div class="row">
-                <MigasLink
-                  v-for="(item, index) in syncInfo.sync_attributes"
-                  :key="index"
-                  model="attributes"
-                  :pk="item.id"
-                  :value="`${item.property_att.prefix}-${item.value}`"
-                />
+              <div class="row q-pa-md">
+                <q-list bordered>
+                  <q-expansion-item
+                    label="Attributes"
+                    default-opened
+                    icon="mdi-pound"
+                    :content-inset-level="0.5"
+                  >
+                    <q-list class="overflow">
+                      <q-item
+                        v-for="item in syncInfo.sync_attributes"
+                        :key="item.id"
+                      >
+                        <MigasLink
+                          model="attributes"
+                          :pk="item.id"
+                          :value="`${item.property_att.prefix}-${item.value}`"
+                        />
+                      </q-item>
+                    </q-list>
+                  </q-expansion-item>
+                </q-list>
               </div>
             </q-card-section>
           </q-card>
@@ -367,36 +382,53 @@
             </q-card-section>
 
             <q-card-section>
-              <div class="row">
-                <q-list class="overflow">
-                  <q-tooltip>Software inventory</q-tooltip>
-                  <q-item v-for="item in softwareInventory" :key="item.id">
-                    <MigasLink
-                      model="packages"
-                      :pk="item.id"
-                      :value="item.name"
-                    />
-                  </q-item>
-                </q-list>
-              </div>
+              <q-list bordered>
+                <q-expansion-item
+                  label="Inventory"
+                  icon="mdi-package-variant"
+                  :content-inset-level="0.5"
+                  @show="loadSoftwareInventory"
+                >
+                  <q-list class="overflow">
+                    <q-item v-if="loading.inventory">
+                      <q-spinner
+                        color="primary"
+                        size="3em"
+                        class="loading-items"
+                      />
+                    </q-item>
+                    <q-item v-for="item in softwareInventory" :key="item.id">
+                      <MigasLink
+                        model="packages"
+                        :pk="item.id"
+                        :value="item.name"
+                      />
+                    </q-item>
+                  </q-list>
+                </q-expansion-item>
 
-              <div class="row">
-                <q-tooltip>Software History</q-tooltip>
-                <div class="row">
-                  <q-toggle
-                    v-model="expandedHistory"
-                    label="Expandir historial"
-                    class="q-mb-md"
-                  />
-                </div>
-                <div class="row">
-                  <q-list style="width: 600px" class="overflow">
+                <q-separator />
+
+                <q-expansion-item
+                  label="History"
+                  icon="mdi-history"
+                  :content-inset-level="0.5"
+                  @show="loadSoftwareHistory"
+                >
+                  <q-list class="overflow">
+                    <q-item v-if="loading.history">
+                      <q-spinner
+                        color="primary"
+                        size="3em"
+                        class="loading-items"
+                      />
+                    </q-item>
                     <q-expansion-item
                       v-for="(value, key) in softwareHistory"
                       :key="key"
-                      v-model="expandedHistory"
                       expand-separator
                       :label="key"
+                      icon="mdi-calendar-range"
                     >
                       <q-card>
                         <q-card-section>
@@ -407,8 +439,8 @@
                       </q-card>
                     </q-expansion-item>
                   </q-list>
-                </div>
-              </div>
+                </q-expansion-item>
+              </q-list>
             </q-card-section>
           </q-card>
         </div>
@@ -462,11 +494,15 @@ export default {
           text: 'Id'
         }
       ],
-      expandedHistory: false,
+      loading: {
+        inventory: false,
+        history: false
+      },
       element: {},
       syncInfo: {},
       softwareInventory: [],
       softwareHistory: {},
+      devices: {},
       status: [],
       tags: []
     }
@@ -479,7 +515,7 @@ export default {
         this.element = response.data
         this.breadcrumbs[4].text = this.element.__str__
         this.loadSyncInfo()
-        this.loadSoftware()
+        this.loadDevices()
       })
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error.response.data.detail)
@@ -516,26 +552,52 @@ export default {
         })
     },
 
-    async loadSoftware() {
-      if (this.element.has_software_inventory) {
+    async loadDevices() {
+      await this.$axios
+        .get(`/api/v1/token/computers/${this.$route.params.id}/devices/`)
+        .then((response) => {
+          console.log(response)
+          this.devices = response.data
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error.response.data.detail)
+        })
+    },
+
+    async loadSoftwareInventory() {
+      if (
+        this.element.has_software_inventory &&
+        this.softwareInventory.length === 0
+      ) {
+        this.loading.inventory = true
         await this.$axios
           .get(this.element.software_inventory)
           .then((response) => {
-            console.log(response)
             this.softwareInventory = response.data
+            this.loading.inventory = false
           })
           .catch((error) => {
             this.$store.dispatch('ui/notifyError', error.response.data.detail)
+            this.loading.inventory = false
           })
+      }
+    },
 
+    async loadSoftwareHistory() {
+      if (
+        this.element.has_software_inventory &&
+        Object.keys(this.softwareHistory).length === 0
+      ) {
+        this.loading.history = true
         await this.$axios
           .get(this.element.software_history)
           .then((response) => {
-            console.log(response)
             this.softwareHistory = response.data
+            this.loading.history = false
           })
           .catch((error) => {
             this.$store.dispatch('ui/notifyError', error.response.data.detail)
+            this.loading.history = false
           })
       }
     },
@@ -570,5 +632,8 @@ export default {
 .overflow {
   max-height: 15em;
   overflow: auto;
+}
+.loading-items {
+  height: 6em;
 }
 </style>
