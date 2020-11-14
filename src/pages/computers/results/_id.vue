@@ -384,17 +384,33 @@
             <q-card-section>
               <q-list bordered>
                 <q-expansion-item
-                  label="Inventory"
-                  icon="mdi-package-variant"
                   :content-inset-level="0.5"
                   @show="loadSoftwareInventory"
                 >
+                  <template v-slot:header>
+                    <q-item-section avatar>
+                      <q-icon name="mdi-package-variant" size="md" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Inventory
+                    </q-item-section>
+
+                    <q-item-section side>
+                      <q-btn
+                        flat
+                        icon="mdi-content-copy"
+                        color="primary"
+                        @click.stop="copyInventory"
+                      />
+                    </q-item-section>
+                  </template>
+
                   <q-list class="overflow">
                     <q-item v-if="loading.inventory">
-                      <q-spinner
+                      <q-spinner-dots
                         color="primary"
                         size="3em"
-                        class="loading-items"
                       />
                     </q-item>
                     <q-item v-for="item in softwareInventory" :key="item.id">
@@ -410,17 +426,33 @@
                 <q-separator />
 
                 <q-expansion-item
-                  label="History"
-                  icon="mdi-history"
                   :content-inset-level="0.5"
                   @show="loadSoftwareHistory"
                 >
+                  <template v-slot:header>
+                    <q-item-section avatar>
+                      <q-icon name="mdi-history" size="md" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      History
+                    </q-item-section>
+
+                    <q-item-section side>
+                      <q-btn
+                        flat
+                        icon="mdi-content-copy"
+                        color="primary"
+                        @click.stop="copyHistory"
+                      />
+                    </q-item-section>
+                  </template>
+
                   <q-list class="overflow">
                     <q-item v-if="loading.history">
-                      <q-spinner
+                      <q-spinner-dots
                         color="primary"
                         size="3em"
-                        class="loading-items"
                       />
                     </q-item>
                     <q-expansion-item
@@ -442,6 +474,57 @@
                 </q-expansion-item>
               </q-list>
             </q-card-section>
+          </q-card>
+        </div>
+
+        <div class="col-md">
+          <q-card>
+            <q-card-section>
+              <div class="text-h5">Dispositivos</div>
+            </q-card-section>
+
+            <q-card-section>
+              <p>
+                <q-select
+                  v-model="devices.assigned_logical_devices_to_cid"
+                  outlined
+                  use-input
+                  use-chips
+                  emit-value
+                  map-options
+                  multiple
+                  input-debounce="0"
+                  label="Asignados"
+                  :options="assignedDevices"
+                  @filter="filterAssignedDevices"
+                  @filter-abort="abortFilterAssignedDevices"
+                >
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-grey">
+                        No results
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+              </p>
+
+              <p>
+                <q-select
+                  v-model="devices.default_logical_device"
+                  outlined
+                  label="Por defecto"
+                />
+              </p>
+            </q-card-section>
+
+            <q-card-actions>
+              <q-btn
+                class="full-width"
+                color="primary"
+                icon="mdi-content-save"
+              />
+            </q-card-actions>
           </q-card>
         </div>
       </div>
@@ -504,7 +587,8 @@ export default {
       softwareHistory: {},
       devices: {},
       status: [],
-      tags: []
+      tags: [],
+      assignedDevices: []
     }
   },
   async mounted() {
@@ -623,6 +707,25 @@ export default {
 
     abortFilterTags() {
       // console.log('delayed filter aborted')
+    },
+
+    filterAssignedDevices(val, update, abort) {
+      // call abort() at any time if you can't retrieve data somehow
+      if (val.length < 3) {
+        abort()
+        return
+      }
+
+      /* update(() => {
+        const needle = val.toLowerCase()
+        this.tags = stringOptions.filter(
+          (v) => v.toLowerCase().indexOf(needle) > -1
+        )
+      }) */
+    },
+
+    abortFilterAssignedDevices() {
+      // console.log('delayed filter aborted')
     }
   }
 }
@@ -630,10 +733,8 @@ export default {
 
 <style scoped>
 .overflow {
+  min-height: 6em;
   max-height: 15em;
   overflow: auto;
-}
-.loading-items {
-  height: 6em;
 }
 </style>
