@@ -346,29 +346,27 @@
                 />
               </div>
 
-              <div class="row q-pa-md">
-                <q-list bordered>
-                  <q-expansion-item
-                    label="Attributes"
-                    default-opened
-                    icon="mdi-pound"
-                    :content-inset-level="0.5"
-                  >
-                    <q-list class="overflow">
-                      <q-item
-                        v-for="item in syncInfo.sync_attributes"
-                        :key="item.id"
-                      >
-                        <MigasLink
-                          model="attributes"
-                          :pk="item.id"
-                          :value="`${item.property_att.prefix}-${item.value}`"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-expansion-item>
-                </q-list>
-              </div>
+              <q-list bordered>
+                <q-expansion-item
+                  label="Attributes"
+                  default-opened
+                  icon="mdi-pound"
+                  :content-inset-level="0.5"
+                >
+                  <q-list class="overflow">
+                    <q-item
+                      v-for="item in syncInfo.sync_attributes"
+                      :key="item.id"
+                    >
+                      <MigasLink
+                        model="attributes"
+                        :pk="item.id"
+                        :value="`${item.property_att.prefix}-${item.value}`"
+                      />
+                    </q-item>
+                  </q-list>
+                </q-expansion-item>
+              </q-list>
             </q-card-section>
           </q-card>
         </div>
@@ -408,10 +406,7 @@
 
                   <q-list class="overflow">
                     <q-item v-if="loading.inventory">
-                      <q-spinner-dots
-                        color="primary"
-                        size="3em"
-                      />
+                      <q-spinner-dots color="primary" size="3em" />
                     </q-item>
                     <q-item v-for="item in softwareInventory" :key="item.id">
                       <MigasLink
@@ -450,10 +445,7 @@
 
                   <q-list class="overflow">
                     <q-item v-if="loading.history">
-                      <q-spinner-dots
-                        color="primary"
-                        size="3em"
-                      />
+                      <q-spinner-dots color="primary" size="3em" />
                     </q-item>
                     <q-expansion-item
                       v-for="(value, key) in softwareHistory"
