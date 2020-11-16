@@ -21,10 +21,12 @@ export default {
   },
   methods: {
     goTo(to) {
-      if (to) {
+      if (typeof to === 'object') {
+        return to
+      } else if (typeof to === 'string') {
         return { name: to }
       }
-      return ''
+      return '#'
     }
   }
 }
