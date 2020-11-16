@@ -22,7 +22,12 @@ const routes = [
         path: '/computers/results/:id',
         name: 'computer-detail',
         component: () => import('pages/computers/results/_id.vue')
-      }
+      },
+      {
+        path: '/computers/results/:id/events',
+        name: 'computer-events',
+        component: () => import('pages/computers/results/events.vue')
+      },
     ],
     meta: { authRequired: true }
   },
