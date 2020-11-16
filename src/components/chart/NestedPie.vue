@@ -3,7 +3,7 @@
     <q-card-section>
       <div class="row">
         <div class="col">
-          {{ title }}
+          <div class="text-h5">{{ title }}</div>
         </div>
 
         <div class="col-auto">
@@ -50,54 +50,56 @@ export default {
       required: true,
       default() {
         return { inner: [], outer: [], total: 0 }
-      },
+      }
     },
-    url: { type: String, required: false, default: '' },
+    url: { type: String, required: false, default: '' }
   },
-  data: () => ({
-    initOptions: {
-      renderer: 'svg',
-    },
-    options: {
-      animation: false,
-      tooltip: {
-        trigger: 'item',
-        formatter: '{b} ({c}): <strong>{d}%</strong>',
+  data() {
+    return {
+      initOptions: {
+        renderer: 'svg'
       },
-      series: [
-        {
-          type: 'pie',
-          selectedMode: 'single',
-          radius: [0, '30%'],
-          label: {
-            position: 'inner',
-          },
-          labelLine: {
-            show: false,
-          },
-          data: [],
+      options: {
+        animation: false,
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b} ({c}): <strong>{d}%</strong>'
         },
-        {
-          type: 'pie',
-          radius: ['40%', '55%'],
-          label: {
-            formatter: '{b} ({c}): {per|{d}%}',
-            rich: {
-              per: {
-                fontWeight: 'bold',
-              },
+        series: [
+          {
+            type: 'pie',
+            selectedMode: 'single',
+            radius: [0, '30%'],
+            label: {
+              position: 'inner'
             },
+            labelLine: {
+              show: false
+            },
+            data: []
           },
-          data: [],
-        },
-      ],
-    },
-  }),
+          {
+            type: 'pie',
+            radius: ['40%', '55%'],
+            label: {
+              formatter: '{b} ({c}): {per|{d}%}',
+              rich: {
+                per: {
+                  fontWeight: 'bold'
+                }
+              }
+            },
+            data: []
+          }
+        ]
+      }
+    }
+  },
   watch: {
-    data: function (val, oldVal) {
+    data: function(val, oldVal) {
       this.options.series[0].data = val.inner
       this.options.series[1].data = val.outer
-    },
+    }
   },
   beforeMount() {
     window.addEventListener('resize', this.windowResize)
@@ -118,7 +120,7 @@ export default {
       if (this.url) {
         this.$router.push(this.url)
       }
-    },
-  },
+    }
+  }
 }
 </script>
