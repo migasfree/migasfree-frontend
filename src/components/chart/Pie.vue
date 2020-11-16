@@ -3,7 +3,7 @@
     <q-card-section>
       <div class="row">
         <div class="col">
-          {{ title }}
+          <div class="text-h5">{{ title }}</div>
         </div>
 
         <div class="col-auto">
@@ -54,33 +54,35 @@ export default {
     },
     url: { type: String, required: false, default: '' }
   },
-  data: () => ({
-    initOptions: {
-      renderer: 'svg'
-    },
-    options: {
-      animation: false,
-      tooltip: {
-        trigger: 'item',
-        formatter: '{b} ({c}): <strong>{d}%</strong>'
+  data() {
+    return {
+      initOptions: {
+        renderer: 'svg'
       },
-      series: [
-        {
-          type: 'pie',
-          radius: ['30%', '65%'],
-          center: ['50%', '60%'],
-          data: [],
-          emphasis: {
-            itemStyle: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
+      options: {
+        animation: false,
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b} ({c}): <strong>{d}%</strong>'
+        },
+        series: [
+          {
+            type: 'pie',
+            radius: ['30%', '65%'],
+            center: ['50%', '60%'],
+            data: [],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
             }
           }
-        }
-      ]
+        ]
+      }
     }
-  }),
+  },
   watch: {
     data: function(val, oldVal) {
       this.options.series[0].data = val.data
