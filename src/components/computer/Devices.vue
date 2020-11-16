@@ -40,7 +40,14 @@
     </q-card-section>
 
     <q-card-actions>
-      <q-btn class="full-width" color="primary" icon="mdi-content-save" />
+      <q-btn
+        class="full-width"
+        color="primary"
+        icon="mdi-content-save"
+        :loading="loading"
+        :disabled="loading"
+        @click="updateDevices"
+      />
     </q-card-actions>
   </q-card>
 </template>
@@ -57,6 +64,7 @@ export default {
 
   data() {
     return {
+      loading: false,
       devices: {},
       assignedDevices: []
     }
@@ -74,6 +82,25 @@ export default {
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error.response.data.detail)
+        })
+    },
+
+    async updateDevices() {
+      this.loading = true
+      await this.$axios
+        .patch(`/api/v1/token/computers/${this.cid}/`, {
+          // default_logical_device: , TODO
+          // assigned_logical_devices_to_cid: TODO
+        })
+        .then((response) => {
+          console.log(response)
+          this.$store.dispatch('ui/notifySuccess', 'Devices have been changed!')
+          this.loading = false
+        })
+        .catch((error) => {
+          console.log(error.response.data)
+          this.$store.dispatch('ui/notifyError', error.response.data)
+          this.loading = false
         })
     },
 
