@@ -2,8 +2,14 @@
   <q-card>
     <q-card-section>
       <q-btn-group v-if="$store.getters['auth/user'].is_superuser">
-        <q-input v-model="name" outlined label="Nombre" />
-        <q-btn color="primary" icon="mdi-content-save" @click="updateName" />
+        <q-input v-model="value" outlined label="Nombre" />
+        <q-btn
+          color="primary"
+          icon="mdi-content-save"
+          :loading="loading"
+          :disabled="loading"
+          @click="updateName"
+        />
       </q-btn-group>
       <div v-else class="text-h5">{{ name }}</div>
     </q-card-section>
@@ -120,9 +126,31 @@ export default {
       default: null
     }
   },
+  data() {
+    return {
+      loading: false,
+      value: this.name
+    }
+  },
   methods: {
-    updateName() {
-      console.log(this.name)
+    async updateName() {
+      this.loading = true
+      await this.$axios
+        .patch(`/api/v1/token/computers/${this.cid}/`, {
+          name: this.value,
+        })
+        .then((response) => {
+          console.log(response)
+          this.$store.dispatch(
+            'ui/notifySuccess',
+            'Name has been changed!'
+          )
+          this.loading = false
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error.response.data.detail)
+          this.loading = false
+        })
     }
   }
 }
