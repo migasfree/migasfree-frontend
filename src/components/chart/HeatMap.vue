@@ -14,6 +14,7 @@
 import 'echarts/lib/chart/heatmap'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/calendar'
+import 'echarts/lib/component/visualMap'
 import { parseDate } from 'echarts/lib/util/number'
 import { formatTime } from 'echarts/lib/util/format'
 
@@ -38,27 +39,30 @@ export default {
         renderer: 'svg'
       },
       options: {
-        tooltip: {},
+        tooltip: {
+          position: 'top',
+          formatter: function(p) {
+            const format = formatTime('yyyy-MM-dd', p.data[0])
+            return `${format}: ${p.data[1]}`
+          }
+        },
         visualMap: {
-          min: 0,
-          max: 10000,
-          type: 'piecewise',
+          min: 1,
+          max: 100,
           orient: 'horizontal',
+          calculable: true,
           left: 'center',
-          top: 65,
+          top: 40,
           textStyle: { color: '#000' }
         },
         calendar: {
           top: 120,
           left: 30,
           right: 30,
-          cellSize: ['auto', 13],
-          range: [
-            this.start,
-            formatTime('yyyy-MM-dd', Date.now())
-          ],
+          cellSize: [25, 25],
+          range: [this.start, formatTime('yyyy-MM-dd', Date.now())],
           itemStyle: { borderWidth: 0.5 },
-          yearLabel: { show: false }
+          yearLabel: { show: true }
         },
         series: {
           type: 'heatmap',
@@ -89,7 +93,7 @@ export default {
       for (var time = date; time < end; time += dayTime) {
         data.push([
           formatTime('yyyy-MM-dd', time),
-          Math.floor(Math.random() * 10000)
+          Math.floor(Math.random() * 100)
         ])
       }
       console.log(data)
@@ -103,7 +107,9 @@ export default {
 <style scoped>
 .echart-container {
   /* width: 100%; */
-  width: 600px;
+  /* width: 600px; */
+  min-width: 600px;
+  max-width: 10000px;
   height: 400px;
 }
 .echarts {
