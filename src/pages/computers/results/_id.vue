@@ -173,6 +173,9 @@
                 class="full-width"
                 color="primary"
                 icon="mdi-content-save"
+                :loading="loading"
+                :disabled="loading"
+                @click="updateCurrentSituation"
               />
             </q-card-actions>
           </q-card>
@@ -269,7 +272,12 @@
       </div>
 
       <div class="row q-pa-md">
-        <q-btn icon="mdi-delete" color="negative" label="Borrar" />
+        <q-btn
+          icon="mdi-delete"
+          color="negative"
+          label="Borrar"
+          @click="remove"
+        />
       </div>
     </template>
   </q-page>
@@ -329,7 +337,8 @@ export default {
       status: [],
       tags: [],
       errors: {},
-      faults: {}
+      faults: {},
+      loading: false
     }
   },
   async mounted() {
@@ -424,6 +433,29 @@ export default {
 
     abortFilterTags() {
       // console.log('delayed filter aborted')
+    },
+
+    async updateCurrentSituation() {
+      this.loading = true
+      await this.$axios
+        .patch(`/api/v1/token/computers/${this.element.id}/`, {
+          status: this.element.status,
+          comment: this.element.comment,
+          // tags: TODO
+        })
+        .then((response) => {
+          console.log(response)
+          this.$store.dispatch('ui/notifySuccess', 'Current Situation has been changed!')
+          this.loading = false
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error.response.data.detail)
+          this.loading = false
+        })
+    },
+
+    remove() {
+      console.log(this.element.id)
     }
   }
 }
