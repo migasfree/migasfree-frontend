@@ -16,6 +16,33 @@
           </h2>
         </div>
       </div>
+
+      <div class="row">
+        <h3 class="text-h5">
+          <q-tooltip self="bottom middle"
+            >Date of entry into the migasfree system</q-tooltip
+          >
+          <q-icon name="mdi-calendar-plus" size="md" />
+          {{ showDate(computer.created_at) }}
+        </h3>
+      </div>
+
+      <div class="row">
+        <q-btn-group>
+          <q-btn label="Sincronizaciones" no-caps />
+          <q-btn label="Errores" no-caps />
+          <q-btn label="Fallas" no-caps />
+          <q-btn label="Registros de Estado" no-caps />
+          <q-btn label="Migraciones" no-caps />
+        </q-btn-group>
+      </div>
+
+      <div class="row">
+        <HeatMap
+          :data="{ data: [] }"
+          :start="showDate(computer.created_at, 'YYYY-MM-DD')"
+        />
+      </div>
     </template>
   </q-page>
 </template>
@@ -23,11 +50,12 @@
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import MigasLink from 'components/MigasLink'
+import HeatMap from 'components/chart/HeatMap'
 import { elementMixin } from 'mixins/element'
 import { dateMixin } from 'mixins/date'
 
 export default {
-  components: { Breadcrumbs, MigasLink },
+  components: { Breadcrumbs, MigasLink, HeatMap },
   mixins: [elementMixin, dateMixin],
   data() {
     return {
