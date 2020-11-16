@@ -31,7 +31,12 @@ const routes = [
     path: '/login',
     component: () => import('layouts/Empty.vue'),
     children: [
-      { path: '', name: 'login', component: () => import('pages/Login.vue') }
+      { path: '', name: 'login', component: () => import('pages/Login.vue') },
+      {
+        path: '/computers/results/:id/label',
+        name: 'computer-label',
+        component: () => import('pages/computers/results/label.vue')
+      }
     ]
   },
 
