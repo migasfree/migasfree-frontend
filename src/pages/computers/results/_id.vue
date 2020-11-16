@@ -127,6 +127,45 @@
                   </template>
                 </q-select>
               </p>
+
+              <q-list bordered>
+                <q-expansion-item
+                  label="Conjuntos de atributos"
+                  default-opened
+                  icon="mdi-set-none"
+                  :content-inset-level="0.5"
+                >
+                  <q-list class="overflow">
+                    <q-item v-for="item in onlyAttributeSets" :key="item.id">
+                      <MigasLink
+                        model="attributes"
+                        :pk="item.id"
+                        :value="`${item.property_att.prefix}-${item.value}`"
+                      />
+                    </q-item>
+                  </q-list>
+                </q-expansion-item>
+              </q-list>
+
+              <div class="row q-pa-md text-center">
+                <div class="col-md">
+                  <q-tooltip>Errores</q-tooltip>
+                  <q-icon name="mdi-bug" size="xl" />
+                  <q-chip size="md" color="negative" text-color="white">{{
+                    errors.unchecked
+                  }}</q-chip>
+                  / <q-chip size="md">{{ errors.total }}</q-chip>
+                </div>
+
+                <div class="col-md">
+                  <q-tooltip>Fallas</q-tooltip>
+                  <q-icon name="mdi-bomb" size="xl" />
+                  <q-chip size="md" color="negative" text-color="white">{{
+                    faults.unchecked
+                  }}</q-chip>
+                  / <q-chip size="md">{{ faults.total }}</q-chip>
+                </div>
+              </div>
             </q-card-section>
 
             <q-card-actions>
@@ -201,10 +240,7 @@
                   :content-inset-level="0.5"
                 >
                   <q-list class="overflow">
-                    <q-item
-                      v-for="item in syncInfo.sync_attributes"
-                      :key="item.id"
-                    >
+                    <q-item v-for="item in onlyAttributes" :key="item.id">
                       <MigasLink
                         model="attributes"
                         :pk="item.id"
@@ -288,8 +324,12 @@ export default {
       ],
       element: {},
       syncInfo: {},
+      onlyAttributes: [],
+      onlyAttributeSets: [],
       status: [],
-      tags: []
+      tags: [],
+      errors: {},
+      faults: {}
     }
   },
   async mounted() {
@@ -300,6 +340,8 @@ export default {
         this.element = response.data
         this.breadcrumbs[4].text = this.element.__str__
         this.loadSyncInfo()
+        this.loadErrors()
+        this.loadFaults()
       })
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error.response.data.detail)
@@ -328,6 +370,37 @@ export default {
         .then((response) => {
           console.log(response)
           this.syncInfo = response.data
+          Object.entries(response.data.sync_attributes).map(([key, val]) => {
+            if (val.property_att.prefix === 'SET') {
+              this.onlyAttributeSets.push(val)
+            } else {
+              this.onlyAttributes.push(val)
+            }
+          })
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error.response.data.detail)
+        })
+    },
+
+    async loadErrors() {
+      await this.$axios
+        .get(`/api/v1/token/computers/${this.$route.params.id}/errors/`)
+        .then((response) => {
+          console.log(response)
+          this.errors = response.data
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error.response.data.detail)
+        })
+    },
+
+    async loadFaults() {
+      await this.$axios
+        .get(`/api/v1/token/computers/${this.$route.params.id}/faults/`)
+        .then((response) => {
+          console.log(response)
+          this.faults = response.data
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error.response.data.detail)
@@ -356,7 +429,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .overflow {
   min-height: 6em;
   max-height: 15em;
