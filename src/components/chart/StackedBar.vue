@@ -1,6 +1,8 @@
 <template>
   <q-card class="q-ma-sm">
-    <q-card-section>{{ title }}</q-card-section>
+    <q-card-section>
+      <div class="text-h5">{{ title }}</div>
+    </q-card-section>
 
     <q-card-section class="echart-container">
       <v-chart
@@ -35,37 +37,39 @@ export default {
   name: 'StackedBarChart',
   props: {
     title: { type: String, required: true },
-    data: { type: Object, required: true },
+    data: { type: Object, required: true }
   },
-  data: () => ({
-    options: {
-      animation: false,
-      tooltip: {
-        show: true,
-        trigger: 'axis',
+  data() {
+    return {
+      options: {
+        animation: false,
+        tooltip: {
+          show: true,
+          trigger: 'axis'
+        },
+        legend: {
+          show: true,
+          bottom: 'bottom'
+        },
+        xAxis: {
+          type: 'category',
+          data: []
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: []
       },
-      legend: {
-        show: true,
-        bottom: 'bottom',
-      },
-      xAxis: {
-        type: 'category',
-        data: [],
-      },
-      yAxis: {
-        type: 'value',
-      },
-      series: [],
-    },
-    initOptions: {
-      renderer: 'svg',
-    },
-  }),
+      initOptions: {
+        renderer: 'svg'
+      }
+    }
+  },
   watch: {
-    data: function (val, oldVal) {
+    data: function(val, oldVal) {
       this.options.series = val.series
       this.options.xAxis.data = val.xData
-    },
+    }
   },
   beforeMount() {
     window.addEventListener('resize', this.windowResize)
@@ -81,7 +85,7 @@ export default {
       if (this.$refs.chart !== null && this.$refs.chart !== undefined) {
         this.$refs.chart.resize()
       }
-    },
-  },
+    }
+  }
 }
 </script>
