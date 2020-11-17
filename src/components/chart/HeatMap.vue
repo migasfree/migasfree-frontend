@@ -1,5 +1,17 @@
 <template>
   <q-card class="q-ma-sm">
+    <q-card-section>
+      <div class="row">
+        <div class="col">
+          <div class="text-h5">{{ title }}</div>
+        </div>
+
+        <div v-if="total" class="col-auto">
+          <q-chip size="md" color="info">{{ total }}</q-chip>
+        </div>
+      </div>
+    </q-card-section>
+
     <q-card-section class="echart-container">
       <v-chart
         ref="chart"
@@ -22,15 +34,21 @@ export default {
   name: 'HeatMap',
   props: {
     data: {
-      type: Object,
-      required: true,
-      default() {
-        return { data: [] }
-      }
+      type: Array,
+      required: true
     },
     start: {
       type: String,
       required: true
+    },
+    title: {
+      type: String,
+      required: true
+    },
+    total: {
+      type: Number,
+      required: false,
+      default: 0
     }
   },
   data() {
@@ -67,8 +85,21 @@ export default {
         series: {
           type: 'heatmap',
           coordinateSystem: 'calendar',
-          data: this.getVirtualData(2020)
+          data: []
         }
+      }
+    }
+  },
+  watch: {
+    data: function(val, oldVal) {
+      if (val.length > 0) {
+        this.options.series.data = val
+        this.options.visualMap.max = Math.max.apply(
+          Math,
+          val.map(function(o) {
+            return o[1]
+          })
+        )
       }
     }
   },
@@ -83,22 +114,6 @@ export default {
       if (this.$refs.chart !== null && this.$refs.chart !== undefined) {
         this.$refs.chart.resize()
       }
-    },
-    getVirtualData(year) {
-      year = year || '2017'
-      var date = +parseDate(year + '-01-01')
-      var end = +parseDate(+year + 1 + '-01-01')
-      var dayTime = 3600 * 24 * 1000
-      var data = []
-      for (var time = date; time < end; time += dayTime) {
-        data.push([
-          formatTime('yyyy-MM-dd', time),
-          Math.floor(Math.random() * 100)
-        ])
-      }
-      console.log(data)
-      console.log()
-      return data
     }
   }
 }
