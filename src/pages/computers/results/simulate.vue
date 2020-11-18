@@ -85,7 +85,61 @@
               <div class="text-h5">Salida (del servidor)</div>
             </q-card-section>
 
-            <q-card-section> </q-card-section>
+            <q-card-section v-if="Object.keys(simulation).length > 0">
+              <OverflowList
+                label="Definiciones de fallas"
+                icon="mdi-alarm-light"
+                :items="simulation.fault_definitions"
+                model="fault-definitions"
+              />
+
+              <OverflowList
+                label="Despliegues"
+                icon="mdi-rocket-launch"
+                :items="simulation.deployments"
+                model="deployments"
+              />
+
+              <OverflowList
+                label="Paquetes a instalar"
+                icon="mdi-package-down"
+                :items="simulation.packages.install"
+              />
+
+              <OverflowList
+                label="Paquetes a instalar (por políticas)"
+                icon="mdi-package-down"
+                :items="simulation.policies.install"
+              />
+
+              <OverflowList
+                label="Paquetes a desinstalar"
+                icon="mdi-package-up"
+                :items="simulation.packages.remove"
+              />
+
+              <OverflowList
+                label="Paquetes a desinstalar (por políticas)"
+                icon="mdi-package-up"
+                :items="simulation.policies.remove"
+              />
+
+              <OverflowList
+                label="Dispositivos"
+                icon="mdi-printer"
+                :items="simulation.logical_devices"
+                model="devices/logical"
+              />
+
+              <p>
+                Obtención del hardware:
+                <q-chip
+                  :color="simulation.capture_hardware ? 'positive' : 'negative'"
+                  text-color="white"
+                  >{{ simulation.capture_hardware ? 'Sí' : 'No' }}</q-chip
+                >
+              </p>
+            </q-card-section>
           </q-card>
         </div>
       </div>
