@@ -83,7 +83,8 @@ export default {
           cellSize: [25, 25],
           range: [this.start, formatTime('yyyy-MM-dd', Date.now())],
           itemStyle: { borderWidth: 0.5 },
-          yearLabel: { show: true }
+          yearLabel: { show: true },
+          dayLabel: { firstDay: 1 }
         },
         series: {
           type: 'heatmap',
@@ -101,7 +102,7 @@ export default {
         'days'
       )
       return {
-        '--variable-width': `${diff / 7 * 25}px`
+        '--variable-width': `${(diff / 7) * 25}px`
       }
     }
   },
