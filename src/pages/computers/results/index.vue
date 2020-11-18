@@ -247,7 +247,8 @@ export default {
         },
         {
           text: 'Ordenadores',
-          to: 'computers-dashboard'
+          to: 'computers-dashboard',
+          icon: 'mdi-desktop-classic'
         },
         {
           text: 'Resultados'

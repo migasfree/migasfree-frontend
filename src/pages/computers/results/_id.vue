@@ -320,7 +320,8 @@ export default {
         },
         {
           text: 'Ordenadores',
-          to: 'computers-dashboard'
+          to: 'computers-dashboard',
+          icon: 'mdi-desktop-classic'
         },
         {
           text: 'Resultados',
@@ -440,12 +441,15 @@ export default {
       await this.$axios
         .patch(`/api/v1/token/computers/${this.element.id}/`, {
           status: this.element.status,
-          comment: this.element.comment,
+          comment: this.element.comment
           // tags: TODO
         })
         .then((response) => {
           console.log(response)
-          this.$store.dispatch('ui/notifySuccess', 'Current Situation has been changed!')
+          this.$store.dispatch(
+            'ui/notifySuccess',
+            'Current Situation has been changed!'
+          )
           this.loading = false
         })
         .catch((error) => {

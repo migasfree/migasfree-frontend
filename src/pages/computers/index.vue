@@ -78,7 +78,8 @@ export default {
           icon: 'mdi-database-search'
         },
         {
-          text: 'Ordenadores'
+          text: 'Ordenadores',
+          icon: 'mdi-desktop-classic'
         }
       ],
       pieData: {},
