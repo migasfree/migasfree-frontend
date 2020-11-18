@@ -86,7 +86,8 @@
       <div v-if="items.length > 0" class="q-pa-md">
         <q-toolbar class="bg-primary text-white shadow-2">
           <q-toolbar-title
-            >{{ events[event].title }} ({{ items.length }})</q-toolbar-title
+            >{{ events[event].title }} ({{ itemsDate }}:
+            {{ items.length }})</q-toolbar-title
           >
         </q-toolbar>
 
@@ -178,7 +179,8 @@ export default {
           title: 'Registros de Estado'
         }
       },
-      items: []
+      items: [],
+      itemsDate: null
     }
   },
   async mounted() {
@@ -295,6 +297,8 @@ export default {
         )
       }
       const url = `/api/v1/token/${this.camelToKebabCase(this.event)}/`
+
+      this.itemsDate = params.data[0]
 
       await this.$axios
         .get(url, { params: queryString })
