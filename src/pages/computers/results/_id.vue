@@ -128,24 +128,12 @@
                 </q-select>
               </p>
 
-              <q-list bordered>
-                <q-expansion-item
-                  label="Conjuntos de atributos"
-                  default-opened
-                  icon="mdi-set-none"
-                  :content-inset-level="0.5"
-                >
-                  <q-list class="overflow">
-                    <q-item v-for="item in onlyAttributeSets" :key="item.id">
-                      <MigasLink
-                        model="attributes"
-                        :pk="item.id"
-                        :value="`${item.property_att.prefix}-${item.value}`"
-                      />
-                    </q-item>
-                  </q-list>
-                </q-expansion-item>
-              </q-list>
+              <OverflowList
+                label="Conjuntos de atributos"
+                icon="mdi-set-none"
+                :items="onlyAttributeSets"
+                model="attributes"
+              />
 
               <div class="row q-pa-md text-center">
                 <div class="col-md">
@@ -235,24 +223,12 @@
                 />
               </div>
 
-              <q-list bordered>
-                <q-expansion-item
-                  label="Attributes"
-                  default-opened
-                  icon="mdi-pound"
-                  :content-inset-level="0.5"
-                >
-                  <q-list class="overflow">
-                    <q-item v-for="item in onlyAttributes" :key="item.id">
-                      <MigasLink
-                        model="attributes"
-                        :pk="item.id"
-                        :value="`${item.property_att.prefix}-${item.value}`"
-                      />
-                    </q-item>
-                  </q-list>
-                </q-expansion-item>
-              </q-list>
+              <OverflowList
+                label="Attributes"
+                icon="mdi-pound"
+                :items="onlyAttributes"
+                model="attributes"
+              />
             </q-card-section>
           </q-card>
         </div>
@@ -285,6 +261,7 @@
 
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
+import OverflowList from 'components/ui/OverflowList'
 import MigasLink from 'components/MigasLink'
 import DateDiff from 'components/DateDiff'
 import ComputerInfo from 'components/computer/Info'
@@ -298,6 +275,7 @@ import { MIGASFREE_SECONDS_MESSAGE_ALERT } from 'config/app.conf'
 export default {
   components: {
     Breadcrumbs,
+    OverflowList,
     MigasLink,
     DateDiff,
     ComputerInfo,
@@ -382,9 +360,15 @@ export default {
           this.syncInfo = response.data
           Object.entries(response.data.sync_attributes).map(([key, val]) => {
             if (val.property_att.prefix === 'SET') {
-              this.onlyAttributeSets.push(val)
+              this.onlyAttributeSets.push({
+                id: val.id,
+                value: `${val.property_att.prefix}-${val.value}`
+              })
             } else {
-              this.onlyAttributes.push(val)
+              this.onlyAttributes.push({
+                id: val.id,
+                value: `${val.property_att.prefix}-${val.value}`
+              })
             }
           })
         })
@@ -464,11 +448,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.overflow {
-  min-height: 6em;
-  max-height: 15em;
-  overflow: auto;
-}
-</style>
