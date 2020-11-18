@@ -28,6 +28,11 @@ const routes = [
         name: 'computer-events',
         component: () => import('pages/computers/results/events.vue')
       },
+      {
+        path: '/computers/results/:id/sync/simulation',
+        name: 'computer-simulate',
+        component: () => import('pages/computers/results/simulate.vue')
+      }
     ],
     meta: { authRequired: true }
   },
