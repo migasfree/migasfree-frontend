@@ -6,32 +6,37 @@ const routes = [
       {
         path: '',
         name: 'home',
-        component: () => import('pages/Dashboard.vue')
+        component: () => import('pages/Dashboard')
       },
       {
         path: '/computers',
         name: 'computers-dashboard',
-        component: () => import('pages/computers/index.vue')
+        component: () => import('pages/computers/index')
       },
       {
         path: '/computers/results',
         name: 'computers-list',
-        component: () => import('pages/computers/results/index.vue')
+        component: () => import('pages/computers/results/index')
       },
       {
         path: '/computers/results/:id',
         name: 'computer-detail',
-        component: () => import('pages/computers/results/_id.vue')
+        component: () => import('pages/computers/results/_id')
       },
       {
         path: '/computers/results/:id/events',
         name: 'computer-events',
-        component: () => import('pages/computers/results/events.vue')
+        component: () => import('pages/computers/results/events')
       },
       {
         path: '/computers/results/:id/sync/simulation',
         name: 'computer-simulate',
-        component: () => import('pages/computers/results/simulate.vue')
+        component: () => import('pages/computers/results/simulate')
+      },
+      {
+        path: '/attributes',
+        name: 'attributes-dashboard',
+        component: () => import('pages/attributes/index')
       }
     ],
     meta: { authRequired: true }

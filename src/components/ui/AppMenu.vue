@@ -93,15 +93,19 @@ export default {
               title: 'Ordenadores',
               to: 'computers-dashboard',
               icon: 'mdi-desktop-classic'
-            }
+            },
             /* { title: 'Reemplazo de Ordenadores', to: 'computers-replacement' },
             {
               title: 'Usuarios/as',
               to: 'users-dashboard',
               separatorAfter: true
-            },
-            { title: 'Atributos', to: 'attributes-dashboard' },
-            { title: 'Etiquetas', to: 'tags-dashboard', separatorAfter: true },
+            }, */
+            {
+              title: 'Atributos',
+              to: 'attributes-dashboard',
+              icon: 'mdi-pound'
+            }
+            /* { title: 'Etiquetas', to: 'tags-dashboard', separatorAfter: true },
             { title: 'Sincronizaciones', to: 'synchronizations-dashboard', icon: 'mdi-sync' },
             { title: 'Errores', to: 'errors-dashboard', icon: 'mdi-bug' },
             { title: 'Fallas', to: 'faults-dashboard', icon: 'mdi-bomb' },
