@@ -17,6 +17,7 @@
         ref="chart"
         :init-options="initOptions"
         :options="options"
+        :style="cssVars"
         autoresize
         @click="passData"
       /> </q-card-section
@@ -30,6 +31,7 @@ import 'echarts/lib/component/calendar'
 import 'echarts/lib/component/visualMap'
 import { parseDate } from 'echarts/lib/util/number'
 import { formatTime } from 'echarts/lib/util/format'
+import { date } from 'quasar'
 
 export default {
   name: 'HeatMap',
@@ -70,7 +72,7 @@ export default {
           max: 100,
           orient: 'horizontal',
           calculable: true,
-          left: 'center',
+          left: 'left',
           top: 40,
           textStyle: { color: '#000' }
         },
@@ -91,16 +93,30 @@ export default {
       }
     }
   },
+  computed: {
+    cssVars() {
+      const diff = date.getDateDiff(
+        this.options.calendar.range[1],
+        this.options.calendar.range[0],
+        'days'
+      )
+      return {
+        '--variable-width': `${diff / 7 * 25}px`
+      }
+    }
+  },
   watch: {
     data: function(val, oldVal) {
+      this.options.series.data = val
       if (val.length > 0) {
-        this.options.series.data = val
         this.options.visualMap.max = Math.max.apply(
           Math,
           val.map(function(o) {
             return o[1]
           })
         )
+      } else {
+        this.options.visualMap.max = 1
       }
     }
   },
@@ -126,14 +142,11 @@ export default {
 
 <style scoped>
 .echart-container {
-  /* width: 100%; */
-  /* width: 600px; */
-  min-width: 600px;
-  max-width: 10000px;
   height: 400px;
+  overflow: auto;
 }
 .echarts {
-  width: 100%;
+  width: calc(var(--variable-width) + 200px);
   height: 100%;
 }
 </style>
