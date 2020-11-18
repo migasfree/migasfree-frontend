@@ -7,8 +7,14 @@
       :content-inset-level="0.5"
     >
       <q-list class="overflow">
-        <q-item v-for="item in items" :key="item.id">
-          <MigasLink :model="model" :pk="item.id" :value="item.value" />
+        <q-item v-for="(item, index) in items" :key="index">
+          <MigasLink
+            v-if="model"
+            :model="model"
+            :pk="item.id"
+            :value="item.value || item.name"
+          />
+          <div v-else>{{ item }}</div>
         </q-item>
       </q-list>
     </q-expansion-item>
@@ -37,7 +43,8 @@ export default {
     },
     model: {
       type: String,
-      required: true
+      required: false,
+      default: ''
     }
   }
 }
