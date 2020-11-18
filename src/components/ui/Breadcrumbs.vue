@@ -26,8 +26,14 @@ export default {
       } else if (typeof to === 'string') {
         return { name: to }
       }
-      return '#'
+      return ''
     }
   }
 }
 </script>
+
+<style scoped>
+span.q-breadcrumbs__el {
+  color: black;
+}
+</style>
