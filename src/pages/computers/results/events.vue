@@ -78,8 +78,28 @@
             :data="current.data"
             :total="current.total"
             :start="showDate(computer.created_at, 'YYYY-MM-DD')"
+            @getDate="showItems"
           />
         </div>
+      </div>
+
+      <div v-if="items.length > 0" class="q-pa-md">
+        <q-toolbar class="bg-primary text-white shadow-2">
+          <q-toolbar-title
+            >{{ events[event].title }} ({{ items.length }})</q-toolbar-title
+          >
+        </q-toolbar>
+
+        <q-list bordered dense separator>
+          <q-item v-for="(item, index) in items" :key="index" class="q-my-sm">
+            <q-item-section>
+              {{ item[0] }}
+            </q-item-section>
+
+            <!-- eslint-disable-next-line vue/no-v-html -->
+            <q-item-section v-html="item[1]" />
+          </q-item>
+        </q-list>
       </div>
     </template>
   </q-page>
@@ -91,6 +111,7 @@ import MigasLink from 'components/MigasLink'
 import HeatMap from 'components/chart/HeatMap'
 import { elementMixin } from 'mixins/element'
 import { dateMixin } from 'mixins/date'
+import { date } from 'quasar'
 
 export default {
   components: { Breadcrumbs, MigasLink, HeatMap },
@@ -156,7 +177,8 @@ export default {
           total: 0,
           title: 'Registros de Estado'
         }
-      }
+      },
+      items: []
     }
   },
   async mounted() {
@@ -256,6 +278,73 @@ export default {
 
     updateEvent(evt) {
       this.current = this.events[evt]
+      this.items = []
+    },
+
+    camelToKebabCase(str) {
+      return str.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)
+    },
+
+    async showItems(params) {
+      const queryString = {
+        computer__id: this.computer.id,
+        created_at: params.data[0],
+        created_at__lt: this.showDate(
+          date.addToDate(Date.parse(params.data[0]), { days: 1 }),
+          'YYYY-MM-DD'
+        )
+      }
+      const url = `/api/v1/token/${this.camelToKebabCase(this.event)}/`
+
+      await this.$axios
+        .get(url, { params: queryString })
+        .then((response) => {
+          this.items = []
+          response.data.results.forEach((item) => {
+            let itemDate = new Date(item.date || item.created_at)
+            itemDate = itemDate.toLocaleTimeString()
+            switch (this.event) {
+              case 'syncs':
+                this.items.push([
+                  itemDate,
+                  `(${item.project.name}): ${item.user.fullname}`
+                ])
+                break
+
+              case 'errors':
+                this.items.push([
+                  itemDate,
+                  `(${item.project.name}):<br />${item.description.replace(
+                    new RegExp('\n', 'g'),
+                    '<br />'
+                  )}`
+                ])
+                break
+
+              case 'faults':
+                this.items.push([
+                  itemDate,
+                  `(${item.project.name}):<br />${item.result.replace(
+                    new RegExp('\n', 'g'),
+                    '<br />'
+                  )}`
+                ])
+                break
+
+              case 'statusLogs':
+                this.items.push([itemDate, item.status])
+                break
+
+              case 'migrations':
+                this.items.push([itemDate, item.project.name])
+                break
+            }
+          })
+          console.log(this.items)
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error.response.data)
+        })
     }
   }
 }
