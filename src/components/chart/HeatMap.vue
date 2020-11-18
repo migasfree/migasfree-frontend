@@ -18,6 +18,7 @@
         :init-options="initOptions"
         :options="options"
         autoresize
+        @click="passData"
       /> </q-card-section
   ></q-card>
 </template>
@@ -114,6 +115,10 @@ export default {
       if (this.$refs.chart !== null && this.$refs.chart !== undefined) {
         this.$refs.chart.resize()
       }
+    },
+
+    passData(params) {
+      this.$emit('getDate', params)
     }
   }
 }
