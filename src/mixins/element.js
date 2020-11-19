@@ -2,8 +2,8 @@ const MAC_RAW_LEN = 12
 
 export const elementMixin = {
   methods: {
-    elementIcon(status) {
-      switch (status) {
+    elementIcon(value) {
+      switch (value) {
         case 'intended':
           return 'mdi-heart-pulse'
         case 'available':
@@ -16,6 +16,8 @@ export const elementMixin = {
           return 'mdi-crosshairs-question'
         case 'unsubscribed':
           return 'mdi-recycle-variant'
+        case 'SET':
+          return 'mdi-set-none'
       }
     },
 
@@ -53,9 +55,14 @@ export const elementMixin = {
 
       const addresses = this.chunk(value, MAC_RAW_LEN)
       for (let i = 0; i < addresses.length; i++) {
-          addresses[i] = this.chunk(addresses[i], 2).join(':')
+        addresses[i] = this.chunk(addresses[i], 2).join(':')
       }
       return addresses.join(', ')
+    },
+
+    attributeValue(att) {
+      if (att.property_att.prefix === 'SET') return att.value
+      return `${att.property_att.prefix}-${att.value}`
     }
   }
 }
