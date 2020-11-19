@@ -362,12 +362,13 @@ export default {
             if (val.property_att.prefix === 'SET') {
               this.onlyAttributeSets.push({
                 id: val.id,
-                value: `${val.property_att.prefix}-${val.value}`
+                value: this.attributeValue(val),
+                icon: 'mdi-set-none'
               })
             } else {
               this.onlyAttributes.push({
                 id: val.id,
-                value: `${val.property_att.prefix}-${val.value}`
+                value: this.attributeValue(val)
               })
             }
           })
