@@ -61,20 +61,6 @@
             :value="props.row.property_att.name || ''"
           />
         </span>
-        <span v-else-if="props.column.field == 'sync_user.name'">
-          <MigasLink
-            model="users"
-            :pk="props.row.sync_user.id"
-            :value="props.row.sync_user.name || ''"
-          />
-        </span>
-        <span v-else-if="props.column.field == 'product'">
-          <MigasLink
-            model="computers"
-            :pk="props.row.id"
-            :value="props.row.product || ''"
-          />
-        </span>
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
         </span>
