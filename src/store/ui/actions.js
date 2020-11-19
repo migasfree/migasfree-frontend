@@ -37,7 +37,7 @@ export function notifyError(context, error) {
     }
   }
 
-  if (typeof error === 'string'){
+  if (typeof error === 'string') {
     message = error
   }
 
