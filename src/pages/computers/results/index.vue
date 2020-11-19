@@ -222,6 +222,7 @@ import DateRangeInput from 'components/ui/DateRangeInput'
 import CrudHeading from 'components/ui/CrudHeading'
 import MigasLink from 'components/MigasLink'
 import { elementMixin } from 'mixins/element'
+import { datagridMixin } from 'mixins/datagrid'
 
 export default {
   components: {
@@ -232,7 +233,7 @@ export default {
     CrudHeading,
     MigasLink
   },
-  mixins: [elementMixin],
+  mixins: [elementMixin, datagridMixin],
   data() {
     return {
       breadcrumbs: [
@@ -254,10 +255,6 @@ export default {
           text: 'Resultados'
         }
       ],
-      rows: [],
-      totalRecords: 0,
-      selected: [],
-      isLoading: false,
       columns: [
         {
           field: 'id',
@@ -330,15 +327,6 @@ export default {
           }
         }
       ],
-      serverParams: {
-        columnFilters: {},
-        sort: {
-          field: '',
-          type: ''
-        },
-        page: 1,
-        perPage: 100
-      },
       tableFilters: {
         search: '',
         platform: {
@@ -405,32 +393,6 @@ export default {
         syncEndDateRange: {
           selected: { from: null, to: null }
         }
-      },
-      selectOptions: { enabled: true, selectOnCheckboxOnly: true }
-    }
-  },
-  computed: {
-    paginationOptions() {
-      return {
-        enabled: true,
-        mode: 'records',
-        perPage: this.serverParams.perPage,
-        perPageDropdown: [50, 100, 150],
-        dropdownAllowAll: false,
-        nextLabel: this.$t('vgt.next'),
-        prevLabel: this.$t('vgt.prev'),
-        rowsPerPageLabel: this.$t('vgt.rowPerPage'),
-        ofLabel: this.$t('vgt.of'),
-        pageLabel: this.$t('vgt.page'), // for 'pages' mode
-        allLabel: this.$t('vgt.all')
-      }
-    },
-
-    searchOptions() {
-      return {
-        enabled: true,
-        skipDiacritics: true,
-        externalQuery: this.tableFilters.search
       }
     }
   },
@@ -481,47 +443,7 @@ export default {
       }
     }
   },
-  async mounted() {
-    await this.loadFilters()
-    await this.loadItems()
-  },
   methods: {
-    updateParams(newProps) {
-      console.log('serverParams before', this.serverParams)
-      this.serverParams = Object.assign({}, this.serverParams, newProps)
-      console.log('serverParams after', this.serverParams)
-    },
-
-    onPageChange(params) {
-      this.updateParams({ page: params.currentPage })
-      this.loadItems()
-    },
-
-    onPerPageChange(params) {
-      this.updateParams({ perPage: params.currentPerPage })
-      this.loadItems()
-    },
-
-    onSortChange(params) {
-      this.updateParams({
-        sort: {
-          type: params[0].type === 'desc' ? '-' : '',
-          field: params[0].field.split('.')[0]
-        }
-      })
-      this.loadItems()
-    },
-
-    onColumnFilter(params) {
-      console.log(params)
-      this.updateParams(params)
-      this.loadItems()
-    },
-
-    onSelectionChanged(params) {
-      console.log(params)
-    },
-
     onPlatformFilter(params) {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
@@ -623,10 +545,6 @@ export default {
       console.log(params)
       console.log('createdAt selected', this.tableFilters.createdAt.selected)
       this.tableFilters.createdAt.selected = params
-      // this.$refs.menu.save(this.tableFilters.createdAt.selected)
-      /* this.tableFilters.createdAt.view = this.tableFilters.createdAt.selected.join(
-        ' ~ '
-      ) */
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
           created_at__gte: this.tableFilters.createdAt.selected.from,
