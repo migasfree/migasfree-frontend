@@ -52,7 +52,13 @@ export default {
         return { data: [], total: 0 }
       }
     },
-    url: { type: String, required: false, default: '' }
+    url: {
+      type: Object,
+      required: false,
+      default() {
+        return {}
+      }
+    }
   },
   data() {
     return {
