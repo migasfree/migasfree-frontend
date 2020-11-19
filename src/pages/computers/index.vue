@@ -86,15 +86,21 @@ export default {
       nestedPieData: {},
       newMonthData: {},
       entryYearData: {},
-      url: '/computers/results/?'
+      url: { name: 'computers-list' }
     }
   },
   computed: {
     byProjectUrl() {
-      return `${this.url}status_in=intended,reserved,unknown` // FIXME
+      // FIXME
+      return Object.assign(this.url, {
+        query: { status_in: 'intended,reserved,unknown' }
+      })
     },
+
     productiveUrl() {
-      return `${this.url}status_in=intended,reserved,unknown`
+      return Object.assign(this.url, {
+        query: { status_in: 'intended,reserved,unknown' }
+      })
     }
   },
   async mounted() {
@@ -105,11 +111,7 @@ export default {
         this.pieData = response.data
       })
       .catch((error) => {
-        console.log(error)
-        this.$store.dispatch(
-          'ui/notifyError',
-          error.response.data.detail || error.response.data
-        )
+        this.$store.dispatch('ui/notifyError', error)
       })
 
     await this.$axios
@@ -119,11 +121,7 @@ export default {
         this.nestedPieData = response.data
       })
       .catch((error) => {
-        console.log(error)
-        this.$store.dispatch(
-          'ui/notifyError',
-          error.response.data.detail || error.response.data
-        )
+        this.$store.dispatch('ui/notifyError', error)
       })
 
     await this.$axios
@@ -146,11 +144,7 @@ export default {
         }
       })
       .catch((error) => {
-        console.log(error)
-        this.$store.dispatch(
-          'ui/notifyError',
-          error.response.data.detail || error.response.data
-        )
+        this.$store.dispatch('ui/notifyError', error)
       })
 
     await this.$axios
@@ -173,37 +167,39 @@ export default {
         }
       })
       .catch((error) => {
-        console.log(error)
-        this.$store.dispatch(
-          'ui/notifyError',
-          error.response.data.detail || error.response.data
-        )
+        this.$store.dispatch('ui/notifyError', error)
       })
   },
   methods: {
     goTo(params) {
       console.log(params)
       if (params.data.project_id) {
-        this.$router.push(this.url + `project_id=${params.data.project_id}`)
+        this.$router.push(
+          Object.assign(this.url, {
+            query: { project_id: params.data.project_id }
+          })
+        )
       }
 
       if (params.data.created_at__lt) {
-        let url =
-          this.url +
-          `created_at__gte=${params.data.created_at__gte}` +
-          `&created_at__lt=${params.data.created_at__lt}`
+        let query = {
+          created_at__gte: params.data.created_at__gte,
+          created_at__lt: params.data.created_at__lt
+        }
+
         if (params.data.project__id__exact) {
-          url += `&project_id=${params.data.project__id__exact}`
+          Object.assign(query, { project_id: params.data.project__id__exact })
         }
         if (params.data.machine) {
-          url += `&machine=${params.data.machine}`
+          Object.assign(query, { machine: params.data.machine })
         }
-        this.$router.push(url)
+        console.log(query)
+        this.$router.push(Object.assign(this.url, { query }))
       }
     },
 
     search(value) {
-      this.$router.push(this.url + `search=${value}`)
+      this.$router.push(Object.assign(this.url, { query: { search: value } }))
     }
   }
 }
