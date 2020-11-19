@@ -37,7 +37,12 @@ const routes = [
         path: '/attributes',
         name: 'attributes-dashboard',
         component: () => import('pages/attributes/index')
-      }
+      },
+      {
+        path: '/attributes/results',
+        name: 'attributes-list',
+        component: () => import('pages/attributes/results/index')
+      },
     ],
     meta: { authRequired: true }
   },
