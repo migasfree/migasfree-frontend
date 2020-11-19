@@ -10,6 +10,12 @@
 
     <SearchFilter @search="onSearch" @clear="onSearchClear" />
 
+    <div class="row q-pa-md">
+      <div class="col-12">
+        <q-btn @click="resetFilters">Reset all filters</q-btn>
+      </div>
+    </div>
+
     <vue-good-table
       ref="myTable"
       :columns="columns"
@@ -139,11 +145,7 @@ export default {
         {
           label: 'Total Computers',
           field: 'total_computers',
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$t('vgt.filter'),
-            trigger: 'enter'
-          }
+          sortable: false
         },
         {
           label: 'Formula',
@@ -157,14 +159,29 @@ export default {
       ]
     }
   },
+  created() {
+    if (this.$route.query.property_id) {
+      this.updateParams({
+        columnFilters: { property_att: this.$route.query.property_id }
+      })
+      this.columns[5].filterOptions.filterValue = this.$route.query.property_id
+    }
+
+    if (this.$route.query.search) {
+      this.updateParams({
+        columnFilters: { search: this.$route.query.search }
+      })
+      this.tableFilters.search = this.$route.query.search
+    }
+  },
   methods: {
     onSearch(value) {
-      /* this.tableFilters.search = value
+      this.tableFilters.search = value
       console.log(this.tableFilters.search)
       this.updateParams({
         columnFilters: { search: this.tableFilters.search }
       })
-      this.loadItems()*/
+      this.loadItems()
     },
 
     onSearchClear() {
@@ -173,6 +190,23 @@ export default {
 
     paramsToQueryString() {
       let ret = `page_size=${this.serverParams.perPage}&page=${this.serverParams.page}`
+
+      if (Object.keys(this.serverParams.columnFilters).length) {
+        ret +=
+          '&' +
+          Object.entries(this.serverParams.columnFilters)
+            .map(([key, val]) => {
+              switch (key) {
+                case 'property_att':
+                  return `property_att__id=${val}`
+                case 'search':
+                  return `${key}=${val}`
+                default:
+                  return `${key.replace('.', '__')}__icontains=${val}`
+              }
+            })
+            .join('&')
+      }
 
       if (this.serverParams.sort.field) {
         ret += `&ordering=${this.serverParams.sort.type}${this.serverParams.sort.field}`
@@ -197,6 +231,21 @@ export default {
             error.response.data.detail || error.response.data
           )
         })
+    },
+
+    resetFilters() {
+      this.$refs.myTable.reset()
+      this.updateParams({ columnFilters: {} })
+      this.tableFilters.search = ''
+      this.loadItems()
+    },
+
+    edit(id) {
+      this.$router.push({ name: 'attribute-detail', params: { id } })
+    },
+
+    remove(id) {
+      console.log(id)
     }
   }
 }
