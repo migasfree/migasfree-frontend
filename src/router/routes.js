@@ -34,12 +34,12 @@ const routes = [
         component: () => import('pages/computers/results/simulate')
       },
       {
-        path: '/attributes',
+        path: '/features',
         name: 'attributes-dashboard',
         component: () => import('pages/attributes/index')
       },
       {
-        path: '/attributes/results',
+        path: '/features/results',
         name: 'attributes-list',
         component: () => import('pages/attributes/results/index')
       },
