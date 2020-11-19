@@ -88,10 +88,7 @@ export default {
           this.relations = response.data
         })
         .catch((error) => {
-          this.$store.dispatch(
-            'ui/notifyError',
-            error.response.data.detail || error.response.data
-          )
+          this.$store.dispatch('ui/notifyError', error)
         })
       this.loading = false
     }
