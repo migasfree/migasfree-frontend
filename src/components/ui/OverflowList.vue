@@ -12,6 +12,7 @@
             v-if="model"
             :model="model"
             :pk="item.id"
+            :icon="item.icon || ''"
             :value="item.value || item.name"
           />
           <div v-else>{{ item }}</div>
