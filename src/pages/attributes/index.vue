@@ -50,22 +50,17 @@ export default {
         }
       ],
       pieData: {},
-      url: '/attributes/results/?'
+      url: { name: 'attributes-list' }
     }
   },
   async mounted() {
     await this.$axios
       .get('/api/v1/token/stats/features/property/')
       .then((response) => {
-        console.log(response)
         this.pieData = response.data
       })
       .catch((error) => {
-        console.log(error)
-        this.$store.dispatch(
-          'ui/notifyError',
-          error.response.data.detail || error.response.data
-        )
+        this.$store.dispatch('ui/notifyError', error)
       })
   },
   methods: {
@@ -74,7 +69,7 @@ export default {
     },
 
     search(value) {
-      this.$router.push(this.url + `search=${value}`)
+      this.$router.push(Object.assign(this.url, { query: { search: value } }))
     }
   }
 }
