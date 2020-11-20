@@ -57,6 +57,16 @@ const routes = [
         component: () => import('pages/tags/index')
       },
       {
+        path: '/tags/results',
+        name: 'tags-list',
+        component: () => import('pages/tags/results/index')
+      },
+      {
+        path: '/tags/add',
+        name: 'tag-add',
+        component: () => import('pages/tags/results/_id')
+      },
+      {
         path: '/tags/results/:id',
         name: 'tag-detail',
         component: () => import('pages/tags/results/_id')
