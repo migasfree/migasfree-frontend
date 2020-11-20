@@ -2,9 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <div class="row">
-      <h2 class="text-h3">Ordenadores</h2>
-    </div>
+    <Header title="Ordenadores" :has-add-button="false" />
 
     <SearchFilter @search="search" />
 
@@ -52,6 +50,7 @@
 
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
+import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
 import PieChart from 'components/chart/Pie'
 import NestedPieChart from 'components/chart/NestedPie'
@@ -60,6 +59,7 @@ import StackedBarChart from 'components/chart/StackedBar'
 export default {
   components: {
     Breadcrumbs,
+    Header,
     SearchFilter,
     PieChart,
     NestedPieChart,
