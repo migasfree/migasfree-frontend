@@ -140,12 +140,12 @@ export default {
         },
         {
           label: 'Description',
-          field: 'description'
-        },
-        {
-          label: 'Total Computers',
-          field: 'total_computers',
-          sortable: false
+          field: 'description',
+          filterOptions: {
+            enabled: true,
+            placeholder: this.$t('vgt.filter'),
+            trigger: 'enter'
+          }
         },
         {
           label: 'Formula',
@@ -164,7 +164,7 @@ export default {
       this.updateParams({
         columnFilters: { property_att: this.$route.query.property_id }
       })
-      this.columns[5].filterOptions.filterValue = this.$route.query.property_id
+      this.columns[4].filterOptions.filterValue = this.$route.query.property_id
     }
 
     if (this.$route.query.search) {
@@ -216,20 +216,38 @@ export default {
       return ret
     },
 
+    async loadFilters() {
+      await this.$axios
+        .get('/api/v1/token/formulas/')
+        .then((response) => {
+          console.log(response)
+          this.columns[4].filterOptions.filterDropdownItems = response.data.results.map(
+            (item) => {
+              return {
+                value: item.id,
+                text: item.name
+              }
+            }
+          )
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+    },
+
     async loadItems() {
+      this.isLoading = true
       await this.$axios
         .get('/api/v1/token/features/?' + this.paramsToQueryString())
         .then((response) => {
           console.log(response)
           this.totalRecords = response.data.count
           this.rows = response.data.results
+          this.isLoading = false
         })
         .catch((error) => {
-          console.error(error)
-          this.$store.dispatch(
-            'ui/notifyError',
-            error.response.data.detail || error.response.data
-          )
+          this.isLoading = false
+          this.$store.dispatch('ui/notifyError', error)
         })
     },
 
