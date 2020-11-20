@@ -10,7 +10,11 @@
 
     <q-list bordered>
       <q-expansion-item icon="mdi-filter" label="More Filters">
-        <SearchFilter @search="onSearch" @clear="onSearchClear" />
+        <SearchFilter
+          v-model="tableFilters.search"
+          @search="onSearch"
+          @clear="onSearchClear"
+        />
 
         <div class="row q-pa-md q-col-gutter-lg">
           <div class="col-12 col-sm-6 col-md-4">
