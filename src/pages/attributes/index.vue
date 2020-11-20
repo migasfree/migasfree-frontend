@@ -2,9 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <div class="row">
-      <h2 class="text-h3">Atributos</h2>
-    </div>
+    <Header title="Atributos" :has-add-button="false" />
 
     <SearchFilter @search="search" />
 
@@ -23,12 +21,14 @@
 
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
+import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
 import PieChart from 'components/chart/Pie'
 
 export default {
   components: {
     Breadcrumbs,
+    Header,
     SearchFilter,
     PieChart
   },
