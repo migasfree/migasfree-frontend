@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header title="Etiquetas" @new="addElement" />
+    <Header title="Etiquetas" @new="$router.push({ name: 'tag-add' })" />
 
     <SearchFilter @search="search" />
 
@@ -77,10 +77,6 @@ export default {
 
     search(value) {
       this.$router.push(Object.assign(this.url, { query: { search: value } }))
-    },
-
-    addElement() {
-      this.$router.push({ name: 'tag-detail' })
     }
   }
 }
