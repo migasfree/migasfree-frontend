@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <CrudHeading
+    <Header
       title="Ordenadores"
       :results="totalRecords"
       :has-add-button="false"
@@ -219,7 +219,7 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import SearchFilter from 'components/ui/SearchFilter'
 import SelectTree from 'components/ui/SelectTree'
 import DateRangeInput from 'components/ui/DateRangeInput'
-import CrudHeading from 'components/ui/CrudHeading'
+import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import { elementMixin } from 'mixins/element'
 import { datagridMixin } from 'mixins/datagrid'
@@ -230,7 +230,7 @@ export default {
     SearchFilter,
     SelectTree,
     DateRangeInput,
-    CrudHeading,
+    Header,
     MigasLink
   },
   mixins: [elementMixin, datagridMixin],
