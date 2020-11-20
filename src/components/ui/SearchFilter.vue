@@ -23,9 +23,21 @@
 <script>
 export default {
   name: 'SearchFilter',
+  props: {
+    value: {
+      type: String,
+      required: false,
+      default: ''
+    }
+  },
   data() {
     return {
-      searchText: ''
+      searchText: this.value
+    }
+  },
+  watch: {
+    value(val) {
+      this.searchText = val
     }
   }
 }
