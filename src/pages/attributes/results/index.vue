@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <CrudHeading
+    <Header
       title="Atributos"
       :results="totalRecords"
       :has-add-button="false"
@@ -82,7 +82,7 @@
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import SearchFilter from 'components/ui/SearchFilter'
-import CrudHeading from 'components/ui/CrudHeading'
+import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import { elementMixin } from 'mixins/element'
 import { datagridMixin } from 'mixins/datagrid'
@@ -91,7 +91,7 @@ export default {
   components: {
     Breadcrumbs,
     SearchFilter,
-    CrudHeading,
+    Header,
     MigasLink
   },
   mixins: [elementMixin, datagridMixin],
