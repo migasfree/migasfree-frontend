@@ -53,7 +53,7 @@
         />
         <q-btn
           label="Grabar y seguir editando"
-          icon="mdi-pencil"
+          icon="mdi-content-save-edit"
           :loading="loading"
           :disabled="loading"
           @click="updateElement"
@@ -61,7 +61,7 @@
         <q-btn
           label="Grabar"
           color="primary"
-          icon="mdi-content-save"
+          icon="mdi-content-save-move"
           :loading="loading"
           :disabled="loading"
           @click="updateElement('return')"
@@ -78,40 +78,24 @@
       />
     </div>
 
-    <q-dialog v-model="confirmRemove" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar
-            icon="mdi-alert-remove"
-            color="negative"
-            text-color="white"
-          />
-          <span class="q-ml-sm">Are you sure remove this item?</span>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn v-close-popup flat label="Cancel" color="primary" />
-          <q-btn
-            v-close-popup
-            label="Borrar"
-            icon="mdi-delete"
-            color="negative"
-            @click="remove"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+    <RemoveDialog
+      v-model="confirmRemove"
+      message="Are you sure remove this item?"
+      @confirmed="remove"
+    />
   </q-page>
 </template>
 
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import MigasLink from 'components/MigasLink'
+import RemoveDialog from 'components/ui/RemoveDialog'
 import { elementMixin } from 'mixins/element'
 
 export default {
   components: {
     Breadcrumbs,
+    RemoveDialog,
     MigasLink
   },
   mixins: [elementMixin],
