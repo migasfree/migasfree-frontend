@@ -635,7 +635,7 @@ export default {
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data)
+          this.$store.dispatch('ui/notifyError', error)
         })
 
       await this.$axios
@@ -652,7 +652,7 @@ export default {
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data)
+          this.$store.dispatch('ui/notifyError', error)
         })
 
       await this.$axios
@@ -662,24 +662,23 @@ export default {
           this.updateStatusInFilter(response.data)
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data)
+          this.$store.dispatch('ui/notifyError', error)
         })
     },
 
     async loadItems() {
+      this.isLoading = true
       await this.$axios
         .get('/api/v1/token/computers/?' + this.paramsToQueryString())
         .then((response) => {
           console.log(response)
           this.totalRecords = response.data.count
           this.rows = response.data.results
+          this.isLoading = false
         })
         .catch((error) => {
-          console.error(error)
-          this.$store.dispatch(
-            'ui/notifyError',
-            error.response.data.detail || error.response.data
-          )
+          this.isLoading = false
+          this.$store.dispatch('ui/notifyError', error)
         })
     },
 
