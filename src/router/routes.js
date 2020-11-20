@@ -43,6 +43,11 @@ const routes = [
         name: 'attributes-list',
         component: () => import('pages/attributes/results/index')
       },
+      {
+        path: '/features/results/:id',
+        name: 'attribute-detail',
+        component: () => import('pages/attributes/results/_id')
+      },
     ],
     meta: { authRequired: true }
   },
