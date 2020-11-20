@@ -8,6 +8,7 @@ const routes = [
         name: 'home',
         component: () => import('pages/Dashboard')
       },
+
       {
         path: '/computers',
         name: 'computers-dashboard',
@@ -33,6 +34,7 @@ const routes = [
         name: 'computer-simulate',
         component: () => import('pages/computers/results/simulate')
       },
+
       {
         path: '/features',
         name: 'attributes-dashboard',
@@ -47,6 +49,17 @@ const routes = [
         path: '/features/results/:id',
         name: 'attribute-detail',
         component: () => import('pages/attributes/results/_id')
+      },
+
+      {
+        path: '/tags',
+        name: 'tags-dashboard',
+        component: () => import('pages/tags/index')
+      },
+      {
+        path: '/tags/results/:id',
+        name: 'tag-detail',
+        component: () => import('pages/tags/results/_id')
       },
     ],
     meta: { authRequired: true }
