@@ -2,13 +2,13 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header
-      title="Atributos"
-      :results="totalRecords"
-      :has-add-button="false"
-    />
+    <Header title="Atributos" :results="totalRecords" :has-add-button="false" />
 
-    <SearchFilter @search="onSearch" @clear="onSearchClear" />
+    <SearchFilter
+      v-model="tableFilters.search"
+      @search="onSearch"
+      @clear="onSearchClear"
+    />
 
     <div class="row q-pa-md">
       <div class="col-12">
