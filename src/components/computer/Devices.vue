@@ -95,13 +95,12 @@ export default {
         .then((response) => {
           console.log(response)
           this.$store.dispatch('ui/notifySuccess', 'Devices have been changed!')
-          this.loading = false
         })
         .catch((error) => {
           console.log(error.response.data)
           this.$store.dispatch('ui/notifyError', error.response.data)
-          this.loading = false
         })
+        .finally(() => (this.loading = false))
     },
 
     filterAssignedDevices(val, update, abort) {
