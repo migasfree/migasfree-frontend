@@ -179,7 +179,6 @@ export default {
             'ui/notifySuccess',
             'Last hardware capture has been changed!'
           )
-          this.loading = false
         })
         .catch((error) => {
           console.log(error.response.data)
@@ -187,8 +186,8 @@ export default {
             'ui/notifyError',
             error.response.data.last_hardware_capture[0]
           )
-          this.loading = false
         })
+        .finally(() => (this.loading = false))
     }
   }
 }
