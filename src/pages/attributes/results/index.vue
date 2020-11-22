@@ -243,12 +243,11 @@ export default {
           console.log(response)
           this.totalRecords = response.data.count
           this.rows = response.data.results
-          this.isLoading = false
         })
         .catch((error) => {
-          this.isLoading = false
           this.$store.dispatch('ui/notifyError', error)
         })
+        .finally(() => (this.isLoading = false))
     },
 
     resetFilters() {
