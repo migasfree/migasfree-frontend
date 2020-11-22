@@ -125,16 +125,15 @@ export default {
         })
         .then((response) => {
           console.log(response)
-          this.loading = false
           this.$store.dispatch(
             'ui/notifySuccess',
             'Data has been changed!'
           )
         })
         .catch((error) => {
-          this.loading = false
           this.$store.dispatch('ui/notifyError', error)
         })
+        .finally(() => (this.loading = false))
     },
 
     remove() {
