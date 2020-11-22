@@ -88,8 +88,8 @@
 
     <RemoveDialog
       v-model="confirmRemove"
-      message="Are you sure remove this item?"
       @confirmed="remove"
+      @canceled="confirmRemove = !confirmRemove"
     />
   </q-page>
 </template>
@@ -135,6 +135,7 @@ export default {
     isValid() {
       return (
         this.element.value !== undefined &&
+        this.element.value !== '' &&
         this.element.hasOwnProperty('property_att')
       )
     }
