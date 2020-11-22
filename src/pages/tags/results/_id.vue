@@ -194,7 +194,8 @@ export default {
               this.$router.push({ name: 'tags-list' })
             } else if (action === 'add') {
               this.element = { id: 0 }
-              this.breadcrumbs[4].text = 'Añadir'
+              if (this.breadcrumbs.length === 5) this.breadcrumbs.pop()
+              this.breadcrumbs[3].text = 'Añadir'
               this.$router.push({ name: 'tag-add' })
             }
           })
