@@ -1,5 +1,5 @@
 <template>
-  <q-dialog v-model="value" persistent>
+  <q-dialog v-model="showing" persistent>
     <q-card>
       <q-card-section class="row items-center">
         <q-avatar icon="mdi-alert-remove" color="negative" text-color="white" />
@@ -7,7 +7,13 @@
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn v-close-popup flat label="Cancel" color="primary" />
+        <q-btn
+          v-close-popup
+          flat
+          label="Cancel"
+          color="primary"
+          @click="$emit('canceled')"
+        />
         <q-btn
           v-close-popup
           label="Borrar"
@@ -26,11 +32,22 @@ export default {
   props: {
     message: {
       type: String,
-      required: true
+      required: false,
+      default: 'Are you sure you want to remove this item?'
     },
     value: {
       type: Boolean,
       required: true
+    }
+  },
+  data() {
+    return {
+      showing: this.value
+    }
+  },
+  watch: {
+    value(newVal) {
+      this.showing = newVal
     }
   }
 }
