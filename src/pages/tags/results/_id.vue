@@ -172,7 +172,6 @@ export default {
           })
           .then((response) => {
             console.log(response)
-            this.loading = false
             this.$store.dispatch('ui/notifySuccess', 'Data has been changed!')
             if (action === 'return') {
               this.$router.push({ name: 'tags-list' })
@@ -183,9 +182,9 @@ export default {
             }
           })
           .catch((error) => {
-            this.loading = false
             this.$store.dispatch('ui/notifyError', error)
           })
+          .finally(() => (this.loading = false))
       } else {
         this.loading = true
         await this.$axios
@@ -195,7 +194,6 @@ export default {
             description: this.element.description
           })
           .then((response) => {
-            this.loading = false
             console.log(response)
             this.element = response.data
             this.element.property_att = this.stamps.filter(
@@ -217,9 +215,9 @@ export default {
             }
           })
           .catch((error) => {
-            this.loading = false
             this.$store.dispatch('ui/notifyError', error)
           })
+          .finally(() => (this.loading = false))
       }
     },
 
