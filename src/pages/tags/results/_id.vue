@@ -27,11 +27,19 @@
             :options="stamps"
             option-value="id"
             option-label="name"
+            lazy-rules
+            :rules="[(val) => !!val || '* Required']"
           />
         </p>
 
         <p>
-          <q-input v-model="element.value" outlined label="Valor" />
+          <q-input
+            v-model="element.value"
+            outlined
+            label="Valor"
+            lazy-rules
+            :rules="[(val) => !!val || '* Required']"
+          />
         </p>
 
         <p>
@@ -48,14 +56,14 @@
           label="Grabar y añadir otro"
           icon="mdi-plus"
           :loading="loading"
-          :disabled="loading"
+          :disabled="!isValid || loading"
           @click="updateElement('add')"
         />
         <q-btn
           label="Grabar y seguir editando"
           icon="mdi-content-save-edit"
           :loading="loading"
-          :disabled="loading"
+          :disabled="!isValid || loading"
           @click="updateElement"
         />
         <q-btn
@@ -63,7 +71,7 @@
           color="primary"
           icon="mdi-content-save-move"
           :loading="loading"
-          :disabled="loading"
+          :disabled="!isValid || loading"
           @click="updateElement('return')"
         />
       </q-card-actions>
@@ -121,6 +129,14 @@ export default {
       stamps: [],
       loading: false,
       confirmRemove: false
+    }
+  },
+  computed: {
+    isValid() {
+      return (
+        this.element.value !== undefined &&
+        this.element.hasOwnProperty('property_att')
+      )
     }
   },
   created() {
