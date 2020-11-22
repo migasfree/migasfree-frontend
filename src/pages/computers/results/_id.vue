@@ -435,12 +435,11 @@ export default {
             'ui/notifySuccess',
             'Current Situation has been changed!'
           )
-          this.loading = false
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error.response.data.detail)
-          this.loading = false
         })
+        .finally(() => (this.loading = false))
     },
 
     remove() {
