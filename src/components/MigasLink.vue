@@ -90,7 +90,7 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-      this.loading = false
+        .finally(() => (this.loading = false))
     }
   }
 }
