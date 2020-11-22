@@ -108,8 +108,6 @@
                   v-model="element.tags"
                   outlined
                   use-input
-                  use-chips
-                  emit-value
                   map-options
                   multiple
                   input-debounce="0"
@@ -124,6 +122,29 @@
                         No results
                       </q-item-section>
                     </q-item>
+                  </template>
+
+                  <template v-slot:option="scope">
+                    <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                      {{ attributeValue(scope.opt) }}
+                    </q-item>
+                  </template>
+
+                  <template v-slot:selected-item="scope">
+                    <q-chip
+                      removable
+                      dense
+                      :tabindex="scope.tabindex"
+                      color="white"
+                      class="q-ma-md"
+                      @remove="scope.removeAtIndex(scope.index)"
+                    >
+                      <MigasLink
+                        model="tags"
+                        :pk="scope.opt.id"
+                        :value="attributeValue(scope.opt)"
+                      />
+                    </q-chip>
                   </template>
                 </q-select>
               </p>
@@ -409,12 +430,19 @@ export default {
         return
       }
 
-      /* update(() => {
+      update(() => {
         const needle = val.toLowerCase()
-        this.tags = stringOptions.filter(
+        this.$axios
+          .get(`/api/v1/token/tags/?search=${needle}`)
+          .then((response) => {
+            console.log(response)
+            this.tags = response.data.results
+            console.log(this.tags)
+          })
+        /* this.tags = stringOptions.filter(
           (v) => v.toLowerCase().indexOf(needle) > -1
-        )
-      }) */
+        ) */
+      })
     },
 
     abortFilterTags() {
@@ -426,8 +454,8 @@ export default {
       await this.$axios
         .patch(`/api/v1/token/computers/${this.element.id}/`, {
           status: this.element.status,
-          comment: this.element.comment
-          // tags: TODO
+          comment: this.element.comment,
+          tags: this.element.tags.map((item) => item.id)
         })
         .then((response) => {
           console.log(response)
