@@ -57,21 +57,29 @@
           icon="mdi-delete"
           color="negative"
           label="Borrar"
-          @click="remove"
+          @click="confirmRemove = true"
         />
       </div>
+
+      <RemoveDialog
+        v-model="confirmRemove"
+        @confirmed="remove"
+        @canceled="confirmRemove = !confirmRemove"
+      />
     </template>
   </q-page>
 </template>
 
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
+import RemoveDialog from 'components/ui/RemoveDialog'
 import MigasLink from 'components/MigasLink'
 import { elementMixin } from 'mixins/element'
 
 export default {
   components: {
     Breadcrumbs,
+    RemoveDialog,
     MigasLink
   },
   mixins: [elementMixin],
@@ -101,7 +109,8 @@ export default {
         }
       ],
       element: {},
-      loading: false
+      loading: false,
+      confirmRemove: false
     }
   },
   async mounted() {
@@ -121,14 +130,11 @@ export default {
       this.loading = true
       await this.$axios
         .patch(`/api/v1/token/features/${this.element.id}/`, {
-          description: this.element.description,
+          description: this.element.description
         })
         .then((response) => {
           console.log(response)
-          this.$store.dispatch(
-            'ui/notifySuccess',
-            'Data has been changed!'
-          )
+          this.$store.dispatch('ui/notifySuccess', 'Data has been changed!')
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
@@ -136,8 +142,16 @@ export default {
         .finally(() => (this.loading = false))
     },
 
-    remove() {
+    async remove() {
       console.log(this.element.id)
+      await this.$axios
+        .delete(`/api/v1/token/features/${this.element.id}/`)
+        .then((response) => {
+          this.$router.push({ name: 'attributes-list' })
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
     }
   }
 }
