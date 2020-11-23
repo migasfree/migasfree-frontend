@@ -115,7 +115,7 @@ export default {
   },
   methods: {
     passData(params) {
-      this.$emit('getLink', params)
+      this.$emit('getLink', Object.assign(params, { url: this.url }))
     },
     windowResize() {
       if (this.$refs.chart !== null && this.$refs.chart !== undefined) {
