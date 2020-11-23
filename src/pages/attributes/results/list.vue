@@ -77,7 +77,7 @@
           size="sm"
           color="negative"
           icon="mdi-delete"
-          @click="confirmRemove(0)"
+          @click="confirmRemove"
         ></q-btn>
       </div>
     </vue-good-table>
@@ -275,40 +275,6 @@ export default {
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
-        })
-    },
-
-    confirmRemove(id) {
-      let items = []
-      let message = 'Are you sure you want to remove this item?'
-
-      if (id > 0) {
-        items.push(id)
-      } else {
-        message = 'Are you sure you want to remove all these items?'
-        items = this.selectedRows.map((item) => item.id)
-      }
-
-      if (items.length === 0) return
-
-      this.$q
-        .dialog({
-          message,
-          ok: {
-            color: 'negative',
-            label: 'Borrar',
-            icon: 'mdi-delete'
-          },
-          cancel: {
-            flat: true
-          },
-          persistent: true
-        })
-        .onOk(() => {
-          items.forEach((id) => {
-            this.remove(id)
-          })
-          this.loadItems()
         })
     }
   }
