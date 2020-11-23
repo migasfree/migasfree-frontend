@@ -428,7 +428,10 @@ export default {
       this.updateParams({
         columnFilters: { machine: this.$route.query.machine }
       })
-      this.tableFilters.machine.selected = this.$route.query.machine
+      this.tableFilters.machine.selected = this.findById(
+        this.tableFilters.machine.items,
+        this.$route.query.machine
+      ).label
     }
 
     if (this.$route.query.search) {
