@@ -411,6 +411,12 @@ export default {
       this.columns[2].filterOptions.filterValue = this.$route.query.name
     }
 
+    if (this.$route.query.platform_id) {
+      this.updateParams({
+        columnFilters: { platform: this.$route.query.platform_id }
+      })
+    }
+
     if (this.$route.query.project_id) {
       this.updateParams({
         columnFilters: { 'project.name': this.$route.query.project_id }
@@ -436,7 +442,6 @@ export default {
       this.updateParams({
         columnFilters: { status_in: this.$route.query.status_in }
       })
-      this.tableFilters.statusIn.selected = this.$route.query.status_in
     }
 
     if (this.$route.query.created_at__gte && this.$route.query.created_at__lt) {
@@ -453,6 +458,21 @@ export default {
     }
   },
   methods: {
+    findById(data, id) {
+      for (var i = 0; i < data.length; i++) {
+        console.log(data[i].id, id, data[i].id == id)
+        if (data[i].id == id) {
+          return data[i]
+        } else if (
+          data[i].children &&
+          data[i].children.length &&
+          typeof data[i].children === 'object'
+        ) {
+          return this.findById(data[i].children, id)
+        }
+      }
+    },
+
     onPlatformFilter(params) {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
@@ -510,6 +530,7 @@ export default {
     },
 
     onStatusInFilter(params) {
+      console.log('onstatusfilter', this.tableFilters.statusIn.selected)
       console.log(params)
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
@@ -548,6 +569,13 @@ export default {
         },
         { id: options.unsubscribed.join(','), label: 'unsubscribed' }
       ]
+
+      if (this.$route.query.status_in) {
+        this.tableFilters.statusIn.selected = this.findById(
+          this.tableFilters.statusIn.items,
+          this.$route.query.status_in
+        ).label
+      }
     },
 
     onCreatedAtFilter(params) {
@@ -642,6 +670,12 @@ export default {
           this.tableFilters.platform.items = this.tableFilters.platform.items.concat(
             response.data.results
           )
+
+          if (this.$route.query.platform_id) {
+            this.tableFilters.platform.selected = this.tableFilters.platform.items.find(
+              (x) => x.id == this.$route.query.platform_id
+            )
+          }
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
