@@ -49,7 +49,7 @@
             size="sm"
             icon="mdi-delete"
             color="negative"
-            @click="remove(props.row.id)"
+            @click="confirmRemove(props.row.id)"
           />
         </span>
         <span v-else-if="props.column.field == 'value'">
@@ -73,7 +73,12 @@
       </template>
       <div slot="emptystate">{{ $t('vgt.noData') }}</div>
       <div slot="selected-row-actions">
-        <q-btn size="sm" color="negative" icon="mdi-delete"></q-btn>
+        <q-btn
+          size="sm"
+          color="negative"
+          icon="mdi-delete"
+          @click="confirmRemove(0)"
+        ></q-btn>
       </div>
     </vue-good-table>
   </q-page>
@@ -262,7 +267,49 @@ export default {
     },
 
     remove(id) {
-      console.log(id)
+      this.$axios
+        .delete(`/api/v1/token/features/${id}/`)
+        .then((response) => {
+          this.$store.dispatch('ui/notifySuccess', 'Item deleted!')
+          this.loadItems()
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+    },
+
+    confirmRemove(id) {
+      let items = []
+      let message = 'Are you sure you want to remove this item?'
+
+      if (id > 0) {
+        items.push(id)
+      } else {
+        message = 'Are you sure you want to remove all these items?'
+        items = this.selectedRows.map((item) => item.id)
+      }
+
+      if (items.length === 0) return
+
+      this.$q
+        .dialog({
+          message,
+          ok: {
+            color: 'negative',
+            label: 'Borrar',
+            icon: 'mdi-delete'
+          },
+          cancel: {
+            flat: true
+          },
+          persistent: true
+        })
+        .onOk(() => {
+          items.forEach((id) => {
+            this.remove(id)
+          })
+          this.loadItems()
+        })
     }
   }
 }
