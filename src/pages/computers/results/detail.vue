@@ -273,9 +273,15 @@
           icon="mdi-delete"
           color="negative"
           label="Borrar"
-          @click="remove"
+          @click="confirmRemove = true"
         />
       </div>
+
+      <RemoveDialog
+        v-model="confirmRemove"
+        @confirmed="remove"
+        @canceled="confirmRemove = !confirmRemove"
+      />
     </template>
   </q-page>
 </template>
@@ -283,6 +289,7 @@
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import OverflowList from 'components/ui/OverflowList'
+import RemoveDialog from 'components/ui/RemoveDialog'
 import MigasLink from 'components/MigasLink'
 import DateDiff from 'components/DateDiff'
 import ComputerInfo from 'components/computer/Info'
@@ -297,6 +304,7 @@ export default {
   components: {
     Breadcrumbs,
     OverflowList,
+    RemoveDialog,
     MigasLink,
     DateDiff,
     ComputerInfo,
@@ -338,7 +346,8 @@ export default {
       tags: [],
       errors: {},
       faults: {},
-      loading: false
+      loading: false,
+      confirmRemove: false
     }
   },
   async mounted() {
@@ -470,8 +479,16 @@ export default {
         .finally(() => (this.loading = false))
     },
 
-    remove() {
+    async remove() {
       console.log(this.element.id)
+      await this.$axios
+        .delete(`/api/v1/token/computers/${this.element.id}/`)
+        .then((response) => {
+          this.$router.push({ name: 'computers-list' })
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
     }
   }
 }
