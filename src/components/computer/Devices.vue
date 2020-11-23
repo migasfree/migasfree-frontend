@@ -11,7 +11,6 @@
           outlined
           use-input
           use-chips
-          emit-value
           map-options
           multiple
           input-debounce="0"
@@ -26,6 +25,29 @@
                 No results
               </q-item-section>
             </q-item>
+          </template>
+
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+              {{ scope.opt.name }}
+            </q-item>
+          </template>
+
+          <template v-slot:selected-item="scope">
+            <q-chip
+              removable
+              dense
+              :tabindex="scope.tabindex"
+              color="white"
+              class="q-ma-md"
+              @remove="scope.removeAtIndex(scope.index)"
+            >
+              <MigasLink
+                model="devices/devices"
+                :pk="scope.opt.id"
+                :value="scope.opt.name"
+              />
+            </q-chip>
           </template>
         </q-select>
       </p>
