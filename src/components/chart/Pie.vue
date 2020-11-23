@@ -40,6 +40,7 @@
 <script>
 import 'echarts/lib/chart/pie'
 import 'echarts/lib/component/tooltip'
+import { MIGASFREE_CHART_COLORS } from 'config/app.conf'
 
 export default {
   name: 'PieChart',
@@ -71,6 +72,7 @@ export default {
           trigger: 'item',
           formatter: '{b} ({c}): <strong>{d}%</strong>'
         },
+        color: MIGASFREE_CHART_COLORS,
         series: [
           {
             type: 'pie',
