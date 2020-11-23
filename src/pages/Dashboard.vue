@@ -108,6 +108,25 @@ export default {
   methods: {
     goTo(params) {
       console.log(params)
+
+      let query = {}
+
+      if (params.data.project_id) {
+        query = Object.assign(query, {
+          project_id: params.data.project_id
+        })
+      }
+
+      if (params.data.platform_id) {
+        query = Object.assign(query, {
+          platform_id: params.data.platform_id
+        })
+      }
+
+      this.$router.push({
+        name: params.url.name,
+        query: Object.assign(params.url.query || {}, query)
+      })
     }
   }
 }
