@@ -143,6 +143,7 @@
                         model="tags"
                         :pk="scope.opt.id"
                         :value="attributeValue(scope.opt)"
+                        icon="mdi-tag"
                       />
                     </q-chip>
                   </template>
