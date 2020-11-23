@@ -89,6 +89,40 @@ export const datagridMixin = {
 
     async loadFilters() {},
 
-    async loadItems() {}
+    async loadItems() {},
+
+    confirmRemove(id) {
+      let items = []
+      let message = 'Are you sure you want to remove this item?'
+
+      if (typeof id === 'number' && id > 0) {
+        items.push(id)
+      } else {
+        message = 'Are you sure you want to remove all these items?'
+        items = this.selectedRows.map((item) => item.id)
+      }
+
+      if (items.length === 0) return
+
+      this.$q
+        .dialog({
+          message,
+          ok: {
+            color: 'negative',
+            label: 'Borrar',
+            icon: 'mdi-delete'
+          },
+          cancel: {
+            flat: true
+          },
+          persistent: true
+        })
+        .onOk(() => {
+          items.forEach((id) => {
+            this.remove(id)
+          })
+          this.loadItems()
+        })
+    }
   }
 }
