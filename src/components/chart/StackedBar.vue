@@ -32,6 +32,7 @@ import 'echarts/lib/chart/bar'
 import 'echarts/lib/chart/line'
 import 'echarts/lib/component/legend'
 import 'echarts/lib/component/tooltip'
+import { MIGASFREE_CHART_COLORS } from 'config/app.conf'
 
 export default {
   name: 'StackedBarChart',
@@ -43,6 +44,7 @@ export default {
     return {
       options: {
         animation: false,
+        color: MIGASFREE_CHART_COLORS,
         tooltip: {
           show: true,
           trigger: 'axis'
