@@ -26,6 +26,7 @@
         v-ripple
         dense
         clickable
+        :to="relationLink(item)"
       >
         <q-item-section>
           <q-chip outline color="primary" size="md">
@@ -75,6 +76,25 @@ export default {
     }
   },
   methods: {
+    relationLink(item) {
+      if (item.model && item.pk) {
+        return {
+          name: `${this.$pluralize.singular(item.model)}-detail`,
+          params: {
+            id: item.pk
+          }
+        }
+      }
+      else if (item.model) {
+        return {
+          name: `${item.model}-list`
+        }
+      }
+      else {
+        return '#' // TODO
+      }
+    },
+
     async getRelations() {
       const url = `/api/v1/token/${this.model}/${this.pk}/relations/`
 
@@ -86,6 +106,7 @@ export default {
         .get(url)
         .then((response) => {
           this.relations = response.data
+          console.log(this.relations)
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
