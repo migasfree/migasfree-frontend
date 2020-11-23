@@ -53,7 +53,7 @@
             size="sm"
             icon="mdi-delete"
             color="negative"
-            @click="remove(props.row.id)"
+            @click="confirmRemove(props.row.id)"
           />
         </span>
         <span v-else-if="props.column.field == 'value'">
@@ -77,7 +77,12 @@
       </template>
       <div slot="emptystate">{{ $t('vgt.noData') }}</div>
       <div slot="selected-row-actions">
-        <q-btn size="sm" color="negative" icon="mdi-delete"></q-btn>
+        <q-btn
+          size="sm"
+          color="negative"
+          icon="mdi-delete"
+          @click="confirmRemove"
+        ></q-btn>
       </div>
     </vue-good-table>
   </q-page>
@@ -266,7 +271,14 @@ export default {
     },
 
     remove(id) {
-      console.log(id)
+      this.$axios
+        .delete(`/api/v1/token/tags/${id}/`)
+        .then((response) => {
+          this.$store.dispatch('ui/notifySuccess', 'Item deleted!')
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
     }
   }
 }
