@@ -20,7 +20,7 @@ module.exports = function(/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
-    boot: ['i18n', 'axios', 'vue-good-table', 'vue-echarts'],
+    boot: ['i18n', 'axios', 'vue-good-table', 'vue-echarts', 'pluralize'],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ['app.sass'],
