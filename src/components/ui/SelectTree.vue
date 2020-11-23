@@ -85,10 +85,16 @@ export default {
       selected: this.value || null
     }
   },
+  watch: {
+    value(val) {
+      this.selected = val
+    }
+  },
   methods: {
     nodeSelected(value) {
       const node = this.$refs.tree.getNodeByKey(value)
       this.selected = node[this.labelKey]
+      console.log('selectTree', this.selected)
       this.$refs.menu.hide()
       this.$emit('select', node)
     },
