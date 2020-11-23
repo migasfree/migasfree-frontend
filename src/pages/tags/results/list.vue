@@ -60,7 +60,7 @@
           <MigasLink
             model="tags"
             :pk="props.row.id"
-            :icon="elementIcon(props.row.property_att.prefix)"
+            icon="mdi-tag"
             :value="attributeValue(props.row)"
           />
         </span>
