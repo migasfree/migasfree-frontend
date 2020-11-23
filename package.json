@@ -19,7 +19,8 @@
     "validator": "^12.1.0",
     "vue-echarts": "^5.0.0-beta.0",
     "vue-good-table": "^2.21.1",
-    "vue-i18n": "^8.0.0"
+    "vue-i18n": "^8.0.0",
+    "vue-pluralize": "^0.0.2"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",
