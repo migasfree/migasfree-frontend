@@ -271,7 +271,6 @@ export default {
         .delete(`/api/v1/token/features/${id}/`)
         .then((response) => {
           this.$store.dispatch('ui/notifySuccess', 'Item deleted!')
-          this.loadItems()
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
