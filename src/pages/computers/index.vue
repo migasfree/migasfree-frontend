@@ -174,11 +174,21 @@ export default {
     goTo(params) {
       console.log(params)
       if (params.data.project_id) {
-        this.$router.push(
-          Object.assign(this.url, {
-            query: { project_id: params.data.project_id }
+        this.$router.push({
+          name: this.url.name,
+          query: Object.assign(params.url.query, {
+            project_id: params.data.project_id
           })
-        )
+        })
+      }
+
+      if (params.data.platform_id) {
+        this.$router.push({
+          name: this.url.name,
+          query: Object.assign(params.url.query, {
+            platform_id: params.data.platform_id
+          })
+        })
       }
 
       if (params.data.created_at__lt) {
