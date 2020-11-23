@@ -17,12 +17,12 @@ const routes = [
       {
         path: '/computers/results',
         name: 'computers-list',
-        component: () => import('pages/computers/results/index')
+        component: () => import('pages/computers/results/list')
       },
       {
         path: '/computers/results/:id',
         name: 'computer-detail',
-        component: () => import('pages/computers/results/_id')
+        component: () => import('pages/computers/results/detail')
       },
       {
         path: '/computers/results/:id/events',
@@ -43,12 +43,12 @@ const routes = [
       {
         path: '/features/results',
         name: 'attributes-list',
-        component: () => import('pages/attributes/results/index')
+        component: () => import('pages/attributes/results/list')
       },
       {
         path: '/features/results/:id',
         name: 'attribute-detail',
-        component: () => import('pages/attributes/results/_id')
+        component: () => import('pages/attributes/results/detail')
       },
 
       {
@@ -59,17 +59,17 @@ const routes = [
       {
         path: '/tags/results',
         name: 'tags-list',
-        component: () => import('pages/tags/results/index')
+        component: () => import('pages/tags/results/list')
       },
       {
         path: '/tags/add',
         name: 'tag-add',
-        component: () => import('pages/tags/results/_id')
+        component: () => import('pages/tags/results/detail')
       },
       {
         path: '/tags/results/:id',
         name: 'tag-detail',
-        component: () => import('pages/tags/results/_id')
+        component: () => import('pages/tags/results/detail')
       },
     ],
     meta: { authRequired: true }
