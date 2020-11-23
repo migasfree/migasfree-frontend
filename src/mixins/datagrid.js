@@ -16,7 +16,8 @@ export const datagridMixin = {
       selectOptions: { enabled: true, selectOnCheckboxOnly: true },
       tableFilters: {
         search: ''
-      }
+      },
+      selectedRows: []
     }
   },
   computed: {
@@ -82,7 +83,8 @@ export const datagridMixin = {
     },
 
     onSelectionChanged(params) {
-      console.log(params)
+      this.selectedRows = params.selectedRows
+      console.log(this.selectedRows)
     },
 
     async loadFilters() {},
