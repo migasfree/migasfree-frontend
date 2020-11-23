@@ -11,7 +11,7 @@
             model="tags"
             :pk="element.id"
             :value="attributeValue(element)"
-            :icon="elementIcon(element.property_att.prefix)"
+            icon="mdi-tag"
           />
         </h2>
       </div>
