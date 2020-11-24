@@ -6,11 +6,11 @@ export const MIGASFREE_CHART_COLORS = [
   '#ff8552', // coral
   '#297373', // skobeloff
   '#DB3A34', // cg red
-  '#85FFC7', // aquamarine
+  '#084C61', // midnight green eagle green
   '#39393A', // onyx
   '#FFC857', // maximum yellow red
   '#613A3A', // rose ebony
-  '#084C61', // midnight green eagle green
+  '#85FFC7', // aquamarine
   '#573280', // spanish violet
   '#ADA8B6', // silver metallic
   '#845A6D', // mauve taupe
