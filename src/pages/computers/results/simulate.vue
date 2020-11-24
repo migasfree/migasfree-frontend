@@ -70,6 +70,13 @@
               />
 
               <OverflowList
+                label="Etiquetas"
+                icon="mdi-tag"
+                :items="onlyTags"
+                model="tags"
+              />
+
+              <OverflowList
                 label="Conjuntos de atributos"
                 icon="mdi-set-none"
                 :items="onlyAttributeSets"
@@ -190,6 +197,7 @@ export default {
       platform: {},
       onlyAttributes: [],
       onlyAttributeSets: [],
+      onlyTags: [],
       simulation: {}
     }
   },
@@ -204,9 +212,17 @@ export default {
         this.loadProject()
         this.loadSyncInfo()
         this.loadSimulation()
+
+        Object.entries(response.data.tags).map(([key, val]) => {
+          this.onlyTags.push({
+            id: val.id,
+            icon: 'mdi-tag',
+            value: this.attributeValue(val)
+          })
+        })
       })
       .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error.response.data.detail)
+        this.$store.dispatch('ui/notifyError', error)
       })
   },
   methods: {
@@ -214,11 +230,10 @@ export default {
       await this.$axios
         .get(`/api/v1/token/projects/${this.computer.project.id}/`)
         .then((response) => {
-          console.log(response)
           this.platform = response.data.platform
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data.detail)
+          this.$store.dispatch('ui/notifyError', error)
         })
     },
 
@@ -231,18 +246,19 @@ export default {
             if (val.property_att.prefix === 'SET') {
               this.onlyAttributeSets.push({
                 id: val.id,
-                value: `${val.property_att.prefix}-${val.value}`
+                icon: 'mdi-set-none',
+                value: this.attributeValue(val)
               })
             } else {
               this.onlyAttributes.push({
                 id: val.id,
-                value: `${val.property_att.prefix}-${val.value}`
+                value: this.attributeValue(val)
               })
             }
           })
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data.detail)
+          this.$store.dispatch('ui/notifyError', error)
         })
     },
 
@@ -250,11 +266,10 @@ export default {
       await this.$axios
         .get(`/api/v1/token/computers/${this.computer.id}/sync/simulation/`)
         .then((response) => {
-          console.log(response)
           this.simulation = response.data
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data.detail)
+          this.$store.dispatch('ui/notifyError', error)
         })
     }
   }
