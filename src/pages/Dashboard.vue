@@ -32,6 +32,24 @@
         />
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-12">
+        <StackedBarChart
+          title="Ordenadores únicos sincronizados / día"
+          :data="dailySyncs"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <StackedBarChart
+          title="Ordenadores únicos sincronizados / mes"
+          :data="monthlySyncs"
+        />
+      </div>
+    </div>
   </q-page>
 </template>
 
@@ -39,9 +57,10 @@
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import NestedPieChart from 'components/chart/NestedPie'
+import StackedBarChart from 'components/chart/StackedBar'
 
 export default {
-  components: { Breadcrumbs, Header, NestedPieChart },
+  components: { Breadcrumbs, Header, NestedPieChart, StackedBarChart },
   data() {
     return {
       breadcrumbs: [
@@ -52,7 +71,10 @@ export default {
       ],
       productiveComputers: {},
       uncheckedErrors: {},
-      uncheckedFaults: {}
+      uncheckedFaults: {},
+      dailySyncs: {},
+      monthlySyncs: {},
+      projects: []
     }
   },
   computed: {
@@ -104,8 +126,83 @@ export default {
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error)
       })
+
+    await this.$axios
+      .get('/api/v1/token/stats/syncs/daily/')
+      .then((response) => {
+        const series = []
+
+        Object.entries(response.data.data).map(([key, val]) => {
+          series.push({
+            type: 'line',
+            smooth: true,
+            name: key,
+            data: val
+          })
+        })
+        this.dailySyncs = {
+          xData: response.data.x_labels,
+          series
+        }
+      })
+      .catch((error) => {
+        this.$store.dispatch('ui/notifyError', error)
+      })
+
+    this.loadProjects()
   },
   methods: {
+    async loadProjects() {
+      await this.$axios
+        .get('/api/v1/token/projects')
+        .then((response) => {
+          this.projects = response.data.results
+          this.loadMonthlySyncs()
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+    },
+
+    async loadMonthlySyncs() {
+      this.$set(this.monthlySyncs, 'series', [])
+
+      await this.$axios
+        .get('/api/v1/token/stats/syncs/monthly/')
+        .then((response) => {
+          this.$set(this.monthlySyncs, 'xData', response.data.x_labels)
+          Object.entries(response.data.data).map(([key, val]) => {
+            this.monthlySyncs.series.push({
+              type: 'line',
+              smooth: true,
+              name: 'Total',
+              data: val
+            })
+          })
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+
+      this.projects.forEach((item) => {
+        this.$axios
+          .get(`/api/v1/token/stats/syncs/monthly/?project_id=${item.id}`)
+          .then((response) => {
+            Object.entries(response.data.data).map(([key, val]) => {
+              this.monthlySyncs.series.push({
+                type: 'line',
+                smooth: true,
+                name: item.name,
+                data: val
+              })
+            })
+          })
+          .catch((error) => {
+            this.$store.dispatch('ui/notifyError', error)
+          })
+      })
+    },
+
     goTo(params) {
       console.log(params)
 
