@@ -110,10 +110,10 @@ export default {
               to: 'tags-dashboard',
               icon: 'mdi-tag',
               separatorAfter: true
-            }
-            /* { title: 'Sincronizaciones', to: 'synchronizations-dashboard', icon: 'mdi-sync' },
+            },
+            // { title: 'Sincronizaciones', to: 'synchronizations-dashboard', icon: 'mdi-sync' },
             { title: 'Errores', to: 'errors-dashboard', icon: 'mdi-bug' },
-            { title: 'Fallas', to: 'faults-dashboard', icon: 'mdi-bomb' },
+            /* { title: 'Fallas', to: 'faults-dashboard', icon: 'mdi-bomb' },
             { title: 'Registros de Estados', to: 'status-logs-dashboard', icon: 'mdi-flag-variant' },
             {
               title: 'Migraciones',
