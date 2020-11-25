@@ -71,6 +71,12 @@ const routes = [
         name: 'tag-detail',
         component: () => import('pages/tags/results/detail')
       },
+
+      {
+        path: '/errors',
+        name: 'errors-dashboard',
+        component: () => import('pages/errors/index')
+      },
     ],
     meta: { authRequired: true }
   },
