@@ -83,7 +83,7 @@
         </div>
       </div>
 
-      <div v-if="items.length > 0" class="q-pa-md">
+      <div v-if="items.length > 0" id="events" class="q-pa-md">
         <q-toolbar class="bg-primary text-white shadow-2">
           <q-toolbar-title
             >{{ events[event].title }} ({{ itemsDate }}:
@@ -195,7 +195,7 @@ export default {
         this.loadItems()
       })
       .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error.response.data.detail)
+        this.$store.dispatch('ui/notifyError', error)
       })
   },
   methods: {
@@ -223,7 +223,7 @@ export default {
           this.updateEvent(this.event)
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data)
+          this.$store.dispatch('ui/notifyError', error)
         })
 
       await this.$axios
@@ -236,7 +236,7 @@ export default {
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data)
+          this.$store.dispatch('ui/notifyError', error)
         })
 
       await this.$axios
@@ -249,7 +249,7 @@ export default {
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data)
+          this.$store.dispatch('ui/notifyError', error)
         })
 
       await this.$axios
@@ -262,7 +262,7 @@ export default {
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data)
+          this.$store.dispatch('ui/notifyError', error)
         })
 
       await this.$axios
@@ -275,7 +275,7 @@ export default {
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data)
+          this.$store.dispatch('ui/notifyError', error)
         })
     },
 
@@ -345,10 +345,15 @@ export default {
                 break
             }
           })
-          console.log(this.items)
+          setTimeout(() => {
+            this.$store.dispatch(
+              'ui/scrollToElement',
+              document.getElementById('events')
+            )
+          }, 250)
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data)
+          this.$store.dispatch('ui/notifyError', error)
         })
     }
   }
