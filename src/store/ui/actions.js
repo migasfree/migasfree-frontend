@@ -1,3 +1,15 @@
+import { scroll } from 'quasar'
+
+const { getScrollTarget, setScrollPosition } = scroll
+
+export function scrollToElement(context, element) {
+  const target = getScrollTarget(element)
+  const offset = element.offsetTop
+  const duration = 1000
+
+  setScrollPosition(target, offset, duration)
+}
+
 export function notifyError(context, error) {
   let message = ''
 
