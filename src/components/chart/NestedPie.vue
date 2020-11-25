@@ -104,9 +104,12 @@ export default {
     }
   },
   watch: {
-    data: function(val, oldVal) {
-      this.options.series[0].data = val.inner
-      this.options.series[1].data = val.outer
+    data: {
+      handler: function(val, oldVal) {
+        this.options.series[0].data = val.inner
+        this.options.series[1].data = val.outer
+      },
+      deep: true
     }
   },
   beforeMount() {

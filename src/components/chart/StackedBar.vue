@@ -68,9 +68,12 @@ export default {
     }
   },
   watch: {
-    data: function(val, oldVal) {
-      this.options.series = val.series
-      this.options.xAxis.data = val.xData
+    data: {
+      handler: function(val, oldVal) {
+        this.options.series = val.series
+        this.options.xAxis.data = val.xData
+      },
+      deep: true
     }
   },
   beforeMount() {
