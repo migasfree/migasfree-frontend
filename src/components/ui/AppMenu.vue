@@ -121,6 +121,7 @@ export default {
               icon: 'mdi-map-marker-right',
               separatorAfter: true
             },
+            { title: 'Mensajes', to: 'messages-dashboard' },
             { title: 'Notificaciones', to: 'notifications-dashboard' } */
           ]
         }
