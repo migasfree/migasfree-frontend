@@ -35,7 +35,7 @@
 
     <div class="row">
       <div class="col-12">
-        <q-card class="q-ma-sm">
+        <q-card id="events-history" class="q-ma-sm">
           <q-expansion-item @show="loadEventsHistory">
             <template v-slot:header>
               <q-item-section>
@@ -296,6 +296,10 @@ export default {
 
         this.loading = false
       }
+      this.$store.dispatch(
+        'ui/scrollToElement',
+        document.getElementById('events-history')
+      )
     },
 
     goTo(params) {
