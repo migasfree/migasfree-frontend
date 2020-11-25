@@ -35,6 +35,27 @@
 
     <div class="row">
       <div class="col-12">
+        <q-card class="q-ma-sm">
+          <q-expansion-item @show="loadEventsHistory">
+            <template v-slot:header>
+              <q-item-section>
+                <div class="text-h5">
+                  Histórico de sucesos en las últimas 72 horas
+                </div>
+              </q-item-section>
+            </template>
+
+            <div v-if="loading" class="text-center">
+              <q-spinner-dots color="primary" size="3em" />
+            </div>
+            <StackedBarChart title="" :data="eventsHistory" />
+          </q-expansion-item>
+        </q-card>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
         <StackedBarChart
           title="Ordenadores únicos sincronizados / día"
           :data="dailySyncs"
@@ -74,7 +95,9 @@ export default {
       uncheckedFaults: {},
       dailySyncs: {},
       monthlySyncs: {},
-      projects: []
+      projects: [],
+      loading: false,
+      eventsHistory: {}
     }
   },
   computed: {
@@ -201,6 +224,78 @@ export default {
             this.$store.dispatch('ui/notifyError', error)
           })
       })
+    },
+
+    async loadEventsHistory() {
+      if (Object.keys(this.eventsHistory).length === 0) {
+        this.loading = true
+        const syncs = await this.$axios
+          .get('/api/v1/token/stats/syncs/history/')
+          .catch((error) => {
+            this.$store.dispatch('ui/notifyError', error)
+          })
+
+        const errors = await this.$axios
+          .get('/api/v1/token/stats/errors/history/')
+          .catch((error) => {
+            this.$store.dispatch('ui/notifyError', error)
+          })
+
+        const faults = await this.$axios
+          .get('/api/v1/token/stats/faults/history/')
+          .catch((error) => {
+            this.$store.dispatch('ui/notifyError', error)
+          })
+
+        const migrations = await this.$axios
+          .get('/api/v1/token/stats/migrations/history/')
+          .catch((error) => {
+            this.$store.dispatch('ui/notifyError', error)
+          })
+
+        const statusLogs = await this.$axios
+          .get('/api/v1/token/stats/status-logs/history/')
+          .catch((error) => {
+            this.$store.dispatch('ui/notifyError', error)
+          })
+
+        this.$set(this.eventsHistory, 'xData', syncs.data.x_labels)
+        this.$set(this.eventsHistory, 'series', [
+          {
+            type: 'line',
+            smooth: true,
+            name: Object.keys(syncs.data.data)[0],
+            data: Object.values(syncs.data.data)[0]
+          },
+          {
+            type: 'line',
+            smooth: true,
+            name: Object.keys(errors.data.data)[0],
+            data: Object.values(errors.data.data)[0]
+          },
+          {
+            type: 'line',
+            smooth: true,
+            name: Object.keys(faults.data.data)[0],
+            data: Object.values(faults.data.data)[0]
+          },
+          {
+            type: 'line',
+            smooth: true,
+            name: Object.keys(migrations.data.data)[0],
+            data: Object.values(migrations.data.data)[0]
+          },
+          {
+            type: 'line',
+            smooth: true,
+            name: Object.keys(statusLogs.data.data)[0],
+            data: Object.values(statusLogs.data.data)[0]
+          }
+        ])
+        console.log(this.eventsHistory)
+
+        this.loading = false
+      }
     },
 
     goTo(params) {
