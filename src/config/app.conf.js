@@ -21,7 +21,7 @@ export const MIGASFREE_CHART_COLORS = [
 */
 
 // https://colorbrewer2.org/?type=qualitative&scheme=Set3&n=12
-export const MIGASFREE_CHART_COLORS = [
+/* export const MIGASFREE_CHART_COLORS = [
   '#a6cee3',
   '#1f78b4',
   '#b2df8a',
@@ -34,4 +34,28 @@ export const MIGASFREE_CHART_COLORS = [
   '#6a3d9a',
   '#ffff99',
   '#b15928'
+] */
+
+export const MIGASFREE_CHART_COLORS = [
+  '#5f98cf',
+  '#434348',
+  '#49a65e',
+  '#f45b5b',
+  '#708090',
+  '#b68c51',
+  '#397550',
+  '#c0493d',
+  '#4f4a7a',
+  '#b381b3'
 ]
+
+/* export const MIGASFREE_CHART_COLORS = [
+  '#514F78',
+  '#42A07B',
+  '#9B5E4A',
+  '#72727F',
+  '#1F949A',
+  '#82914E',
+  '#86777F',
+  '#42A07B'
+] */
