@@ -77,6 +77,11 @@ const routes = [
         name: 'errors-dashboard',
         component: () => import('pages/errors/index')
       },
+      {
+        path: '/errors/results',
+        name: 'errors-list',
+        component: () => import('pages/errors/results/list')
+      },
     ],
     meta: { authRequired: true }
   },
