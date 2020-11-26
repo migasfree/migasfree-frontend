@@ -214,7 +214,7 @@ export default {
           .then((response) => {
             console.log(response)
             this.element = response.data
-            this.element.property_att = this.stamps.filter(
+            this.element.property_att = this.stamps.find(
               (x) => x.id === this.element.property_att
             )
             console.log('element new', this.element)
@@ -226,6 +226,13 @@ export default {
               this.element = { id: 0 }
               this.$router.push({ name: 'tag-add' })
             } else {
+              if (this.breadcrumbs.length === 4) {
+                this.breadcrumbs.pop()
+                this.breadcrumbs.push({ text: 'Resultados', to: 'tags-list' })
+                this.breadcrumbs.push({
+                  text: this.attributeValue(this.element)
+                })
+              }
               this.$router.push({
                 name: 'tag-detail',
                 params: { id: this.element.id }
