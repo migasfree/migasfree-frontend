@@ -70,19 +70,10 @@
           {{ showDate(props.row.created_at) }}
         </span>
         <span v-else-if="props.column.field == 'description'">
-          <pre class="ellipsis-3-lines">{{ props.row.description }}</pre>
+          <Truncate v-model="props.row.description" />
         </span>
         <span v-else-if="props.column.field == 'checked'">
-          <q-icon
-            v-if="props.row.checked"
-            name="mdi-check-bold"
-            color="positive"
-            size="md"
-            ><q-tooltip>Sí</q-tooltip></q-icon
-          >
-          <q-icon v-else name="mdi-close-thick" color="negative" size="md">
-            <q-tooltip>No</q-tooltip>
-          </q-icon>
+          <BooleanView v-model="props.row.checked" />
         </span>
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
@@ -105,6 +96,8 @@
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import SearchFilter from 'components/ui/SearchFilter'
 import Header from 'components/ui/Header'
+import BooleanView from 'components/ui/BooleanView'
+import Truncate from 'components/ui/Truncate'
 import MigasLink from 'components/MigasLink'
 import { dateMixin } from 'mixins/date'
 import { elementMixin } from 'mixins/element'
@@ -115,6 +108,8 @@ export default {
     Breadcrumbs,
     SearchFilter,
     Header,
+    BooleanView,
+    Truncate,
     MigasLink
   },
   mixins: [dateMixin, elementMixin, datagridMixin],
