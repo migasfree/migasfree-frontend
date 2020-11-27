@@ -272,11 +272,12 @@ export default {
       this.$router.push({ name: 'tag-detail', params: { id } })
     },
 
-    remove(id) {
+    remove(id, reload = true) {
       this.$axios
         .delete(`/api/v1/token/tags/${id}/`)
         .then((response) => {
           this.$store.dispatch('ui/notifySuccess', 'Item deleted!')
+          if (reload) this.loadItems()
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
