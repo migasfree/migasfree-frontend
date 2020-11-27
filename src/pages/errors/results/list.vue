@@ -52,11 +52,13 @@
             @click="confirmRemove(props.row.id)"
           />
         </span>
-        <span v-else-if="props.column.field == 'computer.cid_description'">
+        <span v-else-if="props.column.field == 'computer.__str__'">
           <MigasLink
             model="computers"
             :pk="props.row.computer.id"
-            :value="props.row.computer.cid_description"
+            :value="props.row.computer.__str__"
+            :icon="elementIcon(props.row.computer.status)"
+            :tooltip="props.row.computer.summary"
           />
         </span>
         <span v-else-if="props.column.field == 'project.name'">
@@ -155,8 +157,16 @@ export default {
           hidden: true
         },
         {
+          field: 'computer.status',
+          hidden: true
+        },
+        {
+          field: 'computer.summary',
+          hidden: true
+        },
+        {
           label: 'Ordenador',
-          field: 'computer.cid_description'
+          field: 'computer.__str__'
         },
         {
           field: 'project.id',
