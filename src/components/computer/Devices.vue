@@ -65,7 +65,8 @@
       <q-btn
         class="full-width"
         color="primary"
-        icon="mdi-content-save"
+        label="Grabar y seguir editando"
+        icon="mdi-content-save-edit"
         :loading="loading"
         :disabled="loading"
         @click="updateDevices"
