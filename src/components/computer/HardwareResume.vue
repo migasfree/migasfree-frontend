@@ -21,11 +21,13 @@
             ></q-datetime-picker>
             <q-btn
               color="primary"
-              icon="mdi-content-save"
+              icon="mdi-content-save-edit"
               :loading="loading"
               :disabled="loading"
               @click="updateCapture"
-            />
+            >
+              <q-tooltip>Grabar y seguir editando</q-tooltip>
+            </q-btn>
           </q-btn-group>
         </div>
       </div>
