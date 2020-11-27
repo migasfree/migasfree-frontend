@@ -106,6 +106,23 @@
       <div slot="emptystate">{{ $t('vgt.noData') }}</div>
       <div slot="selected-row-actions">
         <q-btn
+          class="q-ma-xs"
+          size="sm"
+          icon="mdi-eye-check"
+          color="positive"
+          @click="updateItemsChecked(true)"
+          ><q-tooltip>Comprobar</q-tooltip></q-btn
+        >
+        <q-btn
+          class="q-ma-xs"
+          size="sm"
+          icon="mdi-eye-remove"
+          color="negative"
+          @click="updateItemsChecked(false)"
+          ><q-tooltip>No comprobar</q-tooltip></q-btn
+        >
+        <q-btn
+          class="q-ma-xs"
           size="sm"
           color="negative"
           icon="mdi-delete"
@@ -288,27 +305,37 @@ export default {
       this.$router.push({ name: 'error-detail', params: { id } })
     },
 
-    remove(id) {
+    remove(id, reload = true) {
       this.$axios
         .delete(`/api/v1/token/errors/${id}/`)
         .then((response) => {
           this.$store.dispatch('ui/notifySuccess', 'Item deleted!')
+          if (reload) this.loadItems()
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
     },
 
-    updateChecked(id, value) {
+    updateChecked(id, value, reload = true) {
       this.$axios
         .patch(`/api/v1/token/errors/${id}/`, { checked: value })
         .then((response) => {
           this.$store.dispatch('ui/notifySuccess', 'Changed item check value!')
-          this.loadItems()
+          if (reload) this.loadItems()
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
+    },
+
+    updateItemsChecked(value) {
+      const items = this.selectedRows.map((item) => item.id)
+      if (items.length === 0) return
+
+      items.forEach((id) => {
+        this.updateChecked(id, value, items[items.length - 1] === id)
+      })
     }
   }
 }
