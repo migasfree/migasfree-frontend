@@ -15,6 +15,7 @@
     "core-js": "^3.6.5",
     "echarts": "^4.9.0",
     "quasar": "^1.0.0",
+    "text-clipper": "^2.1.0",
     "typeface-dosis": "^1.1.13",
     "validator": "^12.1.0",
     "vue-echarts": "^5.0.0-beta.0",
