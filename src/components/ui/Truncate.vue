@@ -6,7 +6,7 @@
     <q-list v-else bordered>
       <q-expansion-item>
         <template v-slot:header>
-          <pre class="overflow">{{ truncatedValue }}</pre>
+          <pre class="overflow">{{ truncatedValue }} …</pre>
         </template>
         <pre>{{ value }}</pre>
       </q-expansion-item>
