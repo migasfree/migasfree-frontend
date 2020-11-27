@@ -4,17 +4,63 @@
 
     <Header title="Errores" :results="totalRecords" :has-add-button="false" />
 
-    <SearchFilter
-      v-model="tableFilters.search"
-      @search="onSearch"
-      @clear="onSearchClear"
-    />
+    <q-list bordered>
+      <q-expansion-item icon="mdi-filter" label="More Filters">
+        <SearchFilter
+          v-model="tableFilters.search"
+          @search="onSearch"
+          @clear="onSearchClear"
+        />
 
-    <div class="row q-pa-md">
-      <div class="col-12">
-        <q-btn @click="resetFilters">Reset all filters</q-btn>
-      </div>
-    </div>
+        <div class="row q-pa-md q-col-gutter-lg">
+          <div class="col-12 col-sm-6 col-md-4">
+            <q-select
+              v-model="tableFilters.platform.selected"
+              :options="tableFilters.platform.items"
+              label="Por plataforma"
+              dense
+              outlined
+              option-value="id"
+              option-label="name"
+              @input="onPlatformFilter"
+            >
+              <template v-slot:before>
+                <q-icon name="mdi-filter" />
+              </template>
+            </q-select>
+          </div>
+
+          <div class="col-12 col-sm-6">
+            <SelectTree
+              ref="statusTree"
+              v-model="tableFilters.statusIn.selected"
+              placeholder="Por estado"
+              prepend-icon="mdi-filter"
+              :options="tableFilters.statusIn.items"
+              @select="onStatusInFilter"
+            />
+          </div>
+        </div>
+
+        <div class="row q-pa-md q-col-gutter-lg">
+          <div class="col-12 col-sm-6 col-md-4">
+            <DateRangeInput
+              ref="createdAtRange"
+              v-model="tableFilters.createdAt.selected"
+              prepend-icon="mdi-filter"
+              label="Por fecha de alta (rango)"
+              @select="onCreatedAtFilter"
+            />
+          </div>
+        </div>
+
+        <div class="row q-pa-md">
+          <div class="col-12">
+            <q-btn @click="resetFilters">Reset all filters</q-btn>
+          </div>
+        </div>
+      </q-expansion-item>
+    </q-list>
 
     <vue-good-table
       ref="myTable"
@@ -139,6 +185,8 @@ import SearchFilter from 'components/ui/SearchFilter'
 import Header from 'components/ui/Header'
 import BooleanView from 'components/ui/BooleanView'
 import Truncate from 'components/ui/Truncate'
+import SelectTree from 'components/ui/SelectTree'
+import DateRangeInput from 'components/ui/DateRangeInput'
 import MigasLink from 'components/MigasLink'
 import { dateMixin } from 'mixins/date'
 import { elementMixin } from 'mixins/element'
@@ -151,6 +199,8 @@ export default {
     Header,
     BooleanView,
     Truncate,
+    SelectTree,
+    DateRangeInput,
     MigasLink
   },
   mixins: [dateMixin, elementMixin, datagridMixin],
@@ -205,7 +255,12 @@ export default {
         },
         {
           label: 'Ordenador',
-          field: 'computer.__str__'
+          field: 'computer.__str__',
+          filterOptions: {
+            enabled: true,
+            placeholder: this.$t('vgt.filter'),
+            trigger: 'enter'
+          }
         },
         {
           field: 'project.id',
@@ -213,21 +268,94 @@ export default {
         },
         {
           label: 'Proyecto',
-          field: 'project.name'
+          field: 'project.name',
+          filterOptions: {
+            enabled: true,
+            placeholder: this.$t('vgt.all'),
+            trigger: 'enter'
+          }
         },
         {
           label: 'Comprobado',
-          field: 'checked'
+          field: 'checked',
+          filterOptions: {
+            enabled: true,
+            placeholder: this.$t('vgt.all'),
+            trigger: 'enter',
+            filterDropdownItems: [
+              // { value: '', text: this.$t('vgt.all') },
+              { value: true, text: 'Sí' },
+              { value: false, text: 'No' }
+            ]
+          }
         },
         {
           label: 'Descripción',
           field: 'description',
-          html: true
+          filterOptions: {
+            enabled: true,
+            placeholder: this.$t('vgt.filter'),
+            trigger: 'enter'
+          }
         }
-      ]
+      ],
+      tableFilters: {
+        search: '',
+        platform: {
+          items: [{ id: '', name: 'Todas' }],
+          selected: null
+        },
+        statusIn: {
+          items: [],
+          selected: null,
+          choices: {}
+        },
+        createdAt: {
+          selected: { from: null, to: null }
+        }
+      }
     }
   },
   created() {
+    if (this.$route.query.platform_id) {
+      this.updateParams({
+        columnFilters: { platform: this.$route.query.platform_id }
+      })
+    }
+
+    if (this.$route.query.project_id) {
+      this.updateParams({
+        columnFilters: { 'project.name': this.$route.query.project_id }
+      })
+      this.columns[8].filterOptions.filterValue = this.$route.query.project_id
+    }
+
+    if (this.$route.query.checked) {
+      this.updateParams({
+        columnFilters: { checked: this.$route.query.checked }
+      })
+      this.columns[9].filterOptions.filterValue = this.$route.query.project_id
+    }
+
+    if (this.$route.query.status_in) {
+      this.updateParams({
+        columnFilters: { status_in: this.$route.query.status_in }
+      })
+    }
+
+    if (this.$route.query.created_at__gte && this.$route.query.created_at__lt) {
+      this.updateParams({
+        columnFilters: {
+          created_at__gte: this.$route.query.created_at__gte,
+          created_at__lt: this.$route.query.created_at__lt
+        }
+      })
+      this.tableFilters.createdAt.selected = {
+        from: this.$route.query.created_at__gte,
+        to: this.$route.query.created_at__lt
+      }
+    }
+
     if (this.$route.query.search) {
       this.updateParams({
         columnFilters: { search: this.$route.query.search }
@@ -249,6 +377,77 @@ export default {
       this.onSearch('')
     },
 
+    onPlatformFilter(params) {
+      this.updateParams({
+        columnFilters: Object.assign(this.serverParams.columnFilters, {
+          platform: params.id
+        })
+      })
+      this.loadItems()
+    },
+
+    onStatusInFilter(params) {
+      console.log('onstatusfilter', this.tableFilters.statusIn.selected)
+      console.log(params)
+      this.updateParams({
+        columnFilters: Object.assign(this.serverParams.columnFilters, {
+          status_in: params.id
+        })
+      })
+      this.loadItems()
+    },
+
+    updateStatusInFilter(options) {
+      this.tableFilters.statusIn.choices = options.choices
+
+      this.tableFilters.statusIn.items = [
+        { id: '', label: 'Todos' },
+        {
+          id: options.subscribed.join(','),
+          label: 'subscribed',
+          children: [
+            {
+              id: options.productive.join(','),
+              label: 'productive',
+              children: Object.entries(options.productive).map(([key, val]) => {
+                return { id: val, label: options.choices[val] }
+              })
+            },
+            {
+              id: options.unproductive.join(','),
+              label: 'unproductive',
+              children: Object.entries(options.unproductive).map(
+                ([key, val]) => {
+                  return { id: val, label: options.choices[val] }
+                }
+              )
+            }
+          ]
+        },
+        { id: options.unsubscribed.join(','), label: 'unsubscribed' }
+      ]
+
+      if (this.$route.query.status_in) {
+        this.tableFilters.statusIn.selected = this.findById(
+          this.tableFilters.statusIn.items,
+          this.$route.query.status_in
+        ).label
+      }
+    },
+
+    onCreatedAtFilter(params) {
+      console.log(params)
+      console.log('createdAt selected', this.tableFilters.createdAt.selected)
+      this.tableFilters.createdAt.selected = params
+      this.updateParams({
+        columnFilters: Object.assign(this.serverParams.columnFilters, {
+          created_at__gte: this.tableFilters.createdAt.selected.from,
+          created_at__lt: this.tableFilters.createdAt.selected.to
+        })
+      })
+      this.loadItems()
+    },
+
     paramsToQueryString() {
       let ret = `page_size=${this.serverParams.perPage}&page=${this.serverParams.page}`
 
@@ -258,10 +457,19 @@ export default {
           Object.entries(this.serverParams.columnFilters)
             .map(([key, val]) => {
               switch (key) {
-                case 'property_att':
-                  return `property_att__id=${val}`
+                case 'project.name':
+                  return `project__id=${val}`
+                case 'computer.__str__':
+                  return `computer__name__icontains=${val}`
+                case 'platform':
+                  return `project__platform__id=${val}`
+                case 'checked':
+                case 'created_at__gte':
+                case 'created_at__lt':
                 case 'search':
                   return `${key}=${val}`
+                case 'status_in':
+                  return `computer__status__in=${val}`
                 default:
                   return `${key.replace('.', '__')}__icontains=${val}`
               }
@@ -277,7 +485,52 @@ export default {
       return ret
     },
 
-    async loadFilters() {},
+    async loadFilters() {
+      await this.$axios
+        .get('/api/v1/token/platforms/')
+        .then((response) => {
+          console.log('plataformas', response.data.results)
+          this.tableFilters.platform.items = this.tableFilters.platform.items.concat(
+            response.data.results
+          )
+
+          if (this.$route.query.platform_id) {
+            this.tableFilters.platform.selected = this.tableFilters.platform.items.find(
+              (x) => x.id == this.$route.query.platform_id
+            )
+          }
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+
+      await this.$axios
+        .get('/api/v1/token/projects/')
+        .then((response) => {
+          console.log(response)
+          this.columns[8].filterOptions.filterDropdownItems = response.data.results.map(
+            (item) => {
+              return {
+                value: item.id,
+                text: item.name
+              }
+            }
+          )
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+
+      await this.$axios
+        .get('/api/v1/token/computers/status/')
+        .then((response) => {
+          console.log(response)
+          this.updateStatusInFilter(response.data)
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+    },
 
     async loadItems() {
       this.isLoading = true
@@ -298,6 +551,14 @@ export default {
       this.$refs.myTable.reset()
       this.updateParams({ columnFilters: {} })
       this.tableFilters.search = ''
+      this.tableFilters.platform.selected = null
+
+      this.tableFilters.statusIn.selected = null
+      this.$refs.statusTree.reset()
+
+      this.tableFilters.createdAt.selected = { from: null, to: null }
+      this.$refs.createdAtRange.reset()
+
       this.loadItems()
     },
 
