@@ -247,6 +247,8 @@ export default {
     },
 
     async loadItems() {
+      if (this.isLoading) return
+
       this.isLoading = true
       await this.$axios
         .get('/api/v1/token/tags/?' + this.paramsToQueryString())

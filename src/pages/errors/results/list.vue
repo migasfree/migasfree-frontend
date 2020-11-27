@@ -283,7 +283,6 @@ export default {
             placeholder: this.$t('vgt.all'),
             trigger: 'enter',
             filterDropdownItems: [
-              // { value: '', text: this.$t('vgt.all') },
               { value: true, text: 'Sí' },
               { value: false, text: 'No' }
             ]
@@ -533,6 +532,8 @@ export default {
     },
 
     async loadItems() {
+      if (this.isLoading) return
+
       this.isLoading = true
       await this.$axios
         .get('/api/v1/token/errors/?' + this.paramsToQueryString())
