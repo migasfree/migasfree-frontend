@@ -5,7 +5,7 @@
     <Header title="Cuadro de mando" :has-add-button="false" />
 
     <div class="row">
-      <div class="col-md">
+      <div class="col-4 col-md">
         <NestedPieChart
           title="Ordenadores productivos"
           :data="productiveComputers"
@@ -14,7 +14,7 @@
         />
       </div>
 
-      <div class="col-md">
+      <div class="col-4 col-md">
         <NestedPieChart
           title="Errores sin comprobar"
           :data="uncheckedErrors"
@@ -23,7 +23,7 @@
         />
       </div>
 
-      <div class="col-md">
+      <div class="col-4 col-md">
         <NestedPieChart
           title="Fallas sin comprobar"
           :data="uncheckedFaults"
