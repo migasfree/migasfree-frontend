@@ -162,6 +162,7 @@
       <template slot="table-row" slot-scope="props">
         <span v-if="props.column.field == 'actions'">
           <q-btn
+            class="q-ma-xs"
             round
             size="sm"
             icon="mdi-pencil"
@@ -169,6 +170,7 @@
             @click="edit(props.row.id)"
           />
           <q-btn
+            class="q-ma-xs"
             round
             size="sm"
             icon="mdi-delete"
