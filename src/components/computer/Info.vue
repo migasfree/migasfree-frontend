@@ -5,11 +5,13 @@
         <q-input v-model="value" outlined label="Nombre" />
         <q-btn
           color="primary"
-          icon="mdi-content-save"
+          icon="mdi-content-save-edit"
           :loading="loading"
           :disabled="loading"
           @click="updateName"
-        />
+        >
+          <q-tooltip>Grabar y seguir editando</q-tooltip>
+        </q-btn>
       </q-btn-group>
       <div v-else class="text-h5">{{ name }}</div>
     </q-card-section>
@@ -137,14 +139,11 @@ export default {
       this.loading = true
       await this.$axios
         .patch(`/api/v1/token/computers/${this.cid}/`, {
-          name: this.value,
+          name: this.value
         })
         .then((response) => {
           console.log(response)
-          this.$store.dispatch(
-            'ui/notifySuccess',
-            'Name has been changed!'
-          )
+          this.$store.dispatch('ui/notifySuccess', 'Name has been changed!')
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error.response.data.detail)
