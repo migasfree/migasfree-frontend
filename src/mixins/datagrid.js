@@ -119,9 +119,8 @@ export const datagridMixin = {
         })
         .onOk(() => {
           items.forEach((id) => {
-            this.remove(id)
+            this.remove(id, items[items.length - 1] === id)
           })
-          this.loadItems()
         })
     }
   }
