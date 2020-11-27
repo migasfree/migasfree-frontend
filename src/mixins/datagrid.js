@@ -50,6 +50,21 @@ export const datagridMixin = {
     await this.loadItems()
   },
   methods: {
+    findById(data, id) {
+      for (var i = 0; i < data.length; i++) {
+        console.log(data[i].id, id, data[i].id == id)
+        if (data[i].id == id) {
+          return data[i]
+        } else if (
+          data[i].children &&
+          data[i].children.length &&
+          typeof data[i].children === 'object'
+        ) {
+          return this.findById(data[i].children, id)
+        }
+      }
+    },
+
     updateParams(newProps) {
       console.log('serverParams before', this.serverParams)
       this.serverParams = Object.assign({}, this.serverParams, newProps)
