@@ -38,6 +38,7 @@
       <template slot="table-row" slot-scope="props">
         <span v-if="props.column.field == 'actions'">
           <q-btn
+            class="q-ma-xs"
             round
             size="sm"
             icon="mdi-pencil"
@@ -45,6 +46,27 @@
             @click="edit(props.row.id)"
           />
           <q-btn
+            v-if="!props.row.checked"
+            class="q-ma-xs"
+            round
+            size="sm"
+            icon="mdi-eye-check"
+            color="positive"
+            @click="updateChecked(props.row.id, true)"
+            ><q-tooltip>Comprobar</q-tooltip></q-btn
+          >
+          <q-btn
+            v-if="props.row.checked"
+            class="q-ma-xs"
+            round
+            size="sm"
+            icon="mdi-eye-remove"
+            color="negative"
+            @click="updateChecked(props.row.id, false)"
+            ><q-tooltip>No comprobar</q-tooltip></q-btn
+          >
+          <q-btn
+            class="q-ma-xs"
             round
             size="sm"
             icon="mdi-delete"
@@ -271,6 +293,18 @@ export default {
         .delete(`/api/v1/token/errors/${id}/`)
         .then((response) => {
           this.$store.dispatch('ui/notifySuccess', 'Item deleted!')
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+    },
+
+    updateChecked(id, value) {
+      this.$axios
+        .patch(`/api/v1/token/errors/${id}/`, { checked: value })
+        .then((response) => {
+          this.$store.dispatch('ui/notifySuccess', 'Changed item check value!')
+          this.loadItems()
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
