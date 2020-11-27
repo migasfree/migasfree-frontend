@@ -17,7 +17,7 @@
     </div>
 
     <div class="row">
-      <div class="col-md">
+      <div class="col-6 col-md">
         <NestedPieChart
           title="Errores / proyecto / estado"
           :data="statusProjects"
@@ -26,7 +26,7 @@
         />
       </div>
 
-      <div class="col-md">
+      <div class="col-6 col-md">
         <NestedPieChart
           title="Errores sin comprobar"
           :data="uncheckedErrors"
@@ -78,7 +78,7 @@ export default {
   },
   computed: {
     uncheckedErrorsUrl() {
-      return Object.assign(this.url, { query: { checked: false } })
+      return Object.assign({}, this.url, { query: { checked: false } })
     }
   },
   async mounted() {
@@ -126,6 +126,53 @@ export default {
   methods: {
     goTo(params) {
       console.log(params)
+      if ('url' in params) {
+        let query = params.url.query || {}
+
+        if (params.data.project_id) {
+          Object.assign(query, {
+            project_id: params.data.project_id
+          })
+        }
+
+        if (params.data.platform_id) {
+          Object.assign(query, {
+            platform_id: params.data.platform_id
+          })
+        }
+
+        if (params.data.status) {
+          Object.assign(query, {
+            status_in: params.data.status
+          })
+        }
+
+        if (
+          !('query' in params.url) &&
+          params.data.name &&
+          !('status' in params.data)
+        ) {
+          Object.assign(query, {
+            status_in: params.data.name
+          })
+        }
+        console.log(params.url.name, query)
+        this.$router.push({ name: params.url.name, query })
+      }
+
+      if (params.data.created_at__lt) {
+        let query = {
+          created_at__gte: params.data.created_at__gte,
+          created_at__lt: params.data.created_at__lt
+        }
+
+        if (params.data.project__id__exact) {
+          Object.assign(query, { project_id: params.data.project__id__exact })
+        }
+
+        console.log(query)
+        this.$router.push(Object.assign({}, this.url, { query }))
+      }
     },
 
     search(value) {
