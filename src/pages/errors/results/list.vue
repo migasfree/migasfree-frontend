@@ -330,11 +330,11 @@ export default {
       this.columns[8].filterOptions.filterValue = this.$route.query.project_id
     }
 
-    if (this.$route.query.checked) {
+    if ('checked' in this.$route.query) {
       this.updateParams({
         columnFilters: { checked: this.$route.query.checked }
       })
-      this.columns[9].filterOptions.filterValue = this.$route.query.project_id
+      this.columns[9].filterOptions.filterValue = this.$route.query.checked
     }
 
     if (this.$route.query.status_in) {
