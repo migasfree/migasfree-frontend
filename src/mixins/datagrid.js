@@ -1,3 +1,5 @@
+import _merge from 'lodash/merge'
+
 export const datagridMixin = {
   data() {
     return {
@@ -67,7 +69,7 @@ export const datagridMixin = {
 
     updateParams(newProps) {
       console.log('serverParams before', this.serverParams)
-      this.serverParams = Object.assign({}, this.serverParams, newProps)
+      this.serverParams = _merge(this.serverParams, newProps)
       console.log('serverParams after', this.serverParams)
     },
 
