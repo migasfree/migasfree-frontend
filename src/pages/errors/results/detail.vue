@@ -10,33 +10,43 @@
 
     <q-card>
       <q-card-section>
-        <p>
-          <q-checkbox v-model="element.checked" left-label label="Comprobado" />
-        </p>
+        <div class="row q-pa-md">
+          <div class="col-6 col-md">
+            <q-checkbox
+              v-model="element.checked"
+              left-label
+              label="Comprobado"
+            />
+          </div>
 
-        <p>
-          Ordenador:
-          <MigasLink
-            v-if="element.computer"
-            model="computers"
-            :pk="element.computer.id"
-            :value="element.computer.__str__ || ''"
-            :icon="elementIcon(element.computer.status)"
-            :tooltip="element.computer.summary"
-          />
-        </p>
+          <div class="col-6 col-md">
+            Ordenador:
+            <MigasLink
+              v-if="element.computer"
+              model="computers"
+              :pk="element.computer.id"
+              :value="element.computer.__str__ || ''"
+              :icon="elementIcon(element.computer.status)"
+              :tooltip="element.computer.summary"
+            />
+          </div>
+        </div>
 
-        <p>
-          Proyecto:
-          <MigasLink
-            v-if="element.project"
-            model="projects"
-            :pk="element.project.id"
-            :value="element.project.name"
-          />
-        </p>
+        <div class="row q-pa-md">
+          <div class="col-6 col-md">
+            Proyecto:
+            <MigasLink
+              v-if="element.project"
+              model="projects"
+              :pk="element.project.id"
+              :value="element.project.name"
+            />
+          </div>
 
-        <p>Fecha: {{ showDate(element.created_at) }}</p>
+          <div class="col-6 col-md">
+            Fecha: {{ showDate(element.created_at) }}
+          </div>
+        </div>
 
         <p>
           <q-list bordered>
