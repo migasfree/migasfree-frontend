@@ -10,12 +10,12 @@
 
     <q-card>
       <q-card-section>
-        <div class="row q-pa-md">
+        <div class="row q-pa-md q-gutter-md">
           <div class="col-6 col-md">
             <q-checkbox
               v-model="element.checked"
               left-label
-              label="Comprobado"
+              label="¿Comprobado?"
             />
           </div>
 
@@ -32,7 +32,7 @@
           </div>
         </div>
 
-        <div class="row q-pa-md">
+        <div class="row q-pa-md q-gutter-md">
           <div class="col-6 col-md">
             Proyecto:
             <MigasLink
@@ -48,28 +48,32 @@
           </div>
         </div>
 
-        <p>
-          <q-list bordered>
-            <q-toolbar>
-              <q-toolbar-title
-                ><div class="text-body1">Descripción</div></q-toolbar-title
-              >
-              <q-btn
-                flat
-                icon="mdi-content-copy"
-                color="primary"
-                @click="copyInfo"
-              />
-            </q-toolbar>
-            <q-item :inset-level="0.5">
-              <pre class="overflow">{{ element.description }}</pre>
-            </q-item>
-          </q-list>
-        </p>
+        <div class="row q-pa-md">
+          <div class="col-12">
+            <q-list bordered>
+              <q-toolbar>
+                <q-toolbar-title
+                  ><div class="text-body1">Descripción</div></q-toolbar-title
+                >
+                <q-btn
+                  flat
+                  icon="mdi-content-copy"
+                  color="primary"
+                  @click="copyInfo"
+                />
+              </q-toolbar>
+              <q-item :inset-level="0.5">
+                <pre class="overflow">{{ element.description }}</pre>
+              </q-item>
+            </q-list>
+          </div>
+        </div>
       </q-card-section>
 
       <q-card-actions class="justify-around">
         <q-btn
+          flat
+          color="primary"
           label="Grabar y seguir editando"
           icon="mdi-content-save-edit"
           :loading="loading"
@@ -89,6 +93,7 @@
 
     <div v-if="$route.params.id && element.id" class="row q-pa-md">
       <q-btn
+        flat
         icon="mdi-delete"
         color="negative"
         label="Borrar"
