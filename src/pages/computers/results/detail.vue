@@ -272,6 +272,7 @@
 
       <div class="row q-pa-md">
         <q-btn
+          flat
           icon="mdi-delete"
           color="negative"
           label="Borrar"
