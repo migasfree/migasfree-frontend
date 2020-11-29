@@ -13,7 +13,7 @@
         />
 
         <div class="row q-pa-md q-col-gutter-lg">
-          <div class="col-12 col-sm-6 col-md-4">
+          <div class="col-sm-6 col-md-4">
             <q-select
               v-model="tableFilters.platform.selected"
               :options="tableFilters.platform.items"
@@ -30,7 +30,7 @@
             </q-select>
           </div>
 
-          <div class="col-12 col-sm-6">
+          <div class="col-md-4 col-sm-6">
             <SelectTree
               ref="statusTree"
               v-model="tableFilters.statusIn.selected"
@@ -40,10 +40,8 @@
               @select="onStatusInFilter"
             />
           </div>
-        </div>
 
-        <div class="row q-pa-md q-col-gutter-lg">
-          <div class="col-12 col-sm-6 col-md-4">
+          <div class="col-sm-6 col-md-4">
             <DateRangeInput
               ref="createdAtRange"
               v-model="tableFilters.createdAt.selected"
