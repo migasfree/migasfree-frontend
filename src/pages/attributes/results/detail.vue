@@ -19,41 +19,55 @@
 
       <q-card>
         <q-card-section>
-          <p>
-            Fórmula:
-            <MigasLink
-              model="properties"
-              :pk="element.property_att.id"
-              :value="element.property_att.name || ''"
-            />
-          </p>
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md">Valor: {{ element.value }}</div>
 
-          <p>Valor: {{ element.value }}</p>
+            <div class="col-6 col-md">
+              Fórmula:
+              <MigasLink
+                model="properties"
+                :pk="element.property_att.id"
+                :value="element.property_att.name || ''"
+              />
+            </div>
+          </div>
 
-          <p>
-            <q-input
-              v-model="element.description"
-              outlined
-              type="textarea"
-              label="Descripción"
-            />
-          </p>
+          <div class="row q-pa-md">
+            <div class="col-12">
+              <q-input
+                v-model="element.description"
+                outlined
+                type="textarea"
+                label="Descripción"
+              />
+            </div>
+          </div>
         </q-card-section>
 
-        <q-card-actions>
+        <q-card-actions class="justify-around">
           <q-btn
-            class="full-width"
+            flat
             color="primary"
-            icon="mdi-content-save"
+            label="Grabar y seguir editando"
+            icon="mdi-content-save-edit"
             :loading="loading"
-            :disabled="loading"
+            :disabled="!isValid || loading"
             @click="updateElement"
+          />
+          <q-btn
+            label="Grabar"
+            color="primary"
+            icon="mdi-content-save-move"
+            :loading="loading"
+            :disabled="!isValid || loading"
+            @click="updateElement('return')"
           />
         </q-card-actions>
       </q-card>
 
       <div class="row q-pa-md">
         <q-btn
+          flat
           icon="mdi-delete"
           color="negative"
           label="Borrar"
@@ -110,6 +124,7 @@ export default {
       ],
       element: {},
       loading: false,
+      isValid: true,
       confirmRemove: false
     }
   },
@@ -126,7 +141,7 @@ export default {
       })
   },
   methods: {
-    async updateElement() {
+    async updateElement(action = null) {
       this.loading = true
       await this.$axios
         .patch(`/api/v1/token/features/${this.element.id}/`, {
@@ -135,6 +150,9 @@ export default {
         .then((response) => {
           console.log(response)
           this.$store.dispatch('ui/notifySuccess', 'Data has been changed!')
+          if (action === 'return') {
+            this.$router.push({ name: 'attributes-list' })
+          }
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
