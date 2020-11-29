@@ -19,40 +19,47 @@
 
     <q-card>
       <q-card-section>
-        <p>
-          <q-select
-            v-model="element.property_att"
-            outlined
-            label="Categoría de etiqueta"
-            :options="stamps"
-            option-value="id"
-            option-label="name"
-            lazy-rules
-            :rules="[(val) => !!val || '* Required']"
-          />
-        </p>
+        <div class="row q-pa-md q-gutter-md">
+          <div class="col-6 col-md">
+            <q-select
+              v-model="element.property_att"
+              outlined
+              label="Categoría de etiqueta"
+              :options="stamps"
+              option-value="id"
+              option-label="name"
+              lazy-rules
+              :rules="[(val) => !!val || '* Required']"
+            />
+          </div>
 
-        <p>
-          <q-input
-            v-model="element.value"
-            outlined
-            label="Valor"
-            lazy-rules
-            :rules="[(val) => !!val || '* Required']"
-          />
-        </p>
+          <div class="col-6 col-md">
+            <q-input
+              v-model="element.value"
+              outlined
+              label="Valor"
+              lazy-rules
+              :rules="[(val) => !!val || '* Required']"
+            />
+          </div>
+        </div>
 
-        <p>
-          <q-input
-            v-model="element.description"
-            outlined
-            type="textarea"
-            label="Descripción"
-          />
-        </p>
+        <div class="row q-pa-md q-gutter-md">
+          <div class="col-12">
+            <q-input
+              v-model="element.description"
+              outlined
+              type="textarea"
+              label="Descripción"
+            />
+          </div>
+        </div>
       </q-card-section>
+
       <q-card-actions class="justify-around">
         <q-btn
+          flat
+          color="primary"
           label="Grabar y añadir otro"
           icon="mdi-plus"
           :loading="loading"
@@ -60,6 +67,8 @@
           @click="updateElement('add')"
         />
         <q-btn
+          flat
+          color="primary"
           label="Grabar y seguir editando"
           icon="mdi-content-save-edit"
           :loading="loading"
@@ -79,6 +88,7 @@
 
     <div v-if="$route.params.id && element.id" class="row q-pa-md">
       <q-btn
+        flat
         icon="mdi-delete"
         color="negative"
         label="Borrar"
