@@ -202,6 +202,14 @@
           />
         </span>
         <span v-else-if="props.column.field == 'product'">
+          <q-icon
+            :name="productIcon(props.row.product_system)"
+            size="md"
+            class="on-left"
+          >
+            <q-tooltip>{{ props.row.product_system }}</q-tooltip></q-icon
+          >
+
           <MigasLink
             model="computers"
             :pk="props.row.id"
@@ -236,6 +244,10 @@ import { elementMixin } from 'mixins/element'
 import { datagridMixin } from 'mixins/datagrid'
 
 export default {
+  meta: {
+    title: 'Computers List',
+    titleTemplate: (title) => `${title} | Migasfree`
+  },
   components: {
     Breadcrumbs,
     SearchFilter,
@@ -326,6 +338,10 @@ export default {
           type: 'date',
           dateInputFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSSSS",
           dateOutputFormat: 'yyyy-MM-dd HH:mm:ss'
+        },
+        {
+          field: 'product_system',
+          hidden: true
         },
         {
           label: 'Product',
