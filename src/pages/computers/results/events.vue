@@ -115,10 +115,16 @@ import { dateMixin } from 'mixins/date'
 import { date } from 'quasar'
 
 export default {
+  meta() {
+    return {
+      title: this.title
+    }
+  },
   components: { Breadcrumbs, MigasLink, HeatMap },
   mixins: [elementMixin, dateMixin],
   data() {
     return {
+      title: 'Events',
       breadcrumbs: [
         {
           text: 'Dashboard',
@@ -190,8 +196,13 @@ export default {
       .then((response) => {
         console.log(response)
         this.computer = response.data
-        this.breadcrumbs[4].text = this.computer.__str__
-        this.breadcrumbs[4].to.params.id = this.computer.id
+        this.breadcrumbs.find(
+          (x) => x.text === 'Id'
+        ).to.params.id = this.computer.id
+        this.breadcrumbs.find(
+          (x) => x.text === 'Id'
+        ).text = this.computer.__str__
+        this.title = `Events: ${this.computer.__str__}`
         this.loadItems()
       })
       .catch((error) => {
