@@ -91,6 +91,11 @@ import MigasLink from 'components/MigasLink'
 import { elementMixin } from 'mixins/element'
 
 export default {
+  meta() {
+    return {
+      title: this.title
+    }
+  },
   components: {
     Breadcrumbs,
     RemoveDialog,
@@ -99,6 +104,7 @@ export default {
   mixins: [elementMixin],
   data() {
     return {
+      title: 'Attribute',
       breadcrumbs: [
         {
           text: 'Dashboard',
@@ -134,7 +140,10 @@ export default {
       .then((response) => {
         console.log(response)
         this.element = response.data
-        this.breadcrumbs[4].text = this.attributeValue(this.element)
+        this.breadcrumbs[
+          this.breadcrumbs.length - 1
+        ].text = this.attributeValue(this.element)
+        this.title = `Attribute: ${this.attributeValue(this.element)}`
       })
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error)
