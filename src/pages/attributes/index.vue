@@ -26,6 +26,9 @@ import SearchFilter from 'components/ui/SearchFilter'
 import PieChart from 'components/chart/Pie'
 
 export default {
+  meta: {
+    title: 'Attributes',
+  },
   components: {
     Breadcrumbs,
     Header,
