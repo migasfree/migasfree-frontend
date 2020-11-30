@@ -87,6 +87,22 @@ const routes = [
         name: 'error-detail',
         component: () => import('pages/errors/results/detail')
       },
+
+      {
+        path: '/faults',
+        name: 'faults-dashboard',
+        component: () => import('pages/faults/index')
+      },
+      {
+        path: '/faults/results',
+        name: 'faults-list',
+        component: () => import('pages/faults/results/list')
+      },
+      {
+        path: '/faults/results/:id',
+        name: 'fault-detail',
+        component: () => import('pages/faults/results/detail')
+      }
     ],
     meta: { authRequired: true }
   },
