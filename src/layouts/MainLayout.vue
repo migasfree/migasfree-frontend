@@ -114,6 +114,9 @@ import SearchBox from 'components/ui/SearchBox'
 
 export default {
   name: 'MainLayout',
+  meta: {
+    titleTemplate: (title) => `${title} | Migasfree`
+  },
   components: { AppMenu, AppFooter, SearchBox },
   data() {
     return {
