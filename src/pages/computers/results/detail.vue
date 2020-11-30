@@ -12,6 +12,7 @@
               :pk="element.id"
               :value="element.__str__ || ''"
               :icon="elementIcon(element.status)"
+              :tooltip="element.summary"
             />
           </h2>
         </div>
