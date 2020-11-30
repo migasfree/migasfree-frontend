@@ -57,6 +57,9 @@ import NestedPieChart from 'components/chart/NestedPie'
 import StackedBarChart from 'components/chart/StackedBar'
 
 export default {
+  meta: {
+    title: 'Computers',
+  },
   components: {
     Breadcrumbs,
     Header,
