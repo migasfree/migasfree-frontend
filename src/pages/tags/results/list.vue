@@ -99,6 +99,9 @@ import { elementMixin } from 'mixins/element'
 import { datagridMixin } from 'mixins/datagrid'
 
 export default {
+  meta: {
+    title: 'Tags List'
+  },
   components: {
     Breadcrumbs,
     SearchFilter,
