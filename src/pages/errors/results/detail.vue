@@ -145,7 +145,7 @@ export default {
         {
           text: 'Errores',
           to: 'errors-dashboard',
-          icon: 'mdi-tag'
+          icon: 'mdi-bug'
         },
         {
           text: 'Resultados',
@@ -215,7 +215,7 @@ export default {
       copyToClipboard(this.element.description).then(() => {
         this.$store.dispatch(
           'ui/notifySuccess',
-          'Description copied to clipboard'
+          'Text copied to clipboard'
         )
       })
     }
