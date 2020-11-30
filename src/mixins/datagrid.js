@@ -73,6 +73,10 @@ export const datagridMixin = {
       console.log('serverParams after', this.serverParams)
     },
 
+    resetColumnFilters() {
+      this.serverParams.columnFilters = {}
+    },
+
     onPageChange(params) {
       this.updateParams({ page: params.currentPage })
       this.loadItems()
