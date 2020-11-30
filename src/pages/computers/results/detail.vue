@@ -305,6 +305,11 @@ import { dateMixin } from 'mixins/date'
 import { MIGASFREE_SECONDS_MESSAGE_ALERT } from 'config/app.conf'
 
 export default {
+  meta() {
+    return {
+      title: this.title
+    }
+  },
   components: {
     Breadcrumbs,
     OverflowList,
@@ -319,6 +324,7 @@ export default {
   mixins: [elementMixin, dateMixin],
   data() {
     return {
+      title: 'Computer',
       breadcrumbs: [
         {
           text: 'Dashboard',
@@ -360,7 +366,10 @@ export default {
       .then((response) => {
         console.log(response)
         this.element = response.data
-        this.breadcrumbs[4].text = this.element.__str__
+        this.breadcrumbs[
+          this.breadcrumbs.length - 1
+        ].text = this.element.__str__
+        this.title = `Computer: ${this.element.__str__}`
         this.loadSyncInfo()
         this.loadErrors()
         this.loadFaults()
