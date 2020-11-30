@@ -162,10 +162,16 @@ import { elementMixin } from 'mixins/element'
 import { dateMixin } from 'mixins/date'
 
 export default {
+  meta() {
+    return {
+      title: this.title
+    }
+  },
   components: { Breadcrumbs, OverflowList, MigasLink },
   mixins: [elementMixin, dateMixin],
   data() {
     return {
+      title: 'Simular sincronización',
       breadcrumbs: [
         {
           text: 'Dashboard',
@@ -207,8 +213,13 @@ export default {
       .then((response) => {
         console.log(response)
         this.computer = response.data
-        this.breadcrumbs[4].text = this.computer.__str__
-        this.breadcrumbs[4].to.params.id = this.computer.id
+        this.breadcrumbs.find(
+          (x) => x.text === 'Id'
+        ).to.params.id = this.computer.id
+        this.breadcrumbs.find(
+          (x) => x.text === 'Id'
+        ).text = this.computer.__str__
+        this.title = `${this.title}: ${this.computer.__str__}`
         this.loadProject()
         this.loadSyncInfo()
         this.loadSimulation()
