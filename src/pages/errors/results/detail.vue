@@ -118,6 +118,11 @@ import { dateMixin } from 'mixins/date'
 import { copyToClipboard } from 'quasar'
 
 export default {
+  meta() {
+    return {
+      title: this.title
+    }
+  },
   components: {
     Breadcrumbs,
     RemoveDialog,
@@ -126,6 +131,7 @@ export default {
   mixins: [elementMixin, dateMixin],
   data() {
     return {
+      title: 'Error',
       breadcrumbs: [
         {
           text: 'Dashboard',
@@ -162,7 +168,10 @@ export default {
         .then((response) => {
           console.log(response)
           this.element = response.data
-          this.breadcrumbs[4].text = this.element.__str__
+          this.breadcrumbs[
+            this.breadcrumbs.length - 1
+          ].text = this.element.__str__
+          this.title = `${this.title}: ${this.element.__str__}`
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
