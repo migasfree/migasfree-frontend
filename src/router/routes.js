@@ -102,7 +102,18 @@ const routes = [
         path: '/faults/results/:id',
         name: 'fault-detail',
         component: () => import('pages/faults/results/detail')
-      }
+      },
+
+      {
+        path: '/syncs',
+        name: 'syncs-dashboard',
+        component: () => import('pages/syncs/index')
+      },
+      {
+        path: '/syncs/results',
+        name: 'syncs-list',
+        component: () => import('pages/syncs/results/list')
+      },
     ],
     meta: { authRequired: true }
   },
