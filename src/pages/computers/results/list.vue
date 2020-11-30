@@ -202,18 +202,12 @@
           />
         </span>
         <span v-else-if="props.column.field == 'product'">
-          <q-icon
-            :name="productIcon(props.row.product_system)"
-            size="md"
-            class="on-left"
-          >
-            <q-tooltip>{{ props.row.product_system }}</q-tooltip></q-icon
-          >
-
           <MigasLink
             model="computers"
             :pk="props.row.id"
             :value="props.row.product || ''"
+            :icon="productIcon(props.row.product_system)"
+            :tooltip="props.row.product_system"
           />
         </span>
         <span v-else>
