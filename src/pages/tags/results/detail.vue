@@ -111,6 +111,11 @@ import RemoveDialog from 'components/ui/RemoveDialog'
 import { elementMixin } from 'mixins/element'
 
 export default {
+  meta() {
+    return {
+      title: this.title
+    }
+  },
   components: {
     Breadcrumbs,
     RemoveDialog,
@@ -119,6 +124,7 @@ export default {
   mixins: [elementMixin],
   data() {
     return {
+      title: 'Tag',
       breadcrumbs: [
         {
           text: 'Dashboard',
@@ -170,7 +176,10 @@ export default {
         .then((response) => {
           console.log(response)
           this.element = response.data
-          this.breadcrumbs[4].text = this.attributeValue(this.element)
+          this.breadcrumbs.find(
+            (x) => x.text === 'Id'
+          ).text = this.attributeValue(this.element)
+          this.title = `${this.title}: ${this.attributeValue(this.element)}`
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
@@ -207,6 +216,7 @@ export default {
               if (this.breadcrumbs.length === 5) this.breadcrumbs.pop()
               this.breadcrumbs[3].text = 'Añadir'
               this.$router.push({ name: 'tag-add' })
+              this.title = 'Tag'
             }
           })
           .catch((error) => {
@@ -242,6 +252,7 @@ export default {
                 this.breadcrumbs.push({
                   text: this.attributeValue(this.element)
                 })
+                this.title = `Tag: ${this.attributeValue(this.element)}`
               }
               this.$router.push({
                 name: 'tag-detail',
