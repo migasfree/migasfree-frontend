@@ -268,7 +268,7 @@ export default {
 
     resetFilters() {
       this.$refs.myTable.reset()
-      this.updateParams({ columnFilters: {} })
+      this.resetColumnFilters()
       this.tableFilters.search = ''
       this.loadItems()
     },
