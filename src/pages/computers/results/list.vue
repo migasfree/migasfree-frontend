@@ -184,7 +184,7 @@
             :pk="props.row.id"
             :icon="elementIcon(props.row.status)"
             :value="props.row.__str__ || ''"
-            :tooltip="computerTooltip(props.row)"
+            :tooltip="props.row.summary"
           />
         </span>
         <span v-else-if="props.column.field == 'project.name'">
@@ -346,6 +346,10 @@ export default {
             placeholder: this.$t('vgt.filter'),
             trigger: 'enter'
           }
+        },
+        {
+          field: 'summary',
+          hidden: true
         }
       ],
       tableFilters: {
@@ -765,15 +769,6 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    },
-
-    computerTooltip(info) {
-      return [
-        this.tableFilters.statusIn.choices[info.status],
-        info.project.name,
-        info.ip_address,
-        info.sync_user.name
-      ].join(', ')
     }
   }
 }
