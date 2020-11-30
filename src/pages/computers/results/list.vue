@@ -240,7 +240,6 @@ import { datagridMixin } from 'mixins/datagrid'
 export default {
   meta: {
     title: 'Computers List',
-    titleTemplate: (title) => `${title} | Migasfree`
   },
   components: {
     Breadcrumbs,
