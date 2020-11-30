@@ -737,7 +737,7 @@ export default {
 
     resetFilters() {
       this.$refs.myTable.reset()
-      this.updateParams({ columnFilters: {} })
+      this.resetColumnFilters()
       this.tableFilters.platform.selected = null
       this.tableFilters.architecture.selected = null
       this.tableFilters.softwareInventory.selected = null
