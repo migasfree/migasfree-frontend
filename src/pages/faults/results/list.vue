@@ -565,7 +565,7 @@ export default {
 
     resetFilters() {
       this.$refs.myTable.reset()
-      this.updateParams({ columnFilters: {} })
+      this.resetColumnFilters()
       this.tableFilters.search = ''
       this.tableFilters.platform.selected = null
       this.tableFilters.user.selected = null
