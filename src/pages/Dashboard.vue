@@ -81,6 +81,9 @@ import NestedPieChart from 'components/chart/NestedPie'
 import StackedBarChart from 'components/chart/StackedBar'
 
 export default {
+  meta: {
+    title: 'Dashboard'
+  },
   components: { Breadcrumbs, Header, NestedPieChart, StackedBarChart },
   data() {
     return {
