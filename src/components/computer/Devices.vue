@@ -19,7 +19,7 @@
           @filter="filterAssignedDevices"
           @filter-abort="abortFilterAssignedDevices"
         >
-          <template v-slot:no-option>
+          <template #no-option>
             <q-item>
               <q-item-section class="text-grey">
                 No results
@@ -27,13 +27,13 @@
             </q-item>
           </template>
 
-          <template v-slot:option="scope">
+          <template #option="scope">
             <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
               {{ scope.opt.name }}
             </q-item>
           </template>
 
-          <template v-slot:selected-item="scope">
+          <template #selected-item="scope">
             <q-chip
               removable
               dense

@@ -24,7 +24,7 @@
               option-label="name"
               @input="onPlatformFilter"
             >
-              <template v-slot:before>
+              <template #before>
                 <q-icon name="mdi-filter" />
               </template>
             </q-select>
@@ -41,7 +41,7 @@
               option-label="name"
               @input="onUserFilter"
             >
-              <template v-slot:before>
+              <template #before>
                 <q-icon name="mdi-filter" />
               </template>
             </q-select>

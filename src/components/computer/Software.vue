@@ -10,7 +10,7 @@
           :content-inset-level="0.5"
           @show="loadSoftwareInventory"
         >
-          <template v-slot:header>
+          <template #header>
             <q-item-section avatar>
               <q-icon name="mdi-package-variant" size="md" />
             </q-item-section>
@@ -45,7 +45,7 @@
           :content-inset-level="0.5"
           @show="loadSoftwareHistory"
         >
-          <template v-slot:header>
+          <template #header>
             <q-item-section avatar>
               <q-icon name="mdi-history" size="md" />
             </q-item-section>

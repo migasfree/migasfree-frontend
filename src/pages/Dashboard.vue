@@ -37,7 +37,7 @@
       <div class="col-12">
         <q-card id="events-history" class="q-ma-sm">
           <q-expansion-item @show="loadEventsHistory">
-            <template v-slot:header>
+            <template #header>
               <q-item-section>
                 <div class="text-h5">
                   Histórico de sucesos en las últimas 72 horas

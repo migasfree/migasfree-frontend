@@ -9,11 +9,11 @@
     :disable="disable"
     @input="$refs.menu.show()"
   >
-    <template v-slot:append>
+    <template #append>
       <q-icon name="mdi-menu-down" class="cursor-pointer" />
     </template>
 
-    <template v-if="prependIcon" v-slot:before>
+    <template v-if="prependIcon" #before>
       <q-icon :name="prependIcon" />
     </template>
 

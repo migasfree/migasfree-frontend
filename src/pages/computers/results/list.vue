@@ -28,7 +28,7 @@
               option-label="name"
               @input="onPlatformFilter"
             >
-              <template v-slot:before>
+              <template #before>
                 <q-icon name="mdi-filter" />
               </template>
             </q-select>
@@ -45,7 +45,7 @@
               option-label="name"
               @input="onArchitectureFilter"
             >
-              <template v-slot:before>
+              <template #before>
                 <q-icon name="mdi-filter" />
               </template>
             </q-select>
@@ -62,7 +62,7 @@
               option-label="name"
               @input="onSyncEndDateFilter"
             >
-              <template v-slot:before>
+              <template #before>
                 <q-icon name="mdi-filter" />
               </template>
             </q-select>
@@ -81,7 +81,7 @@
               option-label="name"
               @input="onSoftwareInventoryFilter"
             >
-              <template v-slot:before>
+              <template #before>
                 <q-icon name="mdi-filter" />
               </template>
             </q-select>

@@ -26,7 +26,7 @@
             lazy-rules
             :rules="[(val) => !!val || '* Required']"
           >
-            <template v-slot:prepend>
+            <template #prepend>
               <q-icon name="mdi-account" />
             </template>
           </q-input>
@@ -43,11 +43,11 @@
             ]"
             :type="showPassword ? 'text' : 'password'"
           >
-            <template v-slot:prepend>
+            <template #prepend>
               <q-icon name="mdi-lock" />
             </template>
 
-            <template v-slot:append>
+            <template #append>
               <q-icon
                 :name="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 @click="showPassword = !showPassword"

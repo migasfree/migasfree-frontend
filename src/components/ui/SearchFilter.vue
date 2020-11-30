@@ -8,7 +8,7 @@
       @keydown.enter="$emit('search', searchText)"
       @clear="$emit('clear')"
     >
-      <template v-slot:append>
+      <template #append>
         <q-btn
           flat
           color="primary"

@@ -43,27 +43,27 @@
             ]"
             @input="updateEvent"
           >
-            <template v-slot:syncs>
+            <template #syncs>
               <q-icon name="mdi-sync" />
               Sincronizaciones ({{ events.syncs.total }})
             </template>
 
-            <template v-slot:errors>
+            <template #errors>
               <q-icon name="mdi-bug" />
               Errores ({{ events.errors.total }})
             </template>
 
-            <template v-slot:faults>
+            <template #faults>
               <q-icon name="mdi-bomb" />
               Fallas ({{ events.faults.total }})
             </template>
 
-            <template v-slot:statusLogs>
+            <template #statusLogs>
               <q-icon name="mdi-flag-variant" />
               Registros de Estado ({{ events.statusLogs.total }})
             </template>
 
-            <template v-slot:migrations>
+            <template #migrations>
               <q-icon name="mdi-map-marker-right" />
               Migraciones ({{ events.migrations.total }})
             </template>

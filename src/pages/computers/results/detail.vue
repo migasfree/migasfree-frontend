@@ -65,7 +65,7 @@
                   label="Estado"
                   :options="status"
                 >
-                  <template v-slot:option="scope">
+                  <template #option="scope">
                     <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
                       <q-item-section avatar>
                         <q-icon :name="scope.opt.icon" />
@@ -79,7 +79,7 @@
                     </q-item>
                   </template>
 
-                  <template v-slot:selected-item="scope">
+                  <template #selected-item="scope">
                     <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
                       <q-item-section avatar>
                         <q-icon :name="scope.opt.icon" />
@@ -117,7 +117,7 @@
                   @filter="filterTags"
                   @filter-abort="abortFilterTags"
                 >
-                  <template v-slot:no-option>
+                  <template #no-option>
                     <q-item>
                       <q-item-section class="text-grey">
                         No results
@@ -125,13 +125,13 @@
                     </q-item>
                   </template>
 
-                  <template v-slot:option="scope">
+                  <template #option="scope">
                     <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
                       {{ attributeValue(scope.opt) }}
                     </q-item>
                   </template>
 
-                  <template v-slot:selected-item="scope">
+                  <template #selected-item="scope">
                     <q-chip
                       removable
                       dense

@@ -26,17 +26,6 @@
   </q-card>
 </template>
 
-<style scoped>
-.echart-container {
-  width: 100%;
-  height: 400px;
-}
-.echarts {
-  width: 100%;
-  height: 100%;
-}
-</style>
-
 <script>
 import 'echarts/lib/chart/pie'
 import 'echarts/lib/component/tooltip'
@@ -122,3 +111,14 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.echart-container {
+  width: 100%;
+  height: 400px;
+}
+.echarts {
+  width: 100%;
+  height: 100%;
+}
+</style>

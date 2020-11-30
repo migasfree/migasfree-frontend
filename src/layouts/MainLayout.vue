@@ -18,7 +18,7 @@
         <q-space />
 
         <q-btn-dropdown v-if="isAlertsVisible" flat stretch>
-          <template v-slot:label>
+          <template #label>
             <q-icon name="mdi-bell" />
             <q-chip :label="totalAlerts" />
             <q-tooltip>
@@ -51,7 +51,7 @@
         </q-btn-dropdown>
 
         <q-btn-dropdown v-if="loggedIn" flat stretch>
-          <template v-slot:label>
+          <template #label>
             <q-icon name="mdi-account" />
             <q-tooltip>
               Cuenta de usuario

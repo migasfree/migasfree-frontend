@@ -28,7 +28,7 @@
               option-label="name"
               @input="onPlatformFilter"
             >
-              <template v-slot:before>
+              <template #before>
                 <q-icon name="mdi-filter" />
               </template>
             </q-select>

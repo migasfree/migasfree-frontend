@@ -7,11 +7,11 @@
     :label="label"
     @click="$refs.qDateProxy.show()"
   >
-    <template v-if="prependIcon" v-slot:before>
+    <template v-if="prependIcon" #before>
       <q-icon :name="prependIcon" />
     </template>
 
-    <template v-slot:append>
+    <template #append>
       <q-icon name="mdi-calendar-multiselect" class="cursor-pointer">
         <q-popup-proxy
           ref="qDateProxy"
