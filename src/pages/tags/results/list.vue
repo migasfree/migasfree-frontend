@@ -175,7 +175,9 @@ export default {
       this.updateParams({
         columnFilters: { property_att: this.$route.query.property_id }
       })
-      this.columns[4].filterOptions.filterValue = this.$route.query.property_id
+      this.columns.find(
+        (x) => x.field === 'property_att'
+      ).filterOptions.filterValue = this.$route.query.property_id
     }
 
     if (this.$route.query.search) {

@@ -324,14 +324,18 @@ export default {
       this.updateParams({
         columnFilters: { 'project.name': this.$route.query.project_id }
       })
-      this.columns[8].filterOptions.filterValue = this.$route.query.project_id
+      this.columns.find(
+        (x) => x.field === 'project.name'
+      ).filterOptions.filterValue = this.$route.query.project_id
     }
 
     if ('checked' in this.$route.query) {
       this.updateParams({
         columnFilters: { checked: this.$route.query.checked }
       })
-      this.columns[9].filterOptions.filterValue = this.$route.query.checked
+      this.columns.find(
+        (x) => x.field === 'checked'
+      ).filterOptions.filterValue = this.$route.query.checked
     }
 
     if (this.$route.query.status_in) {
@@ -505,7 +509,9 @@ export default {
         .get('/api/v1/token/projects/')
         .then((response) => {
           console.log(response)
-          this.columns[8].filterOptions.filterDropdownItems = response.data.results.map(
+          this.columns.find(
+            (x) => x.field === 'project.name'
+          ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
               return {
                 value: item.id,

@@ -424,7 +424,9 @@ export default {
   created() {
     if (this.$route.query.name) {
       this.updateParams({ columnFilters: { name: this.$route.query.name } })
-      this.columns[2].filterOptions.filterValue = this.$route.query.name
+      this.columns.find(
+        (x) => x.field === 'name'
+      ).filterOptions.filterValue = this.$route.query.name
     }
 
     if (this.$route.query.platform_id) {
@@ -437,7 +439,9 @@ export default {
       this.updateParams({
         columnFilters: { 'project.name': this.$route.query.project_id }
       })
-      this.columns[5].filterOptions.filterValue = this.$route.query.project_id
+      this.columns.find(
+        (x) => x.field === 'project.name'
+      ).filterOptions.filterValue = this.$route.query.project_id
     }
 
     if (this.$route.query.machine) {
@@ -689,7 +693,9 @@ export default {
         .get('/api/v1/token/projects/')
         .then((response) => {
           console.log(response)
-          this.columns[5].filterOptions.filterDropdownItems = response.data.results.map(
+          this.columns.find(
+            (x) => x.field === 'project.name'
+          ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
               return {
                 value: item.id,
