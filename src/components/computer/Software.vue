@@ -77,8 +77,13 @@
             >
               <q-card>
                 <q-card-section>
-                  <p v-for="(item, index) in value" :key="index">
-                    {{ item }}
+                  <p v-for="(item, index) in sortArray(value)" :key="index">
+                    <span
+                      :class="
+                        item.startsWith('+') ? 'text-light-green-8' : 'text-red'
+                      "
+                      >{{ item }}</span
+                    >
                   </p>
                 </q-card-section>
               </q-card>
@@ -92,6 +97,7 @@
 
 <script>
 import MigasLink from 'components/MigasLink'
+import { copyToClipboard } from 'quasar'
 
 export default {
   name: 'ComputerSoftware',
@@ -117,6 +123,11 @@ export default {
     }
   },
   methods: {
+    sortArray(array) {
+      const originalCopy = array.slice()
+      return originalCopy.sort()
+    },
+
     async loadSoftwareInventory() {
       if (this.softwareInventory.length === 0) {
         this.loading.inventory = true
@@ -124,12 +135,11 @@ export default {
           .get(this.inventoryUrl)
           .then((response) => {
             this.softwareInventory = response.data
-            this.loading.inventory = false
           })
           .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error.response.data.detail)
-            this.loading.inventory = false
+            this.$store.dispatch('ui/notifyError', error)
           })
+          .finally(() => (this.loading.inventory = false))
       }
     },
 
@@ -140,13 +150,51 @@ export default {
           .get(this.historyUrl)
           .then((response) => {
             this.softwareHistory = response.data
-            this.loading.history = false
           })
           .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error.response.data.detail)
-            this.loading.history = false
+            this.$store.dispatch('ui/notifyError', error)
           })
+          .finally(() => (this.loading.history = false))
       }
+    },
+
+    async copyInventory() {
+      if (this.softwareInventory.length === 0) {
+        await this.loadSoftwareInventory()
+      }
+
+      const inventory = this.softwareInventory.map((item) => item.name)
+
+      copyToClipboard(this.sortArray(inventory).join('\n')).then(
+        () => {
+          this.$store.dispatch(
+            'ui/notifySuccess',
+            'Software Inventory copied to clipboard'
+          )
+        }
+      )
+    },
+
+    async copyHistory() {
+      if (Object.keys(this.softwareHistory).length === 0) {
+        await this.loadSoftwareHistory()
+      }
+
+      let history = []
+      Object.entries(this.softwareHistory).map(([key, val]) => {
+        history.push(key)
+        this.sortArray(val).forEach((item) => {
+          history.push(item)
+        })
+        history.push('')
+      })
+
+      copyToClipboard(history.join('\n')).then(() => {
+        this.$store.dispatch(
+          'ui/notifySuccess',
+          'Software History copied to clipboard'
+        )
+      })
     }
   }
 }
