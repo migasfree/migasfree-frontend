@@ -317,6 +317,12 @@ export default {
     }
   },
   created() {
+    if (this.$route.query.computer_id) {
+      this.updateParams({
+        columnFilters: { computer_id: this.$route.query.computer_id }
+      })
+    }
+
     if (this.$route.query.platform_id) {
       this.updateParams({
         columnFilters: { platform: this.$route.query.platform_id }
@@ -472,6 +478,8 @@ export default {
                 case 'created_at__lt':
                 case 'search':
                   return `${key}=${val}`
+                case 'computer_id':
+                  return `computer__id=${val}`
                 case 'status_in':
                   return `computer__status__in=${val}`
                 default:
