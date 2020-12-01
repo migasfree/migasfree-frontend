@@ -40,11 +40,8 @@ export function notifyError(context, error) {
       error.hasOwnProperty('response') &&
       error.response.hasOwnProperty('data')
     ) {
-      if (
-        error.response.data.hasOwnProperty('message') &&
-        error.response.data.message.length > 0
-      ) {
-        message = error.response.data.message
+      if (Object.keys(error.response.data).length > 0) {
+        message = error.response.data[Object.keys(error.response.data)[0]]
       }
     }
   }
