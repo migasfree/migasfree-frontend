@@ -31,7 +31,7 @@
               :key="index"
               v-close-popup
               clickable
-              :to="item.api"
+              :to="resolveAlertLink(item.api)"
             >
               <q-item-section avatar>
                 <q-icon :name="target(item.target)" />
@@ -153,6 +153,7 @@ export default {
         this.$router.push({ name: 'login' })
       })
     },
+
     async loadAlerts() {
       await this.$axios
         .get('/api/v1/token/stats/alerts/')
@@ -166,18 +167,30 @@ export default {
           )
         })
         .catch((error) => {
-          this.$store.dispatch(
-            'ui/notifyError',
-            error.response.data.detail || error.response.data
-          )
+          this.$store.dispatch('ui/notifyError', error)
         })
     },
+
     target(value) {
       return value === 'computer' ? 'mdi-laptop' : 'mdi-cloud'
     },
+
     level(value) {
       if (value === 'critical') return 'negative'
 
+      return value
+    },
+
+    resolveAlertLink(value) {
+      console.log(value, typeof value)
+      if (typeof value === 'object' && 'model' in value) {
+        switch (value.model) {
+          case 'errors':
+            return { name: 'errors-list', query: value.query }
+          case 'faults':
+            return { name: 'faults-list', query: value.query }
+        }
+      }
       return value
     }
   }
