@@ -114,6 +114,22 @@ const routes = [
         name: 'syncs-list',
         component: () => import('pages/syncs/results/list')
       },
+
+      {
+        path: '/platforms/results',
+        name: 'platforms-list',
+        component: () => import('pages/platforms/results/list')
+      },
+      {
+        path: '/platforms/add',
+        name: 'platform-add',
+        component: () => import('pages/platforms/results/detail')
+      },
+      {
+        path: '/platforms/results/:id',
+        name: 'platform-detail',
+        component: () => import('pages/platforms/results/detail')
+      },
     ],
     meta: { authRequired: true }
   },
