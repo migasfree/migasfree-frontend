@@ -4,7 +4,7 @@
 
     <Header title="Fallas" :results="totalRecords" :has-add-button="false" />
 
-    <q-list bordered>
+    <q-list class="more-filters" bordered>
       <q-expansion-item icon="mdi-filter" label="More Filters">
         <SearchFilter
           v-model="tableFilters.search"
