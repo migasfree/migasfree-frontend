@@ -162,19 +162,57 @@
                 <div class="col-md">
                   <q-tooltip>Errores</q-tooltip>
                   <q-icon name="mdi-bug" size="xl" />
-                  <q-chip size="md" color="negative" text-color="white">{{
-                    errors.unchecked
-                  }}</q-chip>
-                  / <q-chip size="md">{{ errors.total }}</q-chip>
+                  <q-btn
+                    round
+                    size="sm"
+                    color="negative"
+                    text-color="white"
+                    :to="{
+                      name: 'errors-list',
+                      query: { computer_id: element.id, checked: false }
+                    }"
+                    >{{ errors.unchecked }}</q-btn
+                  >
+                  /
+                  <q-btn
+                    round
+                    size="sm"
+                    color="grey-3"
+                    text-color="black"
+                    :to="{
+                      name: 'errors-list',
+                      query: { computer_id: element.id }
+                    }"
+                    >{{ errors.total }}</q-btn
+                  >
                 </div>
 
                 <div class="col-md">
                   <q-tooltip>Fallas</q-tooltip>
                   <q-icon name="mdi-bomb" size="xl" />
-                  <q-chip size="md" color="negative" text-color="white">{{
-                    faults.unchecked
-                  }}</q-chip>
-                  / <q-chip size="md">{{ faults.total }}</q-chip>
+                  <q-btn
+                    round
+                    size="sm"
+                    color="negative"
+                    text-color="white"
+                    :to="{
+                      name: 'faults-list',
+                      query: { computer_id: element.id, checked: false }
+                    }"
+                    >{{ faults.unchecked }}</q-btn
+                  >
+                  /
+                  <q-btn
+                    round
+                    size="sm"
+                    color="grey-3"
+                    text-color="black"
+                    :to="{
+                      name: 'faults-list',
+                      query: { computer_id: element.id }
+                    }"
+                    >{{ faults.total }}</q-btn
+                  >
                 </div>
               </div>
             </q-card-section>
