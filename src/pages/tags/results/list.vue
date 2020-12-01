@@ -237,7 +237,9 @@ export default {
         .get('/api/v1/token/stamps/')
         .then((response) => {
           console.log(response)
-          this.columns[4].filterOptions.filterDropdownItems = response.data.results.map(
+          this.columns.find(
+            (x) => x.field === 'property_att'
+          ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
               return {
                 value: item.id,
