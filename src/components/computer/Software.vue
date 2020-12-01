@@ -19,6 +19,15 @@
               Inventory
             </q-item-section>
 
+            <q-item-section v-if="softwareInventory.length > 0">
+              <q-chip>
+                <q-avatar color="info" text-color="white">{{
+                  softwareInventory.length
+                }}</q-avatar>
+                packages
+              </q-chip>
+            </q-item-section>
+
             <q-item-section side>
               <q-btn
                 flat
@@ -52,6 +61,15 @@
 
             <q-item-section>
               History
+            </q-item-section>
+
+            <q-item-section v-if="Object.keys(softwareHistory).length > 0">
+              <q-chip>
+                <q-avatar color="info" text-color="white">{{
+                  Object.keys(softwareHistory).length
+                }}</q-avatar>
+                dates
+              </q-chip>
             </q-item-section>
 
             <q-item-section side>
@@ -165,14 +183,12 @@ export default {
 
       const inventory = this.softwareInventory.map((item) => item.name)
 
-      copyToClipboard(this.sortArray(inventory).join('\n')).then(
-        () => {
-          this.$store.dispatch(
-            'ui/notifySuccess',
-            'Software Inventory copied to clipboard'
-          )
-        }
-      )
+      copyToClipboard(this.sortArray(inventory).join('\n')).then(() => {
+        this.$store.dispatch(
+          'ui/notifySuccess',
+          'Software Inventory copied to clipboard'
+        )
+      })
     },
 
     async copyHistory() {
