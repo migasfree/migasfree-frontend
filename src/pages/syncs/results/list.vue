@@ -444,7 +444,7 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-        .finally(() => (this.loading = false))
+        .finally(() => (this.isLoading = false))
     },
 
     resetFilters() {
