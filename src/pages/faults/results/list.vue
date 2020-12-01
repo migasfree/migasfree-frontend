@@ -340,6 +340,12 @@ export default {
     }
   },
   created() {
+    if (this.$route.query.computer_id) {
+      this.updateParams({
+        columnFilters: { computer_id: this.$route.query.computer_id }
+      })
+    }
+
     if (this.$route.query.platform_id) {
       this.updateParams({
         columnFilters: { platform: this.$route.query.platform_id }
@@ -366,7 +372,9 @@ export default {
 
     if (this.$route.query.fault_definition_id) {
       this.updateParams({
-        columnFilters: { fault_definition_id: this.$route.query.fault_definition_id }
+        columnFilters: {
+          fault_definition_id: this.$route.query.fault_definition_id
+        }
       })
       this.columns.find(
         (x) => x.field === 'fault_definition.name'
@@ -461,6 +469,8 @@ export default {
                 case 'user':
                 case 'search':
                   return `${key}=${val}`
+                case 'computer_id':
+                  return `computer__id=${val}`
                 default:
                   return `${key.replace('.', '__')}__icontains=${val}`
               }
