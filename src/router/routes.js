@@ -116,6 +116,17 @@ const routes = [
       },
 
       {
+        path: '/packages',
+        name: 'packages-dashboard',
+        component: () => import('pages/packages/index')
+      },
+      {
+        path: '/packages/results',
+        name: 'packages-list',
+        component: () => import('pages/packages/results/list')
+      },
+
+      {
         path: '/platforms/results',
         name: 'platforms-list',
         component: () => import('pages/platforms/results/list')
