@@ -18,22 +18,35 @@
 
     <q-card-section>
       <div class="row q-pa-md">
-        <q-tooltip self="bottom middle">full qualified domain name</q-tooltip>
-        <q-icon name="mdi-information" size="sm" /> {{ fqdn }}
-      </div>
-
-      <div class="row q-pa-md">
         <div class="col-md">
-          <q-tooltip self="bottom middle">project</q-tooltip>
-          <q-icon name="mdi-sitemap" size="sm" />
-          <MigasLink model="projects" :pk="project.id" :value="project.name" />
+          <q-tooltip self="bottom middle">full qualified domain name</q-tooltip>
+          <q-icon name="mdi-information" size="sm" /> {{ fqdn }}
         </div>
+
         <div class="col-md">
           <q-tooltip self="bottom middle"
             >Date of entry into the migasfree system</q-tooltip
           >
           <q-icon name="mdi-calendar-plus" size="sm" />
           {{ showDate(createdAt) }}
+        </div>
+      </div>
+
+      <div class="row q-pa-md">
+        <div class="col-md">
+          <q-tooltip self="bottom middle">platform</q-tooltip>
+          <q-icon name="mdi-layers" size="sm" />
+          <MigasLink
+            model="platforms"
+            :pk="project.platform.id"
+            :value="project.platform.name"
+          />
+        </div>
+
+        <div class="col-md">
+          <q-tooltip self="bottom middle">project</q-tooltip>
+          <q-icon name="mdi-sitemap" size="sm" />
+          <MigasLink model="projects" :pk="project.id" :value="project.name" />
         </div>
       </div>
 
