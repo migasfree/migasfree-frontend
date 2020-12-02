@@ -1,5 +1,5 @@
 <template>
-  <q-chip v-if="diff" icon="mdi-timer" :color="appearance" text-color="white">
+  <q-chip v-if="diff" :icon="icon" :color="appearance" text-color="white">
     <q-tooltip v-if="tooltip">{{ tooltip }}</q-tooltip>
     {{ diff }}
   </q-chip>
@@ -32,12 +32,20 @@ export default {
   data() {
     return {
       diff: null,
-      appearance: 'info'
+      appearance: 'info',
+      icon: 'mdi-timer'
     }
   },
   created() {
     console.log(this.begin, this.end)
     const diffDays = date.getDateDiff(this.end, this.begin, 'days')
+
+    if (this.end < this.begin) {
+      this.icon = 'mdi-sync'
+      this.diff = 'Updating...'
+      return
+    }
+
     const diffSeconds = new Date(
       date.getDateDiff(this.end, this.begin, 'seconds') * 1000
     )
