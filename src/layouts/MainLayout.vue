@@ -182,13 +182,15 @@ export default {
     },
 
     resolveAlertLink(value) {
-      console.log(value, typeof value)
-      if (typeof value === 'object' && 'model' in value) {
-        switch (value.model) {
-          case 'errors':
-            return { name: 'errors-list', query: value.query }
-          case 'faults':
-            return { name: 'faults-list', query: value.query }
+      if (value.startsWith('{')) {
+        const parsedValue = JSON.parse(value)
+        if ('model' in parsedValue) {
+          switch (parsedValue.model) {
+            case 'errors':
+              return { name: 'errors-list', query: parsedValue.query }
+            case 'faults':
+              return { name: 'faults-list', query: parsedValue.query }
+          }
         }
       }
       return value
