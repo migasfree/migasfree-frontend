@@ -17,7 +17,7 @@
         />
 
         <div class="row q-pa-md q-col-gutter-lg">
-          <div class="col-6 col-md">
+          <div class="col-4 col-md">
             <q-select
               v-model="tableFilters.platform.selected"
               :options="tableFilters.platform.items"
@@ -34,12 +34,22 @@
             </q-select>
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-4 col-md">
+            <DateRangeInput
+              ref="startDateRange"
+              v-model="tableFilters.startDate.selected"
+              prepend-icon="mdi-filter"
+              label="Por fecha de inicio (rango)"
+              @select="onStartDateFilter"
+            />
+          </div>
+
+          <div class="col-4 col-md">
             <DateRangeInput
               ref="createdAtRange"
               v-model="tableFilters.createdAt.selected"
               prepend-icon="mdi-filter"
-              label="Por fecha de alta (rango)"
+              label="Por fecha de finalización (rango)"
               @select="onCreatedAtFilter"
             />
           </div>
@@ -108,6 +118,13 @@
         </span>
         <span v-else-if="props.column.field == 'created_at'">
           {{ showDate(props.row.created_at) }}
+          <DateDiff
+            v-if="props.row.created_at && props.row.start_date"
+            class="float-right"
+            :begin="new Date(props.row.start_date)"
+            :end="new Date(props.row.created_at)"
+            tooltip="duration"
+          />
         </span>
         <span v-else-if="props.column.field == 'start_date'">
           {{ showDate(props.row.start_date) }}
@@ -139,6 +156,7 @@ import SearchFilter from 'components/ui/SearchFilter'
 import Header from 'components/ui/Header'
 import BooleanView from 'components/ui/BooleanView'
 import DateRangeInput from 'components/ui/DateRangeInput'
+import DateDiff from 'components/DateDiff'
 import MigasLink from 'components/MigasLink'
 import { dateMixin } from 'mixins/date'
 import { elementMixin } from 'mixins/element'
@@ -154,6 +172,7 @@ export default {
     Header,
     BooleanView,
     DateRangeInput,
+    DateDiff,
     MigasLink
   },
   mixins: [dateMixin, elementMixin, datagridMixin],
@@ -191,7 +210,11 @@ export default {
           globalSearchDisabled: true
         },
         {
-          label: 'Fecha',
+          label: 'Fecha de inicio',
+          field: 'start_date'
+        },
+        {
+          label: 'Fecha de finalización',
           field: 'created_at'
         },
         {
@@ -255,12 +278,13 @@ export default {
           }
         },
         {
-          label: 'Start Date Connection',
-          field: 'start_date'
-        },
-        {
           label: 'Consumidor',
-          field: 'consumer'
+          field: 'consumer',
+          filterOptions: {
+            enabled: true,
+            placeholder: this.$t('vgt.all'),
+            trigger: 'enter'
+          }
         }
       ],
       tableFilters: {
@@ -270,6 +294,9 @@ export default {
           selected: null
         },
         createdAt: {
+          selected: { from: null, to: null }
+        },
+        startDate: {
           selected: { from: null, to: null }
         }
       }
@@ -356,6 +383,18 @@ export default {
       this.loadItems()
     },
 
+    onStartDateFilter(params) {
+      console.log(params)
+      this.tableFilters.startDate.selected = params
+      this.updateParams({
+        columnFilters: Object.assign(this.serverParams.columnFilters, {
+          start_date__gte: this.tableFilters.startDate.selected.from,
+          start_date__lt: this.tableFilters.startDate.selected.to
+        })
+      })
+      this.loadItems()
+    },
+
     paramsToQueryString() {
       let ret = `page_size=${this.serverParams.perPage}&page=${this.serverParams.page}`
 
@@ -374,6 +413,8 @@ export default {
                 case 'pms_status_ok':
                 case 'created_at__gte':
                 case 'created_at__lt':
+                case 'start_date__gte':
+                case 'start_date__lt':
                 case 'search':
                   return `${key}=${val}`
                 default:
@@ -455,6 +496,9 @@ export default {
 
       this.tableFilters.createdAt.selected = { from: null, to: null }
       this.$refs.createdAtRange.reset()
+
+      this.tableFilters.startDate.selected = { from: null, to: null }
+      this.$refs.startDateRange.reset()
 
       this.loadItems()
     },
