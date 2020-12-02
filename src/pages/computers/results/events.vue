@@ -114,6 +114,8 @@ import { elementMixin } from 'mixins/element'
 import { dateMixin } from 'mixins/date'
 import { date } from 'quasar'
 
+const { addToDate } = date
+
 export default {
   meta() {
     return {
@@ -215,7 +217,7 @@ export default {
         computer_id: this.computer.id,
         start_date: this.showDate(this.computer.created_at, 'YYYY-MM-DD'),
         end_date: this.showDate(
-          new Date(Date.now()).toISOString(),
+          addToDate(new Date(), { days: 1}).toISOString(),
           'YYYY-MM-DD'
         )
       }
@@ -302,7 +304,7 @@ export default {
     async showItems(params) {
       const queryString = {
         computer__id: this.computer.id,
-        created_at: params.data[0],
+        created_at__gte: params.data[0],
         created_at__lt: this.showDate(
           date.addToDate(Date.parse(params.data[0]), { days: 1 }),
           'YYYY-MM-DD'
