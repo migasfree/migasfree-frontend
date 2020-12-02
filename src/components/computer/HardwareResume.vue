@@ -46,10 +46,17 @@
 
         <div class="col-md-8">
           <p>
-            <MigasLink model="computers" :pk="cid" :value="product" />
+            <MigasLink
+              model="computers"
+              :pk="cid"
+              :value="product"
+              :icon="productIcon(productSystem)"
+              :tooltip="productSystem"
+            />
           </p>
           <p>
             <q-tooltip self="bottom middle">UUID</q-tooltip>
+            <q-icon name="mdi-card-account-details-outline" size="sm" />
             {{ uuid }}
           </p>
         </div>
@@ -171,6 +178,7 @@ export default {
     humanStorageSize,
     async updateCapture() {
       this.loading = true
+      if (this.hardwareDate === '') this.hardwareDate = null
       await this.$axios
         .patch(`/api/v1/token/computers/${this.cid}/`, {
           last_hardware_capture: this.hardwareDate
