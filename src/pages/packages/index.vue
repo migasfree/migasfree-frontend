@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header title="Paquetes" />
+    <Header title="Paquetes" @new="$router.push({ name: 'package-add' })" />
 
     <SearchFilter @search="search" />
 
@@ -38,7 +38,7 @@ import PieChart from 'components/chart/Pie'
 
 export default {
   meta: {
-    title: 'Packages',
+    title: 'Packages'
   },
   components: {
     Breadcrumbs,
