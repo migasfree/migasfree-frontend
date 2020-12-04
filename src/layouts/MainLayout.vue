@@ -101,6 +101,14 @@
 
     <q-page-container>
       <router-view />
+
+      <q-page-scroller
+        position="bottom-right"
+        :offset="[10, 10]"
+        :scroll-offset="300"
+      >
+        <q-btn fab icon="mdi-chevron-up" color="primary" />
+      </q-page-scroller>
     </q-page-container>
 
     <AppFooter />
