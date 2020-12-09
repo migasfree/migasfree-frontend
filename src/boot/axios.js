@@ -18,7 +18,7 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Token ${authToken}`
     }
 
-    console.log('[ REQUEST ]' + config.url)
+    console.log('[ REQUEST ]', config.url)
 
     return config
   },
@@ -27,19 +27,15 @@ axiosInstance.interceptors.request.use(
   }
 )
 
-const setErrorInterceptor = (errorFunction) => {
-  axiosInstance.interceptors.response.use(
-    (response) => {
-      return response
-    },
-    (error) => {
-      if (!error.response) {
-        errorFunction()
-      }
-      return Promise.reject(error)
-    }
-  )
-}
+axiosInstance.interceptors.response.use(
+  (response) => {
+    console.log('[ RESPONSE ]', response.config.url, response)
+    return response
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
 
 const setBaseURL = (baseURL) => {
   axiosInstance.defaults.baseURL = baseURL
