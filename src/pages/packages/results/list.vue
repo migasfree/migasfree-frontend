@@ -257,7 +257,6 @@ export default {
       await this.$axios
         .get('/api/v1/token/projects/')
         .then((response) => {
-          console.log(response)
           this.columns.find(
             (x) => x.field === 'project.name'
           ).filterOptions.filterDropdownItems = response.data.results.map(
@@ -276,7 +275,6 @@ export default {
       await this.$axios
         .get('/api/v1/token/stores/')
         .then((response) => {
-          console.log(response)
           this.columns.find(
             (x) => x.field === 'store.name'
           ).filterOptions.filterDropdownItems = response.data.results.map(
@@ -300,7 +298,6 @@ export default {
       await this.$axios
         .get('/api/v1/token/packages/?' + this.paramsToQueryString())
         .then((response) => {
-          console.log(response)
           this.totalRecords = response.data.count
           this.rows = response.data.results
         })

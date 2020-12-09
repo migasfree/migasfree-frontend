@@ -236,7 +236,6 @@ export default {
       await this.$axios
         .get('/api/v1/token/stamps/')
         .then((response) => {
-          console.log(response)
           this.columns.find(
             (x) => x.field === 'property_att'
           ).filterOptions.filterDropdownItems = response.data.results.map(
@@ -260,7 +259,6 @@ export default {
       await this.$axios
         .get('/api/v1/token/tags/?' + this.paramsToQueryString())
         .then((response) => {
-          console.log(response)
           this.totalRecords = response.data.count
           this.rows = response.data.results
         })

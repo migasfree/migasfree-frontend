@@ -72,7 +72,6 @@ export default {
     await this.$axios
       .get('/api/v1/token/stats/packages/store/')
       .then((response) => {
-        console.log(response)
         this.byStore = response.data
       })
       .catch((error) => {

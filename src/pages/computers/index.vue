@@ -110,7 +110,6 @@ export default {
     await this.$axios
       .get('/api/v1/token/stats/computers/projects/')
       .then((response) => {
-        console.log(response)
         this.pieData = response.data
       })
       .catch((error) => {
@@ -120,7 +119,6 @@ export default {
     await this.$axios
       .get('/api/v1/token/stats/computers/productive/platform/')
       .then((response) => {
-        console.log(response)
         this.nestedPieData = response.data
       })
       .catch((error) => {
@@ -130,7 +128,6 @@ export default {
     await this.$axios
       .get('/api/v1/token/stats/computers/new/month/')
       .then((response) => {
-        console.log(response)
         const series = []
 
         Object.entries(response.data.data).map(([key, val]) => {
@@ -153,7 +150,6 @@ export default {
     await this.$axios
       .get('/api/v1/token/stats/computers/entry/year/')
       .then((response) => {
-        console.log(response)
         const series = []
 
         Object.entries(response.data.data).map(([key, val]) => {

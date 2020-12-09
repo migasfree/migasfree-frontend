@@ -98,7 +98,6 @@ export default {
     async getRelations() {
       const url = `/api/v1/token/${this.model}/${this.pk}/relations/`
 
-      console.log(this.relations)
       if (this.relations.length > 0) return
 
       this.loading = true
@@ -106,7 +105,6 @@ export default {
         .get(url)
         .then((response) => {
           this.relations = response.data
-          console.log(this.relations)
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)

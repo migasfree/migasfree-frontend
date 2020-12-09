@@ -90,7 +90,6 @@ export default {
     await this.$axios
       .get('/api/v1/token/stats/faults/project/month/')
       .then((response) => {
-        console.log(response)
         const series = []
 
         Object.entries(response.data.data).map(([key, val]) => {

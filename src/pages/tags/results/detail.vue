@@ -174,7 +174,6 @@ export default {
       await this.$axios
         .get(`/api/v1/token/tags/${this.$route.params.id}/`)
         .then((response) => {
-          console.log(response)
           this.element = response.data
           this.breadcrumbs.find(
             (x) => x.text === 'Id'
@@ -189,7 +188,6 @@ export default {
     await this.$axios
       .get(`/api/v1/token/stamps/`)
       .then((response) => {
-        console.log(response)
         this.stamps = response.data.results
       })
       .catch((error) => {
@@ -207,7 +205,6 @@ export default {
             description: this.element.description
           })
           .then((response) => {
-            console.log(response)
             this.$store.dispatch('ui/notifySuccess', 'Data has been changed!')
             if (action === 'return') {
               this.$router.push({ name: 'tags-list' })
@@ -232,7 +229,6 @@ export default {
             description: this.element.description
           })
           .then((response) => {
-            console.log(response)
             this.element = response.data
             this.element.property_att = this.stamps.find(
               (x) => x.id === this.element.property_att
@@ -268,7 +264,6 @@ export default {
     },
 
     async remove() {
-      console.log(this.element.id)
       await this.$axios
         .delete(`/api/v1/token/tags/${this.element.id}/`)
         .then((response) => {

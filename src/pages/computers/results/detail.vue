@@ -402,7 +402,6 @@ export default {
     await this.$axios
       .get(`/api/v1/token/computers/${this.$route.params.id}/`)
       .then((response) => {
-        console.log(response)
         this.element = response.data
         this.breadcrumbs[
           this.breadcrumbs.length - 1
@@ -413,7 +412,7 @@ export default {
         this.loadFaults()
       })
       .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error.response.data.detail)
+        this.$store.dispatch('ui/notifyError', error)
       })
 
     await this.$axios
@@ -429,7 +428,7 @@ export default {
         console.log(this.status)
       })
       .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error.response.data)
+        this.$store.dispatch('ui/notifyError', error)
       })
   },
   methods: {
@@ -437,7 +436,6 @@ export default {
       await this.$axios
         .get(`/api/v1/token/computers/${this.$route.params.id}/sync/`)
         .then((response) => {
-          console.log(response)
           this.syncInfo = response.data
           Object.entries(response.data.sync_attributes).map(([key, val]) => {
             if (val.property_att.prefix === 'SET') {
@@ -455,7 +453,7 @@ export default {
           })
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data.detail)
+          this.$store.dispatch('ui/notifyError', error)
         })
     },
 
@@ -463,11 +461,10 @@ export default {
       await this.$axios
         .get(`/api/v1/token/computers/${this.$route.params.id}/errors/`)
         .then((response) => {
-          console.log(response)
           this.errors = response.data
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data.detail)
+          this.$store.dispatch('ui/notifyError', error)
         })
     },
 
@@ -475,11 +472,10 @@ export default {
       await this.$axios
         .get(`/api/v1/token/computers/${this.$route.params.id}/faults/`)
         .then((response) => {
-          console.log(response)
           this.faults = response.data
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data.detail)
+          this.$store.dispatch('ui/notifyError', error)
         })
     },
 
@@ -495,7 +491,6 @@ export default {
         this.$axios
           .get(`/api/v1/token/tags/?search=${needle}`)
           .then((response) => {
-            console.log(response)
             this.tags = response.data.results
             console.log(this.tags)
           })
@@ -518,20 +513,18 @@ export default {
           tags: this.element.tags.map((item) => item.id)
         })
         .then((response) => {
-          console.log(response)
           this.$store.dispatch(
             'ui/notifySuccess',
             'Current Situation has been changed!'
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data.detail)
+          this.$store.dispatch('ui/notifyError', error)
         })
         .finally(() => (this.loading = false))
     },
 
     async remove() {
-      console.log(this.element.id)
       await this.$axios
         .delete(`/api/v1/token/computers/${this.element.id}/`)
         .then((response) => {

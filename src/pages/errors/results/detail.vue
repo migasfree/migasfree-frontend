@@ -166,7 +166,6 @@ export default {
       await this.$axios
         .get(`/api/v1/token/errors/${this.$route.params.id}/`)
         .then((response) => {
-          console.log(response)
           this.element = response.data
           this.breadcrumbs[
             this.breadcrumbs.length - 1
@@ -187,7 +186,6 @@ export default {
             checked: this.element.checked
           })
           .then((response) => {
-            console.log(response)
             this.$store.dispatch('ui/notifySuccess', 'Data has been changed!')
             if (action === 'return') {
               this.$router.push({ name: 'errors-list' })

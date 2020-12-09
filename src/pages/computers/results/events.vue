@@ -196,7 +196,6 @@ export default {
     await this.$axios
       .get(`/api/v1/token/computers/${this.$route.params.id}/`)
       .then((response) => {
-        console.log(response)
         this.computer = response.data
         this.breadcrumbs.find(
           (x) => x.text === 'Id'

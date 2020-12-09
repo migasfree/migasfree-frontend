@@ -673,7 +673,6 @@ export default {
       await this.$axios
         .get('/api/v1/token/platforms/')
         .then((response) => {
-          console.log('plataformas', response.data.results)
           this.tableFilters.platform.items = this.tableFilters.platform.items.concat(
             response.data.results
           )
@@ -691,7 +690,6 @@ export default {
       await this.$axios
         .get('/api/v1/token/projects/')
         .then((response) => {
-          console.log(response)
           this.columns.find(
             (x) => x.field === 'project.name'
           ).filterOptions.filterDropdownItems = response.data.results.map(
@@ -710,7 +708,6 @@ export default {
       await this.$axios
         .get('/api/v1/token/computers/status/')
         .then((response) => {
-          console.log(response)
           this.updateStatusInFilter(response.data)
         })
         .catch((error) => {
@@ -725,7 +722,6 @@ export default {
       await this.$axios
         .get('/api/v1/token/computers/?' + this.paramsToQueryString())
         .then((response) => {
-          console.log(response)
           this.totalRecords = response.data.count
           this.rows = response.data.results
         })

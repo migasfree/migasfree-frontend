@@ -148,7 +148,6 @@ export default {
       await this.$axios
         .get(`/api/v1/token/platforms/${this.$route.params.id}/`)
         .then((response) => {
-          console.log(response)
           this.element = response.data
           this.breadcrumbs.find(
             (x) => x.text === 'Id'
@@ -169,7 +168,6 @@ export default {
             name: this.element.name,
           })
           .then((response) => {
-            console.log(response)
             this.$store.dispatch('ui/notifySuccess', 'Data has been changed!')
             if (action === 'return') {
               this.$router.push({ name: 'platforms-list' })
@@ -192,7 +190,6 @@ export default {
             name: this.element.name,
           })
           .then((response) => {
-            console.log(response)
             this.element = response.data
             console.log('element new', this.element)
             this.$store.dispatch('ui/notifySuccess', 'Data has been added!')
@@ -225,7 +222,6 @@ export default {
     },
 
     async remove() {
-      console.log(this.element.id)
       await this.$axios
         .delete(`/api/v1/token/platforms/${this.element.id}/`)
         .then((response) => {

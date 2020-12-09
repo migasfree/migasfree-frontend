@@ -184,14 +184,12 @@ export default {
           last_hardware_capture: this.hardwareDate
         })
         .then((response) => {
-          console.log(response)
           this.$store.dispatch(
             'ui/notifySuccess',
             'Last hardware capture has been changed!'
           )
         })
         .catch((error) => {
-          console.log(error.response.data)
           this.$store.dispatch(
             'ui/notifyError',
             error.response.data.last_hardware_capture[0]

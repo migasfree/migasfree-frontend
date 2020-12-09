@@ -207,7 +207,6 @@ export default {
       await this.$axios
         .get('/api/v1/token/platforms/?' + this.paramsToQueryString())
         .then((response) => {
-          console.log(response)
           this.totalRecords = response.data.count
           this.rows = response.data.results
         })

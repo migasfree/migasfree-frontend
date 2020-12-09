@@ -207,7 +207,6 @@ export default {
       await this.$axios
         .get(`/api/v1/token/packages/${this.$route.params.id}/`)
         .then((response) => {
-          console.log(response)
           this.element = response.data
           this.breadcrumbs.find(
             (x) => x.text === 'Id'
@@ -222,7 +221,6 @@ export default {
     await this.$axios
       .get(`/api/v1/token/projects/`)
       .then((response) => {
-        console.log(response)
         this.projects = response.data.results
 
         this.projectStore.items = Object.entries(this.projects).map(
@@ -266,7 +264,6 @@ export default {
       this.$axios
         .get(`/api/v1/token/stores/?project__id=${key}`)
         .then((response) => {
-          console.log(response)
           done(
             Object.entries(response.data.results).map(([index, item]) => {
               return {
@@ -300,7 +297,6 @@ export default {
             description: this.element.description
           })
           .then((response) => {
-            console.log(response)
             this.$store.dispatch('ui/notifySuccess', 'Data has been changed!')
             if (action === 'return') {
               this.$router.push({ name: 'packages-list' })
@@ -328,11 +324,7 @@ export default {
             }
           })
           .then((response) => {
-            console.log(response)
             this.element = response.data
-            /* this.element.project = this.projects.find(
-              (x) => x.id === this.element.project.id
-            ) */
             console.log('element new', this.element)
             this.$store.dispatch('ui/notifySuccess', 'Data has been added!')
 
@@ -367,7 +359,6 @@ export default {
     },
 
     async remove() {
-      console.log(this.element.id)
       await this.$axios
         .delete(`/api/v1/token/packages/${this.element.id}/`)
         .then((response) => {

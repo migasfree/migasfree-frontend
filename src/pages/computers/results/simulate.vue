@@ -211,7 +211,6 @@ export default {
     await this.$axios
       .get(`/api/v1/token/computers/${this.$route.params.id}/`)
       .then((response) => {
-        console.log(response)
         this.computer = response.data
         this.breadcrumbs.find(
           (x) => x.text === 'Id'
@@ -252,7 +251,6 @@ export default {
       await this.$axios
         .get(`/api/v1/token/computers/${this.computer.id}/sync/`)
         .then((response) => {
-          console.log(response)
           Object.entries(response.data.sync_attributes).map(([key, val]) => {
             if (val.property_att.prefix === 'SET') {
               this.onlyAttributeSets.push({

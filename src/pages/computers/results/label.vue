@@ -43,11 +43,10 @@ export default {
     await this.$axios
       .get(`/api/v1/token/computers/${this.$route.params.id}/label`)
       .then((response) => {
-        console.log(response)
         this.label = response.data
       })
       .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error.response.data.detail)
+        this.$store.dispatch('ui/notifyError', error)
       })
   }
 }

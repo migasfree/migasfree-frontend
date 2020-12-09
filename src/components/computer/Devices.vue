@@ -100,7 +100,6 @@ export default {
       await this.$axios
         .get(`/api/v1/token/computers/${this.cid}/devices/`)
         .then((response) => {
-          console.log(response)
           this.devices = response.data
         })
         .catch((error) => {
@@ -116,12 +115,10 @@ export default {
           // assigned_logical_devices_to_cid: TODO
         })
         .then((response) => {
-          console.log(response)
           this.$store.dispatch('ui/notifySuccess', 'Devices have been changed!')
         })
         .catch((error) => {
-          console.log(error.response.data)
-          this.$store.dispatch('ui/notifyError', error.response.data)
+          this.$store.dispatch('ui/notifyError', error)
         })
         .finally(() => (this.loading = false))
     },

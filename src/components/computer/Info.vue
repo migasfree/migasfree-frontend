@@ -155,11 +155,10 @@ export default {
           name: this.value
         })
         .then((response) => {
-          console.log(response)
           this.$store.dispatch('ui/notifySuccess', 'Name has been changed!')
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data.detail)
+          this.$store.dispatch('ui/notifyError', error)
         })
         .finally(() => (this.loading = false))
     }
