@@ -125,6 +125,16 @@ const routes = [
         name: 'packages-list',
         component: () => import('pages/packages/results/list')
       },
+      {
+        path: '/packages/add',
+        name: 'package-add',
+        component: () => import('pages/packages/results/detail')
+      },
+      {
+        path: '/packages/results/:id',
+        name: 'package-detail',
+        component: () => import('pages/packages/results/detail')
+      },
 
       {
         path: '/platforms/results',
