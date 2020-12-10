@@ -239,7 +239,7 @@ import { datagridMixin } from 'mixins/datagrid'
 
 export default {
   meta: {
-    title: 'Computers List',
+    title: 'Computers List'
   },
   components: {
     Breadcrumbs,
@@ -417,7 +417,9 @@ export default {
         syncEndDateRange: {
           selected: { from: null, to: null }
         }
-      }
+      },
+      model: 'computers',
+      detailRoute: 'computer-detail'
     }
   },
   created() {
@@ -611,61 +613,51 @@ export default {
       this.loadItems()
     },
 
-    onSearch(value) {
-      this.tableFilters.search = value
-      console.log(this.tableFilters.search)
-      this.updateParams({
-        columnFilters: { search: this.tableFilters.search }
-      })
-      this.loadItems()
-    },
+    queryParams() {
+      let ret = {
+        page_size: this.serverParams.perPage,
+        page: this.serverParams.page
+      }
 
-    onSearchClear() {
-      this.onSearch('')
-    },
-
-    paramsToQueryString() {
-      let ret = `page_size=${this.serverParams.perPage}&page=${this.serverParams.page}`
+      if (this.serverParams.sort.field) {
+        ret.ordering = `${this.serverParams.sort.type}${this.serverParams.sort.field}`
+      }
 
       if (Object.keys(this.serverParams.columnFilters).length) {
-        ret +=
-          '&' +
-          Object.entries(this.serverParams.columnFilters)
-            .map(([key, val]) => {
-              switch (key) {
-                case 'project.name':
-                  return `project__id=${val}`
-                case 'platform':
-                case 'architecture':
-                case 'machine':
-                case 'product_system':
-                case 'has_software_inventory':
-                case 'search':
-                case 'created_at__gte':
-                case 'created_at__lt':
-                case 'sync_end_date__gte':
-                case 'sync_end_date__lt':
-                  return `${key}=${val}`
-                case 'status_in':
-                  return `status__in=${val}`
-                case 'sync_end_date':
-                  if (val === 0) return `${key}__isnull=true`
-                  else {
-                    let d = new Date()
-                    d = d.toISOString(d.setDate(d.getDate() - val))
-                    return `${key}__lt=${d}`
-                  }
-                default:
-                  return `${key.replace('.', '__')}__icontains=${val}`
+        Object.entries(this.serverParams.columnFilters).map(([key, val]) => {
+          switch (key) {
+            case 'project.name':
+              ret.project__id = val
+              break
+            case 'platform':
+            case 'architecture':
+            case 'machine':
+            case 'product_system':
+            case 'has_software_inventory':
+            case 'search':
+            case 'created_at__gte':
+            case 'created_at__lt':
+            case 'sync_end_date__gte':
+            case 'sync_end_date__lt':
+              ret[key] = val
+              break
+            case 'status_in':
+              ret.status__in = val
+              break
+            case 'sync_end_date':
+              if (val === 0) ret[`${key}__isnull`] = true
+              else {
+                let d = new Date()
+                d = d.toISOString(d.setDate(d.getDate() - val))
+                ret[`${key}__lt`] = d
               }
-            })
-            .join('&')
-      }
-      if (this.serverParams.sort.field) {
-        ret += `&ordering=${this.serverParams.sort.type}${this.serverParams.sort.field}`
+              break
+            default:
+              ret[`${key.replace('.', '__')}__icontains`] = val
+          }
+        })
       }
 
-      console.log(ret)
       return ret
     },
 
@@ -715,22 +707,6 @@ export default {
         })
     },
 
-    async loadItems() {
-      if (this.isLoading) return
-
-      this.isLoading = true
-      await this.$axios
-        .get('/api/v1/token/computers/?' + this.paramsToQueryString())
-        .then((response) => {
-          this.totalRecords = response.data.count
-          this.rows = response.data.results
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-        .finally(() => (this.isLoading = false))
-    },
-
     resetFilters() {
       this.$refs.myTable.reset()
       this.resetColumnFilters()
@@ -754,22 +730,6 @@ export default {
       this.tableFilters.search = ''
 
       this.loadItems()
-    },
-
-    edit(id) {
-      this.$router.push({ name: 'computer-detail', params: { id } })
-    },
-
-    remove(id, reload = true) {
-      this.$axios
-        .delete(`/api/v1/token/computers/${id}/`)
-        .then((response) => {
-          this.$store.dispatch('ui/notifySuccess', 'Item deleted!')
-          if (reload) this.loadItems()
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
     }
   }
 }
