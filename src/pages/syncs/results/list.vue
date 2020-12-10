@@ -299,7 +299,8 @@ export default {
         startDate: {
           selected: { from: null, to: null }
         }
-      }
+      },
+      model: 'syncs'
     }
   },
   created() {
@@ -348,19 +349,6 @@ export default {
     }
   },
   methods: {
-    onSearch(value) {
-      this.tableFilters.search = value
-      console.log(this.tableFilters.search)
-      this.updateParams({
-        columnFilters: { search: this.tableFilters.search }
-      })
-      this.loadItems()
-    },
-
-    onSearchClear() {
-      this.onSearch('')
-    },
-
     onPlatformFilter(params) {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
@@ -393,43 +381,6 @@ export default {
         })
       })
       this.loadItems()
-    },
-
-    paramsToQueryString() {
-      let ret = `page_size=${this.serverParams.perPage}&page=${this.serverParams.page}`
-
-      if (Object.keys(this.serverParams.columnFilters).length) {
-        ret +=
-          '&' +
-          Object.entries(this.serverParams.columnFilters)
-            .map(([key, val]) => {
-              switch (key) {
-                case 'project.name':
-                  return `project__id=${val}`
-                case 'computer.__str__':
-                  return `computer__name__icontains=${val}`
-                case 'platform':
-                  return `project__platform__id=${val}`
-                case 'pms_status_ok':
-                case 'created_at__gte':
-                case 'created_at__lt':
-                case 'start_date__gte':
-                case 'start_date__lt':
-                case 'search':
-                  return `${key}=${val}`
-                default:
-                  return `${key.replace('.', '__')}__icontains=${val}`
-              }
-            })
-            .join('&')
-      }
-
-      if (this.serverParams.sort.field) {
-        ret += `&ordering=${this.serverParams.sort.type}${this.serverParams.sort.field}`
-      }
-
-      console.log(ret)
-      return ret
     },
 
     async loadFilters() {
@@ -469,22 +420,6 @@ export default {
         })
     },
 
-    async loadItems() {
-      if (this.isLoading) return
-
-      this.isLoading = true
-      await this.$axios
-        .get('/api/v1/token/syncs/?' + this.paramsToQueryString())
-        .then((response) => {
-          this.totalRecords = response.data.count
-          this.rows = response.data.results
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-        .finally(() => (this.isLoading = false))
-    },
-
     resetFilters() {
       this.$refs.myTable.reset()
       this.resetColumnFilters()
@@ -498,18 +433,6 @@ export default {
       this.$refs.startDateRange.reset()
 
       this.loadItems()
-    },
-
-    remove(id, reload = true) {
-      this.$axios
-        .delete(`/api/v1/token/syncs/${id}/`)
-        .then((response) => {
-          this.$store.dispatch('ui/notifySuccess', 'Item deleted!')
-          if (reload) this.loadItems()
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
     }
   }
 }
