@@ -423,15 +423,6 @@ export default {
     }
   },
   methods: {
-    onPlatformFilter(params) {
-      this.updateParams({
-        columnFilters: Object.assign(this.serverParams.columnFilters, {
-          platform: params.id
-        })
-      })
-      this.loadItems()
-    },
-
     onArchitectureFilter(params) {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
@@ -474,68 +465,6 @@ export default {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
           has_software_inventory: params.id === 0 ? false : ''
-        })
-      })
-      this.loadItems()
-    },
-
-    onStatusInFilter(params) {
-      console.log('onstatusfilter', this.tableFilters.statusIn.selected)
-      console.log(params)
-      this.updateParams({
-        columnFilters: Object.assign(this.serverParams.columnFilters, {
-          status_in: params.id
-        })
-      })
-      this.loadItems()
-    },
-
-    updateStatusInFilter(options) {
-      this.tableFilters.statusIn.choices = options.choices
-
-      this.tableFilters.statusIn.items = [
-        { id: '', label: 'Todos' },
-        {
-          id: options.subscribed.join(','),
-          label: 'subscribed',
-          children: [
-            {
-              id: options.productive.join(','),
-              label: 'productive',
-              children: Object.entries(options.productive).map(([key, val]) => {
-                return { id: val, label: options.choices[val] }
-              })
-            },
-            {
-              id: options.unproductive.join(','),
-              label: 'unproductive',
-              children: Object.entries(options.unproductive).map(
-                ([key, val]) => {
-                  return { id: val, label: options.choices[val] }
-                }
-              )
-            }
-          ]
-        },
-        { id: options.unsubscribed.join(','), label: 'unsubscribed' }
-      ]
-
-      if (this.$route.query.status_in) {
-        this.tableFilters.statusIn.selected = this.findById(
-          this.tableFilters.statusIn.items,
-          this.$route.query.status_in
-        ).label
-      }
-    },
-
-    onCreatedAtFilter(params) {
-      console.log(params)
-      console.log('createdAt selected', this.tableFilters.createdAt.selected)
-      this.tableFilters.createdAt.selected = params
-      this.updateParams({
-        columnFilters: Object.assign(this.serverParams.columnFilters, {
-          created_at__gte: this.tableFilters.createdAt.selected.from,
-          created_at__lt: this.tableFilters.createdAt.selected.to
         })
       })
       this.loadItems()
