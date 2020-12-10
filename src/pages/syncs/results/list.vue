@@ -304,28 +304,6 @@ export default {
     }
   },
   methods: {
-    onPlatformFilter(params) {
-      this.updateParams({
-        columnFilters: Object.assign(this.serverParams.columnFilters, {
-          platform: params.id
-        })
-      })
-      this.loadItems()
-    },
-
-    onCreatedAtFilter(params) {
-      console.log(params)
-      console.log('createdAt selected', this.tableFilters.createdAt.selected)
-      this.tableFilters.createdAt.selected = params
-      this.updateParams({
-        columnFilters: Object.assign(this.serverParams.columnFilters, {
-          created_at__gte: this.tableFilters.createdAt.selected.from,
-          created_at__lt: this.tableFilters.createdAt.selected.to
-        })
-      })
-      this.loadItems()
-    },
-
     onStartDateFilter(params) {
       console.log(params)
       this.tableFilters.startDate.selected = params
