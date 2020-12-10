@@ -340,6 +340,7 @@ import ComputerSoftware from 'components/computer/Software'
 import ComputerDevices from 'components/computer/Devices'
 import { elementMixin } from 'mixins/element'
 import { dateMixin } from 'mixins/date'
+import { detailMixin } from 'mixins/detail'
 import { MIGASFREE_SECONDS_MESSAGE_ALERT } from 'config/app.conf'
 
 export default {
@@ -359,10 +360,12 @@ export default {
     ComputerSoftware,
     ComputerDevices
   },
-  mixins: [elementMixin, dateMixin],
+  mixins: [elementMixin, dateMixin, detailMixin],
   data() {
     return {
       title: 'Computer',
+      model: 'computers',
+      listRoute: 'computers-list',
       breadcrumbs: [
         {
           text: 'Dashboard',
@@ -380,7 +383,7 @@ export default {
         },
         {
           text: 'Resultados',
-          to: 'computers-list'
+          to: this.listRoute
         },
         {
           text: 'Id'
@@ -400,7 +403,7 @@ export default {
   },
   async mounted() {
     await this.$axios
-      .get(`/api/v1/token/computers/${this.$route.params.id}/`)
+      .get(`/api/v1/token/${this.model}/${this.$route.params.id}/`)
       .then((response) => {
         this.element = response.data
         this.breadcrumbs[
@@ -434,7 +437,7 @@ export default {
   methods: {
     async loadSyncInfo() {
       await this.$axios
-        .get(`/api/v1/token/computers/${this.$route.params.id}/sync/`)
+        .get(`/api/v1/token/${this.model}/${this.$route.params.id}/sync/`)
         .then((response) => {
           this.syncInfo = response.data
           Object.entries(response.data.sync_attributes).map(([key, val]) => {
@@ -459,7 +462,7 @@ export default {
 
     async loadErrors() {
       await this.$axios
-        .get(`/api/v1/token/computers/${this.$route.params.id}/errors/`)
+        .get(`/api/v1/token/${this.model}/${this.$route.params.id}/errors/`)
         .then((response) => {
           this.errors = response.data
         })
@@ -470,7 +473,7 @@ export default {
 
     async loadFaults() {
       await this.$axios
-        .get(`/api/v1/token/computers/${this.$route.params.id}/faults/`)
+        .get(`/api/v1/token/${this.model}/${this.$route.params.id}/faults/`)
         .then((response) => {
           this.faults = response.data
         })
@@ -507,7 +510,7 @@ export default {
     async updateCurrentSituation() {
       this.loading = true
       await this.$axios
-        .patch(`/api/v1/token/computers/${this.element.id}/`, {
+        .patch(`/api/v1/token/${this.model}/${this.element.id}/`, {
           status: this.element.status,
           comment: this.element.comment,
           tags: this.element.tags.map((item) => item.id)
@@ -522,17 +525,6 @@ export default {
           this.$store.dispatch('ui/notifyError', error)
         })
         .finally(() => (this.loading = false))
-    },
-
-    async remove() {
-      await this.$axios
-        .delete(`/api/v1/token/computers/${this.element.id}/`)
-        .then((response) => {
-          this.$router.push({ name: 'computers-list' })
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
     }
   }
 }
