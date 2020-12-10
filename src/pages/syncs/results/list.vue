@@ -303,51 +303,6 @@ export default {
       model: 'syncs'
     }
   },
-  created() {
-    if (this.$route.query.platform_id) {
-      this.updateParams({
-        columnFilters: { platform: this.$route.query.platform_id }
-      })
-    }
-
-    if (this.$route.query.project_id) {
-      this.updateParams({
-        columnFilters: { 'project.name': this.$route.query.project_id }
-      })
-      this.columns.find(
-        (x) => x.field === 'project.name'
-      ).filterOptions.filterValue = this.$route.query.project_id
-    }
-
-    if ('pms_status_ok' in this.$route.query) {
-      this.updateParams({
-        columnFilters: { pms_status_ok: this.$route.query.pms_status_ok }
-      })
-      this.columns.find(
-        (x) => x.field === 'pms_status_ok'
-      ).filterOptions.filterValue = this.$route.query.pms_status_ok
-    }
-
-    if (this.$route.query.created_at__gte && this.$route.query.created_at__lt) {
-      this.updateParams({
-        columnFilters: {
-          created_at__gte: this.$route.query.created_at__gte,
-          created_at__lt: this.$route.query.created_at__lt
-        }
-      })
-      this.tableFilters.createdAt.selected = {
-        from: this.$route.query.created_at__gte,
-        to: this.$route.query.created_at__lt
-      }
-    }
-
-    if (this.$route.query.search) {
-      this.updateParams({
-        columnFilters: { search: this.$route.query.search }
-      })
-      this.tableFilters.search = this.$route.query.search
-    }
-  },
   methods: {
     onPlatformFilter(params) {
       this.updateParams({
