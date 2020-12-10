@@ -97,6 +97,7 @@
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import MigasLink from 'components/MigasLink'
 import RemoveDialog from 'components/ui/RemoveDialog'
+import { detailMixin } from 'mixins/detail'
 
 export default {
   meta() {
@@ -109,9 +110,14 @@ export default {
     RemoveDialog,
     MigasLink
   },
+  mixins: [detailMixin],
   data() {
     return {
       title: 'Store',
+      model: 'stores',
+      listRoute: 'stores-list',
+      addRoute: 'store-add',
+      detailRoute: 'store-detail',
       breadcrumbs: [
         {
           text: 'Dashboard',
@@ -147,7 +153,7 @@ export default {
     if (this.$route.params.id) {
       this.breadcrumbs.push({
         text: 'Resultados',
-        to: 'stores-list'
+        to: this.listRoute
       })
       this.breadcrumbs.push({
         text: 'Id'
@@ -159,7 +165,7 @@ export default {
   async mounted() {
     if (this.$route.params.id) {
       await this.$axios
-        .get(`/api/v1/token/stores/${this.$route.params.id}/`)
+        .get(`/api/v1/token/${this.model}/${this.$route.params.id}/`)
         .then((response) => {
           this.element = response.data
           this.breadcrumbs.find((x) => x.text === 'Id').text = this.element.name
@@ -184,19 +190,19 @@ export default {
       if (this.element.id) {
         this.loading = true
         await this.$axios
-          .patch(`/api/v1/token/stores/${this.element.id}/`, {
+          .patch(`/api/v1/token/${this.model}/${this.element.id}/`, {
             project: this.element.project.id,
             name: this.element.name
           })
           .then((response) => {
             this.$store.dispatch('ui/notifySuccess', 'Data has been changed!')
             if (action === 'return') {
-              this.$router.push({ name: 'stores-list' })
+              this.$router.push({ name: this.listRoute })
             } else if (action === 'add') {
               this.element = { id: 0 }
               if (this.breadcrumbs.length === 5) this.breadcrumbs.pop()
               this.breadcrumbs[3].text = 'Añadir'
-              this.$router.push({ name: 'store-add' })
+              this.$router.push({ name: this.addRoute })
               this.title = 'Store'
             }
           })
@@ -207,7 +213,7 @@ export default {
       } else {
         this.loading = true
         await this.$axios
-          .post('/api/v1/token/stores/', {
+          .post(`/api/v1/token/${this.model}/`, {
             project: this.element.project.id,
             name: this.element.name
           })
@@ -220,21 +226,24 @@ export default {
             this.$store.dispatch('ui/notifySuccess', 'Data has been added!')
 
             if (action === 'return') {
-              this.$router.push({ name: 'stores-list' })
+              this.$router.push({ name: this.listRoute })
             } else if (action === 'add') {
               this.element = { id: 0 }
-              this.$router.push({ name: 'store-add' })
+              this.$router.push({ name: this.addRoute })
             } else {
               if (this.breadcrumbs.length === 4) {
                 this.breadcrumbs.pop()
-                this.breadcrumbs.push({ text: 'Resultados', to: 'stores-list' })
+                this.breadcrumbs.push({
+                  text: 'Resultados',
+                  to: this.listRoute
+                })
                 this.breadcrumbs.push({
                   text: this.element.name
                 })
                 this.title = `Store: ${this.element.name}`
               }
               this.$router.push({
-                name: 'store-detail',
+                name: this.detailRoute,
                 params: { id: this.element.id }
               })
             }
@@ -244,17 +253,6 @@ export default {
           })
           .finally(() => (this.loading = false))
       }
-    },
-
-    async remove() {
-      await this.$axios
-        .delete(`/api/v1/token/stores/${this.element.id}/`)
-        .then((response) => {
-          this.$router.push({ name: 'stores-list' })
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
     }
   }
 }
