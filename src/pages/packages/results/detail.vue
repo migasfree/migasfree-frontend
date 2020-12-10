@@ -183,7 +183,7 @@ export default {
   computed: {
     isValid() {
       return (
-        this.projectStore.selected !== null && this.element.files !== undefined
+        this.projectStore.selected !== null && this.element.files !== null
       )
     }
   },
