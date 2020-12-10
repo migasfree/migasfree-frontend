@@ -127,6 +127,7 @@ import MigasLink from 'components/MigasLink'
 import RemoveDialog from 'components/ui/RemoveDialog'
 import { elementMixin } from 'mixins/element'
 import { dateMixin } from 'mixins/date'
+import { detailMixin } from 'mixins/detail'
 import { copyToClipboard } from 'quasar'
 
 export default {
@@ -140,10 +141,12 @@ export default {
     RemoveDialog,
     MigasLink
   },
-  mixins: [elementMixin, dateMixin],
+  mixins: [elementMixin, dateMixin, detailMixin],
   data() {
     return {
       title: 'Falla',
+      model: 'faults',
+      listRoute: 'faults-list',
       breadcrumbs: [
         {
           text: 'Dashboard',
@@ -161,7 +164,7 @@ export default {
         },
         {
           text: 'Resultados',
-          to: 'faults-list'
+          to: this.listRoute
         },
         {
           text: 'Id'
@@ -176,7 +179,7 @@ export default {
   async mounted() {
     if (this.$route.params.id) {
       await this.$axios
-        .get(`/api/v1/token/faults/${this.$route.params.id}/`)
+        .get(`/api/v1/token/${this.model}/${this.$route.params.id}/`)
         .then((response) => {
           this.element = response.data
           this.breadcrumbs[
@@ -194,13 +197,13 @@ export default {
       if (this.element.id) {
         this.loading = true
         await this.$axios
-          .patch(`/api/v1/token/faults/${this.element.id}/`, {
+          .patch(`/api/v1/token/${this.model}/${this.element.id}/`, {
             checked: this.element.checked
           })
           .then((response) => {
             this.$store.dispatch('ui/notifySuccess', 'Data has been changed!')
             if (action === 'return') {
-              this.$router.push({ name: 'faults-list' })
+              this.$router.push({ name: this.listRoute })
             }
           })
           .catch((error) => {
@@ -208,17 +211,6 @@ export default {
           })
           .finally(() => (this.loading = false))
       }
-    },
-
-    async remove() {
-      await this.$axios
-        .delete(`/api/v1/token/faults/${this.element.id}/`)
-        .then((response) => {
-          this.$router.push({ name: 'faults-list' })
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
     },
 
     copyInfo() {
