@@ -171,23 +171,6 @@ export default {
       detailRoute: 'attribute-detail'
     }
   },
-  created() {
-    if (this.$route.query.property_id) {
-      this.updateParams({
-        columnFilters: { property_att: this.$route.query.property_id }
-      })
-      this.columns.find(
-        (x) => x.field === 'property_att'
-      ).filterOptions.filterValue = this.$route.query.property_id
-    }
-
-    if (this.$route.query.search) {
-      this.updateParams({
-        columnFilters: { search: this.$route.query.search }
-      })
-      this.tableFilters.search = this.$route.query.search
-    }
-  },
   methods: {
     async loadFilters() {
       await this.$axios
