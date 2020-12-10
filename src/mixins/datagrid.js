@@ -365,6 +365,53 @@ export const datagridMixin = {
       items.forEach((id) => {
         this.updateChecked(id, value, items[items.length - 1] === id)
       })
+    },
+
+    resetFilters() {
+      this.tableFilters.search = ''
+      this.$refs.myTable.reset()
+      this.resetColumnFilters()
+
+      if ('platform' in this.tableFilters)
+        this.tableFilters.platform.selected = null
+
+      if ('architecture' in this.tableFilters)
+        this.tableFilters.architecture.selected = null
+
+      if ('softwareInventory' in this.tableFilters)
+        this.tableFilters.softwareInventory.selected = null
+
+      if ('syncEndDate' in this.tableFilters)
+        this.tableFilters.syncEndDate.selected = null
+
+      if ('user' in this.tableFilters) this.tableFilters.user.selected = null
+
+      if ('statusIn' in this.tableFilters) {
+        this.tableFilters.statusIn.selected = null
+        this.$refs.statusTree.reset()
+      }
+
+      if ('createdAt' in this.tableFilters) {
+        this.tableFilters.createdAt.selected = { from: null, to: null }
+        this.$refs.createdAtRange.reset()
+      }
+
+      if ('syncEndDateRange' in this.tableFilters) {
+        this.tableFilters.syncEndDateRange.selected = { from: null, to: null }
+        this.$refs.syncEndDateRange.reset()
+      }
+
+      if ('startDate' in this.tableFilters) {
+        this.tableFilters.startDate.selected = { from: null, to: null }
+        this.$refs.startDateRange.reset()
+      }
+
+      if ('machine' in this.tableFilters) {
+        this.tableFilters.machine.selected = null
+        this.$refs.machineTree.reset()
+      }
+
+      this.loadItems()
     }
   }
 }
