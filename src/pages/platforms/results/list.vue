@@ -147,20 +147,6 @@ export default {
       detailRoute: 'platform-detail'
     }
   },
-  created() {
-    if (this.$route.query.platform_id) {
-      this.updateParams({
-        columnFilters: { platform_id: this.$route.query.platform_id }
-      })
-    }
-
-    if (this.$route.query.search) {
-      this.updateParams({
-        columnFilters: { search: this.$route.query.search }
-      })
-      this.tableFilters.search = this.$route.query.search
-    }
-  },
   methods: {
     resetFilters() {
       this.$refs.myTable.reset()
