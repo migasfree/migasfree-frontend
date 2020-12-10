@@ -165,23 +165,6 @@ export default {
       detailRoute: 'store-detail'
     }
   },
-  created() {
-    if (this.$route.query.project_id) {
-      this.updateParams({
-        columnFilters: { project_id: this.$route.query.project_id }
-      })
-      this.columns.find(
-        (x) => x.field === 'project.name'
-      ).filterOptions.filterValue = this.$route.query.project_id
-    }
-
-    if (this.$route.query.search) {
-      this.updateParams({
-        columnFilters: { search: this.$route.query.search }
-      })
-      this.tableFilters.search = this.$route.query.search
-    }
-  },
   methods: {
     async loadFilters() {
       await this.$axios
