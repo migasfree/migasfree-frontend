@@ -191,13 +191,6 @@ export default {
           this.$store.dispatch('ui/notifyError', error)
         })
     },
-
-    resetFilters() {
-      this.$refs.myTable.reset()
-      this.resetColumnFilters()
-      this.tableFilters.search = ''
-      this.loadItems()
-    }
   }
 }
 </script>
