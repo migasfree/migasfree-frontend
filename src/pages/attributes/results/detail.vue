@@ -89,6 +89,7 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import RemoveDialog from 'components/ui/RemoveDialog'
 import MigasLink from 'components/MigasLink'
 import { elementMixin } from 'mixins/element'
+import { detailMixin } from 'mixins/detail'
 
 export default {
   meta() {
@@ -101,10 +102,12 @@ export default {
     RemoveDialog,
     MigasLink
   },
-  mixins: [elementMixin],
+  mixins: [elementMixin, detailMixin],
   data() {
     return {
       title: 'Attribute',
+      model: 'features',
+      listRoute: 'attributes-list',
       breadcrumbs: [
         {
           text: 'Dashboard',
@@ -122,7 +125,7 @@ export default {
         },
         {
           text: 'Resultados',
-          to: 'attributes-list'
+          to: this.listRoute
         },
         {
           text: 'Id'
@@ -136,13 +139,13 @@ export default {
   },
   async mounted() {
     await this.$axios
-      .get(`/api/v1/token/features/${this.$route.params.id}/`)
+      .get(`/api/v1/token/${this.model}/${this.$route.params.id}/`)
       .then((response) => {
         this.element = response.data
         this.breadcrumbs[
           this.breadcrumbs.length - 1
         ].text = this.attributeValue(this.element)
-        this.title = `Attribute: ${this.attributeValue(this.element)}`
+        this.title = `${this.title}: ${this.attributeValue(this.element)}`
       })
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error)
@@ -152,31 +155,19 @@ export default {
     async updateElement(action = null) {
       this.loading = true
       await this.$axios
-        .patch(`/api/v1/token/features/${this.element.id}/`, {
+        .patch(`/api/v1/token/${this.model}/${this.element.id}/`, {
           description: this.element.description
         })
         .then((response) => {
           this.$store.dispatch('ui/notifySuccess', 'Data has been changed!')
           if (action === 'return') {
-            this.$router.push({ name: 'attributes-list' })
+            this.$router.push({ name: this.listRoute })
           }
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
         .finally(() => (this.loading = false))
-    },
-
-    async remove() {
-      console.log(this.element.id)
-      await this.$axios
-        .delete(`/api/v1/token/features/${this.element.id}/`)
-        .then((response) => {
-          this.$router.push({ name: 'attributes-list' })
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
     }
   }
 }
