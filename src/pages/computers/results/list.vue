@@ -422,65 +422,6 @@ export default {
       detailRoute: 'computer-detail'
     }
   },
-  created() {
-    if (this.$route.query.name) {
-      this.updateParams({ columnFilters: { name: this.$route.query.name } })
-      this.columns.find(
-        (x) => x.field === 'name'
-      ).filterOptions.filterValue = this.$route.query.name
-    }
-
-    if (this.$route.query.platform_id) {
-      this.updateParams({
-        columnFilters: { platform: this.$route.query.platform_id }
-      })
-    }
-
-    if (this.$route.query.project_id) {
-      this.updateParams({
-        columnFilters: { 'project.name': this.$route.query.project_id }
-      })
-      this.columns.find(
-        (x) => x.field === 'project.name'
-      ).filterOptions.filterValue = this.$route.query.project_id
-    }
-
-    if (this.$route.query.machine) {
-      this.updateParams({
-        columnFilters: { machine: this.$route.query.machine }
-      })
-      this.tableFilters.machine.selected = this.findById(
-        this.tableFilters.machine.items,
-        this.$route.query.machine
-      ).label
-    }
-
-    if (this.$route.query.search) {
-      this.updateParams({
-        columnFilters: { search: this.$route.query.search }
-      })
-      this.tableFilters.search = this.$route.query.search
-    }
-
-    if (this.$route.query.status_in) {
-      this.updateParams({
-        columnFilters: { status_in: this.$route.query.status_in }
-      })
-    }
-
-    if (this.$route.query.created_at__gte && this.$route.query.created_at__lt) {
-      this.updateParams({
-        columnFilters: {
-          created_at__gte: this.$route.query.created_at__gte,
-          created_at__lt: this.$route.query.created_at__lt
-        }
-      })
-      this.tableFilters.createdAt.selected = {
-        from: this.$route.query.created_at__gte,
-        to: this.$route.query.created_at__lt
-      }
-    }
-  },
   methods: {
     onPlatformFilter(params) {
       this.updateParams({
