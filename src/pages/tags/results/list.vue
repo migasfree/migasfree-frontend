@@ -170,7 +170,9 @@ export default {
             trigger: 'enter'
           }
         }
-      ]
+      ],
+      model: 'tags',
+      detailRoute: 'tag-detail'
     }
   },
   created() {
@@ -191,47 +193,6 @@ export default {
     }
   },
   methods: {
-    onSearch(value) {
-      this.tableFilters.search = value
-      console.log(this.tableFilters.search)
-      this.updateParams({
-        columnFilters: { search: this.tableFilters.search }
-      })
-      this.loadItems()
-    },
-
-    onSearchClear() {
-      this.onSearch('')
-    },
-
-    paramsToQueryString() {
-      let ret = `page_size=${this.serverParams.perPage}&page=${this.serverParams.page}`
-
-      if (Object.keys(this.serverParams.columnFilters).length) {
-        ret +=
-          '&' +
-          Object.entries(this.serverParams.columnFilters)
-            .map(([key, val]) => {
-              switch (key) {
-                case 'property_att':
-                  return `property_att__id=${val}`
-                case 'search':
-                  return `${key}=${val}`
-                default:
-                  return `${key.replace('.', '__')}__icontains=${val}`
-              }
-            })
-            .join('&')
-      }
-
-      if (this.serverParams.sort.field) {
-        ret += `&ordering=${this.serverParams.sort.type}${this.serverParams.sort.field}`
-      }
-
-      console.log(ret)
-      return ret
-    },
-
     async loadFilters() {
       await this.$axios
         .get('/api/v1/token/stamps/')
@@ -252,43 +213,11 @@ export default {
         })
     },
 
-    async loadItems() {
-      if (this.isLoading) return
-
-      this.isLoading = true
-      await this.$axios
-        .get('/api/v1/token/tags/?' + this.paramsToQueryString())
-        .then((response) => {
-          this.totalRecords = response.data.count
-          this.rows = response.data.results
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-        .finally(() => (this.isLoading = false))
-    },
-
     resetFilters() {
       this.$refs.myTable.reset()
       this.resetColumnFilters()
       this.tableFilters.search = ''
       this.loadItems()
-    },
-
-    edit(id) {
-      this.$router.push({ name: 'tag-detail', params: { id } })
-    },
-
-    remove(id, reload = true) {
-      this.$axios
-        .delete(`/api/v1/token/tags/${id}/`)
-        .then((response) => {
-          this.$store.dispatch('ui/notifySuccess', 'Item deleted!')
-          if (reload) this.loadItems()
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
     }
   }
 }
