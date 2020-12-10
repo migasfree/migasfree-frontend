@@ -19,7 +19,9 @@ export const datagridMixin = {
       tableFilters: {
         search: ''
       },
-      selectedRows: []
+      selectedRows: [],
+      model: '',
+      detailRoute: ''
     }
   },
   computed: {
@@ -68,9 +70,7 @@ export const datagridMixin = {
     },
 
     updateParams(newProps) {
-      console.log('serverParams before', this.serverParams)
       this.serverParams = _merge(this.serverParams, newProps)
-      console.log('serverParams after', this.serverParams)
     },
 
     resetColumnFilters() {
@@ -98,19 +98,117 @@ export const datagridMixin = {
     },
 
     onColumnFilter(params) {
-      console.log(params)
       this.updateParams(params)
       this.loadItems()
     },
 
     onSelectionChanged(params) {
       this.selectedRows = params.selectedRows
-      console.log(this.selectedRows)
+    },
+
+    onSearch(value) {
+      this.tableFilters.search = value
+      this.updateParams({
+        columnFilters: { search: this.tableFilters.search }
+      })
+      this.loadItems()
+    },
+
+    onSearchClear() {
+      this.onSearch('')
+    },
+
+    queryParams() {
+      let ret = {
+        page_size: this.serverParams.perPage,
+        page: this.serverParams.page
+      }
+
+      if (this.serverParams.sort.field) {
+        ret.ordering = `${this.serverParams.sort.type}${this.serverParams.sort.field}`
+      }
+
+      if (Object.keys(this.serverParams.columnFilters).length) {
+        Object.entries(this.serverParams.columnFilters).map(([key, val]) => {
+          switch (key) {
+            case 'computer.__str__':
+              ret.computer__name__icontains = val
+              break
+            case 'computer_id':
+              ret.computer__id = val
+              break
+            case 'fault_definition.name':
+              ret.fault_definition_id = val
+              break
+            case 'platform':
+              ret.project__platform__id = val
+              break
+            case 'project_id':
+            case 'project.name':
+              ret.project__id = val
+              break
+            case 'property_att':
+              ret.property_att__id = val
+              break
+            case 'status_in':
+              ret.computer__status__in = val
+              break
+            case 'store.name':
+              ret.store__id = val
+              break
+            case 'checked':
+            case 'user':
+            case 'platform_id':
+            case 'pms_status_ok':
+            case 'created_at__gte':
+            case 'created_at__lt':
+            case 'start_date__gte':
+            case 'start_date__lt':
+            case 'search':
+              ret[key] = val
+              break
+            default:
+              ret[`${key.replace('.', '__')}__icontains`] = val
+          }
+        })
+      }
+
+      return ret
     },
 
     async loadFilters() {},
 
-    async loadItems() {},
+    async loadItems() {
+      if (this.isLoading) return
+
+      this.isLoading = true
+      await this.$axios
+        .get(`/api/v1/token/${this.model}/`, { params: this.queryParams() })
+        .then((response) => {
+          this.totalRecords = response.data.count
+          this.rows = response.data.results
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+        .finally(() => (this.isLoading = false))
+    },
+
+    edit(id) {
+      this.$router.push({ name: this.detailRoute, params: { id } })
+    },
+
+    remove(id, reload = true) {
+      this.$axios
+        .delete(`/api/v1/token/${this.model}/${id}/`)
+        .then((response) => {
+          this.$store.dispatch('ui/notifySuccess', 'Item deleted!')
+          if (reload) this.loadItems()
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+    },
 
     confirmRemove(id) {
       let items = []
@@ -143,6 +241,27 @@ export const datagridMixin = {
             this.remove(id, items[items.length - 1] === id)
           })
         })
+    },
+
+    updateChecked(id, value, reload = true) {
+      this.$axios
+        .patch(`/api/v1/token/${this.model}/${id}/`, { checked: value })
+        .then((response) => {
+          this.$store.dispatch('ui/notifySuccess', 'Changed item check value!')
+          if (reload) this.loadItems()
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+    },
+
+    updateItemsChecked(value) {
+      const items = this.selectedRows.map((item) => item.id)
+      if (items.length === 0) return
+
+      items.forEach((id) => {
+        this.updateChecked(id, value, items[items.length - 1] === id)
+      })
     }
   }
 }
