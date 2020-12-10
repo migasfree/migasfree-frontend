@@ -341,68 +341,6 @@ export default {
       detailRoute: 'fault-detail'
     }
   },
-  created() {
-    if (this.$route.query.computer_id) {
-      this.updateParams({
-        columnFilters: { computer_id: this.$route.query.computer_id }
-      })
-    }
-
-    if (this.$route.query.platform_id) {
-      this.updateParams({
-        columnFilters: { platform: this.$route.query.platform_id }
-      })
-    }
-
-    if (this.$route.query.project_id) {
-      this.updateParams({
-        columnFilters: { 'project.name': this.$route.query.project_id }
-      })
-      this.columns.find(
-        (x) => x.field === 'project.name'
-      ).filterOptions.filterValue = this.$route.query.project_id
-    }
-
-    if ('checked' in this.$route.query) {
-      this.updateParams({
-        columnFilters: { checked: this.$route.query.checked }
-      })
-      this.columns.find(
-        (x) => x.field === 'checked'
-      ).filterOptions.filterValue = this.$route.query.checked
-    }
-
-    if (this.$route.query.fault_definition_id) {
-      this.updateParams({
-        columnFilters: {
-          fault_definition_id: this.$route.query.fault_definition_id
-        }
-      })
-      this.columns.find(
-        (x) => x.field === 'fault_definition.name'
-      ).filterOptions.filterValue = this.$route.query.fault_definition_id
-    }
-
-    if (this.$route.query.created_at__gte && this.$route.query.created_at__lt) {
-      this.updateParams({
-        columnFilters: {
-          created_at__gte: this.$route.query.created_at__gte,
-          created_at__lt: this.$route.query.created_at__lt
-        }
-      })
-      this.tableFilters.createdAt.selected = {
-        from: this.$route.query.created_at__gte,
-        to: this.$route.query.created_at__lt
-      }
-    }
-
-    if (this.$route.query.search) {
-      this.updateParams({
-        columnFilters: { search: this.$route.query.search }
-      })
-      this.tableFilters.search = this.$route.query.search
-    }
-  },
   methods: {
     onPlatformFilter(params) {
       this.updateParams({
