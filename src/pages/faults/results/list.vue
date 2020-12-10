@@ -336,7 +336,9 @@ export default {
           items: [{ id: '', name: 'Todos' }],
           selected: null
         }
-      }
+      },
+      model: 'faults',
+      detailRoute: 'fault-detail'
     }
   },
   created() {
@@ -402,19 +404,6 @@ export default {
     }
   },
   methods: {
-    onSearch(value) {
-      this.tableFilters.search = value
-      console.log(this.tableFilters.search)
-      this.updateParams({
-        columnFilters: { search: this.tableFilters.search }
-      })
-      this.loadItems()
-    },
-
-    onSearchClear() {
-      this.onSearch('')
-    },
-
     onPlatformFilter(params) {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
@@ -444,46 +433,6 @@ export default {
         })
       })
       this.loadItems()
-    },
-
-    paramsToQueryString() {
-      let ret = `page_size=${this.serverParams.perPage}&page=${this.serverParams.page}`
-
-      if (Object.keys(this.serverParams.columnFilters).length) {
-        ret +=
-          '&' +
-          Object.entries(this.serverParams.columnFilters)
-            .map(([key, val]) => {
-              switch (key) {
-                case 'project.name':
-                  return `project__id=${val}`
-                case 'computer.__str__':
-                  return `computer__name__icontains=${val}`
-                case 'platform':
-                  return `project__platform__id=${val}`
-                case 'fault_definition.name':
-                  return `fault_definition_id=${val}`
-                case 'checked':
-                case 'created_at__gte':
-                case 'created_at__lt':
-                case 'user':
-                case 'search':
-                  return `${key}=${val}`
-                case 'computer_id':
-                  return `computer__id=${val}`
-                default:
-                  return `${key.replace('.', '__')}__icontains=${val}`
-              }
-            })
-            .join('&')
-      }
-
-      if (this.serverParams.sort.field) {
-        ret += `&ordering=${this.serverParams.sort.type}${this.serverParams.sort.field}`
-      }
-
-      console.log(ret)
-      return ret
     },
 
     async loadFilters() {
@@ -552,22 +501,6 @@ export default {
         })
     },
 
-    async loadItems() {
-      if (this.isLoading) return
-
-      this.isLoading = true
-      await this.$axios
-        .get('/api/v1/token/faults/?' + this.paramsToQueryString())
-        .then((response) => {
-          this.totalRecords = response.data.count
-          this.rows = response.data.results
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-        .finally(() => (this.isLoading = false))
-    },
-
     resetFilters() {
       this.$refs.myTable.reset()
       this.resetColumnFilters()
@@ -579,43 +512,6 @@ export default {
       this.$refs.createdAtRange.reset()
 
       this.loadItems()
-    },
-
-    edit(id) {
-      this.$router.push({ name: 'fault-detail', params: { id } })
-    },
-
-    remove(id, reload = true) {
-      this.$axios
-        .delete(`/api/v1/token/faults/${id}/`)
-        .then((response) => {
-          this.$store.dispatch('ui/notifySuccess', 'Item deleted!')
-          if (reload) this.loadItems()
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-    },
-
-    updateChecked(id, value, reload = true) {
-      this.$axios
-        .patch(`/api/v1/token/faults/${id}/`, { checked: value })
-        .then((response) => {
-          this.$store.dispatch('ui/notifySuccess', 'Changed item check value!')
-          if (reload) this.loadItems()
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-    },
-
-    updateItemsChecked(value) {
-      const items = this.selectedRows.map((item) => item.id)
-      if (items.length === 0) return
-
-      items.forEach((id) => {
-        this.updateChecked(id, value, items[items.length - 1] === id)
-      })
     }
   }
 }
