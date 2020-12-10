@@ -646,31 +646,6 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    },
-
-    resetFilters() {
-      this.$refs.myTable.reset()
-      this.resetColumnFilters()
-      this.tableFilters.platform.selected = null
-      this.tableFilters.architecture.selected = null
-      this.tableFilters.softwareInventory.selected = null
-      this.tableFilters.syncEndDate.selected = null
-
-      this.tableFilters.statusIn.selected = null
-      this.$refs.statusTree.reset()
-
-      this.tableFilters.createdAt.selected = { from: null, to: null }
-      this.$refs.createdAtRange.reset()
-
-      this.tableFilters.syncEndDateRange.selected = { from: null, to: null }
-      this.$refs.syncEndDateRange.reset()
-
-      this.tableFilters.machine.selected = null
-      this.$refs.machineTree.reset()
-
-      this.tableFilters.search = ''
-
-      this.loadItems()
     }
   }
 }
