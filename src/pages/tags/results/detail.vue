@@ -109,6 +109,7 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import MigasLink from 'components/MigasLink'
 import RemoveDialog from 'components/ui/RemoveDialog'
 import { elementMixin } from 'mixins/element'
+import { detailMixin } from 'mixins/detail'
 
 export default {
   meta() {
@@ -121,10 +122,14 @@ export default {
     RemoveDialog,
     MigasLink
   },
-  mixins: [elementMixin],
+  mixins: [elementMixin, detailMixin],
   data() {
     return {
       title: 'Tag',
+      model: 'tags',
+      listRoute: 'tags-list',
+      addRoute: 'tag-add',
+      detailRoute: 'tag-detail',
       breadcrumbs: [
         {
           text: 'Dashboard',
@@ -160,7 +165,7 @@ export default {
     if (this.$route.params.id) {
       this.breadcrumbs.push({
         text: 'Resultados',
-        to: 'tags-list'
+        to: this.listRoute
       })
       this.breadcrumbs.push({
         text: 'Id'
@@ -172,7 +177,7 @@ export default {
   async mounted() {
     if (this.$route.params.id) {
       await this.$axios
-        .get(`/api/v1/token/tags/${this.$route.params.id}/`)
+        .get(`/api/v1/token/${this.model}/${this.$route.params.id}/`)
         .then((response) => {
           this.element = response.data
           this.breadcrumbs.find(
@@ -199,7 +204,7 @@ export default {
       if (this.element.id) {
         this.loading = true
         await this.$axios
-          .patch(`/api/v1/token/tags/${this.element.id}/`, {
+          .patch(`/api/v1/token/${this.model}/${this.element.id}/`, {
             property_att: this.element.property_att.id,
             value: this.element.value,
             description: this.element.description
@@ -207,12 +212,12 @@ export default {
           .then((response) => {
             this.$store.dispatch('ui/notifySuccess', 'Data has been changed!')
             if (action === 'return') {
-              this.$router.push({ name: 'tags-list' })
+              this.$router.push({ name: this.listRoute })
             } else if (action === 'add') {
               this.element = { id: 0 }
               if (this.breadcrumbs.length === 5) this.breadcrumbs.pop()
               this.breadcrumbs[3].text = 'Añadir'
-              this.$router.push({ name: 'tag-add' })
+              this.$router.push({ name: this.addRoute })
               this.title = 'Tag'
             }
           })
@@ -223,7 +228,7 @@ export default {
       } else {
         this.loading = true
         await this.$axios
-          .post('/api/v1/token/tags/', {
+          .post(`/api/v1/token/${this.model}/`, {
             property_att: this.element.property_att.id,
             value: this.element.value,
             description: this.element.description
@@ -237,21 +242,24 @@ export default {
             this.$store.dispatch('ui/notifySuccess', 'Data has been added!')
 
             if (action === 'return') {
-              this.$router.push({ name: 'tags-list' })
+              this.$router.push({ name: this.listRoute })
             } else if (action === 'add') {
               this.element = { id: 0 }
-              this.$router.push({ name: 'tag-add' })
+              this.$router.push({ name: this.addRoute })
             } else {
               if (this.breadcrumbs.length === 4) {
                 this.breadcrumbs.pop()
-                this.breadcrumbs.push({ text: 'Resultados', to: 'tags-list' })
+                this.breadcrumbs.push({
+                  text: 'Resultados',
+                  to: this.listRoute
+                })
                 this.breadcrumbs.push({
                   text: this.attributeValue(this.element)
                 })
                 this.title = `Tag: ${this.attributeValue(this.element)}`
               }
               this.$router.push({
-                name: 'tag-detail',
+                name: this.detailRoute,
                 params: { id: this.element.id }
               })
             }
@@ -261,17 +269,6 @@ export default {
           })
           .finally(() => (this.loading = false))
       }
-    },
-
-    async remove() {
-      await this.$axios
-        .delete(`/api/v1/token/tags/${this.element.id}/`)
-        .then((response) => {
-          this.$router.push({ name: 'tags-list' })
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
     }
   }
 }
