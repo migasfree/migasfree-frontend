@@ -79,7 +79,6 @@
               outlined
               counter
               label="Selecciona un fichero"
-              @input="updateFiles"
             />
           </div>
         </div>
@@ -183,9 +182,8 @@ export default {
   },
   computed: {
     isValid() {
-      return true
       return (
-        this.element.project !== undefined && this.element.store !== undefined
+        this.projectStore.selected !== null && this.element.files !== undefined
       )
     }
   },
@@ -242,27 +240,25 @@ export default {
   methods: {
     nodeSelected(value) {
       if (typeof value !== 'string') return
-      console.log(value, typeof value)
+
       const keys = value.split('|')
       if (keys.length != 2) return
 
       const nodeProject = this.$refs.tree.getNodeByKey(parseInt(keys[0]))
       const nodeStore = this.$refs.tree.getNodeByKey(value)
-      console.log(nodeProject)
+
       this.projectStore.selected = `${nodeProject.label} / ${nodeStore.label}`
       Object.assign(this.element, {
         project: { id: nodeProject.id },
         store: { id: nodeStore.store_id }
       })
-      console.log('selectTree', this.projectStore.selected)
-      console.log(this.element)
+
       this.$refs.menu.hide()
     },
 
     onLazyLoad({ node, key, done, fail }) {
-      console.log(node, key)
       this.$axios
-        .get(`/api/v1/token/stores/?project__id=${key}`)
+        .get('/api/v1/token/stores/', { params: { project__id: key } })
         .then((response) => {
           done(
             Object.entries(response.data.results).map(([index, item]) => {
@@ -278,12 +274,6 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    },
-
-    updateFiles(files) {
-      // console.log(files)
-      // this.element.files = files
-      console.log(this.element.files)
     },
 
     async updateElement(action = null) {
