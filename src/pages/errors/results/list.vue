@@ -434,21 +434,6 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    },
-
-    resetFilters() {
-      this.$refs.myTable.reset()
-      this.resetColumnFilters()
-      this.tableFilters.search = ''
-      this.tableFilters.platform.selected = null
-
-      this.tableFilters.statusIn.selected = null
-      this.$refs.statusTree.reset()
-
-      this.tableFilters.createdAt.selected = { from: null, to: null }
-      this.$refs.createdAtRange.reset()
-
-      this.loadItems()
     }
   }
 }
