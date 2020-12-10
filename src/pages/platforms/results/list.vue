@@ -142,7 +142,9 @@ export default {
             trigger: 'enter'
           }
         }
-      ]
+      ],
+      model: 'platforms',
+      detailRoute: 'platform-detail'
     }
   },
   created() {
@@ -160,83 +162,11 @@ export default {
     }
   },
   methods: {
-    onSearch(value) {
-      this.tableFilters.search = value
-      console.log(this.tableFilters.search)
-      this.updateParams({
-        columnFilters: { search: this.tableFilters.search }
-      })
-      this.loadItems()
-    },
-
-    onSearchClear() {
-      this.onSearch('')
-    },
-
-    paramsToQueryString() {
-      let ret = `page_size=${this.serverParams.perPage}&page=${this.serverParams.page}`
-
-      if (Object.keys(this.serverParams.columnFilters).length) {
-        ret +=
-          '&' +
-          Object.entries(this.serverParams.columnFilters)
-            .map(([key, val]) => {
-              switch (key) {
-                case 'platform_id':
-                case 'search':
-                  return `${key}=${val}`
-                default:
-                  return `${key.replace('.', '__')}__icontains=${val}`
-              }
-            })
-            .join('&')
-      }
-
-      if (this.serverParams.sort.field) {
-        ret += `&ordering=${this.serverParams.sort.type}${this.serverParams.sort.field}`
-      }
-
-      console.log(ret)
-      return ret
-    },
-
-    async loadItems() {
-      if (this.isLoading) return
-
-      this.isLoading = true
-      await this.$axios
-        .get('/api/v1/token/platforms/?' + this.paramsToQueryString())
-        .then((response) => {
-          this.totalRecords = response.data.count
-          this.rows = response.data.results
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-        .finally(() => (this.isLoading = false))
-    },
-
     resetFilters() {
       this.$refs.myTable.reset()
       this.resetColumnFilters()
       this.tableFilters.search = ''
       this.loadItems()
-    },
-
-    edit(id) {
-      this.$router.push({ name: 'platform-detail', params: { id } })
-    },
-
-    remove(id, reload = true) {
-      this.$axios
-        .delete(`/api/v1/token/platforms/${id}/`)
-        .then((response) => {
-          this.$store.dispatch('ui/notifySuccess', 'Item deleted!')
-          if (reload) this.loadItems()
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
     }
   }
 }
