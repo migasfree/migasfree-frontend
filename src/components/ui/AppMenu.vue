@@ -81,15 +81,19 @@ export default {
               to: 'schedules-dashboard',
               icon: 'mdi-calendar-start',
               separatorAfter: true
+            }, */
+            {
+              title: 'Almacenes',
+              to: 'stores-dashboard',
+              icon: 'mdi-store-24-hour'
             },
-            { title: 'Almacenes', to: 'stores-dashboard', icon: 'mdi-store-24-hour' },
-            { title: 'Información de Paquetes', to: 'packages-info' }, */
+            // { title: 'Información de Paquetes', to: 'packages-info' },
             {
               title: 'Paquetes',
               to: 'packages-dashboard',
               icon: 'mdi-package-variant',
               separatorAfter: true
-            },
+            }
             /* { title: 'Aplicaciones', to: 'applications-dashboard', icon: 'mdi-apps' },
             { title: 'Políticas', to: 'policies-dashboard', icon: 'mdi-shield-half-full' } */
           ]
