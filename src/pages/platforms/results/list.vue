@@ -146,14 +146,6 @@ export default {
       model: 'platforms',
       detailRoute: 'platform-detail'
     }
-  },
-  methods: {
-    resetFilters() {
-      this.$refs.myTable.reset()
-      this.resetColumnFilters()
-      this.tableFilters.search = ''
-      this.loadItems()
-    }
   }
 }
 </script>
