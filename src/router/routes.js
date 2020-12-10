@@ -137,6 +137,27 @@ const routes = [
       },
 
       {
+        path: '/stores',
+        name: 'stores-dashboard',
+        component: () => import('pages/stores/index')
+      },
+      {
+        path: '/stores/results',
+        name: 'stores-list',
+        component: () => import('pages/stores/results/list')
+      },
+      {
+        path: '/stores/add',
+        name: 'store-add',
+        component: () => import('pages/stores/results/detail')
+      },
+      {
+        path: '/stores/results/:id',
+        name: 'store-detail',
+        component: () => import('pages/stores/results/detail')
+      },
+
+      {
         path: '/platforms/results',
         name: 'platforms-list',
         component: () => import('pages/platforms/results/list')
