@@ -373,21 +373,6 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    },
-
-    resetFilters() {
-      this.$refs.myTable.reset()
-      this.resetColumnFilters()
-      this.tableFilters.search = ''
-      this.tableFilters.platform.selected = null
-
-      this.tableFilters.createdAt.selected = { from: null, to: null }
-      this.$refs.createdAtRange.reset()
-
-      this.tableFilters.startDate.selected = { from: null, to: null }
-      this.$refs.startDateRange.reset()
-
-      this.loadItems()
     }
   }
 }
