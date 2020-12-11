@@ -17,6 +17,12 @@ quasar dev
 yarn run lint
 ```
 
+### i18n
+```bash
+yarn gettext-extract
+yarn gettext-compile
+```
+
 ### Build the app for production
 ```bash
 quasar build
