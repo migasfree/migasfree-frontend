@@ -21,7 +21,7 @@
           flat
           round
           :icon="$q.dark.isActive ? 'nights_stay' : 'wb_sunny'"
-          @click="$q.dark.toggle()"
+          @click="toggleDarkMode"
         >
           <q-tooltip>{{
             $q.dark.isActive ? 'Switch to Light mode' : 'Switch to Dark mode'
@@ -101,11 +101,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <AppMenu />
     </q-drawer>
 
@@ -162,6 +158,9 @@ export default {
       if (newValue) this.loadAlerts()
     }
   },
+  created() {
+    this.$q.dark.set(this.$q.cookies.get('darkMode'))
+  },
   async mounted() {
     if (this.loggedIn) await this.loadAlerts()
   },
@@ -170,6 +169,11 @@ export default {
       this.$store.dispatch('auth/logout').then(() => {
         this.$router.push({ name: 'login' })
       })
+    },
+
+    toggleDarkMode() {
+      this.$q.dark.toggle()
+      this.$q.cookies.set('darkMode', this.$q.dark.isActive)
     },
 
     async loadAlerts() {
