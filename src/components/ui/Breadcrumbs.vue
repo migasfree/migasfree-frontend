@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style scoped>
-span.q-breadcrumbs__el {
+.body--light span.q-breadcrumbs__el {
   color: black;
 }
 </style>
