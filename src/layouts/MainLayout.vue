@@ -32,8 +32,8 @@
           <template #label>
             <q-icon name="mdi-bell" />
             <q-chip :label="totalAlerts" />
-            <q-tooltip v-translate>
-              Alerts
+            <q-tooltip>
+              <translate>Alerts</translate>
             </q-tooltip>
           </template>
           <q-list v-if="alerts">
@@ -64,8 +64,8 @@
         <q-btn-dropdown v-if="loggedIn" flat stretch>
           <template #label>
             <q-icon name="mdi-account" />
-            <q-tooltip v-translate>
-              User Account
+            <q-tooltip>
+              <translate>User Account</translate>
             </q-tooltip>
           </template>
           <q-list>
