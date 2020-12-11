@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh Lpr lFf">
-    <q-header elevated class="bg-brown-7">
+    <q-header elevated>
       <q-toolbar>
         <q-btn
           flat
@@ -16,6 +16,17 @@
         <SearchBox />
 
         <q-space />
+
+        <q-btn
+          flat
+          round
+          :icon="$q.dark.isActive ? 'nights_stay' : 'wb_sunny'"
+          @click="$q.dark.toggle()"
+        >
+          <q-tooltip>{{
+            $q.dark.isActive ? 'Switch to Light mode' : 'Switch to Dark mode'
+          }}</q-tooltip>
+        </q-btn>
 
         <q-btn-dropdown v-if="isAlertsVisible" flat stretch>
           <template #label>
@@ -94,7 +105,6 @@
       v-model="leftDrawerOpen"
       show-if-above
       bordered
-      content-class="bg-grey-1"
     >
       <AppMenu />
     </q-drawer>
