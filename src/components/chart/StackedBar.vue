@@ -21,7 +21,10 @@ import 'echarts/lib/chart/bar'
 import 'echarts/lib/chart/line'
 import 'echarts/lib/component/legend'
 import 'echarts/lib/component/tooltip'
-import { MIGASFREE_CHART_COLORS } from 'config/app.conf'
+import {
+  MIGASFREE_CHART_COLORS,
+  MIGASFREE_CHART_DARK_COLORS
+} from 'config/app.conf'
 
 export default {
   name: 'StackedBarChart',
@@ -33,21 +36,36 @@ export default {
     return {
       options: {
         animation: false,
-        color: MIGASFREE_CHART_COLORS,
+        color: this.$q.dark.isActive
+          ? MIGASFREE_CHART_DARK_COLORS
+          : MIGASFREE_CHART_COLORS,
         tooltip: {
           show: true,
           trigger: 'axis'
         },
         legend: {
           show: true,
-          bottom: 'bottom'
+          bottom: 'bottom',
+          textStyle: {
+            color: this.$q.dark.isActive ? '#fff' : '#333'
+          }
         },
         xAxis: {
           type: 'category',
-          data: []
+          data: [],
+          axisLine: {
+            lineStyle: {
+              color: this.$q.dark.isActive ? '#fff' : '#333'
+            }
+          }
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          axisLine: {
+            lineStyle: {
+              color: this.$q.dark.isActive ? '#fff' : '#333'
+            }
+          }
         },
         series: []
       },
@@ -63,6 +81,14 @@ export default {
         this.options.xAxis.data = val.xData
       },
       deep: true
+    },
+    '$q.dark.isActive'(val) {
+      this.options.color = val
+        ? MIGASFREE_CHART_DARK_COLORS
+        : MIGASFREE_CHART_COLORS
+      this.options.legend.textStyle.color = val ? '#fff' : '#333'
+      this.options.xAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
+      this.options.yAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
     }
   },
   beforeMount() {
