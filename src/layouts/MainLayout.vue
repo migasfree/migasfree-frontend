@@ -32,8 +32,8 @@
           <template #label>
             <q-icon name="mdi-bell" />
             <q-chip :label="totalAlerts" />
-            <q-tooltip>
-              Alertas
+            <q-tooltip v-translate>
+              Alerts
             </q-tooltip>
           </template>
           <q-list v-if="alerts">
@@ -64,19 +64,21 @@
         <q-btn-dropdown v-if="loggedIn" flat stretch>
           <template #label>
             <q-icon name="mdi-account" />
-            <q-tooltip>
-              Cuenta de usuario
+            <q-tooltip v-translate>
+              User Account
             </q-tooltip>
           </template>
           <q-list>
-            <q-item-label header>Usuario: {{ username }}</q-item-label>
+            <q-item-label v-translate="{ name: username }" header
+              >User: %{ name }</q-item-label
+            >
             <q-separator />
             <q-item v-close-popup clickable to="#">
               <q-item-section avatar>
                 <q-icon name="mdi-account-key" />
               </q-item-section>
               <q-item-section>
-                <q-item-label>Cambiar contraseña</q-item-label>
+                <q-item-label v-translate>Change Password</q-item-label>
               </q-item-section>
             </q-item>
 
@@ -85,7 +87,7 @@
                 <q-icon name="mdi-power-standby" />
               </q-item-section>
               <q-item-section>
-                <q-item-label>Terminar sesión</q-item-label>
+                <q-item-label v-translate>Logout</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
