@@ -94,10 +94,10 @@ export default {
     nodeSelected(value) {
       const node = this.$refs.tree.getNodeByKey(value)
       this.selected = node[this.labelKey]
-      console.log('selectTree', this.selected)
       this.$refs.menu.hide()
       this.$emit('select', node)
     },
+
     reset() {
       this.selected = ''
     }
