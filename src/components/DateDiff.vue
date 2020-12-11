@@ -42,7 +42,7 @@ export default {
 
     if (this.end < this.begin) {
       this.icon = 'mdi-sync'
-      this.diff = 'Updating...'
+      this.diff = this.$gettext('Updating...')
       return
     }
 
@@ -58,8 +58,17 @@ export default {
       this.appearance = 'negative'
     }
 
-    if (diffDays) this.diff = `${diffDays} days, ${diffSeconds}`
-    else this.diff = diffSeconds
+    if (diffDays) {
+      const template = this.$ngettext(
+        '%{n} day, %{s}',
+        '%{n} days, %{s}',
+        diffDays
+      )
+      this.diff = this.$gettextInterpolate(template, {
+        n: diffDays,
+        s: diffSeconds
+      })
+    } else this.diff = diffSeconds
   }
 }
 </script>
