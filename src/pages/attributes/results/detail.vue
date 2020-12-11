@@ -119,7 +119,7 @@ export default {
           icon: 'mdi-home'
         },
         {
-          text: this.$gettext('Datum'),
+          text: this.$gettext('Data'),
           icon: 'mdi-database-search'
         },
         {
