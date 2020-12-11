@@ -32,12 +32,12 @@ export const datagridMixin = {
         perPage: this.serverParams.perPage,
         perPageDropdown: [50, 100, 150],
         dropdownAllowAll: false,
-        nextLabel: this.$t('vgt.next'),
-        prevLabel: this.$t('vgt.prev'),
-        rowsPerPageLabel: this.$t('vgt.rowPerPage'),
-        ofLabel: this.$t('vgt.of'),
-        pageLabel: this.$t('vgt.page'), // for 'pages' mode
-        allLabel: this.$t('vgt.all')
+        nextLabel: this.$gettext('Next'),
+        prevLabel: this.$gettext('Previous'),
+        rowsPerPageLabel: this.$gettext('Results per page'),
+        ofLabel: this.$gettext('of'),
+        pageLabel: this.$gettext('page'), // for 'pages' mode
+        allLabel: this.$gettext('All')
       }
     },
 
@@ -254,21 +254,21 @@ export const datagridMixin = {
       this.tableFilters.statusIn.choices = options.choices
 
       this.tableFilters.statusIn.items = [
-        { id: '', label: 'Todos' },
+        { id: '', label: this.$gettext('All') },
         {
           id: options.subscribed.join(','),
-          label: 'subscribed',
+          label: this.$gettext('subscribed'),
           children: [
             {
               id: options.productive.join(','),
-              label: 'productive',
+              label: this.$gettext('productive'),
               children: Object.entries(options.productive).map(([key, val]) => {
                 return { id: val, label: options.choices[val] }
               })
             },
             {
               id: options.unproductive.join(','),
-              label: 'unproductive',
+              label: this.$gettext('unproductive'),
               children: Object.entries(options.unproductive).map(
                 ([key, val]) => {
                   return { id: val, label: options.choices[val] }
@@ -277,7 +277,10 @@ export const datagridMixin = {
             }
           ]
         },
-        { id: options.unsubscribed.join(','), label: 'unsubscribed' }
+        {
+          id: options.unsubscribed.join(','),
+          label: this.$gettext('unsubscribed')
+        }
       ]
 
       if (this.$route.query.status_in) {
@@ -372,7 +375,10 @@ export const datagridMixin = {
       this.$axios
         .delete(`/api/v1/token/${this.model}/${id}/`)
         .then((response) => {
-          this.$store.dispatch('ui/notifySuccess', 'Item deleted!')
+          this.$store.dispatch(
+            'ui/notifySuccess',
+            this.$gettext('Item deleted!')
+          )
           if (reload) this.loadItems()
         })
         .catch((error) => {
@@ -382,12 +388,14 @@ export const datagridMixin = {
 
     confirmRemove(id) {
       let items = []
-      let message = 'Are you sure you want to remove this item?'
+      let message = this.$gettext('Are you sure you want to remove this item?')
 
       if (typeof id === 'number' && id > 0) {
         items.push(id)
       } else {
-        message = 'Are you sure you want to remove all these items?'
+        message = this.$gettext(
+          'Are you sure you want to remove all these items?'
+        )
         items = this.selectedRows.map((item) => item.id)
       }
 
@@ -398,11 +406,12 @@ export const datagridMixin = {
           message,
           ok: {
             color: 'negative',
-            label: 'Borrar',
+            label: this.$gettext('Delete'),
             icon: 'mdi-delete'
           },
           cancel: {
-            flat: true
+            flat: true,
+            label: this.$gettext('Cancel')
           },
           persistent: true
         })
@@ -417,7 +426,10 @@ export const datagridMixin = {
       this.$axios
         .patch(`/api/v1/token/${this.model}/${id}/`, { checked: value })
         .then((response) => {
-          this.$store.dispatch('ui/notifySuccess', 'Changed item check value!')
+          this.$store.dispatch(
+            'ui/notifySuccess',
+            this.$gettext('Changed item check value!')
+          )
           if (reload) this.loadItems()
         })
         .catch((error) => {
