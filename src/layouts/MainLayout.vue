@@ -24,7 +24,9 @@
           @click="toggleDarkMode"
         >
           <q-tooltip>{{
-            $q.dark.isActive ? 'Switch to Light mode' : 'Switch to Dark mode'
+            $q.dark.isActive
+              ? $gettext('Switch to Light mode')
+              : $gettext('Switch to Dark mode')
           }}</q-tooltip>
         </q-btn>
 
