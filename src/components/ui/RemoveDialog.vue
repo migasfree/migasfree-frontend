@@ -3,24 +3,20 @@
     <q-card>
       <q-card-section class="row items-center">
         <q-avatar icon="mdi-alert-remove" color="negative" text-color="white" />
-        <span class="q-ml-sm">{{ message }}</span>
+        <span class="q-ml-sm">{{ text }}</span>
       </q-card-section>
 
       <q-card-actions align="right">
+        <q-btn v-close-popup flat color="primary" @click="$emit('canceled')"
+          ><translate>Cancel</translate></q-btn
+        >
         <q-btn
           v-close-popup
-          flat
-          label="Cancel"
-          color="primary"
-          @click="$emit('canceled')"
-        />
-        <q-btn
-          v-close-popup
-          label="Borrar"
           icon="mdi-delete"
           color="negative"
           @click="$emit('confirmed')"
-        />
+          ><translate>Delete</translate></q-btn
+        >
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -33,7 +29,7 @@ export default {
     message: {
       type: String,
       required: false,
-      default: 'Are you sure you want to remove this item?'
+      default: ''
     },
     value: {
       type: Boolean,
@@ -43,6 +39,14 @@ export default {
   data() {
     return {
       showing: this.value
+    }
+  },
+  computed: {
+    text() {
+      if (this.message === '')
+        return this.$gettext('Are you sure you want to remove this item?')
+
+      return this.message
     }
   },
   watch: {
