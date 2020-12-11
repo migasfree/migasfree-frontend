@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header title="Atributos" :results="totalRecords" :has-add-button="false" />
+    <Header :title="title" :results="totalRecords" :has-add-button="false" />
 
     <SearchFilter
       v-model="tableFilters.search"
@@ -12,7 +12,9 @@
 
     <div class="row q-pa-md">
       <div class="col-12">
-        <q-btn @click="resetFilters">Reset all filters</q-btn>
+        <q-btn @click="resetFilters"
+          ><translate>Reset all filters</translate></q-btn
+        >
       </div>
     </div>
 
@@ -73,7 +75,7 @@
           {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
-      <div slot="emptystate">{{ $t('vgt.noData') }}</div>
+      <div slot="emptystate" v-translate>There are no results</div>
       <div slot="selected-row-actions">
         <q-btn
           size="sm"
@@ -95,8 +97,10 @@ import { elementMixin } from 'mixins/element'
 import { datagridMixin } from 'mixins/datagrid'
 
 export default {
-  meta: {
-    title: 'Attributes List'
+  meta() {
+    return {
+      title: this.$gettext('Attributes List')
+    }
   },
   components: {
     Breadcrumbs,
@@ -107,23 +111,24 @@ export default {
   mixins: [elementMixin, datagridMixin],
   data() {
     return {
+      title: this.$gettext('Attributes'),
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Datos',
+          text: this.$gettext('Data'),
           icon: 'mdi-database-search'
         },
         {
-          text: 'Atributos',
+          text: this.$gettext('Attributes'),
           icon: 'mdi-pound',
           to: 'attributes-dashboard'
         },
         {
-          text: 'Resultados'
+          text: this.$gettext('Results')
         }
       ],
       columns: [
@@ -132,37 +137,37 @@ export default {
           hidden: true
         },
         {
-          label: 'Actions',
+          label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
           globalSearchDisabled: true
         },
         {
-          label: 'Attribute',
+          label: this.$gettext('Attribute'),
           field: 'value',
           html: true,
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.filter'),
+            placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
         },
         {
-          label: 'Description',
+          label: this.$gettext('Description'),
           field: 'description',
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.filter'),
+            placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
         },
         {
-          label: 'Formula',
+          label: this.$gettext('Formula'),
           field: 'property_att',
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.all'),
+            placeholder: this.$gettext('All'),
             trigger: 'enter'
           }
         }
@@ -190,7 +195,7 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    },
+    }
   }
 }
 </script>
