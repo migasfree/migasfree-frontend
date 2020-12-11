@@ -1,7 +1,7 @@
 <template>
   <q-card>
     <q-card-section>
-      <div class="text-h5">Dispositivos</div>
+      <div v-translate class="text-h5">Devices</div>
     </q-card-section>
 
     <q-card-section>
@@ -14,15 +14,16 @@
           map-options
           multiple
           input-debounce="0"
-          label="Asignados"
+          label-slot
           :options="assignedDevices"
           @filter="filterAssignedDevices"
           @filter-abort="abortFilterAssignedDevices"
         >
+          <template #label><translate>Assigned</translate></template>
           <template #no-option>
             <q-item>
               <q-item-section class="text-grey">
-                No results
+                <translate>No results</translate>
               </q-item-section>
             </q-item>
           </template>
@@ -53,11 +54,9 @@
       </p>
 
       <p>
-        <q-select
-          v-model="devices.default_logical_device"
-          outlined
-          label="Por defecto"
-        />
+        <q-select v-model="devices.default_logical_device" outlined label-slot>
+          <template #label><translate>By default</translate></template>
+        </q-select>
       </p>
     </q-card-section>
 
@@ -65,12 +64,12 @@
       <q-btn
         class="full-width"
         color="primary"
-        label="Grabar y seguir editando"
         icon="mdi-content-save-edit"
         :loading="loading"
         :disabled="loading"
         @click="updateDevices"
-      />
+        ><translate>Save and continue editing</translate></q-btn
+      >
     </q-card-actions>
   </q-card>
 </template>
@@ -103,7 +102,7 @@ export default {
           this.devices = response.data
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error.response.data.detail)
+          this.$store.dispatch('ui/notifyError', error)
         })
     },
 
@@ -115,7 +114,10 @@ export default {
           // assigned_logical_devices_to_cid: TODO
         })
         .then((response) => {
-          this.$store.dispatch('ui/notifySuccess', 'Devices have been changed!')
+          this.$store.dispatch(
+            'ui/notifySuccess',
+            this.$gettext('Devices have been changed!')
+          )
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
