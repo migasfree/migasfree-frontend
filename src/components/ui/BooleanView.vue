@@ -1,10 +1,10 @@
 <template>
   <div>
     <q-icon v-if="value" name="mdi-check-bold" color="positive" size="md"
-      ><q-tooltip>Sí</q-tooltip></q-icon
+      ><q-tooltip><translate>Yes</translate></q-tooltip></q-icon
     >
     <q-icon v-else name="mdi-close-thick" color="negative" size="md">
-      <q-tooltip>No</q-tooltip>
+      <q-tooltip><translate>No</translate></q-tooltip>
     </q-icon>
   </div>
 </template>
