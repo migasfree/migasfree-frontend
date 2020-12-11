@@ -27,37 +27,37 @@ export default {
       items: [
         {
           icon: 'mdi-cogs',
-          title: 'Configuración',
+          title: this.$gettext('Configuration'),
           options: [
             {
-              title: 'Plataformas',
+              title: this.gettext('Platforms'),
               to: 'platforms-list',
               icon: 'mdi-layers'
             }
             /* {
-              title: 'Proyectos',
+              title: this.$gettext('Projects'),
               to: 'projects-dashboard',
               icon: 'mdi-sitemap',
               separatorAfter: true
             },
-            { title: 'Fórmulas', to: 'formulas-dashboard', icon: 'mdi-function-variant' },
+            { title: this.$gettext('Formulas'), to: 'formulas-dashboard', icon: 'mdi-function-variant' },
             { title: 'Categorías de etiquetas', to: 'stamps-dashboard', icon: 'mdi-stamper' },
             { title: 'Conjuntos de atributos', to: 'attribute-sets-dashboard', icon: 'mdi-set-none' },
             {
-              title: 'Definiciones de fallas',
+              title: this.$gettext('Faults Definitions'),
               to: 'fault-definitions-dashboard',
               icon: 'mdi-alert-octagram-outline',
               separatorAfter: true
             },
             { title: 'Perfiles de usuario/a', to: 'user-profiles-dashboard', icon: 'mdi-account-cog' },
-            { title: 'Grupos', to: 'groups-dashboard', icon: 'mdi-account-group' },
-            { title: 'Dominios', to: 'domains-dashboard', icon: 'mdi-earth' },
-            { title: 'Ámbitos', to: 'scopes-dashboard', icon: 'mdi-eye-outline' } */
+            { title: this.$gettext('Groups'), to: 'groups-dashboard', icon: 'mdi-account-group' },
+            { title: this.$gettext('Domains'), to: 'domains-dashboard', icon: 'mdi-earth' },
+            { title: this.$gettext('Scopes'), to: 'scopes-dashboard', icon: 'mdi-eye-outline' } */
           ]
         },
         {
           icon: 'mdi-printer-eye',
-          title: 'Dispositivos',
+          title: this.$gettext('Devices'),
           options: [
             /* { title: 'Fabricantes', to: 'manufacturers-dashboard', icon: 'mdi-factory' },
             { title: 'Modelos', to: 'models-dashboard', icon: 'mdi-shape' },
@@ -73,23 +73,23 @@ export default {
         },
         {
           icon: 'mdi-truck-delivery',
-          title: 'Liberación',
+          title: this.$gettext('Release'),
           options: [
-            /* { title: 'Despliegues', to: 'deployments-dashboard', icon: 'mdi-rocket-launch' },
+            /* { title: this.$gettext('Deployments'), to: 'deployments-dashboard', icon: 'mdi-rocket-launch' },
             {
-              title: 'Calendarios',
+              title: this.$gettext('Schedules'),
               to: 'schedules-dashboard',
               icon: 'mdi-calendar-start',
               separatorAfter: true
             }, */
             {
-              title: 'Almacenes',
+              title: this.$gettext('Stores'),
               to: 'stores-dashboard',
               icon: 'mdi-store-24-hour'
             },
             // { title: 'Información de Paquetes', to: 'packages-info' },
             {
-              title: 'Paquetes',
+              title: this.$gettext('Packages'),
               to: 'packages-dashboard',
               icon: 'mdi-package-variant',
               separatorAfter: true
@@ -100,10 +100,10 @@ export default {
         },
         {
           icon: 'mdi-database-search',
-          title: 'Datos',
+          title: this.$gettext('Data'),
           options: [
             {
-              title: 'Ordenadores',
+              title: this.$gettext('Computers'),
               to: 'computers-dashboard',
               icon: 'mdi-desktop-classic'
             },
@@ -115,23 +115,31 @@ export default {
               separatorAfter: true
             }, */
             {
-              title: 'Atributos',
+              title: this.$gettext('Attributes'),
               to: 'attributes-dashboard',
               icon: 'mdi-pound'
             },
             {
-              title: 'Etiquetas',
+              title: this.$gettext('Tags'),
               to: 'tags-dashboard',
               icon: 'mdi-tag',
               separatorAfter: true
             },
             {
-              title: 'Sincronizaciones',
+              title: this.$gettext('Synchronizations'),
               to: 'syncs-dashboard',
               icon: 'mdi-sync'
             },
-            { title: 'Errores', to: 'errors-dashboard', icon: 'mdi-bug' },
-            { title: 'Fallas', to: 'faults-dashboard', icon: 'mdi-bomb' }
+            {
+              title: this.$gettext('Errors'),
+              to: 'errors-dashboard',
+              icon: 'mdi-bug'
+            },
+            {
+              title: this.$gettext('Faults'),
+              to: 'faults-dashboard',
+              icon: 'mdi-bomb'
+            }
             /* { title: 'Registros de Estados', to: 'status-logs-dashboard', icon: 'mdi-flag-variant' },
             {
               title: 'Migraciones',
