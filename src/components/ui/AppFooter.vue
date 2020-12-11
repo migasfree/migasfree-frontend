@@ -19,7 +19,7 @@
         href="http://www.gnu.org/licenses/gpl.html"
         no-caps
         size="16px"
-        ><q-tooltip>License</q-tooltip></q-btn
+        ><q-tooltip><translate>License</translate></q-tooltip></q-btn
       >
       <q-btn
         stretch
@@ -27,13 +27,13 @@
         icon="mdi-github"
         type="a"
         href="https://github.com/migasfree/migasfree"
-        ><q-tooltip>Source code</q-tooltip></q-btn
+        ><q-tooltip><translate>Source code</translate></q-tooltip></q-btn
       >
 
       <q-space />
 
       <q-btn stretch flat icon="mdi-api" type="a" :href="apiLink">
-        <q-tooltip>API Rest Info</q-tooltip></q-btn
+        <q-tooltip><translate>API Rest Info</translate></q-tooltip></q-btn
       >
 
       <q-btn
@@ -44,7 +44,7 @@
         href="http://fun-with-migasfree.readthedocs.io/"
       >
         <q-tooltip anchor="top middle" self="bottom right"
-          >migasfree documentation</q-tooltip
+          ><translate>migasfree documentation</translate></q-tooltip
         ></q-btn
       >
     </q-toolbar>
