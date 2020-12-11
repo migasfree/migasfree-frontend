@@ -2,11 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header
-      title="Ordenadores"
-      :results="totalRecords"
-      :has-add-button="false"
-    />
+    <Header :title="title" :results="totalRecords" :has-add-button="false" />
 
     <q-list class="more-filters" bordered>
       <q-expansion-item icon="mdi-filter" label="More Filters">
@@ -21,13 +17,17 @@
             <q-select
               v-model="tableFilters.platform.selected"
               :options="tableFilters.platform.items"
-              label="Por plataforma"
+              label-slot
               dense
               outlined
               option-value="id"
               option-label="name"
               @input="onPlatformFilter"
             >
+              <template #label>
+                <translate>By Platform</translate>
+              </template>
+
               <template #before>
                 <q-icon name="mdi-filter" />
               </template>
@@ -38,13 +38,17 @@
             <q-select
               v-model="tableFilters.architecture.selected"
               :options="tableFilters.architecture.items"
-              label="Por arquitectura"
+              label-slot
               dense
               outlined
               option-value="id"
               option-label="name"
               @input="onArchitectureFilter"
             >
+              <template #label>
+                <translate>By Architecture</translate>
+              </template>
+
               <template #before>
                 <q-icon name="mdi-filter" />
               </template>
@@ -55,13 +59,17 @@
             <q-select
               v-model="tableFilters.syncEndDate.selected"
               :options="tableFilters.syncEndDate.items"
-              label="Por fecha de última sincronización"
+              label-slot
               dense
               outlined
               option-value="id"
               option-label="name"
               @input="onSyncEndDateFilter"
             >
+              <template #label>
+                <translate>By last sync date</translate>
+              </template>
+
               <template #before>
                 <q-icon name="mdi-filter" />
               </template>
@@ -74,13 +82,17 @@
             <q-select
               v-model="tableFilters.softwareInventory.selected"
               :options="tableFilters.softwareInventory.items"
-              label="Por inventario de software"
+              label-slot
               dense
               outlined
               option-value="id"
               option-label="name"
               @input="onSoftwareInventoryFilter"
             >
+              <template #label>
+                <translate>By Software Inventory</translate>
+              </template>
+
               <template #before>
                 <q-icon name="mdi-filter" />
               </template>
@@ -134,7 +146,9 @@
 
         <div class="row q-pa-md">
           <div class="col-12">
-            <q-btn @click="resetFilters">Reset all filters</q-btn>
+            <q-btn @click="resetFilters"
+              ><translate>Reset all filters</translate></q-btn
+            >
           </div>
         </div>
       </q-expansion-item>
@@ -214,7 +228,7 @@
           {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
-      <div slot="emptystate">{{ $t('vgt.noData') }}</div>
+      <div slot="emptystate" v-translate>There are no results</div>
       <div slot="selected-row-actions">
         <q-btn
           size="sm"
@@ -238,8 +252,10 @@ import { elementMixin } from 'mixins/element'
 import { datagridMixin } from 'mixins/datagrid'
 
 export default {
-  meta: {
-    title: 'Computers List'
+  meta() {
+    return {
+      title: this.$gettext('Computers List')
+    }
   },
   components: {
     Breadcrumbs,
@@ -252,23 +268,24 @@ export default {
   mixins: [elementMixin, datagridMixin],
   data() {
     return {
+      title: this.$gettext('Computers'),
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Datos',
+          text: this.$gettext('Data'),
           icon: 'mdi-database-search'
         },
         {
-          text: 'Ordenadores',
+          text: this.$gettext('Computers'),
           to: 'computers-dashboard',
           icon: 'mdi-desktop-classic'
         },
         {
-          text: 'Resultados'
+          text: this.$gettext('Results')
         }
       ],
       columns: [
@@ -277,19 +294,19 @@ export default {
           hidden: true
         },
         {
-          label: 'Actions',
+          label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
           globalSearchDisabled: true
         },
         {
-          label: 'Name',
+          label: this.$gettext('Name'),
           field: 'name',
           html: true,
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.filter'),
+            placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
         },
@@ -302,12 +319,12 @@ export default {
           hidden: true
         },
         {
-          label: 'Project',
+          label: this.$gettext('Project'),
           field: 'project.name',
           html: true,
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.all'),
+            placeholder: this.$gettext('All'),
             trigger: 'enter'
           }
         },
@@ -316,17 +333,17 @@ export default {
           hidden: true
         },
         {
-          label: 'User',
+          label: this.$gettext('User'),
           field: 'sync_user.name',
           html: true,
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.filter'),
+            placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
         },
         {
-          label: 'Sync end Date',
+          label: this.$gettext('Sync end Date'),
           field: 'sync_end_date',
           type: 'date',
           dateInputFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSSSS",
@@ -337,12 +354,12 @@ export default {
           hidden: true
         },
         {
-          label: 'Product',
+          label: this.$gettext('Product'),
           field: 'product',
           html: true,
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.filter'),
+            placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
         },
@@ -354,12 +371,12 @@ export default {
       tableFilters: {
         search: '',
         platform: {
-          items: [{ id: '', name: 'Todas' }],
+          items: [{ id: '', name: this.$gettext('All') }],
           selected: null
         },
         architecture: {
           items: [
-            { id: '', name: 'Todas' },
+            { id: '', name: this.$gettext('All') },
             { id: 32, name: '32 bits' },
             { id: 64, name: '64 bits' }
           ],
@@ -367,21 +384,21 @@ export default {
         },
         machine: {
           items: [
-            { id: '', label: 'Todas' },
+            { id: '', label: this.$gettext('All') },
             {
               id: 'P',
-              label: 'Físicas',
+              label: this.$gettext('Physical'),
               children: [
-                { id: 'desktop', label: 'desktop' },
-                { id: 'laptop', label: 'portátil' }
+                { id: 'desktop', label: this.$gettext('desktop') },
+                { id: 'laptop', label: this.$gettext('laptop') }
               ]
             },
             {
               id: 'V',
-              label: 'Virtuales',
+              label: this.$gettext('Virtual'),
               children: [
-                { id: 'virtual', label: 'emulador' },
-                { id: 'docker', label: 'contenedor' }
+                { id: 'virtual', label: this.$gettext('emulator') },
+                { id: 'docker', label: this.$gettext('container') }
               ]
             }
           ],
@@ -389,20 +406,45 @@ export default {
         },
         syncEndDate: {
           items: [
-            { id: '', name: 'Todas' },
-            { id: 0, name: 'sin fecha' },
-            { id: 7, name: 'hace 7 días' },
-            { id: 30, name: 'hace 30 días' },
-            { id: 60, name: 'hace 60 días' },
-            { id: 180, name: 'hace 180 días' },
-            { id: 365, name: 'hace 365 días' }
+            { id: '', name: this.$gettext('All') },
+            { id: 0, name: this.$gettext('without date') },
+            {
+              id: 7,
+              name: this.$gettextInterpolate(this.$gettext('%{n} days ago'), {
+                n: 7
+              })
+            },
+            {
+              id: 30,
+              name: this.$gettextInterpolate(this.$gettext('%{n} days ago'), {
+                n: 30
+              })
+            },
+            {
+              id: 60,
+              name: this.$gettextInterpolate(this.$gettext('%{n} days ago'), {
+                n: 60
+              })
+            },
+            {
+              id: 180,
+              name: this.$gettextInterpolate(this.$gettext('%{n} days ago'), {
+                n: 180
+              })
+            },
+            {
+              id: 365,
+              name: this.$gettextInterpolate(this.$gettext('%{n} days ago'), {
+                n: 365
+              })
+            }
           ],
           selected: null
         },
         softwareInventory: {
           items: [
-            { id: '', name: 'Todos' },
-            { id: 0, name: 'sin inventario' }
+            { id: '', name: this.$gettext('All') },
+            { id: 0, name: this.$gettext('without inventory') }
           ],
           selected: null
         },
