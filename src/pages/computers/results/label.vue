@@ -17,7 +17,9 @@
       </q-item>
 
       <q-item class="text-center">
-        <q-item-section> Server: {{ server }} </q-item-section>
+        <q-item-section>
+          <translate>Server</translate>: {{ server }}
+        </q-item-section>
       </q-item>
 
       <q-separator inset />
