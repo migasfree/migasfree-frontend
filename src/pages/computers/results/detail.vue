@@ -6,7 +6,7 @@
       <div class="row">
         <div class="col-md">
           <h2 class="text-h3">
-            Ordenador:
+            <translate>Computer</translate>:
             <MigasLink
               model="computers"
               :pk="element.id"
@@ -52,7 +52,7 @@
         <div class="col-md">
           <q-card>
             <q-card-section>
-              <div class="text-h5">Situación actual</div>
+              <div v-translate class="text-h5">Current Situation</div>
             </q-card-section>
 
             <q-card-section>
@@ -62,9 +62,13 @@
                   outlined
                   emit-value
                   map-options
-                  label="Estado"
+                  label-slot
                   :options="status"
                 >
+                  <template #label>
+                    <translate>Status</translate>
+                  </template>
+
                   <template #option="scope">
                     <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
                       <q-item-section avatar>
@@ -100,8 +104,9 @@
                   v-model="element.comment"
                   outlined
                   type="textarea"
-                  label="Comentario"
-                />
+                  label-slot
+                  ><template #label>Comment</template></q-input
+                >
               </p>
 
               <p>
@@ -112,14 +117,16 @@
                   map-options
                   multiple
                   input-debounce="0"
-                  label="Etiquetas"
+                  label-slot
                   :options="tags"
                   @filter="filterTags"
                   @filter-abort="abortFilterTags"
                 >
+                  <template #label><translate>Tags</translate></template>
+
                   <template #no-option>
                     <q-item>
-                      <q-item-section class="text-grey">
+                      <q-item-section v-translate class="text-grey">
                         No results
                       </q-item-section>
                     </q-item>
@@ -152,7 +159,7 @@
               </p>
 
               <OverflowList
-                label="Conjuntos de atributos"
+                :label="onlyAttributeSetsLabel"
                 icon="mdi-set-none"
                 :items="onlyAttributeSets"
                 model="attributes"
@@ -160,11 +167,11 @@
 
               <div class="row q-pa-md text-center">
                 <div class="col-md">
-                  <q-tooltip>Errores</q-tooltip>
+                  <q-tooltip><translate>Errors</translate></q-tooltip>
                   <q-icon name="mdi-bug" size="xl" />
                   <q-btn
                     round
-                    size="sm"
+                    size="md"
                     color="negative"
                     text-color="white"
                     :to="{
@@ -176,7 +183,7 @@
                   /
                   <q-btn
                     round
-                    size="sm"
+                    size="md"
                     color="grey-3"
                     text-color="black"
                     :to="{
@@ -188,11 +195,11 @@
                 </div>
 
                 <div class="col-md">
-                  <q-tooltip>Fallas</q-tooltip>
+                  <q-tooltip><translate>Faults</translate></q-tooltip>
                   <q-icon name="mdi-bomb" size="xl" />
                   <q-btn
                     round
-                    size="sm"
+                    size="md"
                     color="negative"
                     text-color="white"
                     :to="{
@@ -204,7 +211,7 @@
                   /
                   <q-btn
                     round
-                    size="sm"
+                    size="md"
                     color="grey-3"
                     text-color="black"
                     :to="{
@@ -221,12 +228,12 @@
               <q-btn
                 class="full-width"
                 color="primary"
-                label="Grabar y seguir editando"
                 icon="mdi-content-save-edit"
                 :loading="loading"
                 :disabled="loading"
                 @click="updateCurrentSituation"
-              />
+                ><translate>Save and continue editing</translate></q-btn
+              >
             </q-card-actions>
           </q-card>
         </div>
@@ -236,7 +243,7 @@
             <q-card-section>
               <div class="row">
                 <div class="col-md">
-                  <div class="text-h5">Sincronización</div>
+                  <div v-translate class="text-h5">Synchronization</div>
                 </div>
 
                 <div class="col-md">
@@ -252,14 +259,18 @@
             <q-card-section>
               <div class="row q-pa-md">
                 <div class="col-md">
-                  <q-tooltip self="bottom middle">sync start date</q-tooltip>
+                  <q-tooltip self="bottom middle"
+                    ><translate>sync start date</translate></q-tooltip
+                  >
                   <q-icon name="mdi-play" size="sm" />{{
                     showDate(syncInfo.sync_start_date)
                   }}
                 </div>
 
                 <div class="col-md">
-                  <q-tooltip self="bottom middle">sync end date</q-tooltip>
+                  <q-tooltip self="bottom middle"
+                    ><translate>sync end date</translate></q-tooltip
+                  >
                   <q-icon name="mdi-stop" size="sm" />{{
                     showDate(syncInfo.sync_end_date)
                   }}
@@ -276,7 +287,9 @@
               </div>
 
               <div class="row q-pa-md">
-                <q-tooltip self="bottom middle">User</q-tooltip>
+                <q-tooltip self="bottom middle"
+                  ><translate>User</translate></q-tooltip
+                >
                 <q-icon name="mdi-account" size="sm" />
                 <MigasLink
                   model="users"
@@ -286,7 +299,7 @@
               </div>
 
               <OverflowList
-                label="Attributes"
+                :label="onlyAttributeLabel"
                 icon="mdi-pound"
                 :items="onlyAttributes"
                 model="attributes"
@@ -314,9 +327,9 @@
           flat
           icon="mdi-delete"
           color="negative"
-          label="Borrar"
           @click="confirmRemove = true"
-        />
+          ><translate>Delete</translate></q-btn
+        >
       </div>
 
       <RemoveDialog
@@ -362,28 +375,30 @@ export default {
   },
   mixins: [elementMixin, dateMixin, detailMixin],
   data() {
+    const route = 'computers-list'
+
     return {
-      title: 'Computer',
+      title: this.$gettext('Computer'),
       model: 'computers',
-      listRoute: 'computers-list',
+      listRoute: route,
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Datos',
+          text: this.$gettext('Data'),
           icon: 'mdi-database-search'
         },
         {
-          text: 'Ordenadores',
+          text: this.$gettext('Computers'),
           to: 'computers-dashboard',
           icon: 'mdi-desktop-classic'
         },
         {
-          text: 'Resultados',
-          to: this.listRoute
+          text: this.$gettext('Results'),
+          to: route
         },
         {
           text: 'Id'
@@ -392,7 +407,9 @@ export default {
       element: {},
       syncInfo: {},
       onlyAttributes: [],
+      onlyAttributeLabel: this.$gettext('Attributes'),
       onlyAttributeSets: [],
+      onlyAttributeSetsLabel: this.$gettext('Attributes Sets'),
       status: [],
       tags: [],
       errors: {},
@@ -409,7 +426,7 @@ export default {
         this.breadcrumbs[
           this.breadcrumbs.length - 1
         ].text = this.element.__str__
-        this.title = `Computer: ${this.element.__str__}`
+        this.title = `${this.title}: ${this.element.__str__}`
         this.loadSyncInfo()
         this.loadErrors()
         this.loadFaults()
@@ -428,7 +445,6 @@ export default {
             icon: this.elementIcon(key)
           })
         })
-        console.log(this.status)
       })
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error)
@@ -492,10 +508,9 @@ export default {
       update(() => {
         const needle = val.toLowerCase()
         this.$axios
-          .get(`/api/v1/token/tags/?search=${needle}`)
+          .get('/api/v1/token/tags/', { params: { search: needle } })
           .then((response) => {
             this.tags = response.data.results
-            console.log(this.tags)
           })
         /* this.tags = stringOptions.filter(
           (v) => v.toLowerCase().indexOf(needle) > -1
@@ -518,7 +533,7 @@ export default {
         .then((response) => {
           this.$store.dispatch(
             'ui/notifySuccess',
-            'Current Situation has been changed!'
+            this.$gettext('Current Situation has been changed!')
           )
         })
         .catch((error) => {
