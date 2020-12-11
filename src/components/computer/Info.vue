@@ -2,7 +2,9 @@
   <q-card>
     <q-card-section>
       <q-btn-group v-if="$store.getters['auth/user'].is_superuser">
-        <q-input v-model="value" outlined label="Nombre" />
+        <q-input v-model="value" outlined label-slot>
+          <template #label><translate>Name</translate></template></q-input
+        >
         <q-btn
           color="primary"
           icon="mdi-content-save-edit"
@@ -10,7 +12,9 @@
           :disabled="loading"
           @click="updateName"
         >
-          <q-tooltip>Grabar y seguir editando</q-tooltip>
+          <q-tooltip
+            ><translate>Save and continue editing</translate></q-tooltip
+          >
         </q-btn>
       </q-btn-group>
       <div v-else class="text-h5">{{ name }}</div>
@@ -19,13 +23,17 @@
     <q-card-section>
       <div class="row q-pa-md">
         <div class="col-md">
-          <q-tooltip self="bottom middle">full qualified domain name</q-tooltip>
+          <q-tooltip self="bottom middle"
+            ><translate>full qualified domain name</translate></q-tooltip
+          >
           <q-icon name="mdi-information" size="sm" /> {{ fqdn }}
         </div>
 
         <div class="col-md">
           <q-tooltip self="bottom middle"
-            >Date of entry into the migasfree system</q-tooltip
+            ><translate
+              >Date of entry into the migasfree system</translate
+            ></q-tooltip
           >
           <q-icon name="mdi-calendar-plus" size="sm" />
           {{ showDate(createdAt) }}
@@ -34,30 +42,42 @@
 
       <div class="row q-pa-md">
         <div class="col-md">
-          <q-tooltip self="bottom middle">platform</q-tooltip>
-          <q-icon name="mdi-layers" size="sm" />
+          <q-tooltip self="bottom middle"
+            ><translate>platform</translate></q-tooltip
+          >
           <MigasLink
             model="platforms"
             :pk="project.platform.id"
             :value="project.platform.name"
+            icon="mdi-layers"
           />
         </div>
 
         <div class="col-md">
-          <q-tooltip self="bottom middle">project</q-tooltip>
-          <q-icon name="mdi-sitemap" size="sm" />
-          <MigasLink model="projects" :pk="project.id" :value="project.name" />
+          <q-tooltip self="bottom middle"
+            ><translate>project</translate></q-tooltip
+          >
+          <MigasLink
+            model="projects"
+            :pk="project.id"
+            :value="project.name"
+            icon="mdi-sitemap"
+          />
         </div>
       </div>
 
       <div class="row q-pa-md">
         <div class="col-md">
-          <q-tooltip self="bottom middle">ip address</q-tooltip>
+          <q-tooltip self="bottom middle"
+            ><translate>ip address</translate></q-tooltip
+          >
           <q-icon name="mdi-ip-network" size="sm" />
           {{ ipAddress }}
         </div>
         <div class="col-md">
-          <q-tooltip self="bottom middle">forwarded ip address</q-tooltip>
+          <q-tooltip self="bottom middle"
+            ><translate>forwarded ip address</translate></q-tooltip
+          >
           <q-icon name="mdi-ip" size="sm" />
           {{ forwardedIpAddress }}
         </div>
@@ -68,31 +88,31 @@
       <q-btn-group>
         <q-btn
           icon="mdi-calendar-multiple"
-          label="Sucesos"
           no-caps
           :to="{
             name: 'computer-events',
             params: { id: cid }
           }"
-        />
+          ><translate>Events</translate></q-btn
+        >
         <q-btn
           icon="mdi-head-sync-outline"
-          label="Simular sincronización"
           no-caps
           :to="{
             name: 'computer-simulate',
             params: { id: cid }
           }"
-        />
+          ><translate>Simulate synchronization</translate></q-btn
+        >
         <q-btn
           icon="mdi-card-account-details-outline"
-          label="Identificación"
           no-caps
           :to="{
             name: 'computer-label',
             params: { id: cid }
           }"
-        />
+          ><translate>Identification</translate></q-btn
+        >
       </q-btn-group>
     </q-card-actions>
   </q-card>
@@ -155,7 +175,10 @@ export default {
           name: this.value
         })
         .then((response) => {
-          this.$store.dispatch('ui/notifySuccess', 'Name has been changed!')
+          this.$store.dispatch(
+            'ui/notifySuccess',
+            this.$gettext('Name has been changed!')
+          )
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
