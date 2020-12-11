@@ -30,7 +30,7 @@ export default {
           title: this.$gettext('Configuration'),
           options: [
             {
-              title: this.gettext('Platforms'),
+              title: this.$gettext('Platforms'),
               to: 'platforms-list',
               icon: 'mdi-layers'
             }
