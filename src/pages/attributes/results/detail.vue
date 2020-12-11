@@ -6,7 +6,7 @@
       <div class="row">
         <div class="col-md">
           <h2 class="text-h3">
-            Atributo:
+            <translate>Attribute</translate>:
             <MigasLink
               model="features"
               :pk="element.id"
@@ -20,10 +20,12 @@
       <q-card>
         <q-card-section>
           <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md">Valor: {{ element.value }}</div>
+            <div class="col-6 col-md">
+              <translate>Value</translate>: {{ element.value }}
+            </div>
 
             <div class="col-6 col-md">
-              Fórmula:
+              <translate>Formula</translate>:
               <MigasLink
                 model="properties"
                 :pk="element.property_att.id"
@@ -38,8 +40,10 @@
                 v-model="element.description"
                 outlined
                 type="textarea"
-                label="Descripción"
-              />
+                label-slot
+              >
+                <template #label><translate>Description</translate></template>
+              </q-input>
             </div>
           </div>
         </q-card-section>
@@ -48,20 +52,20 @@
           <q-btn
             flat
             color="primary"
-            label="Grabar y seguir editando"
             icon="mdi-content-save-edit"
             :loading="loading"
             :disabled="!isValid || loading"
             @click="updateElement"
-          />
+            ><translate>Save and continue editing</translate></q-btn
+          >
           <q-btn
-            label="Grabar"
             color="primary"
             icon="mdi-content-save-move"
             :loading="loading"
             :disabled="!isValid || loading"
             @click="updateElement('return')"
-          />
+            ><translate>Save</translate></q-btn
+          >
         </q-card-actions>
       </q-card>
 
@@ -70,9 +74,9 @@
           flat
           icon="mdi-delete"
           color="negative"
-          label="Borrar"
           @click="confirmRemove = true"
-        />
+          ><translate>Delete</translate></q-btn
+        >
       </div>
 
       <RemoveDialog
@@ -105,26 +109,26 @@ export default {
   mixins: [elementMixin, detailMixin],
   data() {
     return {
-      title: 'Attribute',
+      title: this.$gettext('Attribute'),
       model: 'features',
       listRoute: 'attributes-list',
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Datos',
+          text: this.$gettext('Datum'),
           icon: 'mdi-database-search'
         },
         {
-          text: 'Atributos',
+          text: this.$gettext('Attributes'),
           to: 'attributes-dashboard',
           icon: 'mdi-pound'
         },
         {
-          text: 'Resultados',
+          text: this.$gettext('Results'),
           to: this.listRoute
         },
         {
@@ -159,7 +163,10 @@ export default {
           description: this.element.description
         })
         .then((response) => {
-          this.$store.dispatch('ui/notifySuccess', 'Data has been changed!')
+          this.$store.dispatch(
+            'ui/notifySuccess',
+            this.$gettext('Data has been changed!')
+          )
           if (action === 'return') {
             this.$router.push({ name: this.listRoute })
           }
