@@ -6,7 +6,7 @@
       <div class="row">
         <div class="col-md">
           <h2 class="text-h3">
-            Sucesos:
+            <translate>Events</translate>:
             <MigasLink
               model="computers"
               :pk="computer.id"
@@ -20,7 +20,9 @@
       <div class="row">
         <h3 class="text-h5">
           <q-tooltip self="bottom middle"
-            >Date of entry into the migasfree system</q-tooltip
+            ><translate
+              >Date of entry into the migasfree system</translate
+            ></q-tooltip
           >
           <q-icon name="mdi-calendar-plus" size="md" />
           {{ showDate(computer.created_at) }}
@@ -45,27 +47,27 @@
           >
             <template #syncs>
               <q-icon name="mdi-sync" />
-              Sincronizaciones ({{ events.syncs.total }})
+              <translate>Synchronizations</translate> ({{ events.syncs.total }})
             </template>
 
             <template #errors>
               <q-icon name="mdi-bug" />
-              Errores ({{ events.errors.total }})
+              <translate>Errors</translate> ({{ events.errors.total }})
             </template>
 
             <template #faults>
               <q-icon name="mdi-bomb" />
-              Fallas ({{ events.faults.total }})
+              <translate>Faults</translate> ({{ events.faults.total }})
             </template>
 
             <template #statusLogs>
               <q-icon name="mdi-flag-variant" />
-              Registros de Estado ({{ events.statusLogs.total }})
+              <translate>Status Logs</translate> ({{ events.statusLogs.total }})
             </template>
 
             <template #migrations>
               <q-icon name="mdi-map-marker-right" />
-              Migraciones ({{ events.migrations.total }})
+              <translate>Migrations</translate> ({{ events.migrations.total }})
             </template>
           </q-btn-toggle>
         </div>
@@ -126,24 +128,24 @@ export default {
   mixins: [elementMixin, dateMixin],
   data() {
     return {
-      title: 'Events',
+      title: this.$gettext('Events'),
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Datos',
+          text: this.$gettext('Data'),
           icon: 'mdi-database-search'
         },
         {
-          text: 'Ordenadores',
+          text: this.$gettext('Computers'),
           to: 'computers-dashboard',
           icon: 'mdi-desktop-classic'
         },
         {
-          text: 'Resultados',
+          text: this.$gettext('Results'),
           to: 'computers-list'
         },
         {
@@ -151,7 +153,7 @@ export default {
           to: { name: 'computer-detail', params: { id: 0 } }
         },
         {
-          text: 'Sucesos'
+          text: this.$gettext('Events')
         }
       ],
       computer: {},
@@ -165,27 +167,27 @@ export default {
         syncs: {
           data: [],
           total: 0,
-          title: 'Sincronizaciones'
+          title: this.$gettext('Synchronizations')
         },
         errors: {
           data: [],
           total: 0,
-          title: 'Errores'
+          title: this.$gettext('Errors')
         },
         faults: {
           data: [],
           total: 0,
-          title: 'Fallas'
+          title: this.$gettext('Faults')
         },
         migrations: {
           data: [],
           total: 0,
-          title: 'Migraciones'
+          title: this.$gettext('Migrations')
         },
         statusLogs: {
           data: [],
           total: 0,
-          title: 'Registros de Estado'
+          title: this.$gettext('Status Logs')
         }
       },
       items: [],
@@ -203,7 +205,7 @@ export default {
         this.breadcrumbs.find(
           (x) => x.text === 'Id'
         ).text = this.computer.__str__
-        this.title = `Events: ${this.computer.__str__}`
+        this.title = `${this.title}: ${this.computer.__str__}`
         this.loadItems()
       })
       .catch((error) => {
@@ -216,7 +218,7 @@ export default {
         computer_id: this.computer.id,
         start_date: this.showDate(this.computer.created_at, 'YYYY-MM-DD'),
         end_date: this.showDate(
-          addToDate(new Date(), { days: 1}).toISOString(),
+          addToDate(new Date(), { days: 1 }).toISOString(),
           'YYYY-MM-DD'
         )
       }
