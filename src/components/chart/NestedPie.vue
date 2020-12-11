@@ -29,7 +29,10 @@
 <script>
 import 'echarts/lib/chart/pie'
 import 'echarts/lib/component/tooltip'
-import { MIGASFREE_CHART_COLORS } from 'config/app.conf'
+import {
+  MIGASFREE_CHART_COLORS,
+  MIGASFREE_CHART_DARK_COLORS
+} from 'config/app.conf'
 
 export default {
   name: 'NestedPieChart',
@@ -61,7 +64,9 @@ export default {
           trigger: 'item',
           formatter: '{b} ({c}): <strong>{d}%</strong>'
         },
-        color: MIGASFREE_CHART_COLORS,
+        color: this.$q.dark.isActive
+          ? MIGASFREE_CHART_DARK_COLORS
+          : MIGASFREE_CHART_COLORS,
         series: [
           {
             type: 'pie',
@@ -99,6 +104,11 @@ export default {
         this.options.series[1].data = val.outer
       },
       deep: true
+    },
+    '$q.dark.isActive'(val) {
+      this.options.color = val
+        ? MIGASFREE_CHART_DARK_COLORS
+        : MIGASFREE_CHART_COLORS
     }
   },
   beforeMount() {
