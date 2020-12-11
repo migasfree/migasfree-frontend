@@ -8,7 +8,7 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0",
-    "gettext-extract": "gettext-extract --attribute v-translate --output src/i18n/app.pot $(find ./src -type f -name '*.vue')",
+    "gettext-extract": "gettext-extract --attribute v-translate --output src/i18n/app.pot $(find ./src -type f -name '*.vue' -o -name '*.js')",
     "gettext-compile": "gettext-compile --output src/i18n/translations.json src/i18n/*.po"
   },
   "dependencies": {
