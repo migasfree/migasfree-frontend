@@ -49,6 +49,19 @@ export const MIGASFREE_CHART_COLORS = [
   '#b381b3'
 ]
 
+export const MIGASFREE_CHART_DARK_COLORS = [
+  '#008FFB',
+  '#00E396',
+  '#FEB019',
+  '#FF4560',
+  '#775DD0',
+  '#4caf50',
+  '#f9ce1d',
+  '#33b2df',
+  '#d4526e',
+  '#f9a3a4'
+]
+
 /* export const MIGASFREE_CHART_COLORS = [
   '#514F78',
   '#42A07B',
