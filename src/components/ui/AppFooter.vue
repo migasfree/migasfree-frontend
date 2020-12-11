@@ -1,5 +1,5 @@
 <template>
-  <q-footer class="bg-brown-1 text-blue-grey-8">
+  <q-footer>
     <q-toolbar>
       &copy; 2010-{{ new Date().getFullYear() }}
       <q-btn
