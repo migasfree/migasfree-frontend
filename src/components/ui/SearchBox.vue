@@ -2,13 +2,15 @@
   <q-btn-group outlined rounded class="q-ml-lg">
     <q-input
       v-model="searchText"
-      label="Search..."
+      label-slot
       dense
       borderless
       clearable
       bg-color="white"
       @keydown.enter="search('computers-list')"
-    />
+    >
+      <template #label><translate>Search...</translate></template>
+    </q-input>
 
     <q-btn-dropdown
       auto-close
@@ -19,23 +21,23 @@
     >
       <q-list padding>
         <q-item clickable @click="search('computers-list')">
-          Ordenador
+          <translate>Computers</translate>
         </q-item>
         <q-separator />
 
         <q-item clickable @click="search('desployments-list')">
-          Despliegue
+          <translate>Deployments</translate>
         </q-item>
         <q-item clickable @click="search('packages-list')">
-          Paquete
+          <translate>Packages</translate>
         </q-item>
         <q-item clickable @click="search('applications-list')">
-          Aplicación
+          <translate>Apps</translate>
         </q-item>
         <q-separator />
 
         <q-item clickable @click="search('devices-list')">
-          Dispositivo
+          <translate>Devices</translate>
         </q-item>
       </q-list>
     </q-btn-dropdown>
