@@ -2,14 +2,14 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header title="Atributos" :has-add-button="false" />
+    <Header :title="title" :has-add-button="false" />
 
     <SearchFilter @search="search" />
 
     <div class="row">
       <div class="col">
         <PieChart
-          title="Atributos / Fórmula"
+          :title="pieDataTitle"
           :data="pieData"
           :url="url"
           @getLink="goTo"
@@ -26,8 +26,10 @@ import SearchFilter from 'components/ui/SearchFilter'
 import PieChart from 'components/chart/Pie'
 
 export default {
-  meta: {
-    title: 'Attributes',
+  meta() {
+    return {
+      title: this.title
+    }
   },
   components: {
     Breadcrumbs,
@@ -37,22 +39,24 @@ export default {
   },
   data() {
     return {
+      title: this.$gettext('Attributes'),
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Datos',
+          text: this.$gettext('Data'),
           icon: 'mdi-database-search'
         },
         {
-          text: 'Atributos',
+          text: this.$gettext('Attributes'),
           icon: 'mdi-pound'
         }
       ],
       pieData: {},
+      pieDataTitle: this.$gettext('Attributes / Formula'),
       url: { name: 'attributes-list' }
     }
   },
@@ -68,7 +72,6 @@ export default {
   },
   methods: {
     goTo(params) {
-      console.log(params)
       if (params.data.property_att_id) {
         this.$router.push(
           Object.assign(this.url, {
