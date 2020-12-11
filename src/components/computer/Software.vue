@@ -1,7 +1,7 @@
 <template>
   <q-card>
     <q-card-section>
-      <div class="text-h5">Software</div>
+      <div v-translate class="text-h5">Software</div>
     </q-card-section>
 
     <q-card-section>
@@ -16,7 +16,7 @@
             </q-item-section>
 
             <q-item-section>
-              Inventory
+              <translate>Inventory</translate>
             </q-item-section>
 
             <q-item-section v-if="softwareInventory.length > 0">
@@ -24,7 +24,7 @@
                 <q-avatar color="info" text-color="white">{{
                   softwareInventory.length
                 }}</q-avatar>
-                packages
+                <translate>packages</translate>
               </q-chip>
             </q-item-section>
 
@@ -43,7 +43,12 @@
               <q-spinner-dots color="primary" size="3em" />
             </q-item>
             <q-item v-for="item in softwareInventory" :key="item.id">
-              <MigasLink model="packages" :pk="item.id" :value="item.name" />
+              <MigasLink
+                model="packages"
+                :pk="item.id"
+                :value="item.name"
+                icon="mdi-package-variant"
+              />
             </q-item>
           </q-list>
         </q-expansion-item>
@@ -60,7 +65,7 @@
             </q-item-section>
 
             <q-item-section>
-              History
+              <translate>History</translate>
             </q-item-section>
 
             <q-item-section v-if="Object.keys(softwareHistory).length > 0">
@@ -68,7 +73,7 @@
                 <q-avatar color="info" text-color="white">{{
                   Object.keys(softwareHistory).length
                 }}</q-avatar>
-                dates
+                <translate>dates</translate>
               </q-chip>
             </q-item-section>
 
@@ -186,7 +191,7 @@ export default {
       copyToClipboard(this.sortArray(inventory).join('\n')).then(() => {
         this.$store.dispatch(
           'ui/notifySuccess',
-          'Software Inventory copied to clipboard'
+          this.$gettext('Software Inventory copied to clipboard')
         )
       })
     },
@@ -208,7 +213,7 @@ export default {
       copyToClipboard(history.join('\n')).then(() => {
         this.$store.dispatch(
           'ui/notifySuccess',
-          'Software History copied to clipboard'
+          this.$gettext('Software History copied to clipboard')
         )
       })
     }
