@@ -2,19 +2,17 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <div class="row">
-      <div class="col-md">
-        <h2 class="text-h3">
-          Plataforma:
-          <MigasLink
-            v-if="element.id"
-            model="platforms"
-            :pk="element.id"
-            :value="element.name"
-          />
-        </h2>
-      </div>
-    </div>
+    <Header :title="$gettext('Platform')" :has-add-button="false">
+      <template v-if="element.id" #append
+        >:
+        <MigasLink
+          model="platforms"
+          :pk="element.id"
+          :value="element.name"
+          icon="mdi-layers"
+        />
+      </template>
+    </Header>
 
     <q-card>
       <q-card-section>
@@ -23,9 +21,9 @@
             <q-input
               v-model="element.name"
               outlined
-              label="Nombre"
+              :label="$gettext('Name')"
               lazy-rules
-              :rules="[(val) => !!val || '* Required']"
+              :rules="[(val) => !!val || $gettext('* Required')]"
             />
           </div>
         </div>
@@ -35,7 +33,7 @@
         <q-btn
           flat
           color="primary"
-          label="Grabar y añadir otro"
+          :label="$gettext('Save and add other')"
           icon="mdi-plus"
           :loading="loading"
           :disabled="!isValid || loading"
@@ -44,14 +42,14 @@
         <q-btn
           flat
           color="primary"
-          label="Grabar y seguir editando"
+          :label="$gettext('Save and continue editing')"
           icon="mdi-content-save-edit"
           :loading="loading"
           :disabled="!isValid || loading"
           @click="updateElement"
         />
         <q-btn
-          label="Grabar"
+          :label="$gettext('Save')"
           color="primary"
           icon="mdi-content-save-move"
           :loading="loading"
@@ -66,7 +64,7 @@
         flat
         icon="mdi-delete"
         color="negative"
-        label="Borrar"
+        :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
     </div>
@@ -81,6 +79,7 @@
 
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
+import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import RemoveDialog from 'components/ui/RemoveDialog'
 import { detailMixin } from 'mixins/detail'
@@ -93,29 +92,30 @@ export default {
   },
   components: {
     Breadcrumbs,
+    Header,
     RemoveDialog,
     MigasLink
   },
   mixins: [detailMixin],
   data() {
     return {
-      title: 'Platform',
+      title: this.$gettext('Platform'),
       model: 'platforms',
       listRoute: 'platforms-list',
       addRoute: 'platform-add',
       detailRoute: 'platform-detail',
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Configuración',
+          text: this.$gettext('Configuration'),
           icon: 'mdi-cogs'
         },
         {
-          text: 'Plataformas',
+          text: this.$gettext('Platforms'),
           icon: 'mdi-layers',
           to: this.listRoute
         }
@@ -134,14 +134,14 @@ export default {
   created() {
     if (this.$route.params.id) {
       this.breadcrumbs.push({
-        text: 'Resultados',
+        text: this.$gettext('Results'),
         to: this.listRoute
       })
       this.breadcrumbs.push({
         text: 'Id'
       })
     } else {
-      this.breadcrumbs.push({ text: 'Añadir' })
+      this.breadcrumbs.push({ text: this.$gettext('Añadir') })
     }
   },
   async mounted() {
@@ -167,15 +167,18 @@ export default {
             name: this.element.name
           })
           .then((response) => {
-            this.$store.dispatch('ui/notifySuccess', 'Data has been changed!')
+            this.$store.dispatch(
+              'ui/notifySuccess',
+              this.$gettext('Data has been changed!')
+            )
             if (action === 'return') {
               this.$router.push({ name: this.listRoute })
             } else if (action === 'add') {
               this.element = { id: 0 }
               if (this.breadcrumbs.length === 5) this.breadcrumbs.pop()
-              this.breadcrumbs[3].text = 'Añadir'
+              this.breadcrumbs[3].text = this.$gettext('Añadir')
               this.$router.push({ name: this.addRoute })
-              this.title = 'Plataforma'
+              this.title = this.$gettext('Platform')
             }
           })
           .catch((error) => {
@@ -191,7 +194,10 @@ export default {
           .then((response) => {
             this.element = response.data
             console.log('element new', this.element)
-            this.$store.dispatch('ui/notifySuccess', 'Data has been added!')
+            this.$store.dispatch(
+              'ui/notifySuccess',
+              this.$gettext('Data has been added!')
+            )
 
             if (action === 'return') {
               this.$router.push({ name: this.listRoute })
@@ -202,13 +208,13 @@ export default {
               if (this.breadcrumbs.length === 4) {
                 this.breadcrumbs.pop()
                 this.breadcrumbs.push({
-                  text: 'Resultados',
+                  text: this.$gettext('Results'),
                   to: this.listRoute
                 })
                 this.breadcrumbs.push({
                   text: this.element.name
                 })
-                this.title = `Plataforma: ${this.element.name}`
+                this.title = `${this.$gettext('Platform')}: ${this.element.name}`
               }
               this.$router.push({
                 name: this.detailRoute,
