@@ -2,14 +2,14 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header title="Fallas" :has-add-button="false" />
+    <Header :title="title" :has-add-button="false" />
 
     <SearchFilter @search="search" />
 
     <div class="row">
       <div class="col-12">
         <StackedBarChart
-          title="Fallas / Mes"
+          :title="projectMonthTitle"
           :data="projectMonth"
           @getLink="goTo"
         />
@@ -19,7 +19,7 @@
     <div class="row">
       <div class="col-6 col-md">
         <PieChart
-          title="Fallas / Definiciones de fallas"
+          :title="byDefinitionTitle"
           :data="byDefinition"
           :url="url"
           @getLink="goTo"
@@ -28,7 +28,7 @@
 
       <div class="col-6 col-md">
         <NestedPieChart
-          title="Fallas sin comprobar"
+          :title="uncheckedFaultsTitle"
           :data="uncheckedFaults"
           :url="uncheckedFaultsUrl"
           @getLink="goTo"
@@ -47,8 +47,10 @@ import NestedPieChart from 'components/chart/NestedPie'
 import StackedBarChart from 'components/chart/StackedBar'
 
 export default {
-  meta: {
-    title: 'Faults',
+  meta() {
+    return {
+      title: this.title
+    }
   },
   components: {
     Breadcrumbs,
@@ -60,24 +62,28 @@ export default {
   },
   data() {
     return {
+      title: this.$gettext('Faults'),
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Datos',
+          text: this.$gettext('Data'),
           icon: 'mdi-database-search'
         },
         {
-          text: 'Fallas',
+          text: this.$gettext('Faults'),
           icon: 'mdi-bomb'
         }
       ],
       projectMonth: {},
+      projectMonthTitle: this.$gettext('Faults / Month'),
       uncheckedFaults: {},
+      uncheckedFaultsTitle: this.$gettext('Unchecked Faults'),
       byDefinition: {},
+      byDefinitionTitle: this.$gettext('Faults / Faults Definitions'),
       url: { name: 'faults-list' }
     }
   },
