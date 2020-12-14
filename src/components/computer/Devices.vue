@@ -14,12 +14,11 @@
           map-options
           multiple
           input-debounce="0"
-          label-slot
+          :label="$gettext('Assigned')"
           :options="assignedDevices"
           @filter="filterAssignedDevices"
           @filter-abort="abortFilterAssignedDevices"
         >
-          <template #label><translate>Assigned</translate></template>
           <template #no-option>
             <q-item>
               <q-item-section class="text-grey">
@@ -54,9 +53,11 @@
       </p>
 
       <p>
-        <q-select v-model="devices.default_logical_device" outlined label-slot>
-          <template #label><translate>By default</translate></template>
-        </q-select>
+        <q-select
+          v-model="devices.default_logical_device"
+          outlined
+          :label="$gettext('By default')"
+        />
       </p>
     </q-card-section>
 
@@ -67,9 +68,9 @@
         icon="mdi-content-save-edit"
         :loading="loading"
         :disabled="loading"
+        :label="$gettext('Save and continue editing')"
         @click="updateDevices"
-        ><translate>Save and continue editing</translate></q-btn
-      >
+      />
     </q-card-actions>
   </q-card>
 </template>
