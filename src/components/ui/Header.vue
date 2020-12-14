@@ -10,9 +10,11 @@
           @click="$emit('new')"
         />
       </q-item-section>
+
       <q-item-section>
         <h2 class="text-h3">
           {{ title }} <q-chip v-if="results !== null">{{ results }}</q-chip>
+          <slot name="append"></slot>
         </h2>
       </q-item-section>
     </q-item>
