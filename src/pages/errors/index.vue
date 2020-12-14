@@ -2,14 +2,14 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header title="Errores" :has-add-button="false" />
+    <Header :title="title" :has-add-button="false" />
 
     <SearchFilter @search="search" />
 
     <div class="row">
       <div class="col-12">
         <StackedBarChart
-          title="Errores / Mes"
+          :title="projectMonthTitle"
           :data="projectMonth"
           @getLink="goTo"
         />
@@ -19,7 +19,7 @@
     <div class="row">
       <div class="col-6 col-md">
         <NestedPieChart
-          title="Errores / proyecto / estado"
+          :title="statusProjectsTitle"
           :data="statusProjects"
           :url="url"
           @getLink="goTo"
@@ -28,7 +28,7 @@
 
       <div class="col-6 col-md">
         <NestedPieChart
-          title="Errores sin comprobar"
+          :title="uncheckedErrorsTitle"
           :data="uncheckedErrors"
           :url="uncheckedErrorsUrl"
           @getLink="goTo"
@@ -46,8 +46,10 @@ import NestedPieChart from 'components/chart/NestedPie'
 import StackedBarChart from 'components/chart/StackedBar'
 
 export default {
-  meta: {
-    title: 'Errors'
+  meta() {
+    return {
+      title: this.title
+    }
   },
   components: {
     Breadcrumbs,
@@ -58,24 +60,28 @@ export default {
   },
   data() {
     return {
+      title: this.$gettext('Errors'),
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Datos',
+          text: this.$gettext('Data'),
           icon: 'mdi-database-search'
         },
         {
-          text: 'Errores',
+          text: this.$gettext('Errors'),
           icon: 'mdi-bug'
         }
       ],
       projectMonth: {},
+      projectMonthTitle: this.$gettext('Errors / Month'),
       uncheckedErrors: {},
+      uncheckedErrorsTitle: this.$gettext('Unchecked Errors'),
       statusProjects: {},
+      statusProjectsTitle: this.$gettext('Errors / Project / Status'),
       url: { name: 'errors-list' }
     }
   },
