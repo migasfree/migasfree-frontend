@@ -141,7 +141,7 @@ export default {
         text: 'Id'
       })
     } else {
-      this.breadcrumbs.push({ text: this.$gettext('Añadir') })
+      this.breadcrumbs.push({ text: this.$gettext('Add') })
     }
   },
   async mounted() {
@@ -176,7 +176,7 @@ export default {
             } else if (action === 'add') {
               this.element = { id: 0 }
               if (this.breadcrumbs.length === 5) this.breadcrumbs.pop()
-              this.breadcrumbs[3].text = this.$gettext('Añadir')
+              this.breadcrumbs[3].text = this.$gettext('Add')
               this.$router.push({ name: this.addRoute })
               this.title = this.$gettext('Platform')
             }
