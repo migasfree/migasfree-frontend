@@ -2,20 +2,17 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <div class="row">
-      <div class="col-md">
-        <h2 class="text-h3">
-          Almacén:
-          <MigasLink
-            v-if="element.id"
-            model="stores"
-            :pk="element.id"
-            :value="element.name"
-            icon="mdi-store-24-hour"
-          />
-        </h2>
-      </div>
-    </div>
+    <Header :title="$gettext('Store')" :has-add-button="false">
+      <template v-if="element.id" #append
+        >:
+        <MigasLink
+          model="stores"
+          :pk="element.id"
+          :value="element.name"
+          icon="mdi-store-24-hour"
+        />
+      </template>
+    </Header>
 
     <q-card>
       <q-card-section>
@@ -24,12 +21,12 @@
             <q-select
               v-model="element.project"
               outlined
-              label="Proyecto"
+              :label="$gettext('Project')"
               :options="projects"
               option-value="id"
               option-label="name"
               lazy-rules
-              :rules="[(val) => !!val || '* Required']"
+              :rules="[(val) => !!val || $gettext('* Required')]"
             />
           </div>
 
@@ -37,9 +34,9 @@
             <q-input
               v-model="element.name"
               outlined
-              label="Nombre"
+              :label="$gettext('Name')"
               lazy-rules
-              :rules="[(val) => !!val || '* Required']"
+              :rules="[(val) => !!val || $gettext('* Required')]"
             />
           </div>
         </div>
@@ -49,7 +46,7 @@
         <q-btn
           flat
           color="primary"
-          label="Grabar y añadir otro"
+          :label="$gettext('Save and add other')"
           icon="mdi-plus"
           :loading="loading"
           :disabled="!isValid || loading"
@@ -58,14 +55,14 @@
         <q-btn
           flat
           color="primary"
-          label="Grabar y seguir editando"
+          :label="$gettext('Save and continue editing')"
           icon="mdi-content-save-edit"
           :loading="loading"
           :disabled="!isValid || loading"
           @click="updateElement"
         />
         <q-btn
-          label="Grabar"
+          :label="$gettext('Save')"
           color="primary"
           icon="mdi-content-save-move"
           :loading="loading"
@@ -80,7 +77,7 @@
         flat
         icon="mdi-delete"
         color="negative"
-        label="Borrar"
+        :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
     </div>
@@ -95,6 +92,7 @@
 
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
+import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import RemoveDialog from 'components/ui/RemoveDialog'
 import { detailMixin } from 'mixins/detail'
@@ -107,29 +105,30 @@ export default {
   },
   components: {
     Breadcrumbs,
+    Header,
     RemoveDialog,
     MigasLink
   },
   mixins: [detailMixin],
   data() {
     return {
-      title: 'Store',
+      title: this.$gettext('Store'),
       model: 'stores',
       listRoute: 'stores-list',
       addRoute: 'store-add',
       detailRoute: 'store-detail',
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Liberación',
+          text: this.$gettext('Release'),
           icon: 'mdi-truck-delivery'
         },
         {
-          text: 'Almacenes',
+          text: this.$gettext('Stores'),
           to: 'stores-dashboard',
           icon: 'mdi-store-24-hour'
         }
@@ -152,14 +151,14 @@ export default {
   created() {
     if (this.$route.params.id) {
       this.breadcrumbs.push({
-        text: 'Resultados',
+        text: this.$gettext('Results'),
         to: this.listRoute
       })
       this.breadcrumbs.push({
         text: 'Id'
       })
     } else {
-      this.breadcrumbs.push({ text: 'Añadir' })
+      this.breadcrumbs.push({ text: this.$gettext('Add') })
     }
   },
   async mounted() {
@@ -195,15 +194,18 @@ export default {
             name: this.element.name
           })
           .then((response) => {
-            this.$store.dispatch('ui/notifySuccess', 'Data has been changed!')
+            this.$store.dispatch(
+              'ui/notifySuccess',
+              this.$gettext('Data has been changed!')
+            )
             if (action === 'return') {
               this.$router.push({ name: this.listRoute })
             } else if (action === 'add') {
               this.element = { id: 0 }
               if (this.breadcrumbs.length === 5) this.breadcrumbs.pop()
-              this.breadcrumbs[3].text = 'Añadir'
+              this.breadcrumbs[3].text = this.$gettext('Add')
               this.$router.push({ name: this.addRoute })
-              this.title = 'Store'
+              this.title = this.$gettext('Store')
             }
           })
           .catch((error) => {
@@ -223,7 +225,10 @@ export default {
               (x) => x.id === this.element.project
             )
             console.log('element new', this.element)
-            this.$store.dispatch('ui/notifySuccess', 'Data has been added!')
+            this.$store.dispatch(
+              'ui/notifySuccess',
+              this.$gettext('Data has been added!')
+            )
 
             if (action === 'return') {
               this.$router.push({ name: this.listRoute })
@@ -234,13 +239,13 @@ export default {
               if (this.breadcrumbs.length === 4) {
                 this.breadcrumbs.pop()
                 this.breadcrumbs.push({
-                  text: 'Resultados',
+                  text: this.$gettext('Results'),
                   to: this.listRoute
                 })
                 this.breadcrumbs.push({
                   text: this.element.name
                 })
-                this.title = `Store: ${this.element.name}`
+                this.title = `${this.$gettext('Store')}: ${this.element.name}`
               }
               this.$router.push({
                 name: this.detailRoute,
