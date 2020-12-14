@@ -2,31 +2,29 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <div class="row">
-      <div class="col-md">
-        <h2 class="text-h3">
-          Paquete:
-          <MigasLink
-            v-if="element.id"
-            model="packages"
-            :pk="element.id"
-            :value="element.fullname"
-            icon="mdi-package-variant"
-          />
-        </h2>
-      </div>
-    </div>
+    <Header :title="$gettext('Package')" :has-add-button="false">
+      <template v-if="element.id" #append
+        >:
+        <MigasLink
+          model="packages"
+          :pk="element.id"
+          :value="element.fullname"
+          icon="mdi-package-variant"
+        />
+      </template>
+    </Header>
 
     <q-card>
       <q-card-section>
         <div class="row q-pa-md q-gutter-md">
           <div class="col-6 col-md">
             <template v-if="element.id">
-              Proyecto:
+              <translate>Project</translate>:
               <MigasLink
                 model="projects"
                 :pk="element.project.id"
                 :value="element.project.name"
+                icon="mdi-sitemap"
               />
             </template>
             <q-input
@@ -34,9 +32,13 @@
               v-model="projectStore.selected"
               outlined
               readonly
-              label="Proyecto / Almacén"
+              label-slot
               @input="$refs.menu.show()"
             >
+              <template #label>
+                <translate>Project / Store</translate>
+              </template>
+
               <template #append>
                 <q-icon name="mdi-menu-down" class="cursor-pointer" />
               </template>
@@ -60,12 +62,13 @@
 
           <div class="col-6 col-md">
             <template v-if="element.id">
-              Almacén:
+              <translate>Store</translate>:
               <MigasLink
                 v-if="element.store.id > 0"
                 model="stores"
                 :pk="element.store.id"
                 :value="element.store.name"
+                icon="mdi-store-24-hour"
               />
             </template>
           </div>
@@ -78,22 +81,28 @@
               clearable
               outlined
               counter
-              label="Selecciona un fichero"
-            />
+              label-slot
+            >
+              <template #label
+                ><translate>Select one file</translate></template
+              ></q-file
+            >
           </div>
         </div>
 
         <div v-if="element.id" class="row q-pa-md q-gutter-md">
           <div class="col-4 col-md">
-            Nombre: <strong>{{ element.name }}</strong>
+            <translate>Name</translate>: <strong>{{ element.name }}</strong>
           </div>
 
           <div class="col-4 col-md">
-            Versión: <strong>{{ element.version }}</strong>
+            <translate>Version</translate>:
+            <strong>{{ element.version }}</strong>
           </div>
 
           <div class="col-4 col-md">
-            Arquitectura: <strong>{{ element.architecture }}</strong>
+            <translate>Architecture</translate>:
+            <strong>{{ element.architecture }}</strong>
           </div>
         </div>
       </q-card-section>
@@ -102,20 +111,20 @@
         <q-btn
           flat
           color="primary"
-          label="Grabar y añadir otro"
           icon="mdi-plus"
           :loading="loading"
           :disabled="!isValid || loading"
           @click="updateElement('add')"
-        />
+          ><translate>Save and add other</translate></q-btn
+        >
         <q-btn
-          label="Grabar"
           color="primary"
           icon="mdi-content-save-move"
           :loading="loading"
           :disabled="!isValid || loading"
           @click="updateElement('return')"
-        />
+          ><translate>Save</translate></q-btn
+        >
       </q-card-actions>
     </q-card>
 
@@ -124,9 +133,9 @@
         flat
         icon="mdi-delete"
         color="negative"
-        label="Borrar"
         @click="confirmRemove = true"
-      />
+        ><translate>Delete</translate></q-btn
+      >
     </div>
 
     <RemoveDialog
@@ -139,6 +148,7 @@
 
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
+import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import RemoveDialog from 'components/ui/RemoveDialog'
 import { elementMixin } from 'mixins/element'
@@ -152,25 +162,26 @@ export default {
   },
   components: {
     Breadcrumbs,
+    Header,
     RemoveDialog,
     MigasLink
   },
   mixins: [elementMixin, detailMixin],
   data() {
     return {
-      title: 'Paquete',
+      title: this.$gettext('Package'),
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Liberación',
+          text: this.$gettext('Release'),
           icon: 'mdi-truck-delivery'
         },
         {
-          text: 'Paquetes',
+          text: this.$gettext('Packages'),
           to: 'packages-dashboard',
           icon: 'mdi-package-variant'
         }
@@ -193,14 +204,14 @@ export default {
   created() {
     if (this.$route.params.id) {
       this.breadcrumbs.push({
-        text: 'Resultados',
+        text: this.$gettext('Results'),
         to: this.listRoute
       })
       this.breadcrumbs.push({
         text: 'Id'
       })
     } else {
-      this.breadcrumbs.push({ text: 'Añadir' })
+      this.breadcrumbs.push({ text: this.$gettext('Add') })
     }
   },
   async mounted() {
@@ -290,15 +301,18 @@ export default {
             description: this.element.description
           })
           .then((response) => {
-            this.$store.dispatch('ui/notifySuccess', 'Data has been changed!')
+            this.$store.dispatch(
+              'ui/notifySuccess',
+              this.$gettext('Data has been changed!')
+            )
             if (action === 'return') {
               this.$router.push({ name: this.listRoute })
             } else if (action === 'add') {
               this.element = { id: 0 }
               if (this.breadcrumbs.length === 5) this.breadcrumbs.pop()
-              this.breadcrumbs[3].text = 'Añadir'
+              this.breadcrumbs[3].text = this.$gettext('Add')
               this.$router.push({ name: this.addRoute })
-              this.title = 'Paquete'
+              this.title = this.$gettext('Package')
               this.projectStore.selected = null
             }
           })
@@ -320,7 +334,10 @@ export default {
           .then((response) => {
             this.element = response.data
             console.log('element new', this.element)
-            this.$store.dispatch('ui/notifySuccess', 'Data has been added!')
+            this.$store.dispatch(
+              'ui/notifySuccess',
+              this.$gettext('Data has been added!')
+            )
 
             if (action === 'return') {
               this.$router.push({ name: this.listRoute })
@@ -331,13 +348,15 @@ export default {
               if (this.breadcrumbs.length === 4) {
                 this.breadcrumbs.pop()
                 this.breadcrumbs.push({
-                  text: 'Resultados',
+                  text: this.$gettext('Results'),
                   to: this.listRoute
                 })
                 this.breadcrumbs.push({
                   text: this.element.fullname
                 })
-                this.title = `Paquete: ${this.element.fullname}`
+                this.title = `${this.$gettext('Package')}: ${
+                  this.element.fullname
+                }`
               }
               this.$router.push({
                 name: this.detailRoute,
