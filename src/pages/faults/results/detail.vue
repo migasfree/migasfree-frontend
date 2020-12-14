@@ -4,7 +4,9 @@
 
     <div class="row">
       <div class="col-md">
-        <h2 class="text-h3">Fault: {{ element.__str__ }}</h2>
+        <h2 class="text-h3">
+          <translate>Fault</translate>: {{ element.__str__ }}
+        </h2>
       </div>
     </div>
 
@@ -15,12 +17,12 @@
             <q-checkbox
               v-model="element.checked"
               left-label
-              label="¿Comprobado?"
+              :label="checkedLabel"
             />
           </div>
 
           <div class="col-6 col-md">
-            Definición de falla:
+            <translate>Fault Definition</translate>:
             <MigasLink
               v-if="element.fault_definition"
               model="fault-definitions"
@@ -32,7 +34,7 @@
 
         <div class="row q-pa-md q-gutter-md">
           <div class="col-6 col-md">
-            Ordenador:
+            <translate>Computer</translate>:
             <MigasLink
               v-if="element.computer"
               model="computers"
@@ -44,19 +46,20 @@
           </div>
 
           <div class="col-6 col-md">
-            Proyecto:
+            <translate>Project</translate>:
             <MigasLink
               v-if="element.project"
               model="projects"
               :pk="element.project.id"
               :value="element.project.name"
+              icon="mdi-sitemap"
             />
           </div>
         </div>
 
         <div class="row q-pa-md q-gutter-md">
           <div class="col-6 col-md">
-            Fecha: {{ showDate(element.created_at) }}
+            <translate>Date</translate>: {{ showDate(element.created_at) }}
           </div>
         </div>
 
@@ -65,7 +68,9 @@
             <q-list bordered>
               <q-toolbar>
                 <q-toolbar-title
-                  ><div class="text-body1">Resultado</div></q-toolbar-title
+                  ><div v-translate class="text-body1">
+                    Result
+                  </div></q-toolbar-title
                 >
                 <q-btn
                   flat
@@ -86,20 +91,20 @@
         <q-btn
           flat
           color="primary"
-          label="Grabar y seguir editando"
           icon="mdi-content-save-edit"
           :loading="loading"
           :disabled="!isValid || loading"
           @click="updateElement"
-        />
+          ><translate>Save and continue editing</translate></q-btn
+        >
         <q-btn
-          label="Grabar"
           color="primary"
           icon="mdi-content-save-move"
           :loading="loading"
           :disabled="!isValid || loading"
           @click="updateElement('return')"
-        />
+          ><translate>Save</translate></q-btn
+        >
       </q-card-actions>
     </q-card>
 
@@ -108,9 +113,9 @@
         flat
         icon="mdi-delete"
         color="negative"
-        label="Borrar"
         @click="confirmRemove = true"
-      />
+        ><translate>Delete</translate></q-btn
+      >
     </div>
 
     <RemoveDialog
@@ -143,28 +148,30 @@ export default {
   },
   mixins: [elementMixin, dateMixin, detailMixin],
   data() {
+    const route = 'faults-list'
+
     return {
-      title: 'Falla',
+      title: this.$gettext('Fault'),
       model: 'faults',
-      listRoute: 'faults-list',
+      listRoute: route,
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Datos',
+          text: this.$gettext('Data'),
           icon: 'mdi-database-search'
         },
         {
-          text: 'Fallas',
+          text: this.$gettext('Faults'),
           to: 'faults-dashboard',
           icon: 'mdi-bomb'
         },
         {
-          text: 'Resultados',
-          to: this.listRoute
+          text: this.$gettext('Results'),
+          to: route
         },
         {
           text: 'Id'
@@ -173,7 +180,8 @@ export default {
       element: { id: 0 },
       loading: false,
       confirmRemove: false,
-      isValid: true
+      isValid: true,
+      checkedLabel: this.$gettext('Checked?')
     }
   },
   async mounted() {
@@ -201,7 +209,10 @@ export default {
             checked: this.element.checked
           })
           .then((response) => {
-            this.$store.dispatch('ui/notifySuccess', 'Data has been changed!')
+            this.$store.dispatch(
+              'ui/notifySuccess',
+              this.$gettext('Data has been changed!')
+            )
             if (action === 'return') {
               this.$router.push({ name: this.listRoute })
             }
@@ -215,7 +226,10 @@ export default {
 
     copyInfo() {
       copyToClipboard(this.element.result).then(() => {
-        this.$store.dispatch('ui/notifySuccess', 'Text copied to clipboard')
+        this.$store.dispatch(
+          'ui/notifySuccess',
+          this.$gettext('Text copied to clipboard')
+        )
       })
     }
   }
