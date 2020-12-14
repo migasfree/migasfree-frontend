@@ -87,7 +87,6 @@
           ><translate>Save and continue editing</translate></q-btn
         >
         <q-btn
-          label="Grabar"
           color="primary"
           icon="mdi-content-save-move"
           :loading="loading"
