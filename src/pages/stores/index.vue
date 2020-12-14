@@ -2,14 +2,14 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header title="Almacenes" @new="$router.push({ name: 'store-add' })" />
+    <Header :title="title" @new="$router.push({ name: 'store-add' })" />
 
     <SearchFilter @search="search" />
 
     <div class="row">
       <div class="col">
         <PieChart
-          title="Almacenes / Proyecto"
+          :title="$gettext('Stores / Project')"
           :data="pieData"
           :url="url"
           @getLink="goTo"
@@ -26,8 +26,10 @@ import SearchFilter from 'components/ui/SearchFilter'
 import PieChart from 'components/chart/Pie'
 
 export default {
-  meta: {
-    title: 'Stores'
+  meta() {
+    return {
+      title: this.title
+    }
   },
   components: {
     Breadcrumbs,
@@ -37,18 +39,19 @@ export default {
   },
   data() {
     return {
+      title: this.$gettext('Stores'),
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Liberación',
+          text: this.$gettext('Release'),
           icon: 'mdi-truck-delivery'
         },
         {
-          text: 'Stores',
+          text: this.$gettext('Stores'),
           icon: 'mdi-store-24-hour'
         }
       ],
