@@ -6,7 +6,7 @@
       <div class="row">
         <div class="col-md">
           <h2 class="text-h3">
-            Simular sincronización:
+            {{ title }}
             <MigasLink
               model="computers"
               :pk="computer.id"
@@ -21,7 +21,7 @@
         <div class="col-md">
           <q-card>
             <q-card-section>
-              <div class="text-h5">Entrada (del ordenador)</div>
+              <div v-translate class="text-h5">Input (from computer)</div>
             </q-card-section>
 
             <q-card-section>
@@ -36,48 +36,48 @@
               </p>
 
               <p v-if="platform.id">
-                <q-icon name="mdi-layers" size="sm" />
                 <MigasLink
                   model="platforms"
                   :pk="platform.id"
                   :value="platform.name"
+                  icon="mdi-layers"
                 />
               </p>
 
               <p>
-                <q-icon name="mdi-sitemap" size="sm" />
                 <MigasLink
                   model="projects"
                   :pk="computer.project.id"
                   :value="computer.project.name"
+                  icon="mdi-sitemap"
                 />
               </p>
 
               <p>
-                <q-icon name="mdi-account" size="sm" />
                 <MigasLink
                   model="users"
                   :pk="computer.sync_user.id"
                   :value="computer.sync_user.name"
+                  icon="mdi-account"
                 />
               </p>
 
               <OverflowList
-                label="Attributes"
+                :label="onlyAttributesLabel"
                 icon="mdi-pound"
                 :items="onlyAttributes"
                 model="attributes"
               />
 
               <OverflowList
-                label="Etiquetas"
+                :label="onlyTagsLabel"
                 icon="mdi-tag"
                 :items="onlyTags"
                 model="tags"
               />
 
               <OverflowList
-                label="Conjuntos de atributos"
+                :label="onlyAttributeSetsLabel"
                 icon="mdi-set-none"
                 :items="onlyAttributeSets"
                 model="attributes"
@@ -89,61 +89,65 @@
         <div class="col-md">
           <q-card>
             <q-card-section>
-              <div class="text-h5">Salida (del servidor)</div>
+              <div v-translate class="text-h5">Output (from server)</div>
             </q-card-section>
 
             <q-card-section v-if="Object.keys(simulation).length > 0">
               <OverflowList
-                label="Definiciones de fallas"
+                :label="faultsDefinitionsLabel"
                 icon="mdi-alarm-light"
                 :items="simulation.fault_definitions"
                 model="fault-definitions"
               />
 
               <OverflowList
-                label="Despliegues"
+                :label="deploymentsLabel"
                 icon="mdi-rocket-launch"
                 :items="simulation.deployments"
                 model="deployments"
               />
 
               <OverflowList
-                label="Paquetes a instalar"
+                :label="packagesToInstallLabel"
                 icon="mdi-package-down"
                 :items="simulation.packages.install"
               />
 
               <OverflowList
-                label="Paquetes a instalar (por políticas)"
+                :label="packagesToInstallPoliciesLabel"
                 icon="mdi-package-down"
                 :items="simulation.policies.install"
               />
 
               <OverflowList
-                label="Paquetes a desinstalar"
+                :label="packagesToUninstallLabel"
                 icon="mdi-package-up"
                 :items="simulation.packages.remove"
               />
 
               <OverflowList
-                label="Paquetes a desinstalar (por políticas)"
+                :label="packagesToUninstallPoliciesLabel"
                 icon="mdi-package-up"
                 :items="simulation.policies.remove"
               />
 
               <OverflowList
-                label="Dispositivos"
+                :label="devicesLabel"
                 icon="mdi-printer"
                 :items="simulation.logical_devices"
                 model="devices/logical"
               />
 
               <p>
-                Obtención del hardware:
+                <translate>Capture Hardware</translate>:
                 <q-chip
                   :color="simulation.capture_hardware ? 'positive' : 'negative'"
                   text-color="white"
-                  >{{ simulation.capture_hardware ? 'Sí' : 'No' }}</q-chip
+                  >{{
+                    simulation.capture_hardware
+                      ? $gettext('Yes')
+                      : $gettext('No')
+                  }}</q-chip
                 >
               </p>
             </q-card-section>
@@ -171,24 +175,24 @@ export default {
   mixins: [elementMixin, dateMixin],
   data() {
     return {
-      title: 'Simular sincronización',
+      title: this.$gettext('Simulate Synchronization'),
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Datos',
+          text: this.$gettext('Data'),
           icon: 'mdi-database-search'
         },
         {
-          text: 'Ordenadores',
+          text: this.$gettext('Computers'),
           to: 'computers-dashboard',
           icon: 'mdi-desktop-classic'
         },
         {
-          text: 'Resultados',
+          text: this.$gettext('Results'),
           to: 'computers-list'
         },
         {
@@ -196,14 +200,28 @@ export default {
           to: { name: 'computer-detail', params: { id: 0 } }
         },
         {
-          text: 'Simular sincronización'
+          text: this.$gettext('Simulate Synchronization')
         }
       ],
       computer: {},
       platform: {},
       onlyAttributes: [],
+      onlyAttributesLabel: this.$gettext('Attributes'),
       onlyAttributeSets: [],
+      onlyAttributeSetsLabel: this.$gettext('Attributes Sets'),
       onlyTags: [],
+      onlyTagsLabel: this.$gettext('Tags'),
+      faultsDefinitionsLabel: this.$gettext('Faults Definitions'),
+      deploymentsLabel: this.$gettext('Deployments'),
+      devicesLabel: this.$gettext('Devices'),
+      packagesToInstallLabel: this.$gettext('Packages to Install'),
+      packagesToInstallPoliciesLabel: this.$gettext(
+        'Packages to Install (by policies)'
+      ),
+      packagesToUninstallLabel: this.$gettext('Packages to Uninstall'),
+      packagesToUninstallPoliciesLabel: this.$gettext(
+        'Packages to Uninstall (by policies)'
+      ),
       simulation: {}
     }
   },
