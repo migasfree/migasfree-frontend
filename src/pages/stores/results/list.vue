@@ -3,7 +3,7 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <Header
-      title="Almacenes"
+      :title="title"
       :results="totalRecords"
       @new="$router.push({ name: 'store-add' })"
     />
@@ -16,7 +16,9 @@
 
     <div class="row q-pa-md">
       <div class="col-12">
-        <q-btn @click="resetFilters">Reset all filters</q-btn>
+        <q-btn @click="resetFilters"
+          ><translate>Reset all filters</translate></q-btn
+        >
       </div>
     </div>
 
@@ -63,6 +65,7 @@
             model="projects"
             :pk="props.row.project.id"
             :value="props.row.project.name"
+            icon="mdi-sitemap"
           />
         </span>
         <span v-else-if="props.column.field == 'name'">
@@ -70,13 +73,14 @@
             model="stores"
             :pk="props.row.id"
             :value="props.row.name"
+            icon="mdi-store-24-hour"
           />
         </span>
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
-      <div slot="emptystate">{{ $t('vgt.noData') }}</div>
+      <div slot="emptystate" v-translate>There are no results</div>
       <div slot="selected-row-actions">
         <q-btn
           size="sm"
@@ -98,8 +102,10 @@ import { elementMixin } from 'mixins/element'
 import { datagridMixin } from 'mixins/datagrid'
 
 export default {
-  meta: {
-    title: 'Stores List'
+  meta() {
+    return {
+      title: this.$gettext('Stores List')
+    }
   },
   components: {
     Breadcrumbs,
@@ -110,23 +116,24 @@ export default {
   mixins: [elementMixin, datagridMixin],
   data() {
     return {
+      title: this.$gettext('Stores'),
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Liberación',
+          text: this.$gettext('Release'),
           icon: 'mdi-truck-delivery'
         },
         {
-          text: 'Almacenes',
+          text: this.$gettext('Stores'),
           icon: 'mdi-store-24-hour',
           to: 'stores-dashboard'
         },
         {
-          text: 'Resultados'
+          text: this.$gettext('Results')
         }
       ],
       columns: [
@@ -135,28 +142,28 @@ export default {
           hidden: true
         },
         {
-          label: 'Actions',
+          label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
           globalSearchDisabled: true
         },
         {
-          label: 'Nombre',
+          label: this.$gettext('Name'),
           field: 'name',
           html: true,
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.filter'),
+            placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
         },
         {
-          label: 'Proyecto',
+          label: this.$gettext('Project'),
           field: 'project.name',
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.filter'),
+            placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
         }
