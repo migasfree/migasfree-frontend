@@ -3,7 +3,7 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <Header
-      title="Paquetes"
+      :title="title"
       :results="totalRecords"
       @new="$router.push({ name: 'package-add' })"
     />
@@ -16,7 +16,9 @@
 
     <div class="row q-pa-md">
       <div class="col-12">
-        <q-btn @click="resetFilters">Reset all filters</q-btn>
+        <q-btn @click="resetFilters"
+          ><translate>Reset all filters</translate></q-btn
+        >
       </div>
     </div>
 
@@ -80,13 +82,14 @@
             model="stores"
             :pk="props.row.store.id"
             :value="props.row.store.name"
+            icon="mdi-store-24-hour"
           />
         </span>
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
-      <div slot="emptystate">{{ $t('vgt.noData') }}</div>
+      <div slot="emptystate" v-translate>There are no results</div>
       <div slot="selected-row-actions">
         <q-btn
           size="sm"
@@ -108,8 +111,10 @@ import { elementMixin } from 'mixins/element'
 import { datagridMixin } from 'mixins/datagrid'
 
 export default {
-  meta: {
-    title: 'Packages List'
+  meta() {
+    return {
+      title: this.$gettext('Packages List')
+    }
   },
   components: {
     Breadcrumbs,
@@ -120,23 +125,24 @@ export default {
   mixins: [elementMixin, datagridMixin],
   data() {
     return {
+      title: this.$gettext('Packages'),
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Liberación',
+          text: this.$gettext('Release'),
           icon: 'mdi-truck-delivery'
         },
         {
-          text: 'Paquetes',
+          text: this.$gettext('Packages'),
           icon: 'mdi-package-variant',
           to: 'packages-dashboard'
         },
         {
-          text: 'Resultados'
+          text: this.$gettext('Results')
         }
       ],
       columns: [
@@ -145,19 +151,19 @@ export default {
           hidden: true
         },
         {
-          label: 'Actions',
+          label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
           globalSearchDisabled: true
         },
         {
-          label: 'Paquete',
+          label: this.$gettext('Package'),
           field: 'fullname',
           html: true,
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.filter'),
+            placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
         },
@@ -166,11 +172,11 @@ export default {
           hidden: true
         },
         {
-          label: 'Proyecto',
+          label: this.$gettext('Project'),
           field: 'project.name',
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.all'),
+            placeholder: this.$gettext('All'),
             trigger: 'enter'
           }
         },
@@ -179,12 +185,12 @@ export default {
           hidden: true
         },
         {
-          label: 'Store',
+          label: this.$gettext('Store'),
           field: 'store.name',
           html: true,
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.all'),
+            placeholder: this.$gettext('All'),
             trigger: 'enter'
           }
         }
