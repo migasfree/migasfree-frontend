@@ -2,12 +2,12 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header title="Cuadro de mando" :has-add-button="false" />
+    <Header :title="title" :has-add-button="false" />
 
     <div class="row">
       <div class="col-4 col-md">
         <NestedPieChart
-          title="Ordenadores productivos"
+          :title="productiveComputersTitle"
           :data="productiveComputers"
           :url="productiveUrl"
           @getLink="goTo"
@@ -16,7 +16,7 @@
 
       <div class="col-4 col-md">
         <NestedPieChart
-          title="Errores sin comprobar"
+          :title="uncheckedErrorsTitle"
           :data="uncheckedErrors"
           :url="uncheckedErrorsUrl"
           @getLink="goTo"
@@ -25,7 +25,7 @@
 
       <div class="col-4 col-md">
         <NestedPieChart
-          title="Fallas sin comprobar"
+          :title="uncheckedFaultsTitle"
           :data="uncheckedFaults"
           :url="uncheckedFaultsUrl"
           @getLink="goTo"
@@ -40,7 +40,7 @@
             <template #header>
               <q-item-section>
                 <div class="text-h5">
-                  Histórico de sucesos en las últimas 72 horas
+                  <translate>History of events in the last 72 hours</translate>
                 </div>
               </q-item-section>
             </template>
@@ -56,19 +56,13 @@
 
     <div class="row">
       <div class="col-12">
-        <StackedBarChart
-          title="Ordenadores únicos sincronizados / día"
-          :data="dailySyncs"
-        />
+        <StackedBarChart :title="dailySyncsTitle" :data="dailySyncs" />
       </div>
     </div>
 
     <div class="row">
       <div class="col-12">
-        <StackedBarChart
-          title="Ordenadores únicos sincronizados / mes"
-          :data="monthlySyncs"
-        />
+        <StackedBarChart :title="monthlySyncsTitle" :data="monthlySyncs" />
       </div>
     </div>
   </q-page>
@@ -81,23 +75,33 @@ import NestedPieChart from 'components/chart/NestedPie'
 import StackedBarChart from 'components/chart/StackedBar'
 
 export default {
-  meta: {
-    title: 'Dashboard'
+  meta() {
+    return {
+      title: this.title
+    }
   },
   components: { Breadcrumbs, Header, NestedPieChart, StackedBarChart },
   data() {
+    const title = this.$gettext('Dashboard')
+
     return {
+      title,
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: title,
           icon: 'mdi-home'
         }
       ],
       productiveComputers: {},
+      productiveComputersTitle: this.$gettext('Productive Computers'),
       uncheckedErrors: {},
+      uncheckedErrorsTitle: this.$gettext('Unchecked Errors'),
       uncheckedFaults: {},
+      uncheckedFaultsTitle: this.$gettext('Unchecked Faults'),
       dailySyncs: {},
+      dailySyncsTitle: this.$gettext('Synchronized single computers / day'),
       monthlySyncs: {},
+      monthlySyncsTitle: this.$gettext('Synchronized single computers / month'),
       projects: [],
       loading: false,
       eventsHistory: {}
