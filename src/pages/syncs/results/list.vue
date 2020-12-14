@@ -2,14 +2,10 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header
-      title="Sincronizaciones"
-      :results="totalRecords"
-      :has-add-button="false"
-    />
+    <Header :title="title" :results="totalRecords" :has-add-button="false" />
 
     <q-list class="more-filters" bordered>
-      <q-expansion-item icon="mdi-filter" label="More Filters">
+      <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">
         <SearchFilter
           v-model="tableFilters.search"
           @search="onSearch"
@@ -21,7 +17,7 @@
             <q-select
               v-model="tableFilters.platform.selected"
               :options="tableFilters.platform.items"
-              label="Por plataforma"
+              :label="$gettext('By Platform')"
               dense
               outlined
               option-value="id"
@@ -39,7 +35,7 @@
               ref="startDateRange"
               v-model="tableFilters.startDate.selected"
               prepend-icon="mdi-filter"
-              label="Por fecha de inicio (rango)"
+              :label="$gettext('By Start Date (range)')"
               @select="onStartDateFilter"
             />
           </div>
@@ -49,7 +45,7 @@
               ref="createdAtRange"
               v-model="tableFilters.createdAt.selected"
               prepend-icon="mdi-filter"
-              label="Por fecha de finalización (rango)"
+              :label="$gettext('By End Date (range)')"
               @select="onCreatedAtFilter"
             />
           </div>
@@ -57,7 +53,10 @@
 
         <div class="row q-pa-md">
           <div class="col-12">
-            <q-btn @click="resetFilters">Reset all filters</q-btn>
+            <q-btn
+              :label="$gettext('Reset all filters')"
+              @click="resetFilters"
+            />
           </div>
         </div>
       </q-expansion-item>
@@ -107,6 +106,7 @@
             model="projects"
             :pk="props.row.project.id"
             :value="props.row.project.name || ''"
+            icon="mdi-sitemap"
           />
         </span>
         <span v-else-if="props.column.field == 'user.name'">
@@ -114,6 +114,7 @@
             model="users"
             :pk="props.row.user.id"
             :value="props.row.user.name"
+            icon="mdi-user-account"
           />
         </span>
         <span v-else-if="props.column.field == 'created_at'">
@@ -136,7 +137,7 @@
           {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
-      <div slot="emptystate">{{ $t('vgt.noData') }}</div>
+      <div slot="emptystate" v-translate>There are no results</div>
       <div slot="selected-row-actions">
         <q-btn
           class="q-ma-xs"
@@ -163,8 +164,10 @@ import { elementMixin } from 'mixins/element'
 import { datagridMixin } from 'mixins/datagrid'
 
 export default {
-  meta: {
-    title: 'Syncs List'
+  meta() {
+    return {
+      title: this.$gettext('Syncs List')
+    }
   },
   components: {
     Breadcrumbs,
@@ -178,23 +181,24 @@ export default {
   mixins: [dateMixin, elementMixin, datagridMixin],
   data() {
     return {
+      title: this.$gettext('Synchronizations'),
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Datos',
+          text: this.$gettext('Data'),
           icon: 'mdi-database-search'
         },
         {
-          text: 'Sincronizaciones',
+          text: this.$gettext('Synchronizations'),
           icon: 'mdi-sync',
           to: 'syncs-dashboard'
         },
         {
-          text: 'Resultados'
+          text: this.$gettext('Results')
         }
       ],
       columns: [
@@ -203,18 +207,18 @@ export default {
           hidden: true
         },
         {
-          label: 'Actions',
+          label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
           globalSearchDisabled: true
         },
         {
-          label: 'Fecha de inicio',
+          label: this.$gettext('Start Date'),
           field: 'start_date'
         },
         {
-          label: 'Fecha de finalización',
+          label: this.$gettext('End Date'),
           field: 'created_at'
         },
         {
@@ -222,11 +226,11 @@ export default {
           hidden: true
         },
         {
-          label: 'Usuario',
+          label: this.$gettext('User'),
           field: 'user.name',
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.all'),
+            placeholder: this.$gettext('All'),
             trigger: 'enter'
           }
         },
@@ -243,11 +247,11 @@ export default {
           hidden: true
         },
         {
-          label: 'Ordenador',
+          label: this.$gettext('Computer'),
           field: 'computer.__str__',
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.filter'),
+            placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
         },
@@ -256,33 +260,33 @@ export default {
           hidden: true
         },
         {
-          label: 'Proyecto',
+          label: this.$gettext('Project'),
           field: 'project.name',
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.all'),
+            placeholder: this.$gettext('All'),
             trigger: 'enter'
           }
         },
         {
-          label: 'PMS Status Ok',
+          label: this.$gettext('PMS Status Ok'),
           field: 'pms_status_ok',
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.all'),
+            placeholder: this.$gettext('All'),
             trigger: 'enter',
             filterDropdownItems: [
-              { value: true, text: 'Sí' },
-              { value: false, text: 'No' }
+              { value: true, text: this.$gettext('Yes') },
+              { value: false, text: this.$gettext('No') }
             ]
           }
         },
         {
-          label: 'Consumidor',
+          label: this.$gettext('Consumer'),
           field: 'consumer',
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.all'),
+            placeholder: this.$gettext('All'),
             trigger: 'enter'
           }
         }
@@ -290,7 +294,7 @@ export default {
       tableFilters: {
         search: '',
         platform: {
-          items: [{ id: '', name: 'Todas' }],
+          items: [{ id: '', name: this.$gettext('All') }],
           selected: null
         },
         createdAt: {
