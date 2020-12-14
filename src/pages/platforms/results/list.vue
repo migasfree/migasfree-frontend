@@ -3,7 +3,7 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <Header
-      title="Plataformas"
+      :title="title"
       :results="totalRecords"
       @new="$router.push({ name: 'platform-add' })"
     />
@@ -16,7 +16,9 @@
 
     <div class="row q-pa-md">
       <div class="col-12">
-        <q-btn @click="resetFilters">Reset all filters</q-btn>
+        <q-btn @click="resetFilters"
+          ><translate>Reset all filters</translate></q-btn
+        >
       </div>
     </div>
 
@@ -69,7 +71,7 @@
           {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
-      <div slot="emptystate">{{ $t('vgt.noData') }}</div>
+      <div slot="emptystate" v-translate>There are no results</div>
       <div slot="selected-row-actions">
         <q-btn
           size="sm"
@@ -90,8 +92,10 @@ import MigasLink from 'components/MigasLink'
 import { datagridMixin } from 'mixins/datagrid'
 
 export default {
-  meta: {
-    title: 'Platforms List'
+  meta() {
+    return {
+      title: this.$gettext('Platforms List')
+    }
   },
   components: {
     Breadcrumbs,
@@ -102,22 +106,23 @@ export default {
   mixins: [datagridMixin],
   data() {
     return {
+      title: this.$gettext('Platforms'),
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Configuración',
+          text: this.$gettext('Configuration'),
           icon: 'mdi-cogs'
         },
         {
-          text: 'Plataformas',
+          text: this.$gettext('Platforms'),
           icon: 'mdi-layers'
         },
         {
-          text: 'Resultados'
+          text: this.$gettext('Results')
         }
       ],
       columns: [
@@ -126,19 +131,19 @@ export default {
           hidden: true
         },
         {
-          label: 'Actions',
+          label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
           globalSearchDisabled: true
         },
         {
-          label: 'Nombre',
+          label: this.$gettext('Name'),
           field: 'name',
           html: true,
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.filter'),
+            placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
         }
