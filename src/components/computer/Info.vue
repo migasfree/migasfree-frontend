@@ -2,9 +2,7 @@
   <q-card>
     <q-card-section>
       <q-btn-group v-if="$store.getters['auth/user'].is_superuser">
-        <q-input v-model="value" outlined label-slot>
-          <template #label><translate>Name</translate></template></q-input
-        >
+        <q-input v-model="value" outlined :label="$gettext('Name')" />
         <q-btn
           color="primary"
           icon="mdi-content-save-edit"
@@ -93,8 +91,8 @@
             name: 'computer-events',
             params: { id: cid }
           }"
-          ><translate>Events</translate></q-btn
-        >
+          :label="$gettext('Events')"
+        />
         <q-btn
           icon="mdi-head-sync-outline"
           no-caps
@@ -102,8 +100,8 @@
             name: 'computer-simulate',
             params: { id: cid }
           }"
-          ><translate>Simulate synchronization</translate></q-btn
-        >
+          :label="$gettext('Simulate synchronization')"
+        />
         <q-btn
           icon="mdi-card-account-details-outline"
           no-caps
@@ -111,8 +109,8 @@
             name: 'computer-label',
             params: { id: cid }
           }"
-          ><translate>Identification</translate></q-btn
-        >
+          :label="$gettext('Identification')"
+        />
       </q-btn-group>
     </q-card-actions>
   </q-card>
