@@ -3,7 +3,7 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <Header
-      title="Etiquetas"
+      :title="title"
       :results="totalRecords"
       @new="$router.push({ name: 'tag-add' })"
     />
@@ -16,7 +16,7 @@
 
     <div class="row q-pa-md">
       <div class="col-12">
-        <q-btn @click="resetFilters">Reset all filters</q-btn>
+        <q-btn :label="$gettext('Reset all filters')" @click="resetFilters" />
       </div>
     </div>
 
@@ -71,13 +71,14 @@
             model="stamps"
             :pk="props.row.property_att.id"
             :value="props.row.property_att.name || ''"
+            icon="mdi-stamper"
           />
         </span>
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
-      <div slot="emptystate">{{ $t('vgt.noData') }}</div>
+      <div slot="emptystate" v-translate>There are no results</div>
       <div slot="selected-row-actions">
         <q-btn
           size="sm"
@@ -99,8 +100,10 @@ import { elementMixin } from 'mixins/element'
 import { datagridMixin } from 'mixins/datagrid'
 
 export default {
-  meta: {
-    title: 'Tags List'
+  meta() {
+    return {
+      title: this.$gettext('Tags List')
+    }
   },
   components: {
     Breadcrumbs,
@@ -113,21 +116,21 @@ export default {
     return {
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Datos',
+          text: this.$gettext('Data'),
           icon: 'mdi-database-search'
         },
         {
-          text: 'Etiquetas',
+          text: this.$gettext('Tags'),
           icon: 'mdi-tag',
           to: 'tags-dashboard'
         },
         {
-          text: 'Resultados'
+          text: this.$gettext('Results')
         }
       ],
       columns: [
@@ -136,37 +139,37 @@ export default {
           hidden: true
         },
         {
-          label: 'Actions',
+          label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
           globalSearchDisabled: true
         },
         {
-          label: 'Etiqueta',
+          label: this.$gettext('Tag'),
           field: 'value',
           html: true,
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.filter'),
+            placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
         },
         {
-          label: 'Description',
+          label: this.$gettext('Description'),
           field: 'description',
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.filter'),
+            placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
         },
         {
-          label: 'Categoría de etiqueta',
+          label: this.$gettext('Stamp'),
           field: 'property_att',
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.all'),
+            placeholder: this.$gettext('All'),
             trigger: 'enter'
           }
         }
