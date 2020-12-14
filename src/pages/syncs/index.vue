@@ -2,14 +2,14 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header title="Sincronizaciones" :has-add-button="false" />
+    <Header :title="title" :has-add-button="false" />
 
     <SearchFilter @search="search" />
 
     <div class="row">
       <div class="col-12">
         <StackedBarChart
-          title="Sincronizaciones / Mes"
+          :title="$gettext('Syncs / Month')"
           :data="projectMonth"
           @getLink="goTo"
         />
@@ -19,7 +19,7 @@
     <div class="row">
       <div class="col-12">
         <PieChart
-          title="Sincronizaciones / Proyecto"
+          :title="$gettext('Syncs / Project')"
           :data="byProject"
           :url="url"
           @getLink="goTo"
@@ -37,8 +37,10 @@ import PieChart from 'components/chart/Pie'
 import StackedBarChart from 'components/chart/StackedBar'
 
 export default {
-  meta: {
-    title: 'Syncs',
+  meta() {
+    return {
+      title: this.title
+    }
   },
   components: {
     Breadcrumbs,
@@ -49,18 +51,19 @@ export default {
   },
   data() {
     return {
+      title: this.$gettext('Synchronizations'),
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Datos',
+          text: this.$gettext('Data'),
           icon: 'mdi-database-search'
         },
         {
-          text: 'Sincronizaciones',
+          text: this.$gettext('Synchronizations'),
           icon: 'mdi-sync'
         }
       ],
