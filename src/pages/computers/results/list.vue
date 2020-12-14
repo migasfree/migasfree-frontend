@@ -5,7 +5,7 @@
     <Header :title="title" :results="totalRecords" :has-add-button="false" />
 
     <q-list class="more-filters" bordered>
-      <q-expansion-item icon="mdi-filter" label="More Filters">
+      <q-expansion-item icon="mdi-filter" :label="moreFiltersLabel">
         <SearchFilter
           v-model="tableFilters.search"
           @search="onSearch"
@@ -103,7 +103,7 @@
             <SelectTree
               ref="statusTree"
               v-model="tableFilters.statusIn.selected"
-              placeholder="Por estado"
+              :placeholder="byStatusLabel"
               prepend-icon="mdi-filter"
               :options="tableFilters.statusIn.items"
               @select="onStatusInFilter"
@@ -117,7 +117,7 @@
               ref="createdAtRange"
               v-model="tableFilters.createdAt.selected"
               prepend-icon="mdi-filter"
-              label="Por fecha de alta (rango)"
+              :label="byCreatedAtRangeLabel"
               @select="onCreatedAtFilter"
             />
           </div>
@@ -127,7 +127,7 @@
               ref="syncEndDateRange"
               v-model="tableFilters.syncEndDateRange.selected"
               prepend-icon="mdi-filter"
-              label="Por fecha de última sincronización (rango)"
+              :label="byLastSyncDateRangeLabel"
               @select="onSyncEndDateRangeFilter"
             />
           </div>
@@ -136,7 +136,7 @@
             <SelectTree
               ref="machineTree"
               v-model="tableFilters.machine.selected"
-              placeholder="Por máquina"
+              :placeholder="byMachineLabel"
               prepend-icon="mdi-filter"
               :options="tableFilters.machine.items"
               @select="onMachineFilter"
@@ -461,7 +461,12 @@ export default {
         }
       },
       model: 'computers',
-      detailRoute: 'computer-detail'
+      detailRoute: 'computer-detail',
+      moreFiltersLabel: this.$gettext('More Filters'),
+      byStatusLabel: this.$gettext('By Status'),
+      byCreatedAtRangeLabel: this.$gettext('By Subscribed Date (range)'),
+      byLastSyncDateRangeLabel: this.$gettext('By Last Sync Date (range)'),
+      byMachineLabel: this.$gettext('By Machine')
     }
   },
   methods: {
