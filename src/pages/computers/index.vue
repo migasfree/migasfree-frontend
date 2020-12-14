@@ -2,14 +2,14 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header title="Ordenadores" :has-add-button="false" />
+    <Header :title="title" :has-add-button="false" />
 
     <SearchFilter @search="search" />
 
     <div class="row">
       <div class="col-6">
         <PieChart
-          title="Ordenadores por proyecto"
+          :title="pieDataTitle"
           :data="pieData"
           :url="byProjectUrl"
           @getLink="goTo"
@@ -18,7 +18,7 @@
 
       <div class="col-6">
         <NestedPieChart
-          title="Ordenadores productivos"
+          :title="nestedPieDataTitle"
           :data="nestedPieData"
           :url="productiveUrl"
           @getLink="goTo"
@@ -29,7 +29,7 @@
     <div class="row">
       <div class="col-12">
         <StackedBarChart
-          title="Nuevos ordenadores / mes"
+          :title="newMonthDataTitle"
           :data="newMonthData"
           @getLink="goTo"
         />
@@ -39,7 +39,7 @@
     <div class="row">
       <div class="col-12">
         <StackedBarChart
-          title="Ordenadores físicos que entran al sistema por año"
+          :title="entryYearDataTitle"
           :data="entryYearData"
           @getLink="goTo"
         />
@@ -57,8 +57,10 @@ import NestedPieChart from 'components/chart/NestedPie'
 import StackedBarChart from 'components/chart/StackedBar'
 
 export default {
-  meta: {
-    title: 'Computers',
+  meta() {
+    return {
+      title: this.title
+    }
   },
   components: {
     Breadcrumbs,
@@ -70,25 +72,32 @@ export default {
   },
   data() {
     return {
+      title: this.$gettext('Computers'),
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Datos',
+          text: this.$gettext('Data'),
           icon: 'mdi-database-search'
         },
         {
-          text: 'Ordenadores',
+          text: this.$gettext('Computers'),
           icon: 'mdi-desktop-classic'
         }
       ],
       pieData: {},
+      pieDataTitle: this.$gettext('Computers by Project'),
       nestedPieData: {},
+      nestedPieDataTitle: this.$gettext('Productive Computers'),
       newMonthData: {},
+      newMonthDataTitle: this.$gettext('New Computers / Month'),
       entryYearData: {},
+      entryYearDataTitle: this.$gettext(
+        'Physical computers entering the system per year'
+      ),
       url: { name: 'computers-list' }
     }
   },
