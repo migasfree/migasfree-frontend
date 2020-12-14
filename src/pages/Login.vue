@@ -10,22 +10,27 @@
           />
         </q-avatar>
       </q-card-section>
+
       <q-card-section>
         <div class="text-center q-pt-lg">
           <div class="col text-h6 ellipsis">
-            Log in @ migasfree
+            <translate>Log in</translate> @ migasfree
           </div>
         </div>
       </q-card-section>
+
       <q-card-section>
         <q-form class="q-gutter-md" @submit.prevent="login">
           <q-input
             v-model="model.username"
             autofocus
-            label="User"
             lazy-rules
-            :rules="[(val) => !!val || '* Required']"
+            :rules="[(val) => !!val || $gettext('* Required')]"
           >
+            <template #label>
+              <translate>User</translate>
+            </template>
+
             <template #prepend>
               <q-icon name="mdi-account" />
             </template>
@@ -34,15 +39,19 @@
           <q-input
             id="password"
             v-model="model.password"
-            label="Password"
             lazy-rules
             counter
             :rules="[
-              (val) => !!val || '* Required',
-              (val) => val.length > 3 || 'Please use minimum 4 characters'
+              (val) => !!val || $gettext('* Required'),
+              (val) =>
+                val.length > 3 || $gettext('Please use minimum 4 characters')
             ]"
             :type="showPassword ? 'text' : 'password'"
           >
+            <template #label>
+              <translate>Password</translate>
+            </template>
+
             <template #prepend>
               <q-icon name="mdi-lock" />
             </template>
@@ -57,13 +66,13 @@
 
           <div>
             <q-btn
-              label="Login"
               class="full-width"
               type="submit"
               color="primary"
               :loading="loading"
               :disabled="!isValid"
-            />
+              ><translate>Log In</translate></q-btn
+            >
           </div>
         </q-form>
       </q-card-section>
@@ -74,6 +83,11 @@
 <script>
 export default {
   name: 'Login',
+  meta() {
+    return {
+      title: this.$gettext('Log In')
+    }
+  },
   data: () => ({
     loading: false,
     showPassword: false,
