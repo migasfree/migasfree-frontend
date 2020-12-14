@@ -47,8 +47,8 @@ msgstr ""
 #: ./src/pages/platforms/results/detail.vue:99
 #: ./src/pages/stores/results/detail.vue:68
 #: ./src/pages/stores/results/detail.vue:113
-#: ./src/pages/tags/results/detail.vue:67
-#: ./src/pages/tags/results/detail.vue:115
+#: ./src/pages/tags/results/detail.vue:69
+#: ./src/pages/tags/results/detail.vue:117
 msgid "Add"
 msgstr ""
 
@@ -106,8 +106,7 @@ msgstr ""
 msgid "Are you sure you want to remove this item?"
 msgstr ""
 
-#: ./src/components/computer/Devices.vue:9
-#: ./src/components/computer/Devices.vue:1
+#: ./src/components/computer/Devices.vue:41
 msgid "Assigned"
 msgstr ""
 
@@ -142,6 +141,10 @@ msgstr ""
 msgid "Attributes Sets"
 msgstr ""
 
+#: ./src/components/computer/HardwareResume.vue:25
+msgid "bits"
+msgstr ""
+
 #: ./src/pages/computers/results/list.vue:26
 #: ./src/pages/computers/results/list.vue:1
 msgid "By Architecture"
@@ -152,8 +155,7 @@ msgstr ""
 msgid "By Assignment"
 msgstr ""
 
-#: ./src/components/computer/Devices.vue:34
-#: ./src/components/computer/Devices.vue:1
+#: ./src/components/computer/Devices.vue:99
 msgid "By default"
 msgstr ""
 
@@ -321,7 +323,7 @@ msgstr ""
 #: ./src/pages/syncs/index.vue:25
 #: ./src/pages/syncs/results/list.vue:33
 #: ./src/pages/tags/index.vue:23
-#: ./src/pages/tags/results/detail.vue:28
+#: ./src/pages/tags/results/detail.vue:30
 #: ./src/pages/tags/results/list.vue:25
 msgid "Dashboard"
 msgstr ""
@@ -344,7 +346,7 @@ msgstr ""
 #: ./src/pages/syncs/index.vue:30
 #: ./src/pages/syncs/results/list.vue:38
 #: ./src/pages/tags/index.vue:28
-#: ./src/pages/tags/results/detail.vue:33
+#: ./src/pages/tags/results/detail.vue:35
 #: ./src/pages/tags/results/list.vue:30
 msgid "Data"
 msgstr ""
@@ -352,7 +354,7 @@ msgstr ""
 #: ./src/pages/packages/results/detail.vue:190
 #: ./src/pages/platforms/results/detail.vue:119
 #: ./src/pages/stores/results/detail.vue:137
-#: ./src/pages/tags/results/detail.vue:140
+#: ./src/pages/tags/results/detail.vue:142
 msgid "Data has been added!"
 msgstr ""
 
@@ -362,7 +364,7 @@ msgstr ""
 #: ./src/pages/packages/results/detail.vue:157
 #: ./src/pages/platforms/results/detail.vue:92
 #: ./src/pages/stores/results/detail.vue:106
-#: ./src/pages/tags/results/detail.vue:108
+#: ./src/pages/tags/results/detail.vue:110
 msgid "Data has been changed!"
 msgstr ""
 
@@ -373,7 +375,7 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: ./src/components/computer/Info.vue:21
+#: ./src/components/computer/Info.vue:20
 #: ./src/pages/computers/results/events.vue:16
 #: ./src/pages/computers/results/events.vue:12
 msgid "Date of entry into the migasfree system"
@@ -470,7 +472,7 @@ msgstr ""
 msgid "Errors List"
 msgstr ""
 
-#: ./src/components/computer/Info.vue:58
+#: ./src/components/computer/Info.vue:210
 #: ./src/pages/computers/results/events.vue:8
 #: ./src/pages/computers/results/events.vue:4
 #: ./src/pages/computers/results/events.vue:20
@@ -544,12 +546,16 @@ msgstr ""
 msgid "Formula"
 msgstr ""
 
-#: ./src/components/computer/Info.vue:46
+#: ./src/components/computer/Info.vue:45
 msgid "forwarded ip address"
 msgstr ""
 
-#: ./src/components/computer/Info.vue:16
+#: ./src/components/computer/Info.vue:15
 msgid "full qualified domain name"
+msgstr ""
+
+#: ./src/components/computer/HardwareResume.vue:5
+msgid "Hardware"
 msgstr ""
 
 #: ./src/components/computer/Software.vue:51
@@ -562,7 +568,7 @@ msgstr ""
 msgid "History of events in the last 72 hours"
 msgstr ""
 
-#: ./src/components/computer/Info.vue:66
+#: ./src/components/computer/Info.vue:228
 msgid "Identification"
 msgstr ""
 
@@ -576,7 +582,7 @@ msgstr ""
 msgid "Inventory"
 msgstr ""
 
-#: ./src/components/computer/Info.vue:41
+#: ./src/components/computer/Info.vue:40
 msgid "ip address"
 msgstr ""
 
@@ -586,6 +592,14 @@ msgstr ""
 
 #: ./src/pages/computers/results/list.vue:149
 msgid "laptop"
+msgstr ""
+
+#: ./src/components/computer/HardwareResume.vue:53
+msgid "Last hardware capture date"
+msgstr ""
+
+#: ./src/components/computer/HardwareResume.vue:86
+msgid "Last hardware capture date has been changed!"
 msgstr ""
 
 #: ./src/components/ui/AppFooter.vue:5
@@ -603,6 +617,10 @@ msgstr ""
 
 #: ./src/layouts/MainLayout.vue:67
 msgid "Logout"
+msgstr ""
+
+#: ./src/components/computer/HardwareResume.vue:69
+msgid "MAC Address"
 msgstr ""
 
 #: ./src/components/ui/AppFooter.vue:14
@@ -623,8 +641,7 @@ msgstr ""
 msgid "More Filters"
 msgstr ""
 
-#: ./src/components/computer/Info.vue:5
-#: ./src/components/computer/Info.vue:1
+#: ./src/components/computer/Info.vue:47
 #: ./src/pages/computers/results/list.vue:60
 #: ./src/pages/packages/results/detail.vue:51
 #: ./src/pages/platforms/results/detail.vue:55
@@ -654,7 +671,7 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: ./src/components/computer/Devices.vue:13
+#: ./src/components/computer/Devices.vue:12
 #: ./src/components/computer/Devices.vue:3
 #: ./src/pages/computers/results/detail.vue:78
 #: ./src/pages/computers/results/detail.vue:74
@@ -744,7 +761,7 @@ msgstr ""
 msgid "Physical computers entering the system per year"
 msgstr ""
 
-#: ./src/components/computer/Info.vue:29
+#: ./src/components/computer/Info.vue:28
 msgid "platform"
 msgstr ""
 
@@ -778,6 +795,10 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
+#: ./src/components/computer/HardwareResume.vue:44
+msgid "Processor"
+msgstr ""
+
 #: ./src/pages/computers/results/list.vue:113
 msgid "Product"
 msgstr ""
@@ -791,7 +812,7 @@ msgstr ""
 msgid "Productive Computers"
 msgstr ""
 
-#: ./src/components/computer/Info.vue:34
+#: ./src/components/computer/Info.vue:33
 msgid "project"
 msgstr ""
 
@@ -812,6 +833,10 @@ msgstr ""
 #: ./src/pages/packages/results/detail.vue:20
 #: ./src/pages/packages/results/detail.vue:1
 msgid "Project / Store"
+msgstr ""
+
+#: ./src/components/computer/HardwareResume.vue:51
+msgid "RAM"
 msgstr ""
 
 #: ./src/components/ui/AppMenu.vue:54
@@ -861,8 +886,8 @@ msgstr ""
 #: ./src/pages/stores/results/detail.vue:149
 #: ./src/pages/stores/results/list.vue:40
 #: ./src/pages/syncs/results/list.vue:47
-#: ./src/pages/tags/results/detail.vue:60
-#: ./src/pages/tags/results/detail.vue:152
+#: ./src/pages/tags/results/detail.vue:62
+#: ./src/pages/tags/results/detail.vue:154
 #: ./src/pages/tags/results/list.vue:39
 msgid "Results"
 msgstr ""
@@ -889,8 +914,9 @@ msgstr ""
 msgid "Save and add other"
 msgstr ""
 
-#: ./src/components/computer/Devices.vue:40
-#: ./src/components/computer/Info.vue:7
+#: ./src/components/computer/Devices.vue:113
+#: ./src/components/computer/HardwareResume.vue:12
+#: ./src/components/computer/Info.vue:6
 #: ./src/pages/attributes/results/detail.vue:37
 #: ./src/pages/attributes/results/detail.vue:33
 #: ./src/pages/computers/results/detail.vue:132
@@ -919,7 +945,7 @@ msgstr ""
 msgid "Server"
 msgstr ""
 
-#: ./src/components/computer/Info.vue:62
+#: ./src/components/computer/Info.vue:219
 msgid "Simulate synchronization"
 msgstr ""
 
@@ -964,6 +990,10 @@ msgstr ""
 #: ./src/pages/computers/results/events.vue:2
 #: ./src/pages/computers/results/events.vue:79
 msgid "Status Logs"
+msgstr ""
+
+#: ./src/components/computer/HardwareResume.vue:61
+msgid "Storage"
 msgstr ""
 
 #: ./src/pages/packages/results/detail.vue:36
@@ -1056,9 +1086,9 @@ msgstr ""
 msgid "Syncs List"
 msgstr ""
 
-#: ./src/pages/tags/results/detail.vue:21
-#: ./src/pages/tags/results/detail.vue:117
-#: ./src/pages/tags/results/detail.vue:158
+#: ./src/pages/tags/results/detail.vue:23
+#: ./src/pages/tags/results/detail.vue:119
+#: ./src/pages/tags/results/detail.vue:160
 #: ./src/pages/tags/results/detail.vue:31
 #: ./src/pages/tags/results/list.vue:55
 msgid "Tag"
@@ -1071,7 +1101,7 @@ msgstr ""
 #: ./src/pages/computers/results/simulate.vue:52
 #: ./src/pages/tags/index.vue:20
 #: ./src/pages/tags/index.vue:32
-#: ./src/pages/tags/results/detail.vue:37
+#: ./src/pages/tags/results/detail.vue:39
 #: ./src/pages/tags/results/list.vue:34
 msgid "Tags"
 msgstr ""
@@ -1139,6 +1169,10 @@ msgstr ""
 
 #: ./src/layouts/MainLayout.vue:51
 msgid "User: %{ name }"
+msgstr ""
+
+#: ./src/components/computer/HardwareResume.vue:34
+msgid "UUID"
 msgstr ""
 
 #: ./src/pages/attributes/results/detail.vue:18
