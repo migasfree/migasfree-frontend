@@ -3,14 +3,14 @@
     <q-card-section>
       <div class="row">
         <div class="col-md">
-          <div class="text-h5">Hardware</div>
+          <div v-translate class="text-h5">Hardware</div>
         </div>
 
         <div class="col-md">
           <q-btn-group class="float-right">
             <q-datetime-picker
               v-model="hardwareDate"
-              label="Fecha de la última captura del hardware"
+              :label="$gettext('Last hardware capture date')"
               mode="datetime"
               outlined
               clearable
@@ -26,7 +26,9 @@
               :disabled="loading"
               @click="updateCapture"
             >
-              <q-tooltip>Grabar y seguir editando</q-tooltip>
+              <q-tooltip
+                ><translate>Save and continue editing</translate></q-tooltip
+              >
             </q-btn>
           </q-btn-group>
         </div>
@@ -39,7 +41,7 @@
           <q-icon :name="productIcon(productSystem)" style="font-size: 6em;">
             <q-tooltip>{{ productSystem }}</q-tooltip>
             <q-badge floating transparent>
-              {{ architecture }} bits
+              {{ architecture }} <translate>bits</translate>
             </q-badge></q-icon
           >
         </div>
@@ -55,7 +57,9 @@
             />
           </p>
           <p>
-            <q-tooltip self="bottom middle">UUID</q-tooltip>
+            <q-tooltip self="bottom middle"
+              ><translate>UUID</translate></q-tooltip
+            >
             <q-icon name="mdi-card-account-details-outline" size="sm" />
             {{ uuid }}
           </p>
@@ -65,14 +69,18 @@
       <div class="row q-pa-md">
         <div class="col-md">
           <p>
-            <q-tooltip self="bottom middle">Procesador</q-tooltip>
+            <q-tooltip self="bottom middle"
+              ><translate>Processor</translate></q-tooltip
+            >
             <q-icon :name="cpuIcon(architecture)" size="sm" />
             {{ cpu }}
           </p>
         </div>
         <div class="col-md">
           <p>
-            <q-tooltip self="bottom middle">RAM</q-tooltip>
+            <q-tooltip self="bottom middle"
+              ><translate>RAM</translate></q-tooltip
+            >
             <q-icon name="mdi-memory" size="sm" />
             {{ humanStorageSize(ram) }}
           </p>
@@ -82,7 +90,9 @@
       <div class="row q-pa-md">
         <div class="col-md">
           <p>
-            <q-tooltip self="bottom middle">Almacenamiento</q-tooltip>
+            <q-tooltip self="bottom middle"
+              ><translate>Storage</translate></q-tooltip
+            >
             <q-icon name="mdi-harddisk" size="sm" />
             {{ humanStorageSize(storage) }}
             ({{ disks }})
@@ -90,7 +100,9 @@
         </div>
         <div class="col-md">
           <p>
-            <q-tooltip self="bottom middle">Dirección MAC</q-tooltip>
+            <q-tooltip self="bottom middle"
+              ><translate>MAC Address</translate></q-tooltip
+            >
             <q-icon name="mdi-swap-vertical" size="sm" />
             {{ humanMacAddress(macAddress) }}
           </p>
@@ -186,7 +198,7 @@ export default {
         .then((response) => {
           this.$store.dispatch(
             'ui/notifySuccess',
-            'Last hardware capture has been changed!'
+            this.$gettext('Last hardware capture date has been changed!')
           )
         })
         .catch((error) => {
