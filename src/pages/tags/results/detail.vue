@@ -103,6 +103,7 @@
 
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
+import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import RemoveDialog from 'components/ui/RemoveDialog'
 import { elementMixin } from 'mixins/element'
@@ -116,6 +117,7 @@ export default {
   },
   components: {
     Breadcrumbs,
+    Header,
     RemoveDialog,
     MigasLink
   },
