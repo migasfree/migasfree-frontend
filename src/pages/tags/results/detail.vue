@@ -2,20 +2,17 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <div class="row">
-      <div class="col-md">
-        <h2 class="text-h3">
-          Etiqueta:
-          <MigasLink
-            v-if="element.id"
-            model="tags"
-            :pk="element.id"
-            :value="attributeValue(element)"
-            icon="mdi-tag"
-          />
-        </h2>
-      </div>
-    </div>
+    <Header :title="$gettext('Tag')" :has-add-button="false">
+      <template v-if="element.id" #append
+        >:
+        <MigasLink
+          model="tags"
+          :pk="element.id"
+          :value="attributeValue(element)"
+          icon="mdi-tag"
+        />
+      </template>
+    </Header>
 
     <q-card>
       <q-card-section>
@@ -24,12 +21,12 @@
             <q-select
               v-model="element.property_att"
               outlined
-              label="Categoría de etiqueta"
+              :label="$gettext('Stamp')"
               :options="stamps"
               option-value="id"
               option-label="name"
               lazy-rules
-              :rules="[(val) => !!val || '* Required']"
+              :rules="[(val) => !!val || $gettext('* Required')]"
             />
           </div>
 
@@ -39,7 +36,7 @@
               outlined
               label="Valor"
               lazy-rules
-              :rules="[(val) => !!val || '* Required']"
+              :rules="[(val) => !!val || $gettext('* Required')]"
             />
           </div>
         </div>
@@ -50,7 +47,7 @@
               v-model="element.description"
               outlined
               type="textarea"
-              label="Descripción"
+              :label="$gettext('Description')"
             />
           </div>
         </div>
@@ -60,7 +57,7 @@
         <q-btn
           flat
           color="primary"
-          label="Grabar y añadir otro"
+          :label="$gettext('Save and add other')"
           icon="mdi-plus"
           :loading="loading"
           :disabled="!isValid || loading"
@@ -69,14 +66,14 @@
         <q-btn
           flat
           color="primary"
-          label="Grabar y seguir editando"
+          :label="$gettext('Save and continue editing')"
           icon="mdi-content-save-edit"
           :loading="loading"
           :disabled="!isValid || loading"
           @click="updateElement"
         />
         <q-btn
-          label="Grabar"
+          :label="$gettext('Save')"
           color="primary"
           icon="mdi-content-save-move"
           :loading="loading"
@@ -91,7 +88,7 @@
         flat
         icon="mdi-delete"
         color="negative"
-        label="Borrar"
+        :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
     </div>
@@ -125,23 +122,23 @@ export default {
   mixins: [elementMixin, detailMixin],
   data() {
     return {
-      title: 'Tag',
+      title: this.$gettext('Tag'),
       model: 'tags',
       listRoute: 'tags-list',
       addRoute: 'tag-add',
       detailRoute: 'tag-detail',
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Datos',
+          text: this.$gettext('Data'),
           icon: 'mdi-database-search'
         },
         {
-          text: 'Etiquetas',
+          text: this.$gettext('Tags'),
           to: 'tags-dashboard',
           icon: 'mdi-tag'
         }
@@ -164,14 +161,14 @@ export default {
   created() {
     if (this.$route.params.id) {
       this.breadcrumbs.push({
-        text: 'Resultados',
+        text: this.$gettext('Results'),
         to: this.listRoute
       })
       this.breadcrumbs.push({
         text: 'Id'
       })
     } else {
-      this.breadcrumbs.push({ text: 'Añadir' })
+      this.breadcrumbs.push({ text: this.$gettext('Add') })
     }
   },
   async mounted() {
@@ -210,15 +207,18 @@ export default {
             description: this.element.description
           })
           .then((response) => {
-            this.$store.dispatch('ui/notifySuccess', 'Data has been changed!')
+            this.$store.dispatch(
+              'ui/notifySuccess',
+              this.$gettext('Data has been changed!')
+            )
             if (action === 'return') {
               this.$router.push({ name: this.listRoute })
             } else if (action === 'add') {
               this.element = { id: 0 }
               if (this.breadcrumbs.length === 5) this.breadcrumbs.pop()
-              this.breadcrumbs[3].text = 'Añadir'
+              this.breadcrumbs[3].text = this.$gettext('Add')
               this.$router.push({ name: this.addRoute })
-              this.title = 'Tag'
+              this.title = this.$gettext('Tag')
             }
           })
           .catch((error) => {
@@ -239,7 +239,10 @@ export default {
               (x) => x.id === this.element.property_att
             )
             console.log('element new', this.element)
-            this.$store.dispatch('ui/notifySuccess', 'Data has been added!')
+            this.$store.dispatch(
+              'ui/notifySuccess',
+              this.$gettext('Data has been added!')
+            )
 
             if (action === 'return') {
               this.$router.push({ name: this.listRoute })
@@ -250,13 +253,15 @@ export default {
               if (this.breadcrumbs.length === 4) {
                 this.breadcrumbs.pop()
                 this.breadcrumbs.push({
-                  text: 'Resultados',
+                  text: this.$gettext('Results'),
                   to: this.listRoute
                 })
                 this.breadcrumbs.push({
                   text: this.attributeValue(this.element)
                 })
-                this.title = `Tag: ${this.attributeValue(this.element)}`
+                this.title = `${this.$gettext('Tag')}: ${this.attributeValue(
+                  this.element
+                )}`
               }
               this.$router.push({
                 name: this.detailRoute,
