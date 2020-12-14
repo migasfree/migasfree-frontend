@@ -2,10 +2,10 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header title="Errores" :results="totalRecords" :has-add-button="false" />
+    <Header :title="title" :results="totalRecords" :has-add-button="false" />
 
     <q-list class="more-filters" bordered>
-      <q-expansion-item icon="mdi-filter" label="More Filters">
+      <q-expansion-item icon="mdi-filter" :label="moreFiltersLabel">
         <SearchFilter
           v-model="tableFilters.search"
           @search="onSearch"
@@ -17,13 +17,17 @@
             <q-select
               v-model="tableFilters.platform.selected"
               :options="tableFilters.platform.items"
-              label="Por plataforma"
+              label-slot
               dense
               outlined
               option-value="id"
               option-label="name"
               @input="onPlatformFilter"
             >
+              <template #label>
+                <translate>By Platform</translate>
+              </template>
+
               <template #before>
                 <q-icon name="mdi-filter" />
               </template>
@@ -34,7 +38,7 @@
             <SelectTree
               ref="statusTree"
               v-model="tableFilters.statusIn.selected"
-              placeholder="Por estado"
+              :placeholder="byStatusLabel"
               prepend-icon="mdi-filter"
               :options="tableFilters.statusIn.items"
               @select="onStatusInFilter"
@@ -46,7 +50,7 @@
               ref="createdAtRange"
               v-model="tableFilters.createdAt.selected"
               prepend-icon="mdi-filter"
-              label="Por fecha de alta (rango)"
+              :label="byCreatedAtRangeLabel"
               @select="onCreatedAtFilter"
             />
           </div>
@@ -54,7 +58,9 @@
 
         <div class="row q-pa-md">
           <div class="col-12">
-            <q-btn @click="resetFilters">Reset all filters</q-btn>
+            <q-btn @click="resetFilters"
+              ><translate>Reset all filters</translate></q-btn
+            >
           </div>
         </div>
       </q-expansion-item>
@@ -97,7 +103,7 @@
             icon="mdi-eye-check"
             color="positive"
             @click="updateChecked(props.row.id, true)"
-            ><q-tooltip>Comprobar</q-tooltip></q-btn
+            ><q-tooltip><translate>Check</translate></q-tooltip></q-btn
           >
           <q-btn
             v-if="props.row.checked"
@@ -107,7 +113,7 @@
             icon="mdi-eye-remove"
             color="negative"
             @click="updateChecked(props.row.id, false)"
-            ><q-tooltip>No comprobar</q-tooltip></q-btn
+            ><q-tooltip><translate>Not Check</translate></q-tooltip></q-btn
           >
           <q-btn
             class="q-ma-xs"
@@ -147,7 +153,7 @@
           {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
-      <div slot="emptystate">{{ $t('vgt.noData') }}</div>
+      <div slot="emptystate" v-translate>There are no results</div>
       <div slot="selected-row-actions">
         <q-btn
           class="q-ma-xs"
@@ -155,7 +161,7 @@
           icon="mdi-eye-check"
           color="positive"
           @click="updateItemsChecked(true)"
-          ><q-tooltip>Comprobar</q-tooltip></q-btn
+          ><q-tooltip><translate>Check</translate></q-tooltip></q-btn
         >
         <q-btn
           class="q-ma-xs"
@@ -163,7 +169,7 @@
           icon="mdi-eye-remove"
           color="negative"
           @click="updateItemsChecked(false)"
-          ><q-tooltip>No comprobar</q-tooltip></q-btn
+          ><q-tooltip><translate>Not Check</translate></q-tooltip></q-btn
         >
         <q-btn
           class="q-ma-xs"
@@ -191,8 +197,10 @@ import { elementMixin } from 'mixins/element'
 import { datagridMixin } from 'mixins/datagrid'
 
 export default {
-  meta: {
-    title: 'Errors List'
+  meta() {
+    return {
+      title: this.$gettext('Errors List')
+    }
   },
   components: {
     Breadcrumbs,
@@ -207,23 +215,24 @@ export default {
   mixins: [dateMixin, elementMixin, datagridMixin],
   data() {
     return {
+      title: this.$gettext('Errors'),
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           to: 'home',
           icon: 'mdi-home'
         },
         {
-          text: 'Datos',
+          text: this.$gettext('Data'),
           icon: 'mdi-database-search'
         },
         {
-          text: 'Errores',
+          text: this.$gettext('Errors'),
           icon: 'mdi-bug',
           to: 'errors-dashboard'
         },
         {
-          text: 'Resultados'
+          text: this.$gettext('Results')
         }
       ],
       columns: [
@@ -232,14 +241,14 @@ export default {
           hidden: true
         },
         {
-          label: 'Actions',
+          label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
           globalSearchDisabled: true
         },
         {
-          label: 'Fecha',
+          label: this.$gettext('Date'),
           field: 'created_at'
         },
         {
@@ -255,11 +264,11 @@ export default {
           hidden: true
         },
         {
-          label: 'Ordenador',
+          label: this.$gettext('Computer'),
           field: 'computer.__str__',
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.filter'),
+            placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
         },
@@ -268,33 +277,33 @@ export default {
           hidden: true
         },
         {
-          label: 'Proyecto',
+          label: this.$gettext('Project'),
           field: 'project.name',
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.all'),
+            placeholder: this.$gettext('All'),
             trigger: 'enter'
           }
         },
         {
-          label: 'Comprobado',
+          label: this.$gettext('Checked'),
           field: 'checked',
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.all'),
+            placeholder: this.$gettext('All'),
             trigger: 'enter',
             filterDropdownItems: [
-              { value: true, text: 'Sí' },
-              { value: false, text: 'No' }
+              { value: true, text: this.$gettext('Yes') },
+              { value: false, text: this.$gettext('No') }
             ]
           }
         },
         {
-          label: 'Descripción',
+          label: this.$gettext('Description'),
           field: 'description',
           filterOptions: {
             enabled: true,
-            placeholder: this.$t('vgt.filter'),
+            placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
         }
@@ -302,7 +311,7 @@ export default {
       tableFilters: {
         search: '',
         platform: {
-          items: [{ id: '', name: 'Todas' }],
+          items: [{ id: '', name: this.$gettext('All') }],
           selected: null
         },
         statusIn: {
@@ -315,7 +324,10 @@ export default {
         }
       },
       model: 'errors',
-      detailRoute: 'error-detail'
+      detailRoute: 'error-detail',
+      moreFiltersLabel: this.$gettext('More Filters'),
+      byStatusLabel: this.$gettext('By Status'),
+      byCreatedAtRangeLabel: this.$gettext('By Subscribed Date (range)')
     }
   },
   methods: {
