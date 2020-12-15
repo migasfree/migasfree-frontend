@@ -2,7 +2,7 @@
   <div class="row q-pa-md">
     <q-input
       v-model="searchText"
-      label-slot
+      :label="$gettext('Search...')"
       clearable
       autofocus
       @keydown.enter="$emit('search', searchText)"
@@ -15,9 +15,6 @@
           icon="mdi-text-search"
           @click="$emit('search', searchText)"
         />
-      </template>
-      <template #label>
-        <translate>Search...</translate>
       </template>
     </q-input>
   </div>
