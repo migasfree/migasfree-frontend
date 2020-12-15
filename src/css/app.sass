@@ -9,31 +9,47 @@
   max-height: 15em
   overflow: auto
 
-.body--light main
-  background-color: $grey-2
+.q-btn-dropdown--split .q-btn-dropdown__arrow-container
+  border-left: 1px solid currentColor
 
-.body--light .more-filters
-  background-color: #fff
+.body--light
+  main
+    background-color: $grey-2
 
-.body--light header
-  background-color: $brown-7
+  .more-filters
+    background-color: #fff
 
-.body--dark header
-  background-color: $blue-grey-10
+  header
+    background-color: $brown-7
 
-.body--light footer
-  background-color: $brown-1
-  color: $blue-grey-8
+  footer
+    background-color: $brown-1
+    color: $blue-grey-8
 
-.body--dark footer
-  background-color: $blue-grey-8
-  color: $brown-1
+.body--dark
+  header
+    background-color: $blue-grey-10
 
-.body--dark table.vgt-table,
-.body--dark .vgt-table th.vgt-checkbox-col,
-.body--dark .vgt-table thead th
-  background-color: transparent
-  color: white
+  footer
+    background-color: $blue-grey-8
+    color: $brown-1
 
-.body--dark table.vgt-table td
-  color: white
+  table.vgt-table,
+  .vgt-table th.vgt-checkbox-col,
+  .vgt-table thead th,
+  .vgt-table th.vgt-row-header,
+  .vgt-wrap__footer,
+  .vgt-input,
+  .vgt-select
+    background: transparent
+    color: white
+
+  table.vgt-table td
+    color: white
+
+  .vgt-table.striped tbody tr:nth-of-type(odd)
+    background: rgb(58, 65, 73, 0.7)
+
+  .vgt-select option
+    background: #2F353A
+    color: white
