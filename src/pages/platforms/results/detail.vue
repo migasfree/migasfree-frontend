@@ -98,10 +98,12 @@ export default {
   },
   mixins: [detailMixin],
   data() {
+    const route = 'platforms-list'
+
     return {
       title: this.$gettext('Platform'),
       model: 'platforms',
-      listRoute: 'platforms-list',
+      listRoute: route,
       addRoute: 'platform-add',
       detailRoute: 'platform-detail',
       breadcrumbs: [
@@ -117,11 +119,10 @@ export default {
         {
           text: this.$gettext('Platforms'),
           icon: 'mdi-layers',
-          to: this.listRoute
+          to: route
         }
       ],
       element: { id: 0 },
-      stamps: [],
       loading: false,
       confirmRemove: false
     }
@@ -214,7 +215,9 @@ export default {
                 this.breadcrumbs.push({
                   text: this.element.name
                 })
-                this.title = `${this.$gettext('Platform')}: ${this.element.name}`
+                this.title = `${this.$gettext('Platform')}: ${
+                  this.element.name
+                }`
               }
               this.$router.push({
                 name: this.detailRoute,
