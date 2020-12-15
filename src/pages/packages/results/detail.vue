@@ -32,13 +32,9 @@
               v-model="projectStore.selected"
               outlined
               readonly
-              label-slot
+              :label="$gettext('Project / Store')"
               @input="$refs.menu.show()"
             >
-              <template #label>
-                <translate>Project / Store</translate>
-              </template>
-
               <template #append>
                 <q-icon name="mdi-menu-down" class="cursor-pointer" />
               </template>
@@ -54,8 +50,7 @@
                   :selected="projectStore.selected"
                   @update:selected="nodeSelected"
                   @lazy-load="onLazyLoad"
-                >
-                </q-tree>
+                />
               </q-menu>
             </q-input>
           </div>
@@ -81,12 +76,8 @@
               clearable
               outlined
               counter
-              label-slot
-            >
-              <template #label
-                ><translate>Select one file</translate></template
-              ></q-file
-            >
+              :label="$gettext('Select one file')"
+            />
           </div>
         </div>
 
@@ -112,19 +103,19 @@
           flat
           color="primary"
           icon="mdi-plus"
+          :label="$gettext('Save and add other')"
           :loading="loading"
           :disabled="!isValid || loading"
           @click="updateElement('add')"
-          ><translate>Save and add other</translate></q-btn
-        >
+        />
         <q-btn
           color="primary"
           icon="mdi-content-save-move"
+          :label="$gettext('Save')"
           :loading="loading"
           :disabled="!isValid || loading"
           @click="updateElement('return')"
-          ><translate>Save</translate></q-btn
-        >
+        />
       </q-card-actions>
     </q-card>
 
@@ -133,9 +124,9 @@
         flat
         icon="mdi-delete"
         color="negative"
+        :label="$gettext('Delete')"
         @click="confirmRemove = true"
-        ><translate>Delete</translate></q-btn
-      >
+      />
     </div>
 
     <RemoveDialog
