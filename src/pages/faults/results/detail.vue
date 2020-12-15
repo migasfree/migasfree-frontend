@@ -2,13 +2,9 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <div class="row">
-      <div class="col-md">
-        <h2 class="text-h3">
-          <translate>Fault</translate>: {{ element.__str__ }}
-        </h2>
-      </div>
-    </div>
+    <Header :title="$gettext('Fault')" :has-add-button="false">
+      <template v-if="element.id" #append>: {{ element.__str__ }}</template>
+    </Header>
 
     <q-card>
       <q-card-section>
@@ -17,7 +13,7 @@
             <q-checkbox
               v-model="element.checked"
               left-label
-              :label="checkedLabel"
+              :label="$gettext('Checked?')"
             />
           </div>
 
@@ -92,19 +88,19 @@
           flat
           color="primary"
           icon="mdi-content-save-edit"
+          :label="$gettext('Save and continue editing')"
           :loading="loading"
           :disabled="!isValid || loading"
           @click="updateElement"
-          ><translate>Save and continue editing</translate></q-btn
-        >
+        />
         <q-btn
           color="primary"
           icon="mdi-content-save-move"
+          :label="$gettext('Save')"
           :loading="loading"
           :disabled="!isValid || loading"
           @click="updateElement('return')"
-          ><translate>Save</translate></q-btn
-        >
+        />
       </q-card-actions>
     </q-card>
 
@@ -113,9 +109,9 @@
         flat
         icon="mdi-delete"
         color="negative"
+        :label="$gettext('Delete')"
         @click="confirmRemove = true"
-        ><translate>Delete</translate></q-btn
-      >
+      />
     </div>
 
     <RemoveDialog
@@ -128,6 +124,7 @@
 
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
+import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import RemoveDialog from 'components/ui/RemoveDialog'
 import { elementMixin } from 'mixins/element'
@@ -143,6 +140,7 @@ export default {
   },
   components: {
     Breadcrumbs,
+    Header,
     RemoveDialog,
     MigasLink
   },
@@ -180,8 +178,7 @@ export default {
       element: { id: 0 },
       loading: false,
       confirmRemove: false,
-      isValid: true,
-      checkedLabel: this.$gettext('Checked?')
+      isValid: true
     }
   },
   async mounted() {
