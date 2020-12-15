@@ -3,19 +3,17 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <template v-if="computer.id">
-      <div class="row">
-        <div class="col-md">
-          <h2 class="text-h3">
-            <translate>Events</translate>:
-            <MigasLink
-              model="computers"
-              :pk="computer.id"
-              :value="computer.__str__ || ''"
-              :icon="elementIcon(computer.status)"
-            />
-          </h2>
-        </div>
-      </div>
+      <Header :title="$gettext('Events')" :has-add-button="false">
+        <template v-if="computer.id" #append
+          >:
+          <MigasLink
+            model="computers"
+            :pk="computer.id"
+            :value="computer.__str__ || ''"
+            :icon="elementIcon(computer.status)"
+          />
+        </template>
+      </Header>
 
       <div class="row">
         <h3 class="text-h5">
@@ -110,6 +108,7 @@
 
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
+import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import HeatMap from 'components/chart/HeatMap'
 import { elementMixin } from 'mixins/element'
@@ -124,7 +123,7 @@ export default {
       title: this.title
     }
   },
-  components: { Breadcrumbs, MigasLink, HeatMap },
+  components: { Breadcrumbs, Header, MigasLink, HeatMap },
   mixins: [elementMixin, dateMixin],
   data() {
     return {
