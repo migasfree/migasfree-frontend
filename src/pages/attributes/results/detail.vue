@@ -3,19 +3,17 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <template v-if="element.id">
-      <div class="row">
-        <div class="col-md">
-          <h2 class="text-h3">
-            <translate>Attribute</translate>:
-            <MigasLink
-              model="features"
-              :pk="element.id"
-              :value="attributeValue(element)"
-              :icon="elementIcon(element.property_att.prefix)"
-            />
-          </h2>
-        </div>
-      </div>
+      <Header :title="$gettext('Attribute')" :has-add-button="false">
+        <template v-if="element.id" #append
+          >:
+          <MigasLink
+            model="features"
+            :pk="element.id"
+            :value="attributeValue(element)"
+            :icon="elementIcon(element.property_att.prefix)"
+          />
+        </template>
+      </Header>
 
       <q-card>
         <q-card-section>
@@ -40,10 +38,8 @@
                 v-model="element.description"
                 outlined
                 type="textarea"
-                label-slot
-              >
-                <template #label><translate>Description</translate></template>
-              </q-input>
+                :label="$gettext('Description')"
+              />
             </div>
           </div>
         </q-card-section>
@@ -53,19 +49,19 @@
             flat
             color="primary"
             icon="mdi-content-save-edit"
+            :label="$gettext('Save and continue editing')"
             :loading="loading"
             :disabled="!isValid || loading"
             @click="updateElement"
-            ><translate>Save and continue editing</translate></q-btn
-          >
+          />
           <q-btn
             color="primary"
             icon="mdi-content-save-move"
+            :label="$gettext('Save')"
             :loading="loading"
             :disabled="!isValid || loading"
             @click="updateElement('return')"
-            ><translate>Save</translate></q-btn
-          >
+          />
         </q-card-actions>
       </q-card>
 
@@ -74,9 +70,9 @@
           flat
           icon="mdi-delete"
           color="negative"
+          :label="$gettext('Delete')"
           @click="confirmRemove = true"
-          ><translate>Delete</translate></q-btn
-        >
+        />
       </div>
 
       <RemoveDialog
@@ -90,6 +86,7 @@
 
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
+import Header from 'components/ui/Header'
 import RemoveDialog from 'components/ui/RemoveDialog'
 import MigasLink from 'components/MigasLink'
 import { elementMixin } from 'mixins/element'
@@ -103,6 +100,7 @@ export default {
   },
   components: {
     Breadcrumbs,
+    Header,
     RemoveDialog,
     MigasLink
   },
