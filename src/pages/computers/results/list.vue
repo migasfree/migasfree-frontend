@@ -5,7 +5,7 @@
     <Header :title="title" :results="totalRecords" :has-add-button="false" />
 
     <q-list class="more-filters" bordered>
-      <q-expansion-item icon="mdi-filter" :label="moreFiltersLabel">
+      <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">
         <SearchFilter
           v-model="tableFilters.search"
           @search="onSearch"
@@ -17,17 +17,13 @@
             <q-select
               v-model="tableFilters.platform.selected"
               :options="tableFilters.platform.items"
-              label-slot
+              :label="$gettext('By Platform')"
               dense
               outlined
               option-value="id"
               option-label="name"
               @input="onPlatformFilter"
             >
-              <template #label>
-                <translate>By Platform</translate>
-              </template>
-
               <template #before>
                 <q-icon name="mdi-filter" />
               </template>
@@ -38,17 +34,13 @@
             <q-select
               v-model="tableFilters.architecture.selected"
               :options="tableFilters.architecture.items"
-              label-slot
+              :label="$gettext('By Architecture')"
               dense
               outlined
               option-value="id"
               option-label="name"
               @input="onArchitectureFilter"
             >
-              <template #label>
-                <translate>By Architecture</translate>
-              </template>
-
               <template #before>
                 <q-icon name="mdi-filter" />
               </template>
@@ -59,17 +51,13 @@
             <q-select
               v-model="tableFilters.syncEndDate.selected"
               :options="tableFilters.syncEndDate.items"
-              label-slot
+              :label="$gettext('By last sync date')"
               dense
               outlined
               option-value="id"
               option-label="name"
               @input="onSyncEndDateFilter"
             >
-              <template #label>
-                <translate>By last sync date</translate>
-              </template>
-
               <template #before>
                 <q-icon name="mdi-filter" />
               </template>
@@ -82,17 +70,13 @@
             <q-select
               v-model="tableFilters.softwareInventory.selected"
               :options="tableFilters.softwareInventory.items"
-              label-slot
+              :label="$gettext('By Software Inventory')"
               dense
               outlined
               option-value="id"
               option-label="name"
               @input="onSoftwareInventoryFilter"
             >
-              <template #label>
-                <translate>By Software Inventory</translate>
-              </template>
-
               <template #before>
                 <q-icon name="mdi-filter" />
               </template>
@@ -103,7 +87,7 @@
             <SelectTree
               ref="statusTree"
               v-model="tableFilters.statusIn.selected"
-              :placeholder="byStatusLabel"
+              :placeholder="$gettext('By Status')"
               prepend-icon="mdi-filter"
               :options="tableFilters.statusIn.items"
               @select="onStatusInFilter"
@@ -117,7 +101,7 @@
               ref="createdAtRange"
               v-model="tableFilters.createdAt.selected"
               prepend-icon="mdi-filter"
-              :label="byCreatedAtRangeLabel"
+              :label="$gettext('By Subscribed Date (range)')"
               @select="onCreatedAtFilter"
             />
           </div>
@@ -127,7 +111,7 @@
               ref="syncEndDateRange"
               v-model="tableFilters.syncEndDateRange.selected"
               prepend-icon="mdi-filter"
-              :label="byLastSyncDateRangeLabel"
+              :label="$gettext('By Last Sync Date (range)')"
               @select="onSyncEndDateRangeFilter"
             />
           </div>
@@ -136,7 +120,7 @@
             <SelectTree
               ref="machineTree"
               v-model="tableFilters.machine.selected"
-              :placeholder="byMachineLabel"
+              :placeholder="$gettext('By Machine')"
               prepend-icon="mdi-filter"
               :options="tableFilters.machine.items"
               @select="onMachineFilter"
@@ -146,9 +130,10 @@
 
         <div class="row q-pa-md">
           <div class="col-12">
-            <q-btn @click="resetFilters"
-              ><translate>Reset all filters</translate></q-btn
-            >
+            <q-btn
+              :label="$gettext('Reset all filters')"
+              @click="resetFilters"
+            />
           </div>
         </div>
       </q-expansion-item>
@@ -206,6 +191,7 @@
             model="projects"
             :pk="props.row.project.id"
             :value="props.row.project.name || ''"
+            icon="mdi-sitemap"
           />
         </span>
         <span v-else-if="props.column.field == 'sync_user.name'">
@@ -213,6 +199,7 @@
             model="users"
             :pk="props.row.sync_user.id"
             :value="props.row.sync_user.name || ''"
+            icon="mdi-account"
           />
         </span>
         <span v-else-if="props.column.field == 'product'">
@@ -235,7 +222,7 @@
           color="negative"
           icon="mdi-delete"
           @click="confirmRemove"
-        ></q-btn>
+        />
       </div>
     </vue-good-table>
   </q-page>
@@ -461,12 +448,7 @@ export default {
         }
       },
       model: 'computers',
-      detailRoute: 'computer-detail',
-      moreFiltersLabel: this.$gettext('More Filters'),
-      byStatusLabel: this.$gettext('By Status'),
-      byCreatedAtRangeLabel: this.$gettext('By Subscribed Date (range)'),
-      byLastSyncDateRangeLabel: this.$gettext('By Last Sync Date (range)'),
-      byMachineLabel: this.$gettext('By Machine')
+      detailRoute: 'computer-detail'
     }
   },
   methods: {
