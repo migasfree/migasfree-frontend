@@ -3,19 +3,20 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <template v-if="computer.id">
-      <div class="row">
-        <div class="col-md">
-          <h2 class="text-h3">
-            {{ title }}
-            <MigasLink
-              model="computers"
-              :pk="computer.id"
-              :value="computer.__str__ || ''"
-              :icon="elementIcon(computer.status)"
-            />
-          </h2>
-        </div>
-      </div>
+      <Header
+        :title="$gettext('Simulate Synchronization')"
+        :has-add-button="false"
+      >
+        <template v-if="computer.id" #append
+          >:
+          <MigasLink
+            model="computers"
+            :pk="computer.id"
+            :value="computer.__str__ || ''"
+            :icon="elementIcon(computer.status)"
+          />
+        </template>
+      </Header>
 
       <div class="row q-pa-md q-gutter-sm">
         <div class="col-md">
@@ -63,21 +64,21 @@
               </p>
 
               <OverflowList
-                :label="onlyAttributesLabel"
+                :label="$gettext('Attributes')"
                 icon="mdi-pound"
                 :items="onlyAttributes"
                 model="attributes"
               />
 
               <OverflowList
-                :label="onlyTagsLabel"
+                :label="$gettext('Tags')"
                 icon="mdi-tag"
                 :items="onlyTags"
                 model="tags"
               />
 
               <OverflowList
-                :label="onlyAttributeSetsLabel"
+                :label="$gettext('Attributes Sets')"
                 icon="mdi-set-none"
                 :items="onlyAttributeSets"
                 model="attributes"
@@ -94,45 +95,45 @@
 
             <q-card-section v-if="Object.keys(simulation).length > 0">
               <OverflowList
-                :label="faultsDefinitionsLabel"
+                :label="$gettext('Faults Definitions')"
                 icon="mdi-alarm-light"
                 :items="simulation.fault_definitions"
                 model="fault-definitions"
               />
 
               <OverflowList
-                :label="deploymentsLabel"
+                :label="$gettext('Deployments')"
                 icon="mdi-rocket-launch"
                 :items="simulation.deployments"
                 model="deployments"
               />
 
               <OverflowList
-                :label="packagesToInstallLabel"
+                :label="$gettext('Packages to Install')"
                 icon="mdi-package-down"
                 :items="simulation.packages.install"
               />
 
               <OverflowList
-                :label="packagesToInstallPoliciesLabel"
+                :label="$gettext('Packages to Install (by policies)')"
                 icon="mdi-package-down"
                 :items="simulation.policies.install"
               />
 
               <OverflowList
-                :label="packagesToUninstallLabel"
+                :label="$gettext('Packages to Uninstall')"
                 icon="mdi-package-up"
                 :items="simulation.packages.remove"
               />
 
               <OverflowList
-                :label="packagesToUninstallPoliciesLabel"
+                :label="$gettext('Packages to Uninstall (by policies)')"
                 icon="mdi-package-up"
                 :items="simulation.policies.remove"
               />
 
               <OverflowList
-                :label="devicesLabel"
+                :label="$gettext('Devices')"
                 icon="mdi-printer"
                 :items="simulation.logical_devices"
                 model="devices/logical"
@@ -160,6 +161,7 @@
 
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
+import Header from 'components/ui/Header'
 import OverflowList from 'components/ui/OverflowList'
 import MigasLink from 'components/MigasLink'
 import { elementMixin } from 'mixins/element'
@@ -171,7 +173,7 @@ export default {
       title: this.title
     }
   },
-  components: { Breadcrumbs, OverflowList, MigasLink },
+  components: { Breadcrumbs, Header, OverflowList, MigasLink },
   mixins: [elementMixin, dateMixin],
   data() {
     return {
@@ -206,22 +208,8 @@ export default {
       computer: {},
       platform: {},
       onlyAttributes: [],
-      onlyAttributesLabel: this.$gettext('Attributes'),
       onlyAttributeSets: [],
-      onlyAttributeSetsLabel: this.$gettext('Attributes Sets'),
       onlyTags: [],
-      onlyTagsLabel: this.$gettext('Tags'),
-      faultsDefinitionsLabel: this.$gettext('Faults Definitions'),
-      deploymentsLabel: this.$gettext('Deployments'),
-      devicesLabel: this.$gettext('Devices'),
-      packagesToInstallLabel: this.$gettext('Packages to Install'),
-      packagesToInstallPoliciesLabel: this.$gettext(
-        'Packages to Install (by policies)'
-      ),
-      packagesToUninstallLabel: this.$gettext('Packages to Uninstall'),
-      packagesToUninstallPoliciesLabel: this.$gettext(
-        'Packages to Uninstall (by policies)'
-      ),
       simulation: {}
     }
   },
