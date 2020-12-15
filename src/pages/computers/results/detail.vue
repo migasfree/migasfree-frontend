@@ -3,20 +3,18 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <template v-if="element.id">
-      <div class="row">
-        <div class="col-md">
-          <h2 class="text-h3">
-            <translate>Computer</translate>:
-            <MigasLink
-              model="computers"
-              :pk="element.id"
-              :value="element.__str__ || ''"
-              :icon="elementIcon(element.status)"
-              :tooltip="element.summary"
-            />
-          </h2>
-        </div>
-      </div>
+      <Header :title="$gettext('Computer')" :has-add-button="false">
+        <template v-if="element.id" #append
+          >:
+          <MigasLink
+            model="computers"
+            :pk="element.id"
+            :value="element.__str__ || ''"
+            :icon="elementIcon(element.status)"
+            :tooltip="element.summary"
+          />
+        </template>
+      </Header>
 
       <div class="row q-pa-md q-gutter-md">
         <div class="col-md">
@@ -62,13 +60,9 @@
                   outlined
                   emit-value
                   map-options
-                  label-slot
+                  :label="$gettext('Status')"
                   :options="status"
                 >
-                  <template #label>
-                    <translate>Status</translate>
-                  </template>
-
                   <template #option="scope">
                     <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
                       <q-item-section avatar>
@@ -104,9 +98,8 @@
                   v-model="element.comment"
                   outlined
                   type="textarea"
-                  label-slot
-                  ><template #label>Comment</template></q-input
-                >
+                  :label="$gettext('Comment')"
+                />
               </p>
 
               <p>
@@ -117,13 +110,11 @@
                   map-options
                   multiple
                   input-debounce="0"
-                  label-slot
+                  :label="$gettext('Tags')"
                   :options="tags"
                   @filter="filterTags"
                   @filter-abort="abortFilterTags"
                 >
-                  <template #label><translate>Tags</translate></template>
-
                   <template #no-option>
                     <q-item>
                       <q-item-section v-translate class="text-grey">
@@ -159,7 +150,7 @@
               </p>
 
               <OverflowList
-                :label="onlyAttributeSetsLabel"
+                :label="$gettext('Attributes Sets')"
                 icon="mdi-set-none"
                 :items="onlyAttributeSets"
                 model="attributes"
@@ -229,11 +220,11 @@
                 class="full-width"
                 color="primary"
                 icon="mdi-content-save-edit"
+                :label="$gettext('Save and continue editing')"
                 :loading="loading"
                 :disabled="loading"
                 @click="updateCurrentSituation"
-                ><translate>Save and continue editing</translate></q-btn
-              >
+              />
             </q-card-actions>
           </q-card>
         </div>
@@ -299,7 +290,7 @@
               </div>
 
               <OverflowList
-                :label="onlyAttributeLabel"
+                :label="$gettext('Attributes')"
                 icon="mdi-pound"
                 :items="onlyAttributes"
                 model="attributes"
@@ -327,9 +318,9 @@
           flat
           icon="mdi-delete"
           color="negative"
+          :label="$gettext('Delete')"
           @click="confirmRemove = true"
-          ><translate>Delete</translate></q-btn
-        >
+        />
       </div>
 
       <RemoveDialog
@@ -343,6 +334,7 @@
 
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
+import Header from 'components/ui/Header'
 import OverflowList from 'components/ui/OverflowList'
 import RemoveDialog from 'components/ui/RemoveDialog'
 import MigasLink from 'components/MigasLink'
@@ -364,6 +356,7 @@ export default {
   },
   components: {
     Breadcrumbs,
+    Header,
     OverflowList,
     RemoveDialog,
     MigasLink,
@@ -407,9 +400,7 @@ export default {
       element: {},
       syncInfo: {},
       onlyAttributes: [],
-      onlyAttributeLabel: this.$gettext('Attributes'),
       onlyAttributeSets: [],
-      onlyAttributeSetsLabel: this.$gettext('Attributes Sets'),
       status: [],
       tags: [],
       errors: {},
