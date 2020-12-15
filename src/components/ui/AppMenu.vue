@@ -33,23 +33,23 @@ export default {
               title: this.$gettext('Platforms'),
               to: 'platforms-list',
               icon: 'mdi-layers'
-            }
-            /* {
+            },
+            {
               title: this.$gettext('Projects'),
-              to: 'projects-dashboard',
+              to: 'projects-list',
               icon: 'mdi-sitemap',
               separatorAfter: true
             },
-            { title: this.$gettext('Formulas'), to: 'formulas-dashboard', icon: 'mdi-function-variant' },
-            { title: 'Categorías de etiquetas', to: 'stamps-dashboard', icon: 'mdi-stamper' },
-            { title: 'Conjuntos de atributos', to: 'attribute-sets-dashboard', icon: 'mdi-set-none' },
+            /* { title: this.$gettext('Formulas'), to: 'formulas-dashboard', icon: 'mdi-function-variant' },
+            { title: this.$gettext('Stamps'), to: 'stamps-dashboard', icon: 'mdi-stamper' },
+            { title: this.$gettext('Attributes Sets'), to: 'attribute-sets-dashboard', icon: 'mdi-set-none' },
             {
               title: this.$gettext('Faults Definitions'),
               to: 'fault-definitions-dashboard',
               icon: 'mdi-alert-octagram-outline',
               separatorAfter: true
             },
-            { title: 'Perfiles de usuario/a', to: 'user-profiles-dashboard', icon: 'mdi-account-cog' },
+            { title: this.$gettext('User Profiles'), to: 'user-profiles-dashboard', icon: 'mdi-account-cog' },
             { title: this.$gettext('Groups'), to: 'groups-dashboard', icon: 'mdi-account-group' },
             { title: this.$gettext('Domains'), to: 'domains-dashboard', icon: 'mdi-earth' },
             { title: this.$gettext('Scopes'), to: 'scopes-dashboard', icon: 'mdi-eye-outline' } */
@@ -59,16 +59,16 @@ export default {
           icon: 'mdi-printer-eye',
           title: this.$gettext('Devices'),
           options: [
-            /* { title: 'Fabricantes', to: 'manufacturers-dashboard', icon: 'mdi-factory' },
-            { title: 'Modelos', to: 'models-dashboard', icon: 'mdi-shape' },
-            { title: 'Prestaciones', to: 'features-dashboard', icon: 'mdi-format-list-bulleted-type' },
+            /* { title: this.$gettext('Manufacturers'), to: 'manufacturers-dashboard', icon: 'mdi-factory' },
+            { title: this.$gettext('Models'), to: 'models-dashboard', icon: 'mdi-shape' },
+            { title: this.$gettext('Features'), to: 'features-dashboard', icon: 'mdi-format-list-bulleted-type' },
             {
-              title: 'Dispositivos',
+              title: this.$gettext('Devices'),
               to: 'devices-dashboard',
               icon: 'mdi-printer',
               separatorAfter: true
             },
-            { title: 'Reemplazo de Dispositivos', to: 'devices-replacement' } */
+            { title: this.$gettext('Device Replacement'), to: 'devices-replacement' } */
           ]
         },
         {
@@ -87,15 +87,15 @@ export default {
               to: 'stores-dashboard',
               icon: 'mdi-store-24-hour'
             },
-            // { title: 'Información de Paquetes', to: 'packages-info' },
+            // { title: this.$gettext('Package Info'), to: 'packages-info' },
             {
               title: this.$gettext('Packages'),
               to: 'packages-dashboard',
               icon: 'mdi-package-variant',
               separatorAfter: true
             }
-            /* { title: 'Aplicaciones', to: 'applications-dashboard', icon: 'mdi-apps' },
-            { title: 'Políticas', to: 'policies-dashboard', icon: 'mdi-shield-half-full' } */
+            /* { title: this.$gettext('Apps'), to: 'applications-dashboard', icon: 'mdi-apps' },
+            { title: this.$gettext('Policies'), to: 'policies-dashboard', icon: 'mdi-shield-half-full' } */
           ]
         },
         {
@@ -107,9 +107,9 @@ export default {
               to: 'computers-dashboard',
               icon: 'mdi-desktop-classic'
             },
-            /* { title: 'Reemplazo de Ordenadores', to: 'computers-replacement' },
+            /* { title: this.$gettext('Computer Replacement'), to: 'computers-replacement' },
             {
-              title: 'Usuarios/as',
+              title: this.$gettext('Users'),
               to: 'users-dashboard',
               icon: 'mdi-account',
               separatorAfter: true
@@ -140,15 +140,15 @@ export default {
               to: 'faults-dashboard',
               icon: 'mdi-bomb'
             }
-            /* { title: 'Registros de Estados', to: 'status-logs-dashboard', icon: 'mdi-flag-variant' },
+            /* { title: this.$gettext('Status Logs'), to: 'status-logs-dashboard', icon: 'mdi-flag-variant' },
             {
-              title: 'Migraciones',
+              title: this.$gettext('Migrations'),
               to: 'migrations-dashboard',
               icon: 'mdi-map-marker-right',
               separatorAfter: true
             },
-            { title: 'Mensajes', to: 'messages-dashboard', icon: 'mdi-message-text' },
-            { title: 'Notificaciones', to: 'notifications-dashboard', icon: 'mdi-android-messages' } */
+            { title: this.$gettext('Messages'), to: 'messages-dashboard', icon: 'mdi-message-text' },
+            { title: this.$gettext('Notifications'), to: 'notifications-dashboard', icon: 'mdi-android-messages' } */
           ]
         }
       ]
