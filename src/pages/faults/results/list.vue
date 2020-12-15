@@ -5,7 +5,7 @@
     <Header :title="title" :results="totalRecords" :has-add-button="false" />
 
     <q-list class="more-filters" bordered>
-      <q-expansion-item icon="mdi-filter" :label="moreFiltersLabel">
+      <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">
         <SearchFilter
           v-model="tableFilters.search"
           @search="onSearch"
@@ -17,17 +17,13 @@
             <q-select
               v-model="tableFilters.platform.selected"
               :options="tableFilters.platform.items"
-              label-slot
+              :label="$gettext('By Platform')"
               dense
               outlined
               option-value="id"
               option-label="name"
               @input="onPlatformFilter"
             >
-              <template #label>
-                <translate>By Platform</translate>
-              </template>
-
               <template #before>
                 <q-icon name="mdi-filter" />
               </template>
@@ -38,17 +34,13 @@
             <q-select
               v-model="tableFilters.user.selected"
               :options="tableFilters.user.items"
-              label-slot
+              :label="$gettext('By Assignment')"
               dense
               outlined
               option-value="id"
               option-label="name"
               @input="onUserFilter"
             >
-              <template #label>
-                <translate>By Assignment</translate>
-              </template>
-
               <template #before>
                 <q-icon name="mdi-filter" />
               </template>
@@ -60,7 +52,7 @@
               ref="createdAtRange"
               v-model="tableFilters.createdAt.selected"
               prepend-icon="mdi-filter"
-              :label="byCreatedAtRangeLabel"
+              :label="$gettext('By Subscribed Date (range)')"
               @select="onCreatedAtFilter"
             />
           </div>
@@ -68,9 +60,10 @@
 
         <div class="row q-pa-md">
           <div class="col-12">
-            <q-btn @click="resetFilters"
-              ><translate>Reset all filters</translate></q-btn
-            >
+            <q-btn
+              :label="$gettext('Reset all filters')"
+              @click="resetFilters"
+            />
           </div>
         </div>
       </q-expansion-item>
@@ -195,7 +188,7 @@
           color="negative"
           icon="mdi-delete"
           @click="confirmRemove"
-        ></q-btn>
+        />
       </div>
     </vue-good-table>
   </q-page>
@@ -352,9 +345,7 @@ export default {
         }
       },
       model: 'faults',
-      detailRoute: 'fault-detail',
-      moreFiltersLabel: this.$gettext('More Filters'),
-      byCreatedAtRangeLabel: this.$gettext('By Subscribed Date (range)')
+      detailRoute: 'fault-detail'
     }
   },
   methods: {
