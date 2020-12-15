@@ -9,7 +9,7 @@
     <div class="row">
       <div class="col">
         <PieChart
-          :title="pieDataTitle"
+          :title="$gettext('Attributes / Formula')"
           :data="pieData"
           :url="url"
           @getLink="goTo"
@@ -56,7 +56,6 @@ export default {
         }
       ],
       pieData: {},
-      pieDataTitle: this.$gettext('Attributes / Formula'),
       url: { name: 'attributes-list' }
     }
   },
