@@ -172,6 +172,22 @@ const routes = [
         name: 'platform-detail',
         component: () => import('pages/platforms/results/detail')
       },
+
+      {
+        path: '/projects/results',
+        name: 'projects-list',
+        component: () => import('pages/projects/results/list')
+      },
+      {
+        path: '/projects/add',
+        name: 'project-add',
+        component: () => import('pages/projects/results/detail')
+      },
+      {
+        path: '/projects/results/:id',
+        name: 'project-detail',
+        component: () => import('pages/projects/results/detail')
+      },
     ],
     meta: { authRequired: true }
   },
