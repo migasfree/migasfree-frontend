@@ -9,7 +9,7 @@
     <div class="row">
       <div class="col-6">
         <PieChart
-          :title="pieDataTitle"
+          :title="$gettext('Computers by Project')"
           :data="pieData"
           :url="byProjectUrl"
           @getLink="goTo"
@@ -18,7 +18,7 @@
 
       <div class="col-6">
         <NestedPieChart
-          :title="nestedPieDataTitle"
+          :title="$gettext('Productive Computers')"
           :data="nestedPieData"
           :url="productiveUrl"
           @getLink="goTo"
@@ -29,7 +29,7 @@
     <div class="row">
       <div class="col-12">
         <StackedBarChart
-          :title="newMonthDataTitle"
+          :title="$gettext('New Computers / Month')"
           :data="newMonthData"
           @getLink="goTo"
         />
@@ -39,7 +39,7 @@
     <div class="row">
       <div class="col-12">
         <StackedBarChart
-          :title="entryYearDataTitle"
+          :title="$gettext('Physical computers entering the system per year')"
           :data="entryYearData"
           @getLink="goTo"
         />
@@ -89,15 +89,9 @@ export default {
         }
       ],
       pieData: {},
-      pieDataTitle: this.$gettext('Computers by Project'),
       nestedPieData: {},
-      nestedPieDataTitle: this.$gettext('Productive Computers'),
       newMonthData: {},
-      newMonthDataTitle: this.$gettext('New Computers / Month'),
       entryYearData: {},
-      entryYearDataTitle: this.$gettext(
-        'Physical computers entering the system per year'
-      ),
       url: { name: 'computers-list' }
     }
   },
