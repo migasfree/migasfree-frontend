@@ -2,15 +2,13 @@
   <q-btn-group outlined rounded class="q-ml-lg">
     <q-input
       v-model="searchText"
-      label-slot
+      :label="$gettext('Search...')"
       dense
       borderless
       clearable
       bg-color="white"
       @keydown.enter="search('computers-list')"
-    >
-      <template #label><translate>Search...</translate></template>
-    </q-input>
+    />
 
     <q-btn-dropdown
       auto-close
