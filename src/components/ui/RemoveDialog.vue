@@ -7,16 +7,20 @@
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn v-close-popup flat color="primary" @click="$emit('canceled')"
-          ><translate>Cancel</translate></q-btn
-        >
+        <q-btn
+          v-close-popup
+          flat
+          color="primary"
+          :label="$gettext('Cancel')"
+          @click="$emit('canceled')"
+        />
         <q-btn
           v-close-popup
           icon="mdi-delete"
           color="negative"
+          :label="$gettext('Delete')"
           @click="$emit('confirmed')"
-          ><translate>Delete</translate></q-btn
-        >
+        />
       </q-card-actions>
     </q-card>
   </q-dialog>
