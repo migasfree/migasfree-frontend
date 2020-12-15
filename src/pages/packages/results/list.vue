@@ -16,9 +16,7 @@
 
     <div class="row q-pa-md">
       <div class="col-12">
-        <q-btn @click="resetFilters"
-          ><translate>Reset all filters</translate></q-btn
-        >
+        <q-btn :label="$gettext('Reset all filters')" @click="resetFilters" />
       </div>
     </div>
 
@@ -96,7 +94,7 @@
           color="negative"
           icon="mdi-delete"
           @click="confirmRemove"
-        ></q-btn>
+        />
       </div>
     </vue-good-table>
   </q-page>
