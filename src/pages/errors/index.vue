@@ -9,7 +9,7 @@
     <div class="row">
       <div class="col-12">
         <StackedBarChart
-          :title="projectMonthTitle"
+          :title="$gettext('Errors / Month')"
           :data="projectMonth"
           @getLink="goTo"
         />
@@ -19,7 +19,7 @@
     <div class="row">
       <div class="col-6 col-md">
         <NestedPieChart
-          :title="statusProjectsTitle"
+          :title="$gettext('Errors / Project / Status')"
           :data="statusProjects"
           :url="url"
           @getLink="goTo"
@@ -28,7 +28,7 @@
 
       <div class="col-6 col-md">
         <NestedPieChart
-          :title="uncheckedErrorsTitle"
+          :title="$gettext('Unchecked Errors')"
           :data="uncheckedErrors"
           :url="uncheckedErrorsUrl"
           @getLink="goTo"
@@ -77,11 +77,8 @@ export default {
         }
       ],
       projectMonth: {},
-      projectMonthTitle: this.$gettext('Errors / Month'),
       uncheckedErrors: {},
-      uncheckedErrorsTitle: this.$gettext('Unchecked Errors'),
       statusProjects: {},
-      statusProjectsTitle: this.$gettext('Errors / Project / Status'),
       url: { name: 'errors-list' }
     }
   },
