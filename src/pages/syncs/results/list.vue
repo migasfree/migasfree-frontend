@@ -114,7 +114,7 @@
             model="users"
             :pk="props.row.user.id"
             :value="props.row.user.name"
-            icon="mdi-user-account"
+            icon="mdi-account"
           />
         </span>
         <span v-else-if="props.column.field == 'created_at'">
@@ -145,7 +145,7 @@
           color="negative"
           icon="mdi-delete"
           @click="confirmRemove"
-        ></q-btn>
+        />
       </div>
     </vue-good-table>
   </q-page>
