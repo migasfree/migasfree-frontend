@@ -316,6 +316,9 @@ export const datagridMixin = {
             case 'platform':
               ret.project__platform__id = val
               break
+            case 'platform.name':
+              ret.platform__id = val
+              break
             case 'project_id':
             case 'project.name':
               ret.project__id = val
@@ -337,6 +340,7 @@ export const datagridMixin = {
             case 'created_at__lt':
             case 'start_date__gte':
             case 'start_date__lt':
+            case 'auto_register_computers':
             case 'search':
               ret[key] = val
               break
