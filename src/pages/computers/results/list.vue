@@ -364,8 +364,18 @@ export default {
         architecture: {
           items: [
             { id: '', name: this.$gettext('All') },
-            { id: 32, name: '32 bits' },
-            { id: 64, name: '64 bits' }
+            {
+              id: 32,
+              name: this.$gettextInterpolate(this.$gettext('%{n} bits'), {
+                n: 32
+              })
+            },
+            {
+              id: 64,
+              name: this.$gettextInterpolate(this.$gettext('%{n} bits'), {
+                n: 64
+              })
+            }
           ],
           selected: null
         },
