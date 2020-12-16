@@ -136,9 +136,12 @@ export default {
   mixins: [elementMixin, dateMixin, detailMixin],
   data() {
     const route = 'errors-list'
+    const title = this.$gettext('Error')
+    const element = { id: 0 }
 
     return {
-      title: this.$gettext('Error'),
+      title,
+      originalTitle: title,
       model: 'errors',
       listRoute: route,
       breadcrumbs: [
@@ -155,58 +158,23 @@ export default {
           text: this.$gettext('Errors'),
           to: 'errors-dashboard',
           icon: 'mdi-bug'
-        },
-        {
-          text: this.$gettext('Results'),
-          to: route
-        },
-        {
-          text: 'Id'
         }
       ],
-      element: { id: 0 },
-      loading: false,
+      element,
+      emptyElement: element,
       confirmRemove: false,
       isValid: true
     }
   },
-  async mounted() {
-    if (this.$route.params.id) {
-      await this.$axios
-        .get(`/api/v1/token/${this.model}/${this.$route.params.id}/`)
-        .then((response) => {
-          this.element = response.data
-          this.breadcrumbs[
-            this.breadcrumbs.length - 1
-          ].text = this.element.__str__
-          this.title = `${this.title}: ${this.element.__str__}`
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
+  computed: {
+    elementText() {
+      return this.element.id ? this.element.__str__ : ''
     }
   },
   methods: {
-    async updateElement(action = null) {
-      if (this.element.id) {
-        this.loading = true
-        await this.$axios
-          .patch(`/api/v1/token/${this.model}/${this.element.id}/`, {
-            checked: this.element.checked
-          })
-          .then((response) => {
-            this.$store.dispatch(
-              'ui/notifySuccess',
-              this.$gettext('Data has been changed!')
-            )
-            if (action === 'return') {
-              this.$router.push({ name: this.listRoute })
-            }
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-          .finally(() => (this.loading = false))
+    elementData() {
+      return {
+        checked: this.element.checked
       }
     },
 
