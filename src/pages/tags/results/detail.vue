@@ -123,8 +123,12 @@ export default {
   },
   mixins: [elementMixin, detailMixin],
   data() {
+    const title = this.$gettext('Tag')
+    const element = { id: 0 }
+
     return {
-      title: this.$gettext('Tag'),
+      title,
+      originalTitle: title,
       model: 'tags',
       listRoute: 'tags-list',
       addRoute: 'tag-add',
@@ -145,9 +149,9 @@ export default {
           icon: 'mdi-tag'
         }
       ],
-      element: { id: 0 },
+      element,
+      emptyElement: element,
       stamps: [],
-      loading: false,
       confirmRemove: false
     }
   },
@@ -158,124 +162,35 @@ export default {
         this.element.value !== '' &&
         this.element.hasOwnProperty('property_att')
       )
+    },
+    elementText() {
+      return this.element.id ? this.attributeValue(this.element) : ''
     }
   },
-  created() {
-    if (this.$route.params.id) {
-      this.breadcrumbs.push({
-        text: this.$gettext('Results'),
-        to: this.listRoute
-      })
-      this.breadcrumbs.push({
-        text: 'Id'
-      })
-    } else {
-      this.breadcrumbs.push({ text: this.$gettext('Add') })
-    }
-  },
-  async mounted() {
-    if (this.$route.params.id) {
+  methods: {
+    async loadRelated() {
       await this.$axios
-        .get(`/api/v1/token/${this.model}/${this.$route.params.id}/`)
+        .get(`/api/v1/token/stamps/`)
         .then((response) => {
-          this.element = response.data
-          this.breadcrumbs.find(
-            (x) => x.text === 'Id'
-          ).text = this.attributeValue(this.element)
-          this.title = `${this.title}: ${this.attributeValue(this.element)}`
+          this.stamps = response.data.results
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    }
+    },
 
-    await this.$axios
-      .get(`/api/v1/token/stamps/`)
-      .then((response) => {
-        this.stamps = response.data.results
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-  },
-  methods: {
-    async updateElement(action = null) {
-      if (this.element.id) {
-        this.loading = true
-        await this.$axios
-          .patch(`/api/v1/token/${this.model}/${this.element.id}/`, {
-            property_att: this.element.property_att.id,
-            value: this.element.value,
-            description: this.element.description
-          })
-          .then((response) => {
-            this.$store.dispatch(
-              'ui/notifySuccess',
-              this.$gettext('Data has been changed!')
-            )
-            if (action === 'return') {
-              this.$router.push({ name: this.listRoute })
-            } else if (action === 'add') {
-              this.element = { id: 0 }
-              if (this.breadcrumbs.length === 5) this.breadcrumbs.pop()
-              this.breadcrumbs[3].text = this.$gettext('Add')
-              this.$router.push({ name: this.addRoute })
-              this.title = this.$gettext('Tag')
-            }
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-          .finally(() => (this.loading = false))
-      } else {
-        this.loading = true
-        await this.$axios
-          .post(`/api/v1/token/${this.model}/`, {
-            property_att: this.element.property_att.id,
-            value: this.element.value,
-            description: this.element.description
-          })
-          .then((response) => {
-            this.element = response.data
-            this.element.property_att = this.stamps.find(
-              (x) => x.id === this.element.property_att
-            )
-            console.log('element new', this.element)
-            this.$store.dispatch(
-              'ui/notifySuccess',
-              this.$gettext('Data has been added!')
-            )
-
-            if (action === 'return') {
-              this.$router.push({ name: this.listRoute })
-            } else if (action === 'add') {
-              this.element = { id: 0 }
-              this.$router.push({ name: this.addRoute })
-            } else {
-              if (this.breadcrumbs.length === 4) {
-                this.breadcrumbs.pop()
-                this.breadcrumbs.push({
-                  text: this.$gettext('Results'),
-                  to: this.listRoute
-                })
-                this.breadcrumbs.push({
-                  text: this.attributeValue(this.element)
-                })
-                this.title = `${this.$gettext('Tag')}: ${this.attributeValue(
-                  this.element
-                )}`
-              }
-              this.$router.push({
-                name: this.detailRoute,
-                params: { id: this.element.id }
-              })
-            }
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-          .finally(() => (this.loading = false))
+    elementData() {
+      return {
+        property_att: this.element.property_att.id,
+        value: this.element.value,
+        description: this.element.description
       }
+    },
+
+    setRelated() {
+      this.element.property_att = this.stamps.find(
+        (x) => x.id === this.element.property_att
+      )
     }
   }
 }
