@@ -28,6 +28,7 @@
                 model="properties"
                 :pk="element.property_att.id"
                 :value="element.property_att.name || ''"
+                icon="mdi-function-variant"
               />
             </div>
           </div>
@@ -106,8 +107,12 @@ export default {
   },
   mixins: [elementMixin, detailMixin],
   data() {
+    const title = this.$gettext('Attribute')
+    const element = {}
+
     return {
-      title: this.$gettext('Attribute'),
+      title,
+      originalTitle: title,
       model: 'features',
       listRoute: 'attributes-list',
       breadcrumbs: [
@@ -124,55 +129,24 @@ export default {
           text: this.$gettext('Attributes'),
           to: 'attributes-dashboard',
           icon: 'mdi-pound'
-        },
-        {
-          text: this.$gettext('Results'),
-          to: this.listRoute
-        },
-        {
-          text: 'Id'
         }
       ],
-      element: {},
-      loading: false,
+      element,
+      emptyElement: element,
       isValid: true,
       confirmRemove: false
     }
   },
-  async mounted() {
-    await this.$axios
-      .get(`/api/v1/token/${this.model}/${this.$route.params.id}/`)
-      .then((response) => {
-        this.element = response.data
-        this.breadcrumbs[
-          this.breadcrumbs.length - 1
-        ].text = this.attributeValue(this.element)
-        this.title = `${this.title}: ${this.attributeValue(this.element)}`
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
+  computed: {
+    elementText() {
+      return this.element.id ? this.attributeValue(this.element) : ''
+    }
   },
   methods: {
-    async updateElement(action = null) {
-      this.loading = true
-      await this.$axios
-        .patch(`/api/v1/token/${this.model}/${this.element.id}/`, {
-          description: this.element.description
-        })
-        .then((response) => {
-          this.$store.dispatch(
-            'ui/notifySuccess',
-            this.$gettext('Data has been changed!')
-          )
-          if (action === 'return') {
-            this.$router.push({ name: this.listRoute })
-          }
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-        .finally(() => (this.loading = false))
+    elementData() {
+      return {
+        description: this.element.description
+      }
     }
   }
 }
