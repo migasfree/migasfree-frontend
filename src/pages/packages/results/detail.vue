@@ -159,8 +159,12 @@ export default {
   },
   mixins: [elementMixin, detailMixin],
   data() {
+    const title = this.$gettext('Package')
+    const element = { id: 0, files: null }
+
     return {
-      title: this.$gettext('Package'),
+      title,
+      originalTitle: title,
       breadcrumbs: [
         {
           text: this.$gettext('Dashboard'),
@@ -177,70 +181,24 @@ export default {
           icon: 'mdi-package-variant'
         }
       ],
-      element: { id: 0, files: null },
+      element,
+      emptyElement: element,
       model: 'packages',
       listRoute: 'packages-list',
       addRoute: 'package-add',
       detailRoute: 'package-detail',
       projectStore: { items: [], selected: null },
-      loading: false,
       confirmRemove: false
     }
   },
   computed: {
     isValid() {
       return this.projectStore.selected !== null && this.element.files !== null
-    }
-  },
-  created() {
-    if (this.$route.params.id) {
-      this.breadcrumbs.push({
-        text: this.$gettext('Results'),
-        to: this.listRoute
-      })
-      this.breadcrumbs.push({
-        text: 'Id'
-      })
-    } else {
-      this.breadcrumbs.push({ text: this.$gettext('Add') })
-    }
-  },
-  async mounted() {
-    if (this.$route.params.id) {
-      await this.$axios
-        .get(`/api/v1/token/${this.model}/${this.$route.params.id}/`)
-        .then((response) => {
-          this.element = response.data
-          this.breadcrumbs.find(
-            (x) => x.text === 'Id'
-          ).text = this.element.fullname
-          this.title = `${this.title}: ${this.element.fullname}`
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-    }
+    },
 
-    await this.$axios
-      .get(`/api/v1/token/projects/`)
-      .then((response) => {
-        this.projects = response.data.results
-
-        this.projectStore.items = Object.entries(this.projects).map(
-          ([key, item]) => {
-            return {
-              id: item.id,
-              label: item.name,
-              icon: 'mdi-sitemap',
-              lazy: true
-            }
-          }
-        )
-        console.log(this.projectStore.items)
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
+    elementText() {
+      return this.element.id ? this.element.fullname : ''
+    }
   },
   methods: {
     nodeSelected(value) {
@@ -281,85 +239,47 @@ export default {
         })
     },
 
-    async updateElement(action = null) {
-      let data = new FormData()
-      if (this.element.id) {
-        this.loading = true
-        await this.$axios
-          .patch(`/api/v1/token/${this.model}/${this.element.id}/`, {
-            property_att: this.element.property_att.id,
-            value: this.element.value,
-            description: this.element.description
-          })
-          .then((response) => {
-            this.$store.dispatch(
-              'ui/notifySuccess',
-              this.$gettext('Data has been changed!')
-            )
-            if (action === 'return') {
-              this.$router.push({ name: this.listRoute })
-            } else if (action === 'add') {
-              this.element = { id: 0 }
-              if (this.breadcrumbs.length === 5) this.breadcrumbs.pop()
-              this.breadcrumbs[3].text = this.$gettext('Add')
-              this.$router.push({ name: this.addRoute })
-              this.title = this.$gettext('Package')
-              this.projectStore.selected = null
-            }
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-          .finally(() => (this.loading = false))
-      } else {
-        this.loading = true
-        data.append('project', this.element.project.id)
-        data.append('store', this.element.store.id)
-        data.append('files', this.element.files)
-        await this.$axios
-          .post(`/api/v1/token/${this.model}`, data, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          })
-          .then((response) => {
-            this.element = response.data
-            console.log('element new', this.element)
-            this.$store.dispatch(
-              'ui/notifySuccess',
-              this.$gettext('Data has been added!')
-            )
+    async loadRelated() {
+      await this.$axios
+        .get(`/api/v1/token/projects/`)
+        .then((response) => {
+          this.projects = response.data.results
 
-            if (action === 'return') {
-              this.$router.push({ name: this.listRoute })
-            } else if (action === 'add') {
-              this.element = { id: 0 }
-              this.$router.push({ name: this.addRoute })
-            } else {
-              if (this.breadcrumbs.length === 4) {
-                this.breadcrumbs.pop()
-                this.breadcrumbs.push({
-                  text: this.$gettext('Results'),
-                  to: this.listRoute
-                })
-                this.breadcrumbs.push({
-                  text: this.element.fullname
-                })
-                this.title = `${this.$gettext('Package')}: ${
-                  this.element.fullname
-                }`
+          this.projectStore.items = Object.entries(this.projects).map(
+            ([key, item]) => {
+              return {
+                id: item.id,
+                label: item.name,
+                icon: 'mdi-sitemap',
+                lazy: true
               }
-              this.$router.push({
-                name: this.detailRoute,
-                params: { id: this.element.id }
-              })
             }
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-          .finally(() => (this.loading = false))
+          )
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+    },
+
+    elementData() {
+      if (this.element.id) {
+        return {
+          property_att: this.element.property_att.id,
+          value: this.element.value,
+          description: this.element.description
+        }
       }
+
+      let data = new FormData()
+      data.append('project', this.element.project.id)
+      data.append('store', this.element.store.id)
+      data.append('files', this.element.files)
+
+      return data
+    },
+
+    resetRelated() {
+      this.projectStore.selected = null
     }
   }
 }
