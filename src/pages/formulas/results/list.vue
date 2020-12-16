@@ -60,7 +60,7 @@
         </span>
         <span v-else-if="props.column.field == 'name'">
           <MigasLink
-            model="platforms"
+            model="formulas"
             :pk="props.row.id"
             :value="props.row.name"
             icon="mdi-function-variant"
@@ -192,7 +192,7 @@ export default {
   methods: {
     async loadFilters() {
       await this.$axios
-        .get(`/api/v1/token/${this.model}/kind`)
+        .get(`/api/v1/token/properties/kind`)
         .then((response) => {
           this.kind = response.data
           this.columns.find(
