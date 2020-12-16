@@ -145,9 +145,12 @@ export default {
   mixins: [detailMixin],
   data() {
     const route = 'projects-list'
+    const title = this.$gettext('Project')
+    const element = { id: 0, auto_register_computers: false }
 
     return {
-      title: this.$gettext('Project'),
+      title,
+      originalTitle: title,
       model: 'projects',
       listRoute: route,
       addRoute: 'project-add',
@@ -168,10 +171,10 @@ export default {
           to: route
         }
       ],
-      element: { id: 0, auto_register_computers: false },
+      element,
+      emptyElement: element,
       platforms: [],
       pms: [],
-      loading: false,
       confirmRemove: false
     }
   },
@@ -186,137 +189,47 @@ export default {
       )
     }
   },
-  created() {
-    if (this.$route.params.id) {
-      this.breadcrumbs.push({
-        text: this.$gettext('Results'),
-        to: this.listRoute
-      })
-      this.breadcrumbs.push({
-        text: 'Id'
-      })
-    } else {
-      this.breadcrumbs.push({ text: this.$gettext('Add') })
-    }
-  },
-  async mounted() {
-    if (this.$route.params.id) {
+  methods: {
+    async loadRelated() {
       await this.$axios
-        .get(`/api/v1/token/${this.model}/${this.$route.params.id}/`)
+        .get(`/api/v1/token/platforms/`)
         .then((response) => {
-          this.element = response.data
-          this.breadcrumbs.find((x) => x.text === 'Id').text = this.element.name
-          this.title = `${this.title}: ${this.element.name}`
+          this.platforms = response.data.results
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    }
 
-    await this.$axios
-      .get(`/api/v1/token/platforms/`)
-      .then((response) => {
-        this.platforms = response.data.results
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get(`/api/v1/public/pms/`)
-      .then((response) => {
-        Object.entries(response.data).map(([key, val]) => {
-          this.pms.push({
-            id: key,
-            name: val
+      await this.$axios
+        .get(`/api/v1/public/pms/`)
+        .then((response) => {
+          Object.entries(response.data).map(([key, val]) => {
+            this.pms.push({
+              id: key,
+              name: val
+            })
           })
         })
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-  },
-  methods: {
-    async updateElement(action = null) {
-      if (this.element.id) {
-        this.loading = true
-        await this.$axios
-          .patch(`/api/v1/token/${this.model}/${this.element.id}/`, {
-            name: this.element.name,
-            architecture: this.element.architecture,
-            platform: this.element.platform.id,
-            auto_register_computers: this.element.auto_register_computers,
-            pms: this.element.pms.id
-          })
-          .then((response) => {
-            this.$store.dispatch(
-              'ui/notifySuccess',
-              this.$gettext('Data has been changed!')
-            )
-            if (action === 'return') {
-              this.$router.push({ name: this.listRoute })
-            } else if (action === 'add') {
-              this.element = { id: 0 }
-              if (this.breadcrumbs.length === 5) this.breadcrumbs.pop()
-              this.breadcrumbs[3].text = this.$gettext('Add')
-              this.$router.push({ name: this.addRoute })
-              this.title = this.$gettext('Project')
-            }
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-          .finally(() => (this.loading = false))
-      } else {
-        this.loading = true
-        await this.$axios
-          .post(`/api/v1/token/${this.model}/`, {
-            name: this.element.name,
-            architecture: this.element.architecture,
-            platform: this.element.platform.id,
-            auto_register_computers: this.element.auto_register_computers,
-            pms: this.element.pms.id
-          })
-          .then((response) => {
-            this.element = response.data
-            this.element.platform = this.platforms.find(
-              (x) => x.id === this.element.platform
-            )
-            this.element.pms = this.pms.find((x) => x.id == this.element.pms)
-            console.log('element new', this.element)
-            this.$store.dispatch(
-              'ui/notifySuccess',
-              this.$gettext('Data has been added!')
-            )
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+    },
 
-            if (action === 'return') {
-              this.$router.push({ name: this.listRoute })
-            } else if (action === 'add') {
-              this.element = { id: 0 }
-              this.$router.push({ name: this.addRoute })
-            } else {
-              if (this.breadcrumbs.length === 4) {
-                this.breadcrumbs.pop()
-                this.breadcrumbs.push({
-                  text: this.$gettext('Results'),
-                  to: this.listRoute
-                })
-                this.breadcrumbs.push({
-                  text: this.element.name
-                })
-                this.title = `${this.$gettext('Project')}: ${this.element.name}`
-              }
-              this.$router.push({
-                name: this.detailRoute,
-                params: { id: this.element.id }
-              })
-            }
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-          .finally(() => (this.loading = false))
+    elementData() {
+      return {
+        name: this.element.name,
+        architecture: this.element.architecture,
+        platform: this.element.platform.id,
+        auto_register_computers: this.element.auto_register_computers,
+        pms: this.element.pms.id
       }
+    },
+
+    setRelated() {
+      this.element.platform = this.platforms.find(
+        (x) => x.id === this.element.platform
+      )
+      this.element.pms = this.pms.find((x) => x.id == this.element.pms)
     }
   }
 }
