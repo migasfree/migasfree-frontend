@@ -47,6 +47,8 @@
               v-model="element.prefix"
               outlined
               :label="$gettext('Prefix')"
+              counter
+              maxlength="3"
               lazy-rules
               :rules="[
                 (val) => !!val || $gettext('* Required'),
@@ -195,9 +197,12 @@ export default {
   mixins: [detailMixin],
   data() {
     const route = 'formulas-list'
+    const title = this.$gettext('Formula')
+    const element = { id: 0, enabled: false }
 
     return {
-      title: this.$gettext('Formula'),
+      title,
+      originalTitle: title,
       model: 'formulas',
       listRoute: route,
       addRoute: 'formula-add',
@@ -218,10 +223,10 @@ export default {
           to: route
         }
       ],
-      element: { id: 0, enabled: false },
+      element,
+      emptyElement: element,
       languages: [],
       kind: [],
-      loading: false,
       confirmRemove: false
     }
   },
@@ -238,150 +243,59 @@ export default {
       )
     }
   },
-  created() {
-    if (this.$route.params.id) {
-      this.breadcrumbs.push({
-        text: this.$gettext('Results'),
-        to: this.listRoute
-      })
-      this.breadcrumbs.push({
-        text: 'Id'
-      })
-    } else {
-      this.breadcrumbs.push({ text: this.$gettext('Add') })
-    }
-  },
-  async mounted() {
-    if (this.$route.params.id) {
+  methods: {
+    async loadRelated() {
       await this.$axios
-        .get(`/api/v1/token/${this.model}/${this.$route.params.id}/`)
+        .get(`/api/v1/token/properties/kind/`)
         .then((response) => {
-          this.element = response.data
-          this.breadcrumbs.find((x) => x.text === 'Id').text = this.element.name
-          this.title = `${this.title}: ${this.element.name}`
+          Object.entries(response.data).map(([key, val]) => {
+            this.kind.push({
+              id: key,
+              name: val
+            })
+          })
+          if (this.element.id)
+            this.element.kind = this.kind.find((x) => x.id == this.element.kind)
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    }
 
-    await this.$axios
-      .get(`/api/v1/token/properties/kind/`)
-      .then((response) => {
-        Object.entries(response.data).map(([key, val]) => {
-          this.kind.push({
-            id: key,
-            name: val
+      await this.$axios
+        .get(`/api/v1/public/languages/`)
+        .then((response) => {
+          Object.entries(response.data).map(([key, val]) => {
+            this.languages.push({
+              id: parseInt(key),
+              name: val
+            })
           })
-        })
-        if (this.element.id)
-          this.element.kind = this.kind.find((x) => x.id == this.element.kind)
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get(`/api/v1/public/languages/`)
-      .then((response) => {
-        Object.entries(response.data).map(([key, val]) => {
-          this.languages.push({
-            id: parseInt(key),
-            name: val
-          })
-        })
-        if (this.element.id)
-          this.element.language = this.languages.find(
-            (x) => x.id === this.element.language
-          )
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-  },
-  methods: {
-    async updateElement(action = null) {
-      if (this.element.id) {
-        this.loading = true
-        await this.$axios
-          .patch(`/api/v1/token/${this.model}/${this.element.id}/`, {
-            name: this.element.name,
-            prefix: this.element.prefix,
-            enabled: this.element.enabled,
-            kind: this.element.kind.id,
-            language: this.element.language.id,
-            code: this.element.code
-          })
-          .then((response) => {
-            this.$store.dispatch(
-              'ui/notifySuccess',
-              this.$gettext('Data has been changed!')
-            )
-            if (action === 'return') {
-              this.$router.push({ name: this.listRoute })
-            } else if (action === 'add') {
-              this.element = { id: 0, enabled: false }
-              if (this.breadcrumbs.length === 5) this.breadcrumbs.pop()
-              this.breadcrumbs[3].text = this.$gettext('Add')
-              this.$router.push({ name: this.addRoute })
-              this.title = this.$gettext('Formula')
-            }
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-          .finally(() => (this.loading = false))
-      } else {
-        this.loading = true
-        await this.$axios
-          .post(`/api/v1/token/${this.model}/`, {
-            name: this.element.name,
-            prefix: this.element.prefix,
-            enabled: this.element.enabled,
-            kind: this.element.kind.id,
-            language: this.element.language.id,
-            code: this.element.code
-          })
-          .then((response) => {
-            this.element = response.data
-            this.element.kind = this.kind.find((x) => x.id == this.element.kind)
+          if (this.element.id)
             this.element.language = this.languages.find(
               (x) => x.id === this.element.language
             )
-            console.log('element new', this.element)
-            this.$store.dispatch(
-              'ui/notifySuccess',
-              this.$gettext('Data has been added!')
-            )
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+    },
 
-            if (action === 'return') {
-              this.$router.push({ name: this.listRoute })
-            } else if (action === 'add') {
-              this.element = { id: 0 }
-              this.$router.push({ name: this.addRoute })
-            } else {
-              if (this.breadcrumbs.length === 4) {
-                this.breadcrumbs.pop()
-                this.breadcrumbs.push({
-                  text: this.$gettext('Results'),
-                  to: this.listRoute
-                })
-                this.breadcrumbs.push({
-                  text: this.element.name
-                })
-                this.title = `${this.$gettext('Formula')}: ${this.element.name}`
-              }
-              this.$router.push({
-                name: this.detailRoute,
-                params: { id: this.element.id }
-              })
-            }
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-          .finally(() => (this.loading = false))
+    elementData() {
+      return {
+        name: this.element.name,
+        prefix: this.element.prefix,
+        enabled: this.element.enabled,
+        kind: this.element.kind.id,
+        language: this.element.language.id,
+        code: this.element.code
       }
+    },
+
+    setRelated() {
+      this.element.kind = this.kind.find((x) => x.id == this.element.kind)
+      this.element.language = this.languages.find(
+        (x) => x.id === this.element.language
+      )
     }
   }
 }
