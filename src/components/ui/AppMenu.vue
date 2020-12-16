@@ -40,9 +40,13 @@ export default {
               icon: 'mdi-sitemap',
               separatorAfter: true
             },
-            /* { title: this.$gettext('Formulas'), to: 'formulas-dashboard', icon: 'mdi-function-variant' },
-            { title: this.$gettext('Stamps'), to: 'stamps-dashboard', icon: 'mdi-stamper' },
-            { title: this.$gettext('Attributes Sets'), to: 'attribute-sets-dashboard', icon: 'mdi-set-none' },
+            {
+              title: this.$gettext('Formulas'),
+              to: 'formulas-list',
+              icon: 'mdi-function-variant'
+            }
+            /* { title: this.$gettext('Stamps'), to: 'stamps-list', icon: 'mdi-stamper' },
+            { title: this.$gettext('Attributes Sets'), to: 'attribute-sets-list', icon: 'mdi-set-none' },
             {
               title: this.$gettext('Faults Definitions'),
               to: 'fault-definitions-dashboard',
