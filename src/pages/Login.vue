@@ -44,7 +44,13 @@
             :rules="[
               (val) => !!val || $gettext('* Required'),
               (val) =>
-                val.length > 3 || $gettext('Please use minimum 4 characters')
+                val.length > 3 ||
+                $gettextInterpolate(
+                  $gettext('Please use minimum %{n} characters'),
+                  {
+                    n: 4
+                  }
+                )
             ]"
             :type="showPassword ? 'text' : 'password'"
           >
