@@ -341,6 +341,9 @@ export const datagridMixin = {
             case 'start_date__gte':
             case 'start_date__lt':
             case 'auto_register_computers':
+            case 'enabled':
+            case 'sort':
+            case 'kind':
             case 'search':
               ret[key] = val
               break
