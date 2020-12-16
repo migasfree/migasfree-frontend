@@ -188,6 +188,22 @@ const routes = [
         name: 'project-detail',
         component: () => import('pages/projects/results/detail')
       },
+
+      {
+        path: '/formulas/results',
+        name: 'formulas-list',
+        component: () => import('pages/formulas/results/list')
+      },
+      {
+        path: '/formulas/add',
+        name: 'formula-add',
+        component: () => import('pages/formulas/results/detail')
+      },
+      {
+        path: '/formulas/results/:id',
+        name: 'formula-detail',
+        component: () => import('pages/formulas/results/detail')
+      },
     ],
     meta: { authRequired: true }
   },
