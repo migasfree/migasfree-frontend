@@ -99,9 +99,12 @@ export default {
   mixins: [detailMixin],
   data() {
     const route = 'platforms-list'
+    const title = this.$gettext('Platform')
+    const element = { id: 0 }
 
     return {
-      title: this.$gettext('Platform'),
+      title,
+      originalTitle: title,
       model: 'platforms',
       listRoute: route,
       addRoute: 'platform-add',
@@ -122,8 +125,8 @@ export default {
           to: route
         }
       ],
-      element: { id: 0 },
-      loading: false,
+      element,
+      emptyElement: element,
       confirmRemove: false
     }
   },
@@ -132,103 +135,10 @@ export default {
       return this.element.name !== undefined && this.element.name !== ''
     }
   },
-  created() {
-    if (this.$route.params.id) {
-      this.breadcrumbs.push({
-        text: this.$gettext('Results'),
-        to: this.listRoute
-      })
-      this.breadcrumbs.push({
-        text: 'Id'
-      })
-    } else {
-      this.breadcrumbs.push({ text: this.$gettext('Add') })
-    }
-  },
-  async mounted() {
-    if (this.$route.params.id) {
-      await this.$axios
-        .get(`/api/v1/token/${this.model}/${this.$route.params.id}/`)
-        .then((response) => {
-          this.element = response.data
-          this.breadcrumbs.find((x) => x.text === 'Id').text = this.element.name
-          this.title = `${this.title}: ${this.element.name}`
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-    }
-  },
   methods: {
-    async updateElement(action = null) {
-      if (this.element.id) {
-        this.loading = true
-        await this.$axios
-          .patch(`/api/v1/token/${this.model}/${this.element.id}/`, {
-            name: this.element.name
-          })
-          .then((response) => {
-            this.$store.dispatch(
-              'ui/notifySuccess',
-              this.$gettext('Data has been changed!')
-            )
-            if (action === 'return') {
-              this.$router.push({ name: this.listRoute })
-            } else if (action === 'add') {
-              this.element = { id: 0 }
-              if (this.breadcrumbs.length === 5) this.breadcrumbs.pop()
-              this.breadcrumbs[3].text = this.$gettext('Add')
-              this.$router.push({ name: this.addRoute })
-              this.title = this.$gettext('Platform')
-            }
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-          .finally(() => (this.loading = false))
-      } else {
-        this.loading = true
-        await this.$axios
-          .post(`/api/v1/token/${this.model}/`, {
-            name: this.element.name
-          })
-          .then((response) => {
-            this.element = response.data
-            console.log('element new', this.element)
-            this.$store.dispatch(
-              'ui/notifySuccess',
-              this.$gettext('Data has been added!')
-            )
-
-            if (action === 'return') {
-              this.$router.push({ name: this.listRoute })
-            } else if (action === 'add') {
-              this.element = { id: 0 }
-              this.$router.push({ name: this.addRoute })
-            } else {
-              if (this.breadcrumbs.length === 4) {
-                this.breadcrumbs.pop()
-                this.breadcrumbs.push({
-                  text: this.$gettext('Results'),
-                  to: this.listRoute
-                })
-                this.breadcrumbs.push({
-                  text: this.element.name
-                })
-                this.title = `${this.$gettext('Platform')}: ${
-                  this.element.name
-                }`
-              }
-              this.$router.push({
-                name: this.detailRoute,
-                params: { id: this.element.id }
-              })
-            }
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-          .finally(() => (this.loading = false))
+    elementData() {
+      return {
+        name: this.element.name
       }
     }
   }
