@@ -204,6 +204,22 @@ const routes = [
         name: 'formula-detail',
         component: () => import('pages/formulas/results/detail')
       },
+
+      {
+        path: '/stamps/results',
+        name: 'stamps-list',
+        component: () => import('pages/stamps/results/list')
+      },
+      {
+        path: '/stamps/add',
+        name: 'stamp-add',
+        component: () => import('pages/stamps/results/detail')
+      },
+      {
+        path: '/stamps/results/:id',
+        name: 'stamp-detail',
+        component: () => import('pages/stamps/results/detail')
+      },
     ],
     meta: { authRequired: true }
   },
