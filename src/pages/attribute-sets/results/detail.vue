@@ -46,6 +46,100 @@
             />
           </div>
         </div>
+
+        <div class="row q-pa-md q-gutter-md">
+          <div class="col-6 col-md">
+            <q-select
+              v-model="element.included_attributes"
+              outlined
+              use-input
+              map-options
+              multiple
+              input-debounce="0"
+              :label="$gettext('Included Attributes')"
+              :options="attributes"
+              @filter="filterAttributes"
+              @filter-abort="abortFilterAttributes"
+            >
+              <template #no-option>
+                <q-item>
+                  <q-item-section v-translate class="text-grey">
+                    No results
+                  </q-item-section>
+                </q-item>
+              </template>
+
+              <template #option="scope">
+                <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                  {{ attributeValue(scope.opt) }}
+                </q-item>
+              </template>
+
+              <template #selected-item="scope">
+                <q-chip
+                  removable
+                  dense
+                  :tabindex="scope.tabindex"
+                  color="white"
+                  class="q-ma-md"
+                  @remove="scope.removeAtIndex(scope.index)"
+                >
+                  <MigasLink
+                    model="attributes"
+                    :pk="scope.opt.id"
+                    :value="attributeValue(scope.opt)"
+                  />
+                </q-chip>
+              </template>
+            </q-select>
+          </div>
+
+          <div class="col-6 col-md">
+            <q-select
+              v-model="element.excluded_attributes"
+              outlined
+              use-input
+              map-options
+              multiple
+              input-debounce="0"
+              :label="$gettext('Excluded Attributes')"
+              :options="attributes"
+              @filter="filterAttributes"
+              @filter-abort="abortFilterAttributes"
+            >
+              <template #no-option>
+                <q-item>
+                  <q-item-section v-translate class="text-grey">
+                    No results
+                  </q-item-section>
+                </q-item>
+              </template>
+
+              <template #option="scope">
+                <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                  {{ attributeValue(scope.opt) }}
+                </q-item>
+              </template>
+
+              <template #selected-item="scope">
+                <q-chip
+                  removable
+                  dense
+                  :tabindex="scope.tabindex"
+                  color="white"
+                  class="q-ma-md"
+                  @remove="scope.removeAtIndex(scope.index)"
+                >
+                  <MigasLink
+                    model="attributes"
+                    :pk="scope.opt.id"
+                    :value="attributeValue(scope.opt)"
+                  />
+                </q-chip>
+              </template>
+            </q-select>
+          </div>
+        </div>
       </q-card-section>
 
       <q-card-actions class="justify-around">
@@ -102,6 +196,7 @@ import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import RemoveDialog from 'components/ui/RemoveDialog'
 import { detailMixin } from 'mixins/detail'
+import { elementMixin } from 'mixins/element'
 
 export default {
   meta() {
@@ -115,7 +210,7 @@ export default {
     RemoveDialog,
     MigasLink
   },
-  mixins: [detailMixin],
+  mixins: [detailMixin, elementMixin],
   data() {
     const route = 'attribute-sets-list'
     const title = this.$gettext('Attribute Set')
@@ -146,7 +241,8 @@ export default {
       ],
       element,
       emptyElement: Object.assign({}, element),
-      confirmRemove: false
+      confirmRemove: false,
+      attributes: []
     }
   },
   computed: {
@@ -159,15 +255,34 @@ export default {
       return {
         name: this.element.name,
         description: this.element.description,
-        enabled: this.element.enabled
+        enabled: this.element.enabled,
+        included_attributes: this.element.included_attributes.map((item) => item.id),
+        excluded_attributes: this.element.excluded_attributes.map((item) => item.id)
       }
     },
 
-    setRelated() {
-      /* this.element.kind = this.kind.find((x) => x.id == this.element.kind)
-      this.element.language = this.languages.find(
-        (x) => x.id === this.element.language
-      ) */
+    filterAttributes(val, update, abort) {
+      // call abort() at any time if you can't retrieve data somehow
+      if (val.length < 3) {
+        abort()
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        this.$axios
+          .get('/api/v1/token/attributes/', { params: { search: needle } })
+          .then((response) => {
+            this.attributes = response.data.results
+          })
+        /* this.attributes = stringOptions.filter(
+          (v) => v.toLowerCase().indexOf(needle) > -1
+        ) */
+      })
+    },
+
+    abortFilterAttributes() {
+      // console.log('delayed filter aborted')
     }
   }
 }
