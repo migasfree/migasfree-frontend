@@ -61,6 +61,7 @@ msgstr "hace %{n} días"
 #: src/pages/attributes/results/list.vue:49
 #: src/pages/computers/results/list.vue:53 src/pages/errors/results/list.vue:58
 #: src/pages/faults/results/list.vue:56 src/pages/formulas/results/list.vue:49
+#: src/pages/migrations/results/list.vue:53
 #: src/pages/packages/results/list.vue:49
 #: src/pages/platforms/results/list.vue:47
 #: src/pages/projects/results/list.vue:49 src/pages/stamps/results/list.vue:49
@@ -92,6 +93,8 @@ msgstr "Alertas"
 #: src/pages/faults/results/list.vue:139 src/pages/faults/results/list.vue:146
 #: src/pages/formulas/results/list.vue:74
 #: src/pages/formulas/results/list.vue:87
+#: src/pages/migrations/results/list.vue:93
+#: src/pages/migrations/results/list.vue:101
 #: src/pages/packages/results/list.vue:74
 #: src/pages/packages/results/list.vue:88
 #: src/pages/projects/results/list.vue:75
@@ -214,7 +217,8 @@ msgid "By Machine"
 msgstr "Por máquina"
 
 #: src/pages/computers/results/list.vue:75 src/pages/errors/results/list.vue:77
-#: src/pages/faults/results/list.vue:77 src/pages/syncs/results/list.vue:71
+#: src/pages/faults/results/list.vue:77
+#: src/pages/migrations/results/list.vue:65 src/pages/syncs/results/list.vue:71
 msgid "By Platform"
 msgstr "Por plataforma"
 
@@ -233,6 +237,7 @@ msgstr "Por estado"
 
 #: src/pages/computers/results/list.vue:163
 #: src/pages/errors/results/list.vue:107 src/pages/faults/results/list.vue:114
+#: src/pages/migrations/results/list.vue:84
 msgid "By Subscribed Date (range)"
 msgstr "Por fecha de alta (rango)"
 
@@ -281,7 +286,7 @@ msgstr "Comentario"
 #: src/pages/computers/results/detail.vue:75
 #: src/pages/errors/results/detail.vue:22 src/pages/errors/results/list.vue:81
 #: src/pages/faults/results/detail.vue:23 src/pages/faults/results/list.vue:79
-#: src/pages/syncs/results/list.vue:96
+#: src/pages/migrations/results/list.vue:76 src/pages/syncs/results/list.vue:96
 msgid "Computer"
 msgstr "Ordenador"
 
@@ -345,7 +350,8 @@ msgstr "¡La situación actual ha cambiado!"
 #: src/pages/faults/index.vue:27 src/pages/faults/results/detail.vue:35
 #: src/pages/faults/results/list.vue:33
 #: src/pages/formulas/results/detail.vue:34
-#: src/pages/formulas/results/list.vue:27 src/pages/packages/index.vue:23
+#: src/pages/formulas/results/list.vue:27 src/pages/migrations/index.vue:25
+#: src/pages/migrations/results/list.vue:30 src/pages/packages/index.vue:23
 #: src/pages/packages/results/detail.vue:30
 #: src/pages/packages/results/list.vue:26
 #: src/pages/platforms/results/detail.vue:34
@@ -369,7 +375,8 @@ msgstr "Cuadro de mando"
 #: src/pages/computers/results/simulate.vue:26 src/pages/errors/index.vue:30
 #: src/pages/errors/results/detail.vue:40 src/pages/errors/results/list.vue:40
 #: src/pages/faults/index.vue:32 src/pages/faults/results/detail.vue:40
-#: src/pages/faults/results/list.vue:38 src/pages/syncs/index.vue:30
+#: src/pages/faults/results/list.vue:38 src/pages/migrations/index.vue:30
+#: src/pages/migrations/results/list.vue:35 src/pages/syncs/index.vue:30
 #: src/pages/syncs/results/list.vue:38 src/pages/tags/index.vue:28
 #: src/pages/tags/results/detail.vue:39 src/pages/tags/results/list.vue:30
 msgid "Data"
@@ -385,6 +392,7 @@ msgstr "¡Los datos han cambiado!"
 
 #: src/pages/errors/results/detail.vue:16 src/pages/errors/results/list.vue:65
 #: src/pages/faults/results/detail.vue:35 src/pages/faults/results/list.vue:63
+#: src/pages/migrations/results/list.vue:60
 msgid "Date"
 msgstr "Fecha"
 
@@ -550,6 +558,7 @@ msgstr "Lista de Fallas"
 #: src/pages/errors/results/list.vue:85 src/pages/errors/results/list.vue:120
 #: src/pages/faults/results/list.vue:83 src/pages/faults/results/list.vue:131
 #: src/pages/formulas/results/list.vue:61
+#: src/pages/migrations/results/list.vue:80
 #: src/pages/packages/results/list.vue:61
 #: src/pages/platforms/results/list.vue:59
 #: src/pages/projects/results/list.vue:61 src/pages/stamps/results/list.vue:61
@@ -674,15 +683,30 @@ msgstr "Dirección MAC"
 msgid "migasfree documentation"
 msgstr "documentación de migasfree"
 
-#: src/pages/computers/results/events.vue:50
+#: src/components/ui/AppMenu.vue:135 src/pages/computers/results/events.vue:50
 #: src/pages/computers/results/events.vue:46
 #: src/pages/computers/results/events.vue:2
-#: src/pages/computers/results/events.vue:75
+#: src/pages/computers/results/events.vue:75 src/pages/migrations/index.vue:22
+#: src/pages/migrations/index.vue:34 src/pages/migrations/results/list.vue:27
+#: src/pages/migrations/results/list.vue:39
 msgid "Migrations"
 msgstr "Migraciones"
 
+#: src/pages/migrations/index.vue:27
+msgid "Migrations / Month"
+msgstr "Migraciones / Mes"
+
+#: src/pages/migrations/index.vue:36
+msgid "Migrations / Project"
+msgstr "Migraciones / Proyecto"
+
+#: src/pages/migrations/results/list.vue:14
+msgid "Migrations List"
+msgstr "Lista de Migraciones"
+
 #: src/pages/computers/results/list.vue:60 src/pages/errors/results/list.vue:62
-#: src/pages/faults/results/list.vue:62 src/pages/syncs/results/list.vue:56
+#: src/pages/faults/results/list.vue:62
+#: src/pages/migrations/results/list.vue:50 src/pages/syncs/results/list.vue:56
 msgid "More Filters"
 msgstr "Más filtros"
 
@@ -880,6 +904,7 @@ msgstr "proyecto"
 #: src/pages/computers/results/list.vue:78
 #: src/pages/errors/results/detail.vue:27 src/pages/errors/results/list.vue:94
 #: src/pages/faults/results/detail.vue:28 src/pages/faults/results/list.vue:92
+#: src/pages/migrations/results/list.vue:89
 #: src/pages/packages/results/detail.vue:15
 #: src/pages/packages/results/detail.vue:1
 #: src/pages/packages/results/list.vue:70
@@ -920,6 +945,7 @@ msgstr "Liberación"
 #: src/pages/computers/results/list.vue:192
 #: src/pages/errors/results/list.vue:115 src/pages/faults/results/list.vue:122
 #: src/pages/formulas/results/list.vue:45
+#: src/pages/migrations/results/list.vue:92
 #: src/pages/packages/results/list.vue:44
 #: src/pages/platforms/results/list.vue:42
 #: src/pages/projects/results/list.vue:45 src/pages/stamps/results/list.vue:45
@@ -941,6 +967,7 @@ msgstr "Resultado"
 #: src/pages/computers/results/simulate.vue:35
 #: src/pages/errors/results/list.vue:49 src/pages/faults/results/list.vue:47
 #: src/pages/formulas/results/list.vue:40
+#: src/pages/migrations/results/list.vue:44
 #: src/pages/packages/results/list.vue:40
 #: src/pages/platforms/results/list.vue:38
 #: src/pages/projects/results/list.vue:40 src/pages/stamps/results/list.vue:40
@@ -1185,6 +1212,7 @@ msgstr ""
 #: src/pages/attributes/results/list.vue:30
 #: src/pages/computers/results/list.vue:94 src/pages/errors/results/list.vue:63
 #: src/pages/faults/results/list.vue:70 src/pages/formulas/results/list.vue:33
+#: src/pages/migrations/results/list.vue:50
 #: src/pages/packages/results/list.vue:33
 #: src/pages/platforms/results/list.vue:27
 #: src/pages/projects/results/list.vue:33 src/pages/stamps/results/list.vue:33

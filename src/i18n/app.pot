@@ -57,6 +57,7 @@ msgstr ""
 #: ./src/pages/errors/results/list.vue:58
 #: ./src/pages/faults/results/list.vue:56
 #: ./src/pages/formulas/results/list.vue:49
+#: ./src/pages/migrations/results/list.vue:53
 #: ./src/pages/packages/results/list.vue:49
 #: ./src/pages/platforms/results/list.vue:47
 #: ./src/pages/projects/results/list.vue:49
@@ -97,6 +98,8 @@ msgstr ""
 #: ./src/pages/faults/results/list.vue:146
 #: ./src/pages/formulas/results/list.vue:74
 #: ./src/pages/formulas/results/list.vue:87
+#: ./src/pages/migrations/results/list.vue:93
+#: ./src/pages/migrations/results/list.vue:101
 #: ./src/pages/packages/results/list.vue:74
 #: ./src/pages/packages/results/list.vue:88
 #: ./src/pages/projects/results/list.vue:75
@@ -228,6 +231,7 @@ msgstr ""
 #: ./src/pages/computers/results/list.vue:75
 #: ./src/pages/errors/results/list.vue:77
 #: ./src/pages/faults/results/list.vue:77
+#: ./src/pages/migrations/results/list.vue:65
 #: ./src/pages/syncs/results/list.vue:71
 msgid "By Platform"
 msgstr ""
@@ -248,6 +252,7 @@ msgstr ""
 #: ./src/pages/computers/results/list.vue:163
 #: ./src/pages/errors/results/list.vue:107
 #: ./src/pages/faults/results/list.vue:114
+#: ./src/pages/migrations/results/list.vue:84
 msgid "By Subscribed Date (range)"
 msgstr ""
 
@@ -303,6 +308,7 @@ msgstr ""
 #: ./src/pages/errors/results/list.vue:81
 #: ./src/pages/faults/results/detail.vue:23
 #: ./src/pages/faults/results/list.vue:79
+#: ./src/pages/migrations/results/list.vue:76
 #: ./src/pages/syncs/results/list.vue:96
 msgid "Computer"
 msgstr ""
@@ -377,6 +383,8 @@ msgstr ""
 #: ./src/pages/faults/results/list.vue:33
 #: ./src/pages/formulas/results/detail.vue:34
 #: ./src/pages/formulas/results/list.vue:27
+#: ./src/pages/migrations/index.vue:25
+#: ./src/pages/migrations/results/list.vue:30
 #: ./src/pages/packages/index.vue:23
 #: ./src/pages/packages/results/detail.vue:30
 #: ./src/pages/packages/results/list.vue:26
@@ -412,6 +420,8 @@ msgstr ""
 #: ./src/pages/faults/index.vue:32
 #: ./src/pages/faults/results/detail.vue:40
 #: ./src/pages/faults/results/list.vue:38
+#: ./src/pages/migrations/index.vue:30
+#: ./src/pages/migrations/results/list.vue:35
 #: ./src/pages/syncs/index.vue:30
 #: ./src/pages/syncs/results/list.vue:38
 #: ./src/pages/tags/index.vue:28
@@ -432,6 +442,7 @@ msgstr ""
 #: ./src/pages/errors/results/list.vue:65
 #: ./src/pages/faults/results/detail.vue:35
 #: ./src/pages/faults/results/list.vue:63
+#: ./src/pages/migrations/results/list.vue:60
 msgid "Date"
 msgstr ""
 
@@ -613,6 +624,7 @@ msgstr ""
 #: ./src/pages/faults/results/list.vue:83
 #: ./src/pages/faults/results/list.vue:131
 #: ./src/pages/formulas/results/list.vue:61
+#: ./src/pages/migrations/results/list.vue:80
 #: ./src/pages/packages/results/list.vue:61
 #: ./src/pages/platforms/results/list.vue:59
 #: ./src/pages/projects/results/list.vue:61
@@ -744,16 +756,34 @@ msgstr ""
 msgid "migasfree documentation"
 msgstr ""
 
+#: ./src/components/ui/AppMenu.vue:135
 #: ./src/pages/computers/results/events.vue:50
 #: ./src/pages/computers/results/events.vue:46
 #: ./src/pages/computers/results/events.vue:2
 #: ./src/pages/computers/results/events.vue:75
+#: ./src/pages/migrations/index.vue:22
+#: ./src/pages/migrations/index.vue:34
+#: ./src/pages/migrations/results/list.vue:27
+#: ./src/pages/migrations/results/list.vue:39
 msgid "Migrations"
+msgstr ""
+
+#: ./src/pages/migrations/index.vue:27
+msgid "Migrations / Month"
+msgstr ""
+
+#: ./src/pages/migrations/index.vue:36
+msgid "Migrations / Project"
+msgstr ""
+
+#: ./src/pages/migrations/results/list.vue:14
+msgid "Migrations List"
 msgstr ""
 
 #: ./src/pages/computers/results/list.vue:60
 #: ./src/pages/errors/results/list.vue:62
 #: ./src/pages/faults/results/list.vue:62
+#: ./src/pages/migrations/results/list.vue:50
 #: ./src/pages/syncs/results/list.vue:56
 msgid "More Filters"
 msgstr ""
@@ -968,6 +998,7 @@ msgstr ""
 #: ./src/pages/errors/results/list.vue:94
 #: ./src/pages/faults/results/detail.vue:28
 #: ./src/pages/faults/results/list.vue:92
+#: ./src/pages/migrations/results/list.vue:89
 #: ./src/pages/packages/results/detail.vue:15
 #: ./src/pages/packages/results/detail.vue:1
 #: ./src/pages/packages/results/list.vue:70
@@ -1014,6 +1045,7 @@ msgstr ""
 #: ./src/pages/errors/results/list.vue:115
 #: ./src/pages/faults/results/list.vue:122
 #: ./src/pages/formulas/results/list.vue:45
+#: ./src/pages/migrations/results/list.vue:92
 #: ./src/pages/packages/results/list.vue:44
 #: ./src/pages/platforms/results/list.vue:42
 #: ./src/pages/projects/results/list.vue:45
@@ -1040,6 +1072,7 @@ msgstr ""
 #: ./src/pages/errors/results/list.vue:49
 #: ./src/pages/faults/results/list.vue:47
 #: ./src/pages/formulas/results/list.vue:40
+#: ./src/pages/migrations/results/list.vue:44
 #: ./src/pages/packages/results/list.vue:40
 #: ./src/pages/platforms/results/list.vue:38
 #: ./src/pages/projects/results/list.vue:40
@@ -1302,6 +1335,7 @@ msgstr ""
 #: ./src/pages/errors/results/list.vue:63
 #: ./src/pages/faults/results/list.vue:70
 #: ./src/pages/formulas/results/list.vue:33
+#: ./src/pages/migrations/results/list.vue:50
 #: ./src/pages/packages/results/list.vue:33
 #: ./src/pages/platforms/results/list.vue:27
 #: ./src/pages/projects/results/list.vue:33
