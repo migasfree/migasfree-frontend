@@ -186,9 +186,6 @@ export default {
       kind: {}
     }
   },
-  /* created() {
-    this.updateParams({ columnFilters: { sort: 'client' } })
-  }, */
   methods: {
     async loadFilters() {
       await this.$axios
