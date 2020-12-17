@@ -161,7 +161,7 @@ export default {
         }
       ],
       element,
-      emptyElement: element,
+      emptyElement: Object.assign({}, element),
       confirmRemove: false,
       isValid: true
     }

@@ -172,7 +172,7 @@ export default {
         }
       ],
       element,
-      emptyElement: element,
+      emptyElement: Object.assign({}, element),
       platforms: [],
       pms: [],
       confirmRemove: false

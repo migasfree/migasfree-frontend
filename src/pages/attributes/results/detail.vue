@@ -132,7 +132,7 @@ export default {
         }
       ],
       element,
-      emptyElement: element,
+      emptyElement: Object.assign({}, element),
       isValid: true,
       confirmRemove: false
     }

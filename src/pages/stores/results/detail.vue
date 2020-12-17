@@ -138,7 +138,7 @@ export default {
         }
       ],
       element,
-      emptyElement: element,
+      emptyElement: Object.assign({}, element),
       projects: [],
       confirmRemove: false
     }

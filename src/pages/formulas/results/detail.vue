@@ -224,7 +224,7 @@ export default {
         }
       ],
       element,
-      emptyElement: element,
+      emptyElement: Object.assign({}, element),
       languages: [],
       kind: [],
       confirmRemove: false

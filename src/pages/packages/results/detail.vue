@@ -182,7 +182,7 @@ export default {
         }
       ],
       element,
-      emptyElement: element,
+      emptyElement: Object.assign({}, element),
       model: 'packages',
       listRoute: 'packages-list',
       addRoute: 'package-add',
