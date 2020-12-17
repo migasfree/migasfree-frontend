@@ -44,9 +44,9 @@ export default {
               title: this.$gettext('Formulas'),
               to: 'formulas-list',
               icon: 'mdi-function-variant'
-            }
-            /* { title: this.$gettext('Stamps'), to: 'stamps-list', icon: 'mdi-stamper' },
-            { title: this.$gettext('Attributes Sets'), to: 'attribute-sets-list', icon: 'mdi-set-none' },
+            },
+            { title: this.$gettext('Stamps'), to: 'stamps-list', icon: 'mdi-stamper' },
+            /* { title: this.$gettext('Attributes Sets'), to: 'attribute-sets-list', icon: 'mdi-set-none' },
             {
               title: this.$gettext('Faults Definitions'),
               to: 'fault-definitions-dashboard',
