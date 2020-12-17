@@ -220,6 +220,22 @@ const routes = [
         name: 'stamp-detail',
         component: () => import('pages/stamps/results/detail')
       },
+
+      {
+        path: '/attribute-sets/results',
+        name: 'attribute-sets-list',
+        component: () => import('pages/attribute-sets/results/list')
+      },
+      {
+        path: '/attribute-sets/add',
+        name: 'attribute-set-add',
+        component: () => import('pages/attribute-sets/results/detail')
+      },
+      {
+        path: '/attribute-sets/results/:id',
+        name: 'attribute-set-detail',
+        component: () => import('pages/attribute-sets/results/detail')
+      },
     ],
     meta: { authRequired: true }
   },
