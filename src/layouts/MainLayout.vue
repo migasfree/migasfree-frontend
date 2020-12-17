@@ -163,7 +163,7 @@ export default {
     }
   },
   created() {
-    this.$q.dark.set(this.$q.cookies.get('darkMode'))
+    this.$q.dark.set(this.$q.cookies.get('darkMode'), { expires: '30d' })
   },
   async mounted() {
     if (this.loggedIn) await this.loadAlerts()
@@ -177,7 +177,7 @@ export default {
 
     toggleDarkMode() {
       this.$q.dark.toggle()
-      this.$q.cookies.set('darkMode', this.$q.dark.isActive)
+      this.$q.cookies.set('darkMode', this.$q.dark.isActive, { expires: '30d' })
     },
 
     async loadAlerts() {
