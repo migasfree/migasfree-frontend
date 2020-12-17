@@ -116,6 +116,17 @@ const routes = [
       },
 
       {
+        path: '/migrations',
+        name: 'migrations-dashboard',
+        component: () => import('pages/migrations/index')
+      },
+      {
+        path: '/migrations/results',
+        name: 'migrations-list',
+        component: () => import('pages/migrations/results/list')
+      },
+
+      {
         path: '/packages',
         name: 'packages-dashboard',
         component: () => import('pages/packages/index')
