@@ -239,7 +239,7 @@ export default {
         })
     },
 
-        queryParams() {
+    queryParams() {
       let ret = {
         page_size: this.serverParams.perPage,
         page: this.serverParams.page
@@ -274,7 +274,7 @@ export default {
       }
 
       return ret
-    },
+    }
   }
 }
 </script>
