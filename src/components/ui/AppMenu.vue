@@ -152,13 +152,17 @@ export default {
               to: 'faults-dashboard',
               icon: 'mdi-bomb'
             },
-            // { title: this.$gettext('Status Logs'), to: 'status-logs-dashboard', icon: 'mdi-flag-variant' },
+            {
+              title: this.$gettext('Status Logs'),
+              to: 'status-logs-dashboard',
+              icon: 'mdi-flag-variant'
+            },
             {
               title: this.$gettext('Migrations'),
               to: 'migrations-dashboard',
               icon: 'mdi-map-marker-right',
               separatorAfter: true
-            },
+            }
             /* { title: this.$gettext('Messages'), to: 'messages-dashboard', icon: 'mdi-message-text' },
             { title: this.$gettext('Notifications'), to: 'notifications-dashboard', icon: 'mdi-android-messages' } */
           ]
