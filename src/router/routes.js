@@ -116,6 +116,17 @@ const routes = [
       },
 
       {
+        path: '/status-logs',
+        name: 'status-logs-dashboard',
+        component: () => import('pages/status-logs/index')
+      },
+      {
+        path: '/status-logs/results',
+        name: 'status-logs-list',
+        component: () => import('pages/status-logs/results/list')
+      },
+
+      {
         path: '/migrations',
         name: 'migrations-dashboard',
         component: () => import('pages/migrations/index')
