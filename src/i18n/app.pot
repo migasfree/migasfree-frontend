@@ -8,6 +8,8 @@ msgstr ""
 #: ./src/pages/Login.vue:77
 #: ./src/pages/Login.vue:99
 #: ./src/pages/attribute-sets/results/detail.vue:79
+#: ./src/pages/fault-definitions/results/detail.vue:92
+#: ./src/pages/fault-definitions/results/detail.vue:126
 #: ./src/pages/formulas/results/detail.vue:86
 #: ./src/pages/formulas/results/detail.vue:101
 #: ./src/pages/formulas/results/detail.vue:125
@@ -55,6 +57,7 @@ msgstr ""
 #: ./src/pages/attributes/results/list.vue:49
 #: ./src/pages/computers/results/list.vue:53
 #: ./src/pages/errors/results/list.vue:58
+#: ./src/pages/fault-definitions/results/list.vue:49
 #: ./src/pages/faults/results/list.vue:56
 #: ./src/pages/formulas/results/list.vue:49
 #: ./src/pages/migrations/results/list.vue:53
@@ -93,6 +96,7 @@ msgstr ""
 #: ./src/pages/errors/results/list.vue:98
 #: ./src/pages/errors/results/list.vue:107
 #: ./src/pages/errors/results/list.vue:128
+#: ./src/pages/fault-definitions/results/list.vue:70
 #: ./src/pages/faults/results/list.vue:96
 #: ./src/pages/faults/results/list.vue:105
 #: ./src/pages/faults/results/list.vue:122
@@ -158,7 +162,7 @@ msgid "Attribute Set"
 msgstr ""
 
 #: ./src/components/ui/AppMenu.vue:32
-#: ./src/pages/attribute-sets/results/detail.vue:44
+#: ./src/pages/attribute-sets/results/detail.vue:49
 #: ./src/pages/attribute-sets/results/list.vue:24
 #: ./src/pages/attribute-sets/results/list.vue:36
 msgid "Attribute Sets"
@@ -174,8 +178,9 @@ msgstr ""
 #: ./src/pages/attributes/results/detail.vue:41
 #: ./src/pages/attributes/results/list.vue:23
 #: ./src/pages/attributes/results/list.vue:35
-#: ./src/pages/computers/results/detail.vue:502
+#: ./src/pages/computers/results/detail.vue:501
 #: ./src/pages/computers/results/simulate.vue:105
+#: ./src/pages/fault-definitions/results/detail.vue:46
 msgid "Attributes"
 msgstr ""
 
@@ -187,7 +192,7 @@ msgstr ""
 msgid "Attributes List"
 msgstr ""
 
-#: ./src/pages/computers/results/detail.vue:283
+#: ./src/pages/computers/results/detail.vue:282
 #: ./src/pages/computers/results/simulate.vue:117
 msgid "Attributes Sets"
 msgstr ""
@@ -212,7 +217,7 @@ msgstr ""
 msgid "By Assignment"
 msgstr ""
 
-#: ./src/components/computer/Devices.vue:99
+#: ./src/components/computer/Devices.vue:98
 msgid "By default"
 msgstr ""
 
@@ -299,6 +304,8 @@ msgstr ""
 msgid "Checked?"
 msgstr ""
 
+#: ./src/pages/fault-definitions/results/detail.vue:32
+#: ./src/pages/fault-definitions/results/detail.vue:136
 #: ./src/pages/formulas/results/detail.vue:50
 #: ./src/pages/formulas/results/detail.vue:158
 msgid "Code"
@@ -341,8 +348,10 @@ msgid "Computers List"
 msgstr ""
 
 #: ./src/components/ui/AppMenu.vue:8
-#: ./src/pages/attribute-sets/results/detail.vue:40
+#: ./src/pages/attribute-sets/results/detail.vue:45
 #: ./src/pages/attribute-sets/results/list.vue:32
+#: ./src/pages/fault-definitions/results/detail.vue:46
+#: ./src/pages/fault-definitions/results/list.vue:32
 #: ./src/pages/formulas/results/detail.vue:39
 #: ./src/pages/formulas/results/list.vue:32
 #: ./src/pages/platforms/results/detail.vue:39
@@ -372,7 +381,7 @@ msgid "Current Situation has been changed!"
 msgstr ""
 
 #: ./src/pages/Dashboard.vue:14
-#: ./src/pages/attribute-sets/results/detail.vue:35
+#: ./src/pages/attribute-sets/results/detail.vue:40
 #: ./src/pages/attribute-sets/results/list.vue:27
 #: ./src/pages/attributes/index.vue:23
 #: ./src/pages/attributes/results/detail.vue:32
@@ -385,6 +394,8 @@ msgstr ""
 #: ./src/pages/errors/index.vue:25
 #: ./src/pages/errors/results/detail.vue:35
 #: ./src/pages/errors/results/list.vue:35
+#: ./src/pages/fault-definitions/results/detail.vue:41
+#: ./src/pages/fault-definitions/results/list.vue:27
 #: ./src/pages/faults/index.vue:27
 #: ./src/pages/faults/results/detail.vue:35
 #: ./src/pages/faults/results/list.vue:33
@@ -473,10 +484,11 @@ msgstr ""
 
 #: ./src/components/ui/RemoveDialog.vue:46
 #: ./src/mixins/datagrid.js:416
-#: ./src/pages/attribute-sets/results/detail.vue:257
+#: ./src/pages/attribute-sets/results/detail.vue:255
 #: ./src/pages/attributes/results/detail.vue:125
-#: ./src/pages/computers/results/detail.vue:537
+#: ./src/pages/computers/results/detail.vue:536
 #: ./src/pages/errors/results/detail.vue:187
+#: ./src/pages/fault-definitions/results/detail.vue:377
 #: ./src/pages/faults/results/detail.vue:210
 #: ./src/pages/formulas/results/detail.vue:224
 #: ./src/pages/packages/results/detail.vue:245
@@ -498,6 +510,7 @@ msgstr ""
 #: ./src/pages/attributes/results/list.vue:66
 #: ./src/pages/errors/results/detail.vue:36
 #: ./src/pages/errors/results/list.vue:116
+#: ./src/pages/fault-definitions/results/detail.vue:103
 #: ./src/pages/tags/results/detail.vue:85
 #: ./src/pages/tags/results/list.vue:65
 msgid "Description"
@@ -523,12 +536,14 @@ msgid "emulator"
 msgstr ""
 
 #: ./src/pages/attribute-sets/results/list.vue:66
+#: ./src/pages/fault-definitions/results/list.vue:66
 #: ./src/pages/formulas/results/list.vue:70
 #: ./src/pages/stamps/results/list.vue:70
 msgid "Enabled"
 msgstr ""
 
 #: ./src/pages/attribute-sets/results/detail.vue:69
+#: ./src/pages/fault-definitions/results/detail.vue:82
 #: ./src/pages/formulas/results/detail.vue:73
 #: ./src/pages/stamps/results/detail.vue:61
 msgid "Enabled?"
@@ -582,7 +597,8 @@ msgstr ""
 msgid "Example of code:"
 msgstr ""
 
-#: ./src/pages/attribute-sets/results/detail.vue:163
+#: ./src/pages/attribute-sets/results/detail.vue:162
+#: ./src/pages/fault-definitions/results/detail.vue:216
 msgid "Excluded Attributes"
 msgstr ""
 
@@ -591,9 +607,22 @@ msgstr ""
 msgid "Fault"
 msgstr ""
 
+#: ./src/pages/fault-definitions/results/detail.vue:23
+#: ./src/pages/fault-definitions/results/detail.vue:51
 #: ./src/pages/faults/results/detail.vue:16
 #: ./src/pages/faults/results/list.vue:118
 msgid "Fault Definition"
+msgstr ""
+
+#: ./src/components/ui/AppMenu.vue:37
+#: ./src/pages/fault-definitions/results/detail.vue:50
+#: ./src/pages/fault-definitions/results/list.vue:24
+#: ./src/pages/fault-definitions/results/list.vue:36
+msgid "Fault Definitions"
+msgstr ""
+
+#: ./src/pages/fault-definitions/results/list.vue:11
+msgid "Fault Definitions List"
 msgstr ""
 
 #: ./src/components/ui/AppMenu.vue:129
@@ -635,6 +664,7 @@ msgstr ""
 #: ./src/pages/computers/results/list.vue:118
 #: ./src/pages/errors/results/list.vue:85
 #: ./src/pages/errors/results/list.vue:120
+#: ./src/pages/fault-definitions/results/list.vue:61
 #: ./src/pages/faults/results/list.vue:83
 #: ./src/pages/faults/results/list.vue:131
 #: ./src/pages/formulas/results/list.vue:61
@@ -684,6 +714,7 @@ msgstr ""
 msgid "Fullname"
 msgstr ""
 
+#: ./src/pages/fault-definitions/results/detail.vue:12
 #: ./src/pages/formulas/results/detail.vue:12
 msgid "General"
 msgstr ""
@@ -707,6 +738,7 @@ msgid "Identification"
 msgstr ""
 
 #: ./src/pages/attribute-sets/results/detail.vue:104
+#: ./src/pages/fault-definitions/results/detail.vue:158
 msgid "Included Attributes"
 msgstr ""
 
@@ -735,6 +767,7 @@ msgstr ""
 msgid "Kind"
 msgstr ""
 
+#: ./src/pages/fault-definitions/results/detail.vue:121
 #: ./src/pages/formulas/results/detail.vue:143
 msgid "Language"
 msgstr ""
@@ -813,6 +846,8 @@ msgstr ""
 #: ./src/pages/attribute-sets/results/detail.vue:77
 #: ./src/pages/attribute-sets/results/list.vue:56
 #: ./src/pages/computers/results/list.vue:60
+#: ./src/pages/fault-definitions/results/detail.vue:90
+#: ./src/pages/fault-definitions/results/list.vue:56
 #: ./src/pages/formulas/results/detail.vue:123
 #: ./src/pages/formulas/results/list.vue:56
 #: ./src/pages/packages/results/detail.vue:45
@@ -844,6 +879,7 @@ msgstr ""
 #: ./src/pages/attribute-sets/results/list.vue:74
 #: ./src/pages/computers/results/simulate.vue:196
 #: ./src/pages/errors/results/list.vue:111
+#: ./src/pages/fault-definitions/results/list.vue:74
 #: ./src/pages/faults/results/list.vue:109
 #: ./src/pages/formulas/results/list.vue:78
 #: ./src/pages/projects/results/list.vue:97
@@ -860,6 +896,10 @@ msgstr ""
 #: ./src/pages/computers/results/detail.vue:69
 #: ./src/pages/computers/results/detail.vue:65
 #: ./src/pages/computers/results/detail.vue:2
+#: ./src/pages/fault-definitions/results/detail.vue:53
+#: ./src/pages/fault-definitions/results/detail.vue:77
+#: ./src/pages/fault-definitions/results/detail.vue:107
+#: ./src/pages/fault-definitions/results/detail.vue:2
 msgid "No results"
 msgstr ""
 
@@ -1065,6 +1105,7 @@ msgstr ""
 #: ./src/pages/attributes/results/list.vue:43
 #: ./src/pages/computers/results/list.vue:192
 #: ./src/pages/errors/results/list.vue:115
+#: ./src/pages/fault-definitions/results/list.vue:44
 #: ./src/pages/faults/results/list.vue:122
 #: ./src/pages/formulas/results/list.vue:45
 #: ./src/pages/migrations/results/list.vue:92
@@ -1094,6 +1135,7 @@ msgstr ""
 #: ./src/pages/computers/results/list.vue:44
 #: ./src/pages/computers/results/simulate.vue:35
 #: ./src/pages/errors/results/list.vue:49
+#: ./src/pages/fault-definitions/results/list.vue:40
 #: ./src/pages/faults/results/list.vue:47
 #: ./src/pages/formulas/results/list.vue:40
 #: ./src/pages/migrations/results/list.vue:44
@@ -1113,9 +1155,10 @@ msgstr ""
 msgid "Results per page"
 msgstr ""
 
-#: ./src/pages/attribute-sets/results/detail.vue:238
+#: ./src/pages/attribute-sets/results/detail.vue:236
 #: ./src/pages/attributes/results/detail.vue:109
 #: ./src/pages/errors/results/detail.vue:170
+#: ./src/pages/fault-definitions/results/detail.vue:358
 #: ./src/pages/faults/results/detail.vue:193
 #: ./src/pages/formulas/results/detail.vue:205
 #: ./src/pages/packages/results/detail.vue:227
@@ -1127,7 +1170,8 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: ./src/pages/attribute-sets/results/detail.vue:222
+#: ./src/pages/attribute-sets/results/detail.vue:220
+#: ./src/pages/fault-definitions/results/detail.vue:342
 #: ./src/pages/formulas/results/detail.vue:189
 #: ./src/pages/packages/results/detail.vue:219
 #: ./src/pages/platforms/results/detail.vue:69
@@ -1138,13 +1182,14 @@ msgstr ""
 msgid "Save and add other"
 msgstr ""
 
-#: ./src/components/computer/Devices.vue:113
+#: ./src/components/computer/Devices.vue:112
 #: ./src/components/computer/HardwareResume.vue:12
 #: ./src/components/computer/Info.vue:6
-#: ./src/pages/attribute-sets/results/detail.vue:231
+#: ./src/pages/attribute-sets/results/detail.vue:229
 #: ./src/pages/attributes/results/detail.vue:101
-#: ./src/pages/computers/results/detail.vue:395
+#: ./src/pages/computers/results/detail.vue:394
 #: ./src/pages/errors/results/detail.vue:162
+#: ./src/pages/fault-definitions/results/detail.vue:351
 #: ./src/pages/faults/results/detail.vue:185
 #: ./src/pages/formulas/results/detail.vue:198
 #: ./src/pages/platforms/results/detail.vue:78
@@ -1377,6 +1422,7 @@ msgstr ""
 #: ./src/pages/attributes/results/list.vue:30
 #: ./src/pages/computers/results/list.vue:94
 #: ./src/pages/errors/results/list.vue:63
+#: ./src/pages/fault-definitions/results/list.vue:30
 #: ./src/pages/faults/results/list.vue:70
 #: ./src/pages/formulas/results/list.vue:33
 #: ./src/pages/migrations/results/list.vue:50
@@ -1436,6 +1482,11 @@ msgstr ""
 msgid "User Account"
 msgstr ""
 
+#: ./src/pages/fault-definitions/results/detail.vue:100
+#: ./src/pages/fault-definitions/results/detail.vue:284
+msgid "User Profiles"
+msgstr ""
+
 #: ./src/layouts/MainLayout.vue:51
 msgid "User: %{ name }"
 msgstr ""
@@ -1479,6 +1530,7 @@ msgstr ""
 #: ./src/pages/attribute-sets/results/list.vue:73
 #: ./src/pages/computers/results/simulate.vue:195
 #: ./src/pages/errors/results/list.vue:110
+#: ./src/pages/fault-definitions/results/list.vue:73
 #: ./src/pages/faults/results/list.vue:108
 #: ./src/pages/formulas/results/list.vue:77
 #: ./src/pages/projects/results/list.vue:96
