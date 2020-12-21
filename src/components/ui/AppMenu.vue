@@ -54,14 +54,14 @@ export default {
               title: this.$gettext('Attribute Sets'),
               to: 'attribute-sets-list',
               icon: 'mdi-set-none'
-            }
-            /* {
-              title: this.$gettext('Faults Definitions'),
-              to: 'fault-definitions-dashboard',
+            },
+            {
+              title: this.$gettext('Fault Definitions'),
+              to: 'fault-definitions-list',
               icon: 'mdi-alert-octagram-outline',
               separatorAfter: true
-            },
-            { title: this.$gettext('User Profiles'), to: 'user-profiles-dashboard', icon: 'mdi-account-cog' },
+            }
+            /* { title: this.$gettext('User Profiles'), to: 'user-profiles-dashboard', icon: 'mdi-account-cog' },
             { title: this.$gettext('Groups'), to: 'groups-dashboard', icon: 'mdi-account-group' },
             { title: this.$gettext('Domains'), to: 'domains-dashboard', icon: 'mdi-earth' },
             { title: this.$gettext('Scopes'), to: 'scopes-dashboard', icon: 'mdi-eye-outline' } */
