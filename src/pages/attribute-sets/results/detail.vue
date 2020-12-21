@@ -80,7 +80,6 @@
                   removable
                   dense
                   :tabindex="scope.tabindex"
-                  color="white"
                   class="q-ma-md"
                   @remove="scope.removeAtIndex(scope.index)"
                 >
@@ -126,7 +125,6 @@
                   removable
                   dense
                   :tabindex="scope.tabindex"
-                  color="white"
                   class="q-ma-md"
                   @remove="scope.removeAtIndex(scope.index)"
                 >
@@ -214,7 +212,12 @@ export default {
   data() {
     const route = 'attribute-sets-list'
     const title = this.$gettext('Attribute Set')
-    const element = { id: 0, enabled: false }
+    const element = {
+      id: 0,
+      enabled: false,
+      included_attributes: [],
+      excluded_attributes: []
+    }
 
     return {
       title,
@@ -256,8 +259,12 @@ export default {
         name: this.element.name,
         description: this.element.description,
         enabled: this.element.enabled,
-        included_attributes: this.element.included_attributes.map((item) => item.id),
-        excluded_attributes: this.element.excluded_attributes.map((item) => item.id)
+        included_attributes: this.element.included_attributes.map(
+          (item) => item.id
+        ),
+        excluded_attributes: this.element.excluded_attributes.map(
+          (item) => item.id
+        )
       }
     },
 
