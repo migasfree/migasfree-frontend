@@ -119,13 +119,13 @@ export default {
               to: 'computers-dashboard',
               icon: 'mdi-desktop-classic'
             },
-            /* { title: this.$gettext('Computer Replacement'), to: 'computers-replacement' },
+            // { title: this.$gettext('Computer Replacement'), to: 'computers-replacement' },
             {
               title: this.$gettext('Users'),
-              to: 'users-dashboard',
+              to: 'users-list',
               icon: 'mdi-account',
               separatorAfter: true
-            }, */
+            },
             {
               title: this.$gettext('Attributes'),
               to: 'attributes-dashboard',
