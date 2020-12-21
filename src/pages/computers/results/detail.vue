@@ -134,7 +134,6 @@
                       removable
                       dense
                       :tabindex="scope.tabindex"
-                      color="white"
                       class="q-ma-md"
                       @remove="scope.removeAtIndex(scope.index)"
                     >
