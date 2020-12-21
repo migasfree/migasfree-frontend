@@ -105,6 +105,12 @@ const routes = [
       },
 
       {
+        path: '/users/results',
+        name: 'users-list',
+        component: () => import('pages/users/results/list')
+      },
+
+      {
         path: '/syncs',
         name: 'syncs-dashboard',
         component: () => import('pages/syncs/index')
