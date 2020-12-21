@@ -89,6 +89,22 @@ const routes = [
       },
 
       {
+        path: '/fault-definitions/results',
+        name: 'fault-definitions-list',
+        component: () => import('pages/fault-definitions/results/list')
+      },
+      {
+        path: '/fault-definitions/add',
+        name: 'fault-definition-add',
+        component: () => import('pages/fault-definitions/results/detail')
+      },
+      {
+        path: '/fault-definitions/results/:id',
+        name: 'fault-definition-detail',
+        component: () => import('pages/fault-definitions/results/detail')
+      },
+
+      {
         path: '/faults',
         name: 'faults-dashboard',
         component: () => import('pages/faults/index')
