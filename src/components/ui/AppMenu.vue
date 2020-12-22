@@ -70,9 +70,13 @@ export default {
               title: this.$gettext('Groups'),
               to: 'groups-list',
               icon: 'mdi-account-group'
+            },
+            {
+              title: this.$gettext('Domains'),
+              to: 'domains-list',
+              icon: 'mdi-earth'
             }
-            /* { title: this.$gettext('Domains'), to: 'domains-dashboard', icon: 'mdi-earth' },
-            { title: this.$gettext('Scopes'), to: 'scopes-dashboard', icon: 'mdi-eye-outline' } */
+            /*{ title: this.$gettext('Scopes'), to: 'scopes-dashboard', icon: 'mdi-eye-outline' } */
           ]
         },
         {
