@@ -312,6 +312,22 @@ const routes = [
         name: 'group-detail',
         component: () => import('pages/groups/results/detail')
       },
+
+      {
+        path: '/domains/results',
+        name: 'domains-list',
+        component: () => import('pages/domains/results/list')
+      },
+      {
+        path: '/domains/add',
+        name: 'domain-add',
+        component: () => import('pages/domains/results/detail')
+      },
+      {
+        path: '/domains/results/:id',
+        name: 'domain-detail',
+        component: () => import('pages/domains/results/detail')
+      },
     ],
     meta: { authRequired: true }
   },
