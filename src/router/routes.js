@@ -296,6 +296,22 @@ const routes = [
         name: 'user-profile-detail',
         component: () => import('pages/user-profiles/results/detail')
       },
+
+      {
+        path: '/groups/results',
+        name: 'groups-list',
+        component: () => import('pages/groups/results/list')
+      },
+      {
+        path: '/groups/add',
+        name: 'group-add',
+        component: () => import('pages/groups/results/detail')
+      },
+      {
+        path: '/groups/results/:id',
+        name: 'group-detail',
+        component: () => import('pages/groups/results/detail')
+      },
     ],
     meta: { authRequired: true }
   },
