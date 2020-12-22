@@ -75,8 +75,12 @@ export default {
               title: this.$gettext('Domains'),
               to: 'domains-list',
               icon: 'mdi-earth'
+            },
+            {
+              title: this.$gettext('Scopes'),
+              to: 'scopes-list',
+              icon: 'mdi-eye-outline'
             }
-            /*{ title: this.$gettext('Scopes'), to: 'scopes-dashboard', icon: 'mdi-eye-outline' } */
           ]
         },
         {
