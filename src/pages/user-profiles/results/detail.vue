@@ -152,12 +152,7 @@
                   class="q-ma-md"
                   @remove="scope.removeAtIndex(scope.index)"
                 >
-                  <MigasLink
-                    model="accounts/groups"
-                    :pk="scope.opt.id"
-                    :value="scope.opt.name"
-                    icon="mdi-account-group"
-                  />
+                  {{ scope.opt.name }}
                 </q-chip>
               </template>
             </q-select>
