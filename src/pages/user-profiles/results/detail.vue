@@ -67,7 +67,7 @@
               lazy-rules
               :rules="[(val) => !!val, isValidEmail]"
             >
-              <template v-slot:prepend> <q-icon name="mail" /> </template
+              <template #prepend> <q-icon name="mail" /> </template
             ></q-input>
           </div>
         </div>
