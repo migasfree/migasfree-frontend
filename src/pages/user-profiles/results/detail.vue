@@ -99,7 +99,7 @@
               left-label
               :label="$gettext('Enabled?')"
             />
-            <p translate class="text-caption">
+            <p v-translate class="text-caption">
               Indicates whether the user should be treated as active. Uncheck
               this option instead of deleting the account.
             </p>
@@ -113,7 +113,7 @@
               left-label
               :label="$gettext('Is Super User?')"
             />
-            <p translate class="text-caption">
+            <p v-translate class="text-caption">
               Indicates that this user has all permissions without explicitly
               assigning them.
             </p>
@@ -127,7 +127,7 @@
               left-label
               :label="$gettext('Is Staff?')"
             />
-            <p translate class="text-caption">
+            <p v-translate class="text-caption">
               Indicates whether the user can enter this administration site.
             </p>
           </div>
