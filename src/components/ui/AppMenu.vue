@@ -65,9 +65,13 @@ export default {
               title: this.$gettext('User Profiles'),
               to: 'user-profiles-list',
               icon: 'mdi-account-cog'
+            },
+            {
+              title: this.$gettext('Groups'),
+              to: 'groups-list',
+              icon: 'mdi-account-group'
             }
-            /* { title: this.$gettext('Groups'), to: 'groups-dashboard', icon: 'mdi-account-group' },
-            { title: this.$gettext('Domains'), to: 'domains-dashboard', icon: 'mdi-earth' },
+            /* { title: this.$gettext('Domains'), to: 'domains-dashboard', icon: 'mdi-earth' },
             { title: this.$gettext('Scopes'), to: 'scopes-dashboard', icon: 'mdi-eye-outline' } */
           ]
         },
