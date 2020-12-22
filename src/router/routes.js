@@ -280,6 +280,22 @@ const routes = [
         name: 'attribute-set-detail',
         component: () => import('pages/attribute-sets/results/detail')
       },
+
+      {
+        path: '/user-profiles/results',
+        name: 'user-profiles-list',
+        component: () => import('pages/user-profiles/results/list')
+      },
+      {
+        path: '/user-profiles/add',
+        name: 'user-profile-add',
+        component: () => import('pages/user-profiles/results/detail')
+      },
+      {
+        path: '/user-profiles/results/:id',
+        name: 'user-profile-detail',
+        component: () => import('pages/user-profiles/results/detail')
+      },
     ],
     meta: { authRequired: true }
   },
