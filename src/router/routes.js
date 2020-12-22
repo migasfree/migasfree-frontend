@@ -328,6 +328,22 @@ const routes = [
         name: 'domain-detail',
         component: () => import('pages/domains/results/detail')
       },
+
+      {
+        path: '/scopes/results',
+        name: 'scopes-list',
+        component: () => import('pages/scopes/results/list')
+      },
+      {
+        path: '/scopes/add',
+        name: 'scope-add',
+        component: () => import('pages/scopes/results/detail')
+      },
+      {
+        path: '/scopes/results/:id',
+        name: 'scope-detail',
+        component: () => import('pages/scopes/results/detail')
+      },
     ],
     meta: { authRequired: true }
   },
