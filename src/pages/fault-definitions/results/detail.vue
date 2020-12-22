@@ -218,6 +218,7 @@
                     model="user-profiles"
                     :pk="scope.opt.id"
                     :value="scope.opt.username"
+                    icon="mdi-account-cog"
                   />
                 </q-chip>
               </template>
