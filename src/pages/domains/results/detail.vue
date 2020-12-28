@@ -195,7 +195,7 @@
 
           <div class="col-6 col-md">
             <q-select
-              v-model="element.user_profiles"
+              v-model="element.domain_admins"
               :options="userProfiles"
               :label="$gettext('Domain Admins')"
               outlined
@@ -301,7 +301,7 @@ export default {
       included_attributes: [],
       excluded_attributes: [],
       tags: [],
-      user_profiles: []
+      domain_admins: []
     }
 
     return {
@@ -343,9 +343,9 @@ export default {
   methods: {
     async loadRelated() {
       await this.$axios
-        .get(`/api/v1/token/user-profiles/`)
+        .get('/api/v1/token/user-profiles/domain-admins/')
         .then((response) => {
-          Object.entries(response.data.results).map(([index, item]) => {
+          Object.entries(response.data).map(([index, item]) => {
             this.userProfiles.push({
               id: item.id,
               name: item.username
@@ -355,6 +355,12 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
+    },
+
+    setRelated() {
+      this.element.domain_admins = this.element.domain_admins.map(
+        ({ id, username }) => ({ id, name: username })
+      )
     },
 
     elementData() {
@@ -368,14 +374,8 @@ export default {
           (item) => item.id
         ),
         tags: this.element.tags.map((item) => item.id),
-        user_profiles: this.element.user_profiles.map((item) => item.id)
+        domain_admins: this.element.domain_admins.map((item) => item.id)
       }
-    },
-
-    setRelated() {
-      /* this.element.language = this.languages.find(
-        (x) => x.id === this.element.language
-      ) */
     },
 
     filterAttributes(val, update, abort) {
