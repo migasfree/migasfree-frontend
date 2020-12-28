@@ -34,6 +34,7 @@ export const detailMixin = {
         .get(`/api/v1/token/${this.model}/${this.$route.params.id}/`)
         .then((response) => {
           this.element = response.data
+          this.setRelated()
           this.breadcrumbs.find((x) => x.text === 'Id').text = this.elementText
           this.title = `${this.title}: ${this.elementText}`
         })
