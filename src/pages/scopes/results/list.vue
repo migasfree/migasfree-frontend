@@ -68,10 +68,19 @@
         </span>
         <span v-else-if="props.column.field == 'domain.name'">
           <MigasLink
+            v-if="props.row.domain"
             model="domains"
             :pk="props.row.domain.id"
             :value="props.row.domain.name"
             icon="mdi-earth"
+          />
+        </span>
+        <span v-else-if="props.column.field == 'user.username'">
+          <MigasLink
+            model="user-profiles"
+            :pk="props.row.user.id"
+            :value="props.row.user.username"
+            icon="mdi-account-cog"
           />
         </span>
         <span v-else>
@@ -95,6 +104,7 @@
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import SearchFilter from 'components/ui/SearchFilter'
 import Header from 'components/ui/Header'
+import MigasLink from 'components/MigasLink'
 import { datagridMixin } from 'mixins/datagrid'
 
 export default {
@@ -106,7 +116,8 @@ export default {
   components: {
     Breadcrumbs,
     SearchFilter,
-    Header
+    Header,
+    MigasLink
   },
   mixins: [datagridMixin],
   data() {
@@ -160,6 +171,16 @@ export default {
           label: this.$gettext('Domain'),
           field: 'domain.name',
           html: true
+        },
+        {
+          label: this.$gettext('User Profile'),
+          field: 'user.username',
+          hidden: true,
+          filterOptions: {
+            enabled: true,
+            placeholder: this.$gettext('Filter'),
+            trigger: 'enter'
+          }
         }
       ],
       model: 'scopes',
@@ -167,9 +188,12 @@ export default {
     }
   },
   created() {
-    this.updateParams({
-      columnFilters: { user: this.$store.getters['auth/user'].pk }
-    })
+    if (this.$store.getters['auth/user'].is_superuser) {
+      this.columns.find((x) => x.field === 'user.username').hidden = false
+    } else
+      this.updateParams({
+        columnFilters: { user: this.$store.getters['auth/user'].pk }
+      })
   }
 }
 </script>
