@@ -344,6 +344,22 @@ const routes = [
         name: 'scope-detail',
         component: () => import('pages/scopes/results/detail')
       },
+
+      {
+        path: '/manufacturers/results',
+        name: 'manufacturers-list',
+        component: () => import('pages/manufacturers/results/list')
+      },
+      {
+        path: '/manufacturers/add',
+        name: 'manufacturer-add',
+        component: () => import('pages/manufacturers/results/detail')
+      },
+      {
+        path: '/manufacturers/results/:id',
+        name: 'manufacturer-detail',
+        component: () => import('pages/manufacturers/results/detail')
+      },
     ],
     meta: { authRequired: true }
   },
