@@ -62,6 +62,39 @@
             </q-select>
           </div>
         </div>
+
+        <div
+          v-if="$store.getters['auth/user'].is_superuser"
+          class="row q-pa-md q-gutter-md"
+        >
+          <div class="col-6 col-md">
+            <q-select
+              v-model="element.user"
+              :options="userProfiles"
+              :label="$gettext('User')"
+              outlined
+              option-value="id"
+              option-label="name"
+            >
+              <template #selected-item="scope">
+                <q-chip
+                  removable
+                  dense
+                  :tabindex="scope.tabindex"
+                  class="q-ma-md"
+                  @remove="scope.removeAtIndex(scope.index)"
+                >
+                  <MigasLink
+                    model="user-profiles"
+                    :pk="scope.opt.id"
+                    :value="scope.opt.name"
+                    icon="mdi-account-cog"
+                  />
+                </q-chip>
+              </template>
+            </q-select>
+          </div>
+        </div>
       </q-card-section>
 
       <q-card-section>
@@ -266,6 +299,7 @@ export default {
       emptyElement: Object.assign({}, element),
       attributes: [],
       domains: [],
+      userProfiles: [],
       confirmRemove: false
     }
   },
@@ -277,7 +311,7 @@ export default {
   methods: {
     async loadRelated() {
       await this.$axios
-        .get(`/api/v1/token/domains/`)
+        .get('/api/v1/token/domains/')
         .then((response) => {
           Object.entries(response.data.results).map(([index, item]) => {
             this.domains.push({
@@ -293,11 +327,33 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
+
+      if (this.$store.getters['auth/user'].is_superuser)
+        await this.$axios
+          .get('/api/v1/token/user-profiles/')
+          .then((response) => {
+            Object.entries(response.data.results).map(([index, item]) => {
+              this.userProfiles.push({
+                id: item.id,
+                name: item.username
+              })
+            })
+          })
+          .catch((error) => {
+            this.$store.dispatch('ui/notifyError', error)
+          })
+    },
+
+    setRelated() {
+      this.element.user.name = this.element.user.username
+      delete this.element.username
     },
 
     elementData() {
       return {
-        user: this.$store.getters['auth/user'].pk,
+        user: this.element.user
+          ? this.element.user.id
+          : this.$store.getters['auth/user'].pk,
         name: this.element.name,
         domain: this.element.domain ? this.element.domain.id : null,
         included_attributes: this.element.included_attributes.map(
