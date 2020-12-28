@@ -91,10 +91,14 @@ export default {
               title: this.$gettext('Manufacturers'),
               to: 'manufacturers-list',
               icon: 'mdi-factory'
-            }
-            /* { title: this.$gettext('Models'), to: 'models-dashboard', icon: 'mdi-shape' },
-            { title: this.$gettext('Features'), to: 'features-dashboard', icon: 'mdi-format-list-bulleted-type' },
+            },
+            // { title: this.$gettext('Models'), to: 'models-dashboard', icon: 'mdi-shape' },
             {
+              title: this.$gettext('Capabilities'),
+              to: 'capabilities-list',
+              icon: 'mdi-format-list-bulleted-type'
+            }
+            /* {
               title: this.$gettext('Devices'),
               to: 'devices-dashboard',
               icon: 'mdi-printer',
