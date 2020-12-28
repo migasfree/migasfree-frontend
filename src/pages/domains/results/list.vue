@@ -87,6 +87,7 @@
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import SearchFilter from 'components/ui/SearchFilter'
 import Header from 'components/ui/Header'
+import MigasLink from 'components/MigasLink'
 import { datagridMixin } from 'mixins/datagrid'
 
 export default {
@@ -99,6 +100,7 @@ export default {
     Breadcrumbs,
     SearchFilter,
     Header,
+    MigasLink
   },
   mixins: [datagridMixin],
   data() {
@@ -143,7 +145,7 @@ export default {
             placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
-        },
+        }
       ],
       model: 'domains',
       detailRoute: 'domain-detail'
