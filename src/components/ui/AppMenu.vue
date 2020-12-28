@@ -87,8 +87,12 @@ export default {
           icon: 'mdi-printer-eye',
           title: this.$gettext('Devices'),
           options: [
-            /* { title: this.$gettext('Manufacturers'), to: 'manufacturers-dashboard', icon: 'mdi-factory' },
-            { title: this.$gettext('Models'), to: 'models-dashboard', icon: 'mdi-shape' },
+            {
+              title: this.$gettext('Manufacturers'),
+              to: 'manufacturers-list',
+              icon: 'mdi-factory'
+            }
+            /* { title: this.$gettext('Models'), to: 'models-dashboard', icon: 'mdi-shape' },
             { title: this.$gettext('Features'), to: 'features-dashboard', icon: 'mdi-format-list-bulleted-type' },
             {
               title: this.$gettext('Devices'),
