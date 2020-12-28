@@ -360,6 +360,22 @@ const routes = [
         name: 'manufacturer-detail',
         component: () => import('pages/manufacturers/results/detail')
       },
+
+      {
+        path: '/capabilities/results',
+        name: 'capabilities-list',
+        component: () => import('pages/capabilities/results/list')
+      },
+      {
+        path: '/capabilities/add',
+        name: 'capability-add',
+        component: () => import('pages/capabilities/results/detail')
+      },
+      {
+        path: '/capabilities/results/:id',
+        name: 'capability-detail',
+        component: () => import('pages/capabilities/results/detail')
+      },
     ],
     meta: { authRequired: true }
   },
