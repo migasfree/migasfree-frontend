@@ -314,7 +314,8 @@ export const datagridMixin = {
               ret.fault_definition_id = val
               break
             case 'platform':
-              ret.project__platform__id = val
+              if (this.model === 'computers') ret[key] = val
+              else ret.project__platform__id = val
               break
             case 'platform.name':
               ret.platform__id = val
@@ -327,7 +328,8 @@ export const datagridMixin = {
               ret.property_att__id = val
               break
             case 'status_in':
-              ret.computer__status__in = val
+              if (this.model === 'computers') ret.status__in = val
+              else ret.computer__status__in = val
               break
             case 'store.name':
               ret.store__id = val
@@ -344,8 +346,22 @@ export const datagridMixin = {
             case 'enabled':
             case 'sort':
             case 'kind':
+            case 'architecture':
+            case 'machine':
+            case 'product_system':
+            case 'has_software_inventory':
+            case 'sync_end_date__gte':
+            case 'sync_end_date__lt':
             case 'search':
               ret[key] = val
+              break
+            case 'sync_end_date':
+              if (val === 0) ret[`${key}__isnull`] = true
+              else {
+                let d = new Date()
+                d = d.toISOString(d.setDate(d.getDate() - val))
+                ret[`${key}__lt`] = d
+              }
               break
             default:
               ret[`${key.replace('.', '__')}__icontains`] = val
