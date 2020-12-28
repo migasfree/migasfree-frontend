@@ -522,54 +522,6 @@ export default {
       this.loadItems()
     },
 
-    queryParams() {
-      let ret = {
-        page_size: this.serverParams.perPage,
-        page: this.serverParams.page
-      }
-
-      if (this.serverParams.sort.field) {
-        ret.ordering = `${this.serverParams.sort.type}${this.serverParams.sort.field}`
-      }
-
-      if (Object.keys(this.serverParams.columnFilters).length) {
-        Object.entries(this.serverParams.columnFilters).map(([key, val]) => {
-          switch (key) {
-            case 'project.name':
-              ret.project__id = val
-              break
-            case 'platform':
-            case 'architecture':
-            case 'machine':
-            case 'product_system':
-            case 'has_software_inventory':
-            case 'search':
-            case 'created_at__gte':
-            case 'created_at__lt':
-            case 'sync_end_date__gte':
-            case 'sync_end_date__lt':
-              ret[key] = val
-              break
-            case 'status_in':
-              ret.status__in = val
-              break
-            case 'sync_end_date':
-              if (val === 0) ret[`${key}__isnull`] = true
-              else {
-                let d = new Date()
-                d = d.toISOString(d.setDate(d.getDate() - val))
-                ret[`${key}__lt`] = d
-              }
-              break
-            default:
-              ret[`${key.replace('.', '__')}__icontains`] = val
-          }
-        })
-      }
-
-      return ret
-    },
-
     async loadFilters() {
       await this.$axios
         .get('/api/v1/token/platforms/')
