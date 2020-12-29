@@ -7,6 +7,7 @@
       :label="item.title"
     >
       <q-list v-for="option in item.options" :key="option.to">
+        <q-separator v-if="option.separatorBefore" />
         <q-item clickable :to="{ name: option.to }" :inset-level="1">
           <q-item-section v-if="option.icon">
             <q-icon :name="option.icon" size="sm" />
@@ -23,6 +24,28 @@
 export default {
   name: 'AppMenu',
   data() {
+    let extraDevices = []
+
+    if (this.$store.getters['auth/user'].is_superuser)
+      extraDevices = [
+        {
+          title: this.$gettext('Connections'),
+          to: 'connections-list',
+          icon: 'mdi-connection',
+          separatorBefore: true
+        },
+        {
+          title: this.$gettext('Device Types'),
+          to: 'device-types-list',
+          icon: 'mdi-devices'
+        },
+        {
+          title: this.$gettext('Logical Devices'),
+          to: 'logical-devices-list',
+          icon: 'mdi-printer-settings'
+        }
+      ]
+
     return {
       items: [
         {
@@ -105,7 +128,7 @@ export default {
               separatorAfter: true
             },
             { title: this.$gettext('Device Replacement'), to: 'devices-replacement' } */
-          ]
+          ].concat(extraDevices)
         },
         {
           icon: 'mdi-truck-delivery',
