@@ -310,6 +310,9 @@ export const datagridMixin = {
             case 'computer_id':
               ret.computer__id = val
               break
+            case 'device_type.name':
+              ret.device_type__id = val
+              break
             case 'fault_definition.name':
               ret.fault_definition_id = val
               break
