@@ -376,6 +376,22 @@ const routes = [
         name: 'capability-detail',
         component: () => import('pages/capabilities/results/detail')
       },
+
+      {
+        path: '/device-types/results',
+        name: 'device-types-list',
+        component: () => import('pages/device-types/results/list')
+      },
+      {
+        path: '/device-types/add',
+        name: 'device-type-add',
+        component: () => import('pages/device-types/results/detail')
+      },
+      {
+        path: '/device-types/results/:id',
+        name: 'device-type-detail',
+        component: () => import('pages/device-types/results/detail')
+      },
     ],
     meta: { authRequired: true }
   },
