@@ -392,6 +392,22 @@ const routes = [
         name: 'device-type-detail',
         component: () => import('pages/device-types/results/detail')
       },
+
+      {
+        path: '/connections/results',
+        name: 'connections-list',
+        component: () => import('pages/connections/results/list')
+      },
+      {
+        path: '/connections/add',
+        name: 'connection-add',
+        component: () => import('pages/connections/results/detail')
+      },
+      {
+        path: '/connections/results/:id',
+        name: 'connection-detail',
+        component: () => import('pages/connections/results/detail')
+      },
     ],
     meta: { authRequired: true }
   },
