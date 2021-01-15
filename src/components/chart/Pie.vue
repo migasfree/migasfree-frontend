@@ -7,9 +7,13 @@
         </div>
 
         <div class="col-auto">
-          <q-chip size="md" clickable color="info" @click="goTo">{{
-            data.total
-          }}</q-chip>
+          <q-chip
+            size="md"
+            clickable
+            :color="critical ? 'negative' : 'info'"
+            @click="goTo"
+            >{{ data.total }}</q-chip
+          >
         </div>
       </div>
     </q-card-section>
@@ -51,6 +55,11 @@ export default {
       default() {
         return {}
       }
+    },
+    critical: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data() {
