@@ -7,7 +7,7 @@
     <SearchFilter @search="search" />
 
     <div class="row">
-      <div class="col-6">
+      <div class="col-4 col-md">
         <NestedPieChart
           :title="$gettext('Computers / Machine')"
           :data="machineData"
@@ -16,7 +16,16 @@
         />
       </div>
 
-      <div class="col-6">
+      <div class="col-4 col-md">
+        <NestedPieChart
+          :title="$gettext('Subscribed Computers / Status')"
+          :data="statusData"
+          :url="statusUrl"
+          @getLink="goTo"
+        />
+      </div>
+
+      <div class="col-4 col-md">
         <NestedPieChart
           :title="$gettext('Productive Computers')"
           :data="nestedPieData"
@@ -86,7 +95,8 @@ export default {
           icon: 'mdi-desktop-classic'
         }
       ],
-      pieData: {},
+      machineData: {},
+      statusData: {},
       nestedPieData: {},
       newMonthData: {},
       entryYearData: {},
@@ -94,6 +104,12 @@ export default {
     }
   },
   computed: {
+    statusUrl() {
+      return Object.assign({}, this.url, {
+        query: { status_in: 'intended,reserved,unknown,in repair,available' }
+      })
+    },
+
     productiveUrl() {
       return Object.assign({}, this.url, {
         query: { status_in: 'intended,reserved,unknown' }
@@ -105,6 +121,15 @@ export default {
       .get('/api/v1/token/stats/computers/machine/')
       .then((response) => {
         this.machineData = response.data
+      })
+      .catch((error) => {
+        this.$store.dispatch('ui/notifyError', error)
+      })
+
+    await this.$axios
+      .get('/api/v1/token/stats/computers/status/')
+      .then((response) => {
+        this.statusData = response.data
       })
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error)
