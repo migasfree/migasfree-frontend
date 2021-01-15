@@ -408,6 +408,22 @@ const routes = [
         name: 'connection-detail',
         component: () => import('pages/connections/results/detail')
       },
+
+      {
+        path: '/logical-devices/results',
+        name: 'logical-devices-list',
+        component: () => import('pages/logical-devices/results/list')
+      },
+      {
+        path: '/logical-devices/add',
+        name: 'logical-device-add',
+        component: () => import('pages/logical-devices/results/detail')
+      },
+      {
+        path: '/logical-devices/results/:id',
+        name: 'logical-device-detail',
+        component: () => import('pages/logical-devices/results/detail')
+      },
     ],
     meta: { authRequired: true }
   },
