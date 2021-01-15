@@ -19,6 +19,7 @@
           :title="uncheckedErrorsTitle"
           :data="uncheckedErrors"
           :url="uncheckedErrorsUrl"
+          :critical="true"
           @getLink="goTo"
         />
       </div>
@@ -28,6 +29,7 @@
           :title="uncheckedFaultsTitle"
           :data="uncheckedFaults"
           :url="uncheckedFaultsUrl"
+          :critical="true"
           @getLink="goTo"
         />
       </div>
