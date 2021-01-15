@@ -8,10 +8,10 @@
 
     <div class="row">
       <div class="col-6">
-        <PieChart
-          :title="$gettext('Computers by Project')"
-          :data="pieData"
-          :url="byProjectUrl"
+        <NestedPieChart
+          :title="$gettext('Computers / Machine')"
+          :data="machineData"
+          :url="url"
           @getLink="goTo"
         />
       </div>
@@ -52,7 +52,6 @@
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
-import PieChart from 'components/chart/Pie'
 import NestedPieChart from 'components/chart/NestedPie'
 import StackedBarChart from 'components/chart/StackedBar'
 
@@ -66,7 +65,6 @@ export default {
     Breadcrumbs,
     Header,
     SearchFilter,
-    PieChart,
     NestedPieChart,
     StackedBarChart
   },
@@ -96,24 +94,17 @@ export default {
     }
   },
   computed: {
-    byProjectUrl() {
-      // FIXME
-      return Object.assign(this.url, {
-        query: { status_in: 'intended,reserved,unknown' }
-      })
-    },
-
     productiveUrl() {
-      return Object.assign(this.url, {
+      return Object.assign({}, this.url, {
         query: { status_in: 'intended,reserved,unknown' }
       })
     }
   },
   async mounted() {
     await this.$axios
-      .get('/api/v1/token/stats/computers/projects/')
+      .get('/api/v1/token/stats/computers/machine/')
       .then((response) => {
-        this.pieData = response.data
+        this.machineData = response.data
       })
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error)
@@ -175,6 +166,24 @@ export default {
   methods: {
     goTo(params) {
       console.log(params)
+      if (params.data.machine) {
+        this.$router.push({
+          name: this.url.name,
+          query: Object.assign(params.url.query, {
+            machine: params.data.machine
+          })
+        })
+      }
+
+      if (params.data.status__in) {
+        this.$router.push({
+          name: this.url.name,
+          query: Object.assign(params.url.query, {
+            status_in: params.data.status__in
+          })
+        })
+      }
+
       if (params.data.project_id) {
         this.$router.push({
           name: this.url.name,
