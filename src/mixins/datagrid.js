@@ -298,6 +298,9 @@ export const datagridMixin = {
       if (Object.keys(this.serverParams.columnFilters).length) {
         Object.entries(this.serverParams.columnFilters).map(([key, val]) => {
           switch (key) {
+            case 'capability.name':
+              ret.capability__id = val
+              break
             case 'computer.__str__':
               ret.computer__name__icontains = val
               break
@@ -309,6 +312,9 @@ export const datagridMixin = {
               break
             case 'fault_definition.name':
               ret.fault_definition_id = val
+              break
+            case 'model':
+              ret.device__model__id = val
               break
             case 'platform':
               if (this.model === 'computers') ret[key] = val
@@ -510,7 +516,10 @@ export const datagridMixin = {
         this.$refs.machineTree.reset()
       }
 
-      this.loadItems()
+      if ('model' in this.tableFilters)
+        this.tableFilters.model.selected = null
+
+        this.loadItems()
     }
   }
 }
