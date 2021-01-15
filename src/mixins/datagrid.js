@@ -516,10 +516,9 @@ export const datagridMixin = {
         this.$refs.machineTree.reset()
       }
 
-      if ('model' in this.tableFilters)
-        this.tableFilters.model.selected = null
+      if ('model' in this.tableFilters) this.tableFilters.model.selected = null
 
-        this.loadItems()
+      this.loadItems()
     }
   }
 }
