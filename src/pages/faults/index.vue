@@ -31,6 +31,7 @@
           :title="$gettext('Unchecked Faults')"
           :data="uncheckedFaults"
           :url="uncheckedFaultsUrl"
+          :critical="true"
           @getLink="goTo"
         />
       </div>
