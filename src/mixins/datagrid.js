@@ -158,18 +158,11 @@ export const datagridMixin = {
   },
   methods: {
     findById(data, id) {
-      for (var i = 0; i < data.length; i++) {
-        console.log(data[i].id, id, data[i].id == id)
-        if (data[i].id == id) {
-          return data[i]
-        } else if (
-          data[i].children &&
-          data[i].children.length &&
-          typeof data[i].children === 'object'
-        ) {
-          return this.findById(data[i].children, id)
-        }
-      }
+      return data.reduce((a, item) => {
+        if (a) return a
+        if (item.id === id) return item
+        if (item.children) return this.findById(item.children, id)
+      }, null)
     },
 
     updateParams(newProps) {
@@ -284,10 +277,11 @@ export const datagridMixin = {
       ]
 
       if (this.$route.query.status_in) {
-        this.tableFilters.statusIn.selected = this.findById(
+        const selected = this.findById(
           this.tableFilters.statusIn.items,
           this.$route.query.status_in
-        ).label
+        )
+        if (selected) this.tableFilters.statusIn.selected = selected.label
       }
     },
 
