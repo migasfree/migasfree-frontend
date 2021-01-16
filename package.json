@@ -1,7 +1,7 @@
 {
   "name": "migasfree-frontend",
   "version": "1.0.0",
-  "description": "A Quasar Framework app",
+  "description": "Systems Management System (frontend) (with Quasar framework)",
   "productName": "Migasfree Frontend",
   "author": "jact <jachavar@gmail.com>",
   "private": true,
@@ -12,30 +12,30 @@
     "gettext-compile": "gettext-compile --output src/i18n/translations.json src/i18n/*.po"
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
+    "@quasar/extras": "^1.9.13",
     "axios": "^0.18.1",
     "core-js": "^3.6.5",
     "echarts": "^4.9.0",
-    "quasar": "^1.0.0",
+    "quasar": "^1.15.0",
     "text-clipper": "^2.1.0",
     "typeface-dosis": "^1.1.13",
-    "validator": "^12.1.0",
+    "validator": "^12.2.0",
     "vue-echarts": "^5.0.0-beta.0",
-    "vue-gettext": "^2.1.11",
-    "vue-good-table": "^2.21.1",
+    "vue-gettext": "^2.1.12",
+    "vue-good-table": "^2.21.2",
     "vue-pluralize": "^0.0.2"
   },
   "devDependencies": {
-    "@quasar/app": "^2.0.0",
+    "@quasar/app": "^2.1.14",
     "@quasar/quasar-app-extension-dotenv": "^1.0.5",
-    "babel-eslint": "^10.0.1",
+    "babel-eslint": "^10.1.0",
     "easygettext": "^2.16.1",
     "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.9.0",
-    "eslint-loader": "^3.0.3",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-vue": "^6.1.2",
-    "quasar-app-extension-qdatetimepicker": "^1.0.0-rc.15"
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-loader": "^3.0.4",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-vue": "^6.2.2",
+    "quasar-app-extension-qdatetimepicker": "^1.0.0-rc.17"
   },
   "browserslist": [
     "ie >= 11",
