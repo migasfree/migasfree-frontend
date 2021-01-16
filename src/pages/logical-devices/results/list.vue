@@ -184,10 +184,6 @@ export default {
           html: true
         },
         {
-          label: this.$gettext('Alternative Capability Name'),
-          field: 'alternative_capability_name'
-        },
-        {
           field: 'device.id',
           hidden: true
         },
@@ -214,6 +210,10 @@ export default {
             placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
+        },
+        {
+          label: this.$gettext('Alternative Capability Name'),
+          field: 'alternative_capability_name'
         }
       ],
       tableFilters: {
