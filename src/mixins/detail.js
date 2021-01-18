@@ -124,7 +124,7 @@ export const detailMixin = {
                   to: this.listRoute
                 })
                 this.breadcrumbs.push({
-                  text: this.element.name
+                  text: this.elementText
                 })
                 this.title = `${this.originalTitle}: ${this.element.name}`
               }
