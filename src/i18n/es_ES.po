@@ -27,6 +27,7 @@ msgstr ""
 #: src/pages/formulas/results/detail.vue:125
 #: src/pages/formulas/results/detail.vue:148
 #: src/pages/groups/results/detail.vue:57
+#: src/pages/logical-devices/results/detail.vue:190
 #: src/pages/manufacturers/results/detail.vue:57
 #: src/pages/platforms/results/detail.vue:57
 #: src/pages/projects/results/detail.vue:67
@@ -78,6 +79,7 @@ msgstr "hace %{n} días"
 #: src/pages/fault-definitions/results/list.vue:49
 #: src/pages/faults/results/list.vue:56 src/pages/formulas/results/list.vue:49
 #: src/pages/groups/results/list.vue:45
+#: src/pages/logical-devices/results/list.vue:47
 #: src/pages/manufacturers/results/list.vue:47
 #: src/pages/migrations/results/list.vue:53
 #: src/pages/packages/results/list.vue:49
@@ -92,7 +94,7 @@ msgstr "hace %{n} días"
 msgid "Actions"
 msgstr "Acciones"
 
-#: src/mixins/detail.js:28 src/mixins/detail.js:75
+#: src/mixins/detail.js:32 src/mixins/detail.js:79
 msgid "Add"
 msgstr "Añadir"
 
@@ -116,6 +118,7 @@ msgstr "Alertas"
 #: src/pages/faults/results/list.vue:122 src/pages/faults/results/list.vue:139
 #: src/pages/faults/results/list.vue:146 src/pages/formulas/results/list.vue:74
 #: src/pages/formulas/results/list.vue:87
+#: src/pages/logical-devices/results/list.vue:94
 #: src/pages/migrations/results/list.vue:93
 #: src/pages/migrations/results/list.vue:101
 #: src/pages/packages/results/list.vue:74
@@ -132,6 +135,11 @@ msgstr "Alertas"
 msgid "All"
 msgstr "Todos"
 
+#: src/pages/logical-devices/results/detail.vue:198
+#: src/pages/logical-devices/results/list.vue:87
+msgid "Alternative Capability Name"
+msgstr "Nombre alternativo de la prestación"
+
 #: src/components/ui/AppFooter.vue:11
 msgid "API Rest Info"
 msgstr "Información de la API"
@@ -145,11 +153,11 @@ msgstr "Aplicaciones"
 msgid "Architecture"
 msgstr "Arquitectura"
 
-#: src/mixins/datagrid.js:416
+#: src/mixins/datagrid.js:422
 msgid "Are you sure you want to remove all these items?"
 msgstr "¿Estás seguro que quieres borrar estos elementos?"
 
-#: src/components/ui/RemoveDialog.vue:22 src/mixins/datagrid.js:411
+#: src/components/ui/RemoveDialog.vue:22 src/mixins/datagrid.js:417
 msgid "Are you sure you want to remove this item?"
 msgstr "¿Estás seguro que quieres borrar este elemento?"
 
@@ -187,6 +195,7 @@ msgstr "Lista de Conjuntos de atributos"
 #: src/pages/computers/results/simulate.vue:105
 #: src/pages/domains/results/detail.vue:32
 #: src/pages/fault-definitions/results/detail.vue:46
+#: src/pages/logical-devices/results/detail.vue:129
 #: src/pages/scopes/results/detail.vue:48
 msgid "Attributes"
 msgstr "Atributos"
@@ -252,6 +261,10 @@ msgstr "Por fecha fin de sincronización (rango)"
 msgid "By Machine"
 msgstr "Por máquina"
 
+#: src/pages/logical-devices/results/list.vue:63
+msgid "By Model"
+msgstr "Por modelo"
+
 #: src/pages/computers/results/list.vue:75 src/pages/errors/results/list.vue:77
 #: src/pages/faults/results/list.vue:77
 #: src/pages/migrations/results/list.vue:65 src/pages/syncs/results/list.vue:71
@@ -279,7 +292,7 @@ msgstr "Por estado"
 msgid "By Subscribed Date (range)"
 msgstr "Por fecha de alta (rango)"
 
-#: src/components/ui/RemoveDialog.vue:38 src/mixins/datagrid.js:434
+#: src/components/ui/RemoveDialog.vue:38 src/mixins/datagrid.js:440
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -296,6 +309,8 @@ msgstr "Lista de Prestaciones"
 
 #: src/pages/capabilities/results/detail.vue:22
 #: src/pages/capabilities/results/detail.vue:27
+#: src/pages/logical-devices/results/detail.vue:185
+#: src/pages/logical-devices/results/list.vue:77
 msgid "Capability"
 msgstr "Prestación"
 
@@ -308,7 +323,7 @@ msgstr "Capturar el hardware"
 msgid "Change Password"
 msgstr "Cambiar contraseña"
 
-#: src/mixins/datagrid.js:451
+#: src/mixins/datagrid.js:457
 msgid "Changed item check value!"
 msgstr "¡Cambiado el valor de comprobado!"
 
@@ -444,6 +459,8 @@ msgstr "¡La situación actual ha cambiado!"
 #: src/pages/formulas/results/detail.vue:34
 #: src/pages/formulas/results/list.vue:27
 #: src/pages/groups/results/detail.vue:35 src/pages/groups/results/list.vue:23
+#: src/pages/logical-devices/results/detail.vue:35
+#: src/pages/logical-devices/results/list.vue:25
 #: src/pages/manufacturers/results/detail.vue:34
 #: src/pages/manufacturers/results/list.vue:25
 #: src/pages/migrations/index.vue:25 src/pages/migrations/results/list.vue:30
@@ -484,11 +501,11 @@ msgstr "Cuadro de mando"
 msgid "Data"
 msgstr "Datos"
 
-#: src/mixins/detail.js:105
+#: src/mixins/detail.js:109
 msgid "Data has been added!"
 msgstr "¡Se han añadido los datos!"
 
-#: src/mixins/detail.js:66
+#: src/mixins/detail.js:70
 msgid "Data has been changed!"
 msgstr "¡Los datos han cambiado!"
 
@@ -510,7 +527,7 @@ msgstr "Fecha de entrada en el sistema migasfree"
 msgid "dates"
 msgstr "fechas"
 
-#: src/components/ui/RemoveDialog.vue:46 src/mixins/datagrid.js:429
+#: src/components/ui/RemoveDialog.vue:46 src/mixins/datagrid.js:435
 #: src/pages/attribute-sets/results/detail.vue:255
 #: src/pages/attributes/results/detail.vue:125
 #: src/pages/capabilities/results/detail.vue:104
@@ -523,6 +540,7 @@ msgstr "fechas"
 #: src/pages/faults/results/detail.vue:210
 #: src/pages/formulas/results/detail.vue:224
 #: src/pages/groups/results/detail.vue:160
+#: src/pages/logical-devices/results/detail.vue:245
 #: src/pages/manufacturers/results/detail.vue:104
 #: src/pages/packages/results/detail.vue:245
 #: src/pages/platforms/results/detail.vue:104
@@ -553,6 +571,11 @@ msgstr "Descripción"
 msgid "desktop"
 msgstr "de escritorio"
 
+#: src/pages/logical-devices/results/detail.vue:70
+#: src/pages/logical-devices/results/list.vue:63
+msgid "Device"
+msgstr "Dispositivo"
+
 #: src/pages/connections/results/detail.vue:69
 #: src/pages/connections/results/list.vue:68
 #: src/pages/device-types/results/detail.vue:22
@@ -580,6 +603,8 @@ msgstr "Lista de Tipos de Dispositivos"
 #: src/pages/connections/results/list.vue:30
 #: src/pages/device-types/results/detail.vue:39
 #: src/pages/device-types/results/list.vue:30
+#: src/pages/logical-devices/results/detail.vue:40
+#: src/pages/logical-devices/results/list.vue:30
 #: src/pages/manufacturers/results/detail.vue:39
 #: src/pages/manufacturers/results/list.vue:30
 msgid "Devices"
@@ -753,6 +778,8 @@ msgstr "Campos"
 #: src/pages/fault-definitions/results/list.vue:61
 #: src/pages/faults/results/list.vue:83 src/pages/faults/results/list.vue:131
 #: src/pages/formulas/results/list.vue:61 src/pages/groups/results/list.vue:57
+#: src/pages/logical-devices/results/list.vue:68
+#: src/pages/logical-devices/results/list.vue:82
 #: src/pages/manufacturers/results/list.vue:59
 #: src/pages/migrations/results/list.vue:80
 #: src/pages/packages/results/list.vue:61
@@ -902,7 +929,7 @@ msgstr "¿Es del personal?"
 msgid "Is Super User?"
 msgstr "¿Es superusuario?"
 
-#: src/mixins/datagrid.js:400
+#: src/mixins/datagrid.js:406
 msgid "Item deleted!"
 msgstr "¡Elemento borrado!"
 
@@ -954,9 +981,22 @@ msgstr "Iniciar sesión"
 msgid "Log In"
 msgstr "Iniciar sesión"
 
+#: src/pages/logical-devices/results/detail.vue:23
+#: src/pages/logical-devices/results/detail.vue:39
+#: src/pages/logical-devices/results/list.vue:54
+msgid "Logical Device"
+msgstr "Dispositivos lógico"
+
 #: src/components/ui/AppMenu.vue:20
+#: src/pages/logical-devices/results/detail.vue:44
+#: src/pages/logical-devices/results/list.vue:22
+#: src/pages/logical-devices/results/list.vue:34
 msgid "Logical Devices"
 msgstr "Dispositivos lógicos"
+
+#: src/pages/logical-devices/results/list.vue:10
+msgid "Logical Devices List"
+msgstr "Lista de Dispositivos lógicos"
 
 #: src/layouts/MainLayout.vue:67
 msgid "Logout"
@@ -1009,6 +1049,7 @@ msgstr "Lista de Migraciones"
 
 #: src/pages/computers/results/list.vue:60 src/pages/errors/results/list.vue:62
 #: src/pages/faults/results/list.vue:62
+#: src/pages/logical-devices/results/list.vue:48
 #: src/pages/migrations/results/list.vue:50
 #: src/pages/status-logs/results/list.vue:48
 #: src/pages/syncs/results/list.vue:56
@@ -1085,6 +1126,9 @@ msgstr "No"
 #: src/pages/fault-definitions/results/detail.vue:107
 #: src/pages/fault-definitions/results/detail.vue:2
 #: src/pages/groups/results/detail.vue:21 src/pages/groups/results/detail.vue:2
+#: src/pages/logical-devices/results/detail.vue:18
+#: src/pages/logical-devices/results/detail.vue:42
+#: src/pages/logical-devices/results/detail.vue:2
 #: src/pages/scopes/results/detail.vue:55
 #: src/pages/scopes/results/detail.vue:79 src/pages/scopes/results/detail.vue:2
 #: src/pages/user-profiles/results/detail.vue:119
@@ -1300,6 +1344,7 @@ msgstr "Liberación"
 #: src/pages/fault-definitions/results/list.vue:44
 #: src/pages/faults/results/list.vue:122 src/pages/formulas/results/list.vue:45
 #: src/pages/groups/results/list.vue:40
+#: src/pages/logical-devices/results/list.vue:80
 #: src/pages/manufacturers/results/list.vue:42
 #: src/pages/migrations/results/list.vue:92
 #: src/pages/packages/results/list.vue:44
@@ -1318,7 +1363,7 @@ msgstr "Eliminar todos los filtros"
 msgid "Result"
 msgstr "Resultado"
 
-#: src/mixins/detail.js:21 src/mixins/detail.js:119
+#: src/mixins/detail.js:25 src/mixins/detail.js:123
 #: src/pages/attribute-sets/results/list.vue:40
 #: src/pages/attributes/results/list.vue:40
 #: src/pages/capabilities/results/list.vue:38
@@ -1332,6 +1377,7 @@ msgstr "Resultado"
 #: src/pages/fault-definitions/results/list.vue:40
 #: src/pages/faults/results/list.vue:47 src/pages/formulas/results/list.vue:40
 #: src/pages/groups/results/list.vue:36
+#: src/pages/logical-devices/results/list.vue:38
 #: src/pages/manufacturers/results/list.vue:38
 #: src/pages/migrations/results/list.vue:44
 #: src/pages/packages/results/list.vue:40
@@ -1361,6 +1407,7 @@ msgstr "Resultados por página"
 #: src/pages/faults/results/detail.vue:193
 #: src/pages/formulas/results/detail.vue:205
 #: src/pages/groups/results/detail.vue:141
+#: src/pages/logical-devices/results/detail.vue:226
 #: src/pages/manufacturers/results/detail.vue:85
 #: src/pages/packages/results/detail.vue:227
 #: src/pages/platforms/results/detail.vue:85
@@ -1381,6 +1428,7 @@ msgstr "Grabar"
 #: src/pages/fault-definitions/results/detail.vue:343
 #: src/pages/formulas/results/detail.vue:189
 #: src/pages/groups/results/detail.vue:125
+#: src/pages/logical-devices/results/detail.vue:210
 #: src/pages/manufacturers/results/detail.vue:69
 #: src/pages/packages/results/detail.vue:219
 #: src/pages/platforms/results/detail.vue:69
@@ -1407,6 +1455,7 @@ msgstr "Grabar y añadir otro"
 #: src/pages/faults/results/detail.vue:185
 #: src/pages/formulas/results/detail.vue:198
 #: src/pages/groups/results/detail.vue:134
+#: src/pages/logical-devices/results/detail.vue:219
 #: src/pages/manufacturers/results/detail.vue:78
 #: src/pages/platforms/results/detail.vue:78
 #: src/pages/projects/results/detail.vue:131
@@ -1649,6 +1698,7 @@ msgstr ""
 #: src/pages/fault-definitions/results/list.vue:30
 #: src/pages/faults/results/list.vue:70 src/pages/formulas/results/list.vue:33
 #: src/pages/groups/results/list.vue:24
+#: src/pages/logical-devices/results/list.vue:47
 #: src/pages/manufacturers/results/list.vue:27
 #: src/pages/migrations/results/list.vue:50
 #: src/pages/packages/results/list.vue:33
