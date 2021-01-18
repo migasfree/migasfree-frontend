@@ -2,7 +2,6 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    {{ element }}
     <Header :title="$gettext('Logical Device')" :has-add-button="false">
       <template v-if="element.id" #append
         >:
