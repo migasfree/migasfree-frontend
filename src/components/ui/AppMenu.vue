@@ -115,7 +115,11 @@ export default {
               to: 'manufacturers-list',
               icon: 'mdi-factory'
             },
-            // { title: this.$gettext('Models'), to: 'models-dashboard', icon: 'mdi-shape' },
+            {
+              title: this.$gettext('Models'),
+              to: 'models-dashboard',
+              icon: 'mdi-shape'
+            },
             {
               title: this.$gettext('Capabilities'),
               to: 'capabilities-list',
