@@ -422,7 +422,7 @@ export default {
 
     async loadRelated() {
       await this.$axios
-        .get(`/api/v1/token/accounts/groups/`)
+        .get('/api/v1/token/accounts/groups/')
         .then((response) => {
           Object.entries(response.data.results).map(([index, item]) => {
             this.groups.push({
@@ -436,7 +436,7 @@ export default {
         })
 
       await this.$axios
-        .get(`/api/v1/token/domains/`)
+        .get('/api/v1/token/domains/')
         .then((response) => {
           Object.entries(response.data.results).map(([index, item]) => {
             this.domains.push({
@@ -454,7 +454,7 @@ export default {
         })
 
       await this.$axios
-        .get(`/api/v1/token/scopes/`)
+        .get('/api/v1/token/scopes/')
         .then((response) => {
           Object.entries(response.data.results).map(([index, item]) => {
             this.scopes.push({
@@ -490,12 +490,6 @@ export default {
         groups: this.element.groups.map((item) => item.id),
         user_permissions: this.element.user_permissions.map((item) => item.id)
       }
-    },
-
-    setRelated() {
-      /* this.element.language = this.languages.find(
-        (x) => x.id === this.element.language
-      ) */
     },
 
     filterUserPermissions(val, update, abort) {
