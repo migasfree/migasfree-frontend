@@ -120,14 +120,14 @@ export default {
               title: this.$gettext('Capabilities'),
               to: 'capabilities-list',
               icon: 'mdi-format-list-bulleted-type'
-            }
-            /* {
+            },
+            {
               title: this.$gettext('Devices'),
               to: 'devices-dashboard',
               icon: 'mdi-printer',
               separatorAfter: true
-            },
-            { title: this.$gettext('Device Replacement'), to: 'devices-replacement' } */
+            }
+            // { title: this.$gettext('Device Replacement'), to: 'devices-replacement' }
           ].concat(extraDevices)
         },
         {
