@@ -12,7 +12,11 @@ export const detailMixin = {
   },
   computed: {
     elementText() {
-      return this.element.id ? this.element.name : ''
+      return this.element.id
+        ? this.element.name
+          ? this.element.name
+          : this.element.__str__
+        : ''
     }
   },
   created() {
