@@ -426,6 +426,27 @@ const routes = [
       },
 
       {
+        path: '/models',
+        name: 'models-dashboard',
+        component: () => import('pages/models/index')
+      },
+      {
+        path: '/models/results',
+        name: 'models-list',
+        component: () => import('pages/models/results/list')
+      },
+      {
+        path: '/models/add',
+        name: 'model-add',
+        component: () => import('pages/models/results/detail')
+      },
+      {
+        path: '/models/results/:id',
+        name: 'model-detail',
+        component: () => import('pages/models/results/detail')
+      },
+
+      {
         path: '/devices',
         name: 'devices-dashboard',
         component: () => import('pages/devices/index')
