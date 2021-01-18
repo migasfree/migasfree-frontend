@@ -151,6 +151,41 @@ export const datagridMixin = {
         (x) => x.field === 'pms_status_ok'
       ).filterOptions.filterValue = this.$route.query.pms_status_ok
     }
+
+    if (this.$route.query.model_id) {
+      this.updateParams({
+        columnFilters: {
+          model_id: this.$route.query.model_id
+        }
+      })
+      this.columns.find(
+        (x) => x.field === 'model.name'
+      ).filterOptions.filterValue = this.$route.query.model_id
+    }
+
+    if (this.$route.query.connection_id) {
+      this.updateParams({
+        columnFilters: {
+          connection_id: this.$route.query.connection_id
+        }
+      })
+      this.columns.find(
+        (x) => x.field === 'connection.name'
+      ).filterOptions.filterValue = this.$route.query.connection_id
+    }
+
+    if (this.$route.query.manufacturer_id) {
+      this.updateParams({
+        columnFilters: {
+          manufacturer_id: this.$route.query.manufacturer_id
+        }
+      })
+      this.columns.find(
+        (x) =>
+          x.field === 'manufacturer.name' ||
+          x.field === 'model.manufacturer.name'
+      ).filterOptions.filterValue = this.$route.query.manufacturer_id
+    }
   },
   async mounted() {
     await this.loadFilters()
@@ -307,6 +342,9 @@ export const datagridMixin = {
             case 'computer_id':
               ret.computer__id = val
               break
+            case 'connection.name':
+              ret.connection__id = val
+              break
             case 'device_type.name':
               ret.device_type__id = val
               break
@@ -315,6 +353,12 @@ export const datagridMixin = {
               break
             case 'model':
               ret.device__model__id = val
+              break
+            case 'model.manufacturer.name':
+              ret.model__manufacturer__id = val
+              break
+            case 'model.name':
+              ret.model__id = val
               break
             case 'platform':
               if (this.model === 'computers') ret[key] = val
