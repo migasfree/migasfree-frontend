@@ -424,6 +424,27 @@ const routes = [
         name: 'logical-device-detail',
         component: () => import('pages/logical-devices/results/detail')
       },
+
+      {
+        path: '/devices',
+        name: 'devices-dashboard',
+        component: () => import('pages/devices/index')
+      },
+      {
+        path: '/devices/results',
+        name: 'devices-list',
+        component: () => import('pages/devices/results/list')
+      },
+      {
+        path: '/devices/add',
+        name: 'device-add',
+        component: () => import('pages/devices/results/detail')
+      },
+      {
+        path: '/devices/results/:id',
+        name: 'device-detail',
+        component: () => import('pages/devices/results/detail')
+      },
     ],
     meta: { authRequired: true }
   },
