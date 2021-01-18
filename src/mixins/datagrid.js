@@ -351,6 +351,9 @@ export const datagridMixin = {
             case 'fault_definition.name':
               ret.fault_definition_id = val
               break
+            case 'manufacturer.name':
+              ret.manufacturer__id = val
+              break
             case 'model':
               ret.device__model__id = val
               break
