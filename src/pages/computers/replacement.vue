@@ -58,8 +58,10 @@
                 </q-chip>
               </template>
             </q-select>
+          </q-card-section>
 
-            <ReplacementInfo v-if="source" :element="source" />
+          <q-card-section v-if="source">
+            <ReplacementInfo :element="source" :is-loading="loading" />
           </q-card-section>
         </q-card>
       </div>
@@ -125,8 +127,10 @@
                 </q-chip>
               </template>
             </q-select>
+          </q-card-section>
 
-            <ReplacementInfo v-if="target" :element="target" />
+          <q-card-section v-if="target">
+            <ReplacementInfo :element="target" :is-loading="loading" />
           </q-card-section>
         </q-card>
       </div>
@@ -214,14 +218,16 @@ export default {
     },
 
     async loadDevices(obj) {
-      await this.$axios
-        .get(`/api/v1/token/computers/${obj.id}/devices/`)
-        .then((response) => {
-          this.$set(obj, 'devices', response.data)
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
+      if (obj !== null) {
+        await this.$axios
+          .get(`/api/v1/token/computers/${obj.id}/devices/`)
+          .then((response) => {
+            this.$set(obj, 'devices', response.data)
+          })
+          .catch((error) => {
+            this.$store.dispatch('ui/notifyError', error)
+          })
+      }
     },
 
     async replace() {
