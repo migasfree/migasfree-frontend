@@ -16,6 +16,8 @@
 
     <q-card>
       <q-card-section>
+        <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
+
         <div class="row q-pa-md q-gutter-md">
           <div class="col-6 col-md">
             <q-select
@@ -69,6 +71,12 @@
             />
           </div>
         </div>
+      </q-card-section>
+
+      <q-card-section>
+        <div v-translate class="text-h5 q-mt-sm q-mb-xs">Drivers</div>
+
+        <q-btn :label="$gettext('Add other Driver')" />
       </q-card-section>
 
       <q-card-actions class="justify-around">
