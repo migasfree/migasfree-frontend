@@ -170,7 +170,11 @@ export default {
               to: 'computers-dashboard',
               icon: 'mdi-desktop-classic'
             },
-            // { title: this.$gettext('Computer Replacement'), to: 'computers-replacement' },
+            {
+              title: this.$gettext('Computers Replacement'),
+              to: 'computers-replacement',
+              icon: 'mdi-compare-horizontal'
+            },
             {
               title: this.$gettext('Users'),
               to: 'users-list',
