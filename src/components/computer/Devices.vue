@@ -45,6 +45,7 @@
                 model="devices/devices"
                 :pk="scope.opt.id"
                 :value="scope.opt.name"
+                icon="mdi-printer"
               />
             </q-chip>
           </template>
