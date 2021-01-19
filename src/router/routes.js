@@ -34,6 +34,11 @@ const routes = [
         name: 'computer-simulate',
         component: () => import('pages/computers/results/simulate')
       },
+      {
+        path: '/computers/replacement',
+        name: 'computers-replacement',
+        component: () => import('pages/computers/replacement')
+      },
 
       {
         path: '/features',
