@@ -247,7 +247,6 @@ export default {
   },
   methods: {
     async loadRelated() {
-      console.log(this.element)
       await this.$axios
         .get('/api/v1/token/devices/capabilities/')
         .then((response) => {
