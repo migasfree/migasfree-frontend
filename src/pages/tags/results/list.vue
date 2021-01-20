@@ -114,6 +114,7 @@ export default {
   mixins: [elementMixin, datagridMixin],
   data() {
     return {
+      title: this.$gettext('Tags'),
       breadcrumbs: [
         {
           text: this.$gettext('Dashboard'),
