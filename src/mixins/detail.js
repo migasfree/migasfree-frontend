@@ -56,6 +56,8 @@ export const detailMixin = {
 
     resetRelated() {},
 
+    async updateRelated() {},
+
     async updateElement(action = null) {
       if (this.element.id) {
         this.loading = true
@@ -65,6 +67,8 @@ export const detailMixin = {
             this.elementData()
           )
           .then((response) => {
+            this.updateRelated()
+
             this.$store.dispatch(
               'ui/notifySuccess',
               this.$gettext('Data has been changed!')
@@ -102,6 +106,7 @@ export const detailMixin = {
           )
           .then((response) => {
             this.element = response.data
+            this.updateRelated()
             this.setRelated()
 
             this.$store.dispatch(
