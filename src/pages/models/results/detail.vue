@@ -76,7 +76,72 @@
       <q-card-section>
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">Drivers</div>
 
-        <q-btn :label="$gettext('Add other Driver')" />
+        <q-list v-if="drivers.length > 0" class="q-pa-md" bordered separator>
+          <q-item v-for="(driver, index) in drivers" :key="index">
+            <q-item-section side>
+              <q-btn
+                flat
+                dense
+                round
+                color="negative"
+                icon="mdi-delete"
+                @click="removeDriver(index)"
+                ><q-tooltip><translate>Delete</translate></q-tooltip></q-btn
+              >
+            </q-item-section>
+
+            <q-item-section class="col-3">
+              <q-select
+                v-model="driver.project"
+                outlined
+                :label="$gettext('Project')"
+                :options="projects"
+                option-value="id"
+                option-label="name"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+              />
+            </q-item-section>
+
+            <q-item-section class="col-3 col-md">
+              <q-select
+                v-model="driver.capability"
+                outlined
+                :label="$gettext('Capability')"
+                :options="capabilities"
+                option-value="id"
+                option-label="name"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+              />
+            </q-item-section>
+
+            <q-item-section class="col-3 col-md">
+              <q-input
+                v-model="driver.name"
+                outlined
+                :label="$gettext('Name')"
+              />
+            </q-item-section>
+
+            <q-item-section class="col-2 col-md">
+              <q-input
+                v-model="driver.packages_to_install"
+                outlined
+                type="textarea"
+                :label="$gettext('Packages to Install')"
+              />
+            </q-item-section>
+          </q-item>
+        </q-list>
+
+        <div class="q-pa-md">
+          <q-btn
+            icon="mdi-plus"
+            :label="$gettext('Add other Driver')"
+            @click="addDriver"
+          />
+        </div>
       </q-card-section>
 
       <q-card-actions class="justify-around">
@@ -181,6 +246,10 @@ export default {
       deviceTypes: [],
       manufacturers: [],
       connections: [],
+      drivers: [],
+      removedDrivers: [],
+      projects: [],
+      capabilities: [],
       confirmRemove: false
     }
   },
@@ -226,6 +295,40 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
+
+      await this.$axios
+        .get('/api/v1/token/projects/')
+        .then((response) => {
+          this.projects = response.data.results
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+
+      await this.$axios
+        .get('/api/v1/token/devices/capabilities/')
+        .then((response) => {
+          console.log(response)
+          this.capabilities = response.data.results
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+
+      if (this.element.id) {
+        await this.$axios
+          .get(`/api/v1/token/devices/drivers/?model__id=${this.element.id}`)
+          .then((response) => {
+            console.log(response)
+            this.drivers = response.data.results
+            this.drivers.forEach((item) => {
+              item.packages_to_install = item.packages_to_install.join('\n')
+            })
+          })
+          .catch((error) => {
+            this.$store.dispatch('ui/notifyError', error)
+          })
+      }
     },
 
     elementData() {
@@ -235,6 +338,71 @@ export default {
         name: this.element.name,
         connections: this.element.connections.map((item) => item.id)
       }
+    },
+
+    addDriver() {
+      this.drivers.push({
+        id: 0,
+        project: null,
+        capability: null,
+        name: null,
+        packages_to_install: null
+      })
+    },
+
+    removeDriver(index) {
+      const removedItem = this.drivers.splice(index, 1)
+      if (removedItem.id > 0) {
+        this.removedDrivers.push(removedItem.id)
+      }
+    },
+
+    async updateRelated() {
+      this.drivers.forEach((driver) => {
+        if (driver.project === undefined || driver.capability === undefined) {
+          return
+        }
+
+        if (driver.id > 0) {
+          this.$axios
+            .patch(`/api/v1/token/devices/drivers/${driver.id}/`, {
+              model: this.element.id,
+              project: driver.project.id,
+              capability: driver.capability.id,
+              name: driver.name,
+              packages_to_install:
+                driver.packages_to_install !== null
+                  ? driver.packages_to_install.split('\n')
+                  : []
+            })
+            .catch((error) => {
+              this.$store.dispatch('ui/notifyError', error)
+            })
+        } else {
+          this.$axios
+            .post('/api/v1/token/devices/drivers/', {
+              model: this.element.id,
+              project: driver.project.id,
+              capability: driver.capability.id,
+              name: driver.name,
+              packages_to_install:
+                driver.packages_to_install !== null
+                  ? driver.packages_to_install.split('\n')
+                  : []
+            })
+            .catch((error) => {
+              this.$store.dispatch('ui/notifyError', error)
+            })
+        }
+      })
+
+      this.removedDrivers.forEach((id) => {
+        this.$axios
+          .delete(`/api/v1/token/devices/drivers/${id}/`)
+          .catch((error) => {
+            this.$store.dispatch('ui/notifyError', error)
+          })
+      })
     }
   }
 }
