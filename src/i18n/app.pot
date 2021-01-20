@@ -40,8 +40,8 @@ msgstr ""
 #: ./src/pages/stamps/results/detail.vue:113
 #: ./src/pages/stores/results/detail.vue:62
 #: ./src/pages/stores/results/detail.vue:72
-#: ./src/pages/tags/results/detail.vue:64
-#: ./src/pages/tags/results/detail.vue:74
+#: ./src/pages/tags/results/detail.vue:76
+#: ./src/pages/tags/results/detail.vue:86
 #: ./src/pages/user-profiles/results/detail.vue:122
 msgid "* Required"
 msgstr ""
@@ -95,7 +95,7 @@ msgstr ""
 #: ./src/pages/status-logs/results/list.vue:54
 #: ./src/pages/stores/results/list.vue:49
 #: ./src/pages/syncs/results/list.vue:56
-#: ./src/pages/tags/results/list.vue:48
+#: ./src/pages/tags/results/list.vue:49
 #: ./src/pages/user-profiles/results/list.vue:47
 #: ./src/pages/users/results/list.vue:47
 msgid "Actions"
@@ -152,7 +152,7 @@ msgstr ""
 #: ./src/pages/syncs/results/list.vue:122
 #: ./src/pages/syncs/results/list.vue:135
 #: ./src/pages/syncs/results/list.vue:143
-#: ./src/pages/tags/results/list.vue:78
+#: ./src/pages/tags/results/list.vue:79
 #: ./src/pages/users/results/list.vue:67
 msgid "All"
 msgstr ""
@@ -270,7 +270,7 @@ msgstr ""
 msgid "By Assignment"
 msgstr ""
 
-#: ./src/components/computer/Devices.vue:99
+#: ./src/components/computer/Devices.vue:101
 msgid "By default"
 msgstr ""
 
@@ -419,6 +419,7 @@ msgstr ""
 #: ./src/pages/computers/results/list.vue:39
 #: ./src/pages/computers/results/simulate.vue:30
 #: ./src/pages/devices/results/list.vue:111
+#: ./src/pages/tags/results/detail.vue:111
 msgid "Computers"
 msgstr ""
 
@@ -491,7 +492,7 @@ msgstr ""
 msgid "Current Situation"
 msgstr ""
 
-#: ./src/pages/computers/results/detail.vue:192
+#: ./src/pages/computers/results/detail.vue:185
 msgid "Current Situation has been changed!"
 msgstr ""
 
@@ -558,8 +559,8 @@ msgstr ""
 #: ./src/pages/syncs/index.vue:25
 #: ./src/pages/syncs/results/list.vue:33
 #: ./src/pages/tags/index.vue:23
-#: ./src/pages/tags/results/detail.vue:34
-#: ./src/pages/tags/results/list.vue:25
+#: ./src/pages/tags/results/detail.vue:36
+#: ./src/pages/tags/results/list.vue:26
 #: ./src/pages/user-profiles/results/detail.vue:43
 #: ./src/pages/user-profiles/results/list.vue:25
 #: ./src/pages/users/results/list.vue:25
@@ -589,8 +590,8 @@ msgstr ""
 #: ./src/pages/syncs/index.vue:30
 #: ./src/pages/syncs/results/list.vue:38
 #: ./src/pages/tags/index.vue:28
-#: ./src/pages/tags/results/detail.vue:39
-#: ./src/pages/tags/results/list.vue:30
+#: ./src/pages/tags/results/detail.vue:41
+#: ./src/pages/tags/results/list.vue:31
 #: ./src/pages/users/results/list.vue:30
 msgid "Data"
 msgstr ""
@@ -653,7 +654,7 @@ msgstr ""
 #: ./src/pages/scopes/results/detail.vue:324
 #: ./src/pages/stamps/results/detail.vue:160
 #: ./src/pages/stores/results/detail.vue:119
-#: ./src/pages/tags/results/detail.vue:132
+#: ./src/pages/tags/results/detail.vue:216
 #: ./src/pages/user-profiles/results/detail.vue:473
 msgid "Delete"
 msgstr ""
@@ -669,8 +670,8 @@ msgstr ""
 #: ./src/pages/errors/results/detail.vue:36
 #: ./src/pages/errors/results/list.vue:116
 #: ./src/pages/fault-definitions/results/detail.vue:103
-#: ./src/pages/tags/results/detail.vue:85
-#: ./src/pages/tags/results/list.vue:65
+#: ./src/pages/tags/results/detail.vue:97
+#: ./src/pages/tags/results/list.vue:66
 msgid "Description"
 msgstr ""
 
@@ -746,7 +747,7 @@ msgstr ""
 msgid "Devices / Model"
 msgstr ""
 
-#: ./src/components/computer/Devices.vue:42
+#: ./src/components/computer/Devices.vue:55
 msgid "Devices have been changed!"
 msgstr ""
 
@@ -959,8 +960,8 @@ msgstr ""
 #: ./src/pages/stores/results/list.vue:61
 #: ./src/pages/stores/results/list.vue:70
 #: ./src/pages/syncs/results/list.vue:100
-#: ./src/pages/tags/results/list.vue:60
-#: ./src/pages/tags/results/list.vue:69
+#: ./src/pages/tags/results/list.vue:61
+#: ./src/pages/tags/results/list.vue:70
 #: ./src/pages/user-profiles/results/list.vue:59
 #: ./src/pages/user-profiles/results/list.vue:68
 #: ./src/pages/user-profiles/results/list.vue:77
@@ -1073,6 +1074,10 @@ msgstr ""
 msgid ""
 "Indicates whether the user should be treated as active. Uncheck\n"
 "              this option instead of deleting the account."
+msgstr ""
+
+#: ./src/pages/tags/results/detail.vue:165
+msgid "Inflicted Computers"
 msgstr ""
 
 #: ./src/components/computer/ReplacementInfo.vue:34
@@ -1363,6 +1368,8 @@ msgstr ""
 #: ./src/pages/scopes/results/detail.vue:55
 #: ./src/pages/scopes/results/detail.vue:79
 #: ./src/pages/scopes/results/detail.vue:2
+#: ./src/pages/tags/results/detail.vue:33
+#: ./src/pages/tags/results/detail.vue:2
 #: ./src/pages/user-profiles/results/detail.vue:119
 #: ./src/pages/user-profiles/results/detail.vue:2
 msgid "No results"
@@ -1629,7 +1636,6 @@ msgstr ""
 #: ./src/pages/attribute-sets/results/list.vue:40
 #: ./src/pages/attributes/results/list.vue:40
 #: ./src/pages/capabilities/results/list.vue:38
-#: ./src/pages/computers/results/detail.vue:58
 #: ./src/pages/computers/results/events.vue:38
 #: ./src/pages/computers/results/list.vue:44
 #: ./src/pages/computers/results/simulate.vue:35
@@ -1654,7 +1660,7 @@ msgstr ""
 #: ./src/pages/status-logs/results/list.vue:45
 #: ./src/pages/stores/results/list.vue:40
 #: ./src/pages/syncs/results/list.vue:47
-#: ./src/pages/tags/results/list.vue:39
+#: ./src/pages/tags/results/list.vue:40
 #: ./src/pages/user-profiles/results/list.vue:38
 #: ./src/pages/users/results/list.vue:38
 msgid "Results"
@@ -1685,7 +1691,7 @@ msgstr ""
 #: ./src/pages/scopes/results/detail.vue:305
 #: ./src/pages/stamps/results/detail.vue:141
 #: ./src/pages/stores/results/detail.vue:100
-#: ./src/pages/tags/results/detail.vue:113
+#: ./src/pages/tags/results/detail.vue:197
 #: ./src/pages/user-profiles/results/detail.vue:454
 msgid "Save"
 msgstr ""
@@ -1708,12 +1714,12 @@ msgstr ""
 #: ./src/pages/scopes/results/detail.vue:289
 #: ./src/pages/stamps/results/detail.vue:125
 #: ./src/pages/stores/results/detail.vue:84
-#: ./src/pages/tags/results/detail.vue:97
+#: ./src/pages/tags/results/detail.vue:181
 #: ./src/pages/user-profiles/results/detail.vue:438
 msgid "Save and add other"
 msgstr ""
 
-#: ./src/components/computer/Devices.vue:113
+#: ./src/components/computer/Devices.vue:115
 #: ./src/components/computer/HardwareResume.vue:12
 #: ./src/components/computer/Info.vue:6
 #: ./src/pages/attribute-sets/results/detail.vue:229
@@ -1737,7 +1743,7 @@ msgstr ""
 #: ./src/pages/scopes/results/detail.vue:298
 #: ./src/pages/stamps/results/detail.vue:134
 #: ./src/pages/stores/results/detail.vue:93
-#: ./src/pages/tags/results/detail.vue:106
+#: ./src/pages/tags/results/detail.vue:190
 #: ./src/pages/user-profiles/results/detail.vue:447
 msgid "Save and continue editing"
 msgstr ""
@@ -1804,8 +1810,8 @@ msgstr ""
 
 #: ./src/pages/stamps/results/detail.vue:22
 #: ./src/pages/stamps/results/detail.vue:33
-#: ./src/pages/tags/results/detail.vue:59
-#: ./src/pages/tags/results/list.vue:74
+#: ./src/pages/tags/results/detail.vue:71
+#: ./src/pages/tags/results/list.vue:75
 msgid "Stamp"
 msgstr ""
 
@@ -1950,9 +1956,9 @@ msgstr ""
 msgid "Syncs List"
 msgstr ""
 
-#: ./src/pages/tags/results/detail.vue:22
-#: ./src/pages/tags/results/detail.vue:31
-#: ./src/pages/tags/results/list.vue:55
+#: ./src/pages/tags/results/detail.vue:24
+#: ./src/pages/tags/results/detail.vue:43
+#: ./src/pages/tags/results/list.vue:56
 msgid "Tag"
 msgstr ""
 
@@ -1962,8 +1968,9 @@ msgstr ""
 #: ./src/pages/computers/results/simulate.vue:111
 #: ./src/pages/tags/index.vue:20
 #: ./src/pages/tags/index.vue:32
-#: ./src/pages/tags/results/detail.vue:43
-#: ./src/pages/tags/results/list.vue:34
+#: ./src/pages/tags/results/detail.vue:45
+#: ./src/pages/tags/results/list.vue:23
+#: ./src/pages/tags/results/list.vue:35
 msgid "Tags"
 msgstr ""
 
