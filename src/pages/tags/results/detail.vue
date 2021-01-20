@@ -185,12 +185,6 @@ export default {
         value: this.element.value,
         description: this.element.description
       }
-    },
-
-    setRelated() {
-      this.element.property_att = this.stamps.find(
-        (x) => x.id === this.element.property_att
-      )
     }
   }
 }
