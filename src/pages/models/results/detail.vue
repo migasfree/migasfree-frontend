@@ -351,7 +351,7 @@ export default {
     },
 
     removeDriver(index) {
-      const removedItem = this.drivers.splice(index, 1)
+      const removedItem = this.drivers.splice(index, 1)[0]
       if (removedItem.id > 0) {
         this.removedDrivers.push(removedItem.id)
       }
