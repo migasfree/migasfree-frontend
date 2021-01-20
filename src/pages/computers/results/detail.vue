@@ -387,13 +387,6 @@ export default {
           text: this.$gettext('Computers'),
           to: 'computers-dashboard',
           icon: 'mdi-desktop-classic'
-        },
-        {
-          text: this.$gettext('Results'),
-          to: route
-        },
-        {
-          text: 'Id'
         }
       ],
       element: {},
