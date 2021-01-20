@@ -18,6 +18,7 @@
           :options="assignedDevices"
           @filter="filterAssignedDevices"
           @filter-abort="abortFilterAssignedDevices"
+          @input="updateDefaultLogicalDeviceSelect"
         >
           <template #no-option>
             <q-item>
@@ -29,7 +30,7 @@
 
           <template #option="scope">
             <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-              {{ scope.opt.name }}
+              {{ scope.opt.__str__ }}
             </q-item>
           </template>
 
@@ -42,10 +43,10 @@
               @remove="scope.removeAtIndex(scope.index)"
             >
               <MigasLink
-                model="devices/devices"
+                model="devices/logical"
                 :pk="scope.opt.id"
-                :value="scope.opt.name"
-                icon="mdi-printer"
+                :value="scope.opt.__str__"
+                icon="mdi-printer-settings"
               />
             </q-chip>
           </template>
@@ -56,6 +57,7 @@
         <q-select
           v-model="devices.default_logical_device"
           outlined
+          :options="defaultLogicalDevices"
           :label="$gettext('By default')"
         />
       </p>
@@ -76,8 +78,13 @@
 </template>
 
 <script>
+import MigasLink from 'components/MigasLink'
+
 export default {
   name: 'ComputerDevices',
+  components: {
+    MigasLink
+  },
   props: {
     cid: {
       type: Number,
@@ -89,7 +96,8 @@ export default {
     return {
       loading: false,
       devices: {},
-      assignedDevices: []
+      assignedDevices: [],
+      defaultLogicalDevices: []
     }
   },
   async mounted() {
@@ -101,6 +109,11 @@ export default {
         .get(`/api/v1/token/computers/${this.cid}/devices/`)
         .then((response) => {
           this.devices = response.data
+          this.updateDefaultLogicalDeviceSelect()
+
+          this.devices.default_logical_device = this.defaultLogicalDevices.find(
+            (x) => x.id === this.devices.default_logical_device
+          )
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
@@ -111,8 +124,10 @@ export default {
       this.loading = true
       await this.$axios
         .patch(`/api/v1/token/computers/${this.cid}/`, {
-          // default_logical_device: , TODO
-          // assigned_logical_devices_to_cid: TODO
+          default_logical_device: this.devices.default_logical_device.id,
+          assigned_logical_devices_to_cid: this.devices.assigned_logical_devices_to_cid.map(
+            (item) => item.id
+          )
         })
         .then((response) => {
           this.$store.dispatch(
@@ -133,16 +148,28 @@ export default {
         return
       }
 
-      /* update(() => {
+      update(() => {
         const needle = val.toLowerCase()
-        this.tags = stringOptions.filter(
+        this.$axios
+          .get(`/api/v1/token/devices/logical/`, { params: { search: needle } })
+          .then((response) => {
+            this.assignedDevices = response.data.results
+          })
+        /* this.assignedDevices = stringOptions.filter(
           (v) => v.toLowerCase().indexOf(needle) > -1
-        )
-      }) */
+        ) */
+      })
     },
 
     abortFilterAssignedDevices() {
       // console.log('delayed filter aborted')
+    },
+
+    updateDefaultLogicalDeviceSelect() {
+      this.defaultLogicalDevices = []
+      this.devices.assigned_logical_devices_to_cid.forEach((item) => {
+        this.defaultLogicalDevices.push({ id: item.id, label: item.__str__ })
+      })
     }
   }
 }
