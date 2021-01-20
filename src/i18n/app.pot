@@ -23,10 +23,12 @@ msgstr ""
 #: ./src/pages/groups/results/detail.vue:57
 #: ./src/pages/logical-devices/results/detail.vue:189
 #: ./src/pages/manufacturers/results/detail.vue:57
-#: ./src/pages/models/results/detail.vue:71
-#: ./src/pages/models/results/detail.vue:84
-#: ./src/pages/models/results/detail.vue:100
-#: ./src/pages/models/results/detail.vue:110
+#: ./src/pages/models/results/detail.vue:78
+#: ./src/pages/models/results/detail.vue:91
+#: ./src/pages/models/results/detail.vue:107
+#: ./src/pages/models/results/detail.vue:117
+#: ./src/pages/models/results/detail.vue:179
+#: ./src/pages/models/results/detail.vue:195
 #: ./src/pages/platforms/results/detail.vue:57
 #: ./src/pages/projects/results/detail.vue:67
 #: ./src/pages/projects/results/detail.vue:77
@@ -100,11 +102,11 @@ msgid "Actions"
 msgstr ""
 
 #: ./src/mixins/detail.js:32
-#: ./src/mixins/detail.js:79
+#: ./src/mixins/detail.js:83
 msgid "Add"
 msgstr ""
 
-#: ./src/pages/models/results/detail.vue:123
+#: ./src/pages/models/results/detail.vue:234
 msgid "Add other Driver"
 msgstr ""
 
@@ -342,6 +344,7 @@ msgstr ""
 #: ./src/pages/capabilities/results/detail.vue:27
 #: ./src/pages/logical-devices/results/detail.vue:184
 #: ./src/pages/logical-devices/results/list.vue:77
+#: ./src/pages/models/results/detail.vue:190
 msgid "Capability"
 msgstr ""
 
@@ -467,7 +470,7 @@ msgstr ""
 #: ./src/pages/connections/results/detail.vue:43
 #: ./src/pages/connections/results/list.vue:22
 #: ./src/pages/connections/results/list.vue:34
-#: ./src/pages/models/results/detail.vue:95
+#: ./src/pages/models/results/detail.vue:102
 msgid "Connections"
 msgstr ""
 
@@ -592,11 +595,11 @@ msgstr ""
 msgid "Data"
 msgstr ""
 
-#: ./src/mixins/detail.js:109
+#: ./src/mixins/detail.js:114
 msgid "Data has been added!"
 msgstr ""
 
-#: ./src/mixins/detail.js:70
+#: ./src/mixins/detail.js:74
 msgid "Data has been changed!"
 msgstr ""
 
@@ -642,7 +645,8 @@ msgstr ""
 #: ./src/pages/groups/results/detail.vue:160
 #: ./src/pages/logical-devices/results/detail.vue:244
 #: ./src/pages/manufacturers/results/detail.vue:104
-#: ./src/pages/models/results/detail.vue:168
+#: ./src/pages/models/results/detail.vue:41
+#: ./src/pages/models/results/detail.vue:281
 #: ./src/pages/packages/results/detail.vue:245
 #: ./src/pages/platforms/results/detail.vue:104
 #: ./src/pages/projects/results/detail.vue:157
@@ -1188,7 +1192,7 @@ msgstr ""
 #: ./src/pages/devices/results/list.vue:87
 #: ./src/pages/manufacturers/results/detail.vue:22
 #: ./src/pages/manufacturers/results/detail.vue:27
-#: ./src/pages/models/results/detail.vue:79
+#: ./src/pages/models/results/detail.vue:86
 #: ./src/pages/models/results/list.vue:69
 msgid "Manufacturer"
 msgstr ""
@@ -1234,7 +1238,7 @@ msgstr ""
 
 #: ./src/pages/devices/results/list.vue:73
 #: ./src/pages/models/results/detail.vue:23
-#: ./src/pages/models/results/detail.vue:35
+#: ./src/pages/models/results/detail.vue:42
 msgid "Model"
 msgstr ""
 
@@ -1287,7 +1291,8 @@ msgstr ""
 #: ./src/pages/groups/results/list.vue:52
 #: ./src/pages/manufacturers/results/detail.vue:55
 #: ./src/pages/manufacturers/results/list.vue:54
-#: ./src/pages/models/results/detail.vue:108
+#: ./src/pages/models/results/detail.vue:115
+#: ./src/pages/models/results/detail.vue:206
 #: ./src/pages/models/results/list.vue:55
 #: ./src/pages/packages/results/detail.vue:45
 #: ./src/pages/platforms/results/detail.vue:55
@@ -1424,6 +1429,7 @@ msgid "Packages List"
 msgstr ""
 
 #: ./src/pages/computers/results/simulate.vue:156
+#: ./src/pages/models/results/detail.vue:218
 msgid "Packages to Install"
 msgstr ""
 
@@ -1537,6 +1543,7 @@ msgstr ""
 #: ./src/pages/faults/results/detail.vue:28
 #: ./src/pages/faults/results/list.vue:92
 #: ./src/pages/migrations/results/list.vue:89
+#: ./src/pages/models/results/detail.vue:174
 #: ./src/pages/packages/results/detail.vue:15
 #: ./src/pages/packages/results/detail.vue:1
 #: ./src/pages/packages/results/list.vue:70
@@ -1618,7 +1625,7 @@ msgid "Result"
 msgstr ""
 
 #: ./src/mixins/detail.js:25
-#: ./src/mixins/detail.js:123
+#: ./src/mixins/detail.js:128
 #: ./src/pages/attribute-sets/results/list.vue:40
 #: ./src/pages/attributes/results/list.vue:40
 #: ./src/pages/capabilities/results/list.vue:38
@@ -1671,7 +1678,7 @@ msgstr ""
 #: ./src/pages/groups/results/detail.vue:141
 #: ./src/pages/logical-devices/results/detail.vue:225
 #: ./src/pages/manufacturers/results/detail.vue:85
-#: ./src/pages/models/results/detail.vue:149
+#: ./src/pages/models/results/detail.vue:262
 #: ./src/pages/packages/results/detail.vue:227
 #: ./src/pages/platforms/results/detail.vue:85
 #: ./src/pages/projects/results/detail.vue:138
@@ -1694,7 +1701,7 @@ msgstr ""
 #: ./src/pages/groups/results/detail.vue:125
 #: ./src/pages/logical-devices/results/detail.vue:209
 #: ./src/pages/manufacturers/results/detail.vue:69
-#: ./src/pages/models/results/detail.vue:133
+#: ./src/pages/models/results/detail.vue:246
 #: ./src/pages/packages/results/detail.vue:219
 #: ./src/pages/platforms/results/detail.vue:69
 #: ./src/pages/projects/results/detail.vue:122
@@ -1724,7 +1731,7 @@ msgstr ""
 #: ./src/pages/groups/results/detail.vue:134
 #: ./src/pages/logical-devices/results/detail.vue:218
 #: ./src/pages/manufacturers/results/detail.vue:78
-#: ./src/pages/models/results/detail.vue:142
+#: ./src/pages/models/results/detail.vue:255
 #: ./src/pages/platforms/results/detail.vue:78
 #: ./src/pages/projects/results/detail.vue:131
 #: ./src/pages/scopes/results/detail.vue:298
@@ -2027,7 +2034,7 @@ msgstr ""
 msgid "This procedure changes status, tags and devices between two computers."
 msgstr ""
 
-#: ./src/pages/models/results/detail.vue:66
+#: ./src/pages/models/results/detail.vue:73
 #: ./src/pages/models/results/list.vue:83
 msgid "Type"
 msgstr ""
