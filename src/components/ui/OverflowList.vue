@@ -12,8 +12,9 @@
             v-if="model"
             :model="model"
             :pk="item.id"
-            :icon="item.icon || ''"
-            :value="item.value || item.name"
+            :icon="item.icon || elementIcon(item.status) || ''"
+            :value="item.value || item.name || item.__str__"
+            :tooltip="item.summary || ''"
           />
           <div v-else>{{ item }}</div>
         </q-item>
@@ -24,10 +25,12 @@
 
 <script>
 import MigasLink from 'components/MigasLink'
+import { elementMixin } from 'mixins/element'
 
 export default {
   name: 'OverflowList',
   components: { MigasLink },
+  mixins: [elementMixin],
   props: {
     label: {
       type: String,
