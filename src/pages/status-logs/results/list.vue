@@ -88,6 +88,13 @@
         <span v-else-if="props.column.field == 'created_at'">
           {{ showDate(props.row.created_at) }}
         </span>
+        <span v-else-if="props.column.field == 'status'">
+          <q-icon
+            :name="elementIcon(props.row.status.toLowerCase())"
+            size="sm"
+          />
+          {{ props.row.status }}
+        </span>
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
         </span>
@@ -194,6 +201,7 @@ export default {
         {
           label: this.$gettext('Status'),
           field: 'status',
+          html: true,
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('All'),
