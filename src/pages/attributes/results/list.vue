@@ -67,6 +67,7 @@
             model="properties"
             :pk="props.row.property_att.id"
             :value="props.row.property_att.name || ''"
+            icon="mdi-function-variant"
           />
         </span>
         <span v-else>
