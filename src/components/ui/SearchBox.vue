@@ -6,7 +6,7 @@
       dense
       borderless
       clearable
-      bg-color="white"
+      :bg-color="$q.dark.isActive ? 'dark' : 'white'"
       @keydown.enter="search('computers-list')"
     />
 
