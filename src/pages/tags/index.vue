@@ -6,7 +6,7 @@
 
     <SearchFilter @search="search" />
 
-    <div v-if="pieData.total" class="row">
+    <div class="row">
       <div class="col">
         <PieChart
           :title="$gettext('Tags / Stamps')"

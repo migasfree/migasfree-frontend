@@ -6,10 +6,7 @@
 
     <SearchFilter @search="search" />
 
-    <div
-      v-if="'series' in projectMonth && projectMonth.series.length > 0"
-      class="row"
-    >
+    <div class="row">
       <div class="col-12">
         <StackedBarChart
           :title="$gettext('Migrations / Month')"
@@ -19,7 +16,7 @@
       </div>
     </div>
 
-    <div v-if="byProject.total" class="row">
+    <div class="row">
       <div class="col-12">
         <PieChart
           :title="$gettext('Migrations / Project')"

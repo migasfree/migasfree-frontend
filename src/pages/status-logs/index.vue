@@ -6,7 +6,7 @@
 
     <SearchFilter @search="search" />
 
-    <div v-if="statusLogsStatus.total" class="row">
+    <div class="row">
       <div class="col-12">
         <StackedBarChart
           :title="$gettext('Status Logs / Month')"
@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <div v-if="statusLogsStatus.total" class="row">
+    <div class="row">
       <div class="col-12">
         <NestedPieChart
           :title="$gettext('Status Logs / Status')"

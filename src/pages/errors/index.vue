@@ -6,10 +6,7 @@
 
     <SearchFilter @search="search" />
 
-    <div
-      v-if="'series' in projectMonth && projectMonth.series.length > 0"
-      class="row"
-    >
+    <div class="row">
       <div class="col-12">
         <StackedBarChart
           :title="$gettext('Errors / Month')"
@@ -20,7 +17,7 @@
     </div>
 
     <div class="row">
-      <div v-if="statusProjects.total" class="col-6 col-md">
+      <div class="col-6 col-md">
         <NestedPieChart
           :title="$gettext('Errors / Project / Status')"
           :data="statusProjects"
@@ -29,7 +26,7 @@
         />
       </div>
 
-      <div v-if="uncheckedErrors.total" class="col-6 col-md">
+      <div class="col-6 col-md">
         <NestedPieChart
           :title="$gettext('Unchecked Errors')"
           :data="uncheckedErrors"
