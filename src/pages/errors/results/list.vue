@@ -135,6 +135,7 @@
             model="projects"
             :pk="props.row.project.id"
             :value="props.row.project.name || ''"
+            icon="mdi-sitemap"
           />
         </span>
         <span v-else-if="props.column.field == 'created_at'">
