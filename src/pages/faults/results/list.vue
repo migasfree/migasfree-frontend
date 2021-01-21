@@ -149,6 +149,7 @@
             model="fault-definitions"
             :pk="props.row.fault_definition.id"
             :value="props.row.fault_definition.name || ''"
+            icon="mdi-alert-octagram-outline"
           />
         </span>
         <span v-else-if="props.column.field == 'created_at'">
