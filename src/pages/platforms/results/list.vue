@@ -63,6 +63,7 @@
             model="platforms"
             :pk="props.row.id"
             :value="props.row.name"
+            icon="mdi-layers"
           />
         </span>
         <span v-else>
