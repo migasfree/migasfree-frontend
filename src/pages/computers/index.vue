@@ -7,7 +7,7 @@
     <SearchFilter @search="search" />
 
     <div class="row">
-      <div class="col-4 col-md">
+      <div v-if="machineData.total" class="col-4 col-md">
         <NestedPieChart
           :title="$gettext('Computers / Machine')"
           :data="machineData"
@@ -16,7 +16,7 @@
         />
       </div>
 
-      <div class="col-4 col-md">
+      <div v-if="statusData.total" class="col-4 col-md">
         <NestedPieChart
           :title="$gettext('Subscribed Computers / Status')"
           :data="statusData"
@@ -25,7 +25,7 @@
         />
       </div>
 
-      <div class="col-4 col-md">
+      <div v-if="nestedPieData.total" class="col-4 col-md">
         <NestedPieChart
           :title="$gettext('Productive Computers')"
           :data="nestedPieData"
@@ -35,7 +35,10 @@
       </div>
     </div>
 
-    <div class="row">
+    <div
+      v-if="'series' in newMonthData && newMonthData.series.length > 0"
+      class="row"
+    >
       <div class="col-12">
         <StackedBarChart
           :title="$gettext('New Computers / Month')"
@@ -45,7 +48,10 @@
       </div>
     </div>
 
-    <div class="row">
+    <div
+      v-if="'xData' in entryYearData && entryYearData.xData.length > 0"
+      class="row"
+    >
       <div class="col-12">
         <StackedBarChart
           :title="$gettext('Physical computers entering the system per year')"
