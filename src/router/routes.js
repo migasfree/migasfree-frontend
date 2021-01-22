@@ -207,6 +207,22 @@ const routes = [
       },
 
       {
+        path: '/schedules/results',
+        name: 'schedules-list',
+        component: () => import('pages/schedules/results/list')
+      },
+      {
+        path: '/schedules/add',
+        name: 'schedule-add',
+        component: () => import('pages/schedules/results/detail')
+      },
+      {
+        path: '/schedules/results/:id',
+        name: 'schedule-detail',
+        component: () => import('pages/schedules/results/detail')
+      },
+
+      {
         path: '/platforms/results',
         name: 'platforms-list',
         component: () => import('pages/platforms/results/list')
@@ -470,7 +486,7 @@ const routes = [
         path: '/devices/results/:id',
         name: 'device-detail',
         component: () => import('pages/devices/results/detail')
-      },
+      }
     ],
     meta: { authRequired: true }
   },
