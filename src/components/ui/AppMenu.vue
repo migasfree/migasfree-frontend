@@ -156,9 +156,13 @@ export default {
               to: 'packages-dashboard',
               icon: 'mdi-package-variant',
               separatorAfter: true
+            },
+            {
+              title: this.$gettext('Applications'),
+              to: 'apps-dashboard',
+              icon: 'mdi-apps'
             }
-            /* { title: this.$gettext('Apps'), to: 'applications-dashboard', icon: 'mdi-apps' },
-            { title: this.$gettext('Policies'), to: 'policies-dashboard', icon: 'mdi-shield-half-full' } */
+            /* { title: this.$gettext('Policies'), to: 'policies-dashboard', icon: 'mdi-shield-half-full' } */
           ]
         },
         {
