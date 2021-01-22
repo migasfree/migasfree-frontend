@@ -28,6 +28,7 @@
   "devDependencies": {
     "@quasar/app": "^2.1.14",
     "@quasar/quasar-app-extension-dotenv": "^1.0.5",
+    "@quasar/quasar-app-extension-qmarkdown": "^1.4.1",
     "babel-eslint": "^10.1.0",
     "easygettext": "^2.16.1",
     "eslint": "^6.8.0",
