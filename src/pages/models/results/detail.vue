@@ -85,7 +85,7 @@
                 round
                 color="negative"
                 icon="mdi-delete"
-                @click="removeDriver(index)"
+                @click="removeInline(index)"
                 ><q-tooltip><translate>Delete</translate></q-tooltip></q-btn
               >
             </q-item-section>
@@ -139,7 +139,7 @@
           <q-btn
             icon="mdi-plus"
             :label="$gettext('Add other Driver')"
-            @click="addDriver"
+            @click="addInline"
           />
         </div>
       </q-card-section>
@@ -340,7 +340,7 @@ export default {
       }
     },
 
-    addDriver() {
+    addInline() {
       this.drivers.push({
         id: 0,
         project: null,
@@ -350,7 +350,7 @@ export default {
       })
     },
 
-    removeDriver(index) {
+    removeInline(index) {
       const removedItem = this.drivers.splice(index, 1)[0]
       if (removedItem.id > 0) {
         this.removedDrivers.push(removedItem.id)
