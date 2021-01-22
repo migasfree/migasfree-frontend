@@ -336,6 +336,9 @@ export const datagridMixin = {
             case 'capability.name':
               ret.capability__id = val
               break
+            case 'category.name':
+              ret.category = val
+              break
             case 'computer.__str__':
               ret.computer__name__icontains = val
               break
@@ -350,6 +353,9 @@ export const datagridMixin = {
               break
             case 'fault_definition.name':
               ret.fault_definition_id = val
+              break
+            case 'level.name':
+              ret.level = val
               break
             case 'manufacturer.name':
               ret.manufacturer__id = val
@@ -402,6 +408,7 @@ export const datagridMixin = {
             case 'has_software_inventory':
             case 'sync_end_date__gte':
             case 'sync_end_date__lt':
+            case 'score':
             case 'search':
               ret[key] = val
               break
