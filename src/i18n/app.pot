@@ -34,6 +34,9 @@ msgstr ""
 #: ./src/pages/projects/results/detail.vue:77
 #: ./src/pages/projects/results/detail.vue:100
 #: ./src/pages/projects/results/detail.vue:110
+#: ./src/pages/schedules/results/detail.vue:74
+#: ./src/pages/schedules/results/detail.vue:143
+#: ./src/pages/schedules/results/detail.vue:157
 #: ./src/pages/scopes/results/detail.vue:78
 #: ./src/pages/stamps/results/detail.vue:74
 #: ./src/pages/stamps/results/detail.vue:89
@@ -90,6 +93,7 @@ msgstr ""
 #: ./src/pages/packages/results/list.vue:49
 #: ./src/pages/platforms/results/list.vue:47
 #: ./src/pages/projects/results/list.vue:49
+#: ./src/pages/schedules/results/list.vue:47
 #: ./src/pages/scopes/results/list.vue:47
 #: ./src/pages/stamps/results/list.vue:49
 #: ./src/pages/status-logs/results/list.vue:54
@@ -104,6 +108,10 @@ msgstr ""
 #: ./src/mixins/detail.js:32
 #: ./src/mixins/detail.js:83
 msgid "Add"
+msgstr ""
+
+#: ./src/pages/schedules/results/detail.vue:234
+msgid "Add other Delay"
 msgstr ""
 
 #: ./src/pages/models/results/detail.vue:234
@@ -146,7 +154,7 @@ msgstr ""
 #: ./src/pages/projects/results/list.vue:93
 #: ./src/pages/stamps/results/list.vue:74
 #: ./src/pages/stamps/results/list.vue:87
-#: ./src/pages/status-logs/results/list.vue:90
+#: ./src/pages/status-logs/results/list.vue:91
 #: ./src/pages/syncs/results/list.vue:79
 #: ./src/pages/syncs/results/list.vue:113
 #: ./src/pages/syncs/results/list.vue:122
@@ -221,6 +229,7 @@ msgstr ""
 #: ./src/pages/domains/results/detail.vue:32
 #: ./src/pages/fault-definitions/results/detail.vue:46
 #: ./src/pages/logical-devices/results/detail.vue:128
+#: ./src/pages/schedules/results/detail.vue:172
 #: ./src/pages/scopes/results/detail.vue:48
 msgid "Attributes"
 msgstr ""
@@ -312,7 +321,7 @@ msgstr ""
 
 #: ./src/pages/computers/results/list.vue:149
 #: ./src/pages/errors/results/list.vue:95
-#: ./src/pages/status-logs/results/list.vue:63
+#: ./src/pages/status-logs/results/list.vue:65
 msgid "By Status"
 msgstr ""
 
@@ -320,7 +329,7 @@ msgstr ""
 #: ./src/pages/errors/results/list.vue:107
 #: ./src/pages/faults/results/list.vue:114
 #: ./src/pages/migrations/results/list.vue:84
-#: ./src/pages/status-logs/results/list.vue:75
+#: ./src/pages/status-logs/results/list.vue:77
 msgid "By Subscribed Date (range)"
 msgstr ""
 
@@ -547,6 +556,8 @@ msgstr ""
 #: ./src/pages/platforms/results/list.vue:25
 #: ./src/pages/projects/results/detail.vue:34
 #: ./src/pages/projects/results/list.vue:27
+#: ./src/pages/schedules/results/detail.vue:35
+#: ./src/pages/schedules/results/list.vue:25
 #: ./src/pages/scopes/results/detail.vue:40
 #: ./src/pages/scopes/results/list.vue:25
 #: ./src/pages/stamps/results/detail.vue:34
@@ -629,6 +640,14 @@ msgstr ""
 msgid "Default Device"
 msgstr ""
 
+#: ./src/pages/schedules/results/detail.vue:141
+msgid "Delay"
+msgstr ""
+
+#: ./src/pages/schedules/results/detail.vue:26
+msgid "Delays"
+msgstr ""
+
 #: ./src/components/ui/RemoveDialog.vue:46
 #: ./src/mixins/datagrid.js:482
 #: ./src/pages/attribute-sets/results/detail.vue:255
@@ -651,6 +670,8 @@ msgstr ""
 #: ./src/pages/packages/results/detail.vue:245
 #: ./src/pages/platforms/results/detail.vue:104
 #: ./src/pages/projects/results/detail.vue:157
+#: ./src/pages/schedules/results/detail.vue:31
+#: ./src/pages/schedules/results/detail.vue:281
 #: ./src/pages/scopes/results/detail.vue:324
 #: ./src/pages/stamps/results/detail.vue:160
 #: ./src/pages/stores/results/detail.vue:119
@@ -670,6 +691,8 @@ msgstr ""
 #: ./src/pages/errors/results/detail.vue:36
 #: ./src/pages/errors/results/list.vue:116
 #: ./src/pages/fault-definitions/results/detail.vue:103
+#: ./src/pages/schedules/results/detail.vue:83
+#: ./src/pages/schedules/results/list.vue:64
 #: ./src/pages/tags/results/detail.vue:97
 #: ./src/pages/tags/results/list.vue:66
 msgid "Description"
@@ -782,6 +805,10 @@ msgstr ""
 
 #: ./src/pages/models/results/detail.vue:36
 msgid "Drivers"
+msgstr ""
+
+#: ./src/pages/schedules/results/detail.vue:155
+msgid "Duration"
 msgstr ""
 
 #: ./src/pages/user-profiles/results/detail.vue:151
@@ -953,6 +980,7 @@ msgstr ""
 #: ./src/pages/packages/results/list.vue:61
 #: ./src/pages/platforms/results/list.vue:59
 #: ./src/pages/projects/results/list.vue:61
+#: ./src/pages/schedules/results/list.vue:59
 #: ./src/pages/scopes/results/list.vue:59
 #: ./src/pages/scopes/results/list.vue:78
 #: ./src/pages/stamps/results/list.vue:61
@@ -1013,6 +1041,7 @@ msgstr ""
 #: ./src/pages/fault-definitions/results/detail.vue:12
 #: ./src/pages/formulas/results/detail.vue:12
 #: ./src/pages/models/results/detail.vue:12
+#: ./src/pages/schedules/results/detail.vue:12
 #: ./src/pages/scopes/results/detail.vue:12
 #: ./src/pages/user-profiles/results/detail.vue:18
 msgid "General"
@@ -1269,7 +1298,7 @@ msgstr ""
 #: ./src/pages/faults/results/list.vue:62
 #: ./src/pages/logical-devices/results/list.vue:48
 #: ./src/pages/migrations/results/list.vue:50
-#: ./src/pages/status-logs/results/list.vue:48
+#: ./src/pages/status-logs/results/list.vue:50
 #: ./src/pages/syncs/results/list.vue:56
 msgid "More Filters"
 msgstr ""
@@ -1304,6 +1333,8 @@ msgstr ""
 #: ./src/pages/platforms/results/list.vue:54
 #: ./src/pages/projects/results/detail.vue:75
 #: ./src/pages/projects/results/list.vue:56
+#: ./src/pages/schedules/results/detail.vue:72
+#: ./src/pages/schedules/results/list.vue:54
 #: ./src/pages/scopes/results/detail.vue:76
 #: ./src/pages/scopes/results/list.vue:54
 #: ./src/pages/stamps/results/detail.vue:111
@@ -1365,6 +1396,8 @@ msgstr ""
 #: ./src/pages/logical-devices/results/detail.vue:17
 #: ./src/pages/logical-devices/results/detail.vue:41
 #: ./src/pages/logical-devices/results/detail.vue:2
+#: ./src/pages/schedules/results/detail.vue:46
+#: ./src/pages/schedules/results/detail.vue:2
 #: ./src/pages/scopes/results/detail.vue:55
 #: ./src/pages/scopes/results/detail.vue:79
 #: ./src/pages/scopes/results/detail.vue:2
@@ -1585,6 +1618,8 @@ msgstr ""
 #: ./src/pages/packages/index.vue:28
 #: ./src/pages/packages/results/detail.vue:35
 #: ./src/pages/packages/results/list.vue:31
+#: ./src/pages/schedules/results/detail.vue:40
+#: ./src/pages/schedules/results/list.vue:30
 #: ./src/pages/stores/index.vue:28
 #: ./src/pages/stores/results/detail.vue:38
 #: ./src/pages/stores/results/list.vue:31
@@ -1615,9 +1650,10 @@ msgstr ""
 #: ./src/pages/packages/results/list.vue:44
 #: ./src/pages/platforms/results/list.vue:42
 #: ./src/pages/projects/results/list.vue:45
+#: ./src/pages/schedules/results/list.vue:42
 #: ./src/pages/scopes/results/list.vue:44
 #: ./src/pages/stamps/results/list.vue:45
-#: ./src/pages/status-logs/results/list.vue:83
+#: ./src/pages/status-logs/results/list.vue:85
 #: ./src/pages/stores/results/list.vue:43
 #: ./src/pages/syncs/results/list.vue:108
 #: ./src/pages/tags/results/list.vue:43
@@ -1655,6 +1691,7 @@ msgstr ""
 #: ./src/pages/packages/results/list.vue:40
 #: ./src/pages/platforms/results/list.vue:38
 #: ./src/pages/projects/results/list.vue:40
+#: ./src/pages/schedules/results/list.vue:38
 #: ./src/pages/scopes/results/list.vue:38
 #: ./src/pages/stamps/results/list.vue:40
 #: ./src/pages/status-logs/results/list.vue:45
@@ -1688,6 +1725,7 @@ msgstr ""
 #: ./src/pages/packages/results/detail.vue:227
 #: ./src/pages/platforms/results/detail.vue:85
 #: ./src/pages/projects/results/detail.vue:138
+#: ./src/pages/schedules/results/detail.vue:262
 #: ./src/pages/scopes/results/detail.vue:305
 #: ./src/pages/stamps/results/detail.vue:141
 #: ./src/pages/stores/results/detail.vue:100
@@ -1711,6 +1749,7 @@ msgstr ""
 #: ./src/pages/packages/results/detail.vue:219
 #: ./src/pages/platforms/results/detail.vue:69
 #: ./src/pages/projects/results/detail.vue:122
+#: ./src/pages/schedules/results/detail.vue:246
 #: ./src/pages/scopes/results/detail.vue:289
 #: ./src/pages/stamps/results/detail.vue:125
 #: ./src/pages/stores/results/detail.vue:84
@@ -1740,12 +1779,29 @@ msgstr ""
 #: ./src/pages/models/results/detail.vue:255
 #: ./src/pages/platforms/results/detail.vue:78
 #: ./src/pages/projects/results/detail.vue:131
+#: ./src/pages/schedules/results/detail.vue:255
 #: ./src/pages/scopes/results/detail.vue:298
 #: ./src/pages/stamps/results/detail.vue:134
 #: ./src/pages/stores/results/detail.vue:93
 #: ./src/pages/tags/results/detail.vue:190
 #: ./src/pages/user-profiles/results/detail.vue:447
 msgid "Save and continue editing"
+msgstr ""
+
+#: ./src/pages/schedules/results/detail.vue:23
+#: ./src/pages/schedules/results/detail.vue:41
+msgid "Schedule"
+msgstr ""
+
+#: ./src/components/ui/AppMenu.vue:120
+#: ./src/pages/schedules/results/detail.vue:44
+#: ./src/pages/schedules/results/list.vue:22
+#: ./src/pages/schedules/results/list.vue:34
+msgid "Schedules"
+msgstr ""
+
+#: ./src/pages/schedules/results/list.vue:10
+msgid "Schedules List"
 msgstr ""
 
 #: ./src/pages/scopes/results/detail.vue:23
@@ -2018,9 +2074,10 @@ msgstr ""
 #: ./src/pages/packages/results/list.vue:33
 #: ./src/pages/platforms/results/list.vue:27
 #: ./src/pages/projects/results/list.vue:33
+#: ./src/pages/schedules/results/list.vue:27
 #: ./src/pages/scopes/results/list.vue:33
 #: ./src/pages/stamps/results/list.vue:33
-#: ./src/pages/status-logs/results/list.vue:43
+#: ./src/pages/status-logs/results/list.vue:47
 #: ./src/pages/stores/results/list.vue:30
 #: ./src/pages/syncs/results/list.vue:64
 #: ./src/pages/tags/results/list.vue:30
