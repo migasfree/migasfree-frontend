@@ -149,6 +149,12 @@ export default {
         {
           label: this.$gettext('Description'),
           field: 'description'
+        },
+        {
+          label: this.$gettext('Delays count'),
+          field: 'delays_count',
+          type: 'number',
+          sortable: false
         }
       ],
       model: 'schedules',
