@@ -138,13 +138,13 @@ export default {
           icon: 'mdi-truck-delivery',
           title: this.$gettext('Release'),
           options: [
-            /* { title: this.$gettext('Deployments'), to: 'deployments-dashboard', icon: 'mdi-rocket-launch' },
+            // { title: this.$gettext('Deployments'), to: 'deployments-dashboard', icon: 'mdi-rocket-launch' },
             {
               title: this.$gettext('Schedules'),
-              to: 'schedules-dashboard',
+              to: 'schedules-list',
               icon: 'mdi-calendar-start',
               separatorAfter: true
-            }, */
+            },
             {
               title: this.$gettext('Stores'),
               to: 'stores-dashboard',
