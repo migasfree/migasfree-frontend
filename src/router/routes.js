@@ -223,6 +223,27 @@ const routes = [
       },
 
       {
+        path: '/applications',
+        name: 'apps-dashboard',
+        component: () => import('pages/applications/index')
+      },
+      {
+        path: '/applications/results',
+        name: 'apps-list',
+        component: () => import('pages/applications/results/list')
+      },
+      {
+        path: '/applications/add',
+        name: 'app-add',
+        component: () => import('pages/applications/results/detail')
+      },
+      {
+        path: '/applications/results/:id',
+        name: 'app-detail',
+        component: () => import('pages/applications/results/detail')
+      },
+
+      {
         path: '/platforms/results',
         name: 'platforms-list',
         component: () => import('pages/platforms/results/list')
