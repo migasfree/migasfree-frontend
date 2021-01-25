@@ -161,7 +161,12 @@
           </div>
 
           <div class="col-6 col-md">
-            <q-field outlined :label="$gettext('Preview')" readonly stack-label>
+            <q-field
+              outlined
+              :label="$gettext('Description Preview')"
+              readonly
+              stack-label
+            >
               <template v-slot:control>
                 <q-markdown :src="element.description"></q-markdown>
               </template>
@@ -296,7 +301,12 @@ export default {
   mixins: [detailMixin, elementMixin],
   data() {
     const title = this.$gettext('Application')
-    const element = { id: 0, score: 0, available_for_attributes: [] }
+    const element = {
+      id: 0,
+      score: 0,
+      available_for_attributes: [],
+      description: ''
+    }
 
     return {
       title,
@@ -365,7 +375,7 @@ export default {
         .then((response) => {
           Object.entries(response.data).map(([key, val]) => {
             this.categories.push({
-              id: key,
+              id: parseInt(key),
               name: val
             })
           })
@@ -394,7 +404,6 @@ export default {
     elementData() {
       let data = new FormData()
 
-      data.append('files', this.iconFile)
       data.append('name', this.element.name)
       data.append('level', this.element.level.id)
       data.append('category', this.element.category.id)
@@ -402,10 +411,27 @@ export default {
       data.append('description', this.element.description)
       data.append(
         'available_for_attributes',
-        this.element.available_for_attributes.map((item) => item.id)
+        this.element.available_for_attributes.length > 0
+          ? this.element.available_for_attributes.map((item) => item.id)
+          : []
       )
+      if (this.iconFile) {
+        data.append('icon', this.iconFile)
+      }
 
       return data
+    },
+
+    setRelated() {
+      if (typeof this.element.level === 'string')
+        this.element.level = this.levels.find(
+          (x) => x.id === this.element.level
+        )
+
+      if (typeof this.element.category === 'number')
+        this.element.category = this.categories.find(
+          (x) => x.id === this.element.category
+        )
     },
 
     addInline() {
@@ -450,8 +476,11 @@ export default {
     onRejected(rejectedEntries) {
       this.$store.dispatch(
         'ui/notifyError',
-        this.$gettext(
-          `${rejectedEntries.length} file(s) did not pass validation constraints`
+        this.$gettextInterpolate(
+          this.$gettext('%{n} file(s) did not pass validation constraints'),
+          {
+            n: rejectedEntries.length
+          }
         )
       )
     },
