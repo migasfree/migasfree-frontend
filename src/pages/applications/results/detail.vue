@@ -2,7 +2,6 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    {{ element }} {{ iconFile }}
     <Header :title="$gettext('Application')" :has-add-button="false">
       <template v-if="element.id" #append
         >:
@@ -94,7 +93,7 @@
             <div class="col-6">
               <q-img
                 v-if="element.icon"
-                :src="element.icon"
+                :src="iconPath"
                 spinner-color="white"
                 class="app-icon"
               />
@@ -340,7 +339,8 @@ export default {
       packagesByProject: [],
       removedProjects: [],
       iconFile: null,
-      confirmRemove: false
+      confirmRemove: false,
+      rand: 1
     }
   },
   computed: {
@@ -352,6 +352,10 @@ export default {
         this.element.level !== undefined &&
         this.element.score !== undefined
       )
+    },
+
+    iconPath() {
+      return `${this.element.icon}?rand=${this.rand}`
     }
   },
   methods: {
@@ -385,7 +389,7 @@ export default {
         })
 
       await this.$axios
-        .get(`/api/v1/token/projects/`)
+        .get('/api/v1/token/projects/')
         .then((response) => {
           this.projects = response.data.results
         })
@@ -530,6 +534,8 @@ export default {
             this.$store.dispatch('ui/notifyError', error)
           })
       })
+
+      this.rand = Date.now()
     }
   }
 }
