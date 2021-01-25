@@ -498,9 +498,10 @@ export default {
           return
         }
 
-        if (project.project.id > 0) {
+        if (project.id > 0) {
           this.$axios
-            .patch(`/api/v1/token/catalog/packages/${project.project.id}/`, {
+            .patch(`/api/v1/token/catalog/packages/${project.id}/`, {
+              id: project.id,
               application: this.element.id,
               project: project.project.id,
               packages_to_install:
