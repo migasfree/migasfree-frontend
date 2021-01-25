@@ -16,7 +16,7 @@
     "axios": "^0.18.1",
     "core-js": "^3.6.5",
     "echarts": "^4.9.0",
-    "quasar": "^1.15.0",
+    "quasar": "^1.15.1",
     "text-clipper": "^2.1.0",
     "typeface-dosis": "^1.1.13",
     "validator": "^12.2.0",
