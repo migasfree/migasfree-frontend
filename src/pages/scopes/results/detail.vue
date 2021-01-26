@@ -319,10 +319,6 @@ export default {
               name: item.name
             })
           })
-          if (this.element.id)
-            this.element.domain = this.domains.find(
-              (x) => x.id === this.element.domain
-            )
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
