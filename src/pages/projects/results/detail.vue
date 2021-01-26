@@ -192,7 +192,7 @@ export default {
   methods: {
     async loadRelated() {
       await this.$axios
-        .get(`/api/v1/token/platforms/`)
+        .get('/api/v1/token/platforms/')
         .then((response) => {
           this.platforms = response.data.results
         })
@@ -201,7 +201,7 @@ export default {
         })
 
       await this.$axios
-        .get(`/api/v1/public/pms/`)
+        .get('/api/v1/public/pms/')
         .then((response) => {
           Object.entries(response.data).map(([key, val]) => {
             this.pms.push({
@@ -213,6 +213,9 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
+
+      if (typeof this.element.pms === 'string')
+        this.element.pms = this.pms.find((x) => x.id === this.element.pms)
     },
 
     elementData() {
@@ -226,10 +229,10 @@ export default {
     },
 
     setRelated() {
-      this.element.platform = this.platforms.find(
-        (x) => x.id === this.element.platform
-      )
-      this.element.pms = this.pms.find((x) => x.id == this.element.pms)
+      if (typeof this.element.platform === 'number')
+        this.element.platform = this.platforms.find(
+          (x) => x.id === this.element.platform
+        )
     }
   }
 }
