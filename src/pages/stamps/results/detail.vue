@@ -196,7 +196,7 @@ export default {
   methods: {
     async loadRelated() {
       await this.$axios
-        .get(`/api/v1/token/properties/kind/`)
+        .get('/api/v1/token/properties/kind/')
         .then((response) => {
           Object.entries(response.data).map(([key, val]) => {
             this.kind.push({
@@ -210,6 +210,9 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
+
+      if (typeof this.element.kind === 'string')
+        this.element.kind = this.kind.find((x) => x.id == this.element.kind)
     },
 
     elementData() {
@@ -219,10 +222,6 @@ export default {
         enabled: this.element.enabled,
         kind: this.element.kind.id
       }
-    },
-
-    setRelated() {
-      this.element.kind = this.kind.find((x) => x.id == this.element.kind)
     }
   }
 }
