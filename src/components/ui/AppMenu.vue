@@ -161,8 +161,12 @@ export default {
               title: this.$gettext('Applications'),
               to: 'apps-dashboard',
               icon: 'mdi-apps'
+            },
+            {
+              title: this.$gettext('Policies'),
+              to: 'policies-list',
+              icon: 'mdi-shield-half-full'
             }
-            /* { title: this.$gettext('Policies'), to: 'policies-dashboard', icon: 'mdi-shield-half-full' } */
           ]
         },
         {
