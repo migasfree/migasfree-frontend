@@ -293,6 +293,13 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
+    },
+
+    setRelated() {
+      if (typeof this.element.property_att === 'number')
+        this.element.property_att = this.stamps.find(
+          (x) => x.id === this.element.property_att
+        )
     }
   }
 }
