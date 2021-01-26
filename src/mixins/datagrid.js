@@ -400,6 +400,7 @@ export const datagridMixin = {
             case 'start_date__lt':
             case 'auto_register_computers':
             case 'enabled':
+            case 'exclusive':
             case 'sort':
             case 'kind':
             case 'architecture':
