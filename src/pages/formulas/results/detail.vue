@@ -278,6 +278,14 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
+
+      if (typeof this.element.kind === 'string')
+        this.element.kind = this.kind.find((x) => x.id == this.element.kind)
+
+      if (typeof this.element.language === 'number')
+        this.element.language = this.languages.find(
+          (x) => x.id === this.element.language
+        )
     },
 
     elementData() {
@@ -289,13 +297,6 @@ export default {
         language: this.element.language.id,
         code: this.element.code
       }
-    },
-
-    setRelated() {
-      this.element.kind = this.kind.find((x) => x.id == this.element.kind)
-      this.element.language = this.languages.find(
-        (x) => x.id === this.element.language
-      )
     }
   }
 }
