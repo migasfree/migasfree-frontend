@@ -244,6 +244,22 @@ const routes = [
       },
 
       {
+        path: '/policies/results',
+        name: 'policies-list',
+        component: () => import('pages/policies/results/list')
+      },
+      {
+        path: '/policies/add',
+        name: 'policy-add',
+        component: () => import('pages/policies/results/detail')
+      },
+      {
+        path: '/policies/results/:id',
+        name: 'policy-detail',
+        component: () => import('pages/policies/results/detail')
+      },
+
+      {
         path: '/platforms/results',
         name: 'platforms-list',
         component: () => import('pages/platforms/results/list')
