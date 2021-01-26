@@ -130,8 +130,12 @@ export default {
               to: 'devices-dashboard',
               icon: 'mdi-printer',
               separatorAfter: true
+            },
+            {
+              title: this.$gettext('Devices Replacement'),
+              to: 'devices-replacement',
+              icon: 'mdi-compare-horizontal'
             }
-            // { title: this.$gettext('Device Replacement'), to: 'devices-replacement' }
           ].concat(extraDevices)
         },
         {
