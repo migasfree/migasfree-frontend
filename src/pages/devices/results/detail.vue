@@ -26,51 +26,51 @@
               :rules="[(val) => !!val || $gettext('* Required')]"
             />
           </div>
-        </div>
 
-        <div class="col-6 col-md">
-          <q-select
-            v-model="element.available_for_attributes"
-            outlined
-            use-input
-            map-options
-            multiple
-            input-debounce="0"
-            :label="$gettext('Available for Attributes')"
-            :options="attributes"
-            @filter="filterAttributes"
-            @filter-abort="abortFilterAttributes"
-          >
-            <template #no-option>
-              <q-item>
-                <q-item-section v-translate class="text-grey">
-                  No results
-                </q-item-section>
-              </q-item>
-            </template>
+          <div class="col-6 col-md">
+            <q-select
+              v-model="element.available_for_attributes"
+              outlined
+              use-input
+              map-options
+              multiple
+              input-debounce="0"
+              :label="$gettext('Available for Attributes')"
+              :options="attributes"
+              @filter="filterAttributes"
+              @filter-abort="abortFilterAttributes"
+            >
+              <template #no-option>
+                <q-item>
+                  <q-item-section v-translate class="text-grey">
+                    No results
+                  </q-item-section>
+                </q-item>
+              </template>
 
-            <template #option="scope">
-              <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                {{ attributeValue(scope.opt) }}
-              </q-item>
-            </template>
+              <template #option="scope">
+                <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                  {{ attributeValue(scope.opt) }}
+                </q-item>
+              </template>
 
-            <template #selected-item="scope">
-              <q-chip
-                removable
-                dense
-                :tabindex="scope.tabindex"
-                class="q-ma-md"
-                @remove="scope.removeAtIndex(scope.index)"
-              >
-                <MigasLink
-                  model="attributes"
-                  :pk="scope.opt.id"
-                  :value="attributeValue(scope.opt)"
-                />
-              </q-chip>
-            </template>
-          </q-select>
+              <template #selected-item="scope">
+                <q-chip
+                  removable
+                  dense
+                  :tabindex="scope.tabindex"
+                  class="q-ma-md"
+                  @remove="scope.removeAtIndex(scope.index)"
+                >
+                  <MigasLink
+                    model="attributes"
+                    :pk="scope.opt.id"
+                    :value="attributeValue(scope.opt)"
+                  />
+                </q-chip>
+              </template>
+            </q-select>
+          </div>
         </div>
       </q-card-section>
 
