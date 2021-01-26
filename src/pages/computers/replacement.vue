@@ -72,7 +72,7 @@
           color="primary"
           icon="mdi-arrow-right"
           icon-right="mdi-arrow-left"
-          label="Replace"
+          :label="$gettext('Replace')"
           :disabled="!isEnabled || loading"
           @click="replace"
         />
@@ -254,7 +254,7 @@ export default {
 
             this.$store.dispatch(
               'ui/notifySuccess',
-              this.$gettext('Replacement made!')
+              this.$gettext('Replacement done!')
             )
           })
           .catch((error) => {
