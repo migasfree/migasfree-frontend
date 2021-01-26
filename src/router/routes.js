@@ -523,6 +523,11 @@ const routes = [
         path: '/devices/results/:id',
         name: 'device-detail',
         component: () => import('pages/devices/results/detail')
+      },
+      {
+        path: '/devices/replacement',
+        name: 'devices-replacement',
+        component: () => import('pages/devices/replacement')
       }
     ],
     meta: { authRequired: true }
