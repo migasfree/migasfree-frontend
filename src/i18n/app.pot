@@ -35,7 +35,7 @@ msgstr ""
 #: ./src/pages/models/results/detail.vue:195
 #: ./src/pages/platforms/results/detail.vue:57
 #: ./src/pages/policies/results/detail.vue:89
-#: ./src/pages/policies/results/detail.vue:315
+#: ./src/pages/policies/results/detail.vue:310
 #: ./src/pages/projects/results/detail.vue:67
 #: ./src/pages/projects/results/detail.vue:77
 #: ./src/pages/projects/results/detail.vue:100
@@ -130,7 +130,7 @@ msgstr ""
 msgid "Add other Driver"
 msgstr ""
 
-#: ./src/pages/policies/results/detail.vue:515
+#: ./src/pages/policies/results/detail.vue:510
 msgid "Add other Policy Group"
 msgstr ""
 
@@ -205,17 +205,17 @@ msgstr ""
 msgid "Application"
 msgstr ""
 
-#: ./src/pages/policies/results/detail.vue:50
+#: ./src/pages/policies/results/detail.vue:46
 msgid "Application Area"
 msgstr ""
 
-#: ./src/components/ui/AppMenu.vue:138
+#: ./src/components/ui/AppMenu.vue:142
 #: ./src/pages/applications/index.vue:20
 #: ./src/pages/applications/index.vue:32
 #: ./src/pages/applications/results/detail.vue:48
 #: ./src/pages/applications/results/list.vue:22
 #: ./src/pages/applications/results/list.vue:34
-#: ./src/pages/policies/results/detail.vue:452
+#: ./src/pages/policies/results/detail.vue:447
 msgid "Applications"
 msgstr ""
 
@@ -275,7 +275,7 @@ msgstr ""
 msgid "Attribute Sets List"
 msgstr ""
 
-#: ./src/components/ui/AppMenu.vue:170
+#: ./src/components/ui/AppMenu.vue:174
 #: ./src/pages/attributes/index.vue:20
 #: ./src/pages/attributes/index.vue:32
 #: ./src/pages/attributes/results/detail.vue:41
@@ -466,7 +466,7 @@ msgstr ""
 
 #: ./src/pages/computers/results/detail.vue:219
 #: ./src/pages/domains/results/detail.vue:95
-#: ./src/pages/policies/results/detail.vue:129
+#: ./src/pages/policies/results/detail.vue:124
 msgid "Comment"
 msgstr ""
 
@@ -485,7 +485,7 @@ msgstr ""
 msgid "Computer"
 msgstr ""
 
-#: ./src/components/ui/AppMenu.vue:154
+#: ./src/components/ui/AppMenu.vue:158
 #: ./src/components/ui/SearchBox.vue:7
 #: ./src/pages/computers/index.vue:22
 #: ./src/pages/computers/index.vue:34
@@ -508,7 +508,7 @@ msgstr ""
 msgid "Computers List"
 msgstr ""
 
-#: ./src/components/ui/AppMenu.vue:159
+#: ./src/components/ui/AppMenu.vue:163
 #: ./src/pages/computers/replacement.vue:22
 #: ./src/pages/computers/replacement.vue:39
 msgid "Computers Replacement"
@@ -595,6 +595,7 @@ msgstr ""
 #: ./src/pages/device-types/results/detail.vue:34
 #: ./src/pages/device-types/results/list.vue:25
 #: ./src/pages/devices/index.vue:23
+#: ./src/pages/devices/replacement.vue:25
 #: ./src/pages/devices/results/detail.vue:35
 #: ./src/pages/devices/results/list.vue:25
 #: ./src/pages/domains/results/detail.vue:41
@@ -651,7 +652,7 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: ./src/components/ui/AppMenu.vue:151
+#: ./src/components/ui/AppMenu.vue:155
 #: ./src/pages/attributes/index.vue:28
 #: ./src/pages/attributes/results/detail.vue:37
 #: ./src/pages/attributes/results/list.vue:31
@@ -748,8 +749,8 @@ msgstr ""
 #: ./src/pages/models/results/detail.vue:281
 #: ./src/pages/packages/results/detail.vue:245
 #: ./src/pages/platforms/results/detail.vue:104
-#: ./src/pages/policies/results/detail.vue:109
-#: ./src/pages/policies/results/detail.vue:562
+#: ./src/pages/policies/results/detail.vue:105
+#: ./src/pages/policies/results/detail.vue:557
 #: ./src/pages/projects/results/detail.vue:157
 #: ./src/pages/schedules/results/detail.vue:31
 #: ./src/pages/schedules/results/detail.vue:281
@@ -788,6 +789,8 @@ msgstr ""
 msgid "desktop"
 msgstr ""
 
+#: ./src/pages/devices/replacement.vue:50
+#: ./src/pages/devices/replacement.vue:144
 #: ./src/pages/devices/results/detail.vue:23
 #: ./src/pages/devices/results/detail.vue:34
 #: ./src/pages/logical-devices/results/detail.vue:69
@@ -829,6 +832,8 @@ msgstr ""
 #: ./src/pages/devices/index.vue:20
 #: ./src/pages/devices/index.vue:28
 #: ./src/pages/devices/index.vue:32
+#: ./src/pages/devices/replacement.vue:30
+#: ./src/pages/devices/replacement.vue:34
 #: ./src/pages/devices/results/detail.vue:40
 #: ./src/pages/devices/results/detail.vue:44
 #: ./src/pages/devices/results/list.vue:22
@@ -862,6 +867,12 @@ msgstr ""
 
 #: ./src/pages/devices/results/list.vue:10
 msgid "Devices List"
+msgstr ""
+
+#: ./src/components/ui/AppMenu.vue:112
+#: ./src/pages/devices/replacement.vue:22
+#: ./src/pages/devices/replacement.vue:39
+msgid "Devices Replacement"
 msgstr ""
 
 #: ./src/pages/domains/results/detail.vue:23
@@ -916,7 +927,7 @@ msgstr ""
 #: ./src/pages/attribute-sets/results/detail.vue:69
 #: ./src/pages/fault-definitions/results/detail.vue:82
 #: ./src/pages/formulas/results/detail.vue:73
-#: ./src/pages/policies/results/detail.vue:104
+#: ./src/pages/policies/results/detail.vue:99
 #: ./src/pages/stamps/results/detail.vue:61
 #: ./src/pages/user-profiles/results/detail.vue:204
 msgid "Enabled?"
@@ -931,7 +942,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: ./src/components/ui/AppMenu.vue:186
+#: ./src/components/ui/AppMenu.vue:190
 #: ./src/pages/computers/results/detail.vue:93
 #: ./src/pages/computers/results/detail.vue:89
 #: ./src/pages/computers/results/events.vue:35
@@ -973,8 +984,8 @@ msgstr ""
 #: ./src/pages/attribute-sets/results/detail.vue:162
 #: ./src/pages/domains/results/detail.vue:175
 #: ./src/pages/fault-definitions/results/detail.vue:216
-#: ./src/pages/policies/results/detail.vue:209
-#: ./src/pages/policies/results/detail.vue:391
+#: ./src/pages/policies/results/detail.vue:204
+#: ./src/pages/policies/results/detail.vue:386
 #: ./src/pages/scopes/results/detail.vue:231
 msgid "Excluded Attributes"
 msgstr ""
@@ -983,7 +994,7 @@ msgstr ""
 msgid "Exclusive"
 msgstr ""
 
-#: ./src/pages/policies/results/detail.vue:115
+#: ./src/pages/policies/results/detail.vue:110
 msgid "Exclusive?"
 msgstr ""
 
@@ -1010,7 +1021,7 @@ msgstr ""
 msgid "Fault Definitions List"
 msgstr ""
 
-#: ./src/components/ui/AppMenu.vue:191
+#: ./src/components/ui/AppMenu.vue:195
 #: ./src/pages/computers/results/detail.vue:107
 #: ./src/pages/computers/results/detail.vue:103
 #: ./src/pages/computers/results/events.vue:40
@@ -1187,13 +1198,13 @@ msgstr ""
 msgid "Identification"
 msgstr ""
 
-#: ./src/pages/policies/results/detail.vue:35
+#: ./src/pages/policies/results/detail.vue:31
 msgid ""
 "If you check this field, it orders to uninstall the Applications\n"
 "              assigned in the priorities that have not been met."
 msgstr ""
 
-#: ./src/pages/policies/results/detail.vue:27
+#: ./src/pages/policies/results/detail.vue:23
 msgid ""
 "If you uncheck this field, the policy is disabled for all\n"
 "              computers."
@@ -1202,8 +1213,8 @@ msgstr ""
 #: ./src/pages/attribute-sets/results/detail.vue:104
 #: ./src/pages/domains/results/detail.vue:117
 #: ./src/pages/fault-definitions/results/detail.vue:158
-#: ./src/pages/policies/results/detail.vue:151
-#: ./src/pages/policies/results/detail.vue:330
+#: ./src/pages/policies/results/detail.vue:146
+#: ./src/pages/policies/results/detail.vue:325
 #: ./src/pages/scopes/results/detail.vue:173
 msgid "Included Attributes"
 msgstr ""
@@ -1370,7 +1381,7 @@ msgstr ""
 msgid "migasfree documentation"
 msgstr ""
 
-#: ./src/components/ui/AppMenu.vue:201
+#: ./src/components/ui/AppMenu.vue:205
 #: ./src/pages/computers/results/events.vue:50
 #: ./src/pages/computers/results/events.vue:46
 #: ./src/pages/computers/results/events.vue:2
@@ -1513,6 +1524,9 @@ msgstr ""
 #: ./src/pages/computers/results/detail.vue:69
 #: ./src/pages/computers/results/detail.vue:65
 #: ./src/pages/computers/results/detail.vue:2
+#: ./src/pages/devices/replacement.vue:15
+#: ./src/pages/devices/replacement.vue:53
+#: ./src/pages/devices/replacement.vue:2
 #: ./src/pages/devices/results/detail.vue:21
 #: ./src/pages/devices/results/detail.vue:2
 #: ./src/pages/domains/results/detail.vue:39
@@ -1528,11 +1542,11 @@ msgstr ""
 #: ./src/pages/logical-devices/results/detail.vue:17
 #: ./src/pages/logical-devices/results/detail.vue:41
 #: ./src/pages/logical-devices/results/detail.vue:2
-#: ./src/pages/policies/results/detail.vue:57
-#: ./src/pages/policies/results/detail.vue:81
-#: ./src/pages/policies/results/detail.vue:120
-#: ./src/pages/policies/results/detail.vue:144
-#: ./src/pages/policies/results/detail.vue:168
+#: ./src/pages/policies/results/detail.vue:53
+#: ./src/pages/policies/results/detail.vue:77
+#: ./src/pages/policies/results/detail.vue:116
+#: ./src/pages/policies/results/detail.vue:140
+#: ./src/pages/policies/results/detail.vue:164
 #: ./src/pages/policies/results/detail.vue:2
 #: ./src/pages/schedules/results/detail.vue:46
 #: ./src/pages/schedules/results/detail.vue:2
@@ -1588,7 +1602,7 @@ msgstr ""
 msgid "packages"
 msgstr ""
 
-#: ./src/components/ui/AppMenu.vue:132
+#: ./src/components/ui/AppMenu.vue:136
 #: ./src/components/ui/SearchBox.vue:15
 #: ./src/pages/packages/index.vue:20
 #: ./src/pages/packages/index.vue:32
@@ -1680,7 +1694,7 @@ msgstr ""
 msgid "PMS Status Ok"
 msgstr ""
 
-#: ./src/components/ui/AppMenu.vue:143
+#: ./src/components/ui/AppMenu.vue:147
 #: ./src/pages/policies/results/detail.vue:50
 #: ./src/pages/policies/results/list.vue:24
 #: ./src/pages/policies/results/list.vue:36
@@ -1696,7 +1710,7 @@ msgstr ""
 msgid "Policy"
 msgstr ""
 
-#: ./src/pages/policies/results/detail.vue:104
+#: ./src/pages/policies/results/detail.vue:100
 msgid "Policy Groups"
 msgstr ""
 
@@ -1715,7 +1729,7 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
-#: ./src/pages/policies/results/detail.vue:313
+#: ./src/pages/policies/results/detail.vue:308
 msgid "Priority"
 msgstr ""
 
@@ -1779,7 +1793,7 @@ msgstr ""
 msgid "RAM"
 msgstr ""
 
-#: ./src/components/ui/AppMenu.vue:116
+#: ./src/components/ui/AppMenu.vue:120
 #: ./src/pages/applications/index.vue:28
 #: ./src/pages/applications/results/detail.vue:44
 #: ./src/pages/applications/results/list.vue:30
@@ -1800,8 +1814,14 @@ msgstr ""
 msgid "Relevance to the organization"
 msgstr ""
 
+#: ./src/pages/computers/replacement.vue:128
+#: ./src/pages/devices/replacement.vue:124
+msgid "Replace"
+msgstr ""
+
 #: ./src/pages/computers/replacement.vue:116
-msgid "Replacement made!"
+#: ./src/pages/devices/replacement.vue:119
+msgid "Replacement done!"
 msgstr ""
 
 #: ./src/pages/applications/results/list.vue:44
@@ -1903,7 +1923,7 @@ msgstr ""
 #: ./src/pages/models/results/detail.vue:262
 #: ./src/pages/packages/results/detail.vue:227
 #: ./src/pages/platforms/results/detail.vue:85
-#: ./src/pages/policies/results/detail.vue:543
+#: ./src/pages/policies/results/detail.vue:538
 #: ./src/pages/projects/results/detail.vue:138
 #: ./src/pages/schedules/results/detail.vue:262
 #: ./src/pages/scopes/results/detail.vue:305
@@ -1929,7 +1949,7 @@ msgstr ""
 #: ./src/pages/models/results/detail.vue:246
 #: ./src/pages/packages/results/detail.vue:219
 #: ./src/pages/platforms/results/detail.vue:69
-#: ./src/pages/policies/results/detail.vue:527
+#: ./src/pages/policies/results/detail.vue:522
 #: ./src/pages/projects/results/detail.vue:122
 #: ./src/pages/schedules/results/detail.vue:246
 #: ./src/pages/scopes/results/detail.vue:289
@@ -1961,7 +1981,7 @@ msgstr ""
 #: ./src/pages/manufacturers/results/detail.vue:78
 #: ./src/pages/models/results/detail.vue:255
 #: ./src/pages/platforms/results/detail.vue:78
-#: ./src/pages/policies/results/detail.vue:536
+#: ./src/pages/policies/results/detail.vue:531
 #: ./src/pages/projects/results/detail.vue:131
 #: ./src/pages/schedules/results/detail.vue:255
 #: ./src/pages/scopes/results/detail.vue:298
@@ -1977,7 +1997,7 @@ msgstr ""
 msgid "Schedule"
 msgstr ""
 
-#: ./src/components/ui/AppMenu.vue:120
+#: ./src/components/ui/AppMenu.vue:124
 #: ./src/pages/schedules/results/detail.vue:44
 #: ./src/pages/schedules/results/list.vue:22
 #: ./src/pages/schedules/results/list.vue:34
@@ -2046,6 +2066,7 @@ msgid "Software Inventory copied to clipboard"
 msgstr ""
 
 #: ./src/pages/computers/replacement.vue:14
+#: ./src/pages/devices/replacement.vue:10
 msgid "Source"
 msgstr ""
 
@@ -2081,7 +2102,7 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: ./src/components/ui/AppMenu.vue:196
+#: ./src/components/ui/AppMenu.vue:200
 #: ./src/pages/computers/results/events.vue:45
 #: ./src/pages/computers/results/events.vue:41
 #: ./src/pages/computers/results/events.vue:2
@@ -2117,7 +2138,7 @@ msgstr ""
 msgid "Store"
 msgstr ""
 
-#: ./src/components/ui/AppMenu.vue:126
+#: ./src/components/ui/AppMenu.vue:130
 #: ./src/pages/stores/index.vue:20
 #: ./src/pages/stores/index.vue:32
 #: ./src/pages/stores/results/detail.vue:42
@@ -2169,7 +2190,7 @@ msgstr ""
 msgid "Synchronization"
 msgstr ""
 
-#: ./src/components/ui/AppMenu.vue:181
+#: ./src/components/ui/AppMenu.vue:185
 #: ./src/pages/computers/results/events.vue:30
 #: ./src/pages/computers/results/events.vue:26
 #: ./src/pages/computers/results/events.vue:2
@@ -2208,7 +2229,7 @@ msgid "Tag"
 msgstr ""
 
 #: ./src/components/computer/ReplacementInfo.vue:14
-#: ./src/components/ui/AppMenu.vue:175
+#: ./src/components/ui/AppMenu.vue:179
 #: ./src/pages/computers/results/detail.vue:231
 #: ./src/pages/computers/results/simulate.vue:111
 #: ./src/pages/tags/index.vue:20
@@ -2228,6 +2249,7 @@ msgid "Tags List"
 msgstr ""
 
 #: ./src/pages/computers/replacement.vue:52
+#: ./src/pages/devices/replacement.vue:48
 msgid "Target"
 msgstr ""
 
@@ -2363,7 +2385,7 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: ./src/components/ui/AppMenu.vue:164
+#: ./src/components/ui/AppMenu.vue:168
 #: ./src/pages/users/results/list.vue:22
 #: ./src/pages/users/results/list.vue:34
 msgid "Users"
