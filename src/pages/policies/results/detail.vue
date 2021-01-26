@@ -26,11 +26,6 @@
               :label="$gettext('Name')"
               lazy-rules
               :rules="[(val) => !!val || $gettext('* Required')]"
-              @input="
-                (v) => {
-                  element.name = v.toUpperCase()
-                }
-              "
             />
           </div>
         </div>
@@ -467,9 +462,21 @@ export default {
     }
   },
   methods: {
-    async loadRelated() {},
-
-    setRelated() {},
+    async loadRelated() {
+      if (this.element.id) {
+        await this.$axios
+          .get(
+            `/api/v1/token/catalog/policy-groups/?policy__id=${this.element.id}`
+          )
+          .then((response) => {
+            console.log(response)
+            this.policyGroups = response.data.results
+          })
+          .catch((error) => {
+            this.$store.dispatch('ui/notifyError', error)
+          })
+      }
+    },
 
     elementData() {
       return {
@@ -494,7 +501,8 @@ export default {
 
         if (line.id > 0) {
           this.$axios
-            .patch(`/api/v1/token/catalog/policy-groups/${delay.id}/`, {
+            .patch(`/api/v1/token/catalog/policy-groups/${line.id}/`, {
+              policy: this.element.id,
               priority: line.priority,
               included_attributes: line.included_attributes.map(
                 (item) => item.id
@@ -510,6 +518,7 @@ export default {
         } else {
           this.$axios
             .post('/api/v1/token/catalog/policy-groups/', {
+              policy: this.element.id,
               priority: line.priority,
               included_attributes: line.included_attributes.map(
                 (item) => item.id
@@ -541,9 +550,9 @@ export default {
           ? parseInt(this.policyGroups[this.policyGroups.length - 1].priority) +
             1
           : 1,
-        includes_attributes: null,
-        excluded_attributes: null,
-        applications: null
+        includes_attributes: [],
+        excluded_attributes: [],
+        applications: []
       })
     },
 
