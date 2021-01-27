@@ -11,7 +11,7 @@
         <NestedPieChart
           :title="$gettext('Enabled Deployments')"
           :data="enabledData"
-          :url="url"
+          :url="enabledUrl"
           @getLink="goTo"
         />
       </div>
@@ -80,17 +80,11 @@ export default {
     }
   },
   computed: {
-    /* statusUrl() {
+    enabledUrl() {
       return Object.assign({}, this.url, {
-        query: { status_in: 'intended,reserved,unknown,in repair,available' }
+        query: { enabled: true }
       })
-    },
-
-    productiveUrl() {
-      return Object.assign({}, this.url, {
-        query: { status_in: 'intended,reserved,unknown' }
-      })
-    } */
+    }
   },
   async mounted() {
     await this.$axios
@@ -123,24 +117,6 @@ export default {
   methods: {
     goTo(params) {
       console.log(params)
-      if (params.data.machine) {
-        this.$router.push({
-          name: this.url.name,
-          query: Object.assign(params.url.query, {
-            machine: params.data.machine
-          })
-        })
-      }
-
-      if (params.data.status__in) {
-        this.$router.push({
-          name: this.url.name,
-          query: Object.assign(params.url.query, {
-            status_in: params.data.status__in
-          })
-        })
-      }
-
       if (params.data.project_id) {
         this.$router.push({
           name: this.url.name,
@@ -148,31 +124,6 @@ export default {
             project_id: params.data.project_id
           })
         })
-      }
-
-      if (params.data.platform_id) {
-        this.$router.push({
-          name: this.url.name,
-          query: Object.assign(params.url.query, {
-            platform_id: params.data.platform_id
-          })
-        })
-      }
-
-      if (params.data.created_at__lt) {
-        let query = {
-          created_at__gte: params.data.created_at__gte,
-          created_at__lt: params.data.created_at__lt
-        }
-
-        if (params.data.project__id__exact) {
-          Object.assign(query, { project_id: params.data.project__id__exact })
-        }
-        if (params.data.machine) {
-          Object.assign(query, { machine: params.data.machine })
-        }
-        console.log(query)
-        this.$router.push(Object.assign(this.url, { query }))
       }
     },
 
