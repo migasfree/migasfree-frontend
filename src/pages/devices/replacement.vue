@@ -13,7 +13,6 @@
         <q-card>
           <q-card-section>
             <div v-translate class="text-h5 q-mt-sm q-mb-xs">Source</div>
-            <pre>{{ source }}</pre>
 
             <q-select
               v-model="source"
@@ -82,7 +81,6 @@
         <q-card>
           <q-card-section>
             <div v-translate class="text-h5 q-mt-sm q-mb-xs">Target</div>
-            <pre>{{ target }}</pre>
 
             <q-select
               v-model="target"
@@ -241,19 +239,15 @@ export default {
             }
           )
           .then((response) => {
-            /* let tmp = null
+            let tmp = null
 
-            tmp = this.source.status
-            this.$set(this.source, 'status', this.target.status)
-            this.$set(this.target, 'status', tmp)
-
-            tmp = this.source.tags
-            this.$set(this.source, 'tags', this.target.tags)
-            this.$set(this.target, 'tags', tmp)
-
-            tmp = this.source.devices
-            this.$set(this.source, 'devices', this.target.devices)
-            this.$set(this.target, 'devices', tmp) */
+            tmp = this.source.logical_devices
+            this.$set(
+              this.source,
+              'logical_devices',
+              this.target.logical_devices
+            )
+            this.$set(this.target, 'logical_devices', tmp)
 
             this.$store.dispatch(
               'ui/notifySuccess',
