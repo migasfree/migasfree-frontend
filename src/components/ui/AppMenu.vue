@@ -142,7 +142,11 @@ export default {
           icon: 'mdi-truck-delivery',
           title: this.$gettext('Release'),
           options: [
-            // { title: this.$gettext('Deployments'), to: 'deployments-dashboard', icon: 'mdi-rocket-launch' },
+            {
+              title: this.$gettext('Deployments'),
+              to: 'deployments-dashboard',
+              icon: 'mdi-rocket-launch'
+            },
             {
               title: this.$gettext('Schedules'),
               to: 'schedules-list',
