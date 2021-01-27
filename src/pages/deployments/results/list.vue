@@ -69,29 +69,37 @@
         <span v-else-if="props.column.field == 'project.name'">
           <MigasLink
             model="projects"
-            :pk="props.row.id"
-            :value="props.row.name"
+            :pk="props.row.project.id"
+            :value="props.row.project.name"
             icon="mdi-sitemap"
           />
         </span>
         <span v-else-if="props.column.field == 'domain.name'">
           <MigasLink
+            v-if="props.row.domain"
             model="domains"
-            :pk="props.row.id"
-            :value="props.row.name"
+            :pk="props.row.domain.id"
+            :value="props.row.domain.name"
             icon="mdi-earth"
           />
         </span>
         <span v-else-if="props.column.field == 'schedule.name'">
           <MigasLink
+            v-if="props.row.schedule"
             model="schedules"
-            :pk="props.row.id"
-            :value="props.row.name"
+            :pk="props.row.schedule.id"
+            :value="props.row.schedule.name"
             icon="mdi-calendar-start"
           />
         </span>
         <span v-else-if="props.column.field == 'enabled'">
           <BooleanView v-model="props.row.enabled" />
+        </span>
+        <span v-else-if="props.column.field == 'start_date'">
+          {{ showDate(props.row.start_date, 'YYYY-MM-DD') }}
+        </span>
+        <span v-else-if="props.column.field == 'source'">
+          {{ resolveSource(props.row.source) }}
         </span>
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
@@ -117,6 +125,7 @@ import Header from 'components/ui/Header'
 import BooleanView from 'components/ui/BooleanView'
 import MigasLink from 'components/MigasLink'
 import { datagridMixin } from 'mixins/datagrid'
+import { dateMixin } from 'mixins/date'
 
 export default {
   meta() {
@@ -131,7 +140,7 @@ export default {
     BooleanView,
     MigasLink
   },
-  mixins: [datagridMixin],
+  mixins: [datagridMixin, dateMixin],
   data() {
     return {
       title: this.$gettext('Deployments'),
@@ -148,7 +157,7 @@ export default {
         {
           text: this.$gettext('Deployments'),
           icon: 'mdi-rocket-launch',
-          to: 'apps-dashboard'
+          to: 'deployments-dashboard'
         },
         {
           text: this.$gettext('Results')
@@ -190,19 +199,6 @@ export default {
           }
         },
         {
-          field: 'level.id',
-          hidden: true
-        },
-        {
-          label: this.$gettext('Level'),
-          field: 'level.name',
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
-        },
-        {
           field: 'domain.id',
           hidden: true
         },
@@ -214,6 +210,44 @@ export default {
             placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
+        },
+        {
+          label: this.$gettext('Source'),
+          field: 'source',
+          filterOptions: {
+            enabled: true,
+            placeholder: this.$gettext('All'),
+            trigger: 'enter',
+            filterDropdownItems: [
+              { value: 'I', text: this.$gettext('Internal') },
+              { value: 'E', text: this.$gettext('External') }
+            ]
+          }
+        },
+        {
+          label: this.$gettext('Enabled'),
+          field: 'enabled',
+          filterOptions: {
+            enabled: true,
+            placeholder: this.$gettext('All'),
+            trigger: 'enter',
+            filterDropdownItems: [
+              { value: true, text: this.$gettext('Yes') },
+              { value: false, text: this.$gettext('No') }
+            ]
+          }
+        },
+        {
+          label: this.$gettext('Start Date'),
+          field: 'start_date'
+        },
+        {
+          field: 'schedule.id',
+          hidden: true
+        },
+        {
+          label: this.$gettext('Schedule'),
+          field: 'schedule.name'
         }
       ],
       model: 'deployments',
@@ -257,6 +291,17 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
+    },
+
+    resolveSource(value) {
+      switch (value) {
+        case 'I':
+          return this.$gettext('Internal')
+        case 'E':
+          return this.$gettext('External')
+        default:
+          return ''
+      }
     }
   }
 }
