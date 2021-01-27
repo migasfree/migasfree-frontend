@@ -223,6 +223,17 @@ const routes = [
       },
 
       {
+        path: '/deployments',
+        name: 'deployments-dashboard',
+        component: () => import('pages/deployments/index')
+      },
+      {
+        path: '/deployments/results',
+        name: 'deployments-list',
+        component: () => import('pages/deployments/results/list')
+      },
+
+      {
         path: '/applications',
         name: 'apps-dashboard',
         component: () => import('pages/applications/index')
