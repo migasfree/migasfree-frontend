@@ -186,6 +186,17 @@ export const datagridMixin = {
           x.field === 'model.manufacturer.name'
       ).filterOptions.filterValue = this.$route.query.manufacturer_id
     }
+
+    if (this.$route.query.enabled) {
+      this.updateParams({
+        columnFilters: {
+          enabled: this.$route.query.enabled
+        }
+      })
+      this.columns.find(
+        (x) => x.field === 'enabled'
+      ).filterOptions.filterValue = this.$route.query.enabled
+    }
   },
   async mounted() {
     await this.loadFilters()
@@ -410,6 +421,7 @@ export const datagridMixin = {
             case 'sync_end_date__gte':
             case 'sync_end_date__lt':
             case 'score':
+            case 'source':
             case 'search':
               ret[key] = val
               break
