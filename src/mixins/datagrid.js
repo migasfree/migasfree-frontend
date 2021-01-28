@@ -394,6 +394,9 @@ export const datagridMixin = {
             case 'property_att':
               ret.property_att__id = val
               break
+            case 'schedule.name':
+              ret.schedule__id = val
+              break
             case 'status_in':
               if (this.model === 'computers') ret.status__in = val
               else ret.computer__status__in = val
