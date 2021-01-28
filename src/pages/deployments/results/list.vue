@@ -286,8 +286,8 @@ export default {
         schedule: {
           items: [
             { id: '', name: this.$gettext('All') },
-            { id: true, name: this.$gettext('without schedule') },
-            { id: false, name: this.$gettext('with schedule') }
+            { id: 1, name: this.$gettext('without schedule') },
+            { id: 0, name: this.$gettext('with schedule') }
           ],
           selected: null
         }
@@ -356,7 +356,7 @@ export default {
     onScheduleFilter(params) {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
-          schedule: params.id
+          schedule: params.id ? true : params.id === 0 ? false : ''
         })
       })
       this.loadItems()
