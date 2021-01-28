@@ -8,17 +8,43 @@
       @new="$router.push({ name: 'deployment-add' })"
     />
 
-    <SearchFilter
-      v-model="tableFilters.search"
-      @search="onSearch"
-      @clear="onSearchClear"
-    />
+    <q-list class="more-filters" bordered>
+      <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">
+        <SearchFilter
+          v-model="tableFilters.search"
+          @search="onSearch"
+          @clear="onSearchClear"
+        />
 
-    <div class="row q-pa-md">
-      <div class="col-12">
-        <q-btn :label="$gettext('Reset all filters')" @click="resetFilters" />
-      </div>
-    </div>
+        <div class="row q-pa-md q-col-gutter-lg">
+          <div class="col-sm-6 col-md-4">
+            <q-select
+              v-model="tableFilters.schedule.selected"
+              :options="tableFilters.schedule.items"
+              :label="$gettext('By Schedule')"
+              dense
+              outlined
+              option-value="id"
+              option-label="name"
+              @input="onScheduleFilter"
+            >
+              <template #before>
+                <q-icon name="mdi-filter" />
+              </template>
+            </q-select>
+          </div>
+        </div>
+
+        <div class="row q-pa-md">
+          <div class="col-12">
+            <q-btn
+              :label="$gettext('Reset all filters')"
+              @click="resetFilters"
+            />
+          </div>
+        </div>
+      </q-expansion-item>
+    </q-list>
 
     <vue-good-table
       ref="myTable"
@@ -255,6 +281,17 @@ export default {
           }
         }
       ],
+      tableFilters: {
+        search: '',
+        schedule: {
+          items: [
+            { id: '', name: this.$gettext('All') },
+            { id: true, name: this.$gettext('without schedule') },
+            { id: false, name: this.$gettext('with schedule') }
+          ],
+          selected: null
+        }
+      },
       model: 'deployments',
       detailRoute: 'deployment-detail'
     }
@@ -314,6 +351,15 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
+    },
+
+    onScheduleFilter(params) {
+      this.updateParams({
+        columnFilters: Object.assign(this.serverParams.columnFilters, {
+          schedule: params.id
+        })
+      })
+      this.loadItems()
     },
 
     resolveSource(value) {
