@@ -247,7 +247,12 @@ export default {
         },
         {
           label: this.$gettext('Schedule'),
-          field: 'schedule.name'
+          field: 'schedule.name',
+          filterOptions: {
+            enabled: true,
+            placeholder: this.$gettext('Filter'),
+            trigger: 'enter'
+          }
         }
       ],
       model: 'deployments',
@@ -279,6 +284,24 @@ export default {
         .then((response) => {
           this.columns.find(
             (x) => x.field === 'domain.name'
+          ).filterOptions.filterDropdownItems = response.data.results.map(
+            (item) => {
+              return {
+                value: item.id,
+                text: item.name
+              }
+            }
+          )
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+
+      await this.$axios
+        .get('/api/v1/token/schedules/')
+        .then((response) => {
+          this.columns.find(
+            (x) => x.field === 'schedule.name'
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
               return {
