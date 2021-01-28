@@ -197,6 +197,16 @@ export const datagridMixin = {
         (x) => x.field === 'enabled'
       ).filterOptions.filterValue = this.$route.query.enabled
     }
+
+    if (this.$route.query.schedule) {
+      this.updateParams({
+        columnFilters: { schedule: this.$route.query.schedule }
+      })
+      this.tableFilters.schedule.selected = this.findById(
+        this.tableFilters.schedule.items,
+        this.$route.query.schedule
+      ).label
+    }
   },
   async mounted() {
     await this.loadFilters()
@@ -393,6 +403,9 @@ export const datagridMixin = {
               break
             case 'property_att':
               ret.property_att__id = val
+              break
+            case 'schedule':
+              ret.schedule__isnull = val
               break
             case 'schedule.name':
               ret.schedule__id = val
