@@ -42,6 +42,7 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
 import NestedPieChart from 'components/chart/NestedPie'
+import _merge from 'lodash/merge'
 
 export default {
   meta() {
@@ -117,14 +118,25 @@ export default {
   methods: {
     goTo(params) {
       console.log(params)
+
+      let query = params.url.query || {}
+
       if (params.data.project_id) {
-        this.$router.push({
-          name: this.url.name,
-          query: Object.assign(params.url.query, {
-            project_id: params.data.project_id
-          })
-        })
+        query = _merge(query, { project_id: params.data.project_id })
       }
+
+      if ('schedule' in params.data) {
+        query = _merge(query, { schedule: params.data.schedule })
+      }
+
+      if (params.data.enabled) {
+        query = _merge(query, { enabled: params.data.enabled })
+      }
+
+      this.$router.push({
+        name: this.url.name,
+        query
+      })
     },
 
     search(value) {
