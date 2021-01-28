@@ -198,14 +198,21 @@ export const datagridMixin = {
       ).filterOptions.filterValue = this.$route.query.enabled
     }
 
-    if (this.$route.query.schedule) {
+    if (typeof this.$route.query.schedule === 'string') {
       this.updateParams({
         columnFilters: { schedule: this.$route.query.schedule }
       })
+      const value =
+        this.$route.query.schedule === 'true'
+          ? 1
+          : this.$route.query.schedule === 'false'
+          ? 0
+          : ''
+
       this.tableFilters.schedule.selected = this.findById(
         this.tableFilters.schedule.items,
-        this.$route.query.schedule
-      ).label
+        value
+      ).name
     }
   },
   async mounted() {
