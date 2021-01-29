@@ -1,15 +1,19 @@
 <template>
   <div class="row">
     <q-item class="col-12">
-      <q-item-section v-if="hasAddButton" avatar>
-        <q-btn
-          fab-mini
-          dark
-          color="primary"
-          icon="mdi-plus"
-          @click="$emit('new')"
-        />
-      </q-item-section>
+      <template v-if="addRoutes.length > 0">
+        <q-item-section v-for="(item, index) in addRoutes" :key="index" avatar>
+          <q-btn
+            fab-mini
+            dark
+            color="primary"
+            icon="mdi-plus"
+            @click="$router.push({ name: item.route })"
+          >
+            <q-tooltip v-if="item.title">{{ item.title }}</q-tooltip>
+          </q-btn>
+        </q-item-section>
+      </template>
 
       <q-item-section>
         <h2 class="text-h3">
@@ -27,7 +31,13 @@ export default {
   props: {
     title: { type: String, required: true },
     results: { type: Number, required: false, default: null },
-    hasAddButton: { type: Boolean, required: false, default: true }
+    addRoutes: {
+      type: Array,
+      required: false,
+      default() {
+        return []
+      }
+    }
   }
 }
 </script>
