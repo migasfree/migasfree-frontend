@@ -5,7 +5,7 @@
     <Header
       :title="title"
       :results="totalRecords"
-      @new="$router.push({ name: 'device-type-add' })"
+      :add-routes="[{ route: 'device-type-add' }]"
     />
 
     <SearchFilter

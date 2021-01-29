@@ -5,7 +5,7 @@
     <Header
       :title="title"
       :results="totalRecords"
-      @new="$router.push({ name: 'logical-device-add' })"
+      :add-routes="[{ route: 'logical-device-add' }]"
     />
 
     <q-list class="more-filters" bordered>

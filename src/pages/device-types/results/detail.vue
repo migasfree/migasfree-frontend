@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="$gettext('Device Type')" :has-add-button="false">
+    <Header :title="$gettext('Device Type')">
       <template v-if="element.id" #append
         >:
         <MigasLink

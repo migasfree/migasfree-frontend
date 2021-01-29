@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :has-add-button="false" />
+    <Header :title="title" />
 
     <SearchFilter @search="search" />
 

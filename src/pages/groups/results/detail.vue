@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="$gettext('Group')" :has-add-button="false">
+    <Header :title="$gettext('Group')">
       <template v-if="element.id" #append>: {{ element.name }} </template>
     </Header>
 

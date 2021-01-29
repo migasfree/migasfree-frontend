@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="$gettext('Logical Device')" :has-add-button="false">
+    <Header :title="$gettext('Logical Device')">
       <template v-if="element.id" #append
         >:
         <MigasLink
@@ -262,9 +262,7 @@ export default {
       return {
         device: this.element.device.id,
         capability: this.element.capability.id,
-        attributes: this.element.attributes.map(
-          (item) => item.id
-        ),
+        attributes: this.element.attributes.map((item) => item.id),
         alternative_capability_name: this.element.alternative_capability_name
       }
     },

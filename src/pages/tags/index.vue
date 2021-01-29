@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" @new="$router.push({ name: 'tag-add' })" />
+    <Header :title="title" :add-routes="[{ route: 'tag-add' }]" />
 
     <SearchFilter @search="search" />
 

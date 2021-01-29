@@ -5,7 +5,7 @@
     <Header
       :title="title"
       :results="totalRecords"
-      @new="$router.push({ name: 'user-profile-add' })"
+      :add-routes="[{ route: 'user-profile-add' }]"
     />
 
     <SearchFilter

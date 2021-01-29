@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :results="totalRecords" :has-add-button="false" />
+    <Header :title="title" :results="totalRecords" />
 
     <q-list class="more-filters" bordered>
       <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">

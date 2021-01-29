@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="$gettext('Error')" :has-add-button="false">
+    <Header :title="$gettext('Error')">
       <template v-if="element.id" #append>: {{ element.__str__ }}</template>
     </Header>
 

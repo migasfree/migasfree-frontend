@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="$gettext('User Profile')" :has-add-button="false">
+    <Header :title="$gettext('User Profile')">
       <template v-if="element.id" #append
         >:
         <MigasLink

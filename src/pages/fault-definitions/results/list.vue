@@ -5,7 +5,7 @@
     <Header
       :title="title"
       :results="totalRecords"
-      @new="$router.push({ name: 'fault-definition-add' })"
+      :add-routes="[{ route: 'fault-definition-add' }]"
     />
 
     <SearchFilter

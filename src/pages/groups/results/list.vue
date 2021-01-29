@@ -5,7 +5,7 @@
     <Header
       :title="title"
       :results="totalRecords"
-      @new="$router.push({ name: 'group-add' })"
+      :add-routes="[{ route: 'group-add' }]"
     />
 
     <SearchFilter
@@ -90,7 +90,7 @@ export default {
   components: {
     Breadcrumbs,
     SearchFilter,
-    Header,
+    Header
   },
   mixins: [datagridMixin],
   data() {
@@ -135,7 +135,7 @@ export default {
             placeholder: this.$gettext('Filter'),
             trigger: 'enter'
           }
-        },
+        }
       ],
       model: 'accounts/groups',
       detailRoute: 'group-detail'

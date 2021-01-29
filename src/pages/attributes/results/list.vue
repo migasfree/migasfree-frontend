@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :results="totalRecords" :has-add-button="false" />
+    <Header :title="title" :results="totalRecords" />
 
     <SearchFilter
       v-model="tableFilters.search"

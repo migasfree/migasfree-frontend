@@ -3,7 +3,7 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <template v-if="element.id">
-      <Header :title="$gettext('Attribute')" :has-add-button="false">
+      <Header :title="$gettext('Attribute')">
         <template v-if="element.id" #append
           >:
           <MigasLink

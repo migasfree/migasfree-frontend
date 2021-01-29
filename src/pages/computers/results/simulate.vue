@@ -3,10 +3,7 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <template v-if="computer.id">
-      <Header
-        :title="$gettext('Simulate Synchronization')"
-        :has-add-button="false"
-      >
+      <Header :title="$gettext('Simulate Synchronization')">
         <template v-if="computer.id" #append
           >:
           <MigasLink
