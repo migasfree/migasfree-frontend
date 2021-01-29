@@ -2,7 +2,19 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" @new="$router.push({ name: 'deployment-add' })" />
+    <Header
+      :title="title"
+      :add-routes="[
+        {
+          title: $gettext('Internal Source'),
+          route: 'internal-deployment-add'
+        },
+        {
+          title: $gettext('External Source'),
+          route: 'external-deployment-add'
+        }
+      ]"
+    />
 
     <SearchFilter @search="search" />
 
