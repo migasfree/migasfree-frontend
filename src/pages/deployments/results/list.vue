@@ -5,7 +5,16 @@
     <Header
       :title="title"
       :results="totalRecords"
-      @new="$router.push({ name: 'deployment-add' })"
+      :add-routes="[
+        {
+          title: $gettext('Internal Source'),
+          route: 'internal-deployment-add'
+        },
+        {
+          title: $gettext('External Source'),
+          route: 'external-deployment-add'
+        }
+      ]"
     />
 
     <q-list class="more-filters" bordered>
@@ -73,7 +82,7 @@
             size="sm"
             icon="mdi-pencil"
             color="primary"
-            @click="edit(props.row.id)"
+            @click="edit(props.row)"
           />
           <q-btn
             class="q-ma-xs"
@@ -293,7 +302,7 @@ export default {
         }
       },
       model: 'deployments',
-      detailRoute: 'deployment-detail'
+      detailRoute: 'internal-deployment-detail'
     }
   },
   methods: {
@@ -371,6 +380,12 @@ export default {
         default:
           return ''
       }
+    },
+
+    edit(obj) {
+      let route = this.detailRoute
+      if (obj.source === 'E') route = 'external-deployment-detail'
+      this.$router.push({ name: route, params: { id: obj.id } })
     }
   }
 }
