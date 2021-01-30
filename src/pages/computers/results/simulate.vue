@@ -279,6 +279,19 @@ export default {
         .get(`/api/v1/token/computers/${this.computer.id}/sync/simulation/`)
         .then((response) => {
           this.simulation = response.data
+          if ('logical_devices' in this.simulation)
+            Object.entries(this.simulation.logical_devices).map(
+              ([key, item]) => {
+                item.icon = 'mdi-printer-settings'
+              }
+            )
+
+          if ('fault_definitions' in this.simulation)
+            Object.entries(this.simulation.fault_definitions).map(
+              ([key, item]) => {
+                item.icon = 'mdi-alert-octagram-outline'
+              }
+            )
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
