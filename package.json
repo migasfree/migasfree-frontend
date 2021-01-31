@@ -12,7 +12,7 @@
     "gettext-compile": "gettext-compile --output src/i18n/translations.json src/i18n/*.po"
   },
   "dependencies": {
-    "@quasar/extras": "^1.9.13",
+    "@quasar/extras": "^1.9.15",
     "axios": "^0.18.1",
     "core-js": "^3.6.5",
     "echarts": "^4.9.0",
@@ -22,7 +22,7 @@
     "validator": "^12.2.0",
     "vue-echarts": "^5.0.0-beta.0",
     "vue-gettext": "^2.1.12",
-    "vue-good-table": "^2.21.2",
+    "vue-good-table": "^2.21.3",
     "vue-pluralize": "^0.0.2"
   },
   "devDependencies": {
