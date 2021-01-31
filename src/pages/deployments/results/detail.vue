@@ -415,6 +415,15 @@
                 />
               </div>
             </div>
+
+            <div v-if="computersDelayData" class="row q-pa-md q-gutter-md">
+              <div class="col-md">
+                <StackedBarChart
+                  :title="$gettext('Provided Computers / Delay')"
+                  :data="computersDelayData"
+                />
+              </div>
+            </div>
           </q-card-section>
         </q-card>
       </div>
@@ -478,6 +487,7 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import RemoveDialog from 'components/ui/RemoveDialog'
+import StackedBarChart from 'components/chart/StackedBar'
 import { detailMixin } from 'mixins/detail'
 import { elementMixin } from 'mixins/element'
 import { dateMixin } from 'mixins/date'
@@ -492,7 +502,8 @@ export default {
     Breadcrumbs,
     Header,
     MigasLink,
-    RemoveDialog
+    RemoveDialog,
+    StackedBarChart
   },
   mixins: [detailMixin, elementMixin, dateMixin],
   data() {
@@ -550,6 +561,7 @@ export default {
           name: this.$gettext('External')
         }
       ],
+      computersDelayData: {},
       isValid: true,
       confirmRemove: false
     }
@@ -618,6 +630,32 @@ export default {
         this.element.default_excluded_packages = this.element.default_excluded_packages.join(
           '\n'
         )
+
+        if (this.element.schedule) {
+          await this.$axios
+            .get(
+              `/api/v1/token/stats/deployments/${this.element.id}/computers/delay/`
+            )
+            .then((response) => {
+              const series = []
+
+              Object.entries(response.data.data).map(([key, val]) => {
+                series.push({
+                  type: 'line',
+                  smooth: true,
+                  name: key,
+                  data: val
+                })
+              })
+              this.computersDelayData = {
+                xData: response.data.x_labels,
+                series
+              }
+            })
+            .catch((error) => {
+              this.$store.dispatch('ui/notifyError', error)
+            })
+        }
       }
     },
 
