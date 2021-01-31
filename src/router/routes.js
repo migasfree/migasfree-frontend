@@ -232,6 +232,16 @@ const routes = [
         name: 'deployments-list',
         component: () => import('pages/deployments/results/list')
       },
+      {
+        path: '/deployments/add',
+        name: 'deployment-add',
+        component: () => import('pages/deployments/results/detail')
+      },
+      {
+        path: '/deployments/results/:id',
+        name: 'deployment-detail',
+        component: () => import('pages/deployments/results/detail')
+      },
 
       {
         path: '/applications',
