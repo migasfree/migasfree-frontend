@@ -77,8 +77,8 @@ export default {
   watch: {
     data: {
       handler: function(val, oldVal) {
-        this.options.series = val.series
-        this.options.xAxis.data = val.xData
+        this.$set(this.options, 'series', val.series)
+        this.$set(this.options.xAxis, 'data', val.xData)
       },
       deep: true
     },
