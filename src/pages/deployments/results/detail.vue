@@ -625,7 +625,7 @@ export default {
       let data = {
         enabled: this.element.enabled,
         name: this.element.name,
-        project: this.element.project.id,
+        project: this.element.project ? this.element.project.id : null,
         domain: this.element.domain ? this.element.domain.id : null,
         comment: this.element.comment,
         source: this.element.source,
@@ -660,8 +660,12 @@ export default {
       }
 
       if (this.element.source === 'I') {
-        data.available_packages = this.element.available_packages
-        // data.available_package_sets = this.element.available_package_sets
+        data.available_packages = this.element.available_packages.map(
+          (item) => item.id
+        )
+        /* data.available_package_sets = this.element.available_package_sets.map(
+          (item) => item.id
+        ) */
       }
 
       if (this.element.source === 'E') {
@@ -702,7 +706,7 @@ export default {
 
     filterPackages(val, update, abort) {
       // call abort() at any time if you can't retrieve data somehow
-      if (val.length < 3) {
+      if (val.length < 3 || this.element.project === undefined) {
         abort()
         return
       }
@@ -710,7 +714,9 @@ export default {
       update(() => {
         const needle = val.toLowerCase()
         this.$axios
-          .get('/api/v1/token/packages/', { params: { search: needle } })
+          .get('/api/v1/token/packages/', {
+            params: { search: needle, project__id: this.element.project.id }
+          })
           .then((response) => {
             this.packages = response.data.results
           })
