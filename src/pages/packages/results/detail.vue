@@ -11,6 +11,20 @@
           :value="element.fullname"
           icon="mdi-package-variant"
         />
+        <q-btn
+          v-if="element.store.id"
+          class="q-ma-md"
+          size="md"
+          icon="mdi-information"
+          :label="$gettext('Package Information')"
+          color="info"
+          @click="
+            $router.push({
+              name: 'package-information',
+              params: { id: element.id }
+            })
+          "
+        />
       </template>
     </Header>
 
