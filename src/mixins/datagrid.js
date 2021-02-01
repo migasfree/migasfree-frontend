@@ -87,6 +87,15 @@ export const datagridMixin = {
       ).filterOptions.filterValue = this.$route.query.project_id
     }
 
+    if (this.$route.query.store_id) {
+      this.updateParams({
+        columnFilters: { 'store.name': this.$route.query.store_id }
+      })
+      this.columns.find(
+        (x) => x.field === 'store.name'
+      ).filterOptions.filterValue = this.$route.query.store_id
+    }
+
     if ('checked' in this.$route.query) {
       this.updateParams({
         columnFilters: { checked: this.$route.query.checked }
