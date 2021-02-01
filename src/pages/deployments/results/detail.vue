@@ -418,7 +418,7 @@
               <div v-if="element.timeline" class="col-md">
                 <q-field outlined :label="$gettext('Timeline')" stack-label>
                   <template v-slot:control>
-                    <Timeline :id="element.id" :data="element.timeline" />
+                    <Timeline :id="element.id" v-model="element.timeline" />
                   </template>
                 </q-field>
               </div>
@@ -616,15 +616,6 @@ export default {
         })
 
       if (this.element.id) {
-        await this.$axios
-          .get(`/api/v1/token/stats/deployments/${this.element.id}/timeline/`)
-          .then((response) => {
-            this.element.timeline = response
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-
         this.element.packages_to_install = this.element.packages_to_install.join(
           '\n'
         )
@@ -640,6 +631,20 @@ export default {
         this.element.default_excluded_packages = this.element.default_excluded_packages.join(
           '\n'
         )
+      }
+      this.updateSchedule()
+    },
+
+    async updateSchedule() {
+      if (this.element.id) {
+        await this.$axios
+          .get(`/api/v1/token/stats/deployments/${this.element.id}/timeline/`)
+          .then((response) => {
+            this.$set(this.element, 'timeline', response.data)
+          })
+          .catch((error) => {
+            this.$store.dispatch('ui/notifyError', error)
+          })
 
         if (this.element.schedule) {
           await this.$axios
@@ -726,6 +731,10 @@ export default {
       }
 
       return data
+    },
+
+    async updateRelated() {
+      await this.updateSchedule()
     },
 
     filterAttributes(val, update, abort) {
