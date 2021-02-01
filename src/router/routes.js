@@ -186,6 +186,22 @@ const routes = [
       },
 
       {
+        path: '/package-sets/results',
+        name: 'package-sets-list',
+        component: () => import('pages/package-sets/results/list')
+      },
+      {
+        path: '/package-sets/add',
+        name: 'package-set-add',
+        component: () => import('pages/package-sets/results/detail')
+      },
+      {
+        path: '/package-sets/results/:id',
+        name: 'package-set-detail',
+        component: () => import('pages/package-sets/results/detail')
+      },
+
+      {
         path: '/stores',
         name: 'stores-dashboard',
         component: () => import('pages/stores/index')
