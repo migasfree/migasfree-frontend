@@ -57,6 +57,20 @@
             color="negative"
             @click="confirmRemove(props.row.id)"
           />
+          <q-btn
+            v-if="props.row.store.id"
+            class="q-ma-xs"
+            round
+            size="sm"
+            icon="mdi-information"
+            color="info"
+            @click="
+              $router.push({
+                name: 'package-information',
+                params: { id: props.row.id }
+              })
+            "
+          />
         </span>
         <span v-else-if="props.column.field == 'fullname'">
           <MigasLink
