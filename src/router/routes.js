@@ -184,6 +184,11 @@ const routes = [
         name: 'package-detail',
         component: () => import('pages/packages/results/detail')
       },
+      {
+        path: '/packages/results/:id/information',
+        name: 'package-information',
+        component: () => import('pages/packages/results/information')
+      },
 
       {
         path: '/package-sets/results',
