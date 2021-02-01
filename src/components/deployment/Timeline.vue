@@ -3,19 +3,19 @@
     <q-circular-progress
       show-value
       class="text-positive q-ma-md"
-      :value="data.data.schedule.percent"
+      :value="showing.schedule.percent"
       size="70px"
       :thickness="0.1"
       color="positive"
       track-color="grey-3"
     >
       <q-tooltip
-        >{{ $gettext('Start') }}: {{ data.data.schedule.begin_date }}<br />{{
+        >{{ $gettext('Start') }}: {{ showing.schedule.begin_date }}<br />{{
           $gettext('End')
-        }}: {{ data.data.schedule.end_date }}</q-tooltip
+        }}: {{ showing.schedule.end_date }}</q-tooltip
       >
       <q-icon name="mdi-calendar-start" class="q-mr-xs" />
-      {{ data.data.schedule.percent }} %
+      {{ showing.schedule.percent }} %
     </q-circular-progress>
 
     <q-circular-progress
@@ -25,21 +25,21 @@
       size="70px"
       :thickness="0.1"
       :min="0"
-      :max="data.data.computers.assigned"
-      :value="data.data.computers.ok + data.data.computers.error"
+      :max="showing.computers.assigned"
+      :value="showing.computers.ok + showing.computers.error"
     >
       <q-icon name="mdi-desktop-classic" class="q-mr-xs" />
-      {{ data.data.computers.ok + data.data.computers.error }}/{{
-        data.data.computers.assigned
+      {{ showing.computers.ok + showing.computers.error }}/{{
+        showing.computers.assigned
       }}
       <q-tooltip
-        >{{ $gettext('OK Computers') }}: {{ data.data.computers.ok }}<br />{{
+        >{{ $gettext('OK Computers') }}: {{ showing.computers.ok }}<br />{{
           $gettext('Computers with any error')
-        }}: {{ data.data.computers.error }}</q-tooltip
+        }}: {{ showing.computers.error }}</q-tooltip
       >
     </q-circular-progress>
     <q-btn
-      v-if="data.data.computers.assigned"
+      v-if="showing.computers.assigned"
       round
       size="25px"
       icon="mdi-desktop-classic"
@@ -56,7 +56,7 @@
 export default {
   name: 'Timeline',
   props: {
-    data: {
+    value: {
       type: Object,
       required: true
     },
@@ -67,7 +67,16 @@ export default {
   },
   data() {
     return {
-      loading: false
+      loading: false,
+      showing: this.value
+    }
+  },
+  watch: {
+    value: {
+      handler: function(val, oldVal) {
+        this.showing = val
+      },
+      deep: true
     }
   },
   methods: {
