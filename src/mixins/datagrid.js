@@ -214,6 +214,12 @@ export const datagridMixin = {
         value
       ).name
     }
+
+    if (this.$route.query.id_in) {
+      this.updateParams({
+        columnFilters: { id_in: this.$route.query.id_in }
+      })
+    }
   },
   async mounted() {
     await this.loadFilters()
@@ -381,6 +387,9 @@ export const datagridMixin = {
               break
             case 'fault_definition.name':
               ret.fault_definition_id = val
+              break
+            case 'id_in':
+              ret.id__in = val
               break
             case 'level.name':
               ret.level = val
