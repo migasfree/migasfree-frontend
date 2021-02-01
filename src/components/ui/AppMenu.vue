@@ -162,10 +162,14 @@ export default {
             {
               title: this.$gettext('Packages'),
               to: 'packages-dashboard',
-              icon: 'mdi-package-variant',
+              icon: 'mdi-package-variant'
+            },
+            {
+              title: this.$gettext('Package Sets'),
+              to: 'package-sets-list',
+              icon: 'mdi-apps-box',
               separatorAfter: true
             },
-            // { title: this.$gettext('Package Sets'), to: 'package-sets-list', icon: 'mdi-apps-box' },
             {
               title: this.$gettext('Applications'),
               to: 'apps-dashboard',
