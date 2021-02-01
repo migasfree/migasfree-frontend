@@ -158,7 +158,6 @@ export default {
               to: 'stores-dashboard',
               icon: 'mdi-store-24-hour'
             },
-            // { title: this.$gettext('Package Info'), to: 'packages-info' },
             {
               title: this.$gettext('Packages'),
               to: 'packages-dashboard',
