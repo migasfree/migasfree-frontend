@@ -20,6 +20,7 @@
 
     <q-circular-progress
       show-value
+      class="q-ma-md"
       color="positive"
       track-color="grey-3"
       size="70px"
@@ -41,6 +42,7 @@
     <q-btn
       v-if="showing.computers.assigned"
       round
+      class="q-ma-md"
       size="25px"
       icon="mdi-desktop-classic"
       color="primary"
