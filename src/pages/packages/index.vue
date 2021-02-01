@@ -8,7 +8,7 @@
 
     <div class="row">
       <div class="col-12">
-        <PieChart
+        <NestedPieChart
           :title="$gettext('Packages / Store')"
           :data="byStore"
           :url="url"
@@ -16,17 +16,6 @@
         />
       </div>
     </div>
-
-    <!-- div class="row">
-      <div class="col-12">
-        <PieChart
-          title="Paquetes / Proyecto"
-          :data="byProject"
-          :url="url"
-          @getLink="goTo"
-        />
-      </div>
-    </div -->
   </q-page>
 </template>
 
@@ -34,7 +23,7 @@
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
-import PieChart from 'components/chart/Pie'
+import NestedPieChart from 'components/chart/NestedPie'
 
 export default {
   meta() {
@@ -46,7 +35,7 @@ export default {
     Breadcrumbs,
     Header,
     SearchFilter,
-    PieChart
+    NestedPieChart
   },
   data() {
     return {
@@ -80,15 +69,6 @@ export default {
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error)
       })
-
-    /* await this.$axios
-      .get('/api/v1/token/stats/packages/project/')
-      .then((response) => {
-        this.byProject = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      }) */
   },
   methods: {
     goTo(params) {
@@ -102,22 +82,14 @@ export default {
           })
         }
 
+        if (params.data.store_id) {
+          Object.assign(query, {
+            store_id: params.data.store_id
+          })
+        }
+
         console.log(params.url.name, query)
         this.$router.push({ name: params.url.name, query })
-      }
-
-      if (params.data.created_at__lt) {
-        let query = {
-          created_at__gte: params.data.created_at__gte,
-          created_at__lt: params.data.created_at__lt
-        }
-
-        if (params.data.project__id__exact) {
-          Object.assign(query, { project_id: params.data.project__id__exact })
-        }
-
-        console.log(query)
-        this.$router.push(Object.assign({}, this.url, { query }))
       }
     },
 
