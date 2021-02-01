@@ -414,6 +414,14 @@
                   option-label="name"
                 />
               </div>
+
+              <div v-if="element.timeline" class="col-md">
+                <q-field outlined :label="$gettext('Timeline')" stack-label>
+                  <template v-slot:control>
+                    <Timeline :data="element.timeline" />
+                  </template>
+                </q-field>
+              </div>
             </div>
 
             <div v-if="computersDelayData" class="row q-pa-md q-gutter-md">
@@ -488,6 +496,7 @@ import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import RemoveDialog from 'components/ui/RemoveDialog'
 import StackedBarChart from 'components/chart/StackedBar'
+import Timeline from 'components/deployment/Timeline'
 import { detailMixin } from 'mixins/detail'
 import { elementMixin } from 'mixins/element'
 import { dateMixin } from 'mixins/date'
@@ -503,7 +512,8 @@ export default {
     Header,
     MigasLink,
     RemoveDialog,
-    StackedBarChart
+    StackedBarChart,
+    Timeline
   },
   mixins: [detailMixin, elementMixin, dateMixin],
   data() {
