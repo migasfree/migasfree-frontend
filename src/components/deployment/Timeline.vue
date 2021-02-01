@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="q-pa-md q-gutter-sm">
     <q-circular-progress
       show-value
       class="text-positive q-ma-md"
@@ -38,6 +38,17 @@
         }}: {{ data.data.computers.error }}</q-tooltip
       >
     </q-circular-progress>
+    <q-btn
+      v-if="data.data.computers.assigned"
+      round
+      size="25px"
+      icon="mdi-desktop-classic"
+      color="primary"
+      :disabled="loading"
+      :loading="loading"
+      @click="goToComputers"
+      ><q-tooltip>{{ $gettext('View assigned Computers') }}</q-tooltip></q-btn
+    >
   </div>
 </template>
 
@@ -48,6 +59,34 @@ export default {
     data: {
       type: Object,
       required: true
+    },
+    id: {
+      type: Number,
+      required: true
+    }
+  },
+  data() {
+    return {
+      loading: false
+    }
+  },
+  methods: {
+    goToComputers() {
+      if (this.id > 0) {
+        this.loading = true
+        this.$axios
+          .get(`/api/v1/token/stats/deployments/${this.id}/computers/assigned/`)
+          .then((response) => {
+            this.$router.push({
+              name: 'computers-list',
+              query: { id_in: response.data.join(',') }
+            })
+          })
+          .catch((error) => {
+            this.$store.dispatch('ui/notifyError', error)
+          })
+          .finally(() => (this.loading = false))
+      }
     }
   }
 }
