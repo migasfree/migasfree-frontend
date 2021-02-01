@@ -35,6 +35,7 @@ msgstr ""
 #: ./src/pages/models/results/detail.vue:116
 #: ./src/pages/models/results/detail.vue:178
 #: ./src/pages/models/results/detail.vue:194
+#: ./src/pages/package-sets/results/detail.vue:76
 #: ./src/pages/platforms/results/detail.vue:56
 #: ./src/pages/policies/results/detail.vue:88
 #: ./src/pages/policies/results/detail.vue:309
@@ -125,6 +126,10 @@ msgstr ""
 #: ./src/mixins/detail.js:32
 #: ./src/mixins/detail.js:83
 msgid "Add"
+msgstr ""
+
+#: ./src/pages/package-sets/results/detail.vue:184
+msgid "Add more Packages"
 msgstr ""
 
 #: ./src/pages/schedules/results/detail.vue:233
@@ -245,7 +250,6 @@ msgstr ""
 msgid "Apps"
 msgstr ""
 
-#: ./src/pages/package-sets/results/detail.vue:54
 #: ./src/pages/packages/results/detail.vue:54
 #: ./src/pages/projects/results/detail.vue:107
 msgid "Architecture"
@@ -801,7 +805,7 @@ msgstr ""
 #: ./src/pages/manufacturers/results/detail.vue:103
 #: ./src/pages/models/results/detail.vue:41
 #: ./src/pages/models/results/detail.vue:280
-#: ./src/pages/package-sets/results/detail.vue:244
+#: ./src/pages/package-sets/results/detail.vue:235
 #: ./src/pages/packages/results/detail.vue:244
 #: ./src/pages/platforms/results/detail.vue:103
 #: ./src/pages/policies/results/detail.vue:105
@@ -852,6 +856,7 @@ msgstr ""
 #: ./src/pages/errors/results/detail.vue:36
 #: ./src/pages/errors/results/list.vue:116
 #: ./src/pages/fault-definitions/results/detail.vue:102
+#: ./src/pages/package-sets/results/detail.vue:197
 #: ./src/pages/package-sets/results/list.vue:93
 #: ./src/pages/schedules/results/detail.vue:82
 #: ./src/pages/schedules/results/list.vue:64
@@ -1591,7 +1596,7 @@ msgstr ""
 #: ./src/pages/models/results/detail.vue:114
 #: ./src/pages/models/results/detail.vue:205
 #: ./src/pages/models/results/list.vue:55
-#: ./src/pages/package-sets/results/detail.vue:45
+#: ./src/pages/package-sets/results/detail.vue:74
 #: ./src/pages/package-sets/results/list.vue:56
 #: ./src/pages/packages/results/detail.vue:45
 #: ./src/pages/platforms/results/detail.vue:54
@@ -1740,7 +1745,7 @@ msgid "Package Management System"
 msgstr ""
 
 #: ./src/pages/package-sets/results/detail.vue:22
-#: ./src/pages/package-sets/results/detail.vue:55
+#: ./src/pages/package-sets/results/detail.vue:47
 msgid "Package Set"
 msgstr ""
 
@@ -1762,6 +1767,7 @@ msgstr ""
 
 #: ./src/components/ui/AppMenu.vue:140
 #: ./src/components/ui/SearchBox.vue:15
+#: ./src/pages/package-sets/results/detail.vue:167
 #: ./src/pages/packages/index.vue:20
 #: ./src/pages/packages/index.vue:32
 #: ./src/pages/packages/results/detail.vue:39
@@ -1927,8 +1933,8 @@ msgstr ""
 #: ./src/pages/faults/results/list.vue:92
 #: ./src/pages/migrations/results/list.vue:89
 #: ./src/pages/models/results/detail.vue:173
-#: ./src/pages/package-sets/results/detail.vue:15
-#: ./src/pages/package-sets/results/detail.vue:1
+#: ./src/pages/package-sets/results/detail.vue:20
+#: ./src/pages/package-sets/results/detail.vue:2
 #: ./src/pages/package-sets/results/list.vue:70
 #: ./src/pages/packages/results/detail.vue:15
 #: ./src/pages/packages/results/detail.vue:1
@@ -1941,7 +1947,7 @@ msgstr ""
 msgid "Project"
 msgstr ""
 
-#: ./src/pages/package-sets/results/detail.vue:100
+#: ./src/pages/package-sets/results/detail.vue:122
 #: ./src/pages/packages/results/detail.vue:100
 msgid "Project / Store"
 msgstr ""
@@ -2104,7 +2110,7 @@ msgstr ""
 #: ./src/pages/logical-devices/results/detail.vue:224
 #: ./src/pages/manufacturers/results/detail.vue:84
 #: ./src/pages/models/results/detail.vue:261
-#: ./src/pages/package-sets/results/detail.vue:226
+#: ./src/pages/package-sets/results/detail.vue:218
 #: ./src/pages/packages/results/detail.vue:226
 #: ./src/pages/platforms/results/detail.vue:84
 #: ./src/pages/policies/results/detail.vue:537
@@ -2132,7 +2138,7 @@ msgstr ""
 #: ./src/pages/logical-devices/results/detail.vue:208
 #: ./src/pages/manufacturers/results/detail.vue:68
 #: ./src/pages/models/results/detail.vue:245
-#: ./src/pages/package-sets/results/detail.vue:218
+#: ./src/pages/package-sets/results/detail.vue:210
 #: ./src/pages/packages/results/detail.vue:218
 #: ./src/pages/platforms/results/detail.vue:68
 #: ./src/pages/policies/results/detail.vue:521
@@ -2224,7 +2230,6 @@ msgstr ""
 msgid "Search..."
 msgstr ""
 
-#: ./src/pages/package-sets/results/detail.vue:166
 #: ./src/pages/packages/results/detail.vue:166
 msgid "Select one file"
 msgstr ""
@@ -2328,8 +2333,8 @@ msgstr ""
 msgid "Storage"
 msgstr ""
 
-#: ./src/pages/package-sets/results/detail.vue:31
-#: ./src/pages/package-sets/results/detail.vue:1
+#: ./src/pages/package-sets/results/detail.vue:24
+#: ./src/pages/package-sets/results/detail.vue:6
 #: ./src/pages/package-sets/results/list.vue:83
 #: ./src/pages/packages/results/detail.vue:31
 #: ./src/pages/packages/results/detail.vue:1
@@ -2623,7 +2628,6 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: ./src/pages/package-sets/results/detail.vue:49
 #: ./src/pages/packages/results/detail.vue:49
 msgid "Version"
 msgstr ""
