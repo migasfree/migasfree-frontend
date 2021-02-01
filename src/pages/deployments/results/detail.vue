@@ -418,7 +418,7 @@
               <div v-if="element.timeline" class="col-md">
                 <q-field outlined :label="$gettext('Timeline')" stack-label>
                   <template v-slot:control>
-                    <Timeline :data="element.timeline" />
+                    <Timeline :id="element.id" :data="element.timeline" />
                   </template>
                 </q-field>
               </div>
