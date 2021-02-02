@@ -309,16 +309,6 @@ export default {
     },
 
     elementData() {
-      if (this.element.id) {
-        return {
-          packages: this.element.packages
-            ? this.element.packages.map((item) => item.id)
-            : [],
-          name: this.element.name,
-          description: this.element.description
-        }
-      }
-
       let data = new FormData()
       data.append('name', this.element.name)
       data.append('description', this.element.description)
@@ -328,9 +318,12 @@ export default {
           ? this.element.packages.map((item) => item.id)
           : []
       )
-      data.append('project', this.element.project.id)
-      data.append('store', this.element.store.id)
       data.append('files', this.element.files)
+
+      if (!this.element.id) {
+        data.append('project', this.element.project.id)
+        data.append('store', this.element.store.id)
+      }
 
       return data
     },
