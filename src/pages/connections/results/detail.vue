@@ -182,12 +182,6 @@ export default {
         device_type: this.element.device_type.id,
         fields: this.element.fields
       }
-    },
-
-    setRelated() {
-      this.element.device_type = this.deviceTypes.find(
-        (x) => x.id === this.element.device_type
-      )
     }
   }
 }
