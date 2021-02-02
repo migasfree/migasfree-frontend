@@ -237,9 +237,13 @@ export default {
               to: 'migrations-dashboard',
               icon: 'mdi-map-marker-right',
               separatorAfter: true
+            },
+            {
+              title: this.$gettext('Messages'),
+              to: 'messages-list',
+              icon: 'mdi-message-text'
             }
-            /* { title: this.$gettext('Messages'), to: 'messages-dashboard', icon: 'mdi-message-text' },
-            { title: this.$gettext('Notifications'), to: 'notifications-dashboard', icon: 'mdi-android-messages' } */
+            // { title: this.$gettext('Notifications'), to: 'notifications-dashboard', icon: 'mdi-android-messages' }
           ]
         }
       ]
