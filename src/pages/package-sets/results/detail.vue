@@ -311,15 +311,21 @@ export default {
 
     elementData() {
       let data = new FormData()
+
       data.append('name', this.element.name)
       data.append('description', this.element.description)
-      data.append(
-        'packages',
-        this.element.packages
-          ? this.element.packages.map((item) => item.id)
-          : []
-      )
-      data.append('files', this.element.files)
+
+      if (this.element.packages.length > 0) {
+        for (var i = 0; i < this.element.packages.length; i++) {
+          data.append('packages', this.element.packages[i].id)
+        }
+      } else {
+        data.append('packages', [])
+      }
+
+      for (var i = 0; i < this.element.files.length; i++) {
+        data.append('files', this.element.files[i])
+      }
 
       if (!this.element.id) {
         data.append('project', this.element.project.id)
