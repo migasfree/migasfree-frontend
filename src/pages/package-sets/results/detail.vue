@@ -105,6 +105,7 @@
                 outlined
                 counter
                 multiple
+                append
                 :label="$gettext('Add more Packages')"
               />
             </div>
