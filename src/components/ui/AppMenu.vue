@@ -242,8 +242,12 @@ export default {
               title: this.$gettext('Messages'),
               to: 'messages-list',
               icon: 'mdi-message-text'
+            },
+            {
+              title: this.$gettext('Notifications'),
+              to: 'notifications-dashboard',
+              icon: 'mdi-android-messages'
             }
-            // { title: this.$gettext('Notifications'), to: 'notifications-dashboard', icon: 'mdi-android-messages' }
           ]
         }
       ]
