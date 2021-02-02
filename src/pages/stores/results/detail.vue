@@ -169,13 +169,6 @@ export default {
         project: this.element.project.id,
         name: this.element.name
       }
-    },
-
-    setRelated() {
-      if (typeof this.element.project === 'number')
-        this.element.project = this.projects.find(
-          (x) => x.id === this.element.project
-        )
     }
   }
 }
