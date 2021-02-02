@@ -171,6 +171,17 @@ const routes = [
       },
 
       {
+        path: '/notifications',
+        name: 'notifications-dashboard',
+        component: () => import('pages/notifications/index')
+      },
+      {
+        path: '/notifications/results',
+        name: 'notifications-list',
+        component: () => import('pages/notifications/results/list')
+      },
+
+      {
         path: '/packages',
         name: 'packages-dashboard',
         component: () => import('pages/packages/index')
