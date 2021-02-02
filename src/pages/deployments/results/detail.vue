@@ -256,7 +256,51 @@
               </div>
 
               <div class="row q-pa-md q-gutter-md">
-                <div class="col-md">TODO Package sets</div>
+                <div class="col-md">
+                  <q-select
+                    v-model="element.available_package_sets"
+                    outlined
+                    use-input
+                    map-options
+                    multiple
+                    input-debounce="0"
+                    :label="$gettext('Available Package Sets')"
+                    :options="packageSets"
+                    @filter="filterPackageSets"
+                    @filter-abort="abortFilterPackageSets"
+                  >
+                    <template #no-option>
+                      <q-item>
+                        <q-item-section v-translate class="text-grey">
+                          No results
+                        </q-item-section>
+                      </q-item>
+                    </template>
+
+                    <template #option="scope">
+                      <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                        {{ scope.opt.name }}
+                      </q-item>
+                    </template>
+
+                    <template #selected-item="scope">
+                      <q-chip
+                        removable
+                        dense
+                        :tabindex="scope.tabindex"
+                        class="q-ma-md"
+                        @remove="scope.removeAtIndex(scope.index)"
+                      >
+                        <MigasLink
+                          model="package-sets"
+                          :pk="scope.opt.id"
+                          :value="scope.opt.name"
+                          icon="mdi-apps-box"
+                        />
+                      </q-chip>
+                    </template>
+                  </q-select>
+                </div>
               </div>
             </template>
 
@@ -560,6 +604,7 @@ export default {
       attributes: [],
       schedules: [],
       packages: [],
+      packageSets: [],
       source: null,
       sources: [
         {
@@ -713,12 +758,12 @@ export default {
       }
 
       if (this.element.source === 'I') {
-        data.available_packages = this.element.available_packages.map(
-          (item) => item.id
-        )
-        /* data.available_package_sets = this.element.available_package_sets.map(
-          (item) => item.id
-        ) */
+        data.available_packages = this.element.available_packages
+          ? this.element.available_packages.map((item) => item.id)
+          : []
+        data.available_package_sets = this.element.available_package_sets
+          ? this.element.available_package_sets.map((item) => item.id)
+          : []
       }
 
       if (this.element.source === 'E') {
@@ -784,6 +829,32 @@ export default {
     },
 
     abortFilterPackages() {
+      // console.log('delayed filter aborted')
+    },
+
+    filterPackageSets(val, update, abort) {
+      // call abort() at any time if you can't retrieve data somehow
+      if (val.length < 3 || this.element.project === undefined) {
+        abort()
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        this.$axios
+          .get('/api/v1/token/package-sets/', {
+            params: { search: needle, project__id: this.element.project.id }
+          })
+          .then((response) => {
+            this.packageSets = response.data.results
+          })
+        /* this.packageSets = stringOptions.filter(
+          (v) => v.toLowerCase().indexOf(needle) > -1
+        ) */
+      })
+    },
+
+    abortFilterPackageSets() {
       // console.log('delayed filter aborted')
     }
   }
