@@ -165,6 +165,12 @@ const routes = [
       },
 
       {
+        path: '/messages/results',
+        name: 'messages-list',
+        component: () => import('pages/messages/results/list')
+      },
+
+      {
         path: '/packages',
         name: 'packages-dashboard',
         component: () => import('pages/packages/index')
