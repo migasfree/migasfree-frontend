@@ -29,25 +29,29 @@
 
           <div class="col-6 col-md">
             <template v-if="element.id">
-              <p>
-                <translate>Project</translate>:
-                <MigasLink
-                  model="projects"
-                  :pk="element.project.id"
-                  :value="element.project.name"
-                  icon="mdi-sitemap"
-                />
-              </p>
-              <p>
-                <translate>Store</translate>:
-                <MigasLink
-                  v-if="element.store.id > 0"
-                  model="stores"
-                  :pk="element.store.id"
-                  :value="element.store.name"
-                  icon="mdi-store-24-hour"
-                />
-              </p>
+              <q-field
+                outlined
+                :label="$gettext('Project / Store')"
+                readonly
+                stack-label
+              >
+                <template v-slot:control>
+                  <MigasLink
+                    model="projects"
+                    :pk="element.project.id"
+                    :value="element.project.name"
+                    icon="mdi-sitemap"
+                  />
+                  /
+                  <MigasLink
+                    v-if="element.store.id > 0"
+                    model="stores"
+                    :pk="element.store.id"
+                    :value="element.store.name"
+                    icon="mdi-store-24-hour"
+                  />
+                </template>
+              </q-field>
             </template>
             <q-input
               v-else
@@ -78,7 +82,7 @@
           </div>
         </div>
 
-        <template v-if="projectStore.selected">
+        <template v-if="element.store || element.id">
           <div v-if="packages.length > 0" class="row q-pa-md q-gutter-md">
             <div class="col-md">
               <q-select
@@ -88,7 +92,7 @@
                 :label="$gettext('Packages')"
                 :options="packages"
                 option-value="id"
-                option-label="name"
+                option-label="fullname"
               />
             </div>
           </div>
@@ -181,7 +185,7 @@ export default {
   mixins: [elementMixin, detailMixin],
   data() {
     const title = this.$gettext('Package Set')
-    const element = { id: 0, files: null }
+    const element = { id: 0, project: null, description: null, files: null }
 
     return {
       title,
@@ -215,7 +219,7 @@ export default {
   },
   computed: {
     isValid() {
-      return this.projectStore.selected !== null && this.element.name !== null
+      return this.element.project !== null && this.element.name !== null
     }
   },
   methods: {
@@ -234,22 +238,7 @@ export default {
         store: { id: nodeStore.store_id }
       })
 
-      this.$axios
-        .get('/api/v1/token/packages/', {
-          params: { store__id: this.element.store.id }
-        })
-        .then((response) => {
-          this.packages = []
-          Object.entries(response.data.results).map(([key, item]) => {
-            this.packages.push({
-              id: item.id,
-              name: item.fullname
-            })
-          })
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
+      this.loadPackages()
 
       this.$refs.menu.hide()
     },
@@ -268,6 +257,25 @@ export default {
               }
             })
           )
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+    },
+
+    loadPackages() {
+      this.$axios
+        .get('/api/v1/token/packages/', {
+          params: { store__id: this.element.store.id }
+        })
+        .then((response) => {
+          this.packages = []
+          Object.entries(response.data.results).map(([key, item]) => {
+            this.packages.push({
+              id: item.id,
+              fullname: item.fullname
+            })
+          })
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
@@ -294,6 +302,10 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
+
+      if (this.element.id) {
+        this.loadPackages()
+      }
     },
 
     elementData() {
@@ -308,6 +320,14 @@ export default {
       }
 
       let data = new FormData()
+      data.append('name', this.element.name)
+      data.append('description', this.element.description)
+      data.append(
+        'packages',
+        this.element.packages
+          ? this.element.packages.map((item) => item.id)
+          : []
+      )
       data.append('project', this.element.project.id)
       data.append('store', this.element.store.id)
       data.append('files', this.element.files)
