@@ -240,13 +240,25 @@
                   <DateDiff
                     class="float-right"
                     :begin="new Date(element.sync_end_date)"
-                    tooltip="unsynchronized from"
+                    :tooltip="$gettext('unsynchronized from')"
                   />
                 </div>
               </div>
             </q-card-section>
 
             <q-card-section>
+              <div class="row q-pa-md">
+                <q-tooltip self="bottom middle"
+                  ><translate>User</translate></q-tooltip
+                >
+                <MigasLink
+                  model="users"
+                  :pk="element.sync_user.id"
+                  :value="element.sync_user.name || ''"
+                  icon="mdi-account"
+                />
+              </div>
+
               <div class="row q-pa-md">
                 <div class="col-md">
                   <q-tooltip self="bottom middle"
@@ -271,21 +283,9 @@
                     v-if="syncInfo.sync_start_date"
                     :begin="new Date(syncInfo.sync_start_date)"
                     :end="new Date(syncInfo.sync_end_date)"
-                    tooltip="last sync time"
+                    :tooltip="$gettext('last sync time')"
                   />
                 </div>
-              </div>
-
-              <div class="row q-pa-md">
-                <q-tooltip self="bottom middle"
-                  ><translate>User</translate></q-tooltip
-                >
-                <q-icon name="mdi-account" size="sm" />
-                <MigasLink
-                  model="users"
-                  :pk="element.sync_user.id"
-                  :value="element.sync_user.name || ''"
-                />
               </div>
 
               <OverflowList
