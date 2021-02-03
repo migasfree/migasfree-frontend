@@ -19,16 +19,24 @@
         <q-card-section>
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md">
-              <translate>Value</translate>: {{ element.value }}
+              <q-field outlined :label="$gettext('Formula')" stack-label>
+                <template v-slot:control>
+                  <MigasLink
+                    model="properties"
+                    :pk="element.property_att.id"
+                    :value="element.property_att.name || ''"
+                    icon="mdi-function-variant"
+                  />
+                </template>
+              </q-field>
             </div>
 
             <div class="col-6 col-md">
-              <translate>Formula</translate>:
-              <MigasLink
-                model="properties"
-                :pk="element.property_att.id"
-                :value="element.property_att.name || ''"
-                icon="mdi-function-variant"
+              <q-input
+                v-model="element.value"
+                outlined
+                :label="$gettext('Value')"
+                readonly
               />
             </div>
           </div>
@@ -39,6 +47,7 @@
                 v-model="element.description"
                 outlined
                 type="textarea"
+                autofocus
                 :label="$gettext('Description')"
               />
             </div>
