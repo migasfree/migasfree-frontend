@@ -7,7 +7,10 @@
         </div>
 
         <div class="col-md">
-          <q-btn-group class="float-right">
+          <p v-if="readonly" class="float-right">
+            {{ showDate(hardwareDate) }}
+          </p>
+          <q-btn-group v-else class="float-right">
             <q-datetime-picker
               v-model="hardwareDate"
               :label="$gettext('Last hardware capture date')"
@@ -178,6 +181,11 @@ export default {
       type: String,
       required: false,
       default: ''
+    },
+    readonly: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data() {
