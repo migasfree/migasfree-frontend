@@ -186,7 +186,7 @@ export default {
   mixins: [elementMixin, detailMixin],
   data() {
     const title = this.$gettext('Package Set')
-    const element = { id: 0, project: null, description: null, files: null }
+    const element = { id: 0, project: null, description: '', files: null }
 
     return {
       title,
@@ -315,7 +315,7 @@ export default {
       data.append('name', this.element.name)
       data.append('description', this.element.description)
 
-      if (this.element.packages.length > 0) {
+      if (this.element.packages) {
         for (var i = 0; i < this.element.packages.length; i++) {
           data.append('packages', this.element.packages[i].id)
         }
