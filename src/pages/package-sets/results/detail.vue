@@ -323,8 +323,10 @@ export default {
         data.append('packages', [])
       }
 
-      for (var i = 0; i < this.element.files.length; i++) {
-        data.append('files', this.element.files[i])
+      if (this.element.files) {
+        for (var i = 0; i < this.element.files.length; i++) {
+          data.append('files', this.element.files[i])
+        }
       }
 
       if (!this.element.id) {
