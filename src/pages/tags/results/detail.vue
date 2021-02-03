@@ -288,18 +288,13 @@ export default {
     async updateRelated() {
       await this.$axios
         .patch(`/api/v1/token/${this.model}/${this.element.id}/computers/`, {
-          computers: this.element.computers.map((item) => item.id)
+          computers: this.element.computers
+            ? this.element.computers.map((item) => item.id)
+            : []
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    },
-
-    setRelated() {
-      if (typeof this.element.property_att === 'number')
-        this.element.property_att = this.stamps.find(
-          (x) => x.id === this.element.property_att
-        )
     }
   }
 }
