@@ -426,18 +426,6 @@ export default {
       return data
     },
 
-    setRelated() {
-      if (typeof this.element.level === 'string')
-        this.element.level = this.levels.find(
-          (x) => x.id === this.element.level
-        )
-
-      if (typeof this.element.category === 'number')
-        this.element.category = this.categories.find(
-          (x) => x.id === this.element.category
-        )
-    },
-
     addInline() {
       this.packagesByProject.push({
         id: 0,
