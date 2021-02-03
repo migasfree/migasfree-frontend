@@ -226,13 +226,6 @@ export default {
         auto_register_computers: this.element.auto_register_computers,
         pms: this.element.pms.id
       }
-    },
-
-    setRelated() {
-      if (typeof this.element.platform === 'number')
-        this.element.platform = this.platforms.find(
-          (x) => x.id === this.element.platform
-        )
     }
   }
 }
