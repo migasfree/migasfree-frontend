@@ -13,6 +13,19 @@
             :icon="elementIcon(element.status)"
             :tooltip="element.summary"
           />
+          <q-btn
+            class="q-ma-md"
+            size="md"
+            :icon="productIcon(element.product_system)"
+            :label="$gettext('Hardware Information')"
+            color="info"
+            @click="
+              $router.push({
+                name: 'computer-hardware',
+                params: { id: element.id }
+              })
+            "
+          />
         </template>
       </Header>
 
