@@ -176,6 +176,19 @@
             color="negative"
             @click="confirmRemove(props.row.id)"
           />
+          <q-btn
+            class="q-ma-xs"
+            round
+            size="sm"
+            :icon="productIcon(props.row.product_system)"
+            color="info"
+            @click="
+              $router.push({
+                name: 'computer-hardware',
+                params: { id: props.row.id }
+              })
+            "
+          />
         </span>
         <span v-else-if="props.column.field == 'name'">
           <MigasLink
