@@ -35,6 +35,11 @@ const routes = [
         component: () => import('pages/computers/results/simulate')
       },
       {
+        path: '/computers/results/:id/hardware',
+        name: 'computer-hardware',
+        component: () => import('pages/computers/results/hardware')
+      },
+      {
         path: '/computers/replacement',
         name: 'computers-replacement',
         component: () => import('pages/computers/replacement')
