@@ -35,10 +35,173 @@
         </div>
       </div>
 
-      <div class="row q-pa-md q-gutter-md">
-        <pre>{{ hardwareInfo }}</pre>
+      <div v-if="hardwareInfo" class="row q-pa-md q-gutter-md">
+        <q-tree :nodes="hardwareInfo" node-key="id" no-connectors>
+          <template #default-header="prop">
+            <div class="row items-center">
+              <div class="text-weight-bold text-primary">
+                {{ header(prop.node) }}
+
+                <q-btn
+                  class="q-ma-md"
+                  label="Details"
+                  icon="mdi-text-box-search"
+                  @click="showDetails(prop.node.id)"
+                />
+              </div>
+            </div>
+          </template>
+
+          <template #default-body="prop">
+            <q-card>
+              <q-card-section>
+                <p v-if="prop.node.width">
+                  <translate>Width</translate>:
+                  <strong>{{ prop.node.width }}</strong>
+                </p>
+
+                <p v-if="prop.node.name">
+                  <translate>Name</translate>:
+                  <strong>{{ prop.node.name }}</strong>
+                </p>
+
+                <p v-if="prop.node.class_name">
+                  <translate>Class Name</translate>:
+                  <strong>{{ prop.node.class_name }}</strong>
+                </p>
+
+                <p>
+                  <translate>Enabled</translate>:
+                  <BooleanView v-model="prop.node.enabled" />
+                </p>
+
+                <p>
+                  <translate>Claimed</translate>:
+                  <BooleanView v-model="prop.node.claimed" />
+                </p>
+
+                <p v-if="prop.node.vendor">
+                  <translate>Vendor</translate>:
+                  <strong>{{ prop.node.vendor }}</strong>
+                </p>
+
+                <p v-if="prop.node.product">
+                  <translate>Product</translate>:
+                  <strong>{{ prop.node.product }}</strong>
+                </p>
+
+                <p v-if="prop.node.version">
+                  <translate>Version</translate>:
+                  <strong>{{ prop.node.version }}</strong>
+                </p>
+
+                <p v-if="prop.node.serial">
+                  <translate>Serial</translate>:
+                  <strong>{{ prop.node.serial }}</strong>
+                </p>
+
+                <p v-if="prop.node.bus_info">
+                  <translate>Bus Info</translate>:
+                  <strong>{{ prop.node.bus_info }}</strong>
+                </p>
+
+                <p v-if="prop.node.physid">
+                  <translate>Physical Id</translate>:
+                  <strong>{{ prop.node.physid }}</strong>
+                </p>
+
+                <p v-if="prop.node.slot">
+                  <translate>Slot</translate>:
+                  <strong>{{ prop.node.slot }}</strong>
+                </p>
+
+                <p v-if="prop.node.size">
+                  <translate>Size</translate>:
+                  <strong>{{ humanStorageSize(prop.node.size) }}</strong>
+                </p>
+
+                <p v-if="prop.node.capacity">
+                  <translate>Capacity</translate>:
+                  <strong>{{ humanStorageSize(prop.node.capacity) }}</strong>
+                </p>
+
+                <p v-if="prop.node.clock">
+                  <translate>Clock</translate>:
+                  <strong>{{ humanStorageSize(prop.node.clock) }}</strong>
+                </p>
+
+                <p v-if="prop.node.dev">
+                  <translate>Dev</translate>:
+                  <strong>{{ prop.node.dev }}</strong>
+                </p>
+              </q-card-section>
+            </q-card>
+          </template>
+        </q-tree>
       </div>
     </template>
+
+    <q-dialog v-model="details">
+      <q-card>
+        <q-card-section>
+          <div class="text-h5">
+            <q-icon name="mdi-text-box-search" />
+            <translate>Details</translate>:
+            {{ detailInfo.name }}
+          </div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <div v-translate class="text-h6">Capabilities</div>
+          <q-table
+            v-if="detailInfo.capability.length > 0"
+            class="q-ma-md"
+            :data="detailInfo.capability"
+            :columns="columnsCapability"
+            row-key="name"
+            hide-pagination
+          />
+          <q-banner v-else class="text-white bg-info q-ma-md">
+            <translate>No information</translate>
+          </q-banner>
+
+          <div v-translate class="text-h6">Logical Names</div>
+          <q-table
+            v-if="detailInfo.logical_name.length > 0"
+            class="q-ma-md"
+            :data="detailInfo.logical_name"
+            :columns="columnsLogicalName"
+            row-key="name"
+            hide-pagination
+          />
+          <q-banner v-else class="text-white bg-info q-ma-md">
+            <translate>No information</translate>
+          </q-banner>
+
+          <div v-translate class="text-h6">Configurations</div>
+          <q-table
+            v-if="detailInfo.configuration.length > 0"
+            class="q-ma-md"
+            :data="detailInfo.configuration"
+            :columns="columnsConfiguration"
+            row-key="name"
+            hide-pagination
+          />
+          <q-banner v-else class="text-white bg-info q-ma-md">
+            <translate>No information</translate>
+          </q-banner>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            v-close-popup
+            flat
+            :label="$gettext('Close')"
+            color="primary"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -46,8 +209,13 @@
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
+import BooleanView from 'components/ui/BooleanView'
 import ComputerHardwareResume from 'components/computer/HardwareResume'
 import { elementMixin } from 'mixins/element'
+import { arrayToTree } from 'performant-array-to-tree'
+import { format } from 'quasar'
+
+const { humanStorageSize } = format
 
 export default {
   meta() {
@@ -59,6 +227,7 @@ export default {
     Breadcrumbs,
     Header,
     MigasLink,
+    BooleanView,
     ComputerHardwareResume
   },
   mixins: [elementMixin],
@@ -94,7 +263,44 @@ export default {
         }
       ],
       element: {},
-      hardwareInfo: {}
+      hardwareInfo: [],
+      details: false,
+      detailInfo: { capability: [], logical_name: [], configuration: [] },
+      columnsCapability: [
+        {
+          name: 'name',
+          field: 'name',
+          label: this.$gettext('Name'),
+          align: 'left'
+        },
+        {
+          name: 'description',
+          field: 'description',
+          label: this.$gettext('Description'),
+          align: 'left'
+        }
+      ],
+      columnsLogicalName: [
+        {
+          name: 'name',
+          field: 'name',
+          label: this.$gettext('Name'),
+          align: 'left'
+        }
+      ],
+      columnsConfiguration: [
+        {
+          name: 'name',
+          field: 'name',
+          label: this.$gettext('Name'),
+          align: 'left'
+        },
+        {
+          name: 'value',
+          field: 'value',
+          label: this.$gettext('Value')
+        }
+      ]
     }
   },
   async mounted() {
@@ -116,11 +322,36 @@ export default {
       })
   },
   methods: {
+    humanStorageSize,
+
     async loadHardwareInfo() {
       await this.$axios
         .get(`/api/v1/token/${this.model}/${this.$route.params.id}/hardware/`)
         .then((response) => {
-          this.hardwareInfo = response.data
+          this.hardwareInfo = arrayToTree(response.data, {
+            dataField: null,
+            parentId: 'parent'
+          })
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+    },
+
+    header(row) {
+      if (row.description !== null && row.description !== 'NULL')
+        return row.description
+
+      return row.product
+    },
+
+    async showDetails(id) {
+      await this.$axios
+        .get(`/api/v1/token/hardware/${id}/info/`)
+        .then((response) => {
+          console.log(response.data)
+          this.detailInfo = response.data
+          this.details = true
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
