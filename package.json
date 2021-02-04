@@ -16,6 +16,7 @@
     "axios": "^0.18.1",
     "core-js": "^3.6.5",
     "echarts": "^4.9.0",
+    "performant-array-to-tree": "^1.8.1",
     "quasar": "^1.15.1",
     "text-clipper": "^2.1.0",
     "typeface-dosis": "^1.1.13",
