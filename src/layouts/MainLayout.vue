@@ -218,6 +218,8 @@ export default {
               return { name: 'faults-list', query: parsedValue.query }
             case 'notifications':
               return { name: 'notifications-list', query: parsedValue.query }
+            case 'packages':
+              return { name: 'packages-list', query: parsedValue.query }
           }
         }
       }
