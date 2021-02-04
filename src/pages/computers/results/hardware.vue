@@ -19,6 +19,7 @@
       <div class="row q-pa-md q-gutter-md">
         <div class="col-md">
           <ComputerHardwareResume
+            v-if="element.product_system"
             :cid="element.id"
             :last-hardware-capture="element.last_hardware_capture"
             :product="element.product"
@@ -32,10 +33,13 @@
             :mac-address="element.mac_address"
             :readonly="true"
           />
+          <q-banner v-else class="text-white bg-info q-ma-md">
+            <translate>No information</translate>
+          </q-banner>
         </div>
       </div>
 
-      <div v-if="hardwareInfo" class="row q-pa-md q-gutter-md">
+      <div v-if="hardwareInfo.length > 0" class="row q-pa-md q-gutter-md">
         <q-tree :nodes="hardwareInfo" node-key="id" no-connectors>
           <template #default-header="prop">
             <div class="row items-center">
@@ -44,7 +48,7 @@
 
                 <q-btn
                   class="q-ma-md"
-                  label="Details"
+                  :label="$gettext('Details')"
                   icon="mdi-text-box-search"
                   @click="showDetails(prop.node.id)"
                 />
