@@ -224,6 +224,18 @@ export const datagridMixin = {
       ).name
     }
 
+    if (typeof this.$route.query.store === 'string') {
+      this.updateParams({
+        columnFilters: { store: this.$route.query.store }
+      })
+      const value =
+        this.$route.query.store === 'true'
+          ? 1
+          : this.$route.query.store === 'false'
+          ? 0
+          : ''
+    }
+
     if (this.$route.query.id_in) {
       this.updateParams({
         columnFilters: { id_in: this.$route.query.id_in }
@@ -438,6 +450,9 @@ export const datagridMixin = {
             case 'status_in':
               if (this.model === 'computers') ret.status__in = val
               else ret.computer__status__in = val
+              break
+            case 'store':
+              ret.store__isnull = val
               break
             case 'store.name':
               ret.store__id = val
