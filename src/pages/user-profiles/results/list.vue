@@ -177,7 +177,7 @@ export default {
           hidden: true
         },
         {
-          label: this.$gettext('Domain'),
+          label: this.$gettext('Domain Preference'),
           field: 'domain_preference.name'
         }
       ],
