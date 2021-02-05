@@ -63,37 +63,8 @@
           </q-list>
         </q-btn-dropdown>
 
-        <q-btn-dropdown v-if="loggedIn" flat stretch>
-          <template #label>
-            <q-icon name="mdi-account" />
-            <q-tooltip>
-              <translate>User Account</translate>
-            </q-tooltip>
-          </template>
-          <q-list>
-            <q-item-label v-translate="{ name: username }" header
-              >User: %{ name }</q-item-label
-            >
-            <q-separator />
-            <q-item v-close-popup clickable to="#">
-              <q-item-section avatar>
-                <q-icon name="mdi-account-key" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label v-translate>Change Password</q-item-label>
-              </q-item-section>
-            </q-item>
+        <UserAccount v-if="loggedIn" />
 
-            <q-item v-close-popup clickable @click="logout">
-              <q-item-section avatar>
-                <q-icon name="mdi-power-standby" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label v-translate>Logout</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-btn-dropdown>
         <q-btn
           v-else
           flat
@@ -129,13 +100,14 @@
 import AppMenu from 'components/ui/AppMenu'
 import AppFooter from 'components/ui/AppFooter'
 import SearchBox from 'components/ui/SearchBox'
+import UserAccount from 'components/ui/UserAccount'
 
 export default {
   name: 'MainLayout',
   meta: {
     titleTemplate: (title) => `${title} | Migasfree`
   },
-  components: { AppMenu, AppFooter, SearchBox },
+  components: { AppMenu, AppFooter, SearchBox, UserAccount },
   data() {
     return {
       leftDrawerOpen: false,
@@ -144,12 +116,6 @@ export default {
     }
   },
   computed: {
-    username() {
-      const user = this.$store.getters['auth/user']
-      if (user.username) return user.username
-
-      return ''
-    },
     loggedIn() {
       return this.$store.getters['auth/loggedIn']
     },
@@ -166,15 +132,11 @@ export default {
     this.$q.dark.set(this.$q.cookies.get('darkMode'), { expires: '30d' })
   },
   async mounted() {
-    if (this.loggedIn) await this.loadAlerts()
+    if (this.loggedIn) {
+      await this.loadAlerts()
+    }
   },
   methods: {
-    logout() {
-      this.$store.dispatch('auth/logout').then(() => {
-        this.$router.push({ name: 'login' })
-      })
-    },
-
     toggleDarkMode() {
       this.$q.dark.toggle()
       this.$q.cookies.set('darkMode', this.$q.dark.isActive, { expires: '30d' })
