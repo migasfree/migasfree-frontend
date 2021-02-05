@@ -13,11 +13,11 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.9.15",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "echarts": "^4.9.0",
     "performant-array-to-tree": "^1.8.1",
-    "quasar": "^1.15.1",
+    "quasar": "^1.15.2",
     "text-clipper": "^2.1.0",
     "typeface-dosis": "^1.1.13",
     "validator": "^12.2.0",
