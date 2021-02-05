@@ -60,7 +60,7 @@ msgstr ""
 #: src/pages/stores/results/detail.vue:61
 #: src/pages/stores/results/detail.vue:71 src/pages/tags/results/detail.vue:75
 #: src/pages/tags/results/detail.vue:85
-#: src/pages/user-profiles/results/detail.vue:121
+#: src/pages/user-profiles/results/detail.vue:112
 msgid "* Required"
 msgstr "* Obligatorio"
 
@@ -155,7 +155,9 @@ msgstr "Añadir otro proyecto"
 msgid "Alerts"
 msgstr "Alertas"
 
-#: src/mixins/datagrid.js:40 src/mixins/datagrid.js:328
+#: src/components/ui/UserAccount.vue:5 src/components/ui/UserAccount.vue:6
+#: src/components/ui/UserAccount.vue:7 src/components/ui/UserAccount.vue:8
+#: src/mixins/datagrid.js:40 src/mixins/datagrid.js:340
 #: src/pages/attribute-sets/results/list.vue:70
 #: src/pages/attributes/results/list.vue:79
 #: src/pages/computers/results/list.vue:83
@@ -249,11 +251,11 @@ msgstr "Aplicaciones"
 msgid "Architecture"
 msgstr "Arquitectura"
 
-#: src/mixins/datagrid.js:530
+#: src/mixins/datagrid.js:545
 msgid "Are you sure you want to remove all these items?"
 msgstr "¿Estás seguro que quieres borrar estos elementos?"
 
-#: src/components/ui/RemoveDialog.vue:22 src/mixins/datagrid.js:525
+#: src/components/ui/RemoveDialog.vue:22 src/mixins/datagrid.js:540
 msgid "Are you sure you want to remove this item?"
 msgstr "¿Estás seguro que quieres borrar este elemento?"
 
@@ -310,7 +312,7 @@ msgstr "Lista de atributos"
 msgid "Attributes Sets"
 msgstr "Conjuntos de atributos"
 
-#: src/pages/user-profiles/results/detail.vue:61
+#: src/pages/user-profiles/results/detail.vue:56
 msgid "Authorizations"
 msgstr "Autorizaciones"
 
@@ -418,7 +420,7 @@ msgstr "Por estado"
 msgid "By Subscribed Date (range)"
 msgstr "Por fecha de alta (rango)"
 
-#: src/components/ui/RemoveDialog.vue:38 src/mixins/datagrid.js:548
+#: src/components/ui/RemoveDialog.vue:38 src/mixins/datagrid.js:563
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -458,15 +460,24 @@ msgstr "Capturar el hardware"
 msgid "Category"
 msgstr "Categoría"
 
+#: src/components/ui/UserAccount.vue:13
+msgid "Change Domain"
+msgstr "Cambiar dominio"
+
 #: src/pages/applications/results/detail.vue:150
 msgid "Change Icon"
 msgstr "Cambiar icono"
 
-#: src/layouts/MainLayout.vue:58 src/pages/user-profiles/results/detail.vue:97
+#: src/components/ui/UserAccount.vue:43
+#: src/pages/user-profiles/results/detail.vue:86
 msgid "Change Password"
 msgstr "Cambiar contraseña"
 
-#: src/mixins/datagrid.js:565
+#: src/components/ui/UserAccount.vue:26
+msgid "Change Scope"
+msgstr "Cambiar ámbito"
+
+#: src/mixins/datagrid.js:580
 msgid "Changed item check value!"
 msgstr "¡Cambiado el valor de comprobado!"
 
@@ -783,7 +794,7 @@ msgstr "Demoras"
 msgid "Delays count"
 msgstr "Número de demoras"
 
-#: src/components/ui/RemoveDialog.vue:46 src/mixins/datagrid.js:543
+#: src/components/ui/RemoveDialog.vue:46 src/mixins/datagrid.js:558
 #: src/pages/applications/results/detail.vue:97
 #: src/pages/applications/results/detail.vue:387
 #: src/pages/attribute-sets/results/detail.vue:254
@@ -816,7 +827,7 @@ msgstr "Número de demoras"
 #: src/pages/stamps/results/detail.vue:159
 #: src/pages/stores/results/detail.vue:118
 #: src/pages/tags/results/detail.vue:215
-#: src/pages/user-profiles/results/detail.vue:472
+#: src/pages/user-profiles/results/detail.vue:463
 msgid "Delete"
 msgstr "Borrar"
 
@@ -870,6 +881,7 @@ msgid "desktop"
 msgstr "de escritorio"
 
 #: src/pages/computers/results/hardware.vue:126
+#: src/pages/computers/results/hardware.vue:159
 msgid "Details"
 msgstr "Detalles"
 
@@ -961,8 +973,7 @@ msgstr "Reemplazo de dispositivos"
 #: src/pages/domains/results/detail.vue:23
 #: src/pages/domains/results/detail.vue:46
 #: src/pages/scopes/results/detail.vue:90 src/pages/scopes/results/list.vue:68
-#: src/pages/user-profiles/results/detail.vue:369
-#: src/pages/user-profiles/results/list.vue:86
+#: src/pages/user-profiles/results/detail.vue:360
 msgid "Domain"
 msgstr "Dominio"
 
@@ -970,9 +981,13 @@ msgstr "Dominio"
 msgid "Domain Admins"
 msgstr "Administradores del dominio"
 
+#: src/pages/user-profiles/results/list.vue:86
+msgid "Domain Preference"
+msgstr "Preferencia de dominio"
+
 #: src/components/ui/AppMenu.vue:75 src/pages/domains/results/detail.vue:50
 #: src/pages/domains/results/list.vue:22 src/pages/domains/results/list.vue:34
-#: src/pages/user-profiles/results/detail.vue:270
+#: src/pages/user-profiles/results/detail.vue:261
 msgid "Domains"
 msgstr "Dominios"
 
@@ -992,7 +1007,7 @@ msgstr "Duración"
 msgid "Editable by Domain Administrators"
 msgstr "Editable por administradores del dominio"
 
-#: src/pages/user-profiles/results/detail.vue:150
+#: src/pages/user-profiles/results/detail.vue:141
 msgid "Email"
 msgstr "Correo electrónico"
 
@@ -1021,7 +1036,7 @@ msgstr "Despliegues habilitados"
 #: src/pages/formulas/results/detail.vue:72
 #: src/pages/policies/results/detail.vue:98
 #: src/pages/stamps/results/detail.vue:60
-#: src/pages/user-profiles/results/detail.vue:203
+#: src/pages/user-profiles/results/detail.vue:194
 msgid "Enabled?"
 msgstr "¿Habilitado?"
 
@@ -1206,7 +1221,7 @@ msgstr "Campos"
 msgid "Filter"
 msgstr "Filtrar"
 
-#: src/pages/user-profiles/results/detail.vue:131
+#: src/pages/user-profiles/results/detail.vue:122
 #: src/pages/user-profiles/results/list.vue:64
 msgid "First Name"
 msgstr "Nombre"
@@ -1257,7 +1272,7 @@ msgstr "Nombre completo"
 #: src/pages/policies/results/detail.vue:12
 #: src/pages/schedules/results/detail.vue:12
 #: src/pages/scopes/results/detail.vue:12
-#: src/pages/user-profiles/results/detail.vue:18
+#: src/pages/user-profiles/results/detail.vue:13
 msgid "General"
 msgstr "General"
 
@@ -1268,7 +1283,7 @@ msgstr "Grupo"
 
 #: src/components/ui/AppMenu.vue:70 src/pages/groups/results/detail.vue:44
 #: src/pages/groups/results/list.vue:20 src/pages/groups/results/list.vue:32
-#: src/pages/user-profiles/results/detail.vue:242
+#: src/pages/user-profiles/results/detail.vue:233
 msgid "Groups"
 msgstr "Grupos"
 
@@ -1326,7 +1341,7 @@ msgstr ""
 msgid "Included Attributes"
 msgstr "Atributos incluidos"
 
-#: src/pages/user-profiles/results/detail.vue:76
+#: src/pages/user-profiles/results/detail.vue:71
 msgid ""
 "Indicates that this user has all permissions without explicitly\n"
 "              assigning them."
@@ -1334,11 +1349,11 @@ msgstr ""
 "Indica que este usuario tiene todos los permisos sin asignárselos "
 "explícitamente."
 
-#: src/pages/user-profiles/results/detail.vue:86
+#: src/pages/user-profiles/results/detail.vue:81
 msgid "Indicates whether the user can enter this administration site."
 msgstr "Indica si el usuario puede entrar en este sitio de administración."
 
-#: src/pages/user-profiles/results/detail.vue:66
+#: src/pages/user-profiles/results/detail.vue:61
 msgid ""
 "Indicates whether the user should be treated as active. Uncheck\n"
 "              this option instead of deleting the account."
@@ -1366,7 +1381,7 @@ msgstr "Entrada (del ordenador)"
 msgid "Internal"
 msgstr "Interno"
 
-#: src/pages/user-profiles/results/detail.vue:75
+#: src/pages/user-profiles/results/detail.vue:79
 msgid "Invalid email"
 msgstr "Correo electrónico inválido"
 
@@ -1379,19 +1394,19 @@ msgstr "Inventario"
 msgid "ip address"
 msgstr "Dirección IP"
 
-#: src/pages/user-profiles/results/detail.vue:229
+#: src/pages/user-profiles/results/detail.vue:220
 msgid "Is Staff?"
 msgstr "¿Es del personal?"
 
-#: src/pages/user-profiles/results/detail.vue:216
+#: src/pages/user-profiles/results/detail.vue:207
 msgid "Is Super User?"
 msgstr "¿Es superusuario?"
 
-#: src/mixins/datagrid.js:514
+#: src/mixins/datagrid.js:529
 msgid "Item deleted!"
 msgstr "¡Elemento borrado!"
 
-#: src/pages/user-profiles/results/detail.vue:46
+#: src/pages/user-profiles/results/detail.vue:41
 msgid "Joined Date"
 msgstr "Fecha de entrada"
 
@@ -1418,11 +1433,11 @@ msgstr "Última fecha de captura de hardware"
 msgid "Last hardware capture date has been changed!"
 msgstr "¡La última fecha de captura ha cambiado!"
 
-#: src/pages/user-profiles/results/detail.vue:53
+#: src/pages/user-profiles/results/detail.vue:48
 msgid "Last Login"
 msgstr "Última entrada"
 
-#: src/pages/user-profiles/results/detail.vue:139
+#: src/pages/user-profiles/results/detail.vue:130
 #: src/pages/user-profiles/results/list.vue:73
 msgid "Last Name"
 msgstr "Apellidos"
@@ -1473,7 +1488,7 @@ msgstr "Lista de Dispositivos lógicos"
 msgid "Logical Names"
 msgstr "Nombres lógicos"
 
-#: src/layouts/MainLayout.vue:67
+#: src/components/ui/UserAccount.vue:52
 msgid "Logout"
 msgstr "Terminar sesión"
 
@@ -1699,7 +1714,7 @@ msgstr "Sin información"
 #: src/pages/scopes/results/detail.vue:55
 #: src/pages/scopes/results/detail.vue:79 src/pages/scopes/results/detail.vue:2
 #: src/pages/tags/results/detail.vue:33 src/pages/tags/results/detail.vue:2
-#: src/pages/user-profiles/results/detail.vue:119
+#: src/pages/user-profiles/results/detail.vue:114
 #: src/pages/user-profiles/results/detail.vue:2
 msgid "No results"
 msgstr "No hay resultados"
@@ -1732,7 +1747,7 @@ msgstr "de"
 msgid "OK Computers"
 msgstr "Ordenadores OK"
 
-#: src/pages/user-profiles/results/detail.vue:119
+#: src/pages/user-profiles/results/detail.vue:110
 msgid "Only letters, digits and @/./+/-/_"
 msgstr "Sólo letras, dígitos y @/./+/-/_"
 
@@ -1908,9 +1923,13 @@ msgstr "Política"
 msgid "Policy Groups"
 msgstr "Grupos de políticas"
 
-#: src/pages/user-profiles/results/detail.vue:142
+#: src/pages/user-profiles/results/detail.vue:137
 msgid "Preferences"
 msgstr "Preferencias"
+
+#: src/components/ui/UserAccount.vue:74
+msgid "Preferences changed!"
+msgstr "¡Las preferencias han cambiado!"
 
 #: src/pages/formulas/results/detail.vue:95
 #: src/pages/formulas/results/list.vue:66
@@ -1937,7 +1956,7 @@ msgstr "Procesador"
 msgid "Product"
 msgstr "Producto"
 
-#: src/mixins/datagrid.js:335
+#: src/mixins/datagrid.js:347
 msgid "productive"
 msgstr "productivos"
 
@@ -2135,7 +2154,7 @@ msgstr "Resultados por página"
 #: src/pages/scopes/results/detail.vue:304
 #: src/pages/stamps/results/detail.vue:140
 #: src/pages/stores/results/detail.vue:99 src/pages/tags/results/detail.vue:196
-#: src/pages/user-profiles/results/detail.vue:453
+#: src/pages/user-profiles/results/detail.vue:444
 msgid "Save"
 msgstr "Grabar"
 
@@ -2162,7 +2181,7 @@ msgstr "Grabar"
 #: src/pages/scopes/results/detail.vue:288
 #: src/pages/stamps/results/detail.vue:124
 #: src/pages/stores/results/detail.vue:83 src/pages/tags/results/detail.vue:180
-#: src/pages/user-profiles/results/detail.vue:437
+#: src/pages/user-profiles/results/detail.vue:428
 msgid "Save and add other"
 msgstr "Grabar y añadir otro"
 
@@ -2194,7 +2213,7 @@ msgstr "Grabar y añadir otro"
 #: src/pages/scopes/results/detail.vue:297
 #: src/pages/stamps/results/detail.vue:133
 #: src/pages/stores/results/detail.vue:92 src/pages/tags/results/detail.vue:189
-#: src/pages/user-profiles/results/detail.vue:446
+#: src/pages/user-profiles/results/detail.vue:437
 msgid "Save and continue editing"
 msgstr "Grabar y continuar editando"
 
@@ -2217,7 +2236,7 @@ msgstr "Lista de Calendarios"
 
 #: src/pages/scopes/results/detail.vue:23
 #: src/pages/scopes/results/detail.vue:45
-#: src/pages/user-profiles/results/detail.vue:401
+#: src/pages/user-profiles/results/detail.vue:392
 msgid "Scope"
 msgstr "Ámbito"
 
@@ -2377,7 +2396,7 @@ msgstr "Almacenes / Proyecto"
 msgid "Stores List"
 msgstr "Lista de Almacenes"
 
-#: src/mixins/datagrid.js:331
+#: src/mixins/datagrid.js:343
 msgid "subscribed"
 msgstr "de alta"
 
@@ -2389,11 +2408,11 @@ msgstr "Ordenadores de alta / Estado"
 msgid "Suite"
 msgstr "Suite"
 
-#: src/layouts/MainLayout.vue:70
+#: src/layouts/MainLayout.vue:65
 msgid "Switch to Dark mode"
 msgstr "Cambiar al modo oscuro"
 
-#: src/layouts/MainLayout.vue:69
+#: src/layouts/MainLayout.vue:64
 msgid "Switch to Light mode"
 msgstr "Cambiar al modo luminoso"
 
@@ -2560,11 +2579,11 @@ msgstr "Errores sin comprobar"
 msgid "Unchecked Faults"
 msgstr "Fallas sin comprobar"
 
-#: src/mixins/datagrid.js:342
+#: src/mixins/datagrid.js:354
 msgid "unproductive"
 msgstr "improductivos"
 
-#: src/mixins/datagrid.js:353
+#: src/mixins/datagrid.js:365
 msgid "unsubscribed"
 msgstr "de baja"
 
@@ -2585,17 +2604,17 @@ msgstr "Actualizando..."
 msgid "User"
 msgstr "Usuario"
 
-#: src/layouts/MainLayout.vue:47 src/layouts/MainLayout.vue:3
+#: src/components/ui/UserAccount.vue:5 src/components/ui/UserAccount.vue:3
 msgid "User Account"
 msgstr "Cuenta de usuario"
 
-#: src/pages/user-profiles/results/detail.vue:309
+#: src/pages/user-profiles/results/detail.vue:300
 msgid "User Permissions"
 msgstr "Permisos de usuario"
 
 #: src/pages/scopes/results/list.vue:73
 #: src/pages/user-profiles/results/detail.vue:23
-#: src/pages/user-profiles/results/detail.vue:76
+#: src/pages/user-profiles/results/detail.vue:71
 msgid "User Profile"
 msgstr "Perfil de usuario"
 
@@ -2612,11 +2631,11 @@ msgstr "Perfiles de usuario"
 msgid "User Profiles List"
 msgstr "Lista de Perfiles de usuario"
 
-#: src/layouts/MainLayout.vue:51
+#: src/components/ui/UserAccount.vue:9
 msgid "User: %{ name }"
 msgstr "Usuario: %{name}"
 
-#: src/pages/user-profiles/results/detail.vue:118
+#: src/pages/user-profiles/results/detail.vue:109
 #: src/pages/user-profiles/results/list.vue:54
 msgid "Username"
 msgstr "Nombre de usuario"
