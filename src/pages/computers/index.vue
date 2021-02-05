@@ -191,10 +191,12 @@ export default {
   methods: {
     goTo(params) {
       console.log(params)
+      let query = params.url.query || {}
+
       if (params.data.machine) {
         this.$router.push({
           name: this.url.name,
-          query: Object.assign(params.url.query, {
+          query: Object.assign(query, {
             machine: params.data.machine
           })
         })
@@ -203,7 +205,7 @@ export default {
       if (params.data.status__in) {
         this.$router.push({
           name: this.url.name,
-          query: Object.assign(params.url.query, {
+          query: Object.assign(query, {
             status_in: params.data.status__in
           })
         })
@@ -212,7 +214,7 @@ export default {
       if (params.data.project_id) {
         this.$router.push({
           name: this.url.name,
-          query: Object.assign(params.url.query, {
+          query: Object.assign(query, {
             project_id: params.data.project_id
           })
         })
@@ -221,7 +223,7 @@ export default {
       if (params.data.platform_id) {
         this.$router.push({
           name: this.url.name,
-          query: Object.assign(params.url.query, {
+          query: Object.assign(query, {
             platform_id: params.data.platform_id
           })
         })
