@@ -7,12 +7,7 @@ export async function login(context, data) {
       context.dispatch('getUser')
     })
     .catch((error) => {
-      console.error(error.response || error)
-      context.dispatch(
-        'ui/notifyError',
-        error.response.data.non_field_errors || error.response.data.detail,
-        { root: true }
-      )
+      context.dispatch('ui/notifyError', error, { root: true })
     })
 }
 
@@ -23,12 +18,7 @@ export async function getUser(context) {
       context.commit('setUser', response.data)
     })
     .catch((error) => {
-      console.error(error.response)
-      context.dispatch(
-        'ui/notifyError',
-        error.response.data.non_field_errors || error.response.data,
-        { root: true }
-      )
+      context.dispatch('ui/notifyError', error, { root: true })
     })
 }
 
@@ -41,11 +31,6 @@ export async function logout(context) {
       context.commit('setUser', {})
     })
     .catch((error) => {
-      console.error(error.response)
-      context.dispatch(
-        'ui/notifyError',
-        error.response.data.non_field_errors || error.response.data,
-        { root: true }
-      )
+      context.dispatch('ui/notifyError', error, { root: true })
     })
 }
