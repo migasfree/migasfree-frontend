@@ -1,7 +1,7 @@
 <template>
   <q-btn-dropdown ref="userAccount" flat stretch>
     <template #label>
-      <q-icon name="mdi-account" />
+      <q-icon name="mdi-account-cog" />
       <q-tooltip>
         <translate>User Account</translate>
       </q-tooltip>
