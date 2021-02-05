@@ -11,14 +11,14 @@
           :value="element.username"
           icon="mdi-account-cog"
         />
+        <q-btn
+          class="q-ma-md"
+          :label="$gettext('Change Password')"
+          color="primary"
+          icon="mdi-account-key"
+        />
       </template>
     </Header>
-
-    <div v-if="element.id" class="row q-pa-md q-gutter-md">
-      <div class="col-12">
-        <q-btn :label="$gettext('Change Password')" color="primary" />
-      </div>
-    </div>
 
     <q-card>
       <q-card-section>
@@ -411,6 +411,10 @@ export default {
   computed: {
     isValid() {
       return this.element.username !== undefined && this.element.username !== ''
+    },
+
+    elementText() {
+      return this.element.id ? this.element.username : ''
     }
   },
   methods: {
@@ -444,10 +448,6 @@ export default {
               name: item.name
             })
           })
-          if (this.element.id)
-            this.element.domain_preference = this.domains.find(
-              (x) => x.id === this.element.domain_preference
-            )
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
@@ -462,10 +462,6 @@ export default {
               name: item.name
             })
           })
-          if (this.element.id)
-            this.element.scope_preference = this.scopes.find(
-              (x) => x.id === this.element.scope_preference
-            )
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
