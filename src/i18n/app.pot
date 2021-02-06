@@ -54,7 +54,10 @@ msgstr ""
 #: ./src/pages/stores/results/detail.vue:71
 #: ./src/pages/tags/results/detail.vue:75
 #: ./src/pages/tags/results/detail.vue:85
-#: ./src/pages/user-profiles/results/detail.vue:112
+#: ./src/pages/user-profiles/results/changePassword.vue:74
+#: ./src/pages/user-profiles/results/changePassword.vue:91
+#: ./src/pages/user-profiles/results/changePassword.vue:105
+#: ./src/pages/user-profiles/results/detail.vue:118
 msgid "* Required"
 msgstr ""
 
@@ -327,7 +330,7 @@ msgstr ""
 msgid "Attributes Sets"
 msgstr ""
 
-#: ./src/pages/user-profiles/results/detail.vue:56
+#: ./src/pages/user-profiles/results/detail.vue:61
 msgid "Authorizations"
 msgstr ""
 
@@ -488,6 +491,9 @@ msgid "Change Icon"
 msgstr ""
 
 #: ./src/components/ui/UserAccount.vue:43
+#: ./src/pages/user-profiles/results/changePassword.vue:19
+#: ./src/pages/user-profiles/results/changePassword.vue:29
+#: ./src/pages/user-profiles/results/changePassword.vue:128
 #: ./src/pages/user-profiles/results/detail.vue:86
 msgid "Change Password"
 msgstr ""
@@ -636,6 +642,7 @@ msgstr ""
 #: ./src/pages/scopes/results/list.vue:30
 #: ./src/pages/stamps/results/detail.vue:39
 #: ./src/pages/stamps/results/list.vue:32
+#: ./src/pages/user-profiles/results/changePassword.vue:33
 #: ./src/pages/user-profiles/results/detail.vue:48
 #: ./src/pages/user-profiles/results/list.vue:30
 msgid "Configuration"
@@ -669,6 +676,10 @@ msgstr ""
 
 #: ./src/pages/computers/results/list.vue:167
 msgid "container"
+msgstr ""
+
+#: ./src/pages/user-profiles/results/changePassword.vue:58
+msgid "Current Password"
 msgstr ""
 
 #: ./src/pages/computers/results/detail.vue:31
@@ -763,6 +774,7 @@ msgstr ""
 #: ./src/pages/tags/index.vue:23
 #: ./src/pages/tags/results/detail.vue:36
 #: ./src/pages/tags/results/list.vue:26
+#: ./src/pages/user-profiles/results/changePassword.vue:28
 #: ./src/pages/user-profiles/results/detail.vue:43
 #: ./src/pages/user-profiles/results/list.vue:25
 #: ./src/pages/users/results/list.vue:25
@@ -895,7 +907,7 @@ msgstr ""
 #: ./src/pages/stamps/results/detail.vue:159
 #: ./src/pages/stores/results/detail.vue:118
 #: ./src/pages/tags/results/detail.vue:215
-#: ./src/pages/user-profiles/results/detail.vue:463
+#: ./src/pages/user-profiles/results/detail.vue:469
 msgid "Delete"
 msgstr ""
 
@@ -1055,7 +1067,7 @@ msgstr ""
 #: ./src/pages/domains/results/detail.vue:46
 #: ./src/pages/scopes/results/detail.vue:90
 #: ./src/pages/scopes/results/list.vue:68
-#: ./src/pages/user-profiles/results/detail.vue:360
+#: ./src/pages/user-profiles/results/detail.vue:366
 msgid "Domain"
 msgstr ""
 
@@ -1071,7 +1083,7 @@ msgstr ""
 #: ./src/pages/domains/results/detail.vue:50
 #: ./src/pages/domains/results/list.vue:22
 #: ./src/pages/domains/results/list.vue:34
-#: ./src/pages/user-profiles/results/detail.vue:261
+#: ./src/pages/user-profiles/results/detail.vue:267
 msgid "Domains"
 msgstr ""
 
@@ -1091,7 +1103,7 @@ msgstr ""
 msgid "Editable by Domain Administrators"
 msgstr ""
 
-#: ./src/pages/user-profiles/results/detail.vue:141
+#: ./src/pages/user-profiles/results/detail.vue:147
 msgid "Email"
 msgstr ""
 
@@ -1121,7 +1133,7 @@ msgstr ""
 #: ./src/pages/formulas/results/detail.vue:72
 #: ./src/pages/policies/results/detail.vue:98
 #: ./src/pages/stamps/results/detail.vue:60
-#: ./src/pages/user-profiles/results/detail.vue:194
+#: ./src/pages/user-profiles/results/detail.vue:200
 msgid "Enabled?"
 msgstr ""
 
@@ -1325,7 +1337,7 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
-#: ./src/pages/user-profiles/results/detail.vue:122
+#: ./src/pages/user-profiles/results/detail.vue:128
 #: ./src/pages/user-profiles/results/list.vue:64
 msgid "First Name"
 msgstr ""
@@ -1377,7 +1389,7 @@ msgstr ""
 #: ./src/pages/policies/results/detail.vue:12
 #: ./src/pages/schedules/results/detail.vue:12
 #: ./src/pages/scopes/results/detail.vue:12
-#: ./src/pages/user-profiles/results/detail.vue:13
+#: ./src/pages/user-profiles/results/detail.vue:18
 msgid "General"
 msgstr ""
 
@@ -1390,7 +1402,7 @@ msgstr ""
 #: ./src/pages/groups/results/detail.vue:44
 #: ./src/pages/groups/results/list.vue:20
 #: ./src/pages/groups/results/list.vue:32
-#: ./src/pages/user-profiles/results/detail.vue:233
+#: ./src/pages/user-profiles/results/detail.vue:239
 msgid "Groups"
 msgstr ""
 
@@ -1445,17 +1457,17 @@ msgstr ""
 msgid "Included Attributes"
 msgstr ""
 
-#: ./src/pages/user-profiles/results/detail.vue:71
+#: ./src/pages/user-profiles/results/detail.vue:76
 msgid ""
 "Indicates that this user has all permissions without explicitly\n"
 "              assigning them."
 msgstr ""
 
-#: ./src/pages/user-profiles/results/detail.vue:81
+#: ./src/pages/user-profiles/results/detail.vue:86
 msgid "Indicates whether the user can enter this administration site."
 msgstr ""
 
-#: ./src/pages/user-profiles/results/detail.vue:61
+#: ./src/pages/user-profiles/results/detail.vue:66
 msgid ""
 "Indicates whether the user should be treated as active. Uncheck\n"
 "              this option instead of deleting the account."
@@ -1494,11 +1506,11 @@ msgstr ""
 msgid "ip address"
 msgstr ""
 
-#: ./src/pages/user-profiles/results/detail.vue:220
+#: ./src/pages/user-profiles/results/detail.vue:226
 msgid "Is Staff?"
 msgstr ""
 
-#: ./src/pages/user-profiles/results/detail.vue:207
+#: ./src/pages/user-profiles/results/detail.vue:213
 msgid "Is Super User?"
 msgstr ""
 
@@ -1506,7 +1518,7 @@ msgstr ""
 msgid "Item deleted!"
 msgstr ""
 
-#: ./src/pages/user-profiles/results/detail.vue:41
+#: ./src/pages/user-profiles/results/detail.vue:46
 msgid "Joined Date"
 msgstr ""
 
@@ -1534,11 +1546,11 @@ msgstr ""
 msgid "Last hardware capture date has been changed!"
 msgstr ""
 
-#: ./src/pages/user-profiles/results/detail.vue:48
+#: ./src/pages/user-profiles/results/detail.vue:53
 msgid "Last Login"
 msgstr ""
 
-#: ./src/pages/user-profiles/results/detail.vue:130
+#: ./src/pages/user-profiles/results/detail.vue:136
 #: ./src/pages/user-profiles/results/list.vue:73
 msgid "Last Name"
 msgstr ""
@@ -1760,6 +1772,10 @@ msgstr ""
 msgid "New Computers / Month"
 msgstr ""
 
+#: ./src/pages/user-profiles/results/changePassword.vue:83
+msgid "New Password"
+msgstr ""
+
 #: ./src/mixins/datagrid.js:35
 msgid "Next"
 msgstr ""
@@ -1840,7 +1856,7 @@ msgstr ""
 #: ./src/pages/scopes/results/detail.vue:2
 #: ./src/pages/tags/results/detail.vue:33
 #: ./src/pages/tags/results/detail.vue:2
-#: ./src/pages/user-profiles/results/detail.vue:114
+#: ./src/pages/user-profiles/results/detail.vue:119
 #: ./src/pages/user-profiles/results/detail.vue:2
 msgid "No results"
 msgstr ""
@@ -1877,7 +1893,7 @@ msgstr ""
 msgid "OK Computers"
 msgstr ""
 
-#: ./src/pages/user-profiles/results/detail.vue:110
+#: ./src/pages/user-profiles/results/detail.vue:116
 msgid "Only letters, digits and @/./+/-/_"
 msgstr ""
 
@@ -1985,6 +2001,15 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
+#: ./src/pages/user-profiles/results/changePassword.vue:156
+#: ./src/pages/user-profiles/results/changePassword.vue:174
+msgid "Password changed!"
+msgstr ""
+
+#: ./src/pages/user-profiles/results/changePassword.vue:105
+msgid "Password Confirmation"
+msgstr ""
+
 #: ./src/pages/groups/results/detail.vue:70
 msgid "Permissions"
 msgstr ""
@@ -2031,6 +2056,9 @@ msgid "Please use maximum %{n} characters"
 msgstr ""
 
 #: ./src/pages/Login.vue:103
+#: ./src/pages/user-profiles/results/changePassword.vue:78
+#: ./src/pages/user-profiles/results/changePassword.vue:95
+#: ./src/pages/user-profiles/results/changePassword.vue:109
 msgid "Please use minimum %{n} characters"
 msgstr ""
 
@@ -2058,11 +2086,11 @@ msgstr ""
 msgid "Policy Groups"
 msgstr ""
 
-#: ./src/pages/user-profiles/results/detail.vue:137
+#: ./src/pages/user-profiles/results/detail.vue:142
 msgid "Preferences"
 msgstr ""
 
-#: ./src/components/ui/UserAccount.vue:74
+#: ./src/components/ui/UserAccount.vue:71
 msgid "Preferences changed!"
 msgstr ""
 
@@ -2309,7 +2337,7 @@ msgstr ""
 #: ./src/pages/stamps/results/detail.vue:140
 #: ./src/pages/stores/results/detail.vue:99
 #: ./src/pages/tags/results/detail.vue:196
-#: ./src/pages/user-profiles/results/detail.vue:444
+#: ./src/pages/user-profiles/results/detail.vue:450
 msgid "Save"
 msgstr ""
 
@@ -2337,7 +2365,7 @@ msgstr ""
 #: ./src/pages/stamps/results/detail.vue:124
 #: ./src/pages/stores/results/detail.vue:83
 #: ./src/pages/tags/results/detail.vue:180
-#: ./src/pages/user-profiles/results/detail.vue:428
+#: ./src/pages/user-profiles/results/detail.vue:434
 msgid "Save and add other"
 msgstr ""
 
@@ -2370,7 +2398,7 @@ msgstr ""
 #: ./src/pages/stamps/results/detail.vue:133
 #: ./src/pages/stores/results/detail.vue:92
 #: ./src/pages/tags/results/detail.vue:189
-#: ./src/pages/user-profiles/results/detail.vue:437
+#: ./src/pages/user-profiles/results/detail.vue:443
 msgid "Save and continue editing"
 msgstr ""
 
@@ -2394,7 +2422,7 @@ msgstr ""
 
 #: ./src/pages/scopes/results/detail.vue:23
 #: ./src/pages/scopes/results/detail.vue:45
-#: ./src/pages/user-profiles/results/detail.vue:392
+#: ./src/pages/user-profiles/results/detail.vue:398
 msgid "Scope"
 msgstr ""
 
@@ -2680,6 +2708,10 @@ msgid ""
 "                  'description' is optional."
 msgstr ""
 
+#: ./src/pages/user-profiles/results/changePassword.vue:85
+msgid "The passwords are different"
+msgstr ""
+
 #: ./src/pages/applications/results/list.vue:30
 #: ./src/pages/attribute-sets/results/list.vue:30
 #: ./src/pages/attributes/results/list.vue:30
@@ -2789,7 +2821,7 @@ msgstr ""
 msgid "User Account"
 msgstr ""
 
-#: ./src/pages/user-profiles/results/detail.vue:300
+#: ./src/pages/user-profiles/results/detail.vue:306
 msgid "User Permissions"
 msgstr ""
 
@@ -2802,6 +2834,7 @@ msgstr ""
 #: ./src/components/ui/AppMenu.vue:65
 #: ./src/pages/fault-definitions/results/detail.vue:100
 #: ./src/pages/fault-definitions/results/detail.vue:283
+#: ./src/pages/user-profiles/results/changePassword.vue:37
 #: ./src/pages/user-profiles/results/detail.vue:52
 #: ./src/pages/user-profiles/results/list.vue:22
 #: ./src/pages/user-profiles/results/list.vue:34
@@ -2816,7 +2849,7 @@ msgstr ""
 msgid "User: %{ name }"
 msgstr ""
 
-#: ./src/pages/user-profiles/results/detail.vue:109
+#: ./src/pages/user-profiles/results/detail.vue:115
 #: ./src/pages/user-profiles/results/list.vue:54
 msgid "Username"
 msgstr ""
