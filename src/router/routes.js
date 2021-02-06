@@ -418,6 +418,11 @@ const routes = [
         name: 'user-profile-detail',
         component: () => import('pages/user-profiles/results/detail')
       },
+      {
+        path: '/user-profiles/results/:id/change-password',
+        name: 'user-profile-change-password',
+        component: () => import('pages/user-profiles/results/changePassword')
+      },
 
       {
         path: '/groups/results',
