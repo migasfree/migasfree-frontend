@@ -16,6 +16,12 @@
           :label="$gettext('Change Password')"
           color="primary"
           icon="mdi-account-key"
+          @click="
+            $router.push({
+              name: 'user-profile-change-password',
+              params: { id: element.id }
+            })
+          "
         />
       </template>
     </Header>
@@ -25,7 +31,7 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-12">
+          <div class="col-md">
             <q-input
               v-model="element.username"
               outlined
@@ -93,7 +99,7 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">Authorizations</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-12">
+          <div class="col-md">
             <q-checkbox
               v-model="element.is_active"
               left-label
@@ -107,7 +113,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-12">
+          <div class="col-md">
             <q-checkbox
               v-model="element.is_superuser"
               left-label
@@ -121,7 +127,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-12">
+          <div class="col-md">
             <q-checkbox
               v-model="element.is_staff"
               left-label
@@ -189,7 +195,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-12">
+          <div class="col-md">
             <q-select
               v-model="element.user_permissions"
               outlined
