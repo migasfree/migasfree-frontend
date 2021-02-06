@@ -7,7 +7,7 @@
       </q-tooltip>
     </template>
     <q-list>
-      <q-item-label v-translate="{ name: username }" header
+      <q-item-label v-translate="{ name: user.username || '' }" header
         >User: %{ name }</q-item-label
       >
       <q-separator />
@@ -56,7 +56,11 @@
         </q-item-section>
       </q-item>
 
-      <q-item v-close-popup clickable to="#">
+      <q-item
+        v-close-popup
+        clickable
+        :to="{ name: 'user-profile-change-password', params: { id: user.id } }"
+      >
         <q-item-section avatar>
           <q-icon name="mdi-account-key" />
         </q-item-section>
@@ -89,11 +93,8 @@ export default {
     }
   },
   computed: {
-    username() {
-      const user = this.$store.getters['auth/user']
-      if (user.username) return user.username
-
-      return ''
+    user() {
+      return this.$store.getters['auth/user']
     }
   },
   async mounted() {
@@ -111,11 +112,11 @@ export default {
         this.$store.dispatch('ui/notifyError', error)
       })
 
-    const user = this.$store.getters['auth/user']
-    if (user.domain_preference) this.domainPreference = user.domain_preference
+    if (this.user.domain_preference)
+      this.domainPreference = this.user.domain_preference
 
     await this.$axios
-      .get(`/api/v1/token/scopes/?user=${user.id}`)
+      .get(`/api/v1/token/scopes/?user=${this.user.id}`)
       .then((response) => {
         Object.entries(response.data.results).map(([index, item]) => {
           this.scopes.push({
@@ -128,7 +129,8 @@ export default {
         this.$store.dispatch('ui/notifyError', error)
       })
 
-    if (user.scope_preference) this.scopePreference = user.scope_preference
+    if (this.user.scope_preference)
+      this.scopePreference = this.user.scope_preference
   },
   methods: {
     logout() {
@@ -138,9 +140,8 @@ export default {
     },
 
     async updatePreferences() {
-      const user = this.$store.getters['auth/user']
       await this.$axios
-        .patch(`/api/v1/token/user-profiles/${user.id}/`, {
+        .patch(`/api/v1/token/user-profiles/${this.user.id}/`, {
           domain_preference: this.domainPreference.id
             ? this.domainPreference.id
             : null,
