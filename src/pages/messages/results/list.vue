@@ -13,13 +13,24 @@
         />
 
         <div class="row q-pa-md q-col-gutter-lg">
-          <div class="col-4 col-md">
+          <div class="col-6 col-md">
             <DateRangeInput
               ref="createdAtRange"
               v-model="tableFilters.createdAt.selected"
               prepend-icon="mdi-filter"
               :label="$gettext('By Subscribed Date (range)')"
               @select="onCreatedAtFilter"
+            />
+          </div>
+
+          <div class="col-6 col-md">
+            <SelectTree
+              ref="statusTree"
+              v-model="tableFilters.statusIn.selected"
+              :placeholder="$gettext('By Status')"
+              prepend-icon="mdi-filter"
+              :options="tableFilters.statusIn.items"
+              @select="onStatusInFilter"
             />
           </div>
         </div>
@@ -116,6 +127,7 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import SearchFilter from 'components/ui/SearchFilter'
 import Header from 'components/ui/Header'
 import DateRangeInput from 'components/ui/DateRangeInput'
+import SelectTree from 'components/ui/SelectTree'
 import MigasLink from 'components/MigasLink'
 import { dateMixin } from 'mixins/date'
 import { elementMixin } from 'mixins/element'
@@ -132,6 +144,7 @@ export default {
     SearchFilter,
     Header,
     DateRangeInput,
+    SelectTree,
     MigasLink
   },
   mixins: [dateMixin, elementMixin, datagridMixin],
@@ -219,6 +232,11 @@ export default {
         search: '',
         createdAt: {
           selected: { from: null, to: null }
+        },
+        statusIn: {
+          items: [],
+          selected: null,
+          choices: {}
         }
       },
       model: 'messages'
@@ -239,6 +257,15 @@ export default {
               }
             }
           )
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+
+      await this.$axios
+        .get('/api/v1/token/computers/status/')
+        .then((response) => {
+          this.updateStatusInFilter(response.data)
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
