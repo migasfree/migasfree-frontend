@@ -644,6 +644,9 @@ export const datagridMixin = {
 
       if ('model' in this.tableFilters) this.tableFilters.model.selected = null
 
+      if ('schedule' in this.tableFilters)
+        this.tableFilters.schedule.selected = null
+
       this.loadItems()
     }
   }
