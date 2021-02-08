@@ -57,6 +57,19 @@
             color="negative"
             @click="confirmRemove(props.row.id)"
           />
+          <q-btn
+            class="q-ma-xs"
+            round
+            size="sm"
+            icon="mdi-account-key"
+            color="info"
+            @click="
+              $router.push({
+                name: 'user-profile-change-password',
+                params: { id: props.row.id }
+              })
+            "
+          />
         </span>
         <span v-else-if="props.column.field == 'username'">
           <MigasLink
