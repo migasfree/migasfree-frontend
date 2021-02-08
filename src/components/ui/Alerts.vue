@@ -101,6 +101,8 @@ export default {
               return { name: 'notifications-list', query: parsedValue.query }
             case 'packages':
               return { name: 'packages-list', query: parsedValue.query }
+            case 'deployments':
+              return { name: 'deployments-list', query: parsedValue.query }
           }
         }
       }
