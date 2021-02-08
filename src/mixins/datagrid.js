@@ -111,7 +111,7 @@ export const datagridMixin = {
       })
     }
 
-    if (this.$route.query.created_at__gte && this.$route.query.created_at__lt) {
+    if (this.$route.query.created_at__gte || this.$route.query.created_at__lt) {
       this.updateParams({
         columnFilters: {
           created_at__gte: this.$route.query.created_at__gte,
