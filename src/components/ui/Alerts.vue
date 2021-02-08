@@ -103,6 +103,8 @@ export default {
               return { name: 'packages-list', query: parsedValue.query }
             case 'deployments':
               return { name: 'deployments-list', query: parsedValue.query }
+            case 'messages':
+              return { name: 'messages-list', query: parsedValue.query }
           }
         }
       }
