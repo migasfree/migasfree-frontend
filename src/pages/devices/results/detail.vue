@@ -145,7 +145,20 @@
       <q-card-section v-if="element.connection">
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">Connection Fields</div>
 
-        <pre>{{ element.connection.fields }}</pre>
+        <div
+          v-for="(field, index) in element.connection.fields"
+          :key="index"
+          class="row q-pa-md q-gutter-md"
+        >
+          <div class="col-md">
+            <q-input
+              v-model="field.value"
+              outlined
+              :label="field.id"
+              :hint="field.hint"
+            />
+          </div>
+        </div>
       </q-card-section>
 
       <q-card-section>
@@ -396,8 +409,13 @@ export default {
         connection: this.element.connection.id,
         available_for_attributes: this.element.available_for_attributes
           ? this.element.available_for_attributes.map((item) => item.id)
-          : []
-        // data:
+          : [],
+        // data: this.element.connection.fields.length > 0 ? 'hola' : {}
+        data: this.element.connection.fields.reduce((obj, v) => {
+          console.log(obj, v)
+          obj[v] = 0
+          return obj
+        }, {})
       }
     },
 
@@ -460,7 +478,21 @@ export default {
             `/api/v1/token/devices/connections/${this.element.connection.id}/`
           )
           .then((response) => {
-            this.$set(this.element.connection, 'fields', response.data.fields)
+            this.$set(
+              this.element.connection,
+              'fields',
+              response.data.fields.split(',').map((item) => {
+                const field = item.trim().split(':')
+                return {
+                  id: field[0],
+                  value:
+                    field[0] in this.element.data
+                      ? this.element.data[field[0]]
+                      : null,
+                  hint: field[1] ? field[1] : null
+                }
+              })
+            )
           })
           .catch((error) => {
             this.$store.dispatch('ui/notifyError', error)
