@@ -31,8 +31,11 @@
 </template>
 
 <script>
+import { dateMixin } from 'mixins/date'
+
 export default {
   name: 'DateRangeInput',
+  mixins: [dateMixin],
   props: {
     label: {
       type: String,
@@ -58,9 +61,16 @@ export default {
   },
   computed: {
     dateView() {
-      if (this.date.to) {
-        return `${this.date.from} ~ ${this.date.to}`
+      if (this.date.to && this.date.from) {
+        return `${this.showDate(this.date.from)} ~ ${this.showDate(
+          this.date.to
+        )}`
       }
+
+      if (this.date.to) return `? ~ ${this.showDate(this.date.to)}`
+
+      if (this.date.from) return `${this.showDate(this.date.from)} ~ ?`
+
       return ''
     }
   },
