@@ -2,6 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
+    {{ element }}
     <Header :title="$gettext('Device')">
       <template v-if="element.id" #append
         >:
@@ -355,7 +356,12 @@ export default {
   },
   computed: {
     isValid() {
-      return this.element.name !== undefined && this.element.name !== ''
+      return (
+        this.element.name !== undefined &&
+        this.element.name !== '' &&
+        this.element.model !== undefined &&
+        this.element.connection !== null
+      )
     }
   },
   methods: {
@@ -380,16 +386,18 @@ export default {
           })
 
         this.localConnectionFields()
-        /* this.logicalDevices = this.element.packages_by_project
-        this.packagesByProject.forEach((item) => {
-          item.packages_to_install = item.packages_to_install.join('\n')
-        }) */
       }
     },
 
     elementData() {
       return {
-        name: this.element.name
+        name: this.element.name,
+        model: this.element.model.id,
+        connection: this.element.connection.id,
+        available_for_attributes: this.element.available_for_attributes
+          ? this.element.available_for_attributes.map((item) => item.id)
+          : []
+        // data:
       }
     },
 
@@ -473,6 +481,57 @@ export default {
       if (removedItem.id > 0) {
         this.removedLogicalDevices.push(removedItem.id)
       }
+    },
+
+    async updateRelated() {
+      this.logicalDevices.forEach((logical) => {
+        if (logical.capability === undefined) {
+          return
+        }
+
+        if (logical.id > 0) {
+          this.$axios
+            .patch(`/api/v1/token/devices/logical/${logical.id}/`, {
+              id: logical.id,
+              device: this.element.id,
+              capability: logical.capability.id,
+              alternative_capability_name: logical.alternative_capability_name,
+              attributes:
+                logical.attributes !== null
+                  ? logical.attributes.map((item) => item.id)
+                  : []
+            })
+            .catch((error) => {
+              this.$store.dispatch('ui/notifyError', error)
+            })
+        } else {
+          this.$axios
+            .post('/api/v1/token/devices/logical/', {
+              device: this.element.id,
+              capability: logical.capability.id,
+              alternative_capability_name: logical.alternative_capability_name,
+              attributes:
+                logical.attributes !== null
+                  ? logical.attributes.map((item) => item.id)
+                  : []
+            })
+            .catch((error) => {
+              this.$store.dispatch('ui/notifyError', error)
+            })
+        }
+      })
+
+      this.removedLogicalDevices.forEach((id) => {
+        this.$axios
+          .delete(`/api/v1/token/devices/logical/${id}/`)
+          .catch((error) => {
+            this.$store.dispatch('ui/notifyError', error)
+          })
+      })
+    },
+
+    resetRelated() {
+      this.logicalDevices = []
     }
   }
 }
