@@ -228,12 +228,12 @@ export const datagridMixin = {
       this.updateParams({
         columnFilters: { store: this.$route.query.store }
       })
-      const value =
-        this.$route.query.store === 'true'
-          ? 1
-          : this.$route.query.store === 'false'
-          ? 0
-          : ''
+    }
+
+    if (typeof this.$route.query.deployment === 'string') {
+      this.updateParams({
+        columnFilters: { deployment: this.$route.query.deployment }
+      })
     }
 
     if (this.$route.query.id_in) {
@@ -402,6 +402,9 @@ export const datagridMixin = {
               break
             case 'connection.name':
               ret.connection__id = val
+              break
+            case 'deployment':
+              ret.deployment__isnull = val
               break
             case 'device_type.name':
               ret.device_type__id = val
