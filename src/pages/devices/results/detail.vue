@@ -560,6 +560,10 @@ export default {
       })
     },
 
+    async setRelated() {
+      await this.localConnectionFields()
+    },
+
     resetRelated() {
       this.logicalDevices = []
     }
