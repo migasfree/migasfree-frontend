@@ -211,7 +211,7 @@
           <MigasLink
             model="users"
             :pk="props.row.sync_user.id"
-            :value="props.row.sync_user.name || ''"
+            :value="props.row.sync_user.__str__ || ''"
             icon="mdi-account"
           />
         </span>

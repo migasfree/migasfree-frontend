@@ -267,7 +267,7 @@
                 <MigasLink
                   model="users"
                   :pk="element.sync_user.id"
-                  :value="element.sync_user.name || ''"
+                  :value="element.sync_user.__str__ || ''"
                   icon="mdi-account"
                 />
               </div>

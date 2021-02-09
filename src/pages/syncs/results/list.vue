@@ -113,7 +113,7 @@
           <MigasLink
             model="users"
             :pk="props.row.user.id"
-            :value="props.row.user.name"
+            :value="props.row.user.__str__"
             icon="mdi-account"
           />
         </span>
