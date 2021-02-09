@@ -291,6 +291,14 @@ export const datagridMixin = {
       })
     }
 
+    if (this.$route.query.user_id) {
+      this.updateParams({
+        columnFilters: {
+          user_id: this.$route.query.user_id
+        }
+      })
+    }
+
     if (this.$route.query.users_id) {
       this.updateParams({
         columnFilters: {
@@ -535,6 +543,9 @@ export const datagridMixin = {
               break
             case 'sync_attributes_id':
               ret.sync_attributes__id = val
+              break
+            case 'user_id':
+              ret.user__id = val
               break
             case 'users_id':
               ret.users__id = val
