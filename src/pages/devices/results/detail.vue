@@ -2,7 +2,6 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    {{ element }}
     <Header :title="$gettext('Device')">
       <template v-if="element.id" #append
         >:
@@ -410,10 +409,8 @@ export default {
         available_for_attributes: this.element.available_for_attributes
           ? this.element.available_for_attributes.map((item) => item.id)
           : [],
-        // data: this.element.connection.fields.length > 0 ? 'hola' : {}
         data: this.element.connection.fields.reduce((obj, v) => {
-          console.log(obj, v)
-          obj[v] = 0
+          if (v.value) obj[v.id] = v.value
           return obj
         }, {})
       }
@@ -483,10 +480,11 @@ export default {
               'fields',
               response.data.fields.split(',').map((item) => {
                 const field = item.trim().split(':')
+
                 return {
                   id: field[0],
                   value:
-                    field[0] in this.element.data
+                    'data' in this.element && field[0] in this.element.data
                       ? this.element.data[field[0]]
                       : null,
                   hint: field[1] ? field[1] : null
