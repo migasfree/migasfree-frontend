@@ -76,21 +76,51 @@ export default {
     }
   },
   methods: {
+    normalizeQuery(obj) {
+      const normalizedObj = {}
+      Object.entries(obj).map(([key, val]) => {
+        if (key.includes('__')) normalizedObj[key.replaceAll('__', '_')] = val
+        else normalizedObj[key] = val
+      })
+
+      return normalizedObj
+    },
+
+    normalizeModel(model) {
+      model = model.replaceAll(' ', '-')
+      switch (model) {
+        case 'synchronizations':
+          return 'syncs'
+        case 'features':
+          return 'attributes'
+        case 'applications':
+          return 'apps'
+        default:
+          return model
+      }
+    },
+
     relationLink(item) {
+      console.log('relationLink ********', item)
       if (item.model && item.pk) {
         return {
-          name: `${this.$pluralize.singular(item.model)}-detail`,
+          name: `${this.$pluralize
+            .singular(item.model)
+            .replaceAll(' ', '-')}-detail`,
           params: {
             id: item.pk
           }
         }
-      }
-      else if (item.model) {
+      } else if (item.model) {
         return {
-          name: `${item.model}-list`
+          name: `${item.model.replaceAll(' ', '-')}-list`
         }
-      }
-      else {
+      } else if (item.api) {
+        return {
+          name: `${this.normalizeModel(item.api.model)}-list`,
+          query: this.normalizeQuery(item.api.query)
+        }
+      } else {
         return '#' // TODO
       }
     },
