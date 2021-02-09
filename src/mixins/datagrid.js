@@ -241,6 +241,63 @@ export const datagridMixin = {
         columnFilters: { id_in: this.$route.query.id_in }
       })
     }
+
+    if (this.$route.query.available_for_attributes_id) {
+      this.updateParams({
+        columnFilters: {
+          available_for_attributes_id: this.$route.query
+            .available_for_attributes_id
+        }
+      })
+    }
+
+    if (this.$route.query.included_attributes_id) {
+      this.updateParams({
+        columnFilters: {
+          included_attributes_id: this.$route.query.included_attributes_id
+        }
+      })
+    }
+
+    if (this.$route.query.excluded_attributes_id) {
+      this.updateParams({
+        columnFilters: {
+          excluded_attributes_id: this.$route.query.excluded_attributes_id
+        }
+      })
+    }
+
+    if (this.$route.query.sync_attributes_id) {
+      this.updateParams({
+        columnFilters: {
+          sync_attributes_id: this.$route.query.sync_attributes_id
+        }
+      })
+    }
+
+    if (this.$route.query.attributeset_id) {
+      this.updateParams({
+        columnFilters: {
+          attributeset_id: this.$route.query.attributeset_id
+        }
+      })
+    }
+
+    if (this.$route.query.faultdefinition_id) {
+      this.updateParams({
+        columnFilters: {
+          faultdefinition_id: this.$route.query.faultdefinition_id
+        }
+      })
+    }
+
+    if (this.$route.query.users_id) {
+      this.updateParams({
+        columnFilters: {
+          users_id: this.$route.query.users_id
+        }
+      })
+    }
   },
   async mounted() {
     await this.loadFilters()
@@ -388,6 +445,12 @@ export const datagridMixin = {
       if (Object.keys(this.serverParams.columnFilters).length) {
         Object.entries(this.serverParams.columnFilters).map(([key, val]) => {
           switch (key) {
+            case 'attributeset_id':
+              ret.attributeset__id = val
+              break
+            case 'available_for_attributes_id':
+              ret.available_for_attributes__id = val
+              break
             case 'capability.name':
               ret.capability__id = val
               break
@@ -409,11 +472,20 @@ export const datagridMixin = {
             case 'device_type.name':
               ret.device_type__id = val
               break
+            case 'excluded_attributes_id':
+              ret.excluded_attributes__id = val
+              break
+            case 'faultdefinition_id':
+              ret.faultdefinition__id = val
+              break
             case 'fault_definition.name':
               ret.fault_definition_id = val
               break
             case 'id_in':
               ret.id__in = val
+              break
+            case 'included_attributes_id':
+              ret.included_attributes__id = val
               break
             case 'level.name':
               ret.level = val
@@ -432,6 +504,7 @@ export const datagridMixin = {
               break
             case 'platform':
               if (this.model === 'computers') ret[key] = val
+              else if (this.model === 'projects') ret.platform__id = val
               else ret.project__platform__id = val
               break
             case 'platform.name':
@@ -459,6 +532,12 @@ export const datagridMixin = {
               break
             case 'store.name':
               ret.store__id = val
+              break
+            case 'sync_attributes_id':
+              ret.sync_attributes__id = val
+              break
+            case 'users_id':
+              ret.users__id = val
               break
             case 'checked':
             case 'user':
