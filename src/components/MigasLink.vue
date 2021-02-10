@@ -72,7 +72,7 @@ export default {
   },
   computed: {
     link() {
-      return `/${this.model}/results/${this.pk}`
+      return `/${this.model.replace('devices/', '')}/results/${this.pk}`
     }
   },
   methods: {
@@ -93,8 +93,12 @@ export default {
           return 'syncs'
         case 'features':
           return 'attributes'
+        case 'feature':
+          return 'attribute'
         case 'applications':
           return 'apps'
+        case 'application':
+          return 'app'
         default:
           return model
       }
@@ -104,9 +108,9 @@ export default {
       console.log('relationLink ********', item)
       if (item.model && item.pk) {
         return {
-          name: `${this.$pluralize
-            .singular(item.model)
-            .replaceAll(' ', '-')}-detail`,
+          name: `${this.normalizeModel(
+            this.$pluralize.singular(item.model)
+          )}-detail`,
           params: {
             id: item.pk
           }
