@@ -152,6 +152,18 @@ export const datagridMixin = {
       ).filterOptions.filterValue = this.$route.query.fault_definition_id
     }
 
+    if (this.$route.query.schedule_id) {
+      this.updateParams({
+        columnFilters: {
+          schedule_id: this.$route.query.schedule_id
+        }
+      })
+
+      const filter = this.columns.find((x) => x.field === 'schedule.name')
+      if (filter)
+        filter.filterOptions.filterValue = this.$route.query.schedule_id
+    }
+
     if ('pms_status_ok' in this.$route.query) {
       this.updateParams({
         columnFilters: { pms_status_ok: this.$route.query.pms_status_ok }
@@ -167,9 +179,49 @@ export const datagridMixin = {
           model_id: this.$route.query.model_id
         }
       })
-      this.columns.find(
-        (x) => x.field === 'model.name'
-      ).filterOptions.filterValue = this.$route.query.model_id
+
+      const filter = this.columns.find((x) => x.field === 'model.name')
+      if (filter) filter.filterOptions.filterValue = this.$route.query.model_id
+    }
+
+    if (this.$route.query.logical_id) {
+      this.updateParams({
+        columnFilters: {
+          logical_id: this.$route.query.logical_id
+        }
+      })
+    }
+
+    if (this.$route.query.device_id) {
+      this.updateParams({
+        columnFilters: {
+          device_id: this.$route.query.device_id
+        }
+      })
+    }
+
+    if (this.$route.query.device_type_id) {
+      this.updateParams({
+        columnFilters: {
+          device_type_id: this.$route.query.device_type_id
+        }
+      })
+
+      const filter = this.columns.find((x) => x.field === 'device_type.name')
+      if (filter)
+        filter.filterOptions.filterValue = this.$route.query.device_type_id
+    }
+
+    if (this.$route.query.capability_id) {
+      this.updateParams({
+        columnFilters: {
+          capability_id: this.$route.query.capability_id
+        }
+      })
+
+      const filter = this.columns.find((x) => x.field === 'capability.name')
+      if (filter)
+        filter.filterOptions.filterValue = this.$route.query.capability_id
     }
 
     if (this.$route.query.connection_id) {
@@ -181,6 +233,38 @@ export const datagridMixin = {
       this.columns.find(
         (x) => x.field === 'connection.name'
       ).filterOptions.filterValue = this.$route.query.connection_id
+    }
+
+    if (this.$route.query.connections_id) {
+      this.updateParams({
+        columnFilters: {
+          connections_id: this.$route.query.connections_id
+        }
+      })
+    }
+
+    if (this.$route.query.packages_id) {
+      this.updateParams({
+        columnFilters: {
+          packages_id: this.$route.query.packages_id
+        }
+      })
+    }
+
+    if (this.$route.query.packageset_id) {
+      this.updateParams({
+        columnFilters: {
+          packageset_id: this.$route.query.packageset_id
+        }
+      })
+    }
+
+    if (this.$route.query.application_id) {
+      this.updateParams({
+        columnFilters: {
+          application_id: this.$route.query.application_id
+        }
+      })
     }
 
     if (this.$route.query.manufacturer_id) {
@@ -275,6 +359,46 @@ export const datagridMixin = {
       })
     }
 
+    if (this.$route.query.sync_attributes_id_in) {
+      this.updateParams({
+        columnFilters: {
+          sync_attributes_id_in: this.$route.query.sync_attributes_id_in
+        }
+      })
+    }
+
+    if (this.$route.query.default_logical_device_id) {
+      this.updateParams({
+        columnFilters: {
+          default_logical_device_id: this.$route.query.default_logical_device_id
+        }
+      })
+    }
+
+    if (this.$route.query.deployment_id) {
+      this.updateParams({
+        columnFilters: {
+          deployment_id: this.$route.query.deployment_id
+        }
+      })
+    }
+
+    if (this.$route.query.sync_user_id) {
+      this.updateParams({
+        columnFilters: {
+          sync_user_id: this.$route.query.sync_user_id
+        }
+      })
+    }
+
+    if (this.$route.query.attributes_id) {
+      this.updateParams({
+        columnFilters: {
+          attributes_id: this.$route.query.attributes_id
+        }
+      })
+    }
+
     if (this.$route.query.attributeset_id) {
       this.updateParams({
         columnFilters: {
@@ -303,6 +427,22 @@ export const datagridMixin = {
       this.updateParams({
         columnFilters: {
           users_id: this.$route.query.users_id
+        }
+      })
+    }
+
+    if (this.$route.query.domains_id) {
+      this.updateParams({
+        columnFilters: {
+          domains_id: this.$route.query.domains_id
+        }
+      })
+    }
+
+    if (this.$route.query.tags_id) {
+      this.updateParams({
+        columnFilters: {
+          tags_id: this.$route.query.tags_id
         }
       })
     }
@@ -453,12 +593,19 @@ export const datagridMixin = {
       if (Object.keys(this.serverParams.columnFilters).length) {
         Object.entries(this.serverParams.columnFilters).map(([key, val]) => {
           switch (key) {
+            case 'application_id':
+              ret.application__id = val
+              break
+            case 'attributes_id':
+              ret.attributes__id = val
+              break
             case 'attributeset_id':
               ret.attributeset__id = val
               break
             case 'available_for_attributes_id':
               ret.available_for_attributes__id = val
               break
+            case 'capability_id':
             case 'capability.name':
               ret.capability__id = val
               break
@@ -471,14 +618,30 @@ export const datagridMixin = {
             case 'computer_id':
               ret.computer__id = val
               break
+            case 'connections_id':
+              ret.connections__id = val
+              break
             case 'connection.name':
               ret.connection__id = val
+              break
+            case 'default_logical_device_id':
+              ret.default_logical_device__id = val
               break
             case 'deployment':
               ret.deployment__isnull = val
               break
+            case 'deployment_id':
+              ret.deployment__id = val
+              break
+            case 'device_id':
+              ret.device__id = val
+              break
+            case 'device_type_id':
             case 'device_type.name':
               ret.device_type__id = val
+              break
+            case 'domains_id':
+              ret.domains__id = val
               break
             case 'excluded_attributes_id':
               ret.excluded_attributes__id = val
@@ -498,6 +661,9 @@ export const datagridMixin = {
             case 'level.name':
               ret.level = val
               break
+            case 'logical_id':
+              ret.logical__id = val
+              break
             case 'manufacturer.name':
               ret.manufacturer__id = val
               break
@@ -507,8 +673,15 @@ export const datagridMixin = {
             case 'model.manufacturer.name':
               ret.model__manufacturer__id = val
               break
+            case 'model_id':
             case 'model.name':
               ret.model__id = val
+              break
+            case 'packages_id':
+              ret.packages__id = val
+              break
+            case 'packageset_id':
+              ret.packageset__id = val
               break
             case 'platform':
               if (this.model === 'computers') ret[key] = val
@@ -528,6 +701,7 @@ export const datagridMixin = {
             case 'schedule':
               ret.schedule__isnull = val
               break
+            case 'schedule_id':
             case 'schedule.name':
               ret.schedule__id = val
               break
@@ -543,6 +717,15 @@ export const datagridMixin = {
               break
             case 'sync_attributes_id':
               ret.sync_attributes__id = val
+              break
+            case 'sync_attributes_id_in':
+              ret.sync_attributes__id__in = val
+              break
+            case 'sync_user_id':
+              ret.sync_user__id = val
+              break
+            case 'tags_id':
+              ret.tags__id = val
               break
             case 'user_id':
               ret.user__id = val
