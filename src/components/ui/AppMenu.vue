@@ -196,6 +196,11 @@ export default {
               icon: 'mdi-compare-horizontal'
             },
             {
+              title: this.$gettext('Packages History'),
+              to: 'packages-history-list',
+              icon: 'mdi-history'
+            },
+            {
               title: this.$gettext('Users'),
               to: 'users-list',
               icon: 'mdi-account',
