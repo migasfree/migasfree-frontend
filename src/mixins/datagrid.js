@@ -741,6 +741,10 @@ export const datagridMixin = {
             case 'created_at__lt':
             case 'start_date__gte':
             case 'start_date__lt':
+            case 'install_date__gte':
+            case 'install_date__lt':
+            case 'uninstall_date__gte':
+            case 'uninstall_date__lt':
             case 'auto_register_computers':
             case 'enabled':
             case 'exclusive':
@@ -908,6 +912,16 @@ export const datagridMixin = {
       if ('startDate' in this.tableFilters) {
         this.tableFilters.startDate.selected = { from: null, to: null }
         this.$refs.startDateRange.reset()
+      }
+
+      if ('installDate' in this.tableFilters) {
+        this.tableFilters.installDate.selected = { from: null, to: null }
+        this.$refs.installDateRange.reset()
+      }
+
+      if ('uninstallDate' in this.tableFilters) {
+        this.tableFilters.uninstallDate.selected = { from: null, to: null }
+        this.$refs.uninstallDateRange.reset()
       }
 
       if ('machine' in this.tableFilters) {
