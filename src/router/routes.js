@@ -46,6 +46,12 @@ const routes = [
       },
 
       {
+        path: '/packages-history/results',
+        name: 'packages-history-list',
+        component: () => import('pages/packages-history/results/list')
+      },
+
+      {
         path: '/features',
         name: 'attributes-dashboard',
         component: () => import('pages/attributes/index')
