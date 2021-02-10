@@ -124,7 +124,7 @@
             class="float-right"
             :begin="new Date(props.row.start_date)"
             :end="new Date(props.row.created_at)"
-            tooltip="duration"
+            :tooltip="$gettext('Duration')"
           />
         </span>
         <span v-else-if="props.column.field == 'start_date'">
