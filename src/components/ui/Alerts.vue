@@ -89,23 +89,20 @@ export default {
     },
 
     resolveAlertLink(value) {
-      if (value.startsWith('{')) {
-        const parsedValue = JSON.parse(value)
-        if ('model' in parsedValue) {
-          switch (parsedValue.model) {
-            case 'errors':
-              return { name: 'errors-list', query: parsedValue.query }
-            case 'faults':
-              return { name: 'faults-list', query: parsedValue.query }
-            case 'notifications':
-              return { name: 'notifications-list', query: parsedValue.query }
-            case 'packages':
-              return { name: 'packages-list', query: parsedValue.query }
-            case 'deployments':
-              return { name: 'deployments-list', query: parsedValue.query }
-            case 'messages':
-              return { name: 'messages-list', query: parsedValue.query }
-          }
+      if ('model' in value) {
+        switch (value.model) {
+          case 'errors':
+            return { name: 'errors-list', query: value.query }
+          case 'faults':
+            return { name: 'faults-list', query: value.query }
+          case 'notifications':
+            return { name: 'notifications-list', query: value.query }
+          case 'packages':
+            return { name: 'packages-list', query: value.query }
+          case 'deployments':
+            return { name: 'deployments-list', query: value.query }
+          case 'messages':
+            return { name: 'messages-list', query: value.query }
         }
       }
       return value
