@@ -851,6 +851,30 @@ export const datagridMixin = {
         })
     },
 
+    exportData() {
+      const items = this.selectedRows.map((item) => item.id)
+
+      if (items.length === 0) return
+
+      this.$axios
+        .get(`/api/v1/token/${this.model}/export/?id__in=${items.join(',')}`, {
+          responseType: 'blob'
+        })
+        .then((response) => {
+          let fileURL = window.URL.createObjectURL(new Blob([response.data]))
+          let fileLink = document.createElement('a')
+
+          fileLink.href = fileURL
+          fileLink.setAttribute('download', `${this.model}.csv`)
+          document.body.appendChild(fileLink)
+
+          fileLink.click()
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+    },
+
     updateChecked(id, value, reload = true) {
       this.$axios
         .patch(`/api/v1/token/${this.model}/${id}/`, { checked: value })
