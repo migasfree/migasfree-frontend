@@ -231,6 +231,14 @@
       <div slot="emptystate" v-translate>There are no results</div>
       <div slot="selected-row-actions">
         <q-btn
+          class="q-ma-xs"
+          size="sm"
+          color="info"
+          icon="mdi-file-export"
+          @click="exportData"
+        />
+        <q-btn
+          class="q-ma-xs"
           size="sm"
           color="negative"
           icon="mdi-delete"
