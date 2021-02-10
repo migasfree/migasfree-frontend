@@ -166,7 +166,7 @@ msgstr "Alertas"
 
 #: src/components/ui/UserAccount.vue:5 src/components/ui/UserAccount.vue:6
 #: src/components/ui/UserAccount.vue:7 src/components/ui/UserAccount.vue:8
-#: src/mixins/datagrid.js:40 src/mixins/datagrid.js:545
+#: src/mixins/datagrid.js:45 src/mixins/datagrid.js:550
 #: src/pages/attribute-sets/results/list.vue:70
 #: src/pages/attributes/results/list.vue:79
 #: src/pages/computers/results/list.vue:83
@@ -262,11 +262,11 @@ msgstr "Aplicaciones"
 msgid "Architecture"
 msgstr "Arquitectura"
 
-#: src/mixins/datagrid.js:825
+#: src/mixins/datagrid.js:830
 msgid "Are you sure you want to remove all these items?"
 msgstr "¿Estás seguro que quieres borrar estos elementos?"
 
-#: src/components/ui/RemoveDialog.vue:22 src/mixins/datagrid.js:820
+#: src/components/ui/RemoveDialog.vue:22 src/mixins/datagrid.js:825
 msgid "Are you sure you want to remove this item?"
 msgstr "¿Estás seguro que quieres borrar este elemento?"
 
@@ -440,7 +440,7 @@ msgstr "Por fecha de alta (rango)"
 msgid "By Uninstall Date (range)"
 msgstr "Por fecha de desinstalación (rango)"
 
-#: src/components/ui/RemoveDialog.vue:38 src/mixins/datagrid.js:843
+#: src/components/ui/RemoveDialog.vue:38 src/mixins/datagrid.js:848
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -501,7 +501,7 @@ msgstr "Cambiar contraseña"
 msgid "Change Scope"
 msgstr "Cambiar ámbito"
 
-#: src/mixins/datagrid.js:860
+#: src/mixins/datagrid.js:889
 msgid "Changed item check value!"
 msgstr "¡Cambiado el valor de comprobado!"
 
@@ -535,6 +535,10 @@ msgstr "Reclamado"
 #: src/pages/computers/results/hardware.vue:14
 msgid "Class Name"
 msgstr "Nombre de clase"
+
+#: src/mixins/datagrid.js:22
+msgid "Clear"
+msgstr "Limpiar"
 
 #: src/pages/computers/results/hardware.vue:106
 #: src/pages/computers/results/hardware.vue:102
@@ -832,7 +836,7 @@ msgstr "Demoras"
 msgid "Delays count"
 msgstr "Número de demoras"
 
-#: src/components/ui/RemoveDialog.vue:46 src/mixins/datagrid.js:838
+#: src/components/ui/RemoveDialog.vue:46 src/mixins/datagrid.js:843
 #: src/pages/applications/results/detail.vue:97
 #: src/pages/applications/results/detail.vue:387
 #: src/pages/attribute-sets/results/detail.vue:254
@@ -1448,7 +1452,7 @@ msgstr "¿Es del personal?"
 msgid "Is Super User?"
 msgstr "¿Es superusuario?"
 
-#: src/mixins/datagrid.js:809
+#: src/mixins/datagrid.js:814
 msgid "Item deleted!"
 msgstr "¡Elemento borrado!"
 
@@ -1695,7 +1699,7 @@ msgstr "Nuevos ordenadores / mes"
 msgid "New Password"
 msgstr "Nueva contraseña"
 
-#: src/mixins/datagrid.js:35
+#: src/mixins/datagrid.js:40
 msgid "Next"
 msgstr "Siguiente"
 
@@ -1793,7 +1797,7 @@ msgstr "Notificaciones"
 msgid "Notifications / Month"
 msgstr "Notificaciones / Mes"
 
-#: src/mixins/datagrid.js:38
+#: src/mixins/datagrid.js:43
 msgid "of"
 msgstr "de"
 
@@ -1909,7 +1913,7 @@ msgstr "Paquetes a desinstalar"
 msgid "Packages to Uninstall (by policies)"
 msgstr "Paquetes a desinstalar (por políticas)"
 
-#: src/mixins/datagrid.js:39
+#: src/mixins/datagrid.js:44
 msgid "page"
 msgstr "página"
 
@@ -2014,7 +2018,7 @@ msgstr "¡Las preferencias han cambiado!"
 msgid "Prefix"
 msgstr "Prefijo"
 
-#: src/mixins/datagrid.js:36
+#: src/mixins/datagrid.js:41
 msgid "Previous"
 msgstr "Anterior"
 
@@ -2033,7 +2037,7 @@ msgstr "Procesador"
 msgid "Product"
 msgstr "Producto"
 
-#: src/mixins/datagrid.js:552
+#: src/mixins/datagrid.js:557
 msgid "productive"
 msgstr "productivos"
 
@@ -2203,9 +2207,13 @@ msgstr "Resultado"
 msgid "Results"
 msgstr "Resultados"
 
-#: src/mixins/datagrid.js:37
+#: src/mixins/datagrid.js:42
 msgid "Results per page"
 msgstr "Resultados por página"
+
+#: src/mixins/datagrid.js:21
+msgid "rows selected"
+msgstr "resultados seleccionados"
 
 #: src/pages/applications/results/detail.vue:368
 #: src/pages/attribute-sets/results/detail.vue:235
@@ -2475,7 +2483,7 @@ msgstr "Almacenes / Proyecto"
 msgid "Stores List"
 msgstr "Lista de Almacenes"
 
-#: src/mixins/datagrid.js:548
+#: src/mixins/datagrid.js:553
 msgid "subscribed"
 msgstr "de alta"
 
@@ -2667,11 +2675,11 @@ msgstr "Fallas sin comprobar"
 msgid "Uninstall Date"
 msgstr "Fecha de desinstalación"
 
-#: src/mixins/datagrid.js:559
+#: src/mixins/datagrid.js:564
 msgid "unproductive"
 msgstr "improductivos"
 
-#: src/mixins/datagrid.js:570
+#: src/mixins/datagrid.js:575
 msgid "unsubscribed"
 msgstr "de baja"
 
