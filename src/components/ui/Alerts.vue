@@ -89,20 +89,28 @@ export default {
     },
 
     resolveAlertLink(value) {
+      let query = {}
+      if ('query' in value) {
+        Object.entries(value.query).forEach(([key, value]) => {
+          if (typeof value === 'boolean') query[key] = value.toString()
+          else query[key] = value
+        })
+      }
+
       if ('model' in value) {
         switch (value.model) {
           case 'errors':
-            return { name: 'errors-list', query: value.query }
+            return { name: 'errors-list', query }
           case 'faults':
-            return { name: 'faults-list', query: value.query }
+            return { name: 'faults-list', query }
           case 'notifications':
-            return { name: 'notifications-list', query: value.query }
+            return { name: 'notifications-list', query }
           case 'packages':
-            return { name: 'packages-list', query: value.query }
+            return { name: 'packages-list', query }
           case 'deployments':
-            return { name: 'deployments-list', query: value.query }
+            return { name: 'deployments-list', query }
           case 'messages':
-            return { name: 'messages-list', query: value.query }
+            return { name: 'messages-list', query }
         }
       }
       return value
