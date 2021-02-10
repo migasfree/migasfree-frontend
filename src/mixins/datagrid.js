@@ -15,7 +15,12 @@ export const datagridMixin = {
         page: 1,
         perPage: 100
       },
-      selectOptions: { enabled: true, selectOnCheckboxOnly: true },
+      selectOptions: {
+        enabled: true,
+        selectOnCheckboxOnly: true,
+        selectionText: this.$gettext('rows selected'),
+        clearSelectionText: this.$gettext('Clear')
+      },
       tableFilters: {
         search: ''
       },
