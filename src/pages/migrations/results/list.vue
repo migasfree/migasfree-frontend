@@ -44,6 +44,9 @@
         <div class="row q-pa-md">
           <div class="col-12">
             <q-btn
+              icon="mdi-filter-remove"
+              color="info"
+              text-color="black"
               :label="$gettext('Reset all filters')"
               @click="resetFilters"
             />
