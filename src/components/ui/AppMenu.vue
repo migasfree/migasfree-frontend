@@ -9,7 +9,7 @@
       <q-list v-for="option in item.options" :key="option.to">
         <q-separator v-if="option.separatorBefore" />
         <q-item clickable :to="{ name: option.to }" :inset-level="1">
-          <q-item-section v-if="option.icon">
+          <q-item-section v-if="option.icon" avatar>
             <q-icon :name="option.icon" size="sm" />
           </q-item-section>
           <q-item-section>{{ option.title }}</q-item-section>
