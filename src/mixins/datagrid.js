@@ -252,6 +252,14 @@ export const datagridMixin = {
       })
     }
 
+    if (this.$route.query.package_id) {
+      this.updateParams({
+        columnFilters: {
+          package_id: this.$route.query.package_id
+        }
+      })
+    }
+
     if (this.$route.query.packages_id) {
       this.updateParams({
         columnFilters: {
@@ -685,6 +693,9 @@ export const datagridMixin = {
             case 'model_id':
             case 'model.name':
               ret.model__id = val
+              break
+            case 'package_id':
+              ret.package__id = val
               break
             case 'packages_id':
               ret.packages__id = val
