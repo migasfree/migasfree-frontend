@@ -72,7 +72,9 @@ export default {
   },
   computed: {
     link() {
-      return `/${this.model.replace('devices/', '')}/results/${this.pk}`
+      return `/${this.model
+        .replace('devices/', '')
+        .replace('catalog/', '')}/results/${this.pk}`
     }
   },
   methods: {
