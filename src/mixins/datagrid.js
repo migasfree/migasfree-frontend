@@ -81,6 +81,10 @@ export const datagridMixin = {
       this.updateParams({
         columnFilters: { platform: this.$route.query.platform_id }
       })
+
+      const filter = this.columns.find((x) => x.field === 'platform.name')
+      if (filter)
+        filter.filterOptions.filterValue = this.$route.query.platform_id
     }
 
     if (this.$route.query.project_id) {
