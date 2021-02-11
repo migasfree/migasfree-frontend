@@ -400,6 +400,22 @@ export const datagridMixin = {
       })
     }
 
+    if (this.$route.query.deployment_included_id) {
+      this.updateParams({
+        columnFilters: {
+          deployment_included_id: this.$route.query.deployment_included_id
+        }
+      })
+    }
+
+    if (this.$route.query.deployment_excluded_id) {
+      this.updateParams({
+        columnFilters: {
+          deployment_excluded_id: this.$route.query.deployment_excluded_id
+        }
+      })
+    }
+
     if (this.$route.query.sync_user_id) {
       this.updateParams({
         columnFilters: {
@@ -416,10 +432,18 @@ export const datagridMixin = {
       })
     }
 
-    if (this.$route.query.attributeset_id) {
+    if (this.$route.query.attributeset_included_id) {
       this.updateParams({
         columnFilters: {
-          attributeset_id: this.$route.query.attributeset_id
+          attributeset_included_id: this.$route.query.attributeset_included_id
+        }
+      })
+    }
+
+    if (this.$route.query.attributeset_excluded_id) {
+      this.updateParams({
+        columnFilters: {
+          attributeset_excluded_id: this.$route.query.attributeset_excluded_id
         }
       })
     }
@@ -428,6 +452,32 @@ export const datagridMixin = {
       this.updateParams({
         columnFilters: {
           faultdefinition_id: this.$route.query.faultdefinition_id
+        }
+      })
+    }
+
+    if (this.$route.query.faultdefinition_included_id) {
+      this.updateParams({
+        columnFilters: {
+          faultdefinition_included_id: this.$route.query
+            .faultdefinition_included_id
+        }
+      })
+    }
+
+    if (this.$route.query.faultdefinition_excluded_id) {
+      this.updateParams({
+        columnFilters: {
+          faultdefinition_excluded_id: this.$route.query
+            .faultdefinition_excluded_id
+        }
+      })
+    }
+
+    if (this.$route.query.faultdefinition_users_id) {
+      this.updateParams({
+        columnFilters: {
+          faultdefinition_users_id: this.$route.query.faultdefinition_users_id
         }
       })
     }
@@ -448,6 +498,30 @@ export const datagridMixin = {
       })
     }
 
+    if (this.$route.query.domain_included_id) {
+      this.updateParams({
+        columnFilters: {
+          domain_included_id: this.$route.query.domain_included_id
+        }
+      })
+    }
+
+    if (this.$route.query.domain_excluded_id) {
+      this.updateParams({
+        columnFilters: {
+          domain_excluded_id: this.$route.query.domain_excluded_id
+        }
+      })
+    }
+
+    if (this.$route.query.domain_tags_id) {
+      this.updateParams({
+        columnFilters: {
+          domain_tags_id: this.$route.query.domain_tags_id
+        }
+      })
+    }
+
     if (this.$route.query.domains_id) {
       this.updateParams({
         columnFilters: {
@@ -456,10 +530,42 @@ export const datagridMixin = {
       })
     }
 
+    if (this.$route.query.scope_included_id) {
+      this.updateParams({
+        columnFilters: {
+          scope_included_id: this.$route.query.scope_included_id
+        }
+      })
+    }
+
+    if (this.$route.query.scope_excluded_id) {
+      this.updateParams({
+        columnFilters: {
+          scope_excluded_id: this.$route.query.scope_excluded_id
+        }
+      })
+    }
+
     if (this.$route.query.tags_id) {
       this.updateParams({
         columnFilters: {
           tags_id: this.$route.query.tags_id
+        }
+      })
+    }
+
+    if (this.$route.query.policy_included_id) {
+      this.updateParams({
+        columnFilters: {
+          policy_included_id: this.$route.query.policy_included_id
+        }
+      })
+    }
+
+    if (this.$route.query.policy_excluded_id) {
+      this.updateParams({
+        columnFilters: {
+          policy_excluded_id: this.$route.query.policy_excluded_id
         }
       })
     }
@@ -616,8 +722,11 @@ export const datagridMixin = {
             case 'attributes_id':
               ret.attributes__id = val
               break
-            case 'attributeset_id':
-              ret.attributeset__id = val
+            case 'attributeset_included_id':
+              ret.attributeset_included__id = val
+              break
+            case 'attributeset_excluded_id':
+              ret.attributeset_excluded__id = val
               break
             case 'available_for_attributes_id':
               ret.available_for_attributes__id = val
@@ -650,12 +759,27 @@ export const datagridMixin = {
             case 'deployment_id':
               ret.deployment__id = val
               break
+            case 'deployment_included_id':
+              ret.deployment_included__id = val
+              break
+            case 'deployment_excluded_id':
+              ret.deployment_excluded__id = val
+              break
             case 'device_id':
               ret.device__id = val
               break
             case 'device_type_id':
             case 'device_type.name':
               ret.device_type__id = val
+              break
+            case 'domain_included_id':
+              ret.domain_included__id = val
+              break
+            case 'domain_excluded_id':
+              ret.domain_excluded__id = val
+              break
+            case 'domain_tags_id':
+              ret.domain_tags__id = val
               break
             case 'domains_id':
               ret.domains__id = val
@@ -665,6 +789,15 @@ export const datagridMixin = {
               break
             case 'faultdefinition_id':
               ret.faultdefinition__id = val
+              break
+            case 'faultdefinition_included_id':
+              ret.faultdefinition_included__id = val
+              break
+            case 'faultdefinition_excluded_id':
+              ret.faultdefinition_excluded__id = val
+              break
+            case 'faultdefinition_users_id':
+              ret.faultdefinition_users__id = val
               break
             case 'fault_definition.name':
               ret.fault_definition_id = val
@@ -711,6 +844,12 @@ export const datagridMixin = {
             case 'platform.name':
               ret.platform__id = val
               break
+            case 'policy_included_id':
+              ret.policy_included__id = val
+              break
+            case 'policy_excluded_id':
+              ret.policy_excluded__id = val
+              break
             case 'project_id':
             case 'project.name':
               ret.project__id = val
@@ -724,6 +863,12 @@ export const datagridMixin = {
             case 'schedule_id':
             case 'schedule.name':
               ret.schedule__id = val
+              break
+            case 'scope_included_id':
+              ret.scope_included__id = val
+              break
+            case 'scope_excluded_id':
+              ret.scope_excluded__id = val
               break
             case 'status_in':
               if (this.model === 'computers') ret.status__in = val
