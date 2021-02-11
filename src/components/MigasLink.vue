@@ -20,13 +20,13 @@
 
     <q-list>
       <q-item
-        v-for="(item, index) in relations"
+        v-for="(item, index) in validRelations"
         :key="index"
         v-close-popup
         v-ripple
         dense
         clickable
-        :to="relationLink(item)"
+        :to="item.to"
       >
         <q-item-section>
           <q-chip outline color="primary" size="md">
@@ -75,6 +75,61 @@ export default {
       return `/${this.model
         .replace('devices/', '')
         .replace('catalog/', '')}/results/${this.pk}`
+    },
+
+    validRelations() {
+      const valid = []
+      let name = ''
+
+      Object.entries(this.relations).map(([key, item]) => {
+        let to = '#'
+        console.log('validRelations', item)
+        if (item.model && item.pk) {
+          name = `${this.normalizeModel(
+            this.$pluralize.singular(item.model)
+          )}-detail`
+          if (
+            !this.$router.resolve({ name, params: { id: item.pk } }).resolved
+              .matched.length > 0
+          )
+            return
+
+          to = {
+            name: `${this.normalizeModel(
+              this.$pluralize.singular(item.model)
+            )}-detail`,
+            params: {
+              id: item.pk
+            }
+          }
+        } else if (item.model) {
+          name = `${item.model.replaceAll(' ', '-')}-list`
+          if (!this.$router.resolve({ name }).resolved.matched.length > 0)
+            return
+
+          to = {
+            name: `${item.model.replaceAll(' ', '-')}-list`
+          }
+        } else if (item.api) {
+          name = `${this.normalizeModel(item.api.model)}-list`
+          if (!this.$router.resolve({ name }).resolved.matched.length > 0)
+            return
+
+          to = {
+            name: `${this.normalizeModel(item.api.model)}-list`,
+            query: this.normalizeQuery(item.api.query)
+          }
+        }
+
+        valid.push({
+          count: item.count,
+          text: item.text,
+          actions: item.actions,
+          to
+        })
+      })
+
+      return valid
     }
   },
   methods: {
@@ -101,33 +156,10 @@ export default {
           return 'apps'
         case 'application':
           return 'app'
+        case 'type':
+          return 'device-type'
         default:
           return model
-      }
-    },
-
-    relationLink(item) {
-      console.log('relationLink ********', item)
-      if (item.model && item.pk) {
-        return {
-          name: `${this.normalizeModel(
-            this.$pluralize.singular(item.model)
-          )}-detail`,
-          params: {
-            id: item.pk
-          }
-        }
-      } else if (item.model) {
-        return {
-          name: `${item.model.replaceAll(' ', '-')}-list`
-        }
-      } else if (item.api) {
-        return {
-          name: `${this.normalizeModel(item.api.model)}-list`,
-          query: this.normalizeQuery(item.api.query)
-        }
-      } else {
-        return '#' // TODO
       }
     },
 
