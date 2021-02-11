@@ -72,9 +72,7 @@ export default {
   },
   computed: {
     link() {
-      return `/${this.model
-        .replace('devices/', '')
-        .replace('catalog/', '')}/results/${this.pk}`
+      return `/${this.normalizeModel(this.model)}/results/${this.pk}`
     },
 
     validRelations() {
@@ -144,7 +142,10 @@ export default {
     },
 
     normalizeModel(model) {
-      model = model.replaceAll(' ', '-')
+      model = model
+        .replaceAll(' ', '-')
+        .replace('devices/', '')
+        .replace('catalog/', '')
       switch (model) {
         case 'synchronizations':
           return 'syncs'
@@ -158,6 +159,8 @@ export default {
           return 'app'
         case 'type':
           return 'device-type'
+        case 'logical':
+          return 'logical-devices'
         default:
           return model
       }
