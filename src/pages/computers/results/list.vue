@@ -99,10 +99,10 @@
           <div class="col-12 col-sm-6 col-md-4">
             <DateRangeInput
               ref="createdAtRange"
-              v-model="tableFilters.createdAt.selected"
+              v-model="tableFilters.createdAtRange.selected"
               prepend-icon="mdi-filter"
               :label="$gettext('By Subscribed Date (range)')"
-              @select="onCreatedAtFilter"
+              @select="onCreatedAtRangeFilter"
             />
           </div>
 
@@ -131,6 +131,9 @@
         <div class="row q-pa-md">
           <div class="col-12">
             <q-btn
+              icon="mdi-filter-remove"
+              color="info"
+              text-color="black"
               :label="$gettext('Reset all filters')"
               @click="resetFilters"
             />
@@ -471,7 +474,7 @@ export default {
           selected: null,
           choices: {}
         },
-        createdAt: {
+        createdAtRange: {
           selected: { from: null, to: null }
         },
         syncEndDateRange: {
