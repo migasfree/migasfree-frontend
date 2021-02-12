@@ -50,10 +50,10 @@
           <div class="col-sm-6 col-md-4">
             <DateRangeInput
               ref="createdAtRange"
-              v-model="tableFilters.createdAt.selected"
+              v-model="tableFilters.createdAtRange.selected"
               prepend-icon="mdi-filter"
               :label="$gettext('By Subscribed Date (range)')"
-              @select="onCreatedAtFilter"
+              @select="onCreatedAtRangeFilter"
             />
           </div>
         </div>
@@ -340,7 +340,7 @@ export default {
           items: [{ id: '', name: this.$gettext('All') }],
           selected: null
         },
-        createdAt: {
+        createdAtRange: {
           selected: { from: null, to: null }
         },
         user: {

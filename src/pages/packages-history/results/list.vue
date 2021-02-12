@@ -16,20 +16,20 @@
           <div class="col-6 col-md">
             <DateRangeInput
               ref="installDateRange"
-              v-model="tableFilters.installDate.selected"
+              v-model="tableFilters.installDateRange.selected"
               prepend-icon="mdi-filter"
               :label="$gettext('By Install Date (range)')"
-              @select="onInstallDateFilter"
+              @select="onInstallDateRangeFilter"
             />
           </div>
 
           <div class="col-6 col-md">
             <DateRangeInput
               ref="uninstallDateRange"
-              v-model="tableFilters.uninstallDate.selected"
+              v-model="tableFilters.uninstallDateRange.selected"
               prepend-icon="mdi-filter"
               :label="$gettext('By Uninstall Date (range)')"
-              @select="onUninstallDateFilter"
+              @select="onUninstallDateRangeFilter"
             />
           </div>
         </div>
@@ -205,10 +205,10 @@ export default {
       ],
       tableFilters: {
         search: '',
-        installDate: {
+        installDateRange: {
           selected: { from: null, to: null }
         },
-        uninstallDate: {
+        uninstallDateRange: {
           selected: { from: null, to: null }
         }
       },
@@ -216,27 +216,27 @@ export default {
     }
   },
   methods: {
-    onInstallDateFilter(params) {
-      this.tableFilters.installDate.selected = params
+    onInstallDateRangeFilter(params) {
+      this.tableFilters.installDateRange.selected = params
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
           install_date__gte:
-            this.tableFilters.installDate.selected.from + 'T00:00:00',
+            this.tableFilters.installDateRange.selected.from + 'T00:00:00',
           install_date__lt:
-            this.tableFilters.installDate.selected.to + 'T23:59:59'
+            this.tableFilters.installDateRange.selected.to + 'T23:59:59'
         })
       })
       this.loadItems()
     },
 
-    onUninstallDateFilter(params) {
-      this.tableFilters.uninstallDate.selected = params
+    onUninstallDateRangeFilter(params) {
+      this.tableFilters.uninstallDateRange.selected = params
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
           uninstall_date__gte:
-            this.tableFilters.uninstallDate.selected.from + 'T00:00:00',
+            this.tableFilters.uninstallDateRange.selected.from + 'T00:00:00',
           uninstall_date__lt:
-            this.tableFilters.uninstallDate.selected.to + 'T23:59:59'
+            this.tableFilters.uninstallDateRange.selected.to + 'T23:59:59'
         })
       })
       this.loadItems()

@@ -33,20 +33,20 @@
           <div class="col-4 col-md">
             <DateRangeInput
               ref="startDateRange"
-              v-model="tableFilters.startDate.selected"
+              v-model="tableFilters.startDateRange.selected"
               prepend-icon="mdi-filter"
               :label="$gettext('By Start Date (range)')"
-              @select="onStartDateFilter"
+              @select="onStartDateRangeFilter"
             />
           </div>
 
           <div class="col-4 col-md">
             <DateRangeInput
               ref="createdAtRange"
-              v-model="tableFilters.createdAt.selected"
+              v-model="tableFilters.createdAtRange.selected"
               prepend-icon="mdi-filter"
               :label="$gettext('By End Date (range)')"
-              @select="onCreatedAtFilter"
+              @select="onCreatedAtRangeFilter"
             />
           </div>
         </div>
@@ -297,10 +297,10 @@ export default {
           items: [{ id: '', name: this.$gettext('All') }],
           selected: null
         },
-        createdAt: {
+        createdAtRange: {
           selected: { from: null, to: null }
         },
-        startDate: {
+        startDateRange: {
           selected: { from: null, to: null }
         }
       },
@@ -308,13 +308,12 @@ export default {
     }
   },
   methods: {
-    onStartDateFilter(params) {
-      console.log(params)
-      this.tableFilters.startDate.selected = params
+    onStartDateRangeFilter(params) {
+      this.tableFilters.startDateRange.selected = params
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
-          start_date__gte: this.tableFilters.startDate.selected.from,
-          start_date__lt: this.tableFilters.startDate.selected.to
+          start_date__gte: this.tableFilters.startDateRange.selected.from,
+          start_date__lt: this.tableFilters.startDateRange.selected.to
         })
       })
       this.loadItems()
