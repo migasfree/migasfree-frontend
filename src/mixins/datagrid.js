@@ -2,10 +2,25 @@ import _merge from 'lodash/merge'
 
 export const datagridMixin = {
   data() {
+    const perPage = 100
+
     return {
       rows: [],
       totalRecords: 0,
       isLoading: false,
+      paginationOptions: {
+        enabled: true,
+        mode: 'records',
+        perPage,
+        perPageDropdown: [50, 100, 150],
+        dropdownAllowAll: false,
+        nextLabel: this.$gettext('Next'),
+        prevLabel: this.$gettext('Previous'),
+        rowsPerPageLabel: this.$gettext('Results per page'),
+        ofLabel: this.$gettext('of'),
+        pageLabel: this.$gettext('page'), // for 'pages' mode
+        allLabel: this.$gettext('All')
+      },
       serverParams: {
         columnFilters: {},
         sort: {
@@ -13,7 +28,7 @@ export const datagridMixin = {
           type: ''
         },
         page: 1,
-        perPage: 100
+        perPage
       },
       selectOptions: {
         enabled: true,
@@ -30,22 +45,6 @@ export const datagridMixin = {
     }
   },
   computed: {
-    paginationOptions() {
-      return {
-        enabled: true,
-        mode: 'records',
-        perPage: this.serverParams.perPage,
-        perPageDropdown: [50, 100, 150],
-        dropdownAllowAll: false,
-        nextLabel: this.$gettext('Next'),
-        prevLabel: this.$gettext('Previous'),
-        rowsPerPageLabel: this.$gettext('Results per page'),
-        ofLabel: this.$gettext('of'),
-        pageLabel: this.$gettext('page'), // for 'pages' mode
-        allLabel: this.$gettext('All')
-      }
-    },
-
     searchOptions() {
       return {
         enabled: true,
@@ -159,6 +158,10 @@ export const datagridMixin = {
 
     updateParams(newProps) {
       this.serverParams = _merge(this.serverParams, newProps)
+      if (!('page' in newProps)) {
+        this.$set(this.serverParams, 'page', 1)
+        this.$set(this.paginationOptions, 'setCurrentPage', 1)
+      }
     },
 
     resetColumnFilters() {
