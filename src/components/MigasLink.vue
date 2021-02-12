@@ -13,7 +13,7 @@
     <template #label>
       <q-icon v-if="icon" left :name="icon" />
       {{ value }}
-      <q-tooltip v-if="tooltip" content-style="font-size: 14px">
+      <q-tooltip v-if="tooltip">
         {{ tooltip }}
       </q-tooltip>
     </template>
