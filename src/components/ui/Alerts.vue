@@ -2,11 +2,12 @@
   <q-btn-dropdown v-if="isAlertsVisible" flat stretch @click="loadAlerts">
     <template #label>
       <q-icon name="mdi-bell" />
-      <q-chip :label="totalAlerts" />
+      <q-chip :label="totalAlerts" color="white" text-color="black" />
       <q-tooltip>
         <translate>Alerts</translate>
       </q-tooltip>
     </template>
+
     <q-list v-if="alerts">
       <q-item
         v-for="(item, index) in alerts"
