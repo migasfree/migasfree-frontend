@@ -55,520 +55,94 @@ export const datagridMixin = {
     }
   },
   created() {
-    if (this.$route.query.property_id) {
-      this.updateParams({
-        columnFilters: { property_att: this.$route.query.property_id }
-      })
-      this.columns.find(
-        (x) => x.field === 'property_att'
-      ).filterOptions.filterValue = this.$route.query.property_id
-    }
+    Object.entries(this.$route.query).map(([key, value]) => {
+      let columnKey = null
+      let filterKey = null
 
-    if (this.$route.query.search) {
-      this.updateParams({
-        columnFilters: { search: this.$route.query.search }
-      })
-      this.tableFilters.search = this.$route.query.search
-    }
+      if (typeof value === 'boolean') value = value.toString()
 
-    if (this.$route.query.computer_id) {
-      this.updateParams({
-        columnFilters: { computer_id: this.$route.query.computer_id }
-      })
-    }
-
-    if (this.$route.query.platform_id) {
-      this.updateParams({
-        columnFilters: { platform: this.$route.query.platform_id }
-      })
-
-      const filter = this.columns.find((x) => x.field === 'platform.name')
-      if (filter)
-        filter.filterOptions.filterValue = this.$route.query.platform_id
-    }
-
-    if (this.$route.query.project_id) {
-      this.updateParams({
-        columnFilters: { 'project.name': this.$route.query.project_id }
-      })
-      this.columns.find(
-        (x) => x.field === 'project.name'
-      ).filterOptions.filterValue = this.$route.query.project_id
-    }
-
-    if (this.$route.query.store_id) {
-      this.updateParams({
-        columnFilters: { 'store.name': this.$route.query.store_id }
-      })
-      this.columns.find(
-        (x) => x.field === 'store.name'
-      ).filterOptions.filterValue = this.$route.query.store_id
-    }
-
-    if ('checked' in this.$route.query) {
-      this.updateParams({
-        columnFilters: { checked: this.$route.query.checked }
-      })
-      this.columns.find(
-        (x) => x.field === 'checked'
-      ).filterOptions.filterValue = this.$route.query.checked
-    }
-
-    if (this.$route.query.status_in) {
-      this.updateParams({
-        columnFilters: { status_in: this.$route.query.status_in }
-      })
-    }
-
-    if (this.$route.query.created_at__gte || this.$route.query.created_at__lt) {
-      this.updateParams({
-        columnFilters: {
-          created_at__gte: this.$route.query.created_at__gte,
-          created_at__lt: this.$route.query.created_at__lt
-        }
-      })
-      this.tableFilters.createdAt.selected = {
-        from: this.$route.query.created_at__gte,
-        to: this.$route.query.created_at__lt
+      switch (key) {
+        case 'capability_id':
+          filterKey = 'capability.name'
+          break
+        case 'connection_id':
+          filterKey = 'connection.name'
+          break
+        case 'device_type_id':
+          filterKey = 'device_type.name'
+          break
+        case 'fault_definition_id':
+          filterKey = 'fault_definition.name'
+          break
+        case 'model_id':
+          filterKey = 'model.name'
+          break
+        case 'platform_id':
+          columnKey = 'platform'
+          filterKey = 'platform.name'
+          break
+        case 'project_id':
+          columnKey = 'project.name'
+          filterKey = 'project.name'
+          break
+        case 'property_id':
+          columnKey = 'property_att'
+          filterKey = 'property_att'
+          break
+        case 'schedule_id':
+          filterKey = 'schedule.name'
+          break
+        case 'store_id':
+          columnKey = 'store.name'
+          filterKey = 'store.name'
+          break
       }
-    }
 
-    if (this.$route.query.name) {
-      this.updateParams({ columnFilters: { name: this.$route.query.name } })
-      this.columns.find(
-        (x) => x.field === 'name'
-      ).filterOptions.filterValue = this.$route.query.name
-    }
-
-    if (this.$route.query.machine) {
       this.updateParams({
-        columnFilters: { machine: this.$route.query.machine }
+        columnFilters: { [columnKey ? columnKey : key]: value }
       })
-      this.tableFilters.machine.selected = this.findById(
-        this.tableFilters.machine.items,
-        this.$route.query.machine
-      ).label
-    }
 
-    if (this.$route.query.fault_definition_id) {
-      this.updateParams({
-        columnFilters: {
-          fault_definition_id: this.$route.query.fault_definition_id
+      let filter = null
+      if (key === 'manufacturer_id')
+        filter = this.columns.find(
+          (x) =>
+            x.field === 'manufacturer.name' ||
+            x.field === 'model.manufacturer.name'
+        )
+      else
+        filter = this.columns.find(
+          (x) => x.field === (filterKey ? filterKey : key)
+        )
+      if (filter) filter.filterOptions.filterValue = value
+
+      if (key in this.tableFilters) {
+        switch (key) {
+          case 'machine':
+            this.tableFilters.machine.selected = this.findById(
+              this.tableFilters.machine.items,
+              value
+            ).label
+            break
+          case 'schedule':
+            this.tableFilters.schedule.selected = this.findById(
+              this.tableFilters.schedule.items,
+              value === 'true' ? 1 : value === 'false' ? 0 : ''
+            ).name
+            break
+          default:
+            this.tableFilters[key] = value
         }
-      })
-      this.columns.find(
-        (x) => x.field === 'fault_definition.name'
-      ).filterOptions.filterValue = this.$route.query.fault_definition_id
-    }
+      }
 
-    if (this.$route.query.schedule_id) {
-      this.updateParams({
-        columnFilters: {
-          schedule_id: this.$route.query.schedule_id
-        }
-      })
+      // special cases
+      if ('createdAt' in this.tableFilters) {
+        if (key === 'created_at__gte')
+          this.tableFilters.createdAt.selected.from = value
 
-      const filter = this.columns.find((x) => x.field === 'schedule.name')
-      if (filter)
-        filter.filterOptions.filterValue = this.$route.query.schedule_id
-    }
-
-    if ('pms_status_ok' in this.$route.query) {
-      this.updateParams({
-        columnFilters: { pms_status_ok: this.$route.query.pms_status_ok }
-      })
-      this.columns.find(
-        (x) => x.field === 'pms_status_ok'
-      ).filterOptions.filterValue = this.$route.query.pms_status_ok
-    }
-
-    if (this.$route.query.model_id) {
-      this.updateParams({
-        columnFilters: {
-          model_id: this.$route.query.model_id
-        }
-      })
-
-      const filter = this.columns.find((x) => x.field === 'model.name')
-      if (filter) filter.filterOptions.filterValue = this.$route.query.model_id
-    }
-
-    if (this.$route.query.logical_id) {
-      this.updateParams({
-        columnFilters: {
-          logical_id: this.$route.query.logical_id
-        }
-      })
-    }
-
-    if (this.$route.query.device_id) {
-      this.updateParams({
-        columnFilters: {
-          device_id: this.$route.query.device_id
-        }
-      })
-    }
-
-    if (this.$route.query.device_type_id) {
-      this.updateParams({
-        columnFilters: {
-          device_type_id: this.$route.query.device_type_id
-        }
-      })
-
-      const filter = this.columns.find((x) => x.field === 'device_type.name')
-      if (filter)
-        filter.filterOptions.filterValue = this.$route.query.device_type_id
-    }
-
-    if (this.$route.query.capability_id) {
-      this.updateParams({
-        columnFilters: {
-          capability_id: this.$route.query.capability_id
-        }
-      })
-
-      const filter = this.columns.find((x) => x.field === 'capability.name')
-      if (filter)
-        filter.filterOptions.filterValue = this.$route.query.capability_id
-    }
-
-    if (this.$route.query.connection_id) {
-      this.updateParams({
-        columnFilters: {
-          connection_id: this.$route.query.connection_id
-        }
-      })
-      this.columns.find(
-        (x) => x.field === 'connection.name'
-      ).filterOptions.filterValue = this.$route.query.connection_id
-    }
-
-    if (this.$route.query.connections_id) {
-      this.updateParams({
-        columnFilters: {
-          connections_id: this.$route.query.connections_id
-        }
-      })
-    }
-
-    if (this.$route.query.package_id) {
-      this.updateParams({
-        columnFilters: {
-          package_id: this.$route.query.package_id
-        }
-      })
-    }
-
-    if (this.$route.query.packages_id) {
-      this.updateParams({
-        columnFilters: {
-          packages_id: this.$route.query.packages_id
-        }
-      })
-    }
-
-    if (this.$route.query.packageset_id) {
-      this.updateParams({
-        columnFilters: {
-          packageset_id: this.$route.query.packageset_id
-        }
-      })
-    }
-
-    if (this.$route.query.application_id) {
-      this.updateParams({
-        columnFilters: {
-          application_id: this.$route.query.application_id
-        }
-      })
-    }
-
-    if (this.$route.query.manufacturer_id) {
-      this.updateParams({
-        columnFilters: {
-          manufacturer_id: this.$route.query.manufacturer_id
-        }
-      })
-      this.columns.find(
-        (x) =>
-          x.field === 'manufacturer.name' ||
-          x.field === 'model.manufacturer.name'
-      ).filterOptions.filterValue = this.$route.query.manufacturer_id
-    }
-
-    if (this.$route.query.enabled) {
-      this.updateParams({
-        columnFilters: {
-          enabled: this.$route.query.enabled
-        }
-      })
-      this.columns.find(
-        (x) => x.field === 'enabled'
-      ).filterOptions.filterValue = this.$route.query.enabled
-    }
-
-    if (typeof this.$route.query.schedule === 'string') {
-      this.updateParams({
-        columnFilters: { schedule: this.$route.query.schedule }
-      })
-      const value =
-        this.$route.query.schedule === 'true'
-          ? 1
-          : this.$route.query.schedule === 'false'
-          ? 0
-          : ''
-
-      this.tableFilters.schedule.selected = this.findById(
-        this.tableFilters.schedule.items,
-        value
-      ).name
-    }
-
-    if (typeof this.$route.query.store === 'string') {
-      this.updateParams({
-        columnFilters: { store: this.$route.query.store }
-      })
-    }
-
-    if (typeof this.$route.query.deployment === 'string') {
-      this.updateParams({
-        columnFilters: { deployment: this.$route.query.deployment }
-      })
-    }
-
-    if (this.$route.query.id_in) {
-      this.updateParams({
-        columnFilters: { id_in: this.$route.query.id_in }
-      })
-    }
-
-    if (this.$route.query.available_for_attributes_id) {
-      this.updateParams({
-        columnFilters: {
-          available_for_attributes_id: this.$route.query
-            .available_for_attributes_id
-        }
-      })
-    }
-
-    if (this.$route.query.included_attributes_id) {
-      this.updateParams({
-        columnFilters: {
-          included_attributes_id: this.$route.query.included_attributes_id
-        }
-      })
-    }
-
-    if (this.$route.query.excluded_attributes_id) {
-      this.updateParams({
-        columnFilters: {
-          excluded_attributes_id: this.$route.query.excluded_attributes_id
-        }
-      })
-    }
-
-    if (this.$route.query.sync_attributes_id) {
-      this.updateParams({
-        columnFilters: {
-          sync_attributes_id: this.$route.query.sync_attributes_id
-        }
-      })
-    }
-
-    if (this.$route.query.sync_attributes_id_in) {
-      this.updateParams({
-        columnFilters: {
-          sync_attributes_id_in: this.$route.query.sync_attributes_id_in
-        }
-      })
-    }
-
-    if (this.$route.query.default_logical_device_id) {
-      this.updateParams({
-        columnFilters: {
-          default_logical_device_id: this.$route.query.default_logical_device_id
-        }
-      })
-    }
-
-    if (this.$route.query.deployment_id) {
-      this.updateParams({
-        columnFilters: {
-          deployment_id: this.$route.query.deployment_id
-        }
-      })
-    }
-
-    if (this.$route.query.deployment_included_id) {
-      this.updateParams({
-        columnFilters: {
-          deployment_included_id: this.$route.query.deployment_included_id
-        }
-      })
-    }
-
-    if (this.$route.query.deployment_excluded_id) {
-      this.updateParams({
-        columnFilters: {
-          deployment_excluded_id: this.$route.query.deployment_excluded_id
-        }
-      })
-    }
-
-    if (this.$route.query.sync_user_id) {
-      this.updateParams({
-        columnFilters: {
-          sync_user_id: this.$route.query.sync_user_id
-        }
-      })
-    }
-
-    if (this.$route.query.attributes_id) {
-      this.updateParams({
-        columnFilters: {
-          attributes_id: this.$route.query.attributes_id
-        }
-      })
-    }
-
-    if (this.$route.query.attributeset_included_id) {
-      this.updateParams({
-        columnFilters: {
-          attributeset_included_id: this.$route.query.attributeset_included_id
-        }
-      })
-    }
-
-    if (this.$route.query.attributeset_excluded_id) {
-      this.updateParams({
-        columnFilters: {
-          attributeset_excluded_id: this.$route.query.attributeset_excluded_id
-        }
-      })
-    }
-
-    if (this.$route.query.faultdefinition_id) {
-      this.updateParams({
-        columnFilters: {
-          faultdefinition_id: this.$route.query.faultdefinition_id
-        }
-      })
-    }
-
-    if (this.$route.query.faultdefinition_included_id) {
-      this.updateParams({
-        columnFilters: {
-          faultdefinition_included_id: this.$route.query
-            .faultdefinition_included_id
-        }
-      })
-    }
-
-    if (this.$route.query.faultdefinition_excluded_id) {
-      this.updateParams({
-        columnFilters: {
-          faultdefinition_excluded_id: this.$route.query
-            .faultdefinition_excluded_id
-        }
-      })
-    }
-
-    if (this.$route.query.faultdefinition_users_id) {
-      this.updateParams({
-        columnFilters: {
-          faultdefinition_users_id: this.$route.query.faultdefinition_users_id
-        }
-      })
-    }
-
-    if (this.$route.query.user_id) {
-      this.updateParams({
-        columnFilters: {
-          user_id: this.$route.query.user_id
-        }
-      })
-    }
-
-    if (this.$route.query.users_id) {
-      this.updateParams({
-        columnFilters: {
-          users_id: this.$route.query.users_id
-        }
-      })
-    }
-
-    if (this.$route.query.domain_included_id) {
-      this.updateParams({
-        columnFilters: {
-          domain_included_id: this.$route.query.domain_included_id
-        }
-      })
-    }
-
-    if (this.$route.query.domain_excluded_id) {
-      this.updateParams({
-        columnFilters: {
-          domain_excluded_id: this.$route.query.domain_excluded_id
-        }
-      })
-    }
-
-    if (this.$route.query.domain_tags_id) {
-      this.updateParams({
-        columnFilters: {
-          domain_tags_id: this.$route.query.domain_tags_id
-        }
-      })
-    }
-
-    if (this.$route.query.domains_id) {
-      this.updateParams({
-        columnFilters: {
-          domains_id: this.$route.query.domains_id
-        }
-      })
-    }
-
-    if (this.$route.query.scope_included_id) {
-      this.updateParams({
-        columnFilters: {
-          scope_included_id: this.$route.query.scope_included_id
-        }
-      })
-    }
-
-    if (this.$route.query.scope_excluded_id) {
-      this.updateParams({
-        columnFilters: {
-          scope_excluded_id: this.$route.query.scope_excluded_id
-        }
-      })
-    }
-
-    if (this.$route.query.tags_id) {
-      this.updateParams({
-        columnFilters: {
-          tags_id: this.$route.query.tags_id
-        }
-      })
-    }
-
-    if (this.$route.query.policy_included_id) {
-      this.updateParams({
-        columnFilters: {
-          policy_included_id: this.$route.query.policy_included_id
-        }
-      })
-    }
-
-    if (this.$route.query.policy_excluded_id) {
-      this.updateParams({
-        columnFilters: {
-          policy_excluded_id: this.$route.query.policy_excluded_id
-        }
-      })
-    }
+        if (key === 'created_at__lt')
+          this.tableFilters.createdAt.selected.to = value
+      }
+    })
   },
   async mounted() {
     await this.loadFilters()
