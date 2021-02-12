@@ -17,7 +17,15 @@
 
       <q-item-section>
         <h2 class="text-h3">
-          {{ title }} <q-chip v-if="results !== null">{{ results }}</q-chip>
+          {{ title }}
+          <q-chip
+            v-if="results !== null"
+            square
+            size="xl"
+            color="info"
+            text-color="black"
+            >{{ results }}</q-chip
+          >
           <slot name="append"></slot>
         </h2>
       </q-item-section>
