@@ -218,12 +218,12 @@ export const datagridMixin = {
       this.loadItems()
     },
 
-    onCreatedAtFilter(params) {
-      this.tableFilters.createdAt.selected = params
+    onCreatedAtRangeFilter(params) {
+      this.tableFilters.createdAtRange.selected = params
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
-          created_at__gte: this.tableFilters.createdAt.selected.from,
-          created_at__lt: this.tableFilters.createdAt.selected.to
+          created_at__gte: this.tableFilters.createdAtRange.selected.from,
+          created_at__lt: this.tableFilters.createdAtRange.selected.to
         })
       })
       this.loadItems()
@@ -642,63 +642,30 @@ export const datagridMixin = {
     },
 
     resetFilters() {
-      this.tableFilters.search = ''
       this.$refs.myTable.reset()
       this.resetColumnFilters()
 
-      if ('platform' in this.tableFilters)
-        this.tableFilters.platform.selected = null
-
-      if ('architecture' in this.tableFilters)
-        this.tableFilters.architecture.selected = null
-
-      if ('softwareInventory' in this.tableFilters)
-        this.tableFilters.softwareInventory.selected = null
-
-      if ('syncEndDate' in this.tableFilters)
-        this.tableFilters.syncEndDate.selected = null
-
-      if ('user' in this.tableFilters) this.tableFilters.user.selected = null
-
-      if ('statusIn' in this.tableFilters) {
-        this.tableFilters.statusIn.selected = null
-        this.$refs.statusTree.reset()
-      }
-
-      if ('createdAt' in this.tableFilters) {
-        this.tableFilters.createdAt.selected = { from: null, to: null }
-        this.$refs.createdAtRange.reset()
-      }
-
-      if ('syncEndDateRange' in this.tableFilters) {
-        this.tableFilters.syncEndDateRange.selected = { from: null, to: null }
-        this.$refs.syncEndDateRange.reset()
-      }
-
-      if ('startDate' in this.tableFilters) {
-        this.tableFilters.startDate.selected = { from: null, to: null }
-        this.$refs.startDateRange.reset()
-      }
-
-      if ('installDate' in this.tableFilters) {
-        this.tableFilters.installDate.selected = { from: null, to: null }
-        this.$refs.installDateRange.reset()
-      }
-
-      if ('uninstallDate' in this.tableFilters) {
-        this.tableFilters.uninstallDate.selected = { from: null, to: null }
-        this.$refs.uninstallDateRange.reset()
-      }
-
-      if ('machine' in this.tableFilters) {
-        this.tableFilters.machine.selected = null
-        this.$refs.machineTree.reset()
-      }
-
-      if ('model' in this.tableFilters) this.tableFilters.model.selected = null
-
-      if ('schedule' in this.tableFilters)
-        this.tableFilters.schedule.selected = null
+      Object.entries(this.tableFilters).map(([key, value]) => {
+        switch (key) {
+          case 'createdAtRange':
+          case 'installDateRange':
+          case 'startDateRange':
+          case 'syncEndDateRange':
+          case 'uninstallDateRange':
+            this.tableFilters[key].selected = { from: null, to: null }
+            this.$refs[key].reset()
+            break
+          case 'search':
+            this.tableFilters[key] = ''
+            break
+          case 'machine':
+            this.$refs.machineTree.reset()
+          case 'statusIn':
+            this.$refs.statusTree.reset()
+          default:
+            this.tableFilters[key].selected = null
+        }
+      })
 
       this.loadItems()
     }
