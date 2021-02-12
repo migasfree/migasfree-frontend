@@ -53,101 +53,112 @@ export const datagridMixin = {
       }
     }
   },
+  watch: {
+    $route() {
+      this.resetFilters(false)
+      this.loadQueryParams()
+      this.loadItems()
+    }
+  },
   created() {
-    Object.entries(this.$route.query).map(([key, value]) => {
-      let columnKey = null
-      let filterKey = null
-
-      if (typeof value === 'boolean') value = value.toString()
-
-      switch (key) {
-        case 'capability_id':
-          filterKey = 'capability.name'
-          break
-        case 'connection_id':
-          filterKey = 'connection.name'
-          break
-        case 'device_type_id':
-          filterKey = 'device_type.name'
-          break
-        case 'fault_definition_id':
-          filterKey = 'fault_definition.name'
-          break
-        case 'model_id':
-          filterKey = 'model.name'
-          break
-        case 'platform_id':
-          columnKey = 'platform'
-          filterKey = 'platform.name'
-          break
-        case 'project_id':
-          columnKey = 'project.name'
-          filterKey = 'project.name'
-          break
-        case 'property_id':
-          columnKey = 'property_att'
-          filterKey = 'property_att'
-          break
-        case 'schedule_id':
-          filterKey = 'schedule.name'
-          break
-        case 'store_id':
-          columnKey = 'store.name'
-          filterKey = 'store.name'
-          break
-      }
-
-      this.updateParams({
-        columnFilters: { [columnKey ? columnKey : key]: value }
-      })
-
-      let filter = null
-      if (key === 'manufacturer_id')
-        filter = this.columns.find(
-          (x) =>
-            x.field === 'manufacturer.name' ||
-            x.field === 'model.manufacturer.name'
-        )
-      else
-        filter = this.columns.find(
-          (x) => x.field === (filterKey ? filterKey : key)
-        )
-      if (filter) filter.filterOptions.filterValue = value
-
-      if (key in this.tableFilters) {
-        switch (key) {
-          case 'machine':
-            this.tableFilters.machine.selected = this.findById(
-              this.tableFilters.machine.items,
-              value
-            ).label
-            break
-          case 'schedule':
-            this.tableFilters.schedule.selected = this.findById(
-              this.tableFilters.schedule.items,
-              value === 'true' ? 1 : value === 'false' ? 0 : ''
-            ).name
-            break
-          default:
-            this.tableFilters[key] = value
-        }
-      }
-
-      // special cases
-      if ('createdAt' in this.tableFilters) {
-        if (key === 'created_at__gte')
-          this.tableFilters.createdAt.selected.from = value
-
-        if (key === 'created_at__lt')
-          this.tableFilters.createdAt.selected.to = value
-      }
-    })
+    this.loadQueryParams()
   },
   async mounted() {
     await this.loadFilters()
     await this.loadItems()
   },
   methods: {
+    loadQueryParams() {
+      Object.entries(this.$route.query).map(([key, value]) => {
+        let columnKey = null
+        let filterKey = null
+
+        if (typeof value === 'boolean') value = value.toString()
+
+        switch (key) {
+          case 'capability_id':
+            filterKey = 'capability.name'
+            break
+          case 'connection_id':
+            filterKey = 'connection.name'
+            break
+          case 'device_type_id':
+            filterKey = 'device_type.name'
+            break
+          case 'fault_definition_id':
+            filterKey = 'fault_definition.name'
+            break
+          case 'model_id':
+            filterKey = 'model.name'
+            break
+          case 'platform_id':
+            columnKey = 'platform'
+            filterKey = 'platform.name'
+            break
+          case 'project_id':
+            columnKey = 'project.name'
+            filterKey = 'project.name'
+            break
+          case 'property_id':
+            columnKey = 'property_att'
+            filterKey = 'property_att'
+            break
+          case 'schedule_id':
+            filterKey = 'schedule.name'
+            break
+          case 'store_id':
+            columnKey = 'store.name'
+            filterKey = 'store.name'
+            break
+        }
+
+        this.updateParams({
+          columnFilters: { [columnKey ? columnKey : key]: value }
+        })
+
+        let filter = null
+        if (key === 'manufacturer_id')
+          filter = this.columns.find(
+            (x) =>
+              x.field === 'manufacturer.name' ||
+              x.field === 'model.manufacturer.name'
+          )
+        else
+          filter = this.columns.find(
+            (x) => x.field === (filterKey ? filterKey : key)
+          )
+        if (filter) filter.filterOptions.filterValue = value
+
+        if (key in this.tableFilters) {
+          switch (key) {
+            case 'machine':
+              this.tableFilters.machine.selected = this.findById(
+                this.tableFilters.machine.items,
+                value
+              ).label
+              break
+            case 'schedule':
+              this.tableFilters.schedule.selected = this.findById(
+                this.tableFilters.schedule.items,
+                value === 'true' ? 1 : value === 'false' ? 0 : ''
+              ).name
+              break
+            default:
+              this.tableFilters[key] = value
+          }
+        }
+
+        // special cases
+        if ('createdAt' in this.tableFilters) {
+          if (key === 'created_at__gte')
+            this.tableFilters.createdAt.selected.from = value
+
+          if (key === 'created_at__lt')
+            this.tableFilters.createdAt.selected.to = value
+        }
+      })
+    },
+
     findById(data, id) {
       return data.reduce((a, item) => {
         if (a) return a
@@ -641,7 +652,7 @@ export const datagridMixin = {
       })
     },
 
-    resetFilters() {
+    resetFilters(loadItemsAfter = true) {
       this.$refs.myTable.reset()
       this.resetColumnFilters()
 
@@ -667,7 +678,7 @@ export const datagridMixin = {
         }
       })
 
-      this.loadItems()
+      if (loadItemsAfter) this.loadItems()
     }
   }
 }
