@@ -113,22 +113,19 @@ export default {
   methods: {
     async login() {
       this.loading = true
-      await this.$store.dispatch('auth/login', this.model).then(() => {
-        if (this.$route.params.nextUrl != null) {
-          console.log(this.$route.params.nextUrl)
-          this.$router.push(this.$route.params.nextUrl)
-        } else {
-          this.$router.push(
-            {
-              name: 'home'
-            },
-            () => {}
-          ) /*.catch((err) => {
-          throw new Error(`Problem handling something: ${err}.`)
-        })*/
-        }
-      })
-      this.loading = false
+      await this.$store
+        .dispatch('auth/login', this.model)
+        .then(() => {
+          if (this.$route.params.nextUrl != null) {
+            this.$router.push(this.$route.params.nextUrl)
+          } else {
+            this.$router.push({ name: 'home' })
+          }
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+        .finally(() => (this.loading = false))
     }
   }
 }
