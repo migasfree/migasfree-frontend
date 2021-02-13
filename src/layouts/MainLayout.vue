@@ -11,7 +11,14 @@
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
 
-        <q-btn stretch flat label="migasfree" to="/" no-caps size="22px" />
+        <q-btn
+          stretch
+          flat
+          label="migasfree"
+          :to="{ name: 'home' }"
+          no-caps
+          size="22px"
+        />
 
         <SearchBox />
 
@@ -39,7 +46,7 @@
           stretch
           text-color="white"
           icon="mdi-account-arrow-right"
-          to="/login"
+          :to="{ name: 'login' }"
         />
       </q-toolbar>
     </q-header>
