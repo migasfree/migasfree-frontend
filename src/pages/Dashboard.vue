@@ -6,18 +6,18 @@
 
     <div class="row">
       <div class="col-4 col-md">
-        <NestedPieChart
+        <PieChart
           :title="productiveComputersTitle"
-          :data="productiveComputers"
+          end-point="/api/v1/token/stats/computers/productive/platform/"
           :url="productiveUrl"
           @getLink="goTo"
         />
       </div>
 
       <div class="col-4 col-md">
-        <NestedPieChart
+        <PieChart
           :title="uncheckedErrorsTitle"
-          :data="uncheckedErrors"
+          end-point="/api/v1/token/stats/errors/unchecked/"
           :url="uncheckedErrorsUrl"
           :critical="true"
           @getLink="goTo"
@@ -25,9 +25,9 @@
       </div>
 
       <div class="col-4 col-md">
-        <NestedPieChart
+        <PieChart
           :title="uncheckedFaultsTitle"
-          :data="uncheckedFaults"
+          end-point="/api/v1/token/stats/faults/unchecked/"
           :url="uncheckedFaultsUrl"
           :critical="true"
           @getLink="goTo"
@@ -37,7 +37,7 @@
 
     <div class="row">
       <div class="col-12">
-        <q-card id="events-history" class="q-ma-sm">
+        <q-list id="events-history" class="q-ma-sm rounded-borders" bordered>
           <q-expansion-item @show="loadEventsHistory">
             <template #header>
               <q-item-section>
@@ -47,24 +47,42 @@
               </q-item-section>
             </template>
 
-            <div v-if="loading" class="text-center">
-              <q-spinner-dots color="primary" size="3em" />
-            </div>
-            <StackedBarChart title="" :data="eventsHistory" />
+            <q-card>
+              <div v-if="loading" class="text-center">
+                <q-spinner-dots color="primary" size="3em" />
+              </div>
+              <StackedBarChart title="" :initial-data="eventsHistory" />
+
+              <q-card-actions align="right">
+                <q-btn
+                  icon="mdi-refresh"
+                  :disabled="loading"
+                  :loading="loading"
+                  :label="$gettext('Update')"
+                  @click="updateEventsHistory"
+                />
+              </q-card-actions>
+            </q-card>
           </q-expansion-item>
-        </q-card>
+        </q-list>
       </div>
     </div>
 
     <div class="row">
       <div class="col-12">
-        <StackedBarChart :title="dailySyncsTitle" :data="dailySyncs" />
+        <StackedBarChart
+          :title="dailySyncsTitle"
+          end-point="/api/v1/token/stats/syncs/daily/"
+        />
       </div>
     </div>
 
     <div class="row">
       <div class="col-12">
-        <StackedBarChart :title="monthlySyncsTitle" :data="monthlySyncs" />
+        <StackedBarChart
+          :title="monthlySyncsTitle"
+          :initial-data="monthlySyncs"
+        />
       </div>
     </div>
   </q-page>
@@ -73,7 +91,7 @@
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
-import NestedPieChart from 'components/chart/NestedPie'
+import PieChart from 'components/chart/Pie'
 import StackedBarChart from 'components/chart/StackedBar'
 
 export default {
@@ -82,7 +100,7 @@ export default {
       title: this.title
     }
   },
-  components: { Breadcrumbs, Header, NestedPieChart, StackedBarChart },
+  components: { Breadcrumbs, Header, PieChart, StackedBarChart },
   data() {
     const title = this.$gettext('Dashboard')
 
@@ -94,13 +112,9 @@ export default {
           icon: 'mdi-home'
         }
       ],
-      productiveComputers: {},
       productiveComputersTitle: this.$gettext('Productive Computers'),
-      uncheckedErrors: {},
       uncheckedErrorsTitle: this.$gettext('Unchecked Errors'),
-      uncheckedFaults: {},
       uncheckedFaultsTitle: this.$gettext('Unchecked Faults'),
-      dailySyncs: {},
       dailySyncsTitle: this.$gettext('Synchronized single computers / day'),
       monthlySyncs: {},
       monthlySyncsTitle: this.$gettext('Synchronized single computers / month'),
@@ -132,55 +146,6 @@ export default {
     }
   },
   async mounted() {
-    await this.$axios
-      .get('/api/v1/token/stats/computers/productive/platform/')
-      .then((response) => {
-        this.productiveComputers = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get('/api/v1/token/stats/errors/unchecked/')
-      .then((response) => {
-        this.uncheckedErrors = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get('/api/v1/token/stats/faults/unchecked/')
-      .then((response) => {
-        this.uncheckedFaults = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get('/api/v1/token/stats/syncs/daily/')
-      .then((response) => {
-        const series = []
-
-        Object.entries(response.data.data).map(([key, val]) => {
-          series.push({
-            type: 'line',
-            smooth: true,
-            name: key,
-            data: val
-          })
-        })
-        this.dailySyncs = {
-          xData: response.data.x_labels,
-          series
-        }
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
     this.loadProjects()
   },
   methods: {
@@ -309,6 +274,11 @@ export default {
         'ui/scrollToElement',
         document.getElementById('events-history')
       )
+    },
+
+    updateEventsHistory() {
+      this.eventsHistory = {}
+      this.loadEventsHistory()
     },
 
     goTo(params) {
