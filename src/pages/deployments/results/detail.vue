@@ -468,11 +468,16 @@
               </div>
             </div>
 
-            <div v-if="computersDelayData" class="row q-pa-md q-gutter-md">
+            <div
+              v-if="element.id && element.schedule"
+              class="row q-pa-md q-gutter-md"
+            >
               <div class="col-md">
                 <StackedBarChart
                   :title="$gettext('Provided Computers / Delay')"
-                  :data="computersDelayData"
+                  :end-point="
+                    `/api/v1/token/stats/deployments/${element.id}/computers/delay/`
+                  "
                 />
               </div>
             </div>
@@ -616,7 +621,6 @@ export default {
           name: this.$gettext('External')
         }
       ],
-      computersDelayData: {},
       isValid: true,
       confirmRemove: false
     }
@@ -690,32 +694,6 @@ export default {
           .catch((error) => {
             this.$store.dispatch('ui/notifyError', error)
           })
-
-        if (this.element.schedule) {
-          await this.$axios
-            .get(
-              `/api/v1/token/stats/deployments/${this.element.id}/computers/delay/`
-            )
-            .then((response) => {
-              const series = []
-
-              Object.entries(response.data.data).map(([key, val]) => {
-                series.push({
-                  type: 'line',
-                  smooth: true,
-                  name: key,
-                  data: val
-                })
-              })
-              this.computersDelayData = {
-                xData: response.data.x_labels,
-                series
-              }
-            })
-            .catch((error) => {
-              this.$store.dispatch('ui/notifyError', error)
-            })
-        }
       }
     },
 
