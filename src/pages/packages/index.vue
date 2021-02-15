@@ -8,9 +8,9 @@
 
     <div class="row">
       <div class="col-12">
-        <NestedPieChart
+        <PieChart
           :title="$gettext('Packages / Store')"
-          :data="byStore"
+          end-point="/api/v1/token/stats/packages/store/"
           :url="url"
           @getLink="goTo"
         />
@@ -23,7 +23,7 @@
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
-import NestedPieChart from 'components/chart/NestedPie'
+import PieChart from 'components/chart/Pie'
 
 export default {
   meta() {
@@ -35,7 +35,7 @@ export default {
     Breadcrumbs,
     Header,
     SearchFilter,
-    NestedPieChart
+    PieChart
   },
   data() {
     return {
@@ -55,20 +55,8 @@ export default {
           icon: 'mdi-package-variant'
         }
       ],
-      byStore: {},
-      byProject: {},
       url: { name: 'packages-list' }
     }
-  },
-  async mounted() {
-    await this.$axios
-      .get('/api/v1/token/stats/packages/store/')
-      .then((response) => {
-        this.byStore = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
   },
   methods: {
     goTo(params) {
