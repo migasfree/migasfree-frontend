@@ -10,7 +10,7 @@
       <div class="col">
         <PieChart
           :title="$gettext('Attributes / Formula')"
-          :data="pieData"
+          end-point="/api/v1/token/stats/features/property/"
           :url="url"
           @getLink="goTo"
         />
@@ -55,19 +55,8 @@ export default {
           icon: 'mdi-pound'
         }
       ],
-      pieData: {},
       url: { name: 'attributes-list' }
     }
-  },
-  async mounted() {
-    await this.$axios
-      .get('/api/v1/token/stats/features/property/')
-      .then((response) => {
-        this.pieData = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
   },
   methods: {
     goTo(params) {
