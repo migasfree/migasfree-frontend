@@ -10,7 +10,7 @@
       <div class="col-12">
         <StackedBarChart
           :title="$gettext('Faults / Month')"
-          :data="projectMonth"
+          end-point="/api/v1/token/stats/faults/project/month/"
           @getLink="goTo"
         />
       </div>
@@ -20,16 +20,16 @@
       <div class="col-6 col-md">
         <PieChart
           :title="$gettext('Faults / Faults Definitions')"
-          :data="byDefinition"
+          end-point="/api/v1/token/stats/faults/definition/"
           :url="url"
           @getLink="goTo"
         />
       </div>
 
       <div class="col-6 col-md">
-        <NestedPieChart
+        <PieChart
           :title="$gettext('Unchecked Faults')"
-          :data="uncheckedFaults"
+          end-point="/api/v1/token/stats/faults/unchecked/"
           :url="uncheckedFaultsUrl"
           :critical="true"
           @getLink="goTo"
@@ -44,7 +44,6 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
 import PieChart from 'components/chart/Pie'
-import NestedPieChart from 'components/chart/NestedPie'
 import StackedBarChart from 'components/chart/StackedBar'
 
 export default {
@@ -58,7 +57,6 @@ export default {
     Header,
     SearchFilter,
     StackedBarChart,
-    NestedPieChart,
     PieChart
   },
   data() {
@@ -79,9 +77,6 @@ export default {
           icon: 'mdi-bomb'
         }
       ],
-      projectMonth: {},
-      uncheckedFaults: {},
-      byDefinition: {},
       url: { name: 'faults-list' }
     }
   },
@@ -89,47 +84,6 @@ export default {
     uncheckedFaultsUrl() {
       return Object.assign({}, this.url, { query: { checked: false } })
     }
-  },
-  async mounted() {
-    await this.$axios
-      .get('/api/v1/token/stats/faults/project/month/')
-      .then((response) => {
-        const series = []
-
-        Object.entries(response.data.data).map(([key, val]) => {
-          series.push({
-            type: 'line',
-            smooth: true,
-            name: key,
-            data: val
-          })
-        })
-        this.projectMonth = {
-          xData: response.data.x_labels,
-          series
-        }
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get('/api/v1/token/stats/faults/unchecked/')
-      .then((response) => {
-        this.uncheckedFaults = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get('/api/v1/token/stats/faults/definition/')
-      .then((response) => {
-        this.byDefinition = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
   },
   methods: {
     goTo(params) {
