@@ -8,27 +8,27 @@
 
     <div class="row">
       <div class="col-4 col-md">
-        <NestedPieChart
+        <PieChart
           :title="$gettext('Computers / Machine')"
-          :data="machineData"
+          end-point="/api/v1/token/stats/computers/machine/"
           :url="url"
           @getLink="goTo"
         />
       </div>
 
       <div class="col-4 col-md">
-        <NestedPieChart
+        <PieChart
           :title="$gettext('Subscribed Computers / Status')"
-          :data="statusData"
+          end-point="/api/v1/token/stats/computers/status/"
           :url="statusUrl"
           @getLink="goTo"
         />
       </div>
 
       <div class="col-4 col-md">
-        <NestedPieChart
+        <PieChart
           :title="$gettext('Productive Computers')"
-          :data="nestedPieData"
+          end-point="/api/v1/token/stats/computers/productive/platform/"
           :url="productiveUrl"
           @getLink="goTo"
         />
@@ -39,7 +39,7 @@
       <div class="col-12">
         <StackedBarChart
           :title="$gettext('New Computers / Month')"
-          :data="newMonthData"
+          end-point="/api/v1/token/stats/computers/new/month/"
           @getLink="goTo"
         />
       </div>
@@ -49,7 +49,7 @@
       <div class="col-12">
         <StackedBarChart
           :title="$gettext('Physical computers entering the system per year')"
-          :data="entryYearData"
+          end-point="/api/v1/token/stats/computers/entry/year/"
           @getLink="goTo"
         />
       </div>
@@ -61,7 +61,7 @@
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
-import NestedPieChart from 'components/chart/NestedPie'
+import PieChart from 'components/chart/Pie'
 import StackedBarChart from 'components/chart/StackedBar'
 
 export default {
@@ -74,7 +74,7 @@ export default {
     Breadcrumbs,
     Header,
     SearchFilter,
-    NestedPieChart,
+    PieChart,
     StackedBarChart
   },
   data() {
@@ -95,11 +95,6 @@ export default {
           icon: 'mdi-desktop-classic'
         }
       ],
-      machineData: {},
-      statusData: {},
-      nestedPieData: {},
-      newMonthData: {},
-      entryYearData: {},
       url: { name: 'computers-list' }
     }
   },
@@ -115,78 +110,6 @@ export default {
         query: { status_in: 'intended,reserved,unknown' }
       })
     }
-  },
-  async mounted() {
-    await this.$axios
-      .get('/api/v1/token/stats/computers/machine/')
-      .then((response) => {
-        this.machineData = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get('/api/v1/token/stats/computers/status/')
-      .then((response) => {
-        this.statusData = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get('/api/v1/token/stats/computers/productive/platform/')
-      .then((response) => {
-        this.nestedPieData = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get('/api/v1/token/stats/computers/new/month/')
-      .then((response) => {
-        const series = []
-
-        Object.entries(response.data.data).map(([key, val]) => {
-          series.push({
-            type: 'line',
-            smooth: true,
-            name: key,
-            data: val
-          })
-        })
-        this.newMonthData = {
-          xData: response.data.x_labels,
-          series
-        }
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get('/api/v1/token/stats/computers/entry/year/')
-      .then((response) => {
-        const series = []
-
-        Object.entries(response.data.data).map(([key, val]) => {
-          series.push({
-            type: 'line',
-            smooth: true,
-            name: key,
-            data: val
-          })
-        })
-        this.entryYearData = {
-          xData: response.data.x_labels,
-          series
-        }
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
   },
   methods: {
     goTo(params) {
