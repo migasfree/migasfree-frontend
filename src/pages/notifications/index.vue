@@ -10,7 +10,7 @@
       <div class="col-12">
         <StackedBarChart
           :title="$gettext('Notifications / Month')"
-          :data="projectMonth"
+          end-point="/api/v1/token/stats/notifications/month/"
           @getLink="goTo"
         />
       </div>
@@ -54,33 +54,8 @@ export default {
           icon: 'mdi-android-messages'
         }
       ],
-      projectMonth: {},
-      byProject: {},
       url: { name: 'notifications-list' }
     }
-  },
-  async mounted() {
-    await this.$axios
-      .get('/api/v1/token/stats/notifications/month/')
-      .then((response) => {
-        const series = []
-
-        Object.entries(response.data.data).map(([key, val]) => {
-          series.push({
-            type: 'line',
-            smooth: true,
-            name: key,
-            data: val
-          })
-        })
-        this.projectMonth = {
-          xData: response.data.x_labels,
-          series
-        }
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
   },
   methods: {
     goTo(params) {
