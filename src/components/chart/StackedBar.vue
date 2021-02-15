@@ -6,12 +6,16 @@
 
     <q-card-section class="echart-container">
       <v-chart
+        v-show="isChartVisible"
         ref="chart"
         :init-options="initOptions"
         :options="options"
         autoresize
         @click="passData"
       />
+      <q-banner v-if="noData" rounded class="bg-warning text-black">
+        <translate>No data available.</translate>
+      </q-banner>
     </q-card-section>
   </q-card>
 </template>
@@ -30,10 +34,22 @@ export default {
   name: 'StackedBarChart',
   props: {
     title: { type: String, required: true },
-    data: { type: Object, required: true }
+    endPoint: {
+      type: String,
+      required: false,
+      default: ''
+    },
+    initialData: {
+      type: Object,
+      required: false,
+      default() {
+        return {}
+      }
+    }
   },
   data() {
     return {
+      data: this.initialData,
       options: {
         animation: false,
         color: this.$q.dark.isActive
@@ -74,6 +90,15 @@ export default {
       }
     }
   },
+  computed: {
+    isChartVisible() {
+      return Object.keys(this.data).length === 0 || this.data.series.length > 0
+    },
+
+    noData() {
+      return !'series' in this.data
+    }
+  },
   watch: {
     data: {
       handler: function(val, oldVal) {
@@ -82,6 +107,14 @@ export default {
       },
       deep: true
     },
+    initialData: {
+      handler: function(val, oldVal) {
+        console.log('watch initialData ***********', val)
+        this.data = val
+      },
+      deep: true
+    },
+
     '$q.dark.isActive'(val) {
       this.options.color = val
         ? MIGASFREE_CHART_DARK_COLORS
@@ -90,6 +123,44 @@ export default {
       this.options.xAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
       this.options.yAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
     }
+  },
+  async mounted() {
+    if (!this.endPoint) return
+
+    this.$refs.chart.showLoading({
+      showSpinner: true,
+      text: this.$gettext('Loading data...'),
+      color: '#39BEDA',
+      textColor: this.$q.dark.isActive
+        ? 'rgba(255, 255, 255, 0.5)'
+        : 'rgba(0, 0, 0, 0.5)',
+      maskColor: this.$q.dark.isActive ? '#3A4149' : 'white'
+    })
+    await this.$axios
+      .get(this.endPoint)
+      .then((response) => {
+        const series = []
+
+        Object.entries(response.data.data).map(([key, val]) => {
+          series.push({
+            type: 'line',
+            smooth: true,
+            name: key,
+            data: val
+          })
+        })
+        this.data = {
+          xData: response.data.x_labels,
+          series
+        }
+        console.log(this.data)
+      })
+      .catch((error) => {
+        this.$store.dispatch('ui/notifyError', error)
+      })
+      .finally(() => {
+        this.$refs.chart.hideLoading()
+      })
   },
   beforeMount() {
     window.addEventListener('resize', this.windowResize)
