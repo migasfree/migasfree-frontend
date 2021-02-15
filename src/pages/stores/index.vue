@@ -10,7 +10,7 @@
       <div class="col">
         <PieChart
           :title="$gettext('Stores / Project')"
-          :data="pieData"
+          end-point="/api/v1/token/stats/stores/project/"
           :url="url"
           @getLink="goTo"
         />
@@ -55,19 +55,8 @@ export default {
           icon: 'mdi-store-24-hour'
         }
       ],
-      pieData: {},
       url: { name: 'stores-list' }
     }
-  },
-  async mounted() {
-    await this.$axios
-      .get('/api/v1/token/stats/stores/project/')
-      .then((response) => {
-        this.pieData = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
   },
   methods: {
     goTo(params) {
