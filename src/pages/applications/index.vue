@@ -10,7 +10,7 @@
       <div class="col-6 col-md">
         <PieChart
           :title="$gettext('Applications / Category')"
-          :data="categoryData"
+          end-point="/api/v1/token/stats/applications/category/"
           :url="url"
           @getLink="goTo"
         />
@@ -19,7 +19,7 @@
       <div class="col-6 col-md">
         <PieChart
           :title="$gettext('Applications / Level')"
-          :data="levelData"
+          end-point="/api/v1/token/stats/applications/level/"
           :url="url"
           @getLink="goTo"
         />
@@ -64,29 +64,8 @@ export default {
           icon: 'mdi-apps'
         }
       ],
-      categoryData: {},
-      levelData: {},
       url: { name: 'apps-list' }
     }
-  },
-  async mounted() {
-    await this.$axios
-      .get('/api/v1/token/stats/applications/category/')
-      .then((response) => {
-        this.categoryData = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get('/api/v1/token/stats/applications/level/')
-      .then((response) => {
-        this.levelData = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
   },
   methods: {
     goTo(params) {
