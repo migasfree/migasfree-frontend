@@ -168,8 +168,8 @@ msgstr ""
 #: ./src/components/ui/UserAccount.vue:6
 #: ./src/components/ui/UserAccount.vue:7
 #: ./src/components/ui/UserAccount.vue:8
-#: ./src/mixins/datagrid.js:45
-#: ./src/mixins/datagrid.js:550
+#: ./src/mixins/datagrid.js:22
+#: ./src/mixins/datagrid.js:256
 #: ./src/pages/attribute-sets/results/list.vue:70
 #: ./src/pages/attributes/results/list.vue:79
 #: ./src/pages/computers/results/list.vue:83
@@ -244,6 +244,7 @@ msgid "Application Area"
 msgstr ""
 
 #: ./src/components/ui/AppMenu.vue:150
+#: ./src/components/ui/SearchBox.vue:24
 #: ./src/pages/applications/index.vue:20
 #: ./src/pages/applications/index.vue:32
 #: ./src/pages/applications/results/detail.vue:48
@@ -265,21 +266,17 @@ msgstr ""
 msgid "Applications List"
 msgstr ""
 
-#: ./src/components/ui/SearchBox.vue:18
-msgid "Apps"
-msgstr ""
-
 #: ./src/pages/packages/results/detail.vue:60
 #: ./src/pages/projects/results/detail.vue:107
 msgid "Architecture"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:830
+#: ./src/mixins/datagrid.js:578
 msgid "Are you sure you want to remove all these items?"
 msgstr ""
 
 #: ./src/components/ui/RemoveDialog.vue:22
-#: ./src/mixins/datagrid.js:825
+#: ./src/mixins/datagrid.js:573
 msgid "Are you sure you want to remove this item?"
 msgstr ""
 
@@ -460,7 +457,7 @@ msgid "By Uninstall Date (range)"
 msgstr ""
 
 #: ./src/components/ui/RemoveDialog.vue:38
-#: ./src/mixins/datagrid.js:848
+#: ./src/mixins/datagrid.js:596
 msgid "Cancel"
 msgstr ""
 
@@ -521,7 +518,7 @@ msgstr ""
 msgid "Change Scope"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:889
+#: ./src/mixins/datagrid.js:637
 msgid "Changed item check value!"
 msgstr ""
 
@@ -560,7 +557,7 @@ msgstr ""
 msgid "Class Name"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:22
+#: ./src/mixins/datagrid.js:37
 msgid "Clear"
 msgstr ""
 
@@ -610,7 +607,7 @@ msgid "Computer"
 msgstr ""
 
 #: ./src/components/ui/AppMenu.vue:166
-#: ./src/components/ui/SearchBox.vue:7
+#: ./src/components/ui/SearchBox.vue:8
 #: ./src/pages/computers/index.vue:22
 #: ./src/pages/computers/index.vue:34
 #: ./src/pages/computers/replacement.vue:34
@@ -756,7 +753,7 @@ msgstr ""
 #: ./src/pages/errors/results/list.vue:35
 #: ./src/pages/fault-definitions/results/detail.vue:41
 #: ./src/pages/fault-definitions/results/list.vue:27
-#: ./src/pages/faults/index.vue:27
+#: ./src/pages/faults/index.vue:25
 #: ./src/pages/faults/results/detail.vue:35
 #: ./src/pages/faults/results/list.vue:33
 #: ./src/pages/formulas/results/detail.vue:34
@@ -825,7 +822,7 @@ msgstr ""
 #: ./src/pages/errors/index.vue:30
 #: ./src/pages/errors/results/detail.vue:40
 #: ./src/pages/errors/results/list.vue:40
-#: ./src/pages/faults/index.vue:32
+#: ./src/pages/faults/index.vue:30
 #: ./src/pages/faults/results/detail.vue:40
 #: ./src/pages/faults/results/list.vue:38
 #: ./src/pages/messages/results/list.vue:36
@@ -905,7 +902,7 @@ msgid "Delays count"
 msgstr ""
 
 #: ./src/components/ui/RemoveDialog.vue:46
-#: ./src/mixins/datagrid.js:843
+#: ./src/mixins/datagrid.js:591
 #: ./src/pages/applications/results/detail.vue:97
 #: ./src/pages/applications/results/detail.vue:387
 #: ./src/pages/attribute-sets/results/detail.vue:254
@@ -913,7 +910,7 @@ msgstr ""
 #: ./src/pages/capabilities/results/detail.vue:103
 #: ./src/pages/computers/results/detail.vue:545
 #: ./src/pages/connections/results/detail.vue:131
-#: ./src/pages/deployments/results/detail.vue:729
+#: ./src/pages/deployments/results/detail.vue:731
 #: ./src/pages/device-types/results/detail.vue:103
 #: ./src/pages/devices/results/detail.vue:93
 #: ./src/pages/devices/results/detail.vue:441
@@ -949,7 +946,7 @@ msgid "Deployment"
 msgstr ""
 
 #: ./src/components/ui/AppMenu.vue:123
-#: ./src/components/ui/SearchBox.vue:12
+#: ./src/components/ui/SearchBox.vue:14
 #: ./src/pages/computers/results/simulate.vue:149
 #: ./src/pages/deployments/index.vue:21
 #: ./src/pages/deployments/index.vue:33
@@ -1040,7 +1037,7 @@ msgstr ""
 #: ./src/components/computer/ReplacementInfo.vue:7
 #: ./src/components/ui/AppMenu.vue:88
 #: ./src/components/ui/AppMenu.vue:106
-#: ./src/components/ui/SearchBox.vue:23
+#: ./src/components/ui/SearchBox.vue:30
 #: ./src/pages/capabilities/results/detail.vue:39
 #: ./src/pages/capabilities/results/list.vue:30
 #: ./src/pages/computers/results/simulate.vue:175
@@ -1281,19 +1278,19 @@ msgstr ""
 #: ./src/pages/computers/results/events.vue:36
 #: ./src/pages/computers/results/events.vue:2
 #: ./src/pages/computers/results/events.vue:70
-#: ./src/pages/faults/index.vue:24
-#: ./src/pages/faults/index.vue:36
+#: ./src/pages/faults/index.vue:22
+#: ./src/pages/faults/index.vue:34
 #: ./src/pages/faults/results/detail.vue:44
 #: ./src/pages/faults/results/list.vue:30
 #: ./src/pages/faults/results/list.vue:42
 msgid "Faults"
 msgstr ""
 
-#: ./src/pages/faults/index.vue:35
+#: ./src/pages/faults/index.vue:34
 msgid "Faults / Faults Definitions"
 msgstr ""
 
-#: ./src/pages/faults/index.vue:26
+#: ./src/pages/faults/index.vue:25
 msgid "Faults / Month"
 msgstr ""
 
@@ -1553,7 +1550,7 @@ msgstr ""
 msgid "Is Super User?"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:814
+#: ./src/mixins/datagrid.js:562
 msgid "Item deleted!"
 msgstr ""
 
@@ -1605,6 +1602,11 @@ msgstr ""
 
 #: ./src/components/ui/AppFooter.vue:5
 msgid "License"
+msgstr ""
+
+#: ./src/components/chart/Pie.vue:120
+#: ./src/components/chart/StackedBar.vue:109
+msgid "Loading data..."
 msgstr ""
 
 #: ./src/pages/devices/results/list.vue:65
@@ -1818,7 +1820,7 @@ msgstr ""
 msgid "New Password"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:40
+#: ./src/mixins/datagrid.js:17
 msgid "Next"
 msgstr ""
 
@@ -1837,6 +1839,11 @@ msgstr ""
 #: ./src/pages/stamps/results/list.vue:78
 #: ./src/pages/syncs/results/list.vue:126
 msgid "No"
+msgstr ""
+
+#: ./src/components/chart/Pie.vue:17
+#: ./src/components/chart/StackedBar.vue:9
+msgid "No data available."
 msgstr ""
 
 #: ./src/pages/computers/results/hardware.vue:15
@@ -1929,7 +1936,7 @@ msgstr ""
 msgid "Notifications / Month"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:43
+#: ./src/mixins/datagrid.js:20
 msgid "of"
 msgstr ""
 
@@ -1995,7 +2002,7 @@ msgid "packages"
 msgstr ""
 
 #: ./src/components/ui/AppMenu.vue:139
-#: ./src/components/ui/SearchBox.vue:15
+#: ./src/components/ui/SearchBox.vue:19
 #: ./src/pages/package-sets/results/detail.vue:156
 #: ./src/pages/packages/index.vue:20
 #: ./src/pages/packages/index.vue:32
@@ -2047,7 +2054,7 @@ msgstr ""
 msgid "Packages to Uninstall (by policies)"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:44
+#: ./src/mixins/datagrid.js:21
 msgid "page"
 msgstr ""
 
@@ -2156,7 +2163,7 @@ msgstr ""
 msgid "Prefix"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:41
+#: ./src/mixins/datagrid.js:18
 msgid "Previous"
 msgstr ""
 
@@ -2175,11 +2182,11 @@ msgstr ""
 msgid "Product"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:557
+#: ./src/mixins/datagrid.js:263
 msgid "productive"
 msgstr ""
 
-#: ./src/pages/Dashboard.vue:25
+#: ./src/pages/Dashboard.vue:24
 #: ./src/pages/computers/index.vue:44
 msgid "Productive Computers"
 msgstr ""
@@ -2274,42 +2281,42 @@ msgstr ""
 msgid "Replacement done!"
 msgstr ""
 
-#: ./src/pages/applications/results/list.vue:44
-#: ./src/pages/attribute-sets/results/list.vue:44
-#: ./src/pages/attributes/results/list.vue:42
-#: ./src/pages/capabilities/results/list.vue:42
-#: ./src/pages/computers/results/list.vue:191
-#: ./src/pages/connections/results/list.vue:43
-#: ./src/pages/deployments/results/list.vue:85
-#: ./src/pages/device-types/results/list.vue:42
-#: ./src/pages/devices/results/list.vue:46
-#: ./src/pages/domains/results/list.vue:42
-#: ./src/pages/errors/results/list.vue:114
-#: ./src/pages/fault-definitions/results/list.vue:44
-#: ./src/pages/faults/results/list.vue:121
-#: ./src/pages/formulas/results/list.vue:45
-#: ./src/pages/groups/results/list.vue:40
-#: ./src/pages/logical-devices/results/list.vue:80
-#: ./src/pages/manufacturers/results/list.vue:42
-#: ./src/pages/messages/results/list.vue:84
-#: ./src/pages/migrations/results/list.vue:91
-#: ./src/pages/models/results/list.vue:44
+#: ./src/pages/applications/results/list.vue:47
+#: ./src/pages/attribute-sets/results/list.vue:47
+#: ./src/pages/attributes/results/list.vue:45
+#: ./src/pages/capabilities/results/list.vue:45
+#: ./src/pages/computers/results/list.vue:194
+#: ./src/pages/connections/results/list.vue:46
+#: ./src/pages/deployments/results/list.vue:88
+#: ./src/pages/device-types/results/list.vue:45
+#: ./src/pages/devices/results/list.vue:49
+#: ./src/pages/domains/results/list.vue:45
+#: ./src/pages/errors/results/list.vue:117
+#: ./src/pages/fault-definitions/results/list.vue:47
+#: ./src/pages/faults/results/list.vue:124
+#: ./src/pages/formulas/results/list.vue:48
+#: ./src/pages/groups/results/list.vue:43
+#: ./src/pages/logical-devices/results/list.vue:83
+#: ./src/pages/manufacturers/results/list.vue:45
+#: ./src/pages/messages/results/list.vue:87
+#: ./src/pages/migrations/results/list.vue:94
+#: ./src/pages/models/results/list.vue:47
 #: ./src/pages/notifications/results/list.vue:75
-#: ./src/pages/package-sets/results/list.vue:44
-#: ./src/pages/packages-history/results/list.vue:81
-#: ./src/pages/packages/results/list.vue:44
-#: ./src/pages/platforms/results/list.vue:42
-#: ./src/pages/policies/results/list.vue:45
-#: ./src/pages/projects/results/list.vue:45
-#: ./src/pages/schedules/results/list.vue:42
-#: ./src/pages/scopes/results/list.vue:44
-#: ./src/pages/stamps/results/list.vue:45
+#: ./src/pages/package-sets/results/list.vue:47
+#: ./src/pages/packages-history/results/list.vue:84
+#: ./src/pages/packages/results/list.vue:47
+#: ./src/pages/platforms/results/list.vue:45
+#: ./src/pages/policies/results/list.vue:48
+#: ./src/pages/projects/results/list.vue:48
+#: ./src/pages/schedules/results/list.vue:45
+#: ./src/pages/scopes/results/list.vue:47
+#: ./src/pages/stamps/results/list.vue:48
 #: ./src/pages/status-logs/results/list.vue:84
-#: ./src/pages/stores/results/list.vue:43
+#: ./src/pages/stores/results/list.vue:46
 #: ./src/pages/syncs/results/list.vue:107
-#: ./src/pages/tags/results/list.vue:43
-#: ./src/pages/user-profiles/results/list.vue:43
-#: ./src/pages/users/results/list.vue:41
+#: ./src/pages/tags/results/list.vue:46
+#: ./src/pages/user-profiles/results/list.vue:46
+#: ./src/pages/users/results/list.vue:44
 msgid "Reset all filters"
 msgstr ""
 
@@ -2363,11 +2370,11 @@ msgstr ""
 msgid "Results"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:42
+#: ./src/mixins/datagrid.js:19
 msgid "Results per page"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:21
+#: ./src/mixins/datagrid.js:36
 msgid "rows selected"
 msgstr ""
 
@@ -2376,7 +2383,7 @@ msgstr ""
 #: ./src/pages/attributes/results/detail.vue:108
 #: ./src/pages/capabilities/results/detail.vue:84
 #: ./src/pages/connections/results/detail.vue:112
-#: ./src/pages/deployments/results/detail.vue:714
+#: ./src/pages/deployments/results/detail.vue:716
 #: ./src/pages/device-types/results/detail.vue:84
 #: ./src/pages/devices/results/detail.vue:422
 #: ./src/pages/domains/results/detail.vue:350
@@ -2406,7 +2413,7 @@ msgstr ""
 #: ./src/pages/attribute-sets/results/detail.vue:219
 #: ./src/pages/capabilities/results/detail.vue:68
 #: ./src/pages/connections/results/detail.vue:96
-#: ./src/pages/deployments/results/detail.vue:694
+#: ./src/pages/deployments/results/detail.vue:696
 #: ./src/pages/device-types/results/detail.vue:68
 #: ./src/pages/devices/results/detail.vue:406
 #: ./src/pages/domains/results/detail.vue:334
@@ -2439,7 +2446,7 @@ msgstr ""
 #: ./src/pages/capabilities/results/detail.vue:77
 #: ./src/pages/computers/results/detail.vue:406
 #: ./src/pages/connections/results/detail.vue:105
-#: ./src/pages/deployments/results/detail.vue:705
+#: ./src/pages/deployments/results/detail.vue:707
 #: ./src/pages/device-types/results/detail.vue:77
 #: ./src/pages/devices/results/detail.vue:415
 #: ./src/pages/domains/results/detail.vue:343
@@ -2503,7 +2510,7 @@ msgstr ""
 msgid "Score"
 msgstr ""
 
-#: ./src/components/ui/SearchBox.vue:27
+#: ./src/components/ui/SearchBox.vue:22
 #: ./src/components/ui/SearchFilter.vue:13
 msgid "Search..."
 msgstr ""
@@ -2655,7 +2662,7 @@ msgstr ""
 msgid "Stores List"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:553
+#: ./src/mixins/datagrid.js:259
 msgid "subscribed"
 msgstr ""
 
@@ -2706,11 +2713,11 @@ msgstr ""
 msgid "Synchronizations"
 msgstr ""
 
-#: ./src/pages/Dashboard.vue:31
+#: ./src/pages/Dashboard.vue:27
 msgid "Synchronized single computers / day"
 msgstr ""
 
-#: ./src/pages/Dashboard.vue:33
+#: ./src/pages/Dashboard.vue:29
 msgid "Synchronized single computers / month"
 msgstr ""
 
@@ -2841,13 +2848,13 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: ./src/pages/Dashboard.vue:27
+#: ./src/pages/Dashboard.vue:25
 #: ./src/pages/errors/index.vue:42
 msgid "Unchecked Errors"
 msgstr ""
 
-#: ./src/pages/Dashboard.vue:29
-#: ./src/pages/faults/index.vue:43
+#: ./src/pages/Dashboard.vue:26
+#: ./src/pages/faults/index.vue:42
 msgid "Unchecked Faults"
 msgstr ""
 
@@ -2855,16 +2862,20 @@ msgstr ""
 msgid "Uninstall Date"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:564
+#: ./src/mixins/datagrid.js:270
 msgid "unproductive"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:575
+#: ./src/mixins/datagrid.js:281
 msgid "unsubscribed"
 msgstr ""
 
 #: ./src/pages/computers/results/detail.vue:433
 msgid "unsynchronized from"
+msgstr ""
+
+#: ./src/pages/Dashboard.vue:112
+msgid "Update"
 msgstr ""
 
 #: ./src/components/DateDiff.vue:37
