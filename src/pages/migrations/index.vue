@@ -10,7 +10,7 @@
       <div class="col-12">
         <StackedBarChart
           :title="$gettext('Migrations / Month')"
-          :data="projectMonth"
+          end-point="/api/v1/token/stats/migrations/project/month/"
           @getLink="goTo"
         />
       </div>
@@ -20,7 +20,7 @@
       <div class="col-12">
         <PieChart
           :title="$gettext('Migrations / Project')"
-          :data="byProject"
+          end-point="/api/v1/token/stats/migrations/project/"
           :url="url"
           @getLink="goTo"
         />
@@ -67,42 +67,8 @@ export default {
           icon: 'mdi-map-marker-right'
         }
       ],
-      projectMonth: {},
-      byProject: {},
       url: { name: 'migrations-list' }
     }
-  },
-  async mounted() {
-    await this.$axios
-      .get('/api/v1/token/stats/migrations/project/month/')
-      .then((response) => {
-        const series = []
-
-        Object.entries(response.data.data).map(([key, val]) => {
-          series.push({
-            type: 'line',
-            smooth: true,
-            name: key,
-            data: val
-          })
-        })
-        this.projectMonth = {
-          xData: response.data.x_labels,
-          series
-        }
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get('/api/v1/token/stats/migrations/project/')
-      .then((response) => {
-        this.byProject = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
   },
   methods: {
     goTo(params) {
