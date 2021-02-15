@@ -149,10 +149,6 @@ export default {
       switch (model) {
         case 'synchronizations':
           return 'syncs'
-        case 'features':
-          return 'attributes'
-        case 'feature':
-          return 'attribute'
         case 'applications':
           return 'apps'
         case 'application':
@@ -161,6 +157,8 @@ export default {
           return 'device-type'
         case 'logical':
           return 'logical-devices'
+        case 'apps':
+          return 'applications'
         default:
           return model
       }
