@@ -10,7 +10,7 @@
       <div class="col">
         <PieChart
           :title="$gettext('Models / Manufacturer')"
-          :data="pieData"
+          end-point="/api/v1/token/stats/devices/models/manufacturer/"
           :url="url"
           @getLink="goTo"
         />
@@ -55,19 +55,8 @@ export default {
           icon: 'mdi-shape'
         }
       ],
-      pieData: {},
       url: { name: 'models-list' }
     }
-  },
-  async mounted() {
-    await this.$axios
-      .get('/api/v1/token/stats/devices/models/manufacturer/')
-      .then((response) => {
-        this.pieData = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
   },
   methods: {
     goTo(params) {
