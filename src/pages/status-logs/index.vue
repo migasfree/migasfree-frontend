@@ -10,7 +10,7 @@
       <div class="col-12">
         <StackedBarChart
           :title="$gettext('Status Logs / Month')"
-          :data="statusLogsMonth"
+          end-point="/api/v1/token/stats/status-logs/month/"
           @getLink="goTo"
         />
       </div>
@@ -18,9 +18,9 @@
 
     <div class="row">
       <div class="col-12">
-        <NestedPieChart
+        <PieChart
           :title="$gettext('Status Logs / Status')"
-          :data="statusLogsStatus"
+          end-point="/api/v1/token/stats/status-logs/status/"
           :url="url"
           @getLink="goTo"
         />
@@ -33,7 +33,7 @@
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
-import NestedPieChart from 'components/chart/NestedPie'
+import PieChart from 'components/chart/Pie'
 import StackedBarChart from 'components/chart/StackedBar'
 
 export default {
@@ -47,7 +47,7 @@ export default {
     Header,
     SearchFilter,
     StackedBarChart,
-    NestedPieChart
+    PieChart
   },
   data() {
     return {
@@ -67,42 +67,8 @@ export default {
           icon: 'mdi-flag-variant'
         }
       ],
-      statusLogsMonth: {},
-      statusLogsStatus: {},
       url: { name: 'status-logs-list' }
     }
-  },
-  async mounted() {
-    await this.$axios
-      .get('/api/v1/token/stats/status-logs/month/')
-      .then((response) => {
-        const series = []
-
-        Object.entries(response.data.data).map(([key, val]) => {
-          series.push({
-            type: 'line',
-            smooth: true,
-            name: key,
-            data: val
-          })
-        })
-        this.statusLogsMonth = {
-          xData: response.data.x_labels,
-          series
-        }
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get('/api/v1/token/stats/status-logs/status/')
-      .then((response) => {
-        this.statusLogsStatus = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
   },
   methods: {
     goTo(params) {
