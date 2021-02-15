@@ -10,7 +10,7 @@
       <div class="col">
         <PieChart
           :title="$gettext('Tags / Stamps')"
-          :data="pieData"
+          end-point="/api/v1/token/stats/tags/category/"
           :url="url"
           @getLink="goTo"
         />
@@ -55,19 +55,8 @@ export default {
           icon: 'mdi-tag'
         }
       ],
-      pieData: {},
       url: { name: 'tags-list' }
     }
-  },
-  async mounted() {
-    await this.$axios
-      .get('/api/v1/token/stats/tags/category/')
-      .then((response) => {
-        this.pieData = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
   },
   methods: {
     goTo(params) {
