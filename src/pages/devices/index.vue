@@ -10,7 +10,7 @@
       <div class="col-4 col-md">
         <PieChart
           :title="$gettext('Devices / Connection')"
-          :data="connectionData"
+          end-point="/api/v1/token/stats/devices/connection/"
           :url="url"
           @getLink="goTo"
         />
@@ -19,7 +19,7 @@
       <div class="col-4 col-md">
         <PieChart
           :title="$gettext('Devices / Model')"
-          :data="modelData"
+          end-point="/api/v1/token/stats/devices/model/"
           :url="url"
           @getLink="goTo"
         />
@@ -28,7 +28,7 @@
       <div class="col-4 col-md">
         <PieChart
           :title="$gettext('Devices / Manufacturer')"
-          :data="manufacturerData"
+          end-point="/api/v1/token/stats/devices/manufacturer/"
           :url="url"
           @getLink="goTo"
         />
@@ -73,39 +73,8 @@ export default {
           icon: 'mdi-printer'
         }
       ],
-      connectionData: {},
-      modelData: {},
-      manufacturerData: {},
       url: { name: 'devices-list' }
     }
-  },
-  async mounted() {
-    await this.$axios
-      .get('/api/v1/token/stats/devices/connection/')
-      .then((response) => {
-        this.connectionData = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get('/api/v1/token/stats/devices/model/')
-      .then((response) => {
-        this.modelData = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get('/api/v1/token/stats/devices/manufacturer/')
-      .then((response) => {
-        this.manufacturerData = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
   },
   methods: {
     goTo(params) {
