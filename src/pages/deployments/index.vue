@@ -8,27 +8,27 @@
 
     <div class="row">
       <div class="col-4 col-md">
-        <NestedPieChart
+        <PieChart
           :title="$gettext('Enabled Deployments')"
-          :data="enabledData"
+          end-point="/api/v1/token/stats/deployments/enabled/project/"
           :url="enabledUrl"
           @getLink="goTo"
         />
       </div>
 
       <div class="col-4 col-md">
-        <NestedPieChart
+        <PieChart
           :title="$gettext('Deployments / Enabled')"
-          :data="byEnabledData"
+          end-point="/api/v1/token/stats/deployments/enabled/"
           :url="url"
           @getLink="goTo"
         />
       </div>
 
       <div class="col-4 col-md">
-        <NestedPieChart
+        <PieChart
           :title="$gettext('Deployments / Schedule')"
-          :data="scheduleData"
+          end-point="/api/v1/token/stats/deployments/schedule/"
           :url="url"
           @getLink="goTo"
         />
@@ -41,7 +41,7 @@
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
-import NestedPieChart from 'components/chart/NestedPie'
+import PieChart from 'components/chart/Pie'
 import _merge from 'lodash/merge'
 
 export default {
@@ -54,7 +54,7 @@ export default {
     Breadcrumbs,
     Header,
     SearchFilter,
-    NestedPieChart
+    PieChart
   },
   data() {
     return {
@@ -74,9 +74,6 @@ export default {
           icon: 'mdi-rocket-launch'
         }
       ],
-      enabledData: {},
-      byEnabledData: {},
-      scheduleData: {},
       url: { name: 'deployments-list' }
     }
   },
@@ -86,34 +83,6 @@ export default {
         query: { enabled: true }
       })
     }
-  },
-  async mounted() {
-    await this.$axios
-      .get('/api/v1/token/stats/deployments/enabled/project/')
-      .then((response) => {
-        this.enabledData = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get('/api/v1/token/stats/deployments/enabled/')
-      .then((response) => {
-        this.byEnabledData = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-
-    await this.$axios
-      .get('/api/v1/token/stats/deployments/schedule/')
-      .then((response) => {
-        this.scheduleData = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
   },
   methods: {
     goTo(params) {
