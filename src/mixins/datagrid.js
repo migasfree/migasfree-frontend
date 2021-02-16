@@ -458,8 +458,10 @@ export const datagridMixin = {
             case 'scope_excluded_id':
               ret.scope_excluded__id = val
               break
+            case 'status':
             case 'status_in':
-              if (this.model === 'computers') ret.status__in = val
+              if (this.model === 'computers' || this.model === 'status-logs')
+                ret.status__in = val
               else ret.computer__status__in = val
               break
             case 'store':
