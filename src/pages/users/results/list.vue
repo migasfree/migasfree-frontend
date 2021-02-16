@@ -164,7 +164,8 @@ export default {
       tableFilters: {
         search: ''
       },
-      model: 'users'
+      model: 'users',
+      detailRoute: 'user-detail'
     }
   }
 }
