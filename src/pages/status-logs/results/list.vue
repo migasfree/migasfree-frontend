@@ -38,6 +38,9 @@
         <div class="row q-pa-md">
           <div class="col-12">
             <q-btn
+              icon="mdi-filter-remove"
+              color="info"
+              text-color="black"
               :label="$gettext('Reset all filters')"
               @click="resetFilters"
             />
@@ -246,43 +249,6 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    },
-
-    queryParams() {
-      let ret = {
-        page_size: this.serverParams.perPage,
-        page: this.serverParams.page
-      }
-
-      if (this.serverParams.sort.field) {
-        ret.ordering = `${this.serverParams.sort.type}${this.serverParams.sort.field}`
-      }
-
-      if (Object.keys(this.serverParams.columnFilters).length) {
-        Object.entries(this.serverParams.columnFilters).map(([key, val]) => {
-          switch (key) {
-            case 'computer.__str__':
-              ret.computer__name__icontains = val
-              break
-            case 'computer_id':
-              ret.computer__id = val
-              break
-            case 'status':
-            case 'status_in':
-              ret.status__in = val
-              break
-            case 'created_at__gte':
-            case 'created_at__lt':
-            case 'search':
-              ret[key] = val
-              break
-            default:
-              ret[`${key.replace('.', '__')}__icontains`] = val
-          }
-        })
-      }
-
-      return ret
     }
   }
 }
