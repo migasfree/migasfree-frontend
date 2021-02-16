@@ -54,7 +54,8 @@
             icon="mdi-pencil"
             color="primary"
             @click="edit(props.row.id)"
-          />
+            ><q-tooltip>{{ $gettext('Edit') }}</q-tooltip></q-btn
+          >
           <q-btn
             class="q-ma-xs"
             round
@@ -62,7 +63,8 @@
             icon="mdi-delete"
             color="negative"
             @click="confirmRemove(props.row.id)"
-          />
+            ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
+          >
         </span>
         <span v-else-if="props.column.field == 'name'">
           <MigasLink
@@ -83,7 +85,8 @@
           color="negative"
           icon="mdi-delete"
           @click="confirmRemove"
-        />
+          ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
+        >
       </div>
     </vue-good-table>
   </q-page>

@@ -67,17 +67,7 @@
       @on-selected-rows-change="onSelectionChanged"
     >
       <template slot="table-row" slot-scope="props">
-        <span v-if="props.column.field == 'actions'">
-          <q-btn
-            class="q-ma-xs"
-            round
-            size="sm"
-            icon="mdi-delete"
-            color="negative"
-            @click="confirmRemove(props.row.id)"
-          />
-        </span>
-        <span v-else-if="props.column.field == 'computer.__str__'">
+        <span v-if="props.column.field == 'computer.__str__'">
           <MigasLink
             model="computers"
             :pk="props.row.computer.id"

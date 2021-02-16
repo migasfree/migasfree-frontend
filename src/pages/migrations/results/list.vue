@@ -83,7 +83,8 @@
             icon="mdi-delete"
             color="negative"
             @click="confirmRemove(props.row.id)"
-          />
+            ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
+          >
         </span>
         <span v-else-if="props.column.field == 'computer.__str__'">
           <MigasLink
@@ -117,7 +118,8 @@
           color="negative"
           icon="mdi-delete"
           @click="confirmRemove"
-        />
+          ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
+        >
       </div>
     </vue-good-table>
   </q-page>
