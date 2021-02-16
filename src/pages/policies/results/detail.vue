@@ -174,7 +174,7 @@
           separator
         >
           <q-item v-for="(line, index) in policyGroups" :key="index">
-            <q-item-section side>
+            <q-item-section side top>
               <q-btn
                 flat
                 dense
@@ -182,155 +182,161 @@
                 color="negative"
                 icon="mdi-delete"
                 @click="removeInline(index)"
-                ><q-tooltip><translate>Delete</translate></q-tooltip></q-btn
+                ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
               >
             </q-item-section>
 
-            <q-item-section class="col-1">
-              <q-input
-                v-model="line.priority"
-                outlined
-                type="number"
-                :label="$gettext('Priority')"
-                lazy-rules
-                :rules="[(val) => !!val || $gettext('* Required')]"
-              />
-            </q-item-section>
+            <q-item-section>
+              <div class="row q-pa-md q-gutter-md">
+                <div class="col-md">
+                  <q-input
+                    v-model="line.priority"
+                    outlined
+                    type="number"
+                    :label="$gettext('Priority')"
+                    lazy-rules
+                    :rules="[(val) => !!val || $gettext('* Required')]"
+                  />
+                </div>
 
-            <q-item-section class="col-3 col-md">
-              <q-select
-                v-model="line.included_attributes"
-                outlined
-                use-input
-                map-options
-                multiple
-                input-debounce="0"
-                :label="$gettext('Included Attributes')"
-                :options="attributes"
-                @filter="filterAttributes"
-                @filter-abort="abortFilterAttributes"
-              >
-                <template #no-option>
-                  <q-item>
-                    <q-item-section v-translate class="text-grey">
-                      No results
-                    </q-item-section>
-                  </q-item>
-                </template>
-
-                <template #option="scope">
-                  <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                    {{ attributeValue(scope.opt) }}
-                  </q-item>
-                </template>
-
-                <template #selected-item="scope">
-                  <q-chip
-                    removable
-                    dense
-                    :tabindex="scope.tabindex"
-                    class="q-ma-md"
-                    @remove="scope.removeAtIndex(scope.index)"
+                <div class="col-md">
+                  <q-select
+                    v-model="line.applications"
+                    outlined
+                    use-input
+                    map-options
+                    multiple
+                    input-debounce="0"
+                    :label="$gettext('Applications')"
+                    :options="applications"
+                    @filter="filterApplications"
+                    @filter-abort="abortFilterApplications"
                   >
-                    <MigasLink
-                      model="attributes"
-                      :pk="scope.opt.id"
-                      :value="attributeValue(scope.opt)"
-                    />
-                  </q-chip>
-                </template>
-              </q-select>
-            </q-item-section>
+                    <template #no-option>
+                      <q-item>
+                        <q-item-section v-translate class="text-grey">
+                          No results
+                        </q-item-section>
+                      </q-item>
+                    </template>
 
-            <q-item-section class="col-3 col-md">
-              <q-select
-                v-model="line.excluded_attributes"
-                outlined
-                use-input
-                map-options
-                multiple
-                input-debounce="0"
-                :label="$gettext('Excluded Attributes')"
-                :options="attributes"
-                @filter="filterAttributes"
-                @filter-abort="abortFilterAttributes"
-              >
-                <template #no-option>
-                  <q-item>
-                    <q-item-section v-translate class="text-grey">
-                      No results
-                    </q-item-section>
-                  </q-item>
-                </template>
+                    <template #option="scope">
+                      <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                        {{ scope.opt.name }}
+                      </q-item>
+                    </template>
 
-                <template #option="scope">
-                  <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                    {{ attributeValue(scope.opt) }}
-                  </q-item>
-                </template>
+                    <template #selected-item="scope">
+                      <q-chip
+                        removable
+                        dense
+                        :tabindex="scope.tabindex"
+                        class="q-ma-md"
+                        @remove="scope.removeAtIndex(scope.index)"
+                      >
+                        <MigasLink
+                          model="catalog/apps"
+                          :pk="scope.opt.id"
+                          :value="scope.opt.name"
+                          icon="mdi-apps"
+                        />
+                      </q-chip>
+                    </template>
+                  </q-select>
+                </div>
+              </div>
 
-                <template #selected-item="scope">
-                  <q-chip
-                    removable
-                    dense
-                    :tabindex="scope.tabindex"
-                    class="q-ma-md"
-                    @remove="scope.removeAtIndex(scope.index)"
+              <div class="row q-pa-md q-gutter-md">
+                <div class="col-md">
+                  <q-select
+                    v-model="line.included_attributes"
+                    outlined
+                    use-input
+                    map-options
+                    multiple
+                    input-debounce="0"
+                    :label="$gettext('Included Attributes')"
+                    :options="attributes"
+                    @filter="filterAttributes"
+                    @filter-abort="abortFilterAttributes"
                   >
-                    <MigasLink
-                      model="attributes"
-                      :pk="scope.opt.id"
-                      :value="attributeValue(scope.opt)"
-                    />
-                  </q-chip>
-                </template>
-              </q-select>
-            </q-item-section>
+                    <template #no-option>
+                      <q-item>
+                        <q-item-section v-translate class="text-grey">
+                          No results
+                        </q-item-section>
+                      </q-item>
+                    </template>
 
-            <q-item-section class="col-3 col-md">
-              <q-select
-                v-model="line.applications"
-                outlined
-                use-input
-                map-options
-                multiple
-                input-debounce="0"
-                :label="$gettext('Applications')"
-                :options="applications"
-                @filter="filterApplications"
-                @filter-abort="abortFilterApplications"
-              >
-                <template #no-option>
-                  <q-item>
-                    <q-item-section v-translate class="text-grey">
-                      No results
-                    </q-item-section>
-                  </q-item>
-                </template>
+                    <template #option="scope">
+                      <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                        {{ attributeValue(scope.opt) }}
+                      </q-item>
+                    </template>
 
-                <template #option="scope">
-                  <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                    {{ scope.opt.name }}
-                  </q-item>
-                </template>
+                    <template #selected-item="scope">
+                      <q-chip
+                        removable
+                        dense
+                        :tabindex="scope.tabindex"
+                        class="q-ma-md"
+                        @remove="scope.removeAtIndex(scope.index)"
+                      >
+                        <MigasLink
+                          model="attributes"
+                          :pk="scope.opt.id"
+                          :value="attributeValue(scope.opt)"
+                        />
+                      </q-chip>
+                    </template>
+                  </q-select>
+                </div>
 
-                <template #selected-item="scope">
-                  <q-chip
-                    removable
-                    dense
-                    :tabindex="scope.tabindex"
-                    class="q-ma-md"
-                    @remove="scope.removeAtIndex(scope.index)"
+                <div class="col-md">
+                  <q-select
+                    v-model="line.excluded_attributes"
+                    outlined
+                    use-input
+                    map-options
+                    multiple
+                    input-debounce="0"
+                    :label="$gettext('Excluded Attributes')"
+                    :options="attributes"
+                    @filter="filterAttributes"
+                    @filter-abort="abortFilterAttributes"
                   >
-                    <MigasLink
-                      model="catalog/apps"
-                      :pk="scope.opt.id"
-                      :value="scope.opt.name"
-                      icon="mdi-apps"
-                    />
-                  </q-chip>
-                </template>
-              </q-select>
+                    <template #no-option>
+                      <q-item>
+                        <q-item-section v-translate class="text-grey">
+                          No results
+                        </q-item-section>
+                      </q-item>
+                    </template>
+
+                    <template #option="scope">
+                      <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                        {{ attributeValue(scope.opt) }}
+                      </q-item>
+                    </template>
+
+                    <template #selected-item="scope">
+                      <q-chip
+                        removable
+                        dense
+                        :tabindex="scope.tabindex"
+                        class="q-ma-md"
+                        @remove="scope.removeAtIndex(scope.index)"
+                      >
+                        <MigasLink
+                          model="attributes"
+                          :pk="scope.opt.id"
+                          :value="attributeValue(scope.opt)"
+                        />
+                      </q-chip>
+                    </template>
+                  </q-select>
+                </div>
+              </div>
             </q-item-section>
           </q-item>
         </q-list>
