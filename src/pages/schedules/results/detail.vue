@@ -45,7 +45,7 @@
 
         <q-list v-if="delays.length > 0" class="q-pa-md" bordered separator>
           <q-item v-for="(delay, index) in delays" :key="index">
-            <q-item-section side>
+            <q-item-section side top>
               <q-btn
                 flat
                 dense
@@ -53,75 +53,81 @@
                 color="negative"
                 icon="mdi-delete"
                 @click="removeInline(index)"
-                ><q-tooltip><translate>Delete</translate></q-tooltip></q-btn
+                ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
               >
             </q-item-section>
 
-            <q-item-section class="col-3">
-              <q-input
-                v-model="delay.delay"
-                outlined
-                type="number"
-                :label="$gettext('Delay')"
-                lazy-rules
-                :rules="[(val) => !!val || $gettext('* Required')]"
-              />
-            </q-item-section>
+            <q-item-section>
+              <div class="row q-pa-md q-gutter-md">
+                <div class="col-md">
+                  <q-input
+                    v-model="delay.delay"
+                    outlined
+                    type="number"
+                    :label="$gettext('Delay')"
+                    lazy-rules
+                    :rules="[(val) => !!val || $gettext('* Required')]"
+                  />
+                </div>
 
-            <q-item-section class="col-3 col-md">
-              <q-input
-                v-model="delay.duration"
-                outlined
-                type="number"
-                :label="$gettext('Duration')"
-                lazy-rules
-                :rules="[(val) => !!val || $gettext('* Required')]"
-              />
-            </q-item-section>
+                <div class="col-md">
+                  <q-input
+                    v-model="delay.duration"
+                    outlined
+                    type="number"
+                    :label="$gettext('Duration')"
+                    lazy-rules
+                    :rules="[(val) => !!val || $gettext('* Required')]"
+                  />
+                </div>
+              </div>
 
-            <q-item-section class="col-5 col-md">
-              <q-select
-                v-model="delay.attributes"
-                outlined
-                use-input
-                map-options
-                multiple
-                input-debounce="0"
-                :label="$gettext('Attributes')"
-                :options="attributes"
-                @filter="filterAttributes"
-                @filter-abort="abortFilterAttributes"
-              >
-                <template #no-option>
-                  <q-item>
-                    <q-item-section v-translate class="text-grey">
-                      No results
-                    </q-item-section>
-                  </q-item>
-                </template>
-
-                <template #option="scope">
-                  <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                    {{ attributeValue(scope.opt) }}
-                  </q-item>
-                </template>
-
-                <template #selected-item="scope">
-                  <q-chip
-                    removable
-                    dense
-                    :tabindex="scope.tabindex"
-                    class="q-ma-md"
-                    @remove="scope.removeAtIndex(scope.index)"
+              <div class="row q-pa-md q-gutter-md">
+                <div class="col-md">
+                  <q-select
+                    v-model="delay.attributes"
+                    outlined
+                    use-input
+                    map-options
+                    multiple
+                    input-debounce="0"
+                    :label="$gettext('Attributes')"
+                    :options="attributes"
+                    @filter="filterAttributes"
+                    @filter-abort="abortFilterAttributes"
                   >
-                    <MigasLink
-                      model="attributes"
-                      :pk="scope.opt.id"
-                      :value="attributeValue(scope.opt)"
-                    />
-                  </q-chip>
-                </template>
-              </q-select>
+                    <template #no-option>
+                      <q-item>
+                        <q-item-section v-translate class="text-grey">
+                          No results
+                        </q-item-section>
+                      </q-item>
+                    </template>
+
+                    <template #option="scope">
+                      <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                        {{ attributeValue(scope.opt) }}
+                      </q-item>
+                    </template>
+
+                    <template #selected-item="scope">
+                      <q-chip
+                        removable
+                        dense
+                        :tabindex="scope.tabindex"
+                        class="q-ma-md"
+                        @remove="scope.removeAtIndex(scope.index)"
+                      >
+                        <MigasLink
+                          model="attributes"
+                          :pk="scope.opt.id"
+                          :value="attributeValue(scope.opt)"
+                        />
+                      </q-chip>
+                    </template>
+                  </q-select>
+                </div>
+              </div>
             </q-item-section>
           </q-item>
         </q-list>
