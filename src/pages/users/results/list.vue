@@ -47,6 +47,14 @@
             class="q-ma-xs"
             round
             size="sm"
+            icon="mdi-pencil"
+            color="primary"
+            @click="edit(props.row.id)"
+          />
+          <q-btn
+            class="q-ma-xs"
+            round
+            size="sm"
             icon="mdi-delete"
             color="negative"
             @click="confirmRemove(props.row.id)"
