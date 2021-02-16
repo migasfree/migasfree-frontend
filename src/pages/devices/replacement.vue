@@ -170,11 +170,6 @@ export default {
           icon: 'mdi-printer-eye'
         },
         {
-          text: this.$gettext('Devices'),
-          icon: 'mdi-printer',
-          to: 'devices-dashboard'
-        },
-        {
           text: this.$gettext('Devices Replacement'),
           icon: 'mdi-compare-horizontal'
         }

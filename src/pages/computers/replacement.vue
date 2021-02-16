@@ -172,11 +172,6 @@ export default {
           icon: 'mdi-database-search'
         },
         {
-          text: this.$gettext('Computers'),
-          to: 'computers-dashboard',
-          icon: 'mdi-desktop-classic'
-        },
-        {
           text: this.$gettext('Computers Replacement'),
           icon: 'mdi-compare-horizontal'
         }
