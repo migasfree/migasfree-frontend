@@ -8,8 +8,8 @@
       This procedure changes status, tags and devices between two computers.
     </p>
 
-    <div class="row q-pa-md q-gutter-md">
-      <div class="col-4 col-md">
+    <div class="row q-pa-md justify-around items-center">
+      <div class="col-4 col-md-4">
         <q-card>
           <q-card-section>
             <div v-translate class="text-h5 q-mt-sm q-mb-xs">Source</div>
@@ -66,9 +66,9 @@
         </q-card>
       </div>
 
-      <div class="col-4 col-md">
+      <div class="col-4 col-md-4">
         <q-btn
-          class="absolute-center vertical-top"
+          class="q-mx-auto block"
           color="primary"
           icon="mdi-arrow-right"
           icon-right="mdi-arrow-left"
@@ -78,7 +78,7 @@
         />
       </div>
 
-      <div class="col-4 col-md">
+      <div class="col-4 col-md-4">
         <q-card>
           <q-card-section>
             <div v-translate class="text-h5 q-mt-sm q-mb-xs">Target</div>
