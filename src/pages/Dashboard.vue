@@ -51,7 +51,11 @@
               <div v-if="loading" class="text-center">
                 <q-spinner-dots color="primary" size="3em" />
               </div>
-              <StackedBarChart title="" :initial-data="eventsHistory" />
+              <StackedBarChart
+                v-show="!loading"
+                title=""
+                :initial-data="eventsHistory"
+              />
 
               <q-card-actions align="right">
                 <q-btn
@@ -79,7 +83,11 @@
 
     <div class="row">
       <div class="col-12">
+        <div v-if="loadingMonthlySyncs" class="text-center">
+          <q-spinner-dots color="primary" size="3em" />
+        </div>
         <StackedBarChart
+          v-show="!loadingMonthlySyncs"
           :title="monthlySyncsTitle"
           :initial-data="monthlySyncs"
         />
@@ -120,6 +128,7 @@ export default {
       monthlySyncsTitle: this.$gettext('Synchronized single computers / month'),
       projects: [],
       loading: false,
+      loadingMonthlySyncs: false,
       eventsHistory: {}
     }
   },
@@ -164,6 +173,7 @@ export default {
     async loadMonthlySyncs() {
       this.$set(this.monthlySyncs, 'series', [])
 
+      this.loadingMonthlySyncs = true
       await this.$axios
         .get('/api/v1/token/stats/syncs/monthly/')
         .then((response) => {
@@ -179,6 +189,9 @@ export default {
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
+        })
+        .finally(() => {
+          this.loadingMonthlySyncs = false
         })
 
       this.projects.forEach((item) => {
