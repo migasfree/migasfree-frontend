@@ -53,8 +53,8 @@
       <q-card-section>
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">Code</div>
 
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-3 col-md">
+        <div class="row q-pa-md q-gutter-md justify-between">
+          <div class="col-md-3">
             <q-select
               v-model="element.language"
               outlined
@@ -67,7 +67,7 @@
             />
           </div>
 
-          <div class="col-9 col-md">
+          <div class="col-md-8">
             <q-input
               v-model="element.code"
               outlined
