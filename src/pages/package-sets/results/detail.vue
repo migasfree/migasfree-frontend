@@ -35,7 +35,7 @@
                 readonly
                 stack-label
               >
-                <template v-slot:control>
+                <template #control>
                   <MigasLink
                     model="projects"
                     :pk="element.project.id"

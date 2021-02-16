@@ -66,7 +66,7 @@
               stack-label
               :hint="$gettext('Relevance to the organization')"
             >
-              <template v-slot:control>
+              <template #control>
                 <q-rating
                   v-model="element.score"
                   size="sm"
@@ -166,7 +166,7 @@
               readonly
               stack-label
             >
-              <template v-slot:control>
+              <template #control>
                 <q-markdown :src="element.description"></q-markdown>
               </template>
             </q-field>

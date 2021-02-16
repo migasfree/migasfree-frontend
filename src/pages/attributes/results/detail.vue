@@ -20,7 +20,7 @@
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md">
               <q-field outlined :label="$gettext('Formula')" stack-label>
-                <template v-slot:control>
+                <template #control>
                   <MigasLink
                     model="properties"
                     :pk="element.property_att.id"
