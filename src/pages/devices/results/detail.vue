@@ -170,7 +170,7 @@
           separator
         >
           <q-item v-for="(logical, index) in logicalDevices" :key="index">
-            <q-item-section side>
+            <q-item-section side top>
               <q-btn
                 flat
                 dense
@@ -178,74 +178,80 @@
                 color="negative"
                 icon="mdi-delete"
                 @click="removeInline(index)"
-                ><q-tooltip><translate>Delete</translate></q-tooltip></q-btn
+                ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
               >
             </q-item-section>
 
-            <q-item-section class="col-3">
-              <q-select
-                v-model="logical.capability"
-                outlined
-                :label="$gettext('Capability')"
-                :options="capabilities"
-                option-value="id"
-                option-label="name"
-                lazy-rules
-                :rules="[(val) => !!val || $gettext('* Required')]"
-              />
-            </q-item-section>
+            <q-item-section>
+              <div class="row q-pa-md q-gutter-md">
+                <div class="col-md">
+                  <q-select
+                    v-model="logical.capability"
+                    outlined
+                    :label="$gettext('Capability')"
+                    :options="capabilities"
+                    option-value="id"
+                    option-label="name"
+                    lazy-rules
+                    :rules="[(val) => !!val || $gettext('* Required')]"
+                  />
+                </div>
 
-            <q-item-section class="col-4">
-              <q-input
-                v-model="logical.alternative_capability_name"
-                outlined
-                :label="$gettext('Alternative Capability Name')"
-              />
-            </q-item-section>
+                <div class="col-md">
+                  <q-input
+                    v-model="logical.alternative_capability_name"
+                    outlined
+                    :label="$gettext('Alternative Capability Name')"
+                  />
+                </div>
+              </div>
 
-            <q-item-section class="col-4">
-              <q-select
-                v-model="logical.attributes"
-                outlined
-                use-input
-                map-options
-                multiple
-                input-debounce="0"
-                :label="$gettext('Attributes')"
-                :options="attributes"
-                @filter="filterAttributes"
-                @filter-abort="abortFilterAttributes"
-              >
-                <template #no-option>
-                  <q-item>
-                    <q-item-section v-translate class="text-grey">
-                      No results
-                    </q-item-section>
-                  </q-item>
-                </template>
-
-                <template #option="scope">
-                  <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                    {{ attributeValue(scope.opt) }}
-                  </q-item>
-                </template>
-
-                <template #selected-item="scope">
-                  <q-chip
-                    removable
-                    dense
-                    :tabindex="scope.tabindex"
-                    class="q-ma-md"
-                    @remove="scope.removeAtIndex(scope.index)"
+              <div class="row q-pa-md q-gutter-md">
+                <div class="col-md">
+                  <q-select
+                    v-model="logical.attributes"
+                    outlined
+                    use-input
+                    map-options
+                    multiple
+                    input-debounce="0"
+                    :label="$gettext('Attributes')"
+                    :options="attributes"
+                    @filter="filterAttributes"
+                    @filter-abort="abortFilterAttributes"
                   >
-                    <MigasLink
-                      model="attributes"
-                      :pk="scope.opt.id"
-                      :value="attributeValue(scope.opt)"
-                    />
-                  </q-chip>
-                </template>
-              </q-select>
+                    <template #no-option>
+                      <q-item>
+                        <q-item-section v-translate class="text-grey">
+                          No results
+                        </q-item-section>
+                      </q-item>
+                    </template>
+
+                    <template #option="scope">
+                      <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                        {{ attributeValue(scope.opt) }}
+                      </q-item>
+                    </template>
+
+                    <template #selected-item="scope">
+                      <q-chip
+                        removable
+                        dense
+                        :tabindex="scope.tabindex"
+                        class="q-ma-md"
+                        @remove="scope.removeAtIndex(scope.index)"
+                      >
+                        <MigasLink
+                          model="attributes"
+                          :pk="scope.opt.id"
+                          :value="attributeValue(scope.opt)"
+                        />
+                      </q-chip>
+                    </template>
+                  </q-select>
+                </div>
+              </div>
             </q-item-section>
           </q-item>
         </q-list>
