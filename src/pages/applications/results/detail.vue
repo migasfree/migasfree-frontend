@@ -184,7 +184,7 @@
           separator
         >
           <q-item v-for="(project, index) in packagesByProject" :key="index">
-            <q-item-section side>
+            <q-item-section side top>
               <q-btn
                 flat
                 dense
@@ -192,30 +192,34 @@
                 color="negative"
                 icon="mdi-delete"
                 @click="removeInline(index)"
-                ><q-tooltip><translate>Delete</translate></q-tooltip></q-btn
+                ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
               >
             </q-item-section>
 
-            <q-item-section class="col-5">
-              <q-select
-                v-model="project.project"
-                outlined
-                :label="$gettext('Project')"
-                :options="projects"
-                option-value="id"
-                option-label="name"
-                lazy-rules
-                :rules="[(val) => !!val || $gettext('* Required')]"
-              />
-            </q-item-section>
+            <q-item-section>
+              <div class="row q-pa-md q-gutter-md">
+                <div class="col-md">
+                  <q-select
+                    v-model="project.project"
+                    outlined
+                    :label="$gettext('Project')"
+                    :options="projects"
+                    option-value="id"
+                    option-label="name"
+                    lazy-rules
+                    :rules="[(val) => !!val || $gettext('* Required')]"
+                  />
+                </div>
 
-            <q-item-section class="col-6 col-md">
-              <q-input
-                v-model="project.packages_to_install"
-                outlined
-                type="textarea"
-                :label="$gettext('Packages to Install')"
-              />
+                <div class="col-md">
+                  <q-input
+                    v-model="project.packages_to_install"
+                    outlined
+                    type="textarea"
+                    :label="$gettext('Packages to Install')"
+                  />
+                </div>
+              </div>
             </q-item-section>
           </q-item>
         </q-list>
