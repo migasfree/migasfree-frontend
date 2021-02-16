@@ -159,6 +159,8 @@ export default {
           return 'logical-devices'
         case 'apps':
           return 'applications'
+        case 'attributes':
+          return 'features'
         default:
           return model
       }
