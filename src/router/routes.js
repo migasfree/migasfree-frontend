@@ -141,6 +141,11 @@ const routes = [
         name: 'users-list',
         component: () => import('pages/users/results/list')
       },
+      {
+        path: '/users/results/:id',
+        name: 'user-detail',
+        component: () => import('pages/users/results/detail')
+      },
 
       {
         path: '/syncs',
