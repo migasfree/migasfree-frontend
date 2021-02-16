@@ -18,7 +18,7 @@
 
       <q-item class="text-center">
         <q-item-section>
-          <translate>Server</translate>: {{ server }}
+          {{ $gettext('Server') }}: {{ server }}
         </q-item-section>
       </q-item>
 
