@@ -78,7 +78,7 @@
 
         <q-list v-if="drivers.length > 0" class="q-pa-md" bordered separator>
           <q-item v-for="(driver, index) in drivers" :key="index">
-            <q-item-section side>
+            <q-item-section side top>
               <q-btn
                 flat
                 dense
@@ -86,51 +86,57 @@
                 color="negative"
                 icon="mdi-delete"
                 @click="removeInline(index)"
-                ><q-tooltip><translate>Delete</translate></q-tooltip></q-btn
+                ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
               >
             </q-item-section>
 
-            <q-item-section class="col-3">
-              <q-select
-                v-model="driver.project"
-                outlined
-                :label="$gettext('Project')"
-                :options="projects"
-                option-value="id"
-                option-label="name"
-                lazy-rules
-                :rules="[(val) => !!val || $gettext('* Required')]"
-              />
-            </q-item-section>
+            <q-item-section>
+              <div class="row q-pa-md q-gutter-md">
+                <div class="col-md">
+                  <q-select
+                    v-model="driver.project"
+                    outlined
+                    :label="$gettext('Project')"
+                    :options="projects"
+                    option-value="id"
+                    option-label="name"
+                    lazy-rules
+                    :rules="[(val) => !!val || $gettext('* Required')]"
+                  />
+                </div>
 
-            <q-item-section class="col-3 col-md">
-              <q-select
-                v-model="driver.capability"
-                outlined
-                :label="$gettext('Capability')"
-                :options="capabilities"
-                option-value="id"
-                option-label="name"
-                lazy-rules
-                :rules="[(val) => !!val || $gettext('* Required')]"
-              />
-            </q-item-section>
+                <div class="col-md">
+                  <q-select
+                    v-model="driver.capability"
+                    outlined
+                    :label="$gettext('Capability')"
+                    :options="capabilities"
+                    option-value="id"
+                    option-label="name"
+                    lazy-rules
+                    :rules="[(val) => !!val || $gettext('* Required')]"
+                  />
+                </div>
+              </div>
 
-            <q-item-section class="col-3 col-md">
-              <q-input
-                v-model="driver.name"
-                outlined
-                :label="$gettext('Name')"
-              />
-            </q-item-section>
+              <div class="row q-pa-md q-gutter-md">
+                <div class="col-md">
+                  <q-input
+                    v-model="driver.name"
+                    outlined
+                    :label="$gettext('Name')"
+                  />
+                </div>
 
-            <q-item-section class="col-2 col-md">
-              <q-input
-                v-model="driver.packages_to_install"
-                outlined
-                type="textarea"
-                :label="$gettext('Packages to Install')"
-              />
+                <div class="col-md">
+                  <q-input
+                    v-model="driver.packages_to_install"
+                    outlined
+                    type="textarea"
+                    :label="$gettext('Packages to Install')"
+                  />
+                </div>
+              </div>
             </q-item-section>
           </q-item>
         </q-list>
