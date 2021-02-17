@@ -82,7 +82,7 @@
       </div>
     </q-card-section>
 
-    <q-card-actions align="evenly">
+    <q-card-actions class="justify-around">
       <q-btn-group>
         <q-btn
           icon="mdi-calendar-multiple"
