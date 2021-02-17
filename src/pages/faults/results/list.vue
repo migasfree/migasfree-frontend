@@ -425,6 +425,12 @@ export default {
           Object.entries(response.data.choices).map(([key, val]) => {
             this.tableFilters.user.items.push({ id: key, name: val })
           })
+
+          if (this.$route.query.user) {
+            this.tableFilters.user.selected = this.tableFilters.user.items.find(
+              (x) => x.id == this.$route.query.user
+            )
+          }
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
