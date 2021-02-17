@@ -45,6 +45,10 @@
       @on-per-page-change="onPerPageChange"
       @on-selected-rows-change="onSelectionChanged"
     >
+      <span slot="loadingContent" v-translate class="vgt-loading__content"
+        >Loading data...
+      </span>
+
       <template slot="table-row" slot-scope="props">
         <span v-if="props.column.field == 'actions'">
           <q-btn
@@ -80,6 +84,7 @@
             ><q-tooltip>{{ $gettext('Change Password') }}</q-tooltip></q-btn
           >
         </span>
+
         <span v-else-if="props.column.field == 'username'">
           <MigasLink
             model="user-profiles"
@@ -88,6 +93,7 @@
             icon="mdi-account-cog"
           />
         </span>
+
         <span v-else-if="props.column.field == 'domain_preference'">
           <MigasLink
             model="domains"
@@ -96,11 +102,16 @@
             icon="mdi-earth"
           />
         </span>
+
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
-      <div slot="emptystate" v-translate>There are no results</div>
+
+      <q-banner slot="emptystate" rounded class="bg-warning text-black">
+        <translate>There are no results</translate>
+      </q-banner>
+
       <div slot="selected-row-actions">
         <q-btn
           size="sm"

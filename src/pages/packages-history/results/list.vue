@@ -66,6 +66,10 @@
       @on-per-page-change="onPerPageChange"
       @on-selected-rows-change="onSelectionChanged"
     >
+      <span slot="loadingContent" v-translate class="vgt-loading__content"
+        >Loading data...
+      </span>
+
       <template slot="table-row" slot-scope="props">
         <span v-if="props.column.field == 'computer.__str__'">
           <MigasLink
@@ -76,6 +80,7 @@
             :tooltip="props.row.computer.summary"
           />
         </span>
+
         <span v-else-if="props.column.field == 'package.fullname'">
           <MigasLink
             model="packages"
@@ -84,17 +89,23 @@
             icon="mdi-package-variant"
           />
         </span>
+
         <span v-else-if="props.column.field == 'install_date'">
           {{ showDate(props.row.install_date) }}
         </span>
+
         <span v-else-if="props.column.field == 'uninstall_date'">
           {{ showDate(props.row.uninstall_date) }}
         </span>
+
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
-      <div slot="emptystate" v-translate>There are no results</div>
+
+      <q-banner slot="emptystate" rounded class="bg-warning text-black">
+        <translate>There are no results</translate>
+      </q-banner>
     </vue-good-table>
   </q-page>
 </template>

@@ -41,6 +41,10 @@
       @on-per-page-change="onPerPageChange"
       @on-selected-rows-change="onSelectionChanged"
     >
+      <span slot="loadingContent" v-translate class="vgt-loading__content"
+        >Loading data...
+      </span>
+
       <template slot="table-row" slot-scope="props">
         <span v-if="props.column.field == 'actions'">
           <q-btn
@@ -62,6 +66,7 @@
             ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
           >
         </span>
+
         <span v-else-if="props.column.field == 'value'">
           <MigasLink
             model="features"
@@ -70,6 +75,7 @@
             :value="attributeValue(props.row)"
           />
         </span>
+
         <span v-else-if="props.column.field == 'property_att'">
           <MigasLink
             model="properties"
@@ -78,11 +84,16 @@
             icon="mdi-function-variant"
           />
         </span>
+
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
-      <div slot="emptystate" v-translate>There are no results</div>
+
+      <q-banner slot="emptystate" rounded class="bg-warning text-black">
+        <translate>There are no results</translate>
+      </q-banner>
+
       <div slot="selected-row-actions">
         <q-btn
           size="sm"

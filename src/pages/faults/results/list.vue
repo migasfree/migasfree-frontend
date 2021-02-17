@@ -91,6 +91,10 @@
       @on-per-page-change="onPerPageChange"
       @on-selected-rows-change="onSelectionChanged"
     >
+      <span slot="loadingContent" v-translate class="vgt-loading__content"
+        >Loading data...
+      </span>
+
       <template slot="table-row" slot-scope="props">
         <span v-if="props.column.field == 'actions'">
           <q-btn
@@ -132,6 +136,7 @@
             ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
           >
         </span>
+
         <span v-else-if="props.column.field == 'computer.__str__'">
           <MigasLink
             model="computers"
@@ -141,6 +146,7 @@
             :tooltip="props.row.computer.summary"
           />
         </span>
+
         <span v-else-if="props.column.field == 'project.name'">
           <MigasLink
             model="projects"
@@ -149,6 +155,7 @@
             icon="mdi-sitemap"
           />
         </span>
+
         <span v-else-if="props.column.field == 'fault_definition.name'">
           <MigasLink
             model="fault-definitions"
@@ -157,20 +164,28 @@
             icon="mdi-alert-octagram-outline"
           />
         </span>
+
         <span v-else-if="props.column.field == 'created_at'">
           {{ showDate(props.row.created_at) }}
         </span>
+
         <span v-else-if="props.column.field == 'result'">
           <Truncate v-model="props.row.result" />
         </span>
+
         <span v-else-if="props.column.field == 'checked'">
           <BooleanView v-model="props.row.checked" />
         </span>
+
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
-      <div slot="emptystate" v-translate>There are no results</div>
+
+      <q-banner slot="emptystate" rounded class="bg-warning text-black">
+        <translate>There are no results</translate>
+      </q-banner>
+
       <div slot="selected-row-actions">
         <q-btn
           class="q-ma-xs"

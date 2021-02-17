@@ -45,6 +45,10 @@
       @on-per-page-change="onPerPageChange"
       @on-selected-rows-change="onSelectionChanged"
     >
+      <span slot="loadingContent" v-translate class="vgt-loading__content"
+        >Loading data...
+      </span>
+
       <template slot="table-row" slot-scope="props">
         <span v-if="props.column.field == 'actions'">
           <q-btn
@@ -66,6 +70,7 @@
             ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
           >
         </span>
+
         <span v-else-if="props.column.field == 'name'">
           <MigasLink
             model="devices/devices"
@@ -74,6 +79,7 @@
             icon="mdi-printer"
           />
         </span>
+
         <span v-else-if="props.column.field == 'model.name'">
           <MigasLink
             model="devices/models"
@@ -82,6 +88,7 @@
             icon="mdi-shape"
           />
         </span>
+
         <span v-else-if="props.column.field == 'connection.name'">
           <MigasLink
             model="devices/connections"
@@ -90,6 +97,7 @@
             icon="mdi-connection"
           />
         </span>
+
         <span v-else-if="props.column.field == 'model.manufacturer.name'">
           <MigasLink
             model="devices/manufacturers"
@@ -98,14 +106,20 @@
             icon="mdi-factory"
           />
         </span>
+
         <span v-else-if="props.column.field == 'total_computers'">
           {{ props.row.total_computers }}
         </span>
+
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
-      <div slot="emptystate" v-translate>There are no results</div>
+
+      <q-banner slot="emptystate" rounded class="bg-warning text-black">
+        <translate>There are no results</translate>
+      </q-banner>
+
       <div slot="selected-row-actions">
         <q-btn
           size="sm"

@@ -68,6 +68,10 @@
       @on-per-page-change="onPerPageChange"
       @on-selected-rows-change="onSelectionChanged"
     >
+      <span slot="loadingContent" v-translate class="vgt-loading__content"
+        >Loading data...
+      </span>
+
       <template slot="table-row" slot-scope="props">
         <span v-if="props.column.field == 'actions'">
           <q-btn
@@ -89,6 +93,7 @@
             ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
           >
         </span>
+
         <span v-else-if="props.column.field == 'name'">
           <MigasLink
             :model="model"
@@ -97,6 +102,7 @@
             icon="mdi-rocket-launch"
           />
         </span>
+
         <span v-else-if="props.column.field == 'project.name'">
           <MigasLink
             model="projects"
@@ -105,6 +111,7 @@
             icon="mdi-sitemap"
           />
         </span>
+
         <span v-else-if="props.column.field == 'domain.name'">
           <MigasLink
             v-if="props.row.domain"
@@ -114,6 +121,7 @@
             icon="mdi-earth"
           />
         </span>
+
         <span v-else-if="props.column.field == 'schedule.name'">
           <MigasLink
             v-if="props.row.schedule"
@@ -123,20 +131,28 @@
             icon="mdi-calendar-start"
           />
         </span>
+
         <span v-else-if="props.column.field == 'enabled'">
           <BooleanView v-model="props.row.enabled" />
         </span>
+
         <span v-else-if="props.column.field == 'start_date'">
           {{ showDate(props.row.start_date, 'YYYY-MM-DD') }}
         </span>
+
         <span v-else-if="props.column.field == 'source'">
           {{ resolveSource(props.row.source) }}
         </span>
+
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
-      <div slot="emptystate" v-translate>There are no results</div>
+
+      <q-banner slot="emptystate" rounded class="bg-warning text-black">
+        <translate>There are no results</translate>
+      </q-banner>
+
       <div slot="selected-row-actions">
         <q-btn
           size="sm"

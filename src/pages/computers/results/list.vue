@@ -161,6 +161,10 @@
       @on-per-page-change="onPerPageChange"
       @on-selected-rows-change="onSelectionChanged"
     >
+      <span slot="loadingContent" v-translate class="vgt-loading__content"
+        >Loading data...
+      </span>
+
       <template slot="table-row" slot-scope="props">
         <span v-if="props.column.field == 'actions'">
           <q-btn
@@ -198,6 +202,7 @@
             }}</q-tooltip></q-btn
           >
         </span>
+
         <span v-else-if="props.column.field == 'name'">
           <MigasLink
             model="computers"
@@ -207,6 +212,7 @@
             :tooltip="props.row.summary"
           />
         </span>
+
         <span v-else-if="props.column.field == 'project.name'">
           <MigasLink
             model="projects"
@@ -215,6 +221,7 @@
             icon="mdi-sitemap"
           />
         </span>
+
         <span v-else-if="props.column.field == 'sync_user.name'">
           <MigasLink
             model="users"
@@ -223,6 +230,7 @@
             icon="mdi-account"
           />
         </span>
+
         <span v-else-if="props.column.field == 'product'">
           <MigasLink
             model="computers"
@@ -232,11 +240,16 @@
             :tooltip="props.row.product_system"
           />
         </span>
+
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
-      <div slot="emptystate" v-translate>There are no results</div>
+
+      <q-banner slot="emptystate" rounded class="bg-warning text-black">
+        <translate>There are no results</translate>
+      </q-banner>
+
       <div slot="selected-row-actions">
         <q-btn
           class="q-ma-xs"
