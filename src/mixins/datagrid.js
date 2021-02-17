@@ -129,19 +129,23 @@ export const datagridMixin = {
           )
         if (filter) filter.filterOptions.filterValue = value
 
+        filter = null
         if (key in this.tableFilters) {
           switch (key) {
             case 'machine':
-              this.tableFilters.machine.selected = this.findById(
-                this.tableFilters.machine.items,
-                value
-              ).label
+              filter = this.findById(this.tableFilters.machine.items, value)
+              if (filter) this.tableFilters.machine.selected = filter.label
               break
             case 'schedule':
-              this.tableFilters.schedule.selected = this.findById(
+              filter = this.findById(
                 this.tableFilters.schedule.items,
                 value === 'true' ? 1 : value === 'false' ? 0 : ''
-              ).name
+              )
+              if (filter) this.tableFilters.schedule.selected = filter.name
+              break
+            case 'user':
+              filter = this.findById(this.tableFilters.user.items, value)
+              if (filter) this.tableFilters.user.selected = filter.name
               break
             default:
               this.tableFilters[key] = value
