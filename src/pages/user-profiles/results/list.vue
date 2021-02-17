@@ -103,6 +103,10 @@
           />
         </span>
 
+        <span v-else-if="props.column.field == 'is_active'">
+          <BooleanView v-model="props.row.is_active" />
+        </span>
+
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
         </span>
@@ -130,6 +134,7 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import SearchFilter from 'components/ui/SearchFilter'
 import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
+import BooleanView from 'components/ui/BooleanView'
 import { datagridMixin } from 'mixins/datagrid'
 
 export default {
@@ -142,7 +147,8 @@ export default {
     Breadcrumbs,
     SearchFilter,
     Header,
-    MigasLink
+    MigasLink,
+    BooleanView
   },
   mixins: [datagridMixin],
   data() {
@@ -204,6 +210,19 @@ export default {
             enabled: true,
             placeholder: this.$gettext('Filter'),
             trigger: 'enter'
+          }
+        },
+        {
+          label: this.$gettext('Enabled'),
+          field: 'is_active',
+          filterOptions: {
+            enabled: true,
+            placeholder: this.$gettext('All'),
+            trigger: 'enter',
+            filterDropdownItems: [
+              { value: true, text: this.$gettext('Yes') },
+              { value: false, text: this.$gettext('No') }
+            ]
           }
         },
         {
