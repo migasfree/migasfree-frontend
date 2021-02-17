@@ -153,12 +153,12 @@ export const datagridMixin = {
         }
 
         // special cases
-        if ('createdAt' in this.tableFilters) {
+        if ('createdAtRange' in this.tableFilters) {
           if (key === 'created_at__gte')
-            this.tableFilters.createdAt.selected.from = value
+            this.tableFilters.createdAtRange.selected.from = value
 
           if (key === 'created_at__lt')
-            this.tableFilters.createdAt.selected.to = value
+            this.tableFilters.createdAtRange.selected.to = value
         }
       })
     },
