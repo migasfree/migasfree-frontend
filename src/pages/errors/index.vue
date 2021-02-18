@@ -87,7 +87,6 @@ export default {
   },
   methods: {
     goTo(params) {
-      console.log(params)
       if ('url' in params) {
         let query = params.url.query || {}
 
@@ -118,7 +117,7 @@ export default {
             status_in: params.data.name
           })
         }
-        console.log(params.url.name, query)
+
         this.$router.push({ name: params.url.name, query })
       }
 
@@ -132,7 +131,6 @@ export default {
           Object.assign(query, { project_id: params.data.project__id__exact })
         }
 
-        console.log(query)
         this.$router.push(Object.assign({}, this.url, { query }))
       }
     },

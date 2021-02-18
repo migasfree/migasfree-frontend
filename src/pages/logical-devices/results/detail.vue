@@ -250,7 +250,6 @@ export default {
       await this.$axios
         .get('/api/v1/token/devices/capabilities/')
         .then((response) => {
-          console.log(response)
           this.capabilities = response.data.results
         })
         .catch((error) => {

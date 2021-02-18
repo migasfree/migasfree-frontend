@@ -60,7 +60,6 @@ export default {
   },
   methods: {
     goTo(params) {
-      console.log(params)
       if (params.data.project_id) {
         this.$router.push(
           Object.assign(this.url, {

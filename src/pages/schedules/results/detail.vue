@@ -257,7 +257,6 @@ export default {
         await this.$axios
           .get(`/api/v1/token/schedule-delays/?schedule__id=${this.element.id}`)
           .then((response) => {
-            console.log(response)
             this.delays = response.data.results
           })
           .catch((error) => {

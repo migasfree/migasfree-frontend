@@ -280,7 +280,6 @@ export default {
             data: Object.values(statusLogs.data.data)[0]
           }
         ])
-        console.log(this.eventsHistory)
 
         this.loading = false
       }
@@ -296,8 +295,6 @@ export default {
     },
 
     goTo(params) {
-      console.log(params)
-
       let query = {}
 
       if (params.data.project_id) {

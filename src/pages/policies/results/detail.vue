@@ -475,7 +475,6 @@ export default {
             `/api/v1/token/catalog/policy-groups/?policy__id=${this.element.id}`
           )
           .then((response) => {
-            console.log(response)
             this.policyGroups = response.data.results
           })
           .catch((error) => {

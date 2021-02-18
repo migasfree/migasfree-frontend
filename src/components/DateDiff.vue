@@ -37,7 +37,6 @@ export default {
     }
   },
   created() {
-    console.log(this.begin, this.end)
     const diffDays = date.getDateDiff(this.end, this.begin, 'days')
 
     if (this.end < this.begin) {

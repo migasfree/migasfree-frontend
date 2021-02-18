@@ -86,8 +86,6 @@ export default {
   },
   methods: {
     goTo(params) {
-      console.log(params)
-
       let query = params.url.query || {}
 
       if (params.data.project_id) {

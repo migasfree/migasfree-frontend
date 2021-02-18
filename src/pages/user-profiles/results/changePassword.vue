@@ -253,7 +253,6 @@ export default {
         await this.$axios
           .post('/rest-auth/password/change/', this.elementData())
           .then((response) => {
-            console.log(response)
             this.$store.dispatch(
               'ui/notifySuccess',
               this.$gettext('Password changed!')
@@ -271,7 +270,6 @@ export default {
             this.elementData()
           )
           .then((response) => {
-            console.log(response)
             this.$store.dispatch(
               'ui/notifySuccess',
               this.$gettext('Password changed!')

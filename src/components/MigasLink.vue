@@ -81,7 +81,6 @@ export default {
 
       Object.entries(this.relations).map(([key, item]) => {
         let to = '#'
-        console.log('validRelations', item)
         if (item.model && item.pk) {
           name = `${this.normalizeModel(
             this.$pluralize.singular(item.model)

@@ -76,7 +76,6 @@ export default {
   },
   methods: {
     dateSelected() {
-      console.log(this.date, this.value)
       this.$refs.qDateProxy.hide()
       this.$emit('select', this.date)
     },

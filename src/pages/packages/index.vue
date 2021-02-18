@@ -60,7 +60,6 @@ export default {
   },
   methods: {
     goTo(params) {
-      console.log(params)
       if ('url' in params) {
         let query = params.url.query || {}
 
@@ -76,7 +75,6 @@ export default {
           })
         }
 
-        console.log(params.url.name, query)
         this.$router.push({ name: params.url.name, query })
       }
     },

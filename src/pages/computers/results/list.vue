@@ -516,7 +516,6 @@ export default {
     },
 
     onMachineFilter(params) {
-      console.log(params)
       if (params.id === '' || params.id === 'P' || params.id === 'V') {
         this.updateParams({
           columnFilters: Object.assign(this.serverParams.columnFilters, {

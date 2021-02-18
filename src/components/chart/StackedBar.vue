@@ -109,7 +109,6 @@ export default {
     },
     initialData: {
       handler: function(val, oldVal) {
-        console.log('watch initialData ***********', val)
         this.data = val
       },
       deep: true
@@ -153,7 +152,6 @@ export default {
           xData: response.data.x_labels,
           series
         }
-        console.log(this.data)
       })
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error)

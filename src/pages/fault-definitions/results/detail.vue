@@ -370,7 +370,6 @@ export default {
     },
 
     elementData() {
-      console.log(this.element.users)
       return {
         name: this.element.name,
         enabled: this.element.enabled,

@@ -261,7 +261,6 @@ export default {
   },
   computed: {
     isValid() {
-      console.log(this.element)
       return (
         this.element.device_type !== undefined &&
         this.element.manufacturer !== undefined &&
@@ -275,7 +274,6 @@ export default {
       await this.$axios
         .get('/api/v1/token/devices/types/')
         .then((response) => {
-          console.log(response)
           this.deviceTypes = response.data.results
         })
         .catch((error) => {
@@ -285,7 +283,6 @@ export default {
       await this.$axios
         .get('/api/v1/token/devices/manufacturers/')
         .then((response) => {
-          console.log(response)
           this.manufacturers = response.data.results
         })
         .catch((error) => {
@@ -295,7 +292,6 @@ export default {
       await this.$axios
         .get('/api/v1/token/devices/connections/')
         .then((response) => {
-          console.log(response)
           this.connections = response.data.results
         })
         .catch((error) => {
@@ -314,7 +310,6 @@ export default {
       await this.$axios
         .get('/api/v1/token/devices/capabilities/')
         .then((response) => {
-          console.log(response)
           this.capabilities = response.data.results
         })
         .catch((error) => {
@@ -325,7 +320,6 @@ export default {
         await this.$axios
           .get(`/api/v1/token/devices/drivers/?model__id=${this.element.id}`)
           .then((response) => {
-            console.log(response)
             this.drivers = response.data.results
             this.drivers.forEach((item) => {
               item.packages_to_install = item.packages_to_install.join('\n')

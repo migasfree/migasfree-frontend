@@ -72,7 +72,6 @@ export default {
   },
   methods: {
     goTo(params) {
-      console.log(params)
       if ('url' in params) {
         let query = params.url.query || {}
 
@@ -91,7 +90,7 @@ export default {
             status_in: params.data.status_in
           })
         }
-        console.log(params.url.name, query)
+
         this.$router.push({ name: params.url.name, query })
       }
 
@@ -101,7 +100,6 @@ export default {
           created_at__lt: params.data.created_at__lt
         }
 
-        console.log(query)
         this.$router.push(Object.assign({}, this.url, { query }))
       }
     },

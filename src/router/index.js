@@ -27,9 +27,7 @@ export default function({ store /* , ssrContext */ }) {
   })
 
   Router.beforeEach((to, from, next) => {
-    console.log(to, from)
     if (to.matched.some((item) => item.meta.authRequired)) {
-      console.log(store.getters['auth/loggedIn'])
       if (store.getters['auth/loggedIn']) {
         next()
       } else {

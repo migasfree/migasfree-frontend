@@ -353,7 +353,6 @@ export default {
       await this.$axios
         .get(`/api/v1/token/hardware/${id}/info/`)
         .then((response) => {
-          console.log(response.data)
           this.detailInfo = response.data
           this.details = true
         })

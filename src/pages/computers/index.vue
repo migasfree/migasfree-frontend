@@ -113,7 +113,6 @@ export default {
   },
   methods: {
     goTo(params) {
-      console.log(params)
       let query = params.url.query || {}
 
       if (params.data.machine) {
@@ -164,7 +163,7 @@ export default {
         if (params.data.machine) {
           Object.assign(query, { machine: params.data.machine })
         }
-        console.log(query)
+
         this.$router.push(Object.assign(this.url, { query }))
       }
     },
