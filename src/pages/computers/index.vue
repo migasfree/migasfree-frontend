@@ -113,7 +113,9 @@ export default {
   },
   methods: {
     goTo(params) {
-      let query = params.url.query || {}
+      let query = {}
+
+      if ('url' in params && 'query' in params.url) query = params.url.query
 
       if (params.data.machine) {
         this.$router.push({
