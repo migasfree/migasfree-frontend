@@ -323,6 +323,9 @@ export const datagridMixin = {
             case 'available_for_attributes_id':
               ret.available_for_attributes__id = val
               break
+            case 'available_packages_id':
+              ret.available_packages__id = val
+              break
             case 'capability_id':
             case 'capability.name':
               ret.capability__id = val
