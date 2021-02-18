@@ -11,7 +11,7 @@
         <strong>{{ element.status }}</strong>
       </p>
 
-      <q-list v-if="element.tags.length > 0">
+      <q-list v-if="'tags' in element && element.tags.length > 0">
         <q-item-label header><translate>Tags</translate></q-item-label>
         <q-item v-for="tag in element.tags" :key="tag.id">
           <MigasLink
@@ -89,6 +89,12 @@ export default {
       default: false
     }
   }
+  /* watch: {
+    element: {
+      handler: function(val, oldVal) {},
+      deep: true
+    }
+  } */
 }
 </script>
 
