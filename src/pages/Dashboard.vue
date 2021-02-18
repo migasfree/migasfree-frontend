@@ -55,6 +55,7 @@
                 v-show="!loading"
                 title=""
                 :initial-data="eventsHistory"
+                @getLink="goTo"
               />
 
               <q-card-actions align="right">
@@ -311,10 +312,37 @@ export default {
         })
       }
 
-      this.$router.push({
-        name: params.url.name,
-        query: Object.assign(params.url.query || {}, query)
-      })
+      if (params.data.created_at__lt) {
+        Object.assign(query, {
+          created_at__gte: params.data.created_at__gte,
+          created_at__lt: params.data.created_at__lt
+        })
+      }
+
+      if ('url' in params) {
+        this.$router.push({
+          name: params.url.name,
+          query: Object.assign(params.url.query || {}, query)
+        })
+      }
+
+      if ('model' in params.data) {
+        this.$router.push({
+          name: this.resolveRoute(this.$pluralize.plural(params.data.model)),
+          query
+        })
+      }
+    },
+
+    resolveRoute(model) {
+      switch (model) {
+        case 'synchronizations':
+          return 'syncs-list'
+        case 'statuslogs':
+          return 'status-logs-list'
+        default:
+          return `${model}-list`
+      }
     }
   }
 }
