@@ -65,6 +65,12 @@ export default {
           created_at__lt: params.data.created_at__lt
         }
 
+        if ('checked__exact' in params.data) {
+          Object.assign(query, {
+            checked: params.data.checked__exact === 1 ? 'true' : 'false'
+          })
+        }
+
         this.$router.push(Object.assign({}, this.url, { query }))
       }
     },
