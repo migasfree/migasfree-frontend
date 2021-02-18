@@ -62,6 +62,11 @@ const routes = [
         component: () => import('pages/attributes/results/list')
       },
       {
+        path: '/features/results',
+        name: 'features-list',
+        component: () => import('pages/attributes/results/list')
+      },
+      {
         path: '/features/results/:id',
         name: 'attribute-detail',
         component: () => import('pages/attributes/results/detail')
