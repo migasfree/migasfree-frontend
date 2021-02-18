@@ -24,7 +24,7 @@
               :options="computers"
               @filter="filterComputers"
               @filter-abort="abortFilterComputers"
-              @input="loadDevices(source)"
+              @input="loadComputer(source)"
             >
               <template #no-option>
                 <q-item>
@@ -93,7 +93,7 @@
               :options="computers"
               @filter="filterComputers"
               @filter-abort="abortFilterComputers"
-              @input="loadDevices(target)"
+              @input="loadComputer(target)"
             >
               <template #no-option>
                 <q-item>
@@ -210,6 +210,20 @@ export default {
 
     abortFilterComputers() {
       // console.log('delayed filter aborted')
+    },
+
+    async loadComputer(obj) {
+      if (obj !== null) {
+        await this.$axios
+          .get(`/api/v1/token/computers/${obj.id}/`)
+          .then((response) => {
+            obj = Object.assign(obj, response.data)
+            this.loadDevices(obj)
+          })
+          .catch((error) => {
+            this.$store.dispatch('ui/notifyError', error)
+          })
+      }
     },
 
     async loadDevices(obj) {
