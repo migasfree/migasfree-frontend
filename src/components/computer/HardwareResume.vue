@@ -5,12 +5,25 @@
         <div class="col-md">
           <div v-translate class="text-h5">Hardware</div>
         </div>
+      </div>
 
+      <div class="row q-pa-md">
         <div class="col-md">
-          <p v-if="readonly" class="float-right">
-            {{ showDate(hardwareDate) }}
+          <p v-if="readonly">
+            <q-icon
+              name="mdi-calendar-star"
+              size="sm"
+              class="vertical-middle"
+            />
+            <span class="vertical-middle"> {{ showDate(hardwareDate) }} </span>
+            <DateDiff
+              :begin="new Date(hardwareDate)"
+              :tooltip="$gettext('unsynchronized from')"
+            />
+
+            <q-tooltip>{{ $gettext('Last hardware capture date') }}</q-tooltip>
           </p>
-          <q-btn-group v-else class="float-right">
+          <q-btn-group v-else>
             <q-datetime-picker
               v-model="hardwareDate"
               :label="$gettext('Last hardware capture date')"
@@ -36,9 +49,7 @@
           </q-btn-group>
         </div>
       </div>
-    </q-card-section>
 
-    <q-card-section>
       <div class="row q-pa-md">
         <div class="col-md-4">
           <q-icon :name="productIcon(productSystem)" style="font-size: 6em;">
@@ -50,21 +61,46 @@
         </div>
 
         <div class="col-md-8">
-          <p>
-            <MigasLink
-              model="computers"
-              :pk="cid"
-              :value="product"
-              :icon="productIcon(productSystem)"
-              :tooltip="productSystem"
+          <p v-if="readonly">
+            <q-icon
+              :name="productIcon(productSystem)"
+              size="sm"
+              class="vertical-middle"
             />
+            <span class="vertical-middle"> {{ product }}</span>
+            <q-tooltip>{{ productSystem }}</q-tooltip>
+          </p>
+          <p v-else>
+            <q-btn
+              no-caps
+              dense
+              color="info"
+              text-color="black"
+              :icon="productIcon(productSystem)"
+              :label="product"
+              @click="
+                $router.push({
+                  name: 'computer-hardware',
+                  params: { id: cid }
+                })
+              "
+              ><q-tooltip
+                >{{ productSystem }} ({{
+                  $gettext('Hardware Information')
+                }})</q-tooltip
+              ></q-btn
+            >
           </p>
           <p>
             <q-tooltip self="bottom middle"
               ><translate>UUID</translate></q-tooltip
             >
-            <q-icon name="mdi-card-account-details-outline" size="sm" />
-            {{ uuid }}
+            <q-icon
+              name="mdi-card-account-details-outline"
+              size="sm"
+              class="vertical-middle"
+            />
+            <span class="vertical-middle"> {{ uuid }}</span>
           </p>
         </div>
       </div>
@@ -75,8 +111,12 @@
             <q-tooltip self="bottom middle"
               ><translate>Processor</translate></q-tooltip
             >
-            <q-icon :name="cpuIcon(architecture)" size="sm" />
-            {{ cpu }}
+            <q-icon
+              :name="cpuIcon(architecture)"
+              size="sm"
+              class="vertical-middle"
+            />
+            <span class="vertical-middle"> {{ cpu }}</span>
           </p>
         </div>
         <div class="col-md">
@@ -84,8 +124,8 @@
             <q-tooltip self="bottom middle"
               ><translate>RAM</translate></q-tooltip
             >
-            <q-icon name="mdi-memory" size="sm" />
-            {{ humanStorageSize(ram) }}
+            <q-icon name="mdi-memory" size="sm" class="vertical-middle" />
+            <span class="vertical-middle"> {{ humanStorageSize(ram) }}</span>
           </p>
         </div>
       </div>
@@ -96,9 +136,10 @@
             <q-tooltip self="bottom middle"
               ><translate>Storage</translate></q-tooltip
             >
-            <q-icon name="mdi-harddisk" size="sm" />
-            {{ humanStorageSize(storage) }}
-            ({{ disks }})
+            <q-icon name="mdi-harddisk" size="sm" class="vertical-middle" />
+            <span class="vertical-middle">
+              {{ humanStorageSize(storage) }} ({{ disks }})</span
+            >
           </p>
         </div>
         <div class="col-md">
@@ -106,8 +147,14 @@
             <q-tooltip self="bottom middle"
               ><translate>MAC Address</translate></q-tooltip
             >
-            <q-icon name="mdi-swap-vertical" size="sm" />
-            {{ humanMacAddress(macAddress) }}
+            <q-icon
+              name="mdi-swap-vertical"
+              size="sm"
+              class="vertical-middle"
+            />
+            <span class="vertical-middle">
+              {{ humanMacAddress(macAddress) }}</span
+            >
           </p>
         </div>
       </div>
@@ -116,16 +163,16 @@
 </template>
 
 <script>
+import DateDiff from 'components/DateDiff'
 import { format } from 'quasar'
 import { elementMixin } from 'mixins/element'
 import { dateMixin } from 'mixins/date'
-import MigasLink from 'components/MigasLink'
 
 const { humanStorageSize } = format
 
 export default {
   name: 'ComputerHardwareResume',
-  components: { MigasLink },
+  components: { DateDiff },
   mixins: [elementMixin, dateMixin],
   props: {
     cid: {
