@@ -23,63 +23,78 @@
             </q-card-section>
 
             <q-card-section>
-              <p>
-                <q-icon name="mdi-clock-outline" size="sm" />
-                {{ showDate(new Date(Date.now())) }}
+              <p v-if="loading.input" class="justify-center">
+                <q-spinner-dots color="primary" size="3em" />
               </p>
+              <template v-else>
+                <p>
+                  <q-icon
+                    name="mdi-clock-outline"
+                    size="sm"
+                    class="vertical-middle"
+                  />
+                  <span class="vertical-middle">
+                    {{ showDate(new Date(Date.now())) }}</span
+                  >
+                </p>
 
-              <p>
-                <q-icon name="mdi-card-account-details-outline" size="sm" />
-                {{ computer.uuid }}
-              </p>
+                <p>
+                  <q-icon
+                    name="mdi-card-account-details-outline"
+                    size="sm"
+                    class="vertical-middle"
+                  />
+                  <span class="vertical-middle"> {{ computer.uuid }}</span>
+                </p>
 
-              <p v-if="platform.id">
-                <MigasLink
-                  model="platforms"
-                  :pk="platform.id"
-                  :value="platform.name"
-                  icon="mdi-layers"
+                <p v-if="platform.id">
+                  <MigasLink
+                    model="platforms"
+                    :pk="platform.id"
+                    :value="platform.name"
+                    icon="mdi-layers"
+                  />
+                </p>
+
+                <p>
+                  <MigasLink
+                    model="projects"
+                    :pk="computer.project.id"
+                    :value="computer.project.name"
+                    icon="mdi-sitemap"
+                  />
+                </p>
+
+                <p>
+                  <MigasLink
+                    model="users"
+                    :pk="computer.sync_user.id"
+                    :value="computer.sync_user.__str__"
+                    icon="mdi-account"
+                  />
+                </p>
+
+                <OverflowList
+                  :label="$gettext('Attributes')"
+                  icon="mdi-pound"
+                  :items="onlyAttributes"
+                  model="attributes"
                 />
-              </p>
 
-              <p>
-                <MigasLink
-                  model="projects"
-                  :pk="computer.project.id"
-                  :value="computer.project.name"
-                  icon="mdi-sitemap"
+                <OverflowList
+                  :label="$gettext('Tags')"
+                  icon="mdi-tag"
+                  :items="onlyTags"
+                  model="tags"
                 />
-              </p>
 
-              <p>
-                <MigasLink
-                  model="users"
-                  :pk="computer.sync_user.id"
-                  :value="computer.sync_user.name"
-                  icon="mdi-account"
+                <OverflowList
+                  :label="$gettext('Attributes Sets')"
+                  icon="mdi-set-none"
+                  :items="onlyAttributeSets"
+                  model="attributes"
                 />
-              </p>
-
-              <OverflowList
-                :label="$gettext('Attributes')"
-                icon="mdi-pound"
-                :items="onlyAttributes"
-                model="attributes"
-              />
-
-              <OverflowList
-                :label="$gettext('Tags')"
-                icon="mdi-tag"
-                :items="onlyTags"
-                model="tags"
-              />
-
-              <OverflowList
-                :label="$gettext('Attributes Sets')"
-                icon="mdi-set-none"
-                :items="onlyAttributeSets"
-                model="attributes"
-              />
+              </template>
             </q-card-section>
           </q-card>
         </div>
@@ -90,64 +105,71 @@
               <div v-translate class="text-h5">Output (from server)</div>
             </q-card-section>
 
-            <q-card-section v-if="Object.keys(simulation).length > 0">
-              <OverflowList
-                :label="$gettext('Faults Definitions')"
-                icon="mdi-alarm-light"
-                :items="simulation.fault_definitions"
-                model="fault-definitions"
-              />
-
-              <OverflowList
-                :label="$gettext('Deployments')"
-                icon="mdi-rocket-launch"
-                :items="simulation.deployments"
-                model="deployments"
-              />
-
-              <OverflowList
-                :label="$gettext('Packages to Install')"
-                icon="mdi-package-down"
-                :items="simulation.packages.install"
-              />
-
-              <OverflowList
-                :label="$gettext('Packages to Install (by policies)')"
-                icon="mdi-package-down"
-                :items="simulation.policies.install"
-              />
-
-              <OverflowList
-                :label="$gettext('Packages to Uninstall')"
-                icon="mdi-package-up"
-                :items="simulation.packages.remove"
-              />
-
-              <OverflowList
-                :label="$gettext('Packages to Uninstall (by policies)')"
-                icon="mdi-package-up"
-                :items="simulation.policies.remove"
-              />
-
-              <OverflowList
-                :label="$gettext('Devices')"
-                icon="mdi-printer"
-                :items="simulation.logical_devices"
-                model="devices/logical"
-              />
-
-              <p>
-                <translate>Capture Hardware</translate>:
-                <q-chip
-                  :color="simulation.capture_hardware ? 'positive' : 'negative'"
-                  text-color="white"
-                  >{{
-                    simulation.capture_hardware
-                      ? $gettext('Yes')
-                      : $gettext('No')
-                  }}</q-chip
-                >
+            <q-card-section>
+              <p v-if="loading.output" class="justify-center">
+                <q-spinner-dots color="primary" size="3em" />
               </p>
+              <template v-else>
+                <OverflowList
+                  :label="$gettext('Faults Definitions')"
+                  icon="mdi-alarm-light"
+                  :items="simulation.fault_definitions"
+                  model="fault-definitions"
+                />
+
+                <OverflowList
+                  :label="$gettext('Deployments')"
+                  icon="mdi-rocket-launch"
+                  :items="simulation.deployments"
+                  model="deployments"
+                />
+
+                <OverflowList
+                  :label="$gettext('Packages to Install')"
+                  icon="mdi-package-down"
+                  :items="simulation.packages.install"
+                />
+
+                <OverflowList
+                  :label="$gettext('Packages to Install (by policies)')"
+                  icon="mdi-package-down"
+                  :items="simulation.policies.install"
+                />
+
+                <OverflowList
+                  :label="$gettext('Packages to Uninstall')"
+                  icon="mdi-package-up"
+                  :items="simulation.packages.remove"
+                />
+
+                <OverflowList
+                  :label="$gettext('Packages to Uninstall (by policies)')"
+                  icon="mdi-package-up"
+                  :items="simulation.policies.remove"
+                />
+
+                <OverflowList
+                  :label="$gettext('Devices')"
+                  icon="mdi-printer"
+                  :items="simulation.logical_devices"
+                  model="devices/logical"
+                />
+
+                <p>
+                  <translate>Capture Hardware</translate>:
+                  <q-chip
+                    :color="
+                      simulation.capture_hardware ? 'positive' : 'negative'
+                    "
+                    text-color="white"
+                    >{{
+                      simulation.capture_hardware
+                        ? $gettext('Yes')
+                        : $gettext('No')
+                    }}</q-chip
+                  >
+                </p>
+              </template>
             </q-card-section>
           </q-card>
         </div>
@@ -207,7 +229,11 @@ export default {
       onlyAttributes: [],
       onlyAttributeSets: [],
       onlyTags: [],
-      simulation: {}
+      simulation: {},
+      loading: {
+        input: false,
+        output: false
+      }
     }
   },
   async mounted() {
@@ -251,6 +277,7 @@ export default {
     },
 
     async loadSyncInfo() {
+      this.loading.input = true
       await this.$axios
         .get(`/api/v1/token/computers/${this.computer.id}/sync/`)
         .then((response) => {
@@ -272,9 +299,13 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
+        .finally(() => {
+          this.loading.input = false
+        })
     },
 
     async loadSimulation() {
+      this.loading.output = true
       await this.$axios
         .get(`/api/v1/token/computers/${this.computer.id}/sync/simulation/`)
         .then((response) => {
@@ -295,6 +326,9 @@ export default {
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
+        })
+        .finally(() => {
+          this.loading.output = false
         })
     }
   }
