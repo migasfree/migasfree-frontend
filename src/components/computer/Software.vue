@@ -38,18 +38,29 @@
             </q-item-section>
           </template>
 
-          <q-list class="overflow">
+          <q-list>
             <q-item v-if="loading.inventory">
-              <q-spinner-dots color="primary" size="3em" />
+              <div class="row justify-center q-my-md">
+                <q-spinner-dots color="primary" size="3em" />
+              </div>
             </q-item>
-            <q-item v-for="item in softwareInventory" :key="item.id">
-              <MigasLink
-                model="packages"
-                :pk="item.id"
-                :value="item.name"
-                icon="mdi-package-variant"
-              />
-            </q-item>
+
+            <q-virtual-scroll
+              class="overflow"
+              :items-size="softwareInventory.length"
+              :items="softwareInventory"
+            >
+              <template v-slot="{ item }">
+                <q-item>
+                  <MigasLink
+                    model="packages"
+                    :pk="item.id"
+                    :value="item.name"
+                    icon="mdi-package-variant"
+                  />
+                </q-item>
+              </template>
+            </q-virtual-scroll>
           </q-list>
         </q-expansion-item>
 
@@ -89,7 +100,9 @@
 
           <q-list class="overflow">
             <q-item v-if="loading.history">
-              <q-spinner-dots color="primary" size="3em" />
+              <div class="row justify-center q-my-md">
+                <q-spinner-dots color="primary" size="3em" />
+              </div>
             </q-item>
             <q-expansion-item
               v-for="(value, key) in softwareHistory"
