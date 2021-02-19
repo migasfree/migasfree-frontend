@@ -5,62 +5,68 @@
     </q-card-section>
 
     <q-card-section>
-      <p>
-        <q-select
-          v-model="devices.assigned_logical_devices_to_cid"
-          outlined
-          use-input
-          use-chips
-          map-options
-          multiple
-          input-debounce="0"
-          :label="$gettext('Assigned')"
-          :options="assignedDevices"
-          @filter="filterAssignedDevices"
-          @filter-abort="abortFilterAssignedDevices"
-          @input="updateDefaultLogicalDeviceSelect"
-        >
-          <template #no-option>
-            <q-item>
-              <q-item-section class="text-grey">
-                <translate>No results</translate>
-              </q-item-section>
-            </q-item>
-          </template>
+      <div v-if="Object.keys(devices).length == 0" class="justify-center">
+        <q-spinner-dots color="primary" size="3em" />
+      </div>
 
-          <template #option="scope">
-            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-              {{ scope.opt.__str__ }}
-            </q-item>
-          </template>
+      <template v-else>
+        <p>
+          <q-select
+            v-model="devices.assigned_logical_devices_to_cid"
+            outlined
+            use-input
+            use-chips
+            map-options
+            multiple
+            input-debounce="0"
+            :label="$gettext('Assigned')"
+            :options="assignedDevices"
+            @filter="filterAssignedDevices"
+            @filter-abort="abortFilterAssignedDevices"
+            @input="updateDefaultLogicalDeviceSelect"
+          >
+            <template #no-option>
+              <q-item>
+                <q-item-section class="text-grey">
+                  <translate>No results</translate>
+                </q-item-section>
+              </q-item>
+            </template>
 
-          <template #selected-item="scope">
-            <q-chip
-              removable
-              dense
-              :tabindex="scope.tabindex"
-              class="q-ma-md"
-              @remove="scope.removeAtIndex(scope.index)"
-            >
-              <MigasLink
-                model="devices/logical"
-                :pk="scope.opt.id"
-                :value="scope.opt.__str__"
-                icon="mdi-printer-settings"
-              />
-            </q-chip>
-          </template>
-        </q-select>
-      </p>
+            <template #option="scope">
+              <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                {{ scope.opt.__str__ }}
+              </q-item>
+            </template>
 
-      <p>
-        <q-select
-          v-model="devices.default_logical_device"
-          outlined
-          :options="defaultLogicalDevices"
-          :label="$gettext('By default')"
-        />
-      </p>
+            <template #selected-item="scope">
+              <q-chip
+                removable
+                dense
+                :tabindex="scope.tabindex"
+                class="q-ma-md"
+                @remove="scope.removeAtIndex(scope.index)"
+              >
+                <MigasLink
+                  model="devices/logical"
+                  :pk="scope.opt.id"
+                  :value="scope.opt.__str__"
+                  icon="mdi-printer-settings"
+                />
+              </q-chip>
+            </template>
+          </q-select>
+        </p>
+
+        <p>
+          <q-select
+            v-model="devices.default_logical_device"
+            outlined
+            :options="defaultLogicalDevices"
+            :label="$gettext('By default')"
+          />
+        </p>
+      </template>
     </q-card-section>
 
     <q-card-actions>
@@ -105,6 +111,7 @@ export default {
   },
   methods: {
     async loadDevices() {
+      this.loading = true
       await this.$axios
         .get(`/api/v1/token/computers/${this.cid}/devices/`)
         .then((response) => {
@@ -117,6 +124,9 @@ export default {
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
+        })
+        .finally(() => {
+          this.loading = false
         })
     },
 
