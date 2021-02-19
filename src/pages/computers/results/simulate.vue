@@ -23,7 +23,7 @@
             </q-card-section>
 
             <q-card-section>
-              <p v-if="loading.input" class="justify-center">
+              <p v-if="loading.input" class="items-center">
                 <q-spinner-dots color="primary" size="3em" />
               </p>
               <template v-else>
@@ -323,6 +323,11 @@ export default {
                 item.icon = 'mdi-alert-octagram-outline'
               }
             )
+
+          if ('deployments' in this.simulation)
+            Object.entries(this.simulation.deployments).map(([key, item]) => {
+              item.icon = 'mdi-rocket-launch'
+            })
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
