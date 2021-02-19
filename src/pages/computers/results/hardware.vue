@@ -17,7 +17,7 @@
       </Header>
 
       <div class="row q-pa-md q-gutter-md">
-        <div class="col-md">
+        <div class="col-6">
           <ComputerHardwareResume
             v-if="element.product_system"
             :cid="element.id"
