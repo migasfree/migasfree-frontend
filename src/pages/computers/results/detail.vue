@@ -13,19 +13,6 @@
             :icon="elementIcon(element.status)"
             :tooltip="element.summary"
           />
-          <q-btn
-            class="q-ma-md"
-            size="md"
-            :icon="productIcon(element.product_system)"
-            :label="$gettext('Hardware Information')"
-            color="info"
-            @click="
-              $router.push({
-                name: 'computer-hardware',
-                params: { id: element.id }
-              })
-            "
-          />
         </template>
       </Header>
 
@@ -272,28 +259,31 @@
                 />
               </div>
 
-              <div class="row q-pa-md">
+              <div class="row q-pa-md items-baseline">
                 <div class="col-md">
                   <q-tooltip self="bottom middle"
                     ><translate>sync start date</translate></q-tooltip
                   >
-                  <q-icon name="mdi-play" size="sm" />{{
-                    showDate(syncInfo.sync_start_date)
-                  }}
+                  <q-icon name="mdi-play" size="sm" class="vertical-middle" />
+                  <span class="vertical-middle">
+                    {{ showDate(syncInfo.sync_start_date) }}</span
+                  >
                 </div>
 
                 <div class="col-md">
                   <q-tooltip self="bottom middle"
                     ><translate>sync end date</translate></q-tooltip
                   >
-                  <q-icon name="mdi-stop" size="sm" />{{
-                    showDate(syncInfo.sync_end_date)
-                  }}
+                  <q-icon name="mdi-stop" size="sm" class="vertical-middle" />
+                  <span class="vertical-middle">
+                    {{ showDate(syncInfo.sync_end_date) }}</span
+                  >
                 </div>
 
                 <div class="col-md">
                   <DateDiff
                     v-if="syncInfo.sync_start_date"
+                    class="vertical-middle"
                     :begin="new Date(syncInfo.sync_start_date)"
                     :end="new Date(syncInfo.sync_end_date)"
                     :tooltip="$gettext('last sync time')"
