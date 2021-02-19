@@ -39,10 +39,8 @@
           </template>
 
           <q-list>
-            <q-item v-if="loading.inventory">
-              <div class="row justify-center q-my-md">
-                <q-spinner-dots color="primary" size="3em" />
-              </div>
+            <q-item v-if="loading.inventory" class="justify-center">
+              <q-spinner-dots color="primary" size="3em" />
             </q-item>
 
             <q-virtual-scroll
@@ -99,10 +97,8 @@
           </template>
 
           <q-list class="overflow">
-            <q-item v-if="loading.history">
-              <div class="row justify-center q-my-md">
-                <q-spinner-dots color="primary" size="3em" />
-              </div>
+            <q-item v-if="loading.history" class="justify-center">
+              <q-spinner-dots color="primary" size="3em" />
             </q-item>
             <q-expansion-item
               v-for="(value, key) in softwareHistory"
