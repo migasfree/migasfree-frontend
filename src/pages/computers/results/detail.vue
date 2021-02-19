@@ -381,9 +381,11 @@ export default {
   mixins: [elementMixin, dateMixin, detailMixin],
   data() {
     const route = 'computers-list'
+    const title = this.$gettext('Computer')
 
     return {
-      title: this.$gettext('Computer'),
+      title,
+      originalTitle: title,
       model: 'computers',
       listRoute: route,
       breadcrumbs: [
@@ -414,15 +416,16 @@ export default {
       confirmRemove: false
     }
   },
+  computed: {
+    elementText() {
+      return this.element.__str__
+    }
+  },
   async mounted() {
     await this.$axios
       .get(`/api/v1/token/${this.model}/${this.$route.params.id}/`)
       .then((response) => {
         this.element = response.data
-        this.breadcrumbs[
-          this.breadcrumbs.length - 1
-        ].text = this.element.__str__
-        this.title = `${this.title}: ${this.element.__str__}`
         this.loadSyncInfo()
         this.loadErrors()
         this.loadFaults()
