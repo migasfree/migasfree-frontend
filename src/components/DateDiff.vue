@@ -1,5 +1,5 @@
 <template>
-  <q-chip v-if="diff" :icon="icon" :color="appearance" text-color="white">
+  <q-chip v-if="diff" :icon="icon" :color="appearance" :text-color="textColor">
     <q-tooltip v-if="tooltip">{{ tooltip }}</q-tooltip>
     {{ diff }}
   </q-chip>
@@ -33,6 +33,7 @@ export default {
     return {
       diff: null,
       appearance: 'info',
+      textColor: 'black',
       icon: 'mdi-timer'
     }
   },
@@ -55,6 +56,7 @@ export default {
       this.appearance = 'warning'
     } else if (diffDays >= 30) {
       this.appearance = 'negative'
+      this.textColor = 'white'
     }
 
     if (diffDays) {
