@@ -74,7 +74,7 @@ export default {
           calculable: true,
           left: 'left',
           top: 40,
-          textStyle: { color: '#000' }
+          textStyle: { color: this.$q.dark.isActive ? '#fff' : '#000' }
         },
         calendar: {
           top: 120,
@@ -82,9 +82,18 @@ export default {
           right: 30,
           cellSize: [25, 25],
           range: [this.start, formatTime('yyyy-MM-dd', Date.now())],
-          itemStyle: { borderWidth: 0.5 },
+          itemStyle: {
+            borderWidth: 0.5,
+            color: this.$q.dark.isActive ? '#757575' : '#fff'
+          },
           yearLabel: { show: true },
-          dayLabel: { firstDay: 1 }
+          dayLabel: {
+            firstDay: 1,
+            color: this.$q.dark.isActive ? '#fff' : '#000'
+          },
+          monthLabel: {
+            color: this.$q.dark.isActive ? '#fff' : '#000'
+          }
         },
         series: {
           type: 'heatmap',
@@ -119,6 +128,13 @@ export default {
       } else {
         this.options.visualMap.max = 1
       }
+    },
+
+    '$q.dark.isActive'(val) {
+      this.options.visualMap.textStyle.color = val ? '#fff' : '#000'
+      this.options.calendar.monthLabel.color = val ? '#fff' : '#000'
+      this.options.calendar.dayLabel.color = val ? '#fff' : '#000'
+      this.options.calendar.itemStyle.color = val ? '#757575' : '#fff'
     }
   },
   beforeMount() {
