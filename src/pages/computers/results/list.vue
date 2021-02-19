@@ -185,22 +185,6 @@
             @click="confirmRemove(props.row.id)"
             ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
           >
-          <q-btn
-            class="q-ma-xs"
-            round
-            size="sm"
-            :icon="productIcon(props.row.product_system)"
-            color="info"
-            @click="
-              $router.push({
-                name: 'computer-hardware',
-                params: { id: props.row.id }
-              })
-            "
-            ><q-tooltip>{{
-              $gettext('Hardware Information')
-            }}</q-tooltip></q-btn
-          >
         </span>
 
         <span v-else-if="props.column.field == 'name'">
@@ -232,13 +216,25 @@
         </span>
 
         <span v-else-if="props.column.field == 'product'">
-          <MigasLink
-            model="computers"
-            :pk="props.row.id"
-            :value="props.row.product || ''"
+          <q-btn
+            no-caps
+            dense
+            color="info"
+            text-color="black"
             :icon="productIcon(props.row.product_system)"
-            :tooltip="props.row.product_system"
-          />
+            :label="props.row.product || ''"
+            @click="
+              $router.push({
+                name: 'computer-hardware',
+                params: { id: props.row.id }
+              })
+            "
+            ><q-tooltip
+              >{{ props.row.product_system }} ({{
+                $gettext('Hardware Information')
+              }})</q-tooltip
+            ></q-btn
+          >
         </span>
 
         <span v-else>
