@@ -236,7 +236,7 @@
                   <div v-translate class="text-h5">Synchronization</div>
                 </div>
 
-                <div class="col-md">
+                <div v-if="element.id" class="col-md">
                   <DateDiff
                     class="float-right"
                     :begin="new Date(element.sync_end_date)"
@@ -259,44 +259,53 @@
                 />
               </div>
 
-              <div class="row q-pa-md items-baseline">
-                <div class="col-md">
-                  <q-tooltip self="bottom middle"
-                    ><translate>sync start date</translate></q-tooltip
-                  >
-                  <q-icon name="mdi-play" size="sm" class="vertical-middle" />
-                  <span class="vertical-middle">
-                    {{ showDate(syncInfo.sync_start_date) }}</span
-                  >
-                </div>
-
-                <div class="col-md">
-                  <q-tooltip self="bottom middle"
-                    ><translate>sync end date</translate></q-tooltip
-                  >
-                  <q-icon name="mdi-stop" size="sm" class="vertical-middle" />
-                  <span class="vertical-middle">
-                    {{ showDate(syncInfo.sync_end_date) }}</span
-                  >
-                </div>
-
-                <div class="col-md">
-                  <DateDiff
-                    v-if="syncInfo.sync_start_date"
-                    class="vertical-middle"
-                    :begin="new Date(syncInfo.sync_start_date)"
-                    :end="new Date(syncInfo.sync_end_date)"
-                    :tooltip="$gettext('last sync time')"
-                  />
-                </div>
+              <div
+                v-if="loadingSync || Object.keys(syncInfo).length == 0"
+                class="justify-center"
+              >
+                <q-spinner-dots color="primary" size="3em" />
               </div>
 
-              <OverflowList
-                :label="$gettext('Attributes')"
-                icon="mdi-pound"
-                :items="onlyAttributes"
-                model="attributes"
-              />
+              <template v-else>
+                <div class="row q-pa-md items-baseline">
+                  <div class="col-md">
+                    <q-tooltip self="bottom middle"
+                      ><translate>sync start date</translate></q-tooltip
+                    >
+                    <q-icon name="mdi-play" size="sm" class="vertical-middle" />
+                    <span class="vertical-middle">
+                      {{ showDate(syncInfo.sync_start_date) }}</span
+                    >
+                  </div>
+
+                  <div class="col-md">
+                    <q-tooltip self="bottom middle"
+                      ><translate>sync end date</translate></q-tooltip
+                    >
+                    <q-icon name="mdi-stop" size="sm" class="vertical-middle" />
+                    <span class="vertical-middle">
+                      {{ showDate(syncInfo.sync_end_date) }}</span
+                    >
+                  </div>
+
+                  <div class="col-md">
+                    <DateDiff
+                      v-if="syncInfo.sync_start_date"
+                      class="vertical-middle"
+                      :begin="new Date(syncInfo.sync_start_date)"
+                      :end="new Date(syncInfo.sync_end_date)"
+                      :tooltip="$gettext('last sync time')"
+                    />
+                  </div>
+                </div>
+
+                <OverflowList
+                  :label="$gettext('Attributes')"
+                  icon="mdi-pound"
+                  :items="onlyAttributes"
+                  model="attributes"
+                />
+              </template>
             </q-card-section>
           </q-card>
         </div>
@@ -403,6 +412,7 @@ export default {
       errors: {},
       faults: {},
       loading: false,
+      loadingSync: false,
       confirmRemove: false
     }
   },
@@ -441,6 +451,7 @@ export default {
   },
   methods: {
     async loadSyncInfo() {
+      this.loadingSync = true
       await this.$axios
         .get(`/api/v1/token/${this.model}/${this.$route.params.id}/sync/`)
         .then((response) => {
@@ -462,6 +473,9 @@ export default {
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
+        })
+        .finally(() => {
+          this.loadingSync = false
         })
     },
 
