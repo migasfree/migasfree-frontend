@@ -12,23 +12,26 @@
             :value="computer.__str__ || ''"
             :icon="elementIcon(computer.status)"
           />
+          <h3 class="text-h6 float-right">
+            <q-tooltip self="bottom middle"
+              ><translate
+                >Date of entry into the migasfree system</translate
+              ></q-tooltip
+            >
+            <q-icon
+              name="mdi-calendar-plus"
+              size="md"
+              class="vertical-middle"
+            />
+            <span class="vertical-middle">
+              {{ showDate(computer.created_at) }}</span
+            >
+          </h3>
         </template>
       </Header>
 
-      <div class="row">
-        <h3 class="text-h5">
-          <q-tooltip self="bottom middle"
-            ><translate
-              >Date of entry into the migasfree system</translate
-            ></q-tooltip
-          >
-          <q-icon name="mdi-calendar-plus" size="md" />
-          {{ showDate(computer.created_at) }}
-        </h3>
-      </div>
-
-      <div class="row">
-        <div class="col-12">
+      <div class="row q-pa-md">
+        <div class="col-md">
           <q-btn-toggle
             v-model="event"
             spread
@@ -44,34 +47,50 @@
             @input="updateEvent"
           >
             <template #syncs>
-              <q-icon name="mdi-sync" />
-              <translate>Synchronizations</translate> ({{ events.syncs.total }})
+              <q-icon name="mdi-sync" class="vertical-middle" />
+              <span class="vertical-middle">
+                <translate>Synchronizations</translate> ({{
+                  events.syncs.total
+                }})</span
+              >
             </template>
 
             <template #errors>
-              <q-icon name="mdi-bug" />
-              <translate>Errors</translate> ({{ events.errors.total }})
+              <q-icon name="mdi-bug" class="vertical-middle" />
+              <span class="vertical-middle">
+                <translate>Errors</translate> ({{ events.errors.total }})</span
+              >
             </template>
 
             <template #faults>
-              <q-icon name="mdi-bomb" />
-              <translate>Faults</translate> ({{ events.faults.total }})
+              <q-icon name="mdi-bomb" class="vertical-middle" />
+              <span class="vertical-middle">
+                <translate>Faults</translate> ({{ events.faults.total }})</span
+              >
             </template>
 
             <template #statusLogs>
-              <q-icon name="mdi-flag-variant" />
-              <translate>Status Logs</translate> ({{ events.statusLogs.total }})
+              <q-icon name="mdi-flag-variant" class="vertical-middle" />
+              <span class="vertical-middle">
+                <translate>Status Logs</translate> ({{
+                  events.statusLogs.total
+                }})</span
+              >
             </template>
 
             <template #migrations>
-              <q-icon name="mdi-map-marker-right" />
-              <translate>Migrations</translate> ({{ events.migrations.total }})
+              <q-icon name="mdi-map-marker-right" class="vertical-middle" />
+              <span class="vertical-middle">
+                <translate>Migrations</translate> ({{
+                  events.migrations.total
+                }})</span
+              >
             </template>
           </q-btn-toggle>
         </div>
       </div>
 
-      <div class="row">
+      <div class="row q-pa-md">
         <div class="col-12">
           <HeatMap
             :title="current.title"
@@ -325,7 +344,7 @@ export default {
               case 'syncs':
                 this.items.push([
                   itemDate,
-                  `(${item.project.name}): ${item.user.fullname}`
+                  `(${item.project.name}): ${item.user.__str__}`
                 ])
                 break
 
