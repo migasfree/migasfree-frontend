@@ -469,6 +469,7 @@ export const datagridMixin = {
               break
             case 'status':
             case 'status_in':
+            case 'status__in':
               if (this.model === 'computers' || this.model === 'status-logs')
                 ret.status__in = val
               else ret.computer__status__in = val
