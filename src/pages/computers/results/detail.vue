@@ -232,13 +232,12 @@
           <q-card>
             <q-card-section>
               <div class="row">
-                <div class="col-md">
+                <div class="col">
                   <div v-translate class="text-h5">Synchronization</div>
                 </div>
 
-                <div v-if="element.id" class="col-md">
+                <div v-if="element.id" class="col-auto">
                   <DateDiff
-                    class="float-right"
                     :begin="new Date(element.sync_end_date)"
                     :tooltip="$gettext('unsynchronized from')"
                   />
@@ -288,7 +287,7 @@
                     >
                   </div>
 
-                  <div class="col-md">
+                  <div class="col-auto">
                     <DateDiff
                       v-if="syncInfo.sync_start_date"
                       class="vertical-middle"
