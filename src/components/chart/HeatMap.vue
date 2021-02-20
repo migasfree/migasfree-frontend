@@ -7,7 +7,7 @@
         </div>
 
         <div v-if="total" class="col-auto">
-          <q-chip size="md" color="info">{{ total }}</q-chip>
+          <q-chip size="md" color="info" text-color="black">{{ total }}</q-chip>
         </div>
       </div>
     </q-card-section>
