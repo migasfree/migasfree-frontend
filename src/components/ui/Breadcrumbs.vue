@@ -36,4 +36,8 @@ export default {
 .body--light span.q-breadcrumbs__el {
   color: black;
 }
+
+.body--dark span.q-breadcrumbs__el {
+  color: white;
+}
 </style>
