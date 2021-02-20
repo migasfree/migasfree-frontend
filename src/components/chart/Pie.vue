@@ -11,6 +11,7 @@
             size="md"
             clickable
             :color="critical ? 'negative' : 'info'"
+            :text-color="critical ? 'white' : 'black'"
             @click="goTo"
             >{{ data.total }}</q-chip
           >
@@ -145,6 +146,7 @@ export default {
       },
       deep: true
     },
+
     '$q.dark.isActive'(val) {
       this.options.color = val
         ? MIGASFREE_CHART_DARK_COLORS
