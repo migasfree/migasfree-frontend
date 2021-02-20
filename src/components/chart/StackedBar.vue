@@ -107,6 +107,7 @@ export default {
       },
       deep: true
     },
+
     initialData: {
       handler: function(val, oldVal) {
         this.data = val
