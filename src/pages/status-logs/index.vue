@@ -97,7 +97,8 @@ export default {
       if (params.data.created_at__lt) {
         let query = {
           created_at__gte: params.data.created_at__gte,
-          created_at__lt: params.data.created_at__lt
+          created_at__lt: params.data.created_at__lt,
+          status__in: params.data.status__in
         }
 
         this.$router.push(Object.assign({}, this.url, { query }))
