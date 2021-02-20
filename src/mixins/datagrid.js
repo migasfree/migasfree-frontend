@@ -330,6 +330,7 @@ export const datagridMixin = {
             case 'capability.name':
               ret.capability__id = val
               break
+            case 'category':
             case 'category.name':
               ret.category = val
               break
@@ -403,6 +404,7 @@ export const datagridMixin = {
             case 'included_attributes_id':
               ret.included_attributes__id = val
               break
+            case 'level':
             case 'level.name':
               ret.level = val
               break
