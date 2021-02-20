@@ -18,6 +18,11 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Token ${authToken}`
     }
 
+    config.headers['Accept-Language'] = `${Vue.config.language.replace(
+      '_',
+      '-'
+    )},${Vue.config.language.split('_')[0]};q=0.9`
+
     console.log('[ REQUEST ]', config.url, config.params)
 
     return config
