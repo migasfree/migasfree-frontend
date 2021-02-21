@@ -10,7 +10,8 @@
         href="http://www.migasfree.org/"
         no-caps
         size="16px"
-      />
+        ><q-tooltip><translate>Website</translate></q-tooltip></q-btn
+      >
       <q-btn
         stretch
         flat

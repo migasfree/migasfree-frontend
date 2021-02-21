@@ -9,7 +9,8 @@
           icon="mdi-menu"
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
-        />
+          ><q-tooltip>{{ $gettext('Menu') }}</q-tooltip>
+        </q-btn>
 
         <q-btn
           stretch
@@ -18,7 +19,9 @@
           :to="{ name: 'home' }"
           no-caps
           size="22px"
-        />
+        >
+          <q-tooltip>{{ $gettext('Dashboard') }}</q-tooltip>
+        </q-btn>
 
         <SearchBox />
 
