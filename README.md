@@ -38,3 +38,13 @@ yarn gettext-compile
 ```bash
 quasar build
 ```
+
+## Screenshots
+
+### Dashboard (light mode)
+
+![Dashboard](https://github.com/migasfree/migasfree-frontend/blob/master/screenshots/dashboard.png)
+
+### Computers list (dark mode)
+
+![Computers list](https://github.com/migasfree/migasfree-frontend/blob/master/screenshots/computers_list.png)
