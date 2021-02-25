@@ -88,95 +88,19 @@
 
             <div class="row q-pa-md q-gutter-md">
               <div class="col-12">
-                <q-select
+                <SelectAttributes
                   v-model="element.included_attributes"
-                  outlined
-                  use-input
-                  map-options
-                  multiple
-                  input-debounce="0"
                   :label="$gettext('Included Attributes')"
-                  :options="attributes"
-                  @filter="filterAttributes"
-                  @filter-abort="abortFilterAttributes"
-                >
-                  <template #no-option>
-                    <q-item>
-                      <q-item-section v-translate class="text-grey">
-                        No results
-                      </q-item-section>
-                    </q-item>
-                  </template>
-
-                  <template #option="scope">
-                    <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                      {{ attributeValue(scope.opt) }}
-                    </q-item>
-                  </template>
-
-                  <template #selected-item="scope">
-                    <q-chip
-                      removable
-                      dense
-                      :tabindex="scope.tabindex"
-                      class="q-ma-md"
-                      @remove="scope.removeAtIndex(scope.index)"
-                    >
-                      <MigasLink
-                        model="attributes"
-                        :pk="scope.opt.id"
-                        :value="attributeValue(scope.opt)"
-                      />
-                    </q-chip>
-                  </template>
-                </q-select>
+                />
               </div>
             </div>
 
             <div class="row q-pa-md q-gutter-md">
               <div class="col-12">
-                <q-select
+                <SelectAttributes
                   v-model="element.excluded_attributes"
-                  outlined
-                  use-input
-                  map-options
-                  multiple
-                  input-debounce="0"
                   :label="$gettext('Excluded Attributes')"
-                  :options="attributes"
-                  @filter="filterAttributes"
-                  @filter-abort="abortFilterAttributes"
-                >
-                  <template #no-option>
-                    <q-item>
-                      <q-item-section v-translate class="text-grey">
-                        No results
-                      </q-item-section>
-                    </q-item>
-                  </template>
-
-                  <template #option="scope">
-                    <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                      {{ attributeValue(scope.opt) }}
-                    </q-item>
-                  </template>
-
-                  <template #selected-item="scope">
-                    <q-chip
-                      removable
-                      dense
-                      :tabindex="scope.tabindex"
-                      class="q-ma-md"
-                      @remove="scope.removeAtIndex(scope.index)"
-                    >
-                      <MigasLink
-                        model="attributes"
-                        :pk="scope.opt.id"
-                        :value="attributeValue(scope.opt)"
-                      />
-                    </q-chip>
-                  </template>
-                </q-select>
+                />
               </div>
             </div>
           </q-card-section>
@@ -546,6 +470,7 @@ import MigasLink from 'components/MigasLink'
 import RemoveDialog from 'components/ui/RemoveDialog'
 import StackedBarChart from 'components/chart/StackedBar'
 import Timeline from 'components/deployment/Timeline'
+import SelectAttributes from 'components/ui/SelectAttributes'
 import { detailMixin } from 'mixins/detail'
 import { elementMixin } from 'mixins/element'
 import { dateMixin } from 'mixins/date'
@@ -562,7 +487,8 @@ export default {
     MigasLink,
     RemoveDialog,
     StackedBarChart,
-    Timeline
+    Timeline,
+    SelectAttributes
   },
   mixins: [detailMixin, elementMixin, dateMixin],
   data() {
@@ -680,6 +606,8 @@ export default {
         this.element.default_excluded_packages = this.element.default_excluded_packages.join(
           '\n'
         )
+
+        this.updateIncludedAttributes() // FIXME
       }
       this.updateSchedule()
     },
@@ -760,30 +688,6 @@ export default {
       await this.updateSchedule()
     },
 
-    filterAttributes(val, update, abort) {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < 3) {
-        abort()
-        return
-      }
-
-      update(() => {
-        const needle = val.toLowerCase()
-        this.$axios
-          .get('/api/v1/token/attributes/', { params: { search: needle } })
-          .then((response) => {
-            this.attributes = response.data.results
-          })
-        /* this.attributes = stringOptions.filter(
-          (v) => v.toLowerCase().indexOf(needle) > -1
-        ) */
-      })
-    },
-
-    abortFilterAttributes() {
-      // console.log('delayed filter aborted')
-    },
-
     filterPackages(val, update, abort) {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3 || this.element.project === undefined) {
@@ -834,6 +738,33 @@ export default {
 
     abortFilterPackageSets() {
       // console.log('delayed filter aborted')
+    },
+
+    updateIncludedAttributes() {
+      Object.entries(this.element.included_attributes).map(([key, val]) => {
+        if (!('status' in val)) {
+          console.log(val, '*********************')
+          this.$axios
+            .get(`/api/v1/token/attributes/${val.id}/badge/`)
+            .then((response) => {
+              console.log(response)
+              Object.assign(
+                this.element.included_attributes[key],
+                response.data
+              )
+              this.$set(
+                this.element.included_attributes[key],
+                'description',
+                response.data.text
+              )
+              /* this.$set(
+                this.element.included_attributes[key],
+                'id',
+                response.data.pk
+              ) */
+            })
+        }
+      })
     }
   }
 }

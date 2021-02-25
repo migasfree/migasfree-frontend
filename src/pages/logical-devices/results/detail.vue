@@ -63,48 +63,10 @@
           </div>
 
           <div class="col-6 col-md">
-            <q-select
+            <SelectAttributes
               v-model="element.attributes"
-              outlined
-              use-input
-              map-options
-              multiple
-              input-debounce="0"
               :label="$gettext('Attributes')"
-              :options="attributes"
-              @filter="filterAttributes"
-              @filter-abort="abortFilterAttributes"
-            >
-              <template #no-option>
-                <q-item>
-                  <q-item-section v-translate class="text-grey">
-                    No results
-                  </q-item-section>
-                </q-item>
-              </template>
-
-              <template #option="scope">
-                <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                  {{ attributeValue(scope.opt) }}
-                </q-item>
-              </template>
-
-              <template #selected-item="scope">
-                <q-chip
-                  removable
-                  dense
-                  :tabindex="scope.tabindex"
-                  class="q-ma-md"
-                  @remove="scope.removeAtIndex(scope.index)"
-                >
-                  <MigasLink
-                    model="attributes"
-                    :pk="scope.opt.id"
-                    :value="attributeValue(scope.opt)"
-                  />
-                </q-chip>
-              </template>
-            </q-select>
+            />
           </div>
         </div>
 
@@ -184,6 +146,7 @@
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
+import SelectAttributes from 'components/ui/SelectAttributes'
 import RemoveDialog from 'components/ui/RemoveDialog'
 import { detailMixin } from 'mixins/detail'
 import { elementMixin } from 'mixins/element'
@@ -198,7 +161,8 @@ export default {
     Breadcrumbs,
     Header,
     RemoveDialog,
-    MigasLink
+    MigasLink,
+    SelectAttributes
   },
   mixins: [detailMixin, elementMixin],
   data() {
@@ -232,7 +196,6 @@ export default {
       element,
       emptyElement: Object.assign({}, element),
       devices: [],
-      attributes: [],
       capabilities: [],
       confirmRemove: false
     }
@@ -264,30 +227,6 @@ export default {
         attributes: this.element.attributes.map((item) => item.id),
         alternative_capability_name: this.element.alternative_capability_name
       }
-    },
-
-    filterAttributes(val, update, abort) {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < 3) {
-        abort()
-        return
-      }
-
-      update(() => {
-        const needle = val.toLowerCase()
-        this.$axios
-          .get('/api/v1/token/attributes/', { params: { search: needle } })
-          .then((response) => {
-            this.attributes = response.data.results
-          })
-        /* this.attributes = stringOptions.filter(
-          (v) => v.toLowerCase().indexOf(needle) > -1
-        ) */
-      })
-    },
-
-    abortFilterAttributes() {
-      // console.log('delayed filter aborted')
     },
 
     filterDevices(val, update, abort) {
