@@ -17,7 +17,10 @@ export const elementMixin = {
         case 'unsubscribed':
           return 'mdi-recycle-variant'
         case 'SET':
+        case 'set':
           return 'mdi-set-none'
+        case 'domain':
+          return 'mdi-earth'
       }
     },
 
@@ -62,7 +65,30 @@ export const elementMixin = {
 
     attributeValue(att) {
       if (att.property_att.prefix === 'SET') return att.value
+      if (att.property_att.prefix === 'CID') return att.description
       return `${att.property_att.prefix}-${att.value}`
+    },
+
+    equivalentModel(att) {
+      switch (att.property_att.prefix) {
+        case 'SET':
+          return 'attribute-sets'
+        case 'CID':
+          return 'computers'
+        case 'DMN':
+          return 'domains'
+        default:
+          return 'attributes'
+      }
+    },
+
+    equivalentKey(att) {
+      switch (att.property_att.prefix) {
+        case 'CID':
+          return parseInt(att.value)
+        default:
+          return 'pk' in att ? att.pk : att.id
+      }
     }
   }
 }
