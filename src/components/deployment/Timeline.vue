@@ -1,6 +1,7 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
     <q-circular-progress
+      v-if="showing.schedule"
       show-value
       class="text-positive q-ma-md"
       :value="showing.schedule.percent"
