@@ -127,7 +127,8 @@ export const datagridMixin = {
           filter = this.columns.find(
             (x) => x.field === (filterKey ? filterKey : key)
           )
-        if (filter) filter.filterOptions.filterValue = value
+        if (filter && 'filterOptions' in filter)
+          filter.filterOptions.filterValue = value
 
         filter = null
         if (key in this.tableFilters) {
@@ -138,10 +139,10 @@ export const datagridMixin = {
               break
             case 'schedule':
               filter = this.findById(
-                this.tableFilters.schedule.items,
+                this.tableFilters[key].items,
                 value === 'true' ? 1 : value === 'false' ? 0 : ''
               )
-              if (filter) this.tableFilters.schedule.selected = filter.name
+              if (filter) this.tableFilters[key].selected = filter.name
               break
             case 'user':
               filter = this.findById(this.tableFilters.user.items, value)
@@ -159,6 +160,16 @@ export const datagridMixin = {
 
           if (key === 'created_at__lt')
             this.tableFilters.createdAtRange.selected.to = value
+        }
+
+        if ('uninstallDate' in this.tableFilters) {
+          if (key === 'uninstall_date') {
+            filter = this.findById(
+              this.tableFilters.uninstallDate.items,
+              value === 'true' ? 1 : value === 'false' ? 0 : ''
+            )
+            if (filter) this.tableFilters.uninstallDate.selected = filter.name
+          }
         }
       })
     },
