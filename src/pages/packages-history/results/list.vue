@@ -13,7 +13,7 @@
         />
 
         <div class="row q-pa-md q-col-gutter-lg">
-          <div class="col-6 col-md">
+          <div class="col-md">
             <DateRangeInput
               ref="installDateRange"
               v-model="tableFilters.installDateRange.selected"
@@ -23,7 +23,7 @@
             />
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-md">
             <DateRangeInput
               ref="uninstallDateRange"
               v-model="tableFilters.uninstallDateRange.selected"
@@ -31,6 +31,23 @@
               :label="$gettext('By Uninstall Date (range)')"
               @select="onUninstallDateRangeFilter"
             />
+          </div>
+
+          <div class="col-md">
+            <q-select
+              v-model="tableFilters.uninstallDate.selected"
+              :options="tableFilters.uninstallDate.items"
+              :label="$gettext('By Uninstall Date')"
+              dense
+              outlined
+              option-value="id"
+              option-label="name"
+              @input="onUninstallDateFilter"
+            >
+              <template #before>
+                <q-icon name="mdi-filter" />
+              </template>
+            </q-select>
           </div>
         </div>
 
@@ -211,6 +228,14 @@ export default {
         },
         uninstallDateRange: {
           selected: { from: null, to: null }
+        },
+        uninstallDate: {
+          items: [
+            { id: '', name: this.$gettext('All') },
+            { id: 1, name: this.$gettext('without date') },
+            { id: 0, name: this.$gettext('with date') }
+          ],
+          selected: null
         }
       },
       model: 'packages-history'
@@ -238,6 +263,15 @@ export default {
             this.tableFilters.uninstallDateRange.selected.from + 'T00:00:00',
           uninstall_date__lt:
             this.tableFilters.uninstallDateRange.selected.to + 'T23:59:59'
+        })
+      })
+      this.loadItems()
+    },
+
+    onUninstallDateFilter(params) {
+      this.updateParams({
+        columnFilters: Object.assign(this.serverParams.columnFilters, {
+          uninstall_date: params.id ? true : params.id === 0 ? false : ''
         })
       })
       this.loadItems()
