@@ -112,12 +112,13 @@
 
         <q-list bordered dense separator>
           <q-item v-for="(item, index) in items" :key="index" class="q-my-sm">
-            <q-item-section>
+            <q-item-section avatar>
               {{ item[0] }}
             </q-item-section>
 
-            <!-- eslint-disable-next-line vue/no-v-html -->
-            <q-item-section v-html="item[1]" />
+            <q-item-section>
+              <Truncate v-model="item[1]" />
+            </q-item-section>
           </q-item>
         </q-list>
       </div>
@@ -128,6 +129,7 @@
 <script>
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
+import Truncate from 'components/ui/Truncate'
 import MigasLink from 'components/MigasLink'
 import HeatMap from 'components/chart/HeatMap'
 import { elementMixin } from 'mixins/element'
@@ -142,7 +144,7 @@ export default {
       title: this.title
     }
   },
-  components: { Breadcrumbs, Header, MigasLink, HeatMap },
+  components: { Breadcrumbs, Header, MigasLink, HeatMap, Truncate },
   mixins: [elementMixin, dateMixin],
   data() {
     return {
@@ -351,20 +353,14 @@ export default {
               case 'errors':
                 this.items.push([
                   itemDate,
-                  `(${item.project.name}):<br />${item.description.replace(
-                    new RegExp('\n', 'g'),
-                    '<br />'
-                  )}`
+                  `(${item.project.name}):\n${item.description}`
                 ])
                 break
 
               case 'faults':
                 this.items.push([
                   itemDate,
-                  `(${item.project.name}):<br />${item.result.replace(
-                    new RegExp('\n', 'g'),
-                    '<br />'
-                  )}`
+                  `(${item.project.name}):\n${item.result}`
                 ])
                 break
 
