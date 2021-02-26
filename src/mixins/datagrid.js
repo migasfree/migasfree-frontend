@@ -492,6 +492,9 @@ export const datagridMixin = {
             case 'tags_id':
               ret.tags__id = val
               break
+            case 'uninstall_date':
+              ret.uninstall_date__isnull = val
+              break
             case 'user_id':
               ret.user__id = val
               break
