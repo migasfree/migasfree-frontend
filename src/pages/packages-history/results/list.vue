@@ -13,7 +13,7 @@
         />
 
         <div class="row q-pa-md q-col-gutter-lg">
-          <div class="col-md">
+          <div class="col-4 col-md">
             <DateRangeInput
               ref="installDateRange"
               v-model="tableFilters.installDateRange.selected"
@@ -23,7 +23,7 @@
             />
           </div>
 
-          <div class="col-md">
+          <div class="col-4 col-md">
             <DateRangeInput
               ref="uninstallDateRange"
               v-model="tableFilters.uninstallDateRange.selected"
@@ -33,7 +33,7 @@
             />
           </div>
 
-          <div class="col-md">
+          <div class="col-4 col-md">
             <q-select
               v-model="tableFilters.uninstallDate.selected"
               :options="tableFilters.uninstallDate.items"
