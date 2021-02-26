@@ -82,6 +82,9 @@ export default {
       deep: true
     }
   },
+  mounted() {
+    this.updateAttributes()
+  },
   methods: {
     filterAttributes(val, update, abort) {
       // call abort() at any time if you can't retrieve data somehow
