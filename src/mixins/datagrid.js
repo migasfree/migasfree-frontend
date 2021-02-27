@@ -91,6 +91,10 @@ export const datagridMixin = {
           case 'model_id':
             filterKey = 'model.name'
             break
+          case 'package_project_id':
+            columnKey = 'package.project.name'
+            filterKey = 'package.project.name'
+            break
           case 'platform_id':
             columnKey = 'platform'
             filterKey = 'platform.name'
@@ -434,6 +438,9 @@ export const datagridMixin = {
             case 'model_id':
             case 'model.name':
               ret.model__id = val
+              break
+            case 'package.project.name':
+              ret.package__project__id = val
               break
             case 'package_id':
               ret.package__id = val
