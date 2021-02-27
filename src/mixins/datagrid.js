@@ -541,6 +541,7 @@ export const datagridMixin = {
             case 'machine':
             case 'product_system':
             case 'has_software_inventory':
+            case 'installed_package':
             case 'sync_end_date__gte':
             case 'sync_end_date__lt':
             case 'score':
