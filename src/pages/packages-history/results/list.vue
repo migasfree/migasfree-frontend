@@ -107,6 +107,15 @@
           />
         </span>
 
+        <span v-else-if="props.column.field == 'package.project.name'">
+          <MigasLink
+            model="projects"
+            :pk="props.row.package.project.id"
+            :value="props.row.package.project.name"
+            icon="mdi-sitemap"
+          />
+        </span>
+
         <span v-else-if="props.column.field == 'install_date'">
           {{ showDate(props.row.install_date) }}
         </span>
@@ -213,6 +222,20 @@ export default {
           }
         },
         {
+          field: 'package.project.id',
+          hidden: true
+        },
+        {
+          label: this.$gettext('Project'),
+          field: 'package.project.name',
+          html: true,
+          filterOptions: {
+            enabled: true,
+            placeholder: this.$gettext('All'),
+            trigger: 'enter'
+          }
+        },
+        {
           label: this.$gettext('Install Date'),
           field: 'install_date'
         },
@@ -242,6 +265,26 @@ export default {
     }
   },
   methods: {
+    async loadFilters() {
+      await this.$axios
+        .get('/api/v1/token/projects/')
+        .then((response) => {
+          this.columns.find(
+            (x) => x.field === 'package.project.name'
+          ).filterOptions.filterDropdownItems = response.data.results.map(
+            (item) => {
+              return {
+                value: item.id,
+                text: item.name
+              }
+            }
+          )
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+    },
+
     onInstallDateRangeFilter(params) {
       this.tableFilters.installDateRange.selected = params
       this.updateParams({
