@@ -251,7 +251,7 @@ export default {
             (item) => {
               return {
                 value: item.id,
-                text: item.name
+                text: `${item.name} (${item.project.name})`
               }
             }
           )
