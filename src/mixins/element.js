@@ -72,7 +72,8 @@ export const elementMixin = {
     equivalentModel(att) {
       switch (att.property_att.prefix) {
         case 'SET':
-          return 'attribute-sets'
+          if (att.id > 1) return 'attribute-sets'
+          return 'attributes'
         case 'CID':
           return 'computers'
         case 'DMN':
