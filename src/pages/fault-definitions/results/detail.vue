@@ -276,7 +276,7 @@ export default {
   methods: {
     async loadRelated() {
       await this.$axios
-        .get(`/api/v1/public/languages/`)
+        .get('/api/v1/public/languages/')
         .then((response) => {
           Object.entries(response.data).map(([key, val]) => {
             this.languages.push({
@@ -284,7 +284,7 @@ export default {
               name: val
             })
           })
-          if (this.element.id)
+          if (this.element.id && typeof this.element.language === 'number')
             this.element.language = this.languages.find(
               (x) => x.id === this.element.language
             )
@@ -309,12 +309,6 @@ export default {
         ),
         users: this.element.users.map((item) => item.id)
       }
-    },
-
-    setRelated() {
-      this.element.language = this.languages.find(
-        (x) => x.id === this.element.language
-      )
     },
 
     filterUserProfiles(val, update, abort) {
