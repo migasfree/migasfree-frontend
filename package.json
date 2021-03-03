@@ -17,7 +17,7 @@
     "core-js": "^3.6.5",
     "echarts": "^4.9.0",
     "performant-array-to-tree": "^1.8.1",
-    "quasar": "^1.15.2",
+    "quasar": "^1.15.4",
     "text-clipper": "^2.1.0",
     "typeface-dosis": "^1.1.13",
     "validator": "^12.2.0",
@@ -27,7 +27,7 @@
     "vue-pluralize": "^0.0.2"
   },
   "devDependencies": {
-    "@quasar/app": "^2.1.14",
+    "@quasar/app": "^2.1.15",
     "@quasar/quasar-app-extension-dotenv": "^1.0.5",
     "@quasar/quasar-app-extension-qmarkdown": "^1.4.1",
     "babel-eslint": "^10.1.0",
