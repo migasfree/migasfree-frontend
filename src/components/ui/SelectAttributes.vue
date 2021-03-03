@@ -1,59 +1,82 @@
 <template>
-  <q-select
-    v-model="localValue"
-    outlined
-    use-input
-    map-options
-    multiple
-    input-debounce="0"
-    :label="label"
-    :options="attributes"
-    @filter="filterAttributes"
-    @filter-abort="abortFilterAttributes"
-    @input="updateAttributes"
-  >
-    <template #no-option>
-      <q-item>
-        <q-item-section v-translate class="text-grey">
-          No results
-        </q-item-section>
-      </q-item>
-    </template>
+  <div>
+    <q-select
+      ref="attributes"
+      v-model="localValue"
+      outlined
+      use-input
+      map-options
+      multiple
+      input-debounce="0"
+      clearable
+      :label="label"
+      :options="attributes"
+      @filter="filterAttributes"
+      @filter-abort="abortFilterAttributes"
+      @input="updateAttributes"
+    >
+      <template #no-option>
+        <q-item>
+          <q-item-section v-translate class="text-grey">
+            No results
+          </q-item-section>
+        </q-item>
+      </template>
 
-    <template #option="scope">
-      <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-        {{ attributeValue(scope.opt) }}
-      </q-item>
-    </template>
+      <template #option="scope">
+        <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+          {{ attributeValue(scope.opt) }}
+        </q-item>
+      </template>
 
-    <template #selected-item="scope">
-      <q-chip
-        removable
-        dense
-        :tabindex="scope.tabindex"
-        class="q-ma-md"
-        @remove="scope.removeAtIndex(scope.index)"
+      <template #selected-item="scope">
+        <q-chip
+          removable
+          dense
+          :tabindex="scope.tabindex"
+          class="q-ma-md"
+          @remove="scope.removeAtIndex(scope.index)"
+        >
+          <MigasLink
+            :model="equivalentModel(scope.opt)"
+            :pk="equivalentKey(scope.opt)"
+            :value="attributeValue(scope.opt)"
+            :icon="elementIcon(scope.opt.status)"
+            :tooltip="scope.opt.summary"
+          />
+        </q-chip>
+      </template>
+    </q-select>
+
+    <div class="row">
+      <q-btn
+        flat
+        icon="mdi-content-copy"
+        color="primary"
+        @click.stop="copyList(model, 'attributes')"
+        ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
       >
-        <MigasLink
-          :model="equivalentModel(scope.opt)"
-          :pk="equivalentKey(scope.opt)"
-          :value="attributeValue(scope.opt)"
-          :icon="elementIcon(scope.opt.status)"
-          :tooltip="scope.opt.summary"
-        />
-      </q-chip>
-    </template>
-  </q-select>
+
+      <q-btn
+        flat
+        icon="mdi-content-paste"
+        color="primary"
+        @click.stop="pasteList('attributes')"
+        ><q-tooltip>{{ $gettext('Paste') }}</q-tooltip></q-btn
+      >
+    </div>
+  </div>
 </template>
 
 <script>
 import MigasLink from 'components/MigasLink'
 import { elementMixin } from 'mixins/element'
+import { copyPasteMixin } from 'mixins/copyPaste'
 
 export default {
   name: 'SelectAttributes',
   components: { MigasLink },
-  mixins: [elementMixin],
+  mixins: [elementMixin, copyPasteMixin],
   props: {
     value: {
       type: Array,
@@ -67,11 +90,13 @@ export default {
   data() {
     return {
       localValue: this.value,
-      attributes: []
+      attributes: [],
+      model: 'attributes'
     }
   },
   watch: {
     localValue(newValue) {
+      if (newValue === null) newValue = []
       this.$emit('input', newValue)
     },
     value: {
@@ -96,7 +121,7 @@ export default {
       update(() => {
         const needle = val.toLowerCase()
         this.$axios
-          .get('/api/v1/token/attributes/', { params: { search: needle } })
+          .get(`/api/v1/token/${this.model}/`, { params: { search: needle } })
           .then((response) => {
             this.attributes = response.data.results
           })
@@ -114,7 +139,7 @@ export default {
       Object.entries(this.value).map(([key, val]) => {
         if (!('status' in val)) {
           this.$axios
-            .get(`/api/v1/token/attributes/${val.id}/badge/`)
+            .get(`/api/v1/token/${this.model}/${val.id}/badge/`)
             .then((response) => {
               Object.assign(this.value[key], response.data)
               this.$set(this.value[key], 'description', response.data.text)
