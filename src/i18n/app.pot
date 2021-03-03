@@ -274,12 +274,12 @@ msgstr ""
 msgid "Architecture"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:612
+#: ./src/mixins/datagrid.js:613
 msgid "Are you sure you want to remove all these items?"
 msgstr ""
 
 #: ./src/components/ui/RemoveDialog.vue:22
-#: ./src/mixins/datagrid.js:607
+#: ./src/mixins/datagrid.js:608
 msgid "Are you sure you want to remove this item?"
 msgstr ""
 
@@ -464,7 +464,7 @@ msgid "By Uninstall Date (range)"
 msgstr ""
 
 #: ./src/components/ui/RemoveDialog.vue:38
-#: ./src/mixins/datagrid.js:630
+#: ./src/mixins/datagrid.js:631
 msgid "Cancel"
 msgstr ""
 
@@ -527,7 +527,7 @@ msgstr ""
 msgid "Change Scope"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:671
+#: ./src/mixins/datagrid.js:672
 msgid "Changed item check value!"
 msgstr ""
 
@@ -710,6 +710,14 @@ msgstr ""
 
 #: ./src/pages/computers/results/list.vue:167
 msgid "container"
+msgstr ""
+
+#: ./src/mixins/copyPaste.js:15
+msgid "Content copied to clipboard"
+msgstr ""
+
+#: ./src/components/ui/SelectAttributes.vue:88
+msgid "Copy"
 msgstr ""
 
 #: ./src/pages/user-profiles/results/changePassword.vue:58
@@ -914,7 +922,7 @@ msgid "Delays count"
 msgstr ""
 
 #: ./src/components/ui/RemoveDialog.vue:46
-#: ./src/mixins/datagrid.js:625
+#: ./src/mixins/datagrid.js:626
 #: ./src/pages/applications/results/detail.vue:238
 #: ./src/pages/applications/results/detail.vue:335
 #: ./src/pages/applications/results/list.vue:114
@@ -1676,7 +1684,7 @@ msgstr ""
 msgid "Is Super User?"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:596
+#: ./src/mixins/datagrid.js:597
 msgid "Item deleted!"
 msgstr ""
 
@@ -2026,7 +2034,7 @@ msgstr ""
 #: ./src/components/computer/Devices.vue:17
 #: ./src/components/computer/Devices.vue:6
 #: ./src/components/computer/Devices.vue:3
-#: ./src/components/ui/SelectAttributes.vue:4
+#: ./src/components/ui/SelectAttributes.vue:5
 #: ./src/components/ui/SelectAttributes.vue:2
 #: ./src/pages/computers/replacement.vue:19
 #: ./src/pages/computers/replacement.vue:57
@@ -2220,6 +2228,10 @@ msgstr ""
 
 #: ./src/pages/user-profiles/results/changePassword.vue:105
 msgid "Password Confirmation"
+msgstr ""
+
+#: ./src/components/ui/SelectAttributes.vue:104
+msgid "Paste"
 msgstr ""
 
 #: ./src/pages/groups/results/detail.vue:70
