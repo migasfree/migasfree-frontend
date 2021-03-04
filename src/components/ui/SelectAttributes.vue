@@ -48,7 +48,7 @@
       </template>
     </q-select>
 
-    <div class="row">
+    <div v-if="hasPaste" class="row">
       <q-btn
         flat
         icon="mdi-content-copy"
