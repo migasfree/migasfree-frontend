@@ -2983,6 +2983,10 @@ msgstr ""
 msgid "There are no results"
 msgstr ""
 
+#: ./src/mixins/copyPaste.js:28
+msgid "This browser does not implement clipboard reading"
+msgstr ""
+
 #: ./src/pages/formulas/results/detail.vue:60
 #: ./src/pages/formulas/results/detail.vue:1
 msgid ""

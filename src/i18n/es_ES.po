@@ -2775,6 +2775,10 @@ msgstr "Las contraseñas son diferentes"
 msgid "There are no results"
 msgstr "No hay resultados"
 
+#: src/mixins/copyPaste.js:28
+msgid "This browser does not implement clipboard reading"
+msgstr "Este navegador no implementa la lectura del portapapeles"
+
 #: src/pages/formulas/results/detail.vue:60
 #: src/pages/formulas/results/detail.vue:1
 msgid ""
