@@ -143,6 +143,7 @@
                     use-input
                     map-options
                     multiple
+                    clearable
                     input-debounce="0"
                     :label="$gettext('Available Packages')"
                     :options="packages"
@@ -191,6 +192,7 @@
                     use-input
                     map-options
                     multiple
+                    clearable
                     input-debounce="0"
                     :label="$gettext('Available Package Sets')"
                     :options="packageSets"
