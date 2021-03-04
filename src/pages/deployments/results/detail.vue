@@ -376,6 +376,7 @@
                 <q-select
                   v-model="element.schedule"
                   outlined
+                  clearable
                   :label="$gettext('Schedule')"
                   :options="schedules"
                   option-value="id"
