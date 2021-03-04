@@ -626,8 +626,6 @@ export default {
         this.element.default_excluded_packages = this.element.default_excluded_packages.join(
           '\n'
         )
-
-        this.updateIncludedAttributes() // FIXME
       }
       this.updateSchedule()
     },
@@ -758,27 +756,6 @@ export default {
 
     abortFilterPackageSets() {
       // console.log('delayed filter aborted')
-    },
-
-    updateIncludedAttributes() {
-      Object.entries(this.element.included_attributes).map(([key, val]) => {
-        if (!('status' in val)) {
-          this.$axios
-            .get(`/api/v1/token/attributes/${val.id}/badge/`)
-            .then((response) => {
-              console.log(response)
-              Object.assign(
-                this.element.included_attributes[key],
-                response.data
-              )
-              this.$set(
-                this.element.included_attributes[key],
-                'description',
-                response.data.text
-              )
-            })
-        }
-      })
     }
   }
 }
