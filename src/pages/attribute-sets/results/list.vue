@@ -84,6 +84,14 @@
           <BooleanView v-model="props.row.enabled" />
         </span>
 
+        <span v-else-if="props.column.field == 'description'">
+          <Truncate
+            v-if="props.row.description"
+            v-model="props.row.description"
+            :formatted="false"
+          />
+        </span>
+
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
         </span>
@@ -112,6 +120,7 @@ import SearchFilter from 'components/ui/SearchFilter'
 import Header from 'components/ui/Header'
 import BooleanView from 'components/ui/BooleanView'
 import MigasLink from 'components/MigasLink'
+import Truncate from 'components/ui/Truncate'
 import { datagridMixin } from 'mixins/datagrid'
 
 export default {
@@ -125,7 +134,8 @@ export default {
     SearchFilter,
     Header,
     BooleanView,
-    MigasLink
+    MigasLink,
+    Truncate
   },
   mixins: [datagridMixin],
   data() {
@@ -183,6 +193,10 @@ export default {
               { value: false, text: this.$gettext('No') }
             ]
           }
+        },
+        {
+          label: this.$gettext('Description'),
+          field: 'description'
         }
       ],
       model: 'attribute-sets',
