@@ -21,6 +21,8 @@ export const elementMixin = {
           return 'mdi-set-none'
         case 'domain':
           return 'mdi-earth'
+        default:
+          return 'mdi-pound'
       }
     },
 
