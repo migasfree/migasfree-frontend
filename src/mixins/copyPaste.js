@@ -1,6 +1,12 @@
 import { copyToClipboard } from 'quasar'
 
 export const copyPasteMixin = {
+  computed: {
+    hasPaste() {
+      return 'readText' in navigator.clipboard
+    }
+  },
+
   methods: {
     copyList(model, element) {
       if (
