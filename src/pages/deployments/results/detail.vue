@@ -50,7 +50,11 @@
                   option-label="name"
                   lazy-rules
                   :rules="[(val) => !!val || $gettext('* Required')]"
-                />
+                >
+                  <template #prepend>
+                    <q-icon name="mdi-sitemap" />
+                  </template>
+                </q-select>
               </div>
 
               <div class="col-6 col-md">
@@ -381,7 +385,11 @@
                   :options="schedules"
                   option-value="id"
                   option-label="name"
-                />
+                >
+                  <template #prepend>
+                    <q-icon name="mdi-calendar-start" />
+                  </template>
+                </q-select>
               </div>
 
               <div v-if="element.timeline" class="col-md">
@@ -548,8 +556,17 @@ export default {
           name: this.$gettext('External')
         }
       ],
-      isValid: true,
       confirmRemove: false
+    }
+  },
+  computed: {
+    isValid() {
+      return (
+        this.element.name !== undefined &&
+        this.element.name !== '' &&
+        this.element.project !== undefined &&
+        this.element.start_date !== undefined
+      )
     }
   },
   methods: {
@@ -744,7 +761,6 @@ export default {
     updateIncludedAttributes() {
       Object.entries(this.element.included_attributes).map(([key, val]) => {
         if (!('status' in val)) {
-          console.log(val, '*********************')
           this.$axios
             .get(`/api/v1/token/attributes/${val.id}/badge/`)
             .then((response) => {
@@ -758,11 +774,6 @@ export default {
                 'description',
                 response.data.text
               )
-              /* this.$set(
-                this.element.included_attributes[key],
-                'id',
-                response.data.pk
-              ) */
             })
         }
       })
