@@ -22,6 +22,14 @@ export const copyPasteMixin = {
       if (this.$refs[element] !== null) {
         let data = null
 
+        if (!('readText' in navigator.clipboard)) {
+          this.$store.dispatch(
+            'ui/notifyError',
+            this.$gettext('This browser does not implement clipboard reading')
+          )
+          return
+        }
+
         navigator.clipboard.readText().then((value) => {
           if (value) {
             try {
