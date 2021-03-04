@@ -3,7 +3,7 @@ import { copyToClipboard } from 'quasar'
 export const copyPasteMixin = {
   computed: {
     hasPaste() {
-      return 'readText' in navigator.clipboard
+      return 'clipboard' in navigator && 'readText' in navigator.clipboard
     }
   },
 
