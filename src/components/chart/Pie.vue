@@ -99,6 +99,9 @@ export default {
               shadowOffsetX: 0,
               shadowColor: 'rgba(0, 0, 0, 0.5)'
             }
+          },
+          label: {
+            color: this.$q.dark.isActive ? 'white' : 'black'
           }
         }
       ],
@@ -167,6 +170,12 @@ export default {
       this.options.color = val
         ? MIGASFREE_CHART_DARK_COLORS
         : MIGASFREE_CHART_COLORS
+
+      if ('series' in this.options) {
+        this.options.series.map((item) => {
+          item.label.color = val ? 'white' : 'black'
+        })
+      }
     }
   },
   async mounted() {
