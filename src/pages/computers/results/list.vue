@@ -208,6 +208,7 @@
 
         <span v-else-if="props.column.field == 'sync_user.name'">
           <MigasLink
+            v-if="props.row.sync_user"
             model="users"
             :pk="props.row.sync_user.id"
             :value="props.row.sync_user.__str__ || ''"
