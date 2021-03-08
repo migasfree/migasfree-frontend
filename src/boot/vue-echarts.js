@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import ECharts from 'vue-echarts'
+import VueECharts from 'vue-echarts'
 
 export default () => {
-  Vue.component('VChart', ECharts)
+  Vue.component('VChart', VueECharts)
 }
