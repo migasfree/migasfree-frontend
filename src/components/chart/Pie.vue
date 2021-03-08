@@ -24,7 +24,9 @@
         v-show="isChartVisible"
         ref="chart"
         :init-options="initOptions"
-        :options="options"
+        :option="options"
+        :loading="loading"
+        :loading-options="loadingOptions"
         autoresize
         @click="passData"
       />
@@ -36,12 +38,16 @@
 </template>
 
 <script>
-import 'echarts/lib/chart/pie'
-import 'echarts/lib/component/tooltip'
+import * as echarts from 'echarts/core'
+import { PieChart } from 'echarts/charts'
+import { TooltipComponent } from 'echarts/components'
+import { SVGRenderer } from 'echarts/renderers'
 import {
   MIGASFREE_CHART_COLORS,
   MIGASFREE_CHART_DARK_COLORS
 } from 'config/app.conf'
+
+echarts.use([PieChart, TooltipComponent, SVGRenderer])
 
 export default {
   name: 'PieChart',
@@ -122,7 +128,17 @@ export default {
           },
           data: []
         }
-      ]
+      ],
+      loading: false,
+      loadingOptions: {
+        showSpinner: true,
+        text: this.$gettext('Loading data...'),
+        color: '#39BEDA',
+        textColor: this.$q.dark.isActive
+          ? 'rgba(255, 255, 255, 0.5)'
+          : 'rgba(0, 0, 0, 0.5)',
+        maskColor: this.$q.dark.isActive ? '#3A4149' : 'white'
+      }
     }
   },
   computed: {
@@ -154,15 +170,7 @@ export default {
     }
   },
   async mounted() {
-    this.$refs.chart.showLoading({
-      showSpinner: true,
-      text: this.$gettext('Loading data...'),
-      color: '#39BEDA',
-      textColor: this.$q.dark.isActive
-        ? 'rgba(255, 255, 255, 0.5)'
-        : 'rgba(0, 0, 0, 0.5)',
-      maskColor: this.$q.dark.isActive ? '#3A4149' : 'white'
-    })
+    this.loading = true
     await this.$axios
       .get(this.endPoint)
       .then((response) => {
@@ -177,7 +185,7 @@ export default {
         this.$store.dispatch('ui/notifyError', error)
       })
       .finally(() => {
-        this.$refs.chart.hideLoading()
+        this.loading = false
       })
   },
   beforeMount() {

@@ -16,7 +16,7 @@
       <v-chart
         ref="chart"
         :init-options="initOptions"
-        :options="options"
+        :option="options"
         :style="cssVars"
         autoresize
         @click="passData"
@@ -25,13 +25,25 @@
 </template>
 
 <script>
-import 'echarts/lib/chart/heatmap'
-import 'echarts/lib/component/tooltip'
-import 'echarts/lib/component/calendar'
-import 'echarts/lib/component/visualMap'
+import * as echarts from 'echarts/core'
+import { HeatmapChart } from 'echarts/charts'
+import {
+  TooltipComponent,
+  CalendarComponent,
+  VisualMapComponent
+} from 'echarts/components'
+import { SVGRenderer } from 'echarts/renderers'
 import { parseDate } from 'echarts/lib/util/number'
 import { formatTime } from 'echarts/lib/util/format'
 import { date } from 'quasar'
+
+echarts.use([
+  HeatmapChart,
+  TooltipComponent,
+  CalendarComponent,
+  VisualMapComponent,
+  SVGRenderer
+])
 
 export default {
   name: 'HeatMap',

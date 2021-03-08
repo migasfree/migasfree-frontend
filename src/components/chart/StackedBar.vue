@@ -9,7 +9,9 @@
         v-show="isChartVisible"
         ref="chart"
         :init-options="initOptions"
-        :options="options"
+        :option="options"
+        :loading="loading"
+        :loading-options="loadingOptions"
         autoresize
         @click="passData"
       />
@@ -21,14 +23,26 @@
 </template>
 
 <script>
-import 'echarts/lib/chart/bar'
-import 'echarts/lib/chart/line'
-import 'echarts/lib/component/legend'
-import 'echarts/lib/component/tooltip'
+import * as echarts from 'echarts/core'
+import { LineChart } from 'echarts/charts'
+import {
+  GridComponent,
+  TooltipComponent,
+  LegendComponent
+} from 'echarts/components'
+import { SVGRenderer } from 'echarts/renderers'
 import {
   MIGASFREE_CHART_COLORS,
   MIGASFREE_CHART_DARK_COLORS
 } from 'config/app.conf'
+
+echarts.use([
+  LineChart,
+  GridComponent,
+  TooltipComponent,
+  LegendComponent,
+  SVGRenderer
+])
 
 export default {
   name: 'StackedBarChart',
@@ -87,6 +101,16 @@ export default {
       },
       initOptions: {
         renderer: 'svg'
+      },
+      loading: false,
+      loadingOptions: {
+        showSpinner: true,
+        text: this.$gettext('Loading data...'),
+        color: '#39BEDA',
+        textColor: this.$q.dark.isActive
+          ? 'rgba(255, 255, 255, 0.5)'
+          : 'rgba(0, 0, 0, 0.5)',
+        maskColor: this.$q.dark.isActive ? '#3A4149' : 'white'
       }
     }
   },
@@ -102,8 +126,8 @@ export default {
   watch: {
     data: {
       handler: function(val, oldVal) {
-        this.$set(this.options, 'series', val.series)
-        this.$set(this.options.xAxis, 'data', val.xData)
+        if ('series' in val) this.$set(this.options, 'series', val.series)
+        if ('xData' in val) this.$set(this.options.xAxis, 'data', val.xData)
       },
       deep: true
     },
@@ -127,15 +151,7 @@ export default {
   async mounted() {
     if (!this.endPoint) return
 
-    this.$refs.chart.showLoading({
-      showSpinner: true,
-      text: this.$gettext('Loading data...'),
-      color: '#39BEDA',
-      textColor: this.$q.dark.isActive
-        ? 'rgba(255, 255, 255, 0.5)'
-        : 'rgba(0, 0, 0, 0.5)',
-      maskColor: this.$q.dark.isActive ? '#3A4149' : 'white'
-    })
+    this.loading = true
     await this.$axios
       .get(this.endPoint)
       .then((response) => {
@@ -158,7 +174,7 @@ export default {
         this.$store.dispatch('ui/notifyError', error)
       })
       .finally(() => {
-        this.$refs.chart.hideLoading()
+        this.loading = false
       })
   },
   beforeMount() {
