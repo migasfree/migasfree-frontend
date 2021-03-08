@@ -48,7 +48,7 @@
               :items-size="softwareInventory.length"
               :items="softwareInventory"
             >
-              <template v-slot="{ item }">
+              <template #default="{ item }">
                 <q-item>
                   <MigasLink
                     model="packages"
