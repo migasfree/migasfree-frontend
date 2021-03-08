@@ -246,7 +246,7 @@
             </q-card-section>
 
             <q-card-section>
-              <div class="row q-pa-md">
+              <div v-if="element.sync_user" class="row q-pa-md">
                 <q-tooltip self="bottom middle"
                   ><translate>User</translate></q-tooltip
                 >
