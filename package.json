@@ -13,15 +13,16 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.9.19",
+    "@vue/composition-api": "^1.0.0-rc.3",
     "axios": "^0.21.1",
     "core-js": "^3.9.1",
-    "echarts": "^4.9.0",
+    "echarts": "^5.0.2",
     "performant-array-to-tree": "^1.8.1",
     "quasar": "^1.15.4",
     "text-clipper": "^2.1.0",
     "typeface-dosis": "^1.1.13",
     "validator": "^13.5.2",
-    "vue-echarts": "^5.0.0-beta.0",
+    "vue-echarts": "^6.0.0-beta.7",
     "vue-gettext": "^2.1.12",
     "vue-good-table": "^2.21.7",
     "vue-pluralize": "^0.0.2"
