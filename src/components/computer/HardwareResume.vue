@@ -119,7 +119,7 @@
             <span class="vertical-middle"> {{ cpu }}</span>
           </p>
         </div>
-        <div class="col-md">
+        <div v-if="ram" class="col-md">
           <p>
             <q-tooltip self="bottom middle"
               ><translate>RAM</translate></q-tooltip
@@ -131,7 +131,7 @@
       </div>
 
       <div class="row q-pa-md">
-        <div class="col-md">
+        <div v-if="storage" class="col-md">
           <p>
             <q-tooltip self="bottom middle"
               ><translate>Storage</translate></q-tooltip
@@ -142,7 +142,7 @@
             >
           </p>
         </div>
-        <div class="col-md">
+        <div v-if="macAddress" class="col-md">
           <p>
             <q-tooltip self="bottom middle"
               ><translate>MAC Address</translate></q-tooltip
