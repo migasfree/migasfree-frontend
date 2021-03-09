@@ -6,7 +6,18 @@
       :title="title"
       :results="totalRecords"
       :add-routes="[{ route: 'project-add' }]"
-    />
+    >
+      <template #append>
+        <q-btn
+          class="q-ma-md float-right"
+          color="info"
+          text-color="black"
+          :label="$gettext('Export')"
+          icon="mdi-file-export"
+          @click="exportAll"
+        />
+      </template>
+    </Header>
 
     <SearchFilter
       v-model="tableFilters.search"
