@@ -89,11 +89,31 @@
                 v-model="element.packages"
                 outlined
                 multiple
+                use-input
+                input-debounce="0"
+                clearable
                 :label="$gettext('Packages')"
                 :options="packages"
                 option-value="id"
                 option-label="fullname"
-              />
+              >
+                <template #selected-item="scope">
+                  <q-chip
+                    removable
+                    dense
+                    :tabindex="scope.tabindex"
+                    class="q-ma-md"
+                    @remove="scope.removeAtIndex(scope.index)"
+                  >
+                    <MigasLink
+                      model="packages"
+                      :pk="scope.opt.id"
+                      :value="scope.opt.fullname"
+                      icon="mdi-package-variant"
+                    />
+                  </q-chip>
+                </template>
+              </q-select>
             </div>
           </div>
 
