@@ -2,7 +2,7 @@ import _merge from 'lodash/merge'
 
 export const datagridMixin = {
   data() {
-    const perPage = 100
+    const perPage = 10
 
     return {
       rows: [],
@@ -12,7 +12,7 @@ export const datagridMixin = {
         enabled: true,
         mode: 'records',
         perPage,
-        perPageDropdown: [50, 100, 150],
+        perPageDropdown: [10, 50, 100, 150],
         dropdownAllowAll: false,
         nextLabel: this.$gettext('Next'),
         prevLabel: this.$gettext('Previous'),
