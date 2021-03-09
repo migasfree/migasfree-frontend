@@ -100,10 +100,6 @@
         </span>
 
         <span v-else-if="props.column.field == 'status'">
-          <q-icon
-            :name="elementIcon(props.row.status.toLowerCase())"
-            size="sm"
-          />
           {{ props.row.status }}
         </span>
 
