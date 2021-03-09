@@ -122,6 +122,7 @@ export default {
           type: 'pie',
           radius: ['40%', '55%'],
           label: {
+            color: this.$q.dark.isActive ? 'white' : 'black',
             formatter: '{b} ({c}): {per|{d}%}',
             rich: {
               per: {
