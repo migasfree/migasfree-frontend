@@ -33,8 +33,7 @@ import {
   VisualMapComponent
 } from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
-import { parseDate } from 'echarts/lib/util/number'
-import { formatTime } from 'echarts/lib/util/format'
+import { format } from 'echarts/lib/util/time'
 import { date } from 'quasar'
 
 echarts.use([
@@ -75,8 +74,8 @@ export default {
         tooltip: {
           position: 'top',
           formatter: function(p) {
-            const format = formatTime('yyyy-MM-dd', p.data[0])
-            return `${format}: ${p.data[1]}`
+            const formated = format(p.data[0], '{yyyy}-{MM}-{dd}', true)
+            return `${formated}: ${p.data[1]}`
           }
         },
         visualMap: {
@@ -93,7 +92,7 @@ export default {
           left: 30,
           right: 30,
           cellSize: [25, 25],
-          range: [this.start, formatTime('yyyy-MM-dd', Date.now())],
+          range: [this.start, format(Date.now(), '{yyyy}-{MM}-{dd}', true)],
           itemStyle: {
             borderWidth: 0.5,
             color: this.$q.dark.isActive ? '#757575' : '#fff'
