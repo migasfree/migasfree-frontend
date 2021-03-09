@@ -421,39 +421,35 @@
       </div>
     </div>
 
-    <div class="row q-pa-md q-gutter-md">
-      <div class="col-md">
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and add other')"
-          icon="mdi-plus"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('add')"
-        />
-      </div>
-      <div class="col-md">
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and continue editing')"
-          icon="mdi-content-save-edit"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement"
-        />
-      </div>
-      <div class="col-md">
-        <q-btn
-          :label="$gettext('Save')"
-          color="primary"
-          icon="mdi-content-save-move"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('return')"
-        />
-      </div>
+    <div class="row q-pa-md q-gutter-md justify-around">
+      <q-btn
+        flat
+        color="primary"
+        :label="$gettext('Save and add other')"
+        icon="mdi-plus"
+        :loading="loading"
+        :disabled="!isValid || loading"
+        @click="updateElement('add')"
+      />
+
+      <q-btn
+        flat
+        color="primary"
+        :label="$gettext('Save and continue editing')"
+        icon="mdi-content-save-edit"
+        :loading="loading"
+        :disabled="!isValid || loading"
+        @click="updateElement"
+      />
+
+      <q-btn
+        :label="$gettext('Save')"
+        color="primary"
+        icon="mdi-content-save-move"
+        :loading="loading"
+        :disabled="!isValid || loading"
+        @click="updateElement('return')"
+      />
     </div>
 
     <div v-if="$route.params.id && element.id" class="row q-pa-md">
