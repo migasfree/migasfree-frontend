@@ -238,6 +238,10 @@
           >
         </span>
 
+        <span v-else-if="props.column.field == 'sync_end_date'">
+          {{ showDate(props.row.sync_end_date) }}
+        </span>
+
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
         </span>
@@ -278,6 +282,7 @@ import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import { elementMixin } from 'mixins/element'
 import { datagridMixin } from 'mixins/datagrid'
+import { dateMixin } from 'mixins/date'
 
 export default {
   meta() {
@@ -293,7 +298,7 @@ export default {
     Header,
     MigasLink
   },
-  mixins: [elementMixin, datagridMixin],
+  mixins: [elementMixin, datagridMixin, dateMixin],
   data() {
     return {
       title: this.$gettext('Computers'),
@@ -372,10 +377,7 @@ export default {
         },
         {
           label: this.$gettext('Sync end Date'),
-          field: 'sync_end_date',
-          type: 'date',
-          dateInputFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSSSS",
-          dateOutputFormat: 'yyyy-MM-dd HH:mm:ss'
+          field: 'sync_end_date'
         },
         {
           field: 'product_system',
