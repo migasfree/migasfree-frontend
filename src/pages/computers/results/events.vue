@@ -30,77 +30,87 @@
         </template>
       </Header>
 
-      <div class="row q-pa-md">
-        <div class="col-md">
-          <q-btn-toggle
-            v-model="event"
-            spread
-            no-caps
-            toggle-color="primary"
-            :options="[
-              { slot: 'syncs', value: 'syncs' },
-              { slot: 'errors', value: 'errors' },
-              { slot: 'faults', value: 'faults' },
-              { slot: 'statusLogs', value: 'statusLogs' },
-              { slot: 'migrations', value: 'migrations' }
-            ]"
-            @input="updateEvent"
-          >
-            <template #syncs>
-              <q-icon name="mdi-sync" class="vertical-middle" />
-              <span class="vertical-middle">
-                <translate>Synchronizations</translate> ({{
-                  events.syncs.total
-                }})</span
-              >
-            </template>
-
-            <template #errors>
-              <q-icon name="mdi-bug" class="vertical-middle" />
-              <span class="vertical-middle">
-                <translate>Errors</translate> ({{ events.errors.total }})</span
-              >
-            </template>
-
-            <template #faults>
-              <q-icon name="mdi-bomb" class="vertical-middle" />
-              <span class="vertical-middle">
-                <translate>Faults</translate> ({{ events.faults.total }})</span
-              >
-            </template>
-
-            <template #statusLogs>
-              <q-icon name="mdi-flag-variant" class="vertical-middle" />
-              <span class="vertical-middle">
-                <translate>Status Logs</translate> ({{
-                  events.statusLogs.total
-                }})</span
-              >
-            </template>
-
-            <template #migrations>
-              <q-icon name="mdi-map-marker-right" class="vertical-middle" />
-              <span class="vertical-middle">
-                <translate>Migrations</translate> ({{
-                  events.migrations.total
-                }})</span
-              >
-            </template>
-          </q-btn-toggle>
-        </div>
+      <div v-if="loading" class="text-center">
+        <q-spinner-dots color="primary" size="3em" />
       </div>
 
-      <div class="row q-pa-md">
-        <div class="col-12">
-          <HeatMap
-            :title="current.title"
-            :data="current.data"
-            :total="current.total"
-            :start="showDate(computer.created_at, 'YYYY-MM-DD')"
-            @getDate="showItems"
-          />
+      <template v-else>
+        <div class="row q-pa-md">
+          <div class="col-md">
+            <q-btn-toggle
+              v-model="event"
+              spread
+              no-caps
+              toggle-color="primary"
+              :options="[
+                { slot: 'syncs', value: 'syncs' },
+                { slot: 'errors', value: 'errors' },
+                { slot: 'faults', value: 'faults' },
+                { slot: 'statusLogs', value: 'statusLogs' },
+                { slot: 'migrations', value: 'migrations' }
+              ]"
+              @input="updateEvent"
+            >
+              <template #syncs>
+                <q-icon name="mdi-sync" class="vertical-middle" />
+                <span class="vertical-middle">
+                  <translate>Synchronizations</translate> ({{
+                    events.syncs.total
+                  }})</span
+                >
+              </template>
+
+              <template #errors>
+                <q-icon name="mdi-bug" class="vertical-middle" />
+                <span class="vertical-middle">
+                  <translate>Errors</translate> ({{
+                    events.errors.total
+                  }})</span
+                >
+              </template>
+
+              <template #faults>
+                <q-icon name="mdi-bomb" class="vertical-middle" />
+                <span class="vertical-middle">
+                  <translate>Faults</translate> ({{
+                    events.faults.total
+                  }})</span
+                >
+              </template>
+
+              <template #statusLogs>
+                <q-icon name="mdi-flag-variant" class="vertical-middle" />
+                <span class="vertical-middle">
+                  <translate>Status Logs</translate> ({{
+                    events.statusLogs.total
+                  }})</span
+                >
+              </template>
+
+              <template #migrations>
+                <q-icon name="mdi-map-marker-right" class="vertical-middle" />
+                <span class="vertical-middle">
+                  <translate>Migrations</translate> ({{
+                    events.migrations.total
+                  }})</span
+                >
+              </template>
+            </q-btn-toggle>
+          </div>
         </div>
-      </div>
+
+        <div class="row q-pa-md">
+          <div class="col-12">
+            <HeatMap
+              :title="current.title"
+              :data="current.data"
+              :total="current.total"
+              :start="showDate(computer.created_at, 'YYYY-MM-DD')"
+              @getDate="showItems"
+            />
+          </div>
+        </div>
+      </template>
 
       <div v-if="items.length > 0" id="events" class="q-pa-md">
         <q-toolbar class="bg-primary text-white shadow-2">
@@ -211,7 +221,8 @@ export default {
         }
       },
       items: [],
-      itemsDate: null
+      itemsDate: null,
+      loading: false
     }
   },
   async mounted() {
@@ -243,6 +254,7 @@ export default {
         )
       }
 
+      this.loading = true
       await this.$axios
         .get(`/api/v1/token/stats/syncs/by-day/`, { params: queryString })
         .then((response) => {
@@ -258,6 +270,9 @@ export default {
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
+        })
+        .finally(() => {
+          this.loading = false
         })
 
       await this.$axios
