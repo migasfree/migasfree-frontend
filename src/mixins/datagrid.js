@@ -666,6 +666,41 @@ export const datagridMixin = {
         })
     },
 
+    paramsToBackend(obj) {
+      const ret = {}
+      Object.entries(obj).map(([key, val]) => {
+        const lastUnderscore = key.lastIndexOf('_')
+        const newKey = `${key.substring(0, lastUnderscore)}__${key.substring(
+          lastUnderscore + 1
+        )}`
+        ret[newKey] = val
+      })
+
+      return ret
+    },
+
+    exportAll() {
+      console.log(this.$route.query)
+      this.$axios
+        .get(`/api/v1/token/${this.model}/export/`, {
+          params: this.paramsToBackend(this.$route.query),
+          responseType: 'blob'
+        })
+        .then((response) => {
+          let fileURL = window.URL.createObjectURL(new Blob([response.data]))
+          let fileLink = document.createElement('a')
+
+          fileLink.href = fileURL
+          fileLink.setAttribute('download', `${this.model}.csv`)
+          document.body.appendChild(fileLink)
+
+          fileLink.click()
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+    },
+
     updateChecked(id, value, reload = true) {
       this.$axios
         .patch(`/api/v1/token/${this.model}/${id}/`, { checked: value })
