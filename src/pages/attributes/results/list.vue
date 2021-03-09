@@ -2,7 +2,18 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :results="totalRecords" />
+    <Header :title="title" :results="totalRecords">
+      <template #append>
+        <q-btn
+          class="q-ma-md float-right"
+          color="info"
+          text-color="black"
+          :label="$gettext('Export')"
+          icon="mdi-file-export"
+          @click="exportAll"
+        />
+      </template>
+    </Header>
 
     <SearchFilter
       v-model="tableFilters.search"
