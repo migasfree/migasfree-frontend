@@ -21,9 +21,9 @@
           <q-chip
             v-if="results !== null"
             square
+            outline
             size="xl"
             color="info"
-            text-color="black"
             >{{ results }}</q-chip
           >
           <slot name="append"></slot>
