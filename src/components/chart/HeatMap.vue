@@ -127,18 +127,22 @@ export default {
     }
   },
   watch: {
-    data: function(val, oldVal) {
-      this.options.series.data = val
-      if (val.length > 0) {
-        this.options.visualMap.max = Math.max.apply(
-          Math,
-          val.map(function(o) {
-            return o[1]
-          })
-        )
-      } else {
-        this.options.visualMap.max = 1
-      }
+    data: {
+      handler: function(val, oldVal) {
+        this.$set(this.options.series, 'data', val)
+        if (val.length > 0) {
+          this.options.visualMap.max = Math.max.apply(
+            Math,
+            val.map(function(o) {
+              return o[1]
+            })
+          )
+        } else {
+          this.options.visualMap.max = 1
+        }
+      },
+      deep: true,
+      immediate: true
     },
 
     '$q.dark.isActive'(val) {
