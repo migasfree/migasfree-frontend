@@ -87,7 +87,8 @@
                 :label="$gettext('Change Icon')"
                 accept="image/*"
                 @rejected="onRejected"
-              />
+                ><template #prepend><q-icon name="mdi-image" /> </template
+              ></q-file>
             </div>
 
             <div class="col-6">

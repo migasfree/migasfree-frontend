@@ -91,7 +91,9 @@
               outlined
               counter
               :label="$gettext('Select one file')"
-            />
+              ><template #prepend
+                ><q-icon name="mdi-package-variant" /> </template
+            ></q-file>
           </div>
         </div>
 

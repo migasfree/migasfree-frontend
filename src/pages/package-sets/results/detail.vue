@@ -127,7 +127,9 @@
                 multiple
                 append
                 :label="$gettext('Add more Packages')"
-              />
+                ><template #prepend
+                  ><q-icon name="mdi-package-variant" /> </template
+              ></q-file>
             </div>
           </div>
         </template>
