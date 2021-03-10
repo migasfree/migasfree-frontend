@@ -81,7 +81,10 @@
               option-label="name"
               lazy-rules
               :rules="[(val) => !!val || $gettext('* Required')]"
-            />
+              ><template #prepend>
+                <q-icon name="mdi-format-list-bulleted-type" />
+              </template>
+            </q-select>
           </div>
 
           <div class="col-6 col-md">
