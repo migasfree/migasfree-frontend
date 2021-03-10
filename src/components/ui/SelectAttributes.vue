@@ -141,7 +141,11 @@ export default {
           this.$axios
             .get(`/api/v1/token/${this.model}/${val.id}/badge/`)
             .then((response) => {
-              Object.assign(this.value[key], response.data)
+              this.$set(
+                this.value,
+                key,
+                Object.assign({}, this.value[key], response.data)
+              )
               this.$set(this.value[key], 'description', response.data.text)
             })
         }
