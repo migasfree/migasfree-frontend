@@ -116,7 +116,10 @@ export default {
   },
   computed: {
     isChartVisible() {
-      return Object.keys(this.data).length === 0 || this.data.series.length > 0
+      return (
+        Object.keys(this.data).length > 0 ||
+        ('series' in this.data && this.data.series.length > 0)
+      )
     },
 
     noData() {
@@ -129,14 +132,16 @@ export default {
         if ('series' in val) this.$set(this.options, 'series', val.series)
         if ('xData' in val) this.$set(this.options.xAxis, 'data', val.xData)
       },
-      deep: true
+      deep: true,
+      immediate: true
     },
 
     initialData: {
       handler: function(val, oldVal) {
         this.data = val
       },
-      deep: true
+      deep: true,
+      immediate: true
     },
 
     '$q.dark.isActive'(val) {
