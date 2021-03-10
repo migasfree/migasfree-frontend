@@ -12,7 +12,7 @@
           icon="mdi-account-cog"
         />
         <q-btn
-          class="q-ma-md"
+          class="q-ma-sm float-right"
           :label="$gettext('Change Password')"
           color="primary"
           icon="mdi-account-key"
@@ -41,7 +41,11 @@
               :hint="$gettext('Only letters, digits and @/./+/-/_')"
               lazy-rules
               :rules="[(val) => !!val || $gettext('* Required')]"
-            />
+            >
+              <template #prepend>
+                <q-icon name="mdi-account-cog" />
+              </template>
+            </q-input>
           </div>
         </div>
 
@@ -150,6 +154,10 @@
               option-value="id"
               option-label="name"
             >
+              <template #prepend>
+                <q-icon name="mdi-account-group" />
+              </template>
+
               <template #selected-item="scope">
                 <q-chip
                   removable
