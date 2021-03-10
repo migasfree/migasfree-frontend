@@ -1,10 +1,10 @@
 <template>
   <div class="row">
-    <q-item class="col-12">
+    <q-item class="col-12 items-baseline">
       <template v-if="addRoutes.length > 0">
         <q-item-section v-for="(item, index) in addRoutes" :key="index" avatar>
           <q-btn
-            fab-mini
+            round
             dark
             color="primary"
             icon="mdi-plus"
@@ -16,16 +16,11 @@
       </template>
 
       <q-item-section>
-        <h2 class="text-h3">
+        <h2 class="text-h4">
           {{ title }}
-          <q-chip
-            v-if="results !== null"
-            square
-            outline
-            size="xl"
-            color="info"
-            >{{ results }}</q-chip
-          >
+          <q-chip v-if="results !== null" outline size="lg" color="info">{{
+            results
+          }}</q-chip>
           <slot name="append"></slot>
         </h2>
       </q-item-section>
