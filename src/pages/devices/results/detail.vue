@@ -91,14 +91,17 @@
               v-if="element.model"
               v-model="element.connection"
               outlined
-              :label="$gettext('Connections')"
+              :label="$gettext('Connection')"
               :options="element.model.connections"
               option-value="id"
               option-label="name"
               lazy-rules
               :rules="[(val) => !!val || $gettext('* Required')]"
               @input="localConnectionFields"
-            />
+              ><template #prepend>
+                <q-icon name="mdi-connection" />
+              </template>
+            </q-select>
           </div>
         </div>
       </q-card-section>
