@@ -29,7 +29,11 @@
               option-label="name"
               lazy-rules
               :rules="[(val) => !!val || $gettext('* Required')]"
-            />
+            >
+              <template #prepend>
+                <q-icon name="mdi-devices" />
+              </template>
+            </q-select>
           </div>
 
           <div class="col-6 col-md">
@@ -42,7 +46,11 @@
               option-label="name"
               lazy-rules
               :rules="[(val) => !!val || $gettext('* Required')]"
-            />
+            >
+              <template #prepend>
+                <q-icon name="mdi-factory" />
+              </template>
+            </q-select>
           </div>
         </div>
 
@@ -58,7 +66,11 @@
               option-label="name"
               lazy-rules
               :rules="[(val) => !!val || $gettext('* Required')]"
-            />
+            >
+              <template #prepend>
+                <q-icon name="mdi-connection" />
+              </template>
+            </q-select>
           </div>
 
           <div class="col-6 col-md">
@@ -102,7 +114,11 @@
                     option-label="name"
                     lazy-rules
                     :rules="[(val) => !!val || $gettext('* Required')]"
-                  />
+                  >
+                    <template #prepend>
+                      <q-icon name="mdi-sitemap" />
+                    </template>
+                  </q-select>
                 </div>
 
                 <div class="col-md">
@@ -115,7 +131,11 @@
                     option-label="name"
                     lazy-rules
                     :rules="[(val) => !!val || $gettext('* Required')]"
-                  />
+                  >
+                    <template #prepend>
+                      <q-icon name="mdi-format-list-bulleted-type" />
+                    </template>
+                  </q-select>
                 </div>
               </div>
 
