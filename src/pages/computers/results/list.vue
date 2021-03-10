@@ -5,7 +5,7 @@
     <Header :title="title" :results="totalRecords">
       <template #append>
         <q-btn
-          class="q-ma-md float-right"
+          class="q-ma-sm float-right"
           color="info"
           text-color="black"
           :label="$gettext('Export')"
