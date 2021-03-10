@@ -160,6 +160,8 @@ export default {
           return 'applications'
         case 'attributes':
           return 'features'
+        case 'properties':
+          return 'formulas'
         default:
           return model
       }
