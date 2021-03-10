@@ -137,7 +137,12 @@ export default {
 
     updateAttributes() {
       Object.entries(this.value).map(([key, val]) => {
-        if (!('status' in val)) {
+        if (
+          !('status' in val) &&
+          (val.property_att.prefix === 'CID' ||
+            val.property_att.prefix === 'SET' ||
+            val.property_att.prefix === 'DMN')
+        ) {
           this.$axios
             .get(`/api/v1/token/${this.model}/${val.id}/badge/`)
             .then((response) => {
