@@ -118,6 +118,7 @@
           class="q-ma-xs"
           size="sm"
           color="info"
+          text-color="black"
           icon="mdi-file-export"
           @click="exportData"
           ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
