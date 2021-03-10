@@ -16,6 +16,8 @@
 
     <q-card>
       <q-card-section>
+        <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
+
         <div class="row q-pa-md q-gutter-md">
           <div class="col-6 col-md">
             <q-checkbox
@@ -46,19 +48,23 @@
             />
           </div>
         </div>
+      </q-card-section>
+
+      <q-card-section>
+        <div v-translate class="text-h5 q-mt-sm q-mb-xs">Attributes</div>
 
         <div class="row q-pa-md q-gutter-md">
           <div class="col-6 col-md">
             <SelectAttributes
               v-model="element.included_attributes"
-              :label="$gettext('Included Attributes')"
+              :label="$gettext('Included')"
             />
           </div>
 
           <div class="col-6 col-md">
             <SelectAttributes
               v-model="element.excluded_attributes"
-              :label="$gettext('Excluded Attributes')"
+              :label="$gettext('Excluded')"
             />
           </div>
         </div>
