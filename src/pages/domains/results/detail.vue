@@ -54,14 +54,14 @@
           <div class="col-6 col-md">
             <SelectAttributes
               v-model="element.included_attributes"
-              :label="$gettext('Included Attributes')"
+              :label="$gettext('Included')"
             />
           </div>
 
           <div class="col-6 col-md">
             <SelectAttributes
               v-model="element.excluded_attributes"
-              :label="$gettext('Excluded Attributes')"
+              :label="$gettext('Excluded')"
             />
           </div>
         </div>
