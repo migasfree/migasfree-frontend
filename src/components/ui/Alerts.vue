@@ -26,7 +26,7 @@
           <q-chip
             :label="item.result"
             :color="level(item.level)"
-            text-color="white"
+            :text-color="textColor(item.level)"
           />
         </q-item-section>
       </q-item>
@@ -87,6 +87,15 @@ export default {
       if (value === 'critical') return 'negative'
 
       return value
+    },
+
+    textColor(value) {
+      switch (value) {
+        case 'critical':
+          return 'white'
+        default:
+          return 'black'
+      }
     },
 
     resolveAlertLink(value) {
