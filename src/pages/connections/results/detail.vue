@@ -37,7 +37,10 @@
               option-label="name"
               lazy-rules
               :rules="[(val) => !!val || $gettext('* Required')]"
-            />
+              ><template #prepend>
+                <q-icon name="mdi-devices" />
+              </template>
+            </q-select>
           </div>
         </div>
 
