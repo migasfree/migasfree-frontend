@@ -89,10 +89,10 @@
                 />
 
                 <OverflowList
-                  :label="$gettext('Attributes Sets')"
+                  :label="$gettext('Attribute Sets')"
                   icon="mdi-set-none"
                   :items="onlyAttributeSets"
-                  model="attributes"
+                  model="attribute-sets"
                 />
               </template>
             </q-card-section>
@@ -283,11 +283,19 @@ export default {
         .then((response) => {
           Object.entries(response.data.sync_attributes).map(([key, val]) => {
             if (val.property_att.prefix === 'SET') {
-              this.onlyAttributeSets.push({
-                id: val.id,
-                icon: 'mdi-set-none',
-                value: this.attributeValue(val)
-              })
+              this.$axios
+                .get(`/api/v1/token/attributes/${val.id}/badge/`)
+                .then((response) => {
+                  this.onlyAttributeSets.push({
+                    id: response.data.pk,
+                    icon: 'mdi-set-none',
+                    value: this.attributeValue(val),
+                    summary: response.data.summary
+                  })
+                })
+                .catch((error) => {
+                  this.$store.dispatch('ui/notifyError', error)
+                })
             } else {
               this.onlyAttributes.push({
                 id: val.id,
