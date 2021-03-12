@@ -323,6 +323,40 @@
         </div>
       </div>
 
+      <div v-if="markers.length > 0" class="row q-pa-md q-gutter-md">
+        <div class="col-md">
+          <q-card>
+            <q-card-section>
+              <div v-translate class="text-h5">Locations</div>
+              <pre>{{ markers }}</pre>
+            </q-card-section>
+
+            <q-card-section>
+              <l-map
+                id="map"
+                :zoom="zoom"
+                :center="[markers[0].lat, markers[0].lng]"
+              >
+                <l-tile-layer
+                  :url="url"
+                  :attribution="attribution"
+                ></l-tile-layer>
+                <l-marker
+                  v-for="(item, key) in markers"
+                  :key="key"
+                  :lat-lng="[item.lat, item.lng]"
+                  :icon="iconMarker"
+                >
+                  <l-tooltip :options="{ permanent: true }">
+                    {{ item.tooltip }}</l-tooltip
+                  >
+                </l-marker>
+              </l-map>
+            </q-card-section>
+          </q-card>
+        </div>
+      </div>
+
       <div class="row q-pa-md">
         <q-btn
           flat
@@ -412,7 +446,18 @@ export default {
       faults: {},
       loading: false,
       loadingSync: false,
-      confirmRemove: false
+      confirmRemove: false,
+
+      markers: [],
+      zoom: 12,
+      url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      attribution:
+        '© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      iconMarker: L.icon({
+        iconUrl: require('leaflet/dist/images/marker-icon.png'),
+        iconSize: [32, 40],
+        iconAnchor: [16, 37]
+      })
     }
   },
   computed: {
@@ -449,6 +494,18 @@ export default {
       })
   },
   methods: {
+    setRelated() {
+      Object.entries(this.element.tags).map(([key, val]) => {
+        if (val.latitude !== null) {
+          this.markers.push({
+            lat: val.latitude,
+            lng: val.longitude,
+            tooltip: this.attributeValue(val)
+          })
+        }
+      })
+    },
+
     async loadSyncInfo() {
       this.loadingSync = true
       await this.$axios
@@ -475,6 +532,13 @@ export default {
                 id: val.id,
                 value: this.attributeValue(val)
               })
+              if (val.latitude !== null) {
+                this.markers.push({
+                  lat: val.latitude,
+                  lng: val.longitude,
+                  tooltip: this.attributeValue(val)
+                })
+              }
             }
           })
         })
@@ -554,3 +618,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#map {
+  width: 100%;
+  height: 400px;
+}
+</style>
