@@ -136,6 +136,11 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
+#: ./src/pages/attributes/results/detail.vue:106
+#: ./src/pages/tags/results/detail.vue:187
+msgid "Add Coordinates"
+msgstr ""
+
 #: ./src/pages/package-sets/results/detail.vue:199
 msgid "Add more Packages"
 msgstr ""
@@ -304,7 +309,7 @@ msgstr ""
 #: ./src/pages/attribute-sets/results/list.vue:26
 #: ./src/pages/attribute-sets/results/list.vue:38
 #: ./src/pages/computers/results/detail.vue:304
-#: ./src/pages/computers/results/simulate.vue:137
+#: ./src/pages/computers/results/simulate.vue:141
 msgid "Attribute Sets"
 msgstr ""
 
@@ -320,7 +325,7 @@ msgstr ""
 #: ./src/pages/attributes/results/list.vue:23
 #: ./src/pages/attributes/results/list.vue:35
 #: ./src/pages/computers/results/detail.vue:534
-#: ./src/pages/computers/results/simulate.vue:125
+#: ./src/pages/computers/results/simulate.vue:129
 #: ./src/pages/devices/results/detail.vue:285
 #: ./src/pages/domains/results/detail.vue:32
 #: ./src/pages/fault-definitions/results/detail.vue:46
@@ -494,9 +499,9 @@ msgstr ""
 msgid "Capacity"
 msgstr ""
 
-#: ./src/pages/computers/results/simulate.vue:82
-#: ./src/pages/computers/results/simulate.vue:78
-#: ./src/pages/computers/results/simulate.vue:16
+#: ./src/pages/computers/results/simulate.vue:120
+#: ./src/pages/computers/results/simulate.vue:116
+#: ./src/pages/computers/results/simulate.vue:54
 msgid "Capture Hardware"
 msgstr ""
 
@@ -930,7 +935,7 @@ msgstr ""
 #: ./src/pages/attribute-sets/results/detail.vue:160
 #: ./src/pages/attribute-sets/results/list.vue:116
 #: ./src/pages/attribute-sets/results/list.vue:178
-#: ./src/pages/attributes/results/detail.vue:162
+#: ./src/pages/attributes/results/detail.vue:166
 #: ./src/pages/attributes/results/list.vue:124
 #: ./src/pages/attributes/results/list.vue:195
 #: ./src/pages/capabilities/results/detail.vue:103
@@ -1019,7 +1024,7 @@ msgstr ""
 #: ./src/pages/stores/results/list.vue:166
 #: ./src/pages/syncs/results/list.vue:162
 #: ./src/pages/syncs/results/list.vue:248
-#: ./src/pages/tags/results/detail.vue:253
+#: ./src/pages/tags/results/detail.vue:257
 #: ./src/pages/tags/results/list.vue:125
 #: ./src/pages/tags/results/list.vue:196
 #: ./src/pages/user-profiles/results/detail.vue:477
@@ -1038,7 +1043,7 @@ msgstr ""
 
 #: ./src/components/ui/AppMenu.vue:123
 #: ./src/components/ui/SearchBox.vue:14
-#: ./src/pages/computers/results/simulate.vue:178
+#: ./src/pages/computers/results/simulate.vue:182
 #: ./src/pages/deployments/index.vue:21
 #: ./src/pages/deployments/index.vue:33
 #: ./src/pages/deployments/results/detail.vue:60
@@ -1132,7 +1137,7 @@ msgstr ""
 #: ./src/components/ui/SearchBox.vue:30
 #: ./src/pages/capabilities/results/detail.vue:39
 #: ./src/pages/capabilities/results/list.vue:30
-#: ./src/pages/computers/results/simulate.vue:204
+#: ./src/pages/computers/results/simulate.vue:298
 #: ./src/pages/connections/results/detail.vue:39
 #: ./src/pages/connections/results/list.vue:30
 #: ./src/pages/device-types/results/detail.vue:39
@@ -1436,7 +1441,7 @@ msgstr ""
 msgid "Faults / Month"
 msgstr ""
 
-#: ./src/pages/computers/results/simulate.vue:172
+#: ./src/pages/computers/results/simulate.vue:176
 msgid "Faults Definitions"
 msgstr ""
 
@@ -1598,11 +1603,6 @@ msgstr ""
 #: ./src/pages/computers/results/hardware.vue:94
 #: ./src/pages/computers/results/list.vue:338
 msgid "Hardware Information"
-msgstr ""
-
-#: ./src/pages/attributes/results/detail.vue:103
-#: ./src/pages/tags/results/detail.vue:184
-msgid "Hide Map"
 msgstr ""
 
 #: ./src/components/computer/Software.vue:56
@@ -2029,7 +2029,7 @@ msgstr ""
 
 #: ./src/components/ui/BooleanView.vue:4
 #: ./src/pages/attribute-sets/results/list.vue:76
-#: ./src/pages/computers/results/simulate.vue:226
+#: ./src/pages/computers/results/simulate.vue:320
 #: ./src/pages/deployments/results/list.vue:115
 #: ./src/pages/errors/results/list.vue:111
 #: ./src/pages/fault-definitions/results/list.vue:74
@@ -2218,13 +2218,13 @@ msgid "Packages List"
 msgstr ""
 
 #: ./src/pages/applications/results/detail.vue:276
-#: ./src/pages/computers/results/simulate.vue:184
+#: ./src/pages/computers/results/simulate.vue:195
 #: ./src/pages/deployments/results/detail.vue:473
 #: ./src/pages/models/results/detail.vue:240
 msgid "Packages to Install"
 msgstr ""
 
-#: ./src/pages/computers/results/simulate.vue:189
+#: ./src/pages/computers/results/simulate.vue:238
 msgid "Packages to Install (by policies)"
 msgstr ""
 
@@ -2232,11 +2232,11 @@ msgstr ""
 msgid "Packages to Remove"
 msgstr ""
 
-#: ./src/pages/computers/results/simulate.vue:194
+#: ./src/pages/computers/results/simulate.vue:250
 msgid "Packages to Uninstall"
 msgstr ""
 
-#: ./src/pages/computers/results/simulate.vue:199
+#: ./src/pages/computers/results/simulate.vue:293
 msgid "Packages to Uninstall (by policies)"
 msgstr ""
 
@@ -2462,6 +2462,11 @@ msgstr ""
 msgid "Relevance to the organization"
 msgstr ""
 
+#: ./src/pages/attributes/results/detail.vue:105
+#: ./src/pages/tags/results/detail.vue:186
+msgid "Remove Coordinates"
+msgstr ""
+
 #: ./src/pages/computers/replacement.vue:125
 #: ./src/pages/devices/replacement.vue:124
 msgid "Replace"
@@ -2571,7 +2576,7 @@ msgstr ""
 
 #: ./src/pages/applications/results/detail.vue:322
 #: ./src/pages/attribute-sets/results/detail.vue:141
-#: ./src/pages/attributes/results/detail.vue:146
+#: ./src/pages/attributes/results/detail.vue:150
 #: ./src/pages/capabilities/results/detail.vue:84
 #: ./src/pages/connections/results/detail.vue:118
 #: ./src/pages/deployments/results/detail.vue:623
@@ -2595,7 +2600,7 @@ msgstr ""
 #: ./src/pages/scopes/results/detail.vue:199
 #: ./src/pages/stamps/results/detail.vue:140
 #: ./src/pages/stores/results/detail.vue:105
-#: ./src/pages/tags/results/detail.vue:234
+#: ./src/pages/tags/results/detail.vue:238
 #: ./src/pages/user-profiles/results/detail.vue:458
 msgid "Save"
 msgstr ""
@@ -2623,7 +2628,7 @@ msgstr ""
 #: ./src/pages/scopes/results/detail.vue:183
 #: ./src/pages/stamps/results/detail.vue:124
 #: ./src/pages/stores/results/detail.vue:89
-#: ./src/pages/tags/results/detail.vue:218
+#: ./src/pages/tags/results/detail.vue:222
 #: ./src/pages/user-profiles/results/detail.vue:442
 msgid "Save and add other"
 msgstr ""
@@ -2633,7 +2638,7 @@ msgstr ""
 #: ./src/components/computer/Info.vue:14
 #: ./src/pages/applications/results/detail.vue:315
 #: ./src/pages/attribute-sets/results/detail.vue:134
-#: ./src/pages/attributes/results/detail.vue:138
+#: ./src/pages/attributes/results/detail.vue:142
 #: ./src/pages/capabilities/results/detail.vue:77
 #: ./src/pages/computers/results/detail.vue:416
 #: ./src/pages/connections/results/detail.vue:111
@@ -2656,7 +2661,7 @@ msgstr ""
 #: ./src/pages/scopes/results/detail.vue:192
 #: ./src/pages/stamps/results/detail.vue:133
 #: ./src/pages/stores/results/detail.vue:98
-#: ./src/pages/tags/results/detail.vue:227
+#: ./src/pages/tags/results/detail.vue:231
 #: ./src/pages/user-profiles/results/detail.vue:451
 msgid "Save and continue editing"
 msgstr ""
@@ -2726,6 +2731,7 @@ msgstr ""
 
 #: ./src/pages/computers/results/simulate.vue:18
 #: ./src/pages/computers/results/simulate.vue:43
+#: ./src/pages/computers/results/simulate.vue:47
 msgid "Simulate Synchronization"
 msgstr ""
 
@@ -2936,7 +2942,7 @@ msgstr ""
 #: ./src/components/computer/ReplacementInfo.vue:14
 #: ./src/components/ui/AppMenu.vue:192
 #: ./src/pages/computers/results/detail.vue:253
-#: ./src/pages/computers/results/simulate.vue:131
+#: ./src/pages/computers/results/simulate.vue:135
 #: ./src/pages/tags/index.vue:20
 #: ./src/pages/tags/index.vue:32
 #: ./src/pages/tags/results/detail.vue:45
@@ -3171,11 +3177,6 @@ msgstr ""
 msgid "View assigned Computers"
 msgstr ""
 
-#: ./src/pages/attributes/results/detail.vue:103
-#: ./src/pages/tags/results/detail.vue:184
-msgid "View Map"
-msgstr ""
-
 #: ./src/pages/computers/results/list.vue:162
 msgid "Virtual"
 msgstr ""
@@ -3221,7 +3222,7 @@ msgstr ""
 
 #: ./src/components/ui/BooleanView.vue:2
 #: ./src/pages/attribute-sets/results/list.vue:75
-#: ./src/pages/computers/results/simulate.vue:225
+#: ./src/pages/computers/results/simulate.vue:319
 #: ./src/pages/deployments/results/list.vue:114
 #: ./src/pages/errors/results/list.vue:110
 #: ./src/pages/fault-definitions/results/list.vue:73
