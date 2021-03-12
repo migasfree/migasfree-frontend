@@ -328,7 +328,6 @@
           <q-card>
             <q-card-section>
               <div v-translate class="text-h5">Locations</div>
-              <pre>{{ markers }}</pre>
             </q-card-section>
 
             <q-card-section>
