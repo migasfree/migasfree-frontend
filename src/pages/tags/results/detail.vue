@@ -114,7 +114,11 @@
       <q-card-section class="q-mx-md">
         <q-toggle
           v-model="viewMap"
-          :label="viewMap ? $gettext('Hide Map') : $gettext('View Map')"
+          :label="
+            viewMap
+              ? $gettext('Remove Coordinates')
+              : $gettext('Add Coordinates')
+          "
           :false-value="false"
           :true-value="true"
           @input="updateCoords"
@@ -287,18 +291,13 @@ export default {
     },
 
     elementData() {
-      let data = {
+      return {
         property_att: this.element.property_att.id,
         value: this.element.value,
-        description: this.element.description
+        description: this.element.description,
+        latitude: this.element.latitude,
+        longitude: this.element.longitude
       }
-
-      if (this.viewMap) {
-        data['latitude'] = this.element.latitude
-        data['longitude'] = this.element.longitude
-      }
-
-      return data
     },
 
     setRelated() {
@@ -316,6 +315,9 @@ export default {
       if (this.viewMap) {
         this.element.latitude = this.coords[0]
         this.element.longitude = this.coords[1]
+      } else {
+        this.element.latitude = null
+        this.element.longitude = null
       }
     },
 
