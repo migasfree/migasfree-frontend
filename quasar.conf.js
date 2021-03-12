@@ -26,7 +26,8 @@ module.exports = function(/* ctx */) {
       'vue-good-table',
       'vue-echarts',
       'pluralize',
-      'markdown'
+      'markdown',
+      'leaflet'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
