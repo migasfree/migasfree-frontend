@@ -25,11 +25,15 @@
         v-close-popup
         v-ripple
         dense
-        clickable
-        :to="item.to"
       >
         <q-item-section>
-          <q-chip outline color="primary" size="md">
+          <q-chip
+            outline
+            color="primary"
+            size="md"
+            clickable
+            @click="$router.push(item.to)"
+          >
             <q-avatar color="primary" text-color="white">{{
               item.count
             }}</q-avatar>
