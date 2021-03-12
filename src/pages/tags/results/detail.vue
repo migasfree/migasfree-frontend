@@ -111,6 +111,27 @@
         </div>
       </q-card-section>
 
+      <q-card-section class="q-mx-md">
+        <q-toggle
+          v-model="viewMap"
+          :label="viewMap ? $gettext('Hide Map') : $gettext('View Map')"
+          :false-value="false"
+          :true-value="true"
+          @input="updateCoords"
+        />
+
+        <l-map
+          v-if="viewMap"
+          id="map"
+          :zoom="zoom"
+          :center="coords"
+          @click="updateMarker"
+        >
+          <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+          <l-marker :lat-lng="coords" :icon="iconMarker"></l-marker>
+        </l-map>
+      </q-card-section>
+
       <q-card-actions class="justify-around">
         <q-btn
           flat
@@ -214,7 +235,19 @@ export default {
       stamps: [],
       computers: [],
       inflicted: [],
-      confirmRemove: false
+      confirmRemove: false,
+
+      viewMap: false,
+      zoom: 16,
+      url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      coords: [0, 0],
+      attribution:
+        '© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      iconMarker: L.icon({
+        iconUrl: require('leaflet/dist/images/marker-icon.png'),
+        iconSize: [32, 40],
+        iconAnchor: [16, 37]
+      })
     }
   },
   computed: {
@@ -254,11 +287,41 @@ export default {
     },
 
     elementData() {
-      return {
+      let data = {
         property_att: this.element.property_att.id,
         value: this.element.value,
         description: this.element.description
       }
+
+      if (this.viewMap) {
+        data['latitude'] = this.element.latitude
+        data['longitude'] = this.element.longitude
+      }
+
+      return data
+    },
+
+    setRelated() {
+      if (this.element.latitude !== null) {
+        this.coords = [this.element.latitude, this.element.longitude]
+        this.viewMap = true
+      } else if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          this.coords = [position.coords.latitude, position.coords.longitude]
+        })
+      }
+    },
+
+    updateCoords() {
+      if (this.viewMap) {
+        this.element.latitude = this.coords[0]
+        this.element.longitude = this.coords[1]
+      }
+    },
+
+    updateMarker($evt) {
+      this.coords = [$evt.latlng.lat, $evt.latlng.lng]
+      this.updateCoords()
     },
 
     filterComputers(val, update, abort) {
@@ -299,3 +362,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#map {
+  width: 100%;
+  height: 400px;
+}
+</style>
