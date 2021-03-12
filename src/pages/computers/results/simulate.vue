@@ -112,7 +112,7 @@
               <template v-else>
                 <OverflowList
                   :label="$gettext('Faults Definitions')"
-                  icon="mdi-alarm-light"
+                  icon="mdi-alert-octagram-outline"
                   :items="simulation.fault_definitions"
                   model="fault-definitions"
                 />
@@ -124,11 +124,48 @@
                   model="deployments"
                 />
 
-                <OverflowList
-                  :label="$gettext('Packages to Install')"
-                  icon="mdi-package-down"
-                  :items="simulation.packages.install"
-                />
+                <q-list v-if="simulation.packages.install.length > 0" bordered>
+                  <q-expansion-item default-opened :content-inset-level="0.5">
+                    <template #header>
+                      <q-item-section avatar>
+                        <q-icon name="mdi-package-down" size="md" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        <translate>Packages to Install</translate>
+                      </q-item-section>
+
+                      <q-item-section side>
+                        <q-btn
+                          flat
+                          icon="mdi-content-copy"
+                          color="primary"
+                          @click.stop="copyContent(simulation.packages.install)"
+                        />
+                      </q-item-section>
+                    </template>
+
+                    <q-list class="overflow">
+                      <q-item
+                        v-for="(item, index) in simulation.packages.install"
+                        :key="index"
+                      >
+                        <q-item-section>
+                          {{ item.package }}
+                        </q-item-section>
+
+                        <q-item-section avatar>
+                          <MigasLink
+                            model="deployments"
+                            :pk="item.id"
+                            icon="mdi-rocket-launch"
+                            :value="item.name"
+                          />
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-expansion-item>
+                </q-list>
 
                 <OverflowList
                   :label="$gettext('Packages to Install (by policies)')"
@@ -136,11 +173,48 @@
                   :items="simulation.policies.install"
                 />
 
-                <OverflowList
-                  :label="$gettext('Packages to Uninstall')"
-                  icon="mdi-package-up"
-                  :items="simulation.packages.remove"
-                />
+                <q-list v-if="simulation.packages.remove.length > 0" bordered>
+                  <q-expansion-item default-opened :content-inset-level="0.5">
+                    <template #header>
+                      <q-item-section avatar>
+                        <q-icon name="mdi-package-up" size="md" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        <translate>Packages to Uninstall</translate>
+                      </q-item-section>
+
+                      <q-item-section side>
+                        <q-btn
+                          flat
+                          icon="mdi-content-copy"
+                          color="primary"
+                          @click.stop="copyContent(simulation.packages.remove)"
+                        />
+                      </q-item-section>
+                    </template>
+
+                    <q-list class="overflow">
+                      <q-item
+                        v-for="(item, index) in simulation.packages.remove"
+                        :key="index"
+                      >
+                        <q-item-section>
+                          {{ item.package }}
+                        </q-item-section>
+
+                        <q-item-section avatar>
+                          <MigasLink
+                            model="deployments"
+                            :pk="item.id"
+                            icon="mdi-rocket-launch"
+                            :value="item.name"
+                          />
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-expansion-item>
+                </q-list>
 
                 <OverflowList
                   :label="$gettext('Packages to Uninstall (by policies)')"
@@ -185,6 +259,7 @@ import OverflowList from 'components/ui/OverflowList'
 import MigasLink from 'components/MigasLink'
 import { elementMixin } from 'mixins/element'
 import { dateMixin } from 'mixins/date'
+import { copyToClipboard } from 'quasar'
 
 export default {
   meta() {
@@ -343,6 +418,18 @@ export default {
         .finally(() => {
           this.loading.output = false
         })
+    },
+
+    copyContent(items) {
+      console.log(items)
+      const content = items.map((item) => item.package)
+
+      copyToClipboard(content.join('\n')).then(() => {
+        this.$store.dispatch(
+          'ui/notifySuccess',
+          this.$gettext('Content copied to clipboard')
+        )
+      })
     }
   }
 }
