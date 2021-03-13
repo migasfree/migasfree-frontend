@@ -28,7 +28,8 @@ import { LineChart } from 'echarts/charts'
 import {
   GridComponent,
   TooltipComponent,
-  LegendComponent
+  LegendComponent,
+  MarkPointComponent
 } from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
 import {
@@ -41,6 +42,7 @@ echarts.use([
   GridComponent,
   TooltipComponent,
   LegendComponent,
+  MarkPointComponent,
   SVGRenderer
 ])
 
