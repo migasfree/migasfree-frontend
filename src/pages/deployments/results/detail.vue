@@ -653,6 +653,25 @@ export default {
                   data: val
                 })
               })
+
+              const today = this.showDate(new Date(Date.now()), 'YYYY-MM-DD')
+              const madeValue =
+                this.element.timeline.computers.error +
+                this.element.timeline.computers.ok
+              series.push({
+                type: 'line',
+                name: this.$gettext('Made'),
+                markPoint: {
+                  data: [
+                    {
+                      coord: [today, madeValue],
+                      label: { show: true },
+                      value: madeValue
+                    }
+                  ]
+                }
+              })
+
               this.stats = {
                 xData: response.data.x_labels,
                 series
