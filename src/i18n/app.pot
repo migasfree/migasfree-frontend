@@ -309,7 +309,7 @@ msgstr ""
 #: ./src/pages/attribute-sets/results/list.vue:26
 #: ./src/pages/attribute-sets/results/list.vue:38
 #: ./src/pages/computers/results/detail.vue:304
-#: ./src/pages/computers/results/simulate.vue:141
+#: ./src/pages/computers/results/simulate.vue:144
 msgid "Attribute Sets"
 msgstr ""
 
@@ -325,7 +325,7 @@ msgstr ""
 #: ./src/pages/attributes/results/list.vue:23
 #: ./src/pages/attributes/results/list.vue:35
 #: ./src/pages/computers/results/detail.vue:534
-#: ./src/pages/computers/results/simulate.vue:129
+#: ./src/pages/computers/results/simulate.vue:132
 #: ./src/pages/devices/results/detail.vue:285
 #: ./src/pages/domains/results/detail.vue:32
 #: ./src/pages/fault-definitions/results/detail.vue:46
@@ -499,9 +499,9 @@ msgstr ""
 msgid "Capacity"
 msgstr ""
 
-#: ./src/pages/computers/results/simulate.vue:120
-#: ./src/pages/computers/results/simulate.vue:116
-#: ./src/pages/computers/results/simulate.vue:54
+#: ./src/pages/computers/results/simulate.vue:138
+#: ./src/pages/computers/results/simulate.vue:134
+#: ./src/pages/computers/results/simulate.vue:72
 msgid "Capture Hardware"
 msgstr ""
 
@@ -629,7 +629,7 @@ msgstr ""
 #: ./src/pages/computers/results/hardware.vue:41
 #: ./src/pages/computers/results/list.vue:28
 #: ./src/pages/computers/results/list.vue:40
-#: ./src/pages/computers/results/simulate.vue:30
+#: ./src/pages/computers/results/simulate.vue:31
 #: ./src/pages/devices/results/list.vue:111
 #: ./src/pages/tags/results/detail.vue:114
 msgid "Computers"
@@ -718,6 +718,7 @@ msgid "container"
 msgstr ""
 
 #: ./src/mixins/copyPaste.js:21
+#: ./src/pages/computers/results/simulate.vue:175
 msgid "Content copied to clipboard"
 msgstr ""
 
@@ -756,7 +757,7 @@ msgstr ""
 #: ./src/pages/computers/results/events.vue:25
 #: ./src/pages/computers/results/hardware.vue:32
 #: ./src/pages/computers/results/list.vue:31
-#: ./src/pages/computers/results/simulate.vue:21
+#: ./src/pages/computers/results/simulate.vue:22
 #: ./src/pages/connections/results/detail.vue:34
 #: ./src/pages/connections/results/list.vue:25
 #: ./src/pages/deployments/index.vue:24
@@ -841,7 +842,7 @@ msgstr ""
 #: ./src/pages/computers/results/events.vue:30
 #: ./src/pages/computers/results/hardware.vue:37
 #: ./src/pages/computers/results/list.vue:36
-#: ./src/pages/computers/results/simulate.vue:26
+#: ./src/pages/computers/results/simulate.vue:27
 #: ./src/pages/errors/index.vue:30
 #: ./src/pages/errors/results/detail.vue:40
 #: ./src/pages/errors/results/list.vue:40
@@ -1043,7 +1044,7 @@ msgstr ""
 
 #: ./src/components/ui/AppMenu.vue:123
 #: ./src/components/ui/SearchBox.vue:14
-#: ./src/pages/computers/results/simulate.vue:182
+#: ./src/pages/computers/results/simulate.vue:185
 #: ./src/pages/deployments/index.vue:21
 #: ./src/pages/deployments/index.vue:33
 #: ./src/pages/deployments/results/detail.vue:60
@@ -1137,7 +1138,7 @@ msgstr ""
 #: ./src/components/ui/SearchBox.vue:30
 #: ./src/pages/capabilities/results/detail.vue:39
 #: ./src/pages/capabilities/results/list.vue:30
-#: ./src/pages/computers/results/simulate.vue:298
+#: ./src/pages/computers/results/simulate.vue:361
 #: ./src/pages/connections/results/detail.vue:39
 #: ./src/pages/connections/results/list.vue:30
 #: ./src/pages/device-types/results/detail.vue:39
@@ -1441,7 +1442,7 @@ msgstr ""
 msgid "Faults / Month"
 msgstr ""
 
-#: ./src/pages/computers/results/simulate.vue:176
+#: ./src/pages/computers/results/simulate.vue:179
 msgid "Faults Definitions"
 msgstr ""
 
@@ -1761,7 +1762,7 @@ msgid "License"
 msgstr ""
 
 #: ./src/components/chart/Pie.vue:99
-#: ./src/components/chart/StackedBar.vue:83
+#: ./src/components/chart/StackedBar.vue:85
 #: ./src/pages/applications/results/list.vue:15
 #: ./src/pages/attribute-sets/results/list.vue:15
 #: ./src/pages/attributes/results/list.vue:19
@@ -1847,6 +1848,10 @@ msgstr ""
 
 #: ./src/components/computer/HardwareResume.vue:88
 msgid "MAC Address"
+msgstr ""
+
+#: ./src/pages/deployments/results/detail.vue:191
+msgid "Made"
 msgstr ""
 
 #: ./src/pages/devices/results/list.vue:87
@@ -2029,7 +2034,7 @@ msgstr ""
 
 #: ./src/components/ui/BooleanView.vue:4
 #: ./src/pages/attribute-sets/results/list.vue:76
-#: ./src/pages/computers/results/simulate.vue:320
+#: ./src/pages/computers/results/simulate.vue:383
 #: ./src/pages/deployments/results/list.vue:115
 #: ./src/pages/errors/results/list.vue:111
 #: ./src/pages/fault-definitions/results/list.vue:74
@@ -2218,13 +2223,16 @@ msgid "Packages List"
 msgstr ""
 
 #: ./src/pages/applications/results/detail.vue:276
-#: ./src/pages/computers/results/simulate.vue:195
+#: ./src/pages/computers/results/simulate.vue:79
+#: ./src/pages/computers/results/simulate.vue:75
+#: ./src/pages/computers/results/simulate.vue:13
+#: ./src/pages/computers/results/simulate.vue:6
 #: ./src/pages/deployments/results/detail.vue:473
 #: ./src/pages/models/results/detail.vue:240
 msgid "Packages to Install"
 msgstr ""
 
-#: ./src/pages/computers/results/simulate.vue:238
+#: ./src/pages/computers/results/simulate.vue:271
 msgid "Packages to Install (by policies)"
 msgstr ""
 
@@ -2232,11 +2240,14 @@ msgstr ""
 msgid "Packages to Remove"
 msgstr ""
 
-#: ./src/pages/computers/results/simulate.vue:250
+#: ./src/pages/computers/results/simulate.vue:111
+#: ./src/pages/computers/results/simulate.vue:107
+#: ./src/pages/computers/results/simulate.vue:45
+#: ./src/pages/computers/results/simulate.vue:6
 msgid "Packages to Uninstall"
 msgstr ""
 
-#: ./src/pages/computers/results/simulate.vue:293
+#: ./src/pages/computers/results/simulate.vue:356
 msgid "Packages to Uninstall (by policies)"
 msgstr ""
 
@@ -2530,7 +2541,7 @@ msgstr ""
 #: ./src/pages/computers/results/events.vue:39
 #: ./src/pages/computers/results/hardware.vue:46
 #: ./src/pages/computers/results/list.vue:45
-#: ./src/pages/computers/results/simulate.vue:35
+#: ./src/pages/computers/results/simulate.vue:36
 #: ./src/pages/connections/results/list.vue:38
 #: ./src/pages/deployments/results/list.vue:42
 #: ./src/pages/device-types/results/list.vue:38
@@ -2729,9 +2740,9 @@ msgstr ""
 msgid "Simulate synchronization"
 msgstr ""
 
-#: ./src/pages/computers/results/simulate.vue:18
-#: ./src/pages/computers/results/simulate.vue:43
-#: ./src/pages/computers/results/simulate.vue:47
+#: ./src/pages/computers/results/simulate.vue:19
+#: ./src/pages/computers/results/simulate.vue:44
+#: ./src/pages/computers/results/simulate.vue:50
 msgid "Simulate Synchronization"
 msgstr ""
 
@@ -2942,7 +2953,7 @@ msgstr ""
 #: ./src/components/computer/ReplacementInfo.vue:14
 #: ./src/components/ui/AppMenu.vue:192
 #: ./src/pages/computers/results/detail.vue:253
-#: ./src/pages/computers/results/simulate.vue:135
+#: ./src/pages/computers/results/simulate.vue:138
 #: ./src/pages/tags/index.vue:20
 #: ./src/pages/tags/index.vue:32
 #: ./src/pages/tags/results/detail.vue:45
@@ -3222,7 +3233,7 @@ msgstr ""
 
 #: ./src/components/ui/BooleanView.vue:2
 #: ./src/pages/attribute-sets/results/list.vue:75
-#: ./src/pages/computers/results/simulate.vue:319
+#: ./src/pages/computers/results/simulate.vue:382
 #: ./src/pages/deployments/results/list.vue:114
 #: ./src/pages/errors/results/list.vue:110
 #: ./src/pages/fault-definitions/results/list.vue:73
