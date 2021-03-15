@@ -167,11 +167,48 @@
                   </q-expansion-item>
                 </q-list>
 
-                <OverflowList
-                  :label="$gettext('Packages to Install (by policies)')"
-                  icon="mdi-package-down"
-                  :items="simulation.policies.install"
-                />
+                <q-list v-if="simulation.policies.install.length > 0" bordered>
+                  <q-expansion-item default-opened :content-inset-level="0.5">
+                    <template #header>
+                      <q-item-section avatar>
+                        <q-icon name="mdi-package-down" size="md" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        <translate>Packages to Install (by policies)</translate>
+                      </q-item-section>
+
+                      <q-item-section side>
+                        <q-btn
+                          flat
+                          icon="mdi-content-copy"
+                          color="primary"
+                          @click.stop="copyContent(simulation.policies.install)"
+                        />
+                      </q-item-section>
+                    </template>
+
+                    <q-list class="overflow">
+                      <q-item
+                        v-for="(item, index) in simulation.policies.install"
+                        :key="index"
+                      >
+                        <q-item-section>
+                          {{ item.package }}
+                        </q-item-section>
+
+                        <q-item-section avatar>
+                          <MigasLink
+                            model="policies"
+                            :pk="item.id"
+                            icon="mdi-shield-half-full"
+                            :value="item.name"
+                          />
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-expansion-item>
+                </q-list>
 
                 <q-list v-if="simulation.packages.remove.length > 0" bordered>
                   <q-expansion-item default-opened :content-inset-level="0.5">
@@ -216,11 +253,50 @@
                   </q-expansion-item>
                 </q-list>
 
-                <OverflowList
-                  :label="$gettext('Packages to Uninstall (by policies)')"
-                  icon="mdi-package-up"
-                  :items="simulation.policies.remove"
-                />
+                <q-list v-if="simulation.policies.remove.length > 0" bordered>
+                  <q-expansion-item default-opened :content-inset-level="0.5">
+                    <template #header>
+                      <q-item-section avatar>
+                        <q-icon name="mdi-package-up" size="md" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        <translate
+                          >Packages to Uninstall (by policies)</translate
+                        >
+                      </q-item-section>
+
+                      <q-item-section side>
+                        <q-btn
+                          flat
+                          icon="mdi-content-copy"
+                          color="primary"
+                          @click.stop="copyContent(simulation.policies.remove)"
+                        />
+                      </q-item-section>
+                    </template>
+
+                    <q-list class="overflow">
+                      <q-item
+                        v-for="(item, index) in simulation.policies.remove"
+                        :key="index"
+                      >
+                        <q-item-section>
+                          {{ item.package }}
+                        </q-item-section>
+
+                        <q-item-section avatar>
+                          <MigasLink
+                            model="policies"
+                            :pk="item.id"
+                            icon="mdi-shield-half-full"
+                            :value="item.name"
+                          />
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-expansion-item>
+                </q-list>
 
                 <OverflowList
                   :label="$gettext('Devices')"
