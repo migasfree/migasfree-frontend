@@ -16,8 +16,10 @@
 
     <q-card>
       <q-card-section>
+        <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
+
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-md">
             <q-select
               v-model="element.property_att"
               outlined
@@ -30,7 +32,7 @@
             />
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-md">
             <q-input
               v-model="element.value"
               outlined
@@ -42,7 +44,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-12">
+          <div class="col-md">
             <q-input
               v-model="element.description"
               outlined
@@ -53,7 +55,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-md">
             <q-select
               v-model="element.computers"
               outlined
@@ -100,7 +102,7 @@
             </q-select>
           </div>
 
-          <div v-if="element.id && inflicted.length > 0" class="col-6 col-md">
+          <div v-if="element.id && inflicted.length > 0" class="col-md">
             <OverflowList
               :label="$gettext('Inflicted Computers')"
               icon="mdi-desktop-classic"
@@ -111,7 +113,9 @@
         </div>
       </q-card-section>
 
-      <q-card-section class="q-mx-md">
+      <q-card-section>
+        <div v-translate class="text-h5 q-mt-sm q-mb-xs">Location</div>
+
         <q-toggle
           v-model="viewMap"
           :label="
@@ -124,16 +128,45 @@
           @input="updateCoords"
         />
 
-        <l-map
-          v-if="viewMap"
-          id="map"
-          :zoom="zoom"
-          :center="coords"
-          @click="updateMarker"
-        >
-          <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-          <l-marker :lat-lng="coords" :icon="iconMarker"></l-marker>
-        </l-map>
+        <template v-if="viewMap">
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-md">
+              <q-input
+                v-model="element.latitude"
+                outlined
+                :label="$gettext('Latitude')"
+                @input="updateMapCoords"
+              />
+            </div>
+
+            <div class="col-md">
+              <q-input
+                v-model="element.longitude"
+                outlined
+                :label="$gettext('Longitude')"
+                @input="updateMapCoords"
+              />
+            </div>
+          </div>
+
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-md">
+              <l-map
+                v-if="viewMap"
+                id="map"
+                :zoom="zoom"
+                :center="coords"
+                @click="updateMarker"
+              >
+                <l-tile-layer
+                  :url="url"
+                  :attribution="attribution"
+                ></l-tile-layer>
+                <l-marker :lat-lng="coords" :icon="iconMarker"></l-marker>
+              </l-map>
+            </div>
+          </div>
+        </template>
       </q-card-section>
 
       <q-card-actions class="justify-around">
@@ -324,6 +357,10 @@ export default {
     updateMarker($evt) {
       this.coords = [$evt.latlng.lat, $evt.latlng.lng]
       this.updateCoords()
+    },
+
+    updateMapCoords() {
+      this.coords = [this.element.latitude, this.element.longitude]
     },
 
     filterComputers(val, update, abort) {
