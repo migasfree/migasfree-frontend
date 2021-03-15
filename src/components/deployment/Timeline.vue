@@ -31,27 +31,24 @@
       :value="showing.computers.ok + showing.computers.error"
     >
       <q-icon name="mdi-desktop-classic" class="q-mr-xs" />
-      {{ showing.computers.ok + showing.computers.error }}/{{
-        showing.computers.assigned
-      }}
+      {{ showing.computers.ok + showing.computers.error }}/<q-btn
+        flat
+        padding="xs"
+        color="primary"
+        :label="showing.computers.assigned"
+        :disabled="loading"
+        :loading="loading"
+        @click="goToComputers"
+        ><q-tooltip anchor="top middle" self="bottom middle">{{
+          $gettext('View assigned Computers')
+        }}</q-tooltip></q-btn
+      >
       <q-tooltip
         >{{ $gettext('OK Computers') }}: {{ showing.computers.ok }}<br />{{
           $gettext('Computers with any error')
         }}: {{ showing.computers.error }}</q-tooltip
       >
     </q-circular-progress>
-    <q-btn
-      v-if="showing.computers.assigned"
-      round
-      class="q-ma-md"
-      size="25px"
-      icon="mdi-desktop-classic"
-      color="primary"
-      :disabled="loading"
-      :loading="loading"
-      @click="goToComputers"
-      ><q-tooltip>{{ $gettext('View assigned Computers') }}</q-tooltip></q-btn
-    >
   </div>
 </template>
 
