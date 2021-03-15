@@ -69,8 +69,8 @@ msgstr ""
 msgid "# Create an attribute with the name of computer from bash"
 msgstr ""
 
-#: ./src/pages/computers/results/list.vue:136
-#: ./src/pages/computers/results/list.vue:142
+#: ./src/pages/computers/results/list.vue:137
+#: ./src/pages/computers/results/list.vue:143
 msgid "%{n} bits"
 msgstr ""
 
@@ -80,11 +80,11 @@ msgid_plural "%{n} days, %{s}"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./src/pages/computers/results/list.vue:177
-#: ./src/pages/computers/results/list.vue:183
-#: ./src/pages/computers/results/list.vue:189
-#: ./src/pages/computers/results/list.vue:195
-#: ./src/pages/computers/results/list.vue:201
+#: ./src/pages/computers/results/list.vue:178
+#: ./src/pages/computers/results/list.vue:184
+#: ./src/pages/computers/results/list.vue:190
+#: ./src/pages/computers/results/list.vue:196
+#: ./src/pages/computers/results/list.vue:202
 msgid "%{n} days ago"
 msgstr ""
 
@@ -179,11 +179,11 @@ msgstr ""
 #: ./src/pages/attribute-sets/results/list.vue:72
 #: ./src/pages/attributes/results/list.vue:79
 #: ./src/pages/computers/results/list.vue:84
-#: ./src/pages/computers/results/list.vue:128
-#: ./src/pages/computers/results/list.vue:133
-#: ./src/pages/computers/results/list.vue:151
-#: ./src/pages/computers/results/list.vue:173
-#: ./src/pages/computers/results/list.vue:210
+#: ./src/pages/computers/results/list.vue:129
+#: ./src/pages/computers/results/list.vue:134
+#: ./src/pages/computers/results/list.vue:152
+#: ./src/pages/computers/results/list.vue:174
+#: ./src/pages/computers/results/list.vue:211
 #: ./src/pages/deployments/results/list.vue:98
 #: ./src/pages/deployments/results/list.vue:111
 #: ./src/pages/deployments/results/list.vue:141
@@ -280,12 +280,12 @@ msgstr ""
 msgid "Architecture"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:618
+#: ./src/mixins/datagrid.js:619
 msgid "Are you sure you want to remove all these items?"
 msgstr ""
 
 #: ./src/components/ui/RemoveDialog.vue:22
-#: ./src/mixins/datagrid.js:613
+#: ./src/mixins/datagrid.js:614
 msgid "Are you sure you want to remove this item?"
 msgstr ""
 
@@ -386,7 +386,7 @@ msgstr ""
 msgid "Bus Info"
 msgstr ""
 
-#: ./src/pages/computers/results/list.vue:112
+#: ./src/pages/computers/results/list.vue:114
 msgid "By Architecture"
 msgstr ""
 
@@ -406,15 +406,15 @@ msgstr ""
 msgid "By Install Date (range)"
 msgstr ""
 
-#: ./src/pages/computers/results/list.vue:130
+#: ./src/pages/computers/results/list.vue:212
 msgid "By last sync date"
 msgstr ""
 
-#: ./src/pages/computers/results/list.vue:192
+#: ./src/pages/computers/results/list.vue:203
 msgid "By Last Sync Date (range)"
 msgstr ""
 
-#: ./src/pages/computers/results/list.vue:201
+#: ./src/pages/computers/results/list.vue:179
 msgid "By Machine"
 msgstr ""
 
@@ -422,7 +422,7 @@ msgstr ""
 msgid "By Model"
 msgstr ""
 
-#: ./src/pages/computers/results/list.vue:94
+#: ./src/pages/computers/results/list.vue:96
 #: ./src/pages/errors/results/list.vue:81
 #: ./src/pages/faults/results/list.vue:81
 #: ./src/pages/migrations/results/list.vue:71
@@ -432,6 +432,10 @@ msgstr ""
 
 #: ./src/pages/deployments/results/list.vue:75
 msgid "By Schedule"
+msgstr ""
+
+#: ./src/pages/computers/results/list.vue:133
+msgid "By Serial Number"
 msgstr ""
 
 #: ./src/pages/computers/results/list.vue:150
@@ -449,7 +453,7 @@ msgstr ""
 msgid "By Status"
 msgstr ""
 
-#: ./src/pages/computers/results/list.vue:182
+#: ./src/pages/computers/results/list.vue:193
 #: ./src/pages/errors/results/list.vue:111
 #: ./src/pages/faults/results/list.vue:118
 #: ./src/pages/messages/results/list.vue:72
@@ -468,7 +472,7 @@ msgid "By Uninstall Date (range)"
 msgstr ""
 
 #: ./src/components/ui/RemoveDialog.vue:38
-#: ./src/mixins/datagrid.js:636
+#: ./src/mixins/datagrid.js:637
 msgid "Cancel"
 msgstr ""
 
@@ -531,7 +535,7 @@ msgstr ""
 msgid "Change Scope"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:712
+#: ./src/mixins/datagrid.js:713
 msgid "Changed item check value!"
 msgstr ""
 
@@ -713,7 +717,7 @@ msgstr ""
 msgid "Consumer"
 msgstr ""
 
-#: ./src/pages/computers/results/list.vue:165
+#: ./src/pages/computers/results/list.vue:166
 msgid "container"
 msgstr ""
 
@@ -928,7 +932,7 @@ msgid "Delays count"
 msgstr ""
 
 #: ./src/components/ui/RemoveDialog.vue:46
-#: ./src/mixins/datagrid.js:631
+#: ./src/mixins/datagrid.js:632
 #: ./src/pages/applications/results/detail.vue:244
 #: ./src/pages/applications/results/detail.vue:341
 #: ./src/pages/applications/results/list.vue:114
@@ -943,8 +947,8 @@ msgstr ""
 #: ./src/pages/capabilities/results/list.vue:112
 #: ./src/pages/capabilities/results/list.vue:156
 #: ./src/pages/computers/results/detail.vue:642
-#: ./src/pages/computers/results/list.vue:280
-#: ./src/pages/computers/results/list.vue:394
+#: ./src/pages/computers/results/list.vue:298
+#: ./src/pages/computers/results/list.vue:412
 #: ./src/pages/connections/results/detail.vue:137
 #: ./src/pages/connections/results/list.vue:113
 #: ./src/pages/connections/results/list.vue:166
@@ -1087,7 +1091,7 @@ msgstr ""
 msgid "Description Preview"
 msgstr ""
 
-#: ./src/pages/computers/results/list.vue:156
+#: ./src/pages/computers/results/list.vue:157
 msgid "desktop"
 msgstr ""
 
@@ -1232,7 +1236,7 @@ msgstr ""
 #: ./src/pages/attribute-sets/results/list.vue:98
 #: ./src/pages/attributes/results/list.vue:106
 #: ./src/pages/capabilities/results/list.vue:94
-#: ./src/pages/computers/results/list.vue:262
+#: ./src/pages/computers/results/list.vue:280
 #: ./src/pages/connections/results/list.vue:95
 #: ./src/pages/deployments/results/list.vue:143
 #: ./src/pages/device-types/results/list.vue:94
@@ -1269,7 +1273,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: ./src/pages/computers/results/list.vue:164
+#: ./src/pages/computers/results/list.vue:165
 msgid "emulator"
 msgstr ""
 
@@ -1382,8 +1386,8 @@ msgstr ""
 
 #: ./src/pages/attributes/results/list.vue:45
 #: ./src/pages/attributes/results/list.vue:179
-#: ./src/pages/computers/results/list.vue:65
-#: ./src/pages/computers/results/list.vue:377
+#: ./src/pages/computers/results/list.vue:67
+#: ./src/pages/computers/results/list.vue:395
 #: ./src/pages/projects/results/list.vue:48
 #: ./src/pages/projects/results/list.vue:189
 #: ./src/pages/tags/results/list.vue:46
@@ -1607,7 +1611,7 @@ msgstr ""
 #: ./src/pages/computers/results/hardware.vue:28
 #: ./src/pages/computers/results/hardware.vue:54
 #: ./src/pages/computers/results/hardware.vue:94
-#: ./src/pages/computers/results/list.vue:338
+#: ./src/pages/computers/results/list.vue:356
 msgid "Hardware Information"
 msgstr ""
 
@@ -1711,7 +1715,7 @@ msgstr ""
 msgid "Is Super User?"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:602
+#: ./src/mixins/datagrid.js:603
 msgid "Item deleted!"
 msgstr ""
 
@@ -1731,7 +1735,7 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: ./src/pages/computers/results/list.vue:157
+#: ./src/pages/computers/results/list.vue:158
 msgid "laptop"
 msgstr ""
 
@@ -1777,7 +1781,7 @@ msgstr ""
 #: ./src/pages/attribute-sets/results/list.vue:15
 #: ./src/pages/attributes/results/list.vue:19
 #: ./src/pages/capabilities/results/list.vue:15
-#: ./src/pages/computers/results/list.vue:77
+#: ./src/pages/computers/results/list.vue:85
 #: ./src/pages/connections/results/list.vue:15
 #: ./src/pages/deployments/results/list.vue:29
 #: ./src/pages/device-types/results/list.vue:15
@@ -1963,7 +1967,7 @@ msgstr ""
 msgid "Models List"
 msgstr ""
 
-#: ./src/pages/computers/results/list.vue:79
+#: ./src/pages/computers/results/list.vue:81
 #: ./src/pages/deployments/results/list.vue:60
 #: ./src/pages/errors/results/list.vue:66
 #: ./src/pages/faults/results/list.vue:66
@@ -2301,7 +2305,7 @@ msgstr ""
 msgid "Permissions"
 msgstr ""
 
-#: ./src/pages/computers/results/list.vue:154
+#: ./src/pages/computers/results/list.vue:155
 msgid "Physical"
 msgstr ""
 
@@ -2516,7 +2520,7 @@ msgstr ""
 #: ./src/pages/attribute-sets/results/list.vue:56
 #: ./src/pages/attributes/results/list.vue:64
 #: ./src/pages/capabilities/results/list.vue:52
-#: ./src/pages/computers/results/list.vue:214
+#: ./src/pages/computers/results/list.vue:232
 #: ./src/pages/connections/results/list.vue:53
 #: ./src/pages/deployments/results/list.vue:95
 #: ./src/pages/device-types/results/list.vue:52
@@ -3020,7 +3024,7 @@ msgstr ""
 #: ./src/pages/attribute-sets/results/list.vue:42
 #: ./src/pages/attributes/results/list.vue:42
 #: ./src/pages/capabilities/results/list.vue:34
-#: ./src/pages/computers/results/list.vue:119
+#: ./src/pages/computers/results/list.vue:127
 #: ./src/pages/connections/results/list.vue:38
 #: ./src/pages/deployments/results/list.vue:72
 #: ./src/pages/device-types/results/list.vue:34
@@ -3212,7 +3216,7 @@ msgstr ""
 msgid "View assigned Computers"
 msgstr ""
 
-#: ./src/pages/computers/results/list.vue:162
+#: ./src/pages/computers/results/list.vue:163
 msgid "Virtual"
 msgstr ""
 
@@ -3242,12 +3246,12 @@ msgstr ""
 msgid "with schedule"
 msgstr ""
 
-#: ./src/pages/computers/results/list.vue:174
+#: ./src/pages/computers/results/list.vue:175
 #: ./src/pages/packages-history/results/list.vue:119
 msgid "without date"
 msgstr ""
 
-#: ./src/pages/computers/results/list.vue:211
+#: ./src/pages/computers/results/list.vue:212
 msgid "without inventory"
 msgstr ""
 
