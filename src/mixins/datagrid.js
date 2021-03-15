@@ -545,6 +545,7 @@ export const datagridMixin = {
             case 'product_system':
             case 'has_software_inventory':
             case 'installed_package':
+            case 'serial':
             case 'sync_end_date__gte':
             case 'sync_end_date__lt':
             case 'percent__gte':
@@ -741,6 +742,7 @@ export const datagridMixin = {
             this.tableFilters[key].selected = { from: null, to: null }
             this.$refs[key].reset()
             break
+          case 'serial':
           case 'search':
             this.tableFilters[key] = ''
             break
