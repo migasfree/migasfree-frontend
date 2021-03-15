@@ -432,7 +432,7 @@ export default {
 
         if (project.id > 0) {
           this.$axios
-            .patch(`/api/v1/token/catalog/packages/${project.id}/`, {
+            .patch(`/api/v1/token/catalog/project-packages/${project.id}/`, {
               id: project.id,
               application: this.element.id,
               project: project.project.id,
@@ -446,7 +446,7 @@ export default {
             })
         } else {
           this.$axios
-            .post('/api/v1/token/catalog/packages/', {
+            .post('/api/v1/token/catalog/project-packages/', {
               application: this.element.id,
               project: project.project.id,
               packages_to_install:
@@ -462,7 +462,7 @@ export default {
 
       this.removedProjects.forEach((id) => {
         this.$axios
-          .delete(`/api/v1/token/catalog/packages/${id}/`)
+          .delete(`/api/v1/token/catalog/project-packages/${id}/`)
           .catch((error) => {
             this.$store.dispatch('ui/notifyError', error)
           })
