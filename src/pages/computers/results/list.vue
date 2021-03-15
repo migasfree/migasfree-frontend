@@ -59,25 +59,23 @@
           </div>
 
           <div class="col-12 col-sm-6 col-md-4">
-            <q-select
-              v-model="tableFilters.syncEndDate.selected"
-              :options="tableFilters.syncEndDate.items"
-              :label="$gettext('By last sync date')"
-              dense
+            <q-input
+              v-model="tableFilters.serial"
               outlined
-              option-value="id"
-              option-label="name"
-              @input="onSyncEndDateFilter"
+              dense
+              :label="$gettext('By Serial Number')"
+              @blur="onSerialFilter"
+              @keydown.enter="onSerialFilter"
             >
               <template #before>
                 <q-icon name="mdi-filter" />
               </template>
-            </q-select>
+            </q-input>
           </div>
         </div>
 
         <div class="row q-pa-md q-col-gutter-lg">
-          <div class="col-12 col-sm-6">
+          <div class="col-12 col-sm-6 col-md-4">
             <q-select
               v-model="tableFilters.softwareInventory.selected"
               :options="tableFilters.softwareInventory.items"
@@ -94,7 +92,7 @@
             </q-select>
           </div>
 
-          <div class="col-12 col-sm-6">
+          <div class="col-12 col-sm-6 col-md-4">
             <SelectTree
               ref="statusTree"
               v-model="tableFilters.statusIn.selected"
@@ -102,6 +100,17 @@
               prepend-icon="mdi-filter"
               :options="tableFilters.statusIn.items"
               @select="onStatusInFilter"
+            />
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4">
+            <SelectTree
+              ref="machineTree"
+              v-model="tableFilters.machine.selected"
+              :placeholder="$gettext('By Machine')"
+              prepend-icon="mdi-filter"
+              :options="tableFilters.machine.items"
+              @select="onMachineFilter"
             />
           </div>
         </div>
@@ -128,14 +137,20 @@
           </div>
 
           <div class="col-12 col-sm-6 col-md-4">
-            <SelectTree
-              ref="machineTree"
-              v-model="tableFilters.machine.selected"
-              :placeholder="$gettext('By Machine')"
-              prepend-icon="mdi-filter"
-              :options="tableFilters.machine.items"
-              @select="onMachineFilter"
-            />
+            <q-select
+              v-model="tableFilters.syncEndDate.selected"
+              :options="tableFilters.syncEndDate.items"
+              :label="$gettext('By last sync date')"
+              dense
+              outlined
+              option-value="id"
+              option-label="name"
+              @input="onSyncEndDateFilter"
+            >
+              <template #before>
+                <q-icon name="mdi-filter" />
+              </template>
+            </q-select>
           </div>
         </div>
 
@@ -412,6 +427,7 @@ export default {
       ],
       tableFilters: {
         search: '',
+        serial: '',
         platform: {
           items: [{ id: '', name: this.$gettext('All') }],
           selected: null
@@ -574,6 +590,17 @@ export default {
         })
       })
       this.loadItems()
+    },
+
+    onSerialFilter() {
+      if (this.tableFilters.serial) {
+        this.updateParams({
+          columnFilters: Object.assign(this.serverParams.columnFilters, {
+            serial: this.tableFilters.serial
+          })
+        })
+        this.loadItems()
+      }
     },
 
     async loadFilters() {
