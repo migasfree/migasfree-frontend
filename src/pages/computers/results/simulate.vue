@@ -94,6 +94,13 @@
                   :items="onlyAttributeSets"
                   model="attribute-sets"
                 />
+
+                <OverflowList
+                  :label="$gettext('Domains')"
+                  icon="mdi-earth"
+                  :items="onlyDomains"
+                  model="domains"
+                />
               </template>
             </q-card-section>
           </q-card>
@@ -379,6 +386,7 @@ export default {
       platform: {},
       onlyAttributes: [],
       onlyAttributeSets: [],
+      onlyDomains: [],
       onlyTags: [],
       simulation: {},
       loading: {
@@ -440,6 +448,20 @@ export default {
                   this.onlyAttributeSets.push({
                     id: response.data.pk,
                     icon: 'mdi-set-none',
+                    value: this.attributeValue(val),
+                    summary: response.data.summary
+                  })
+                })
+                .catch((error) => {
+                  this.$store.dispatch('ui/notifyError', error)
+                })
+            } else if (val.property_att.prefix === 'DMN') {
+              this.$axios
+                .get(`/api/v1/token/attributes/${val.id}/badge/`)
+                .then((response) => {
+                  this.onlyDomains.push({
+                    id: response.data.pk,
+                    icon: 'mdi-earth',
                     value: this.attributeValue(val),
                     summary: response.data.summary
                   })
