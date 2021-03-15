@@ -352,9 +352,22 @@
                   :key="key"
                   :lat-lng="[item.lat, item.lng]"
                   :icon="iconMarker"
+                  @click="
+                    $router.push({
+                      name: `${$pluralize.singular(item.model)}-detail`,
+                      params: { id: item.id }
+                    })
+                  "
                 >
-                  <l-tooltip :options="{ permanent: true }">
-                    {{ item.tooltip }}</l-tooltip
+                  <l-tooltip>
+                    {{ item.tooltip }}
+                    <p
+                      v-if="
+                        item.description && item.description !== item.tooltip
+                      "
+                    >
+                      {{ item.description }}
+                    </p></l-tooltip
                   >
                 </l-marker>
               </l-map>
@@ -505,9 +518,12 @@ export default {
       Object.entries(this.element.tags).map(([key, val]) => {
         if (val.latitude !== null) {
           this.markers.push({
+            id: val.id,
+            model: 'tags',
             lat: val.latitude,
             lng: val.longitude,
-            tooltip: this.attributeValue(val)
+            tooltip: this.attributeValue(val),
+            description: val.description
           })
         }
       })
@@ -555,9 +571,12 @@ export default {
               })
               if (val.latitude !== null) {
                 this.markers.push({
+                  id: val.id,
+                  model: 'attributes',
                   lat: val.latitude,
                   lng: val.longitude,
-                  tooltip: this.attributeValue(val)
+                  tooltip: this.attributeValue(val),
+                  description: val.description
                 })
               }
             }
