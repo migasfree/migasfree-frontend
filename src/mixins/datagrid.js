@@ -547,6 +547,8 @@ export const datagridMixin = {
             case 'installed_package':
             case 'sync_end_date__gte':
             case 'sync_end_date__lt':
+            case 'percent__gte':
+            case 'percent__lt':
             case 'score':
             case 'source':
             case 'search':
