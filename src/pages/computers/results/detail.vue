@@ -569,16 +569,17 @@ export default {
                 id: val.id,
                 value: this.attributeValue(val)
               })
-              if (val.latitude !== null) {
-                this.markers.push({
-                  id: val.id,
-                  model: 'attributes',
-                  lat: val.latitude,
-                  lng: val.longitude,
-                  tooltip: this.attributeValue(val),
-                  description: val.description
-                })
-              }
+            }
+
+            if (val.latitude !== null) {
+              this.markers.push({
+                id: val.id,
+                model: 'attributes',
+                lat: val.latitude,
+                lng: val.longitude,
+                tooltip: this.attributeValue(val),
+                description: val.description
+              })
             }
           })
         })
