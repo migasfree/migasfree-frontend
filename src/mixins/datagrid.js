@@ -673,20 +673,26 @@ export const datagridMixin = {
       const ret = {}
       Object.entries(obj).map(([key, val]) => {
         const lastUnderscore = key.lastIndexOf('_')
-        const newKey = `${key.substring(0, lastUnderscore)}__${key.substring(
-          lastUnderscore + 1
-        )}`
-        ret[newKey] = val
+        if (lastUnderscore > 0) {
+          const newKey = `${key.substring(0, lastUnderscore)}__${key.substring(
+            lastUnderscore + 1
+          )}`
+          ret[newKey] = val
+        } else ret[key] = val
       })
 
       return ret
     },
 
     exportAll() {
-      console.log(this.$route.query)
+      const params = this.paramsToBackend(this.$route.query)
+      Object.assign(params, this.queryParams())
+      delete params.page
+      delete params.page_size
+
       this.$axios
         .get(`/api/v1/token/${this.model}/export/`, {
-          params: this.paramsToBackend(this.$route.query),
+          params,
           responseType: 'blob'
         })
         .then((response) => {
