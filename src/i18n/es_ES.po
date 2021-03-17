@@ -494,6 +494,10 @@ msgstr "Capturar el hardware"
 msgid "Category"
 msgstr "Categoría"
 
+#: src/pages/computers/results/detail.vue:612
+msgid "Center Markers"
+msgstr "Centrar marcadores"
+
 #: src/components/ui/UserAccount.vue:13
 msgid "Change Domain"
 msgstr "Cambiar dominio"
@@ -515,7 +519,7 @@ msgstr "Cambiar contraseña"
 msgid "Change Scope"
 msgstr "Cambiar ámbito"
 
-#: src/mixins/datagrid.js:713
+#: src/mixins/datagrid.js:719
 msgid "Changed item check value!"
 msgstr "¡Cambiado el valor de comprobado!"
 
@@ -704,7 +708,7 @@ msgstr "Contraseña actual"
 msgid "Current Situation"
 msgstr "Situación actual"
 
-#: src/pages/computers/results/detail.vue:252
+#: src/pages/computers/results/detail.vue:258
 msgid "Current Situation has been changed!"
 msgstr "¡La situación actual ha cambiado!"
 
@@ -874,7 +878,7 @@ msgstr "Número de demoras"
 #: src/pages/capabilities/results/detail.vue:103
 #: src/pages/capabilities/results/list.vue:112
 #: src/pages/capabilities/results/list.vue:156
-#: src/pages/computers/results/detail.vue:642
+#: src/pages/computers/results/detail.vue:672
 #: src/pages/computers/results/list.vue:298
 #: src/pages/computers/results/list.vue:412
 #: src/pages/connections/results/detail.vue:137
@@ -948,7 +952,7 @@ msgstr "Número de demoras"
 #: src/pages/status-logs/results/list.vue:191
 #: src/pages/stores/results/detail.vue:124
 #: src/pages/stores/results/list.vue:113 src/pages/stores/results/list.vue:166
-#: src/pages/syncs/results/list.vue:162 src/pages/syncs/results/list.vue:248
+#: src/pages/syncs/results/list.vue:165 src/pages/syncs/results/list.vue:251
 #: src/pages/tags/results/detail.vue:298 src/pages/tags/results/list.vue:125
 #: src/pages/tags/results/list.vue:196
 #: src/pages/user-profiles/results/detail.vue:477
@@ -1130,7 +1134,7 @@ msgid "Drivers"
 msgstr "Controladores"
 
 #: src/pages/schedules/results/detail.vue:152
-#: src/pages/syncs/results/list.vue:207
+#: src/pages/syncs/results/list.vue:210
 msgid "Duration"
 msgstr "Duración"
 
@@ -2371,7 +2375,7 @@ msgstr "¡Reemplazo realizado!"
 #: src/pages/schedules/results/list.vue:52 src/pages/scopes/results/list.vue:54
 #: src/pages/stamps/results/list.vue:55
 #: src/pages/status-logs/results/list.vue:93
-#: src/pages/stores/results/list.vue:53 src/pages/syncs/results/list.vue:114
+#: src/pages/stores/results/list.vue:53 src/pages/syncs/results/list.vue:117
 #: src/pages/tags/results/list.vue:65
 #: src/pages/user-profiles/results/list.vue:55
 #: src/pages/users/results/list.vue:51

@@ -514,6 +514,10 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
+#: ./src/pages/computers/results/detail.vue:612
+msgid "Center Markers"
+msgstr ""
+
 #: ./src/components/ui/UserAccount.vue:13
 msgid "Change Domain"
 msgstr ""
@@ -535,7 +539,7 @@ msgstr ""
 msgid "Change Scope"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:713
+#: ./src/mixins/datagrid.js:719
 msgid "Changed item check value!"
 msgstr ""
 
@@ -739,7 +743,7 @@ msgstr ""
 msgid "Current Situation"
 msgstr ""
 
-#: ./src/pages/computers/results/detail.vue:252
+#: ./src/pages/computers/results/detail.vue:258
 msgid "Current Situation has been changed!"
 msgstr ""
 
@@ -946,7 +950,7 @@ msgstr ""
 #: ./src/pages/capabilities/results/detail.vue:103
 #: ./src/pages/capabilities/results/list.vue:112
 #: ./src/pages/capabilities/results/list.vue:156
-#: ./src/pages/computers/results/detail.vue:642
+#: ./src/pages/computers/results/detail.vue:672
 #: ./src/pages/computers/results/list.vue:298
 #: ./src/pages/computers/results/list.vue:412
 #: ./src/pages/connections/results/detail.vue:137
@@ -1027,8 +1031,8 @@ msgstr ""
 #: ./src/pages/stores/results/detail.vue:124
 #: ./src/pages/stores/results/list.vue:113
 #: ./src/pages/stores/results/list.vue:166
-#: ./src/pages/syncs/results/list.vue:162
-#: ./src/pages/syncs/results/list.vue:248
+#: ./src/pages/syncs/results/list.vue:165
+#: ./src/pages/syncs/results/list.vue:251
 #: ./src/pages/tags/results/detail.vue:298
 #: ./src/pages/tags/results/list.vue:125
 #: ./src/pages/tags/results/list.vue:196
@@ -1228,7 +1232,7 @@ msgid "Drivers"
 msgstr ""
 
 #: ./src/pages/schedules/results/detail.vue:152
-#: ./src/pages/syncs/results/list.vue:207
+#: ./src/pages/syncs/results/list.vue:210
 msgid "Duration"
 msgstr ""
 
@@ -2548,7 +2552,7 @@ msgstr ""
 #: ./src/pages/stamps/results/list.vue:55
 #: ./src/pages/status-logs/results/list.vue:93
 #: ./src/pages/stores/results/list.vue:53
-#: ./src/pages/syncs/results/list.vue:114
+#: ./src/pages/syncs/results/list.vue:117
 #: ./src/pages/tags/results/list.vue:65
 #: ./src/pages/user-profiles/results/list.vue:55
 #: ./src/pages/users/results/list.vue:51
