@@ -266,5 +266,6 @@ export default {
 #map {
   width: 100%;
   aspect-ratio: 16 / 9;
+  height: 400px;
 }
 </style>
