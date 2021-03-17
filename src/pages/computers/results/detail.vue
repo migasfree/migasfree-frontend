@@ -340,13 +340,30 @@
             <q-card-section>
               <l-map
                 id="map"
+                ref="map"
                 :zoom="zoom"
                 :center="[markers[0].lat, markers[0].lng]"
+                @ready="centerMarkers"
               >
                 <l-tile-layer
                   :url="url"
                   :attribution="attribution"
                 ></l-tile-layer>
+
+                <l-control position="topright">
+                  <q-btn
+                    icon="mdi-crosshairs-gps"
+                    padding="xs"
+                    color="white"
+                    text-color="black"
+                    size="md"
+                    @click="centerMarkers"
+                    ><q-tooltip>{{
+                      $gettext('Center Markers')
+                    }}</q-tooltip></q-btn
+                  >
+                </l-control>
+
                 <l-marker
                   v-for="(item, key) in markers"
                   :key="key"
@@ -360,15 +377,16 @@
                   "
                 >
                   <l-tooltip>
-                    {{ item.tooltip }}
+                    <p>
+                      <strong>{{ item.tooltip }}</strong>
+                    </p>
                     <p
                       v-if="
                         item.description && item.description !== item.tooltip
                       "
-                    >
-                      {{ item.description }}
-                    </p></l-tooltip
-                  >
+                      v-html="item.description"
+                    ></p
+                  ></l-tooltip>
                 </l-marker>
               </l-map>
             </q-card-section>
@@ -524,6 +542,8 @@ export default {
             lng: val.longitude,
             tooltip: this.attributeValue(val),
             description: val.description
+              ? val.description.replaceAll('\n', '<br />')
+              : null
           })
         }
       })
@@ -579,7 +599,10 @@ export default {
                 lng: val.longitude,
                 tooltip: this.attributeValue(val),
                 description: val.description
+                  ? val.description.replaceAll('\n', '<br />')
+                  : null
               })
+              this.centerMarkers()
             }
           })
         })
@@ -655,6 +678,18 @@ export default {
           this.$store.dispatch('ui/notifyError', error)
         })
         .finally(() => (this.loading = false))
+    },
+
+    centerMarkers() {
+      if (this.markers.length) {
+        this.$nextTick(() => {
+          this.$refs.map.mapObject.fitBounds(
+            this.markers.map((m) => {
+              return [m.lat, m.lng]
+            })
+          )
+        })
+      }
     }
   }
 }
