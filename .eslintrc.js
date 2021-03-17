@@ -56,6 +56,7 @@ module.exports = {
   rules: {
     'prefer-promise-reject-errors': 'off',
     'object-shorthand': 0,
+    'vue/no-v-html': 0,
 
     // allow debugger during development only
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
