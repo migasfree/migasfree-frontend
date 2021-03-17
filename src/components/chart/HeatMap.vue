@@ -20,6 +20,7 @@
         :style="cssVars"
         autoresize
         @click="passData"
+        @legendselectchanged="changeRange"
       /> </q-card-section
   ></q-card>
 </template>
@@ -30,7 +31,8 @@ import { HeatmapChart } from 'echarts/charts'
 import {
   TooltipComponent,
   CalendarComponent,
-  VisualMapComponent
+  VisualMapComponent,
+  LegendComponent
 } from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
 import { format } from 'echarts/lib/util/time'
@@ -41,6 +43,7 @@ echarts.use([
   TooltipComponent,
   CalendarComponent,
   VisualMapComponent,
+  LegendComponent,
   SVGRenderer
 ])
 
@@ -71,6 +74,11 @@ export default {
         renderer: 'svg'
       },
       options: {
+        legend: {
+          bottom: 20,
+          selectedMode: 'single',
+          selected: {}
+        },
         tooltip: {
           position: 'top',
           formatter: function(p) {
@@ -89,15 +97,16 @@ export default {
         },
         calendar: {
           top: 120,
-          left: 30,
+          left: 60,
           right: 30,
           cellSize: [25, 25],
-          range: [this.start, format(Date.now(), '{yyyy}-{MM}-{dd}', true)],
+          range: 2021,
+          // range: [this.start, format(Date.now(), '{yyyy}-{MM}-{dd}', true)],
           itemStyle: {
             borderWidth: 0.5,
             color: this.$q.dark.isActive ? '#757575' : '#fff'
           },
-          yearLabel: { show: true },
+          yearLabel: { show: true, margin: 20 },
           dayLabel: {
             firstDay: 1,
             color: this.$q.dark.isActive ? '#fff' : '#000'
@@ -106,11 +115,12 @@ export default {
             color: this.$q.dark.isActive ? '#fff' : '#000'
           }
         },
-        series: {
+        series: []
+        /* series: {
           type: 'heatmap',
           coordinateSystem: 'calendar',
           data: []
-        }
+        } */
       }
     }
   },
@@ -128,8 +138,37 @@ export default {
   },
   watch: {
     data: {
-      handler: function(val, oldVal) {
-        this.$set(this.options.series, 'data', val)
+      handler: function(val) {
+        const series = []
+        const years = {}
+
+        Object.entries(this.seriesByYear(val)).map(([index, year]) => {
+          console.log(index, year)
+          years[parseInt(index)] = false
+          series.push({
+            type: 'heatmap',
+            coordinateSystem: 'calendar',
+            calendarIndex: 0,
+            data: year,
+            name: index
+          })
+        })
+
+        const maxYear = Object.keys(years).reduce(function(a, b) {
+          return Math.max(parseInt(a), parseInt(b))
+        })
+        console.log(maxYear)
+
+        years[maxYear] = true
+        console.log(years)
+
+        this.$set(this.options, 'series', series)
+        this.$set(this.options.legend, 'selected', years)
+        this.$set(this.options.calendar, 'range', maxYear)
+
+        console.log('*******************', this.options)
+
+        // this.$set(this.options.series, 'data', val)
         if (val.length > 0) {
           this.options.visualMap.max = Math.max.apply(
             Math,
@@ -167,6 +206,26 @@ export default {
 
     passData(params) {
       this.$emit('getDate', params)
+    },
+
+    seriesByYear(data) {
+      const series = {}
+
+      data.forEach((item) => {
+        const year = item[0].split('-')[0]
+        if (year in series) series[year].push(item)
+        else series[year] = [item]
+      })
+
+      return series
+    },
+
+    changeRange($evt) {
+      this.$refs.chart.setOption({
+        calendar: {
+          range: $evt.name
+        }
+      })
     }
   }
 }
