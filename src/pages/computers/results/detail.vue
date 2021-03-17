@@ -594,7 +594,8 @@ export default {
             if (val.latitude !== null) {
               this.markers.push({
                 id: val.id,
-                model: 'attributes',
+                model:
+                  val.property_att.prefix === 'DMN' ? 'tags' : 'attributes',
                 lat: val.latitude,
                 lng: val.longitude,
                 tooltip: this.attributeValue(val),
