@@ -587,7 +587,9 @@ export default {
             } else {
               this.onlyAttributes.push({
                 id: val.id,
-                value: this.attributeValue(val)
+                value: this.attributeValue(val),
+                icon:
+                  val.property_att.sort === 'server' ? 'mdi-tag' : 'mdi-pound'
               })
             }
 
@@ -595,7 +597,7 @@ export default {
               this.markers.push({
                 id: val.id,
                 model:
-                  val.property_att.prefix === 'DMN' ? 'tags' : 'attributes',
+                  val.property_att.sort === 'server' ? 'tags' : 'attributes',
                 lat: val.latitude,
                 lng: val.longitude,
                 tooltip: this.attributeValue(val),
