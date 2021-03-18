@@ -17,6 +17,7 @@
         ref="chart"
         :init-options="initOptions"
         :option="options"
+        :update-options="updateOptions"
         :style="cssVars"
         autoresize
         @click="passData"
@@ -77,7 +78,10 @@ export default {
         legend: {
           bottom: 20,
           selectedMode: 'single',
-          selected: {}
+          selected: {},
+          textStyle: {
+            color: this.$q.dark.isActive ? '#fff' : '#000'
+          }
         },
         tooltip: {
           position: 'top',
@@ -121,6 +125,10 @@ export default {
           coordinateSystem: 'calendar',
           data: []
         } */
+      },
+      updateOptions: {
+        // notMerge: true,
+        replaceMerge: ['series'] // , 'legend']
       }
     }
   },
@@ -144,7 +152,7 @@ export default {
 
         Object.entries(this.seriesByYear(val)).map(([index, year]) => {
           console.log(index, year)
-          years[parseInt(index)] = false
+          years[index] = false
           series.push({
             type: 'heatmap',
             coordinateSystem: 'calendar',
@@ -162,23 +170,51 @@ export default {
         years[maxYear] = true
         console.log(years)
 
-        this.$set(this.options, 'series', series)
-        this.$set(this.options.legend, 'selected', years)
-        this.$set(this.options.calendar, 'range', maxYear)
-
-        console.log('*******************', this.options)
-
-        // this.$set(this.options.series, 'data', val)
+        let visualMapMax = 1
         if (val.length > 0) {
-          this.options.visualMap.max = Math.max.apply(
+          visualMapMax = Math.max.apply(
             Math,
             val.map(function(o) {
               return o[1]
             })
           )
-        } else {
-          this.options.visualMap.max = 1
         }
+
+        /* this.$set(this.options, 'series', series)
+        this.$set(this.options.legend, 'selected', years)
+        this.$set(this.options.calendar, 'range', maxYear)
+        this.$set(this.options.visualMap, 'max', visualMapMax) */
+
+        if (this.$refs.chart !== null && this.$refs.chart !== undefined) {
+          this.$refs.chart.setOption(
+            {
+              series,
+              legend: { selected: years },
+              calendar: { range: maxYear },
+              visualMap: { max: visualMapMax }
+            },
+            {
+              // notMerge: true
+              // replaceMerge: ['series', 'legend']
+            }
+          )
+          /* this.$refs.chart.clear()
+          this.$refs.chart.setOption(this.options, {
+            // notMerge: true,
+            // replaceMerge: ['series', 'legend']
+          }) */
+        } else {
+          // this.$set(this.options, 'series', [])
+          this.$set(this.options, 'series', series)
+
+          // this.$set(this.options.legend, 'selected', {})
+          this.$set(this.options.legend, 'selected', years)
+
+          this.$set(this.options.calendar, 'range', maxYear)
+          this.$set(this.options.visualMap, 'max', visualMapMax)
+        }
+        console.log('*******************', this.options)
+        console.log(this.$refs.chart)
       },
       deep: true,
       immediate: true
@@ -189,6 +225,7 @@ export default {
       this.options.calendar.monthLabel.color = val ? '#fff' : '#000'
       this.options.calendar.dayLabel.color = val ? '#fff' : '#000'
       this.options.calendar.itemStyle.color = val ? '#757575' : '#fff'
+      this.options.legend.textStyle.color = val ? '#fff' : '#000'
     }
   },
   beforeMount() {
