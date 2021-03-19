@@ -10,7 +10,9 @@
             icon="mdi-plus"
             @click="$router.push({ name: item.route })"
           >
-            <q-tooltip v-if="item.title">{{ item.title }}</q-tooltip>
+            <q-tooltip>{{
+              item.title ? item.title : $gettext('Add')
+            }}</q-tooltip>
           </q-btn>
         </q-item-section>
       </template>
