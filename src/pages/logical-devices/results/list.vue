@@ -139,6 +139,15 @@
           ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
         >
       </div>
+
+      <template slot="pagination-bottom" slot-scope="props">
+        <TablePagination
+          :total="props.total"
+          :page-changed="props.pageChanged"
+          :per-page-changed="props.perPageChanged"
+          :pagination-options="paginationOptions"
+        />
+      </template>
     </vue-good-table>
   </q-page>
 </template>
@@ -147,6 +156,7 @@
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import SearchFilter from 'components/ui/SearchFilter'
 import Header from 'components/ui/Header'
+import TablePagination from 'components/ui/TablePagination'
 import MigasLink from 'components/MigasLink'
 import { datagridMixin } from 'mixins/datagrid'
 
@@ -160,6 +170,7 @@ export default {
     Breadcrumbs,
     SearchFilter,
     Header,
+    TablePagination,
     MigasLink
   },
   mixins: [datagridMixin],

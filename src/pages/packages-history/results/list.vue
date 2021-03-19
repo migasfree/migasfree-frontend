@@ -132,6 +132,15 @@
       <q-banner slot="emptystate" rounded class="bg-warning text-black">
         <translate>There are no results</translate>
       </q-banner>
+
+      <template slot="pagination-bottom" slot-scope="props">
+        <TablePagination
+          :total="props.total"
+          :page-changed="props.pageChanged"
+          :per-page-changed="props.perPageChanged"
+          :pagination-options="paginationOptions"
+        />
+      </template>
     </vue-good-table>
   </q-page>
 </template>
@@ -140,6 +149,7 @@
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import SearchFilter from 'components/ui/SearchFilter'
 import Header from 'components/ui/Header'
+import TablePagination from 'components/ui/TablePagination'
 import DateRangeInput from 'components/ui/DateRangeInput'
 import MigasLink from 'components/MigasLink'
 import { dateMixin } from 'mixins/date'
@@ -156,6 +166,7 @@ export default {
     Breadcrumbs,
     SearchFilter,
     Header,
+    TablePagination,
     DateRangeInput,
     MigasLink
   },
