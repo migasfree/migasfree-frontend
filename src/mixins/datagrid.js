@@ -19,7 +19,7 @@ export const datagridMixin = {
         rowsPerPageLabel: this.$gettext('Results per page'),
         ofLabel: this.$gettext('of'),
         pageLabel: this.$gettext('page'), // for 'pages' mode
-        allLabel: this.$gettext('All')
+        allLabel: this.$gettext('View All')
       },
       serverParams: {
         columnFilters: {},
