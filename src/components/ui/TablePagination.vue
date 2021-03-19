@@ -1,5 +1,5 @@
 <template>
-  <div class="row q-pa-md q-gutter-sm">
+  <div v-if="showPagination" class="row q-pa-md q-gutter-sm">
     <q-toolbar>
       <q-btn
         v-if="showAllOption"
@@ -113,6 +113,10 @@ export default {
   computed: {
     rowsPerPageOptions() {
       return this.paginationOptions.perPageDropdown
+    },
+
+    showPagination() {
+      return this.total > this.currentPerPage
     },
 
     showAllOption() {
