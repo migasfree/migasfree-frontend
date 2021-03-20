@@ -10,6 +10,7 @@
           text-color="black"
           :label="$gettext('Export')"
           icon="mdi-file-export"
+          :loading="isLoadingExport"
           @click="exportAll"
         />
       </template>
@@ -112,6 +113,7 @@
           color="info"
           text-color="black"
           icon="mdi-file-export"
+          :loading="isLoadingExport"
           @click="exportData"
           ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
         >
