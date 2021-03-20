@@ -113,6 +113,7 @@ export default {
   methods: {
     async login() {
       this.loading = true
+      this.$store.dispatch('auth/reset')
       await this.$store
         .dispatch('auth/login', this.model)
         .then(() => {
