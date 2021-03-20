@@ -28,6 +28,7 @@ import { LineChart } from 'echarts/charts'
 import {
   GridComponent,
   TooltipComponent,
+  ToolboxComponent,
   LegendComponent,
   MarkPointComponent
 } from 'echarts/components'
@@ -41,6 +42,7 @@ echarts.use([
   LineChart,
   GridComponent,
   TooltipComponent,
+  ToolboxComponent,
   LegendComponent,
   MarkPointComponent,
   SVGRenderer
@@ -99,7 +101,26 @@ export default {
             }
           }
         },
-        series: []
+        series: [],
+        title: {
+          text: this.title
+        },
+        toolbox: {
+          show: true,
+          iconStyle: {
+            borderColor: this.$q.dark.isActive ? 'white' : 'black'
+          },
+          feature: {
+            dataView: {
+              readOnly: true,
+              title: this.$gettext('Data View')
+            },
+            saveAsImage: {
+              name: this.title,
+              title: this.$gettext('Save as Image')
+            }
+          }
+        }
       },
       initOptions: {
         renderer: 'svg'
@@ -153,6 +174,7 @@ export default {
       this.options.legend.textStyle.color = val ? '#fff' : '#333'
       this.options.xAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
       this.options.yAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
+      this.options.toolbox.iconStyle.borderColor = val ? 'white' : 'black'
     }
   },
   async mounted() {

@@ -40,14 +40,14 @@
 <script>
 import * as echarts from 'echarts/core'
 import { PieChart } from 'echarts/charts'
-import { TooltipComponent } from 'echarts/components'
+import { TooltipComponent, ToolboxComponent } from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
 import {
   MIGASFREE_CHART_COLORS,
   MIGASFREE_CHART_DARK_COLORS
 } from 'config/app.conf'
 
-echarts.use([PieChart, TooltipComponent, SVGRenderer])
+echarts.use([PieChart, TooltipComponent, ToolboxComponent, SVGRenderer])
 
 export default {
   name: 'PieChart',
@@ -85,7 +85,26 @@ export default {
         color: this.$q.dark.isActive
           ? MIGASFREE_CHART_DARK_COLORS
           : MIGASFREE_CHART_COLORS,
-        series: []
+        series: [],
+        title: {
+          text: this.title
+        },
+        toolbox: {
+          show: true,
+          iconStyle: {
+            borderColor: this.$q.dark.isActive ? 'white' : 'black'
+          },
+          feature: {
+            dataView: {
+              readOnly: true,
+              title: this.$gettext('Data View')
+            },
+            saveAsImage: {
+              name: this.title,
+              title: this.$gettext('Save as Image')
+            }
+          }
+        }
       },
       normalSeries: [
         {
@@ -171,6 +190,8 @@ export default {
       this.options.color = val
         ? MIGASFREE_CHART_DARK_COLORS
         : MIGASFREE_CHART_COLORS
+
+      this.options.toolbox.iconStyle.borderColor = val ? 'white' : 'black'
 
       if ('series' in this.options) {
         this.options.series.map((item) => {
