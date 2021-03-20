@@ -26,11 +26,15 @@ export async function logout(context) {
   await this.$axios
     .post('/rest-auth/logout/')
     .then((response) => {
-      context.commit('setToken', '')
-      context.commit('setLoggedIn', false)
-      context.commit('setUser', {})
+      context.dispatch('reset')
     })
     .catch((error) => {
       context.dispatch('ui/notifyError', error, { root: true })
     })
+}
+
+export function reset(context) {
+  context.commit('setToken', '')
+  context.commit('setLoggedIn', false)
+  context.commit('setUser', {})
 }
