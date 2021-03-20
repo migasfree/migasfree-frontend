@@ -8,6 +8,7 @@ export const datagridMixin = {
       rows: [],
       totalRecords: 0,
       isLoading: false,
+      isLoadingExport: false,
       paginationOptions: {
         enabled: true,
         mode: 'records',
@@ -650,6 +651,7 @@ export const datagridMixin = {
 
       if (items.length === 0) return
 
+      this.isLoadingExport = true
       this.$axios
         .get(`/api/v1/token/${this.model}/export/?id__in=${items.join(',')}`, {
           responseType: 'blob'
@@ -666,6 +668,9 @@ export const datagridMixin = {
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
+        })
+        .finally(() => {
+          this.isLoadingExport = false
         })
     },
 
@@ -690,6 +695,7 @@ export const datagridMixin = {
       delete params.page
       delete params.page_size
 
+      this.isLoadingExport = true
       this.$axios
         .get(`/api/v1/token/${this.model}/export/`, {
           params,
@@ -707,6 +713,9 @@ export const datagridMixin = {
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
+        })
+        .finally(() => {
+          this.isLoadingExport = false
         })
     },
 
