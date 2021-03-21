@@ -19,7 +19,7 @@
     "echarts": "^5.0.2",
     "leaflet": "^1.7.1",
     "performant-array-to-tree": "^1.8.1",
-    "quasar": "^1.15.5",
+    "quasar": "^1.15.6",
     "text-clipper": "^2.1.0",
     "typeface-dosis": "^1.1.13",
     "validator": "^13.5.2",
@@ -32,7 +32,7 @@
   "devDependencies": {
     "@babel/core": "^7.13.8",
     "@babel/eslint-parser": "^7.13.8",
-    "@quasar/app": "^2.2.1",
+    "@quasar/app": "^2.2.2",
     "@quasar/quasar-app-extension-dotenv": "^1.1.0",
     "@quasar/quasar-app-extension-qmarkdown": "^1.4.1",
     "easygettext": "^2.16.1",
