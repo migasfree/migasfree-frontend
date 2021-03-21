@@ -2,7 +2,19 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :results="totalRecords" />
+    <Header :title="title" :results="totalRecords">
+      <template #append>
+        <q-btn
+          class="q-ma-sm float-right"
+          color="info"
+          text-color="black"
+          :label="$gettext('Export')"
+          icon="mdi-file-export"
+          :loading="isLoadingExport"
+          @click="exportAll"
+        />
+      </template>
+    </Header>
 
     <q-list class="more-filters" bordered>
       <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">
@@ -113,6 +125,16 @@
       </q-banner>
 
       <div slot="selected-row-actions">
+        <q-btn
+          class="q-ma-xs"
+          size="sm"
+          color="info"
+          text-color="black"
+          icon="mdi-file-export"
+          :loading="isLoadingExport"
+          @click="exportData"
+          ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
+        >
         <q-btn
           class="q-ma-xs"
           size="sm"
