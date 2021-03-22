@@ -151,19 +151,7 @@
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-md">
-              <l-map
-                v-if="viewMap"
-                id="map"
-                :zoom="zoom"
-                :center="coords"
-                @click="updateMarker"
-              >
-                <l-tile-layer
-                  :url="url"
-                  :attribution="attribution"
-                ></l-tile-layer>
-                <l-marker :lat-lng="coords" :icon="iconMarker"></l-marker>
-              </l-map>
+              <AddLocation v-model="coords" @update-coords="updateCoords" />
             </div>
           </div>
         </template>
@@ -223,6 +211,7 @@ import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import OverflowList from 'components/ui/OverflowList'
 import RemoveDialog from 'components/ui/RemoveDialog'
+import AddLocation from 'components/map/AddLocation'
 import { elementMixin } from 'mixins/element'
 import { detailMixin } from 'mixins/detail'
 
@@ -237,7 +226,8 @@ export default {
     Header,
     RemoveDialog,
     MigasLink,
-    OverflowList
+    OverflowList,
+    AddLocation
   },
   mixins: [elementMixin, detailMixin],
   data() {
@@ -275,16 +265,7 @@ export default {
       confirmRemove: false,
 
       viewMap: false,
-      zoom: 16,
-      url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-      coords: [0, 0],
-      attribution:
-        '© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      iconMarker: L.icon({
-        iconUrl: require('leaflet/dist/images/marker-icon.png'),
-        iconSize: [32, 40],
-        iconAnchor: [16, 37]
-      })
+      coords: [0, 0]
     }
   },
   computed: {
@@ -344,19 +325,14 @@ export default {
       }
     },
 
-    updateCoords() {
+    updateCoords(params) {
       if (this.viewMap) {
-        this.element.latitude = this.coords[0]
-        this.element.longitude = this.coords[1]
+        this.element.latitude = params[0]
+        this.element.longitude = params[1]
       } else {
         this.element.latitude = null
         this.element.longitude = null
       }
-    },
-
-    updateMarker($evt) {
-      this.coords = [$evt.latlng.lat, $evt.latlng.lng]
-      this.updateCoords()
     },
 
     updateMapCoords() {
@@ -401,11 +377,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-#map {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  height: 400px;
-}
-</style>
