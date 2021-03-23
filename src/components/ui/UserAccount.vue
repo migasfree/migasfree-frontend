@@ -29,6 +29,7 @@
             :dense="true"
             :options-dense="true"
             :loading="isLoadingDomain"
+            :disabled="isLoadingDomain"
             @input="updateDomainPreference"
           >
           </q-select>
@@ -52,6 +53,7 @@
             :dense="true"
             :options-dense="true"
             :loading="isLoadingScope"
+            :disabled="isLoadingScope"
             @input="updateScopePreference"
           >
           </q-select>
