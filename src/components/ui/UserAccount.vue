@@ -28,7 +28,8 @@
             option-label="name"
             :dense="true"
             :options-dense="true"
-            @input="updatePreferences"
+            :loading="isLoadingDomain"
+            @input="updateDomainPreference"
           >
           </q-select>
         </q-item-section>
@@ -50,7 +51,8 @@
             option-label="name"
             :dense="true"
             :options-dense="true"
-            @input="updatePreferences"
+            :loading="isLoadingScope"
+            @input="updateScopePreference"
           >
           </q-select>
         </q-item-section>
@@ -89,7 +91,9 @@ export default {
       domains: [{ id: 0, name: this.$gettext('All').toUpperCase() }],
       scopes: [{ id: 0, name: this.$gettext('All').toLowerCase() }],
       domainPreference: { id: 0, name: this.$gettext('All').toUpperCase() },
-      scopePreference: { id: 0, name: this.$gettext('All').toLowerCase() }
+      scopePreference: { id: 0, name: this.$gettext('All').toLowerCase() },
+      isLoadingDomain: false,
+      isLoadingScope: false
     }
   },
   computed: {
@@ -98,6 +102,7 @@ export default {
     }
   },
   async mounted() {
+    this.isLoadingDomain = true
     await this.$axios
       .get('/api/v1/token/domains/')
       .then((response) => {
@@ -111,12 +116,19 @@ export default {
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error)
       })
+      .finally(() => (this.isLoadingDomain = false))
 
-    if (this.user.domain_preference)
+    const scopeParams = {
+      user: this.user.id
+    }
+    if (this.user.domain_preference) {
       this.domainPreference = this.user.domain_preference
+      scopeParams.domain__id = this.domainPreference.id
+    }
 
+    this.isLoadingScope = true
     await this.$axios
-      .get(`/api/v1/token/scopes/?user=${this.user.id}`)
+      .get(`/api/v1/token/scopes/`, scopeParams)
       .then((response) => {
         Object.entries(response.data.results).map(([index, item]) => {
           this.scopes.push({
@@ -128,8 +140,9 @@ export default {
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error)
       })
+      .finally(() => (this.isLoadingScope = false))
 
-    if (this.user.scope_preference)
+    if (this.user.scope_preference && this.user.scope_preference.id)
       this.scopePreference = this.user.scope_preference
   },
   methods: {
@@ -139,16 +152,26 @@ export default {
       })
     },
 
-    async updatePreferences() {
+    async updateDomainPreference() {
+      await this.updatePreferences({
+        domain_preference: this.domainPreference.id
+          ? this.domainPreference.id
+          : null,
+        scope_preference: null
+      })
+    },
+
+    async updateScopePreference() {
+      await this.updatePreferences({
+        scope_preference: this.scopePreference.id
+          ? this.scopePreference.id
+          : null
+      })
+    },
+
+    async updatePreferences(data) {
       await this.$axios
-        .patch(`/api/v1/token/user-profiles/${this.user.id}/`, {
-          domain_preference: this.domainPreference.id
-            ? this.domainPreference.id
-            : null,
-          scope_preference: this.scopePreference.id
-            ? this.scopePreference.id
-            : null
-        })
+        .patch(`/api/v1/token/user-profiles/${this.user.id}/`, data)
         .then((response) => {
           this.$store.dispatch(
             'ui/notifySuccess',
