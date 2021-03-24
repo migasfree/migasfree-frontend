@@ -23,7 +23,7 @@
           <q-select
             v-model="domainPreference"
             standout
-            :options="domains"
+            :options="$store.getters['auth/domains']"
             option-value="id"
             option-label="name"
             :dense="true"
@@ -47,7 +47,7 @@
           <q-select
             v-model="scopePreference"
             standout
-            :options="scopes"
+            :options="$store.getters['auth/scopes']"
             option-value="id"
             option-label="name"
             :dense="true"
@@ -90,8 +90,8 @@ export default {
   name: 'UserAccount',
   data() {
     return {
-      domains: [{ id: 0, name: this.$gettext('All').toUpperCase() }],
-      scopes: [{ id: 0, name: this.$gettext('All').toLowerCase() }],
+      // domains: [{ id: 0, name: this.$gettext('All').toUpperCase() }],
+      // scopes: [{ id: 0, name: this.$gettext('All').toLowerCase() }],
       domainPreference: { id: 0, name: this.$gettext('All').toUpperCase() },
       scopePreference: { id: 0, name: this.$gettext('All').toLowerCase() },
       isLoadingDomain: false,
@@ -104,7 +104,7 @@ export default {
     }
   },
   async mounted() {
-    this.isLoadingDomain = true
+    /* this.isLoadingDomain = true
     await this.$axios
       .get('/api/v1/token/domains/')
       .then((response) => {
@@ -118,9 +118,9 @@ export default {
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error)
       })
-      .finally(() => (this.isLoadingDomain = false))
+      .finally(() => (this.isLoadingDomain = false)) */
 
-    const scopeParams = {
+    /* const scopeParams = {
       user: this.user.id
     }
     if (this.user.domain_preference) {
@@ -143,6 +143,12 @@ export default {
         this.$store.dispatch('ui/notifyError', error)
       })
       .finally(() => (this.isLoadingScope = false))
+
+    if (this.user.scope_preference && this.user.scope_preference.id)
+      this.scopePreference = this.user.scope_preference */
+
+    if (this.user.domain_preference)
+      this.domainPreference = this.user.domain_preference
 
     if (this.user.scope_preference && this.user.scope_preference.id)
       this.scopePreference = this.user.scope_preference
@@ -169,6 +175,9 @@ export default {
           ? this.scopePreference.id
           : null
       })
+      if (this.scopePreference.id) {
+        this.$store.dispatch('auth/loadScopes')
+      }
     },
 
     async updatePreferences(data) {
