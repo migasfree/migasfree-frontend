@@ -5,6 +5,8 @@ export async function login(context, data) {
       context.commit('setToken', response.data.key)
       context.commit('setLoggedIn', true)
       context.dispatch('getUser')
+      context.dispatch('loadDomains')
+      context.dispatch('loadScopes')
     })
     .catch((error) => {
       context.dispatch('ui/notifyError', error, { root: true })
@@ -37,4 +39,49 @@ export function reset(context) {
   context.commit('setToken', '')
   context.commit('setLoggedIn', false)
   context.commit('setUser', {})
+}
+
+export async function loadDomains(context) {
+  // this.isLoadingDomain = true
+  await this.$axios
+    .get('/api/v1/token/domains/')
+    .then((response) => {
+      Object.entries(response.data.results).map(([index, item]) => {
+        context.commit('addDomain', {
+          id: item.id,
+          name: item.name
+        })
+      })
+    })
+    .catch((error) => {
+      context.dispatch('ui/notifyError', error, { root: true })
+    })
+  // .finally(() => (this.isLoadingDomain = false))
+}
+
+export async function loadScopes(context) {
+  const user = this.getters['auth/user']
+
+  const scopeParams = {
+    user: user.id
+  }
+  if (user.domain_preference) {
+    scopeParams.domain__id = this.user.domain_preference
+  }
+
+  // this.isLoadingScope = true
+  await this.$axios
+    .get('/api/v1/token/scopes/', scopeParams)
+    .then((response) => {
+      Object.entries(response.data.results).map(([index, item]) => {
+        context.commit('addScope', {
+          id: item.id,
+          name: item.name
+        })
+      })
+    })
+    .catch((error) => {
+      context.dispatch('ui/notifyError', error, { root: true })
+    })
+  // .finally(() => (this.isLoadingScope = false))
 }
