@@ -14,3 +14,11 @@ export function setToken(state, value) {
   state.token = value
   LocalStorage.set('auth.token', state.token)
 }
+
+export function addDomain(state, value) {
+  state.domains.push(value)
+}
+
+export function addScope(state, value) {
+  state.scopes.push(value)
+}
