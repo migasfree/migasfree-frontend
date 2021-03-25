@@ -47,7 +47,7 @@
           <q-select
             v-model="scopePreference"
             standout
-            :options="$store.getters['auth/scopes']"
+            :options="filteredScopes"
             option-value="id"
             option-label="name"
             :dense="true"
@@ -101,52 +101,23 @@ export default {
   computed: {
     user() {
       return this.$store.getters['auth/user']
+    },
+
+    filteredScopes() {
+      const scopes = this.$store.getters['auth/scopes']
+
+      if (this.user.domain_preference) {
+        return scopes.filter(
+          (el) =>
+            (el.domain && el.domain.id === this.user.domain_preference.id) ||
+            el.id === 0
+        )
+      }
+
+      return scopes
     }
   },
   async mounted() {
-    /* this.isLoadingDomain = true
-    await this.$axios
-      .get('/api/v1/token/domains/')
-      .then((response) => {
-        Object.entries(response.data.results).map(([index, item]) => {
-          this.domains.push({
-            id: item.id,
-            name: item.name
-          })
-        })
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-      .finally(() => (this.isLoadingDomain = false)) */
-
-    /* const scopeParams = {
-      user: this.user.id
-    }
-    if (this.user.domain_preference) {
-      this.domainPreference = this.user.domain_preference
-      scopeParams.domain__id = this.domainPreference.id
-    }
-
-    this.isLoadingScope = true
-    await this.$axios
-      .get(`/api/v1/token/scopes/`, scopeParams)
-      .then((response) => {
-        Object.entries(response.data.results).map(([index, item]) => {
-          this.scopes.push({
-            id: item.id,
-            name: item.name
-          })
-        })
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-      .finally(() => (this.isLoadingScope = false))
-
-    if (this.user.scope_preference && this.user.scope_preference.id)
-      this.scopePreference = this.user.scope_preference */
-
     if (this.user.domain_preference)
       this.domainPreference = this.user.domain_preference
 
