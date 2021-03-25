@@ -288,6 +288,14 @@ export default {
       )
     },
 
+    updateRelated() {
+      if (this.element.id)
+        this.$store.dispatch('auth/addDomain', {
+          id: this.element.id,
+          name: this.element.name
+        })
+    },
+
     elementData() {
       return {
         name: this.element.name,
