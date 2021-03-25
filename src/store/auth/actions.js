@@ -39,6 +39,8 @@ export function reset(context) {
   context.commit('setToken', '')
   context.commit('setLoggedIn', false)
   context.commit('setUser', {})
+  context.commit('resetDomains')
+  context.commit('resetScopes')
 }
 
 export async function loadDomains(context) {
@@ -73,6 +75,7 @@ export async function loadScopes(context) {
   await this.$axios
     .get('/api/v1/token/scopes/', scopeParams)
     .then((response) => {
+      console.log(scopeParams, response.data)
       Object.entries(response.data.results).map(([index, item]) => {
         context.commit('addScope', {
           id: item.id,
