@@ -44,7 +44,6 @@ export function reset(context) {
 }
 
 export async function loadDomains(context) {
-  // this.isLoadingDomain = true
   await this.$axios
     .get('/api/v1/token/domains/')
     .then((response) => {
@@ -58,33 +57,23 @@ export async function loadDomains(context) {
     .catch((error) => {
       context.dispatch('ui/notifyError', error, { root: true })
     })
-  // .finally(() => (this.isLoadingDomain = false))
 }
 
 export async function loadScopes(context) {
   const user = this.getters['auth/user']
 
-  const scopeParams = {
-    user: user.id
-  }
-  if (user.domain_preference) {
-    scopeParams.domain__id = this.user.domain_preference
-  }
-
-  // this.isLoadingScope = true
   await this.$axios
-    .get('/api/v1/token/scopes/', scopeParams)
+    .get('/api/v1/token/scopes/', { user__id: user.id })
     .then((response) => {
-      console.log(scopeParams, response.data)
       Object.entries(response.data.results).map(([index, item]) => {
         context.commit('addScope', {
           id: item.id,
-          name: item.name
+          name: item.name,
+          domain: item.domain
         })
       })
     })
     .catch((error) => {
       context.dispatch('ui/notifyError', error, { root: true })
     })
-  // .finally(() => (this.isLoadingScope = false))
 }
