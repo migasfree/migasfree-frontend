@@ -17,8 +17,12 @@ export function setToken(state, value) {
 }
 
 export function addDomain(state, value) {
-  state.domains.push(value)
-  LocalStorage.set('auth.domains', state.domains)
+  if (!state.domains.find((el) => el.name === value.name)) {
+    const removeIndex = state.domains.map((item) => item.id).indexOf(value.id)
+    if (removeIndex >= 0) state.domains.splice(removeIndex, 1)
+    state.domains.push(value)
+    LocalStorage.set('auth.domains', state.domains)
+  }
 }
 
 export function resetDomains(state) {
@@ -27,8 +31,12 @@ export function resetDomains(state) {
 }
 
 export function addScope(state, value) {
-  state.scopes.push(value)
-  LocalStorage.set('auth.scopes', state.scope)
+  if (!state.scopes.find((el) => el.name === value.name)) {
+    const removeIndex = state.scopes.map((item) => item.id).indexOf(value.id)
+    if (removeIndex >= 0) state.scopes.splice(removeIndex, 1)
+    state.scopes.push(value)
+    LocalStorage.set('auth.scopes', state.scopes)
+  }
 }
 
 export function resetScopes(state) {
