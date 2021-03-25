@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use(
-  function(config) {
+  (config) => {
     const authToken = LocalStorage.getItem('auth.token')
 
     if (authToken) {
@@ -23,12 +23,15 @@ axiosInstance.interceptors.request.use(
       '-'
     )},${Vue.config.language.split('_')[0]};q=0.9`
 
+    // config.timeout = 10000
+
     console.log('[ REQUEST ]', config.url, config.params)
 
     return config
   },
-  function(err) {
-    return Promise.reject(err)
+
+  (error) => {
+    return Promise.reject(error)
   }
 )
 
@@ -37,7 +40,10 @@ axiosInstance.interceptors.response.use(
     console.log('[ RESPONSE ]', response.config.url, response)
     return response
   },
+
   (error) => {
+    // TODO https://haxzie.com/architecting-http-clients-vue-js-network-layer
+    console.error(error.response.status, error.message)
     return Promise.reject(error)
   }
 )
