@@ -43,12 +43,21 @@ export function reset(context) {
   context.commit('resetScopes')
 }
 
+export function addDomain(context, payload) {
+  const domains = this.getters['auth/domains']
+
+  if (!domains.find((el) => el.name === payload.name)) {
+    context.commit('deleteDomain', payload.id)
+    context.commit('addDomain', payload)
+  }
+}
+
 export async function loadDomains(context) {
   await this.$axios
     .get('/api/v1/token/domains/')
     .then((response) => {
       Object.entries(response.data.results).map(([index, item]) => {
-        context.commit('addDomain', {
+        context.dispatch('addDomain', {
           id: item.id,
           name: item.name
         })
@@ -59,6 +68,15 @@ export async function loadDomains(context) {
     })
 }
 
+export function addScope(context, payload) {
+  const scopes = this.getters['auth/scopes']
+
+  if (!scopes.find((el) => el.name === payload.name)) {
+    context.commit('deleteScope', payload.id)
+    context.commit('addScope', payload)
+  }
+}
+
 export async function loadScopes(context) {
   const user = this.getters['auth/user']
 
@@ -66,7 +84,7 @@ export async function loadScopes(context) {
     .get('/api/v1/token/scopes/', { user__id: user.id })
     .then((response) => {
       Object.entries(response.data.results).map(([index, item]) => {
-        context.commit('addScope', {
+        context.dispatch('addScope', {
           id: item.id,
           name: item.name,
           domain: item.domain
