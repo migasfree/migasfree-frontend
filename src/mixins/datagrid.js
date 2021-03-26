@@ -595,10 +595,13 @@ export const datagridMixin = {
       this.$router.push({ name: this.detailRoute, params: { id } })
     },
 
+    postRemove(id) {},
+
     remove(id, reload = true) {
       this.$axios
         .delete(`/api/v1/token/${this.model}/${id}/`)
         .then((response) => {
+          this.postRemove(id)
           this.$store.dispatch(
             'ui/notifySuccess',
             this.$gettext('Item deleted!')

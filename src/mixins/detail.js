@@ -146,10 +146,13 @@ export const detailMixin = {
       }
     },
 
+    postRemove() {},
+
     async remove() {
       await this.$axios
         .delete(`/api/v1/token/${this.model}/${this.element.id}/`)
         .then((response) => {
+          this.postRemove()
           this.$router.push({ name: this.listRoute })
         })
         .catch((error) => {
