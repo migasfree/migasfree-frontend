@@ -226,6 +226,11 @@ export default {
       this.updateParams({
         columnFilters: { user: this.$store.getters['auth/user'].pk }
       })
+  },
+  methods: {
+    postRemove(id) {
+      this.$store.commit('auth/deleteScope', id)
+    }
   }
 }
 </script>

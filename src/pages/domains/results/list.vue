@@ -180,6 +180,11 @@ export default {
       model: 'domains',
       detailRoute: 'domain-detail'
     }
+  },
+  methods: {
+    postRemove(id) {
+      this.$store.commit('auth/deleteDomain', id)
+    }
   }
 }
 </script>
