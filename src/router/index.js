@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import { cancelSource } from 'boot/axios'
 import routes from './routes'
 
 Vue.use(VueRouter)
@@ -27,6 +28,8 @@ export default function({ store /* , ssrContext */ }) {
   })
 
   Router.beforeEach((to, from, next) => {
+    // cancelSource.cancel('Operation canceled by the user')
+
     if (to.matched.some((item) => item.meta.authRequired)) {
       if (store.getters['auth/loggedIn']) {
         next()
