@@ -90,8 +90,6 @@ export default {
   name: 'UserAccount',
   data() {
     return {
-      // domains: [{ id: 0, name: this.$gettext('All').toUpperCase() }],
-      // scopes: [{ id: 0, name: this.$gettext('All').toLowerCase() }],
       domainPreference: { id: 0, name: this.$gettext('All').toUpperCase() },
       scopePreference: { id: 0, name: this.$gettext('All').toLowerCase() },
       isLoadingDomain: false,
