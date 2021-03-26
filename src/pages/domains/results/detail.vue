@@ -296,6 +296,10 @@ export default {
         })
     },
 
+    postRemove() {
+      this.$store.commit('auth/deleteDomain', this.element.id)
+    },
+
     elementData() {
       return {
         name: this.element.name,
