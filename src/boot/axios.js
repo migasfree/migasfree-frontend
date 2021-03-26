@@ -3,6 +3,8 @@ import axios from 'axios'
 import qs from 'qs'
 import { LocalStorage } from 'quasar'
 
+export const cancelSource = axios.CancelToken.source()
+
 const axiosInstance = axios.create({
   paramsSerializer: (params) => {
     return qs.stringify(params, { arrayFormat: 'repeat' })
@@ -24,6 +26,7 @@ axiosInstance.interceptors.request.use(
     )},${Vue.config.language.split('_')[0]};q=0.9`
 
     // config.timeout = 10000
+    config.cancelToken = cancelSource.token
 
     console.log('[ REQUEST ]', config.url, config.params)
 
