@@ -1,11 +1,17 @@
 <template>
   <q-list v-if="items.length > 0" bordered>
-    <q-expansion-item
-      :label="label"
-      default-opened
-      :icon="icon"
-      :content-inset-level="0.5"
-    >
+    <q-expansion-item default-opened :icon="icon" :content-inset-level="0.5">
+      <template #header>
+        <q-item-section>
+          <q-chip>
+            <q-avatar color="info" text-color="black">{{
+              items.length
+            }}</q-avatar>
+            {{ label }}
+          </q-chip>
+        </q-item-section>
+      </template>
+
       <q-list class="overflow">
         <q-item v-for="(item, index) in items" :key="index">
           <MigasLink
