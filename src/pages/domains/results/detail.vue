@@ -78,6 +78,7 @@
               use-input
               map-options
               multiple
+              counter
               input-debounce="0"
               :label="$gettext('Available Tags')"
               :options="tags"
@@ -124,6 +125,7 @@
               :label="$gettext('Domain Admins')"
               outlined
               multiple
+              counter
               option-value="id"
               option-label="name"
             >

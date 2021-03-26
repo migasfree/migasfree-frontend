@@ -62,6 +62,7 @@
               use-input
               map-options
               multiple
+              counter
               input-debounce="0"
               :label="$gettext('Computers')"
               :options="computers"

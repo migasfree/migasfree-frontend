@@ -28,6 +28,7 @@
               use-input
               map-options
               multiple
+              counter
               input-debounce="0"
               :label="$gettext('Permissions')"
               :options="permissions"

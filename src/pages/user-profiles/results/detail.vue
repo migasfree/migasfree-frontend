@@ -151,6 +151,7 @@
               :label="$gettext('Groups')"
               outlined
               multiple
+              counter
               option-value="id"
               option-label="name"
             >
@@ -179,6 +180,7 @@
               :label="$gettext('Domains')"
               outlined
               multiple
+              counter
               option-value="id"
               option-label="name"
             >
@@ -210,6 +212,7 @@
               use-input
               map-options
               multiple
+              counter
               input-debounce="0"
               :label="$gettext('User Permissions')"
               :options="userPermissions"

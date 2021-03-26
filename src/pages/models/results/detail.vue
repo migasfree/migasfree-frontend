@@ -60,6 +60,7 @@
               v-model="element.connections"
               outlined
               multiple
+              counter
               :label="$gettext('Connections')"
               :options="connections"
               option-value="id"

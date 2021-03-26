@@ -89,6 +89,7 @@
                 v-model="element.packages"
                 outlined
                 multiple
+                counter
                 use-input
                 input-debounce="0"
                 clearable

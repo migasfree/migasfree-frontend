@@ -18,6 +18,7 @@
             use-chips
             map-options
             multiple
+            counter
             input-debounce="0"
             :label="$gettext('Assigned')"
             :options="assignedDevices"
