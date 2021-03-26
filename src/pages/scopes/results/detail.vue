@@ -270,6 +270,23 @@ export default {
       delete this.element.username
     },
 
+    updateRelated() {
+      if (
+        this.element.id &&
+        this.element.user.id === this.$store.getters['auth/user'].id
+      )
+        this.$store.dispatch('auth/addScope', {
+          id: this.element.id,
+          name: this.element.name,
+          domain: this.element.domain
+        })
+    },
+
+    postRemove() {
+      if (this.element.user.id === this.$store.getters['auth/user'].id)
+        this.$store.commit('auth/deleteScope', this.element.id)
+    },
+
     elementData() {
       return {
         user: this.element.user
