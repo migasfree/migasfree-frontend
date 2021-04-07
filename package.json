@@ -12,22 +12,22 @@
     "gettext-compile": "gettext-compile --output src/i18n/translations.json src/i18n/*.po"
   },
   "dependencies": {
-    "@quasar/extras": "^1.10.0",
-    "@vue/composition-api": "^1.0.0-rc.5",
+    "@quasar/extras": "^1.10.2",
+    "@vue/composition-api": "^1.0.0-rc.6",
     "axios": "^0.21.1",
-    "core-js": "^3.9.1",
+    "core-js": "^3.10.0",
     "echarts": "^5.0.2",
     "leaflet": "^1.7.1",
     "performant-array-to-tree": "^1.8.1",
-    "quasar": "^1.15.9",
+    "quasar": "^1.15.10",
     "text-clipper": "^2.1.0",
     "typeface-dosis": "^1.1.13",
     "validator": "^13.5.2",
-    "vue-echarts": "^6.0.0-rc.3",
+    "vue-echarts": "^6.0.0-rc.4",
     "vue-gettext": "^2.1.12",
-    "vue-good-table": "^2.21.8",
+    "vue-good-table": "^2.21.9",
     "vue-pluralize": "^0.0.2",
-    "vue2-leaflet": "^2.6.0"
+    "vue2-leaflet": "^2.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",
