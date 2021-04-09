@@ -197,7 +197,7 @@ export default {
             },
             {
               title: this.$gettext('Packages History'),
-              to: 'packages-history-list',
+              to: 'packages-history-dashboard',
               icon: 'mdi-history'
             },
             {
