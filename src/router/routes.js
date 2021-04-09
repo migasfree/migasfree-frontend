@@ -46,6 +46,11 @@ const routes = [
       },
 
       {
+        path: '/packages-history',
+        name: 'packages-history-dashboard',
+        component: () => import('pages/packages-history/index')
+      },
+      {
         path: '/packages-history/results',
         name: 'packages-history-list',
         component: () => import('pages/packages-history/results/list')
