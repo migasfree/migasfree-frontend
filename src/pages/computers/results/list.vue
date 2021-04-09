@@ -267,6 +267,7 @@
 
         <span v-else-if="props.column.field == 'sync_end_date'">
           {{ showDate(props.row.sync_end_date) }}
+          <q-tooltip>{{ diffForHumans(props.row.sync_end_date) }}</q-tooltip>
         </span>
 
         <span v-else>

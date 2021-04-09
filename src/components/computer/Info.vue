@@ -38,9 +38,9 @@
 
         <div class="col-md">
           <q-tooltip self="bottom middle"
-            ><translate
-              >Date of entry into the migasfree system</translate
-            ></q-tooltip
+            ><translate>Date of entry into the migasfree system</translate> ({{
+              diffForHumans(createdAt)
+            }})</q-tooltip
           >
           <q-icon name="mdi-calendar-plus" size="sm" class="vertical-middle" />
           <span class="vertical-middle"> {{ showDate(createdAt) }}</span>

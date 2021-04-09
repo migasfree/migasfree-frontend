@@ -142,7 +142,12 @@
         </span>
 
         <span v-else-if="props.column.field == 'created_at'">
-          {{ showDate(props.row.created_at) }}
+          <span
+            >{{ showDate(props.row.created_at) }}
+            <q-tooltip>{{
+              diffForHumans(props.row.created_at)
+            }}</q-tooltip></span
+          >
           <DateDiff
             v-if="props.row.created_at && props.row.start_date"
             class="float-right"
@@ -154,6 +159,7 @@
 
         <span v-else-if="props.column.field == 'start_date'">
           {{ showDate(props.row.start_date) }}
+          <q-tooltip>{{ diffForHumans(props.row.start_date) }}</q-tooltip>
         </span>
 
         <span v-else-if="props.column.field == 'pms_status_ok'">

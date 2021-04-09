@@ -87,6 +87,7 @@
             <p>
               <translate>Joined Date</translate>:
               <strong>{{ showDate(element.date_joined) }}</strong>
+              <q-tooltip>{{ diffForHumans(element.date_joined) }}</q-tooltip>
             </p>
           </div>
 
@@ -94,6 +95,7 @@
             <p>
               <translate>Last Login</translate>:
               <strong>{{ showDate(element.last_login) }}</strong>
+              <q-tooltip>{{ diffForHumans(element.last_login) }}</q-tooltip>
             </p>
           </div>
         </div>

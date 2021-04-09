@@ -118,10 +118,12 @@
 
         <span v-else-if="props.column.field == 'install_date'">
           {{ showDate(props.row.install_date) }}
+          <q-tooltip>{{ diffForHumans(props.row.install_date) }}</q-tooltip>
         </span>
 
         <span v-else-if="props.column.field == 'uninstall_date'">
           {{ showDate(props.row.uninstall_date) }}
+          <q-tooltip>{{ diffForHumans(props.row.uninstall_date) }}</q-tooltip>
         </span>
 
         <span v-else>

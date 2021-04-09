@@ -138,6 +138,7 @@
 
         <span v-else-if="props.column.field == 'start_date'">
           {{ showDate(props.row.start_date, 'YYYY-MM-DD') }}
+          <q-tooltip>{{ diffForHumans(props.row.start_date) }}</q-tooltip>
         </span>
 
         <span v-else-if="props.column.field == 'source'">

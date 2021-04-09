@@ -96,6 +96,7 @@
 
         <span v-else-if="props.column.field == 'created_at'">
           {{ showDate(props.row.created_at) }}
+          <q-tooltip>{{ diffForHumans(props.row.created_at) }}</q-tooltip>
         </span>
 
         <span v-else-if="props.column.field == 'checked'">

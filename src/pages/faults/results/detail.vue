@@ -56,6 +56,7 @@
         <div class="row q-pa-md q-gutter-md">
           <div class="col-6 col-md">
             <translate>Date</translate>: {{ showDate(element.created_at) }}
+            <q-tooltip>{{ diffForHumans(element.created_at) }}</q-tooltip>
           </div>
         </div>
 

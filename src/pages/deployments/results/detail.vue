@@ -377,7 +377,10 @@
                   landscape
                   target="self"
                   :display-value="showDate(element.start_date, 'YYYY-MM-DD')"
-                ></q-datetime-picker>
+                  ><q-tooltip>{{
+                    diffForHumans(element.start_date)
+                  }}</q-tooltip></q-datetime-picker
+                >
               </div>
 
               <div class="col-md">
