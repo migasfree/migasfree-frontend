@@ -27,7 +27,8 @@ module.exports = function(/* ctx */) {
       'vue-echarts',
       'pluralize',
       'markdown',
-      'leaflet'
+      'leaflet',
+      'code-editor'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
