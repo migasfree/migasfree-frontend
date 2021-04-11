@@ -104,13 +104,9 @@
             </div>
 
             <div class="col-md-8 q-mb-xl">
-              <q-input
-                v-model="element.code"
-                outlined
-                type="textarea"
-                bottom-slots
-                :label="$gettext('Code')"
-              >
+              <CodeEditor v-model="element.code" :language="highlightLang" />
+
+              <q-input borderless dense bottom-slots readonly>
                 <template #hint>
                   <p v-translate>
                     This code will execute in the client computer, and it must
@@ -126,8 +122,8 @@
                     # Create an attribute with the name of computer from bash
                   </p>
                   <p><code>echo $HOSTNAME</code></p>
-                </template></q-input
-              >
+                </template>
+              </q-input>
             </div>
           </div>
         </q-card-section>
@@ -185,6 +181,7 @@
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
+import CodeEditor from 'components/ui/CodeEditor'
 import RemoveDialog from 'components/ui/RemoveDialog'
 import { detailMixin } from 'mixins/detail'
 
@@ -198,13 +195,14 @@ export default {
     Breadcrumbs,
     Header,
     RemoveDialog,
-    MigasLink
+    MigasLink,
+    CodeEditor
   },
   mixins: [detailMixin],
   data() {
     const route = 'formulas-list'
     const title = this.$gettext('Formula')
-    const element = { id: 0, enabled: false }
+    const element = { id: 0, enabled: false, code: '' }
 
     return {
       title,
@@ -251,6 +249,15 @@ export default {
 
     isBasic() {
       return this.element.id && this.element.sort === 'basic'
+    },
+
+    highlightLang() {
+      if (
+        'language' in this.element &&
+        typeof this.element.language === 'object'
+      )
+        return this.element.language.name
+      return 'python'
     }
   },
   methods: {

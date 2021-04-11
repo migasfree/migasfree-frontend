@@ -68,13 +68,7 @@
           </div>
 
           <div class="col-md-8">
-            <q-input
-              v-model="element.code"
-              outlined
-              type="textarea"
-              bottom-slots
-              :label="$gettext('Code')"
-            />
+            <CodeEditor v-model="element.code" :language="highlightLang" />
           </div>
         </div>
       </q-card-section>
@@ -204,6 +198,7 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import SelectAttributes from 'components/ui/SelectAttributes'
+import CodeEditor from 'components/ui/CodeEditor'
 import RemoveDialog from 'components/ui/RemoveDialog'
 import { detailMixin } from 'mixins/detail'
 import { elementMixin } from 'mixins/element'
@@ -219,7 +214,8 @@ export default {
     Header,
     RemoveDialog,
     MigasLink,
-    SelectAttributes
+    SelectAttributes,
+    CodeEditor
   },
   mixins: [detailMixin, elementMixin],
   data() {
@@ -230,7 +226,8 @@ export default {
       enabled: false,
       included_attributes: [],
       excluded_attributes: [],
-      users: []
+      users: [],
+      code: ''
     }
 
     return {
@@ -271,6 +268,15 @@ export default {
         this.element.language !== undefined &&
         this.element.code !== undefined
       )
+    },
+
+    highlightLang() {
+      if (
+        'language' in this.element &&
+        typeof this.element.language === 'object'
+      )
+        return this.element.language.name
+      return 'python'
     }
   },
   methods: {
