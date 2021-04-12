@@ -34,10 +34,10 @@
               target="self"
               format24h
               :display-value="showDate(hardwareDate)"
-              ><q-tooltip>{{
-                diffForHumans(hardwareDate)
-              }}</q-tooltip></q-datetime-picker
-            >
+            />
+
+            <q-tooltip>{{ diffForHumans(hardwareDate) }}</q-tooltip>
+
             <q-btn
               color="primary"
               icon="mdi-content-save-edit"
