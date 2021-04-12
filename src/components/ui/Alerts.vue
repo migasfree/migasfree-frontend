@@ -1,8 +1,10 @@
 <template>
-  <q-btn-dropdown v-if="isAlertsVisible" flat stretch @click="loadAlerts">
+  <q-btn-dropdown v-if="isAlertsVisible" flat stretch>
     <template #label>
       <q-icon name="mdi-bell" />
+
       <q-chip :label="totalAlerts" color="white" text-color="black" />
+
       <q-tooltip>
         <translate>Alerts</translate>
       </q-tooltip>
@@ -19,9 +21,11 @@
         <q-item-section avatar>
           <q-icon :name="target(item.target)" />
         </q-item-section>
+
         <q-item-section>
           <q-item-label>{{ item.msg }}</q-item-label>
         </q-item-section>
+
         <q-item-section side top>
           <q-chip
             :label="item.result"
@@ -40,7 +44,8 @@ export default {
   data() {
     return {
       alerts: [],
-      totalAlerts: 0
+      totalAlerts: 0,
+      socket: null
     }
   },
   computed: {
@@ -55,6 +60,28 @@ export default {
     loggedIn(newValue, oldValue) {
       if (newValue) this.loadAlerts()
     }
+  },
+  created() {
+    this.socket = new WebSocket(
+      `ws://${process.env.MIGASFREE_SERVER.split('//')[1]}/alerts/`
+    )
+
+    let self = this
+
+    this.socket.onmessage = (event) => {
+      const response = JSON.parse(event.data)
+
+      self.alerts = response.filter((item) => parseInt(item.result) > 0)
+      console.log('alerts', self.alerts)
+
+      self.totalAlerts = self.alerts.reduce(
+        (accumulator, current) => accumulator + parseInt(current.result),
+        0
+      )
+    }
+  },
+  destroyed() {
+    this.socket.close()
   },
   async mounted() {
     if (this.loggedIn) {
