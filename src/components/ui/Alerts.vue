@@ -23,7 +23,7 @@
         </q-item-section>
 
         <q-item-section>
-          <q-item-label>{{ item.msg }}</q-item-label>
+          <q-item-label>{{ resolveAlertText(item) }}</q-item-label>
         </q-item-section>
 
         <q-item-section side top>
@@ -150,7 +150,46 @@ export default {
             return { name: 'messages-list', query }
         }
       }
+
       return value
+    },
+
+    resolveAlertText(value) {
+      const api = value.api
+
+      if ('model' in api) {
+        switch (api.model) {
+          case 'packages':
+            return this.$gettext('Orphan Packages')
+          case 'notifications':
+            return this.$gettext('Unchecked Notifications')
+          case 'faults':
+            return this.$gettext('Unchecked Faults')
+          case 'errors':
+            return this.$gettext('Unchecked Errors')
+          case 'deployments':
+            if ('id_in' in api.query)
+              return this.$gettext('Generating Repositories')
+
+            if ('percent__lt' in api.query)
+              return this.$gettext('Active schedule Deployments')
+
+            if ('percent__gte' in api.query)
+              return this.$gettext('Finished schedule Deployments')
+
+            break
+          case 'messages':
+            if ('created_at__gte' in api.query)
+              return this.$gettext('Synchronizing Computers Now')
+
+            if ('created_at__lt' in api.query)
+              return this.$gettext('Delayed Computers')
+
+            break
+        }
+      }
+
+      return value.msg
     }
   }
 }
