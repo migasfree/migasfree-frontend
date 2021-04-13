@@ -72,7 +72,6 @@ export default {
       const response = JSON.parse(event.data)
 
       self.alerts = response.filter((item) => parseInt(item.result) > 0)
-      console.log('alerts', self.alerts)
 
       self.totalAlerts = self.alerts.reduce(
         (accumulator, current) => accumulator + parseInt(current.result),
