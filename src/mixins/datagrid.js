@@ -154,7 +154,7 @@ export const datagridMixin = {
               if (filter) this.tableFilters.user.selected = filter.name
               break
             default:
-              this.tableFilters[key] = value
+              this.tableFilters[key].selected = value
           }
         }
 
