@@ -9,7 +9,7 @@
         <div class="col-auto">
           <q-chip
             size="md"
-            clickable
+            :clickable="data.total > 0"
             :color="critical ? 'negative' : 'info'"
             :text-color="critical ? 'white' : 'black'"
             @click="goTo"
