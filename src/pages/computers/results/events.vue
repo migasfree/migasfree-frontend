@@ -111,25 +111,92 @@
         </div>
       </template>
 
-      <div v-if="items.length > 0" id="events" class="q-pa-md">
-        <q-toolbar class="bg-primary text-white shadow-2">
-          <q-toolbar-title
-            >{{ events[event].title }} ({{ itemsDate }}:
-            {{ items.length }})</q-toolbar-title
-          >
-        </q-toolbar>
+      <div v-if="items.length > 0" id="events" class="q-pa-lg">
+        <q-table
+          :title="`${events[event].title} (${itemsDate}: ${items.length})`"
+          :data="items"
+          :columns="events[event].columns"
+          hide-pagination
+          :visible-columns="events[event].visibleColumns"
+        >
+          <template #body="props">
+            <q-tr :props="props">
+              <q-td v-if="event === 'syncs'" key="start_date" :props="props">
+                {{ showDate(props.row.start_date) }}
+              </q-td>
 
-        <q-list bordered dense separator>
-          <q-item v-for="(item, index) in items" :key="index" class="q-my-sm">
-            <q-item-section avatar>
-              {{ item[0] }}
-            </q-item-section>
+              <q-td key="created_at" :props="props">
+                {{ showDate(props.row.created_at) }}
+                <DateDiff
+                  v-if="props.row.created_at && props.row.start_date"
+                  class="float-right"
+                  :begin="new Date(props.row.start_date)"
+                  :end="new Date(props.row.created_at)"
+                  :tooltip="$gettext('Duration')"
+                />
+              </q-td>
 
-            <q-item-section>
-              <Truncate v-model="item[1]" />
-            </q-item-section>
-          </q-item>
-        </q-list>
+              <q-td v-if="event === 'syncs'" key="user.name" :props="props">
+                <MigasLink
+                  model="users"
+                  :pk="props.row.user.id"
+                  :value="props.row.user.__str__"
+                  icon="mdi-account"
+                />
+              </q-td>
+
+              <q-td
+                v-if="event !== 'statusLogs'"
+                key="project.name"
+                :props="props"
+              >
+                <MigasLink
+                  model="projects"
+                  :pk="props.row.project.id"
+                  :value="props.row.project.name || ''"
+                  icon="mdi-sitemap"
+                />
+              </q-td>
+
+              <q-td v-if="event === 'syncs'" key="pms_status_ok" :props="props">
+                <BooleanView v-model="props.row.pms_status_ok" />
+              </q-td>
+
+              <q-td v-if="event === 'syncs'" key="consumer" :props="props">
+                {{ props.row.consumer }}
+              </q-td>
+
+              <q-td
+                v-if="['errors', 'faults'].includes(event)"
+                key="checked"
+                :props="props"
+              >
+                <BooleanView v-model="props.row.checked" />
+              </q-td>
+
+              <q-td v-if="event === 'errors'" key="description" :props="props">
+                <Truncate v-model="props.row.description" />
+              </q-td>
+
+              <q-td
+                v-if="event === 'faults'"
+                key="fault_definition.name"
+                :props="props"
+              >
+                <MigasLink
+                  model="fault-definitions"
+                  :pk="props.row.fault_definition.id"
+                  :value="props.row.fault_definition.name || ''"
+                  icon="mdi-alert-octagram-outline"
+                />
+              </q-td>
+
+              <q-td v-if="event === 'statusLogs'" key="status" :props="props">
+                {{ props.row.status }}
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
       </div>
     </template>
   </q-page>
@@ -139,7 +206,9 @@
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import Truncate from 'components/ui/Truncate'
+import BooleanView from 'components/ui/BooleanView'
 import MigasLink from 'components/MigasLink'
+import DateDiff from 'components/DateDiff'
 import HeatMap from 'components/chart/HeatMap'
 import { elementMixin } from 'mixins/element'
 import { dateMixin } from 'mixins/date'
@@ -153,7 +222,15 @@ export default {
       title: this.title
     }
   },
-  components: { Breadcrumbs, Header, MigasLink, HeatMap, Truncate },
+  components: {
+    Breadcrumbs,
+    Header,
+    MigasLink,
+    HeatMap,
+    BooleanView,
+    Truncate,
+    DateDiff
+  },
   mixins: [elementMixin, dateMixin],
   data() {
     return {
@@ -196,27 +273,191 @@ export default {
         syncs: {
           data: [],
           total: 0,
-          title: this.$gettext('Synchronizations')
+          title: this.$gettext('Synchronizations'),
+          visibleColumns: [
+            'start_date',
+            'created_at',
+            'user.name',
+            'project.name',
+            'pms_status_ok',
+            'consumer'
+          ],
+          columns: [
+            {
+              name: 'start_date',
+              label: this.$gettext('Start Date'),
+              field: 'start_date',
+              align: 'left'
+            },
+            {
+              name: 'created_at',
+              label: this.$gettext('End Date'),
+              field: 'created_at',
+              align: 'left'
+            },
+            {
+              name: 'user.id',
+              field: 'user.id'
+            },
+            {
+              name: 'user.name',
+              label: this.$gettext('User'),
+              field: 'user.name',
+              align: 'left'
+            },
+            {
+              name: 'project.id',
+              field: 'project.id'
+            },
+            {
+              name: 'project.name',
+              label: this.$gettext('Project'),
+              field: 'project.name',
+              align: 'left'
+            },
+            {
+              name: 'pms_status_ok',
+              label: this.$gettext('PMS Status Ok'),
+              field: 'pms_status_ok',
+              align: 'center'
+            },
+            {
+              name: 'consumer',
+              label: this.$gettext('Consumer'),
+              field: 'consumer',
+              align: 'left'
+            }
+          ]
         },
         errors: {
           data: [],
           total: 0,
-          title: this.$gettext('Errors')
+          title: this.$gettext('Errors'),
+          visibleColumns: [
+            'created_at',
+            'project.name',
+            'checked',
+            'description'
+          ],
+          columns: [
+            {
+              name: 'created_at',
+              label: this.$gettext('Date'),
+              field: 'created_at',
+              align: 'left'
+            },
+            {
+              name: 'project.id',
+              field: 'project.id'
+            },
+            {
+              name: 'project.name',
+              label: this.$gettext('Project'),
+              field: 'project.name',
+              align: 'left'
+            },
+            {
+              name: 'checked',
+              label: this.$gettext('Checked'),
+              field: 'checked',
+              align: 'center'
+            },
+            {
+              name: 'description',
+              label: this.$gettext('Description'),
+              field: 'description',
+              align: 'left'
+            }
+          ]
         },
         faults: {
           data: [],
           total: 0,
-          title: this.$gettext('Faults')
+          title: this.$gettext('Faults'),
+          visibleColumns: [
+            'created_at',
+            'project.name',
+            'checked',
+            'fault_definition.name'
+          ],
+          columns: [
+            {
+              name: 'created_at',
+              label: this.$gettext('Date'),
+              field: 'created_at',
+              align: 'left'
+            },
+            {
+              name: 'project.id',
+              field: 'project.id'
+            },
+            {
+              name: 'project.name',
+              label: this.$gettext('Project'),
+              field: 'project.name',
+              align: 'left'
+            },
+            {
+              name: 'checked',
+              label: this.$gettext('Checked'),
+              field: 'checked',
+              align: 'center'
+            },
+            {
+              name: 'fault_definition.id',
+              field: 'fault_definition.id'
+            },
+            {
+              name: 'fault_definition.name',
+              label: this.$gettext('Fault Definition'),
+              field: 'fault_definition.name',
+              align: 'left'
+            }
+          ]
         },
         migrations: {
           data: [],
           total: 0,
-          title: this.$gettext('Migrations')
+          title: this.$gettext('Migrations'),
+          visibleColumns: ['created_at', 'project.name'],
+          columns: [
+            {
+              name: 'created_at',
+              label: this.$gettext('Date'),
+              field: 'created_at',
+              align: 'left'
+            },
+            {
+              name: 'project.id',
+              field: 'project.id'
+            },
+            {
+              name: 'project.name',
+              label: this.$gettext('Project'),
+              field: 'project.name',
+              align: 'left'
+            }
+          ]
         },
         statusLogs: {
           data: [],
           total: 0,
-          title: this.$gettext('Status Logs')
+          title: this.$gettext('Status Logs'),
+          visibleColumns: ['created_at', 'status'],
+          columns: [
+            {
+              name: 'created_at',
+              label: this.$gettext('Date'),
+              field: 'created_at',
+              align: 'left'
+            },
+            {
+              name: 'status',
+              label: this.$gettext('Status'),
+              field: 'status',
+              align: 'left'
+            }
+          ]
         }
       },
       items: [],
@@ -352,41 +593,8 @@ export default {
       await this.$axios
         .get(url, { params: queryString })
         .then((response) => {
-          this.items = []
-          response.data.results.forEach((item) => {
-            let itemDate = new Date(item.date || item.created_at)
-            itemDate = itemDate.toLocaleTimeString()
-            switch (this.event) {
-              case 'syncs':
-                this.items.push([
-                  itemDate,
-                  `(${item.project.name}): ${item.user.__str__}`
-                ])
-                break
+          this.items = response.data.results
 
-              case 'errors':
-                this.items.push([
-                  itemDate,
-                  `(${item.project.name}):\n${item.description}`
-                ])
-                break
-
-              case 'faults':
-                this.items.push([
-                  itemDate,
-                  `(${item.project.name}):\n${item.result}`
-                ])
-                break
-
-              case 'statusLogs':
-                this.items.push([itemDate, item.status])
-                break
-
-              case 'migrations':
-                this.items.push([itemDate, item.project.name])
-                break
-            }
-          })
           setTimeout(() => {
             this.$store.dispatch(
               'ui/scrollToElement',
