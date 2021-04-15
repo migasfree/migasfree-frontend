@@ -70,13 +70,7 @@ export default {
 
     this.socket.onmessage = (event) => {
       const response = JSON.parse(event.data)
-
-      self.alerts = response.filter((item) => parseInt(item.result) > 0)
-
-      self.totalAlerts = self.alerts.reduce(
-        (accumulator, current) => accumulator + parseInt(current.result),
-        0
-      )
+      self.updateData(response)
     }
   },
   destroyed() {
@@ -92,17 +86,20 @@ export default {
       await this.$axios
         .get('/api/v1/token/stats/alerts/')
         .then((response) => {
-          this.alerts = response.data.filter(
-            (item) => parseInt(item.result) > 0
-          )
-          this.totalAlerts = this.alerts.reduce(
-            (accumulator, current) => accumulator + parseInt(current.result),
-            0
-          )
+          this.updateData(response.data)
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
+    },
+
+    updateData(newData) {
+      this.alerts = newData.filter((item) => parseInt(item.result) > 0)
+
+      this.totalAlerts = this.alerts.reduce(
+        (accumulator, current) => accumulator + parseInt(current.result),
+        0
+      )
     },
 
     target(value) {
