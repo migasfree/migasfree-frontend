@@ -285,7 +285,13 @@
                     >
                   </div>
 
-                  <div class="col-md">
+                  <div
+                    class="col-md"
+                    :class="{
+                      'bg-warning text-black':
+                        syncInfo.sync_end_date < syncInfo.sync_start_date
+                    }"
+                  >
                     <q-tooltip self="bottom middle"
                       ><translate>sync end date</translate></q-tooltip
                     >
