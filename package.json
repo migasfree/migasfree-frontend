@@ -24,6 +24,7 @@
     "text-clipper": "^2.1.0",
     "typeface-dosis": "^1.1.13",
     "validator": "^13.5.2",
+    "vue-code-diff": "^1.1.0",
     "vue-codeditor": "^1.0.5",
     "vue-echarts": "^6.0.0-rc.4",
     "vue-gettext": "^2.1.12",
@@ -58,7 +59,7 @@
     "last 5 Opera versions"
   ],
   "engines": {
-    "node": ">= 10.18.1",
+    "node": ">= 12.18.1",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
   }
