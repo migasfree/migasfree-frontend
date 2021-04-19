@@ -196,6 +196,11 @@ export default {
               icon: 'mdi-compare-horizontal'
             },
             {
+              title: this.$gettext('Software Compare'),
+              to: 'computers-software-compare',
+              icon: 'mdi-file-compare'
+            },
+            {
               title: this.$gettext('Packages History'),
               to: 'packages-history-dashboard',
               icon: 'mdi-history'
