@@ -31,7 +31,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.category"
               outlined
@@ -44,7 +44,7 @@
             />
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.level"
               outlined
@@ -59,7 +59,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-field
               outlined
               :label="$gettext('Score')"
@@ -77,7 +77,7 @@
             </q-field>
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <div class="col-6">
               <q-file
                 v-model="iconFile"
@@ -112,7 +112,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-input
               v-model="element.description"
               outlined
@@ -122,7 +122,7 @@
             />
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-field
               outlined
               :label="$gettext('Description Preview')"
@@ -161,7 +161,7 @@
 
             <q-item-section>
               <div class="row q-pa-md q-gutter-md">
-                <div class="col-md">
+                <div class="col-5 col-md col-sm">
                   <q-select
                     v-model="project.project"
                     outlined
@@ -174,7 +174,7 @@
                   />
                 </div>
 
-                <div class="col-md">
+                <div class="col-5 col-md col-sm">
                   <q-input
                     v-model="project.packages_to_install"
                     outlined

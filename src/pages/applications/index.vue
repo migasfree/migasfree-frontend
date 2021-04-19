@@ -7,7 +7,7 @@
     <SearchFilter @search="search" />
 
     <div class="row">
-      <div class="col-6 col-md">
+      <div class="col-md-6 col-sm-6 col-xs-12">
         <PieChart
           :title="$gettext('Applications / Category')"
           end-point="/api/v1/token/stats/applications/category/"
@@ -16,7 +16,7 @@
         />
       </div>
 
-      <div class="col-6 col-md">
+      <div class="col-md-6 col-sm-6 col-xs-12">
         <PieChart
           :title="$gettext('Applications / Level')"
           end-point="/api/v1/token/stats/applications/level/"

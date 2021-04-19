@@ -7,7 +7,7 @@
     <SearchFilter @search="search" />
 
     <div class="row">
-      <div class="col-4 col-md">
+      <div class="col-md-4 col-sm-12 col-xs-12">
         <PieChart
           :title="$gettext('Computers / Machine')"
           end-point="/api/v1/token/stats/computers/machine/"
@@ -16,7 +16,7 @@
         />
       </div>
 
-      <div class="col-4 col-md">
+      <div class="col-md-4 col-sm-12 col-xs-12">
         <PieChart
           :title="$gettext('Subscribed Computers / Status')"
           end-point="/api/v1/token/stats/computers/status/"
@@ -25,7 +25,7 @@
         />
       </div>
 
-      <div class="col-4 col-md">
+      <div class="col-md-4 col-sm-12 col-xs-12">
         <PieChart
           :title="$gettext('Productive Computers')"
           end-point="/api/v1/token/stats/computers/productive/platform/"
@@ -36,7 +36,7 @@
     </div>
 
     <div class="row">
-      <div class="col-12">
+      <div class="col">
         <StackedBarChart
           :title="$gettext('New Computers / Month')"
           end-point="/api/v1/token/stats/computers/new/month/"
@@ -46,7 +46,7 @@
     </div>
 
     <div class="row">
-      <div class="col-12">
+      <div class="col">
         <StackedBarChart
           :title="$gettext('Physical computers entering the system per year')"
           end-point="/api/v1/token/stats/computers/entry/year/"

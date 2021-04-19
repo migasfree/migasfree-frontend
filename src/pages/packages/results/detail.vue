@@ -31,7 +31,7 @@
     <q-card>
       <q-card-section>
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <template v-if="element.id">
               <translate>Project</translate>:
               <MigasLink
@@ -69,7 +69,7 @@
             </q-input>
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <template v-if="element.id">
               <translate>Store</translate>:
               <MigasLink
@@ -84,7 +84,7 @@
         </div>
 
         <div v-if="element.id === 0" class="row q-pa-md q-gutter-md">
-          <div class="col-12">
+          <div class="col-12 col-md col-sm">
             <q-file
               v-model="element.files"
               clearable
@@ -98,16 +98,16 @@
         </div>
 
         <div v-if="element.id" class="row q-pa-md q-gutter-md">
-          <div class="col-4 col-md">
+          <div class="col-4 col-md col-sm">
             <translate>Name</translate>: <strong>{{ element.name }}</strong>
           </div>
 
-          <div class="col-4 col-md">
+          <div class="col-4 col-md col-sm">
             <translate>Version</translate>:
             <strong>{{ element.version }}</strong>
           </div>
 
-          <div class="col-4 col-md">
+          <div class="col-4 col-md col-sm">
             <translate>Architecture</translate>:
             <strong>{{ element.architecture }}</strong>
           </div>

@@ -17,7 +17,7 @@
     <q-card>
       <q-card-section>
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-input
               v-model="element.name"
               outlined
@@ -27,7 +27,7 @@
             />
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <template v-if="element.id">
               <q-field
                 outlined
@@ -84,7 +84,7 @@
 
         <template v-if="element.store || element.id">
           <div v-if="packages.length > 0" class="row q-pa-md q-gutter-md">
-            <div class="col-md">
+            <div class="col-12 col-md col-sm">
               <q-select
                 v-model="element.packages"
                 outlined
@@ -119,7 +119,7 @@
           </div>
 
           <div class="row q-pa-md q-gutter-md">
-            <div class="col-md">
+            <div class="col-12 col-md col-sm">
               <q-file
                 v-model="element.files"
                 clearable
@@ -136,7 +136,7 @@
         </template>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-md">
+          <div class="col-12 col-md col-sm">
             <q-input
               v-model="element.description"
               outlined

@@ -19,7 +19,7 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-input
               v-model="element.name"
               outlined
@@ -29,7 +29,7 @@
             />
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-input
               v-model="element.description"
               outlined
@@ -59,7 +59,7 @@
 
             <q-item-section>
               <div class="row q-pa-md q-gutter-md">
-                <div class="col-md">
+                <div class="col-5 col-md col-sm">
                   <q-input
                     v-model="delay.delay"
                     outlined
@@ -70,7 +70,7 @@
                   />
                 </div>
 
-                <div class="col-md">
+                <div class="col-5 col-md col-sm">
                   <q-input
                     v-model="delay.duration"
                     outlined
@@ -83,7 +83,7 @@
               </div>
 
               <div class="row q-pa-md q-gutter-md">
-                <div class="col-md">
+                <div class="col-10 col-md col-sm">
                   <SelectAttributes
                     v-model="delay.attributes"
                     :label="$gettext('Attributes')"

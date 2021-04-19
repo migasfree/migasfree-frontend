@@ -19,7 +19,7 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-12">
+          <div class="col">
             <q-input
               v-model="element.name"
               outlined
@@ -31,7 +31,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-checkbox
               v-model="element.enabled"
               left-label
@@ -43,7 +43,7 @@
             </p>
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-checkbox
               v-model="element.exclusive"
               left-label
@@ -57,7 +57,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-12">
+          <div class="col">
             <q-input
               v-model="element.comment"
               outlined
@@ -72,14 +72,14 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">Application Area</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <SelectAttributes
               v-model="element.included_attributes"
               :label="$gettext('Included Attributes')"
             />
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <SelectAttributes
               v-model="element.excluded_attributes"
               :label="$gettext('Excluded Attributes')"
@@ -112,7 +112,7 @@
 
             <q-item-section>
               <div class="row q-pa-md q-gutter-md">
-                <div class="col-md">
+                <div class="col-5 col-md col-sm">
                   <q-input
                     v-model="line.priority"
                     outlined
@@ -123,7 +123,7 @@
                   />
                 </div>
 
-                <div class="col-md">
+                <div class="col-5 col-md col-sm">
                   <q-select
                     v-model="line.applications"
                     outlined
@@ -172,14 +172,14 @@
               </div>
 
               <div class="row q-pa-md q-gutter-md">
-                <div class="col-md">
+                <div class="col-5 col-md col-sm">
                   <SelectAttributes
                     v-model="line.included_attributes"
                     :label="$gettext('Included Attributes')"
                   />
                 </div>
 
-                <div class="col-md">
+                <div class="col-5 col-md col-sm">
                   <SelectAttributes
                     v-model="line.excluded_attributes"
                     :label="$gettext('Excluded Attributes')"
