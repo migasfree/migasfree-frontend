@@ -44,6 +44,11 @@ const routes = [
         name: 'computers-replacement',
         component: () => import('pages/computers/replacement')
       },
+      {
+        path: '/computers/software-compare',
+        name: 'computers-software-compare',
+        component: () => import('pages/computers/softwareCompare')
+      },
 
       {
         path: '/packages-history',
