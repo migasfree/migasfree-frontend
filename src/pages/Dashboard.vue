@@ -5,7 +5,7 @@
     <Header :title="title" />
 
     <div class="row">
-      <div class="col-4 col-md">
+      <div class="col-md-4 col-sm-12 col-xs-12">
         <PieChart
           :title="productiveComputersTitle"
           end-point="/api/v1/token/stats/computers/productive/platform/"
@@ -14,7 +14,7 @@
         />
       </div>
 
-      <div class="col-4 col-md">
+      <div class="col-md-4 col-sm-12 col-xs-12">
         <PieChart
           :title="uncheckedErrorsTitle"
           end-point="/api/v1/token/stats/errors/unchecked/"
@@ -24,7 +24,7 @@
         />
       </div>
 
-      <div class="col-4 col-md">
+      <div class="col-md-4 col-sm-12 col-xs-12">
         <PieChart
           :title="uncheckedFaultsTitle"
           end-point="/api/v1/token/stats/faults/unchecked/"
