@@ -15,7 +15,7 @@
           <h3 class="text-h6 float-right">
             <q-tooltip self="bottom middle"
               ><translate>Date of entry into the migasfree system</translate>
-              ({{ diffForHumans(computer.createdAt) }})</q-tooltip
+              ({{ diffForHumans(computer.created_at) }})</q-tooltip
             >
             <q-icon
               name="mdi-calendar-plus"
