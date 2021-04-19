@@ -9,7 +9,7 @@
     <q-card>
       <q-card-section>
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-checkbox
               v-model="element.checked"
               left-label
@@ -17,14 +17,14 @@
             />
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <translate>Date</translate>: {{ showDate(element.created_at) }}
             <q-tooltip>{{ diffForHumans(element.created_at) }}</q-tooltip>
           </div>
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <translate>Computer</translate>:
             <MigasLink
               v-if="element.computer"
@@ -36,7 +36,7 @@
             />
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <translate>Project</translate>:
             <MigasLink
               v-if="element.project"
@@ -49,7 +49,7 @@
         </div>
 
         <div class="row q-pa-md">
-          <div class="col-12">
+          <div class="col">
             <q-list bordered>
               <q-toolbar>
                 <q-toolbar-title

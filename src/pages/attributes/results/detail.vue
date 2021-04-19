@@ -20,7 +20,7 @@
           <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
           <div class="row q-pa-md q-gutter-md">
-            <div class="col-md">
+            <div class="col-6 col-md col-sm">
               <q-field outlined :label="$gettext('Formula')" stack-label>
                 <template #control>
                   <MigasLink
@@ -33,7 +33,7 @@
               </q-field>
             </div>
 
-            <div class="col-md">
+            <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.value"
                 outlined
@@ -44,7 +44,7 @@
           </div>
 
           <div class="row q-pa-md">
-            <div class="col-md">
+            <div class="col">
               <q-input
                 v-model="element.description"
                 outlined
@@ -73,7 +73,7 @@
 
           <template v-if="viewMap">
             <div class="row q-pa-md q-gutter-md">
-              <div class="col-md">
+              <div class="col-6 col-md col-sm">
                 <q-input
                   v-model="element.latitude"
                   outlined
@@ -82,7 +82,7 @@
                 />
               </div>
 
-              <div class="col-md">
+              <div class="col-6 col-md col-sm">
                 <q-input
                   v-model="element.longitude"
                   outlined
@@ -93,7 +93,7 @@
             </div>
 
             <div class="row q-pa-md q-gutter-md">
-              <div class="col-md">
+              <div class="col">
                 <AddLocation v-model="coords" @update-coords="updateCoords" />
               </div>
             </div>

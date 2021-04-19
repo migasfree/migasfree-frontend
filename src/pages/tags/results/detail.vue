@@ -19,7 +19,7 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.property_att"
               outlined
@@ -32,7 +32,7 @@
             />
           </div>
 
-          <div class="col-md">
+          <div class="col-6 col-md col-sm">
             <q-input
               v-model="element.value"
               outlined
@@ -44,7 +44,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-md">
+          <div class="col">
             <q-input
               v-model="element.description"
               outlined
@@ -55,7 +55,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.computers"
               outlined
@@ -103,7 +103,10 @@
             </q-select>
           </div>
 
-          <div v-if="element.id && inflicted.length > 0" class="col-md">
+          <div
+            v-if="element.id && inflicted.length > 0"
+            class="col-6 col-md col-sm"
+          >
             <OverflowList
               :label="$gettext('Inflicted Computers')"
               icon="mdi-desktop-classic"
@@ -131,7 +134,7 @@
 
         <template v-if="viewMap">
           <div class="row q-pa-md q-gutter-md">
-            <div class="col-md">
+            <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.latitude"
                 outlined
@@ -140,7 +143,7 @@
               />
             </div>
 
-            <div class="col-md">
+            <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.longitude"
                 outlined
@@ -151,7 +154,7 @@
           </div>
 
           <div class="row q-pa-md q-gutter-md">
-            <div class="col-md">
+            <div class="col">
               <AddLocation v-model="coords" @update-coords="updateCoords" />
             </div>
           </div>

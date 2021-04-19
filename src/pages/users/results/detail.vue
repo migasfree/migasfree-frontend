@@ -17,7 +17,7 @@
     <q-card>
       <q-card-section>
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-md">
+          <div class="col-6 col-md col-sm">
             <q-input
               v-model="element.name"
               outlined
@@ -26,7 +26,7 @@
             />
           </div>
 
-          <div class="col-md">
+          <div class="col-6 col-md col-sm">
             <q-input
               v-model="element.fullname"
               outlined
