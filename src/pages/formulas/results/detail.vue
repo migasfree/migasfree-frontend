@@ -24,7 +24,7 @@
           <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
           <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md">
+            <div class="col-6 col-md col-sm">
               <q-checkbox
                 v-model="element.enabled"
                 left-label
@@ -32,7 +32,7 @@
               />
             </div>
 
-            <div class="col-6 col-md">
+            <div class="col-6 col-md col-sm">
               <q-select
                 v-model="element.kind"
                 outlined
@@ -47,7 +47,7 @@
           </div>
 
           <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md">
+            <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.prefix"
                 outlined
@@ -74,7 +74,7 @@
               />
             </div>
 
-            <div class="col-6 col-md">
+            <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.name"
                 outlined
@@ -90,7 +90,7 @@
           <div v-translate class="text-h5 q-mt-sm q-mb-xs">Code</div>
 
           <div class="row q-pa-md q-gutter-md justify-between q-mb-xl">
-            <div class="col-md-3">
+            <div class="col-md-3 col-sm-3 col-xs-3">
               <q-select
                 v-model="element.language"
                 outlined
@@ -103,7 +103,7 @@
               />
             </div>
 
-            <div class="col-md-8 q-mb-xl">
+            <div class="col-md-8 col-sm-8 col-xs-8 q-mb-xl">
               <CodeEditor v-model="element.code" :language="highlightLang" />
 
               <q-input borderless dense bottom-slots readonly>

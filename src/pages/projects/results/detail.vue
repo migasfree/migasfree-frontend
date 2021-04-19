@@ -17,7 +17,7 @@
     <q-card>
       <q-card-section>
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.platform"
               outlined
@@ -34,7 +34,7 @@
             </q-select>
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-input
               v-model="element.name"
               outlined
@@ -46,7 +46,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-4 col-md">
+          <div class="col-4 col-md col-sm">
             <q-checkbox
               v-model="element.auto_register_computers"
               left-label
@@ -54,7 +54,7 @@
             />
           </div>
 
-          <div class="col-4 col-md">
+          <div class="col-4 col-md col-sm">
             <q-select
               v-model="element.pms"
               outlined
@@ -67,7 +67,7 @@
             />
           </div>
 
-          <div class="col-4 col-md">
+          <div class="col-4 col-md col-sm">
             <q-input
               v-model="element.architecture"
               outlined
