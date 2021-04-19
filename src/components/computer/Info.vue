@@ -2,13 +2,13 @@
   <q-card>
     <q-card-section>
       <div class="row">
-        <div class="col-md">
+        <div class="col">
           <div v-translate class="text-h5">General</div>
         </div>
       </div>
 
       <div class="row q-pa-md">
-        <div class="col-md">
+        <div class="col col-md col-sm">
           <q-btn-group v-if="$store.getters['auth/user'].is_superuser">
             <q-input v-model="value" outlined :label="$gettext('Name')" />
             <q-btn
@@ -28,7 +28,7 @@
       </div>
 
       <div class="row q-pa-md">
-        <div class="col-md">
+        <div class="col-6 col-md col-sm">
           <q-tooltip self="bottom middle"
             ><translate>full qualified domain name</translate></q-tooltip
           >
@@ -36,7 +36,7 @@
           <span class="vertical-middle"> {{ fqdn }}</span>
         </div>
 
-        <div class="col-md">
+        <div class="col-6 col-md col-sm">
           <q-tooltip self="bottom middle"
             ><translate>Date of entry into the migasfree system</translate> ({{
               diffForHumans(createdAt)
@@ -48,7 +48,7 @@
       </div>
 
       <div class="row q-pa-md">
-        <div class="col-md">
+        <div class="col-6 col-md col-sm">
           <q-tooltip self="bottom middle"
             ><translate>platform</translate></q-tooltip
           >
@@ -60,7 +60,7 @@
           />
         </div>
 
-        <div class="col-md">
+        <div class="col-6 col-md col-sm">
           <q-tooltip self="bottom middle"
             ><translate>project</translate></q-tooltip
           >
@@ -74,14 +74,15 @@
       </div>
 
       <div class="row q-pa-md">
-        <div class="col-md">
+        <div class="col-6 col-md col-sm">
           <q-tooltip self="bottom middle"
             ><translate>ip address</translate></q-tooltip
           >
           <q-icon name="mdi-ip-network" size="sm" class="vertical-middle" />
           <span class="vertical-middle"> {{ ipAddress }}</span>
         </div>
-        <div class="col-md">
+
+        <div class="col-6 col-md col-sm">
           <q-tooltip self="bottom middle"
             ><translate>forwarded ip address</translate></q-tooltip
           >
@@ -103,6 +104,7 @@
         }"
         :label="$gettext('Events')"
       />
+
       <q-btn
         icon="mdi-head-sync-outline"
         color="info"
@@ -114,6 +116,7 @@
         }"
         :label="$gettext('Simulate synchronization')"
       />
+
       <q-btn
         icon="mdi-card-account-details-outline"
         color="info"
