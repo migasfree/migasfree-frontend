@@ -5,7 +5,7 @@
     <Header :title="title" />
 
     <div class="row q-pa-md q-gutter-sm justify-around">
-      <div class="col-md">
+      <div class="col-6 col-md col-sm col-xs">
         <q-card>
           <q-card-section>
             <div v-translate class="text-h5 q-mt-sm q-mb-xs">Source</div>
@@ -58,7 +58,7 @@
         </q-card>
       </div>
 
-      <div class="col-md">
+      <div class="col-6 col-md col-sm col-xs">
         <q-card>
           <q-card-section>
             <div v-translate class="text-h5 q-mt-sm q-mb-xs">Target</div>
