@@ -9,7 +9,7 @@
     <q-card>
       <q-card-section>
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-12">
+          <div class="col-md col-sm">
             <q-input
               v-model="element.name"
               :label="$gettext('Name')"
@@ -21,7 +21,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-12">
+          <div class="col-md col-sm">
             <q-select
               v-model="element.permissions"
               outlined

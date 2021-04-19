@@ -19,7 +19,7 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.device_type"
               outlined
@@ -36,7 +36,7 @@
             </q-select>
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.manufacturer"
               outlined
@@ -55,7 +55,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.connections"
               outlined
@@ -74,7 +74,7 @@
             </q-select>
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-input
               v-model="element.name"
               outlined
@@ -105,7 +105,7 @@
 
             <q-item-section>
               <div class="row q-pa-md q-gutter-md">
-                <div class="col-md">
+                <div class="col-5 col-md col-sm">
                   <q-select
                     v-model="driver.project"
                     outlined
@@ -122,7 +122,7 @@
                   </q-select>
                 </div>
 
-                <div class="col-md">
+                <div class="col-5 col-md col-sm">
                   <q-select
                     v-model="driver.capability"
                     outlined
@@ -141,7 +141,7 @@
               </div>
 
               <div class="row q-pa-md q-gutter-md">
-                <div class="col-md">
+                <div class="col-5 col-md col-sm">
                   <q-input
                     v-model="driver.name"
                     outlined
@@ -149,7 +149,7 @@
                   />
                 </div>
 
-                <div class="col-md">
+                <div class="col-5 col-md col-sm">
                   <q-input
                     v-model="driver.packages_to_install"
                     outlined

@@ -19,7 +19,7 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-checkbox
               v-model="element.enabled"
               left-label
@@ -27,7 +27,7 @@
             />
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-input
               v-model="element.name"
               outlined
@@ -39,7 +39,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-12">
+          <div class="col-12 col-md col-sm">
             <q-input
               v-model="element.description"
               outlined
@@ -54,7 +54,7 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">Code</div>
 
         <div class="row q-pa-md q-gutter-md justify-between">
-          <div class="col-md-3">
+          <div class="col-md-3 col-sm-3">
             <q-select
               v-model="element.language"
               outlined
@@ -67,7 +67,7 @@
             />
           </div>
 
-          <div class="col-md-8">
+          <div class="col-md-8 col-sm-8">
             <CodeEditor v-model="element.code" :language="highlightLang" />
           </div>
         </div>
@@ -77,14 +77,14 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">Attributes</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <SelectAttributes
               v-model="element.included_attributes"
               :label="$gettext('Included')"
             />
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <SelectAttributes
               v-model="element.excluded_attributes"
               :label="$gettext('Excluded')"
@@ -97,7 +97,7 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">User Profiles</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-12 col-md col-sm">
             <q-select
               v-model="element.users"
               outlined

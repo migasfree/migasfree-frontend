@@ -31,7 +31,7 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-md">
+          <div class="col-md col-sm">
             <q-input
               v-model="element.username"
               outlined
@@ -50,7 +50,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-input
               v-model="element.first_name"
               outlined
@@ -58,7 +58,7 @@
             />
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-input
               v-model="element.last_name"
               outlined
@@ -68,7 +68,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-input
               v-model="element.email"
               outlined
@@ -83,7 +83,7 @@
         </div>
 
         <div v-if="element.id" class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <p>
               <translate>Joined Date</translate>:
               <strong>{{ showDate(element.date_joined) }}</strong>
@@ -91,7 +91,7 @@
             </p>
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <p>
               <translate>Last Login</translate>:
               <strong>{{ showDate(element.last_login) }}</strong>
@@ -146,7 +146,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.groups"
               :options="groups"
@@ -175,7 +175,7 @@
             </q-select>
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.domains"
               :options="domains"
@@ -207,7 +207,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-md">
+          <div class="col-md col-sm">
             <q-select
               v-model="element.user_permissions"
               outlined
@@ -255,7 +255,7 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">Preferences</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.domain_preference"
               :options="domains"
@@ -283,7 +283,7 @@
             </q-select>
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.scope_preference"
               :options="scopes"

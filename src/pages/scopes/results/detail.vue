@@ -19,7 +19,7 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-input
               v-model="element.name"
               outlined
@@ -34,7 +34,7 @@
             />
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.domain"
               :options="domains"
@@ -67,7 +67,7 @@
           v-if="$store.getters['auth/user'].is_superuser"
           class="row q-pa-md q-gutter-md"
         >
-          <div class="col-6 col-md">
+          <div class="col-12 col-md col-sm">
             <q-select
               v-model="element.user"
               :options="userProfiles"
@@ -101,14 +101,14 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">Attributes</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <SelectAttributes
               v-model="element.included_attributes"
               :label="$gettext('Included')"
             />
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <SelectAttributes
               v-model="element.excluded_attributes"
               :label="$gettext('Excluded')"

@@ -19,7 +19,7 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-12">
+          <div class="col-12 col-md col-sm">
             <q-input
               v-model="element.name"
               outlined
@@ -36,7 +36,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-12">
+          <div class="col-12 col-md col-sm">
             <q-input
               v-model="element.comment"
               outlined
@@ -51,14 +51,14 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">Attributes</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <SelectAttributes
               v-model="element.included_attributes"
               :label="$gettext('Included')"
             />
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <SelectAttributes
               v-model="element.excluded_attributes"
               :label="$gettext('Excluded')"
@@ -71,7 +71,7 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">Others</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.tags"
               outlined
@@ -118,7 +118,7 @@
             </q-select>
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.domain_admins"
               :options="userProfiles"
