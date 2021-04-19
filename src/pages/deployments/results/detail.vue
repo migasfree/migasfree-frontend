@@ -15,20 +15,20 @@
     </Header>
 
     <div class="row q-pa-md q-gutter-md">
-      <div class="col-md">
+      <div class="col-md col-sm">
         <q-card>
           <q-card-section>
             <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
             <div class="row q-pa-md q-gutter-md">
-              <div class="col-6 col-md">
+              <div class="col-6 col-md col-sm">
                 <q-checkbox
                   v-model="element.enabled"
                   left-label
                   :label="$gettext('Enabled?')"
                 />
               </div>
-              <div class="col-6 col-md">
+              <div class="col-6 col-md col-sm">
                 <q-input
                   v-model="element.name"
                   outlined
@@ -40,7 +40,7 @@
             </div>
 
             <div class="row q-pa-md q-gutter-md">
-              <div class="col-6 col-md">
+              <div class="col-6 col-md col-sm">
                 <q-select
                   v-model="element.project"
                   outlined
@@ -57,7 +57,7 @@
                 </q-select>
               </div>
 
-              <div class="col-6 col-md">
+              <div class="col-6 col-md col-sm">
                 <q-select
                   v-model="element.domain"
                   outlined
@@ -70,7 +70,7 @@
             </div>
 
             <div class="row q-pa-md q-gutter-md">
-              <div class="col-12">
+              <div class="col-12 col-md col-sm">
                 <q-input
                   v-model="element.comment"
                   outlined
@@ -83,7 +83,7 @@
         </q-card>
       </div>
 
-      <div class="col-md">
+      <div class="col-md col-sm">
         <q-card>
           <q-card-section>
             <div v-translate class="text-h5 q-mt-sm q-mb-xs">
@@ -91,7 +91,7 @@
             </div>
 
             <div class="row q-pa-md q-gutter-md">
-              <div class="col-12">
+              <div class="col-12 col-md col-sm">
                 <SelectAttributes
                   v-model="element.included_attributes"
                   :label="$gettext('Included Attributes')"
@@ -100,7 +100,7 @@
             </div>
 
             <div class="row q-pa-md q-gutter-md">
-              <div class="col-12">
+              <div class="col-12 col-md col-sm">
                 <SelectAttributes
                   v-model="element.excluded_attributes"
                   :label="$gettext('Excluded Attributes')"
@@ -113,7 +113,7 @@
     </div>
 
     <div class="row q-pa-md q-gutter-md">
-      <div class="col-md">
+      <div class="col-md col-sm">
         <q-card>
           <q-card-section>
             <div v-translate class="text-h5 q-mt-sm q-mb-xs">
@@ -121,7 +121,7 @@
             </div>
 
             <div v-if="element.id === 0" class="row q-pa-md q-gutter-md">
-              <div class="col-md">
+              <div class="col-12 col-md col-sm">
                 <q-select
                   v-model="source"
                   outlined
@@ -136,7 +136,7 @@
 
             <template v-if="element.source === 'I'">
               <div class="row q-pa-md q-gutter-md">
-                <div class="col-md">
+                <div class="col-12 col-md col-sm">
                   <q-select
                     v-model="element.available_packages"
                     outlined
@@ -186,7 +186,7 @@
               </div>
 
               <div class="row q-pa-md q-gutter-md">
-                <div class="col-md">
+                <div class="col-12 col-md col-sm">
                   <q-select
                     v-model="element.available_package_sets"
                     outlined
@@ -238,7 +238,7 @@
 
             <template v-if="element.source === 'E'">
               <div class="row q-pa-md q-gutter-md">
-                <div class="col-md">
+                <div class="col-12 col-md col-sm">
                   <q-input
                     v-model="element.base_url"
                     outlined
@@ -248,7 +248,7 @@
               </div>
 
               <div class="row q-pa-md q-gutter-md">
-                <div class="col-md">
+                <div class="col-12 col-md col-sm">
                   <q-input
                     v-model="element.suite"
                     outlined
@@ -258,7 +258,7 @@
               </div>
 
               <div class="row q-pa-md q-gutter-md">
-                <div class="col-md">
+                <div class="col-12 col-md col-sm">
                   <q-input
                     v-model="element.components"
                     outlined
@@ -268,7 +268,7 @@
               </div>
 
               <div class="row q-pa-md q-gutter-md">
-                <div class="col-md">
+                <div class="col-12 col-md col-sm">
                   <q-input
                     v-model="element.options"
                     outlined
@@ -278,7 +278,7 @@
               </div>
 
               <div class="row q-pa-md q-gutter-md">
-                <div class="col-md">
+                <div class="col-6 col-md col-sm">
                   <q-input
                     v-model="element.expire"
                     outlined
@@ -287,7 +287,7 @@
                   />
                 </div>
 
-                <div class="col-md">
+                <div class="col-6 col-md col-sm">
                   <q-checkbox
                     v-model="element.frozen"
                     left-label
@@ -300,13 +300,13 @@
         </q-card>
       </div>
 
-      <div class="col-md">
+      <div class="col-md col-sm">
         <q-card>
           <q-card-section>
             <div v-translate class="text-h5 q-mt-sm q-mb-xs">Actions</div>
 
             <div class="row q-pa-md q-gutter-md">
-              <div class="col-md">
+              <div class="col-6 col-md col-sm">
                 <q-input
                   v-model="element.packages_to_install"
                   outlined
@@ -315,7 +315,7 @@
                 />
               </div>
 
-              <div class="col-md">
+              <div class="col-6 col-md col-sm">
                 <q-input
                   v-model="element.packages_to_remove"
                   outlined
@@ -326,7 +326,7 @@
             </div>
 
             <div class="row q-pa-md q-gutter-md">
-              <div class="col-4 col-sm">
+              <div class="col-4 col-md col-sm">
                 <q-input
                   v-model="element.default_preincluded_packages"
                   outlined
@@ -335,7 +335,7 @@
                 />
               </div>
 
-              <div class="col-4 col-sm">
+              <div class="col-4 col-md col-sm">
                 <q-input
                   v-model="element.default_included_packages"
                   outlined
@@ -344,7 +344,7 @@
                 />
               </div>
 
-              <div class="col-4 col-sm">
+              <div class="col-4 col-md col-sm">
                 <q-input
                   v-model="element.default_excluded_packages"
                   outlined
@@ -359,7 +359,7 @@
     </div>
 
     <div class="row q-pa-md q-gutter-md">
-      <div class="col-12">
+      <div class="col-12 col-md col-sm">
         <q-card>
           <q-card-section>
             <div v-translate class="text-h5 q-mt-sm q-mb-xs">
@@ -367,7 +367,7 @@
             </div>
 
             <div class="row q-pa-md q-gutter-md">
-              <div class="col-md">
+              <div class="col-md col-sm">
                 <q-datetime-picker
                   v-model="element.start_date"
                   :label="$gettext('Start Date')"
@@ -377,13 +377,13 @@
                   landscape
                   target="self"
                   :display-value="showDate(element.start_date, 'YYYY-MM-DD')"
-                  ><q-tooltip>{{
-                    diffForHumans(element.start_date)
-                  }}</q-tooltip></q-datetime-picker
-                >
+                />
+                <q-tooltip v-if="element.start_date">{{
+                  diffForHumans(element.start_date)
+                }}</q-tooltip>
               </div>
 
-              <div class="col-md">
+              <div class="col-md col-sm">
                 <q-select
                   v-model="element.schedule"
                   outlined
@@ -400,7 +400,7 @@
                 </q-select>
               </div>
 
-              <div v-if="element.timeline" class="col-md">
+              <div v-if="element.timeline" class="col-md col-sm">
                 <q-field outlined :label="$gettext('Timeline')" stack-label>
                   <template #control>
                     <Timeline :id="element.id" v-model="element.timeline" />
@@ -413,7 +413,10 @@
               v-if="element.id && element.schedule"
               class="row q-pa-md q-gutter-md"
             >
-              <div v-if="Object.keys(stats).length > 0" class="col-md">
+              <div
+                v-if="Object.keys(stats).length > 0"
+                class="col-12 col-md col-sm"
+              >
                 <StackedBarChart
                   :title="$gettext('Provided Computers / Delay')"
                   :initial-data="stats"

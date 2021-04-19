@@ -19,7 +19,7 @@
         <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-input
               v-model="element.name"
               outlined
@@ -29,7 +29,7 @@
             />
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <SelectAttributes
               v-model="element.available_for_attributes"
               :label="$gettext('Available for Attributes')"
@@ -38,7 +38,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.model"
               outlined
@@ -86,7 +86,7 @@
             </q-select>
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-if="element.model"
               v-model="element.connection"
@@ -149,7 +149,7 @@
 
             <q-item-section>
               <div class="row q-pa-md q-gutter-md">
-                <div class="col-md">
+                <div class="col-5 col-md col-sm">
                   <q-select
                     v-model="logical.capability"
                     outlined
@@ -166,7 +166,7 @@
                   </q-select>
                 </div>
 
-                <div class="col-md">
+                <div class="col-5 col-md col-sm">
                   <q-input
                     v-model="logical.alternative_capability_name"
                     outlined
@@ -176,7 +176,7 @@
               </div>
 
               <div class="row q-pa-md q-gutter-md">
-                <div class="col-md">
+                <div class="col-10 col-md col-sm">
                   <SelectAttributes
                     v-model="logical.attributes"
                     :label="$gettext('Attributes')"

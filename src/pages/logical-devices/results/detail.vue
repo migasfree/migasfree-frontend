@@ -17,7 +17,7 @@
     <q-card>
       <q-card-section>
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.device"
               outlined
@@ -62,7 +62,7 @@
             </q-select>
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <SelectAttributes
               v-model="element.attributes"
               :label="$gettext('Attributes')"
@@ -71,7 +71,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-select
               v-model="element.capability"
               outlined
@@ -87,7 +87,7 @@
             </q-select>
           </div>
 
-          <div class="col-6 col-md">
+          <div class="col-6 col-md col-sm">
             <q-input
               v-model="element.alternative_capability_name"
               outlined
