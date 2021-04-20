@@ -188,6 +188,27 @@ export default {
       return this.source !== null && this.target !== null
     }
   },
+  created() {
+    const url = '/api/v1/token/computers/'
+
+    if (this.$route.params.source) {
+      this.$axios
+        .get(`${url}${this.$route.params.source}/`)
+        .then((response) => {
+          this.source = response.data
+          this.loadSoftware(this.source)
+        })
+    }
+
+    if (this.$route.params.target) {
+      this.$axios
+        .get(`${url}${this.$route.params.target}/`)
+        .then((response) => {
+          this.target = response.data
+          this.loadSoftware(this.target)
+        })
+    }
+  },
   methods: {
     filterComputers(val, update, abort) {
       // call abort() at any time if you can't retrieve data somehow
