@@ -62,8 +62,10 @@ export default {
     }
   },
   created() {
+    const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws'
+
     this.socket = new WebSocket(
-      `ws://${process.env.MIGASFREE_SERVER.split('//')[1]}/alerts/`
+      `${wsScheme}://${process.env.MIGASFREE_SERVER.split('//')[1]}/alerts/`
     )
 
     let self = this
