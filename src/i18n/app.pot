@@ -131,7 +131,7 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: ./src/components/ui/Alerts.vue:130
+#: ./src/components/ui/Alerts.vue:132
 msgid "Active schedule Deployments"
 msgstr ""
 
@@ -193,6 +193,7 @@ msgstr ""
 #: ./src/pages/errors/results/list.vue:109
 #: ./src/pages/errors/results/list.vue:130
 #: ./src/pages/fault-definitions/results/list.vue:72
+#: ./src/pages/fault-definitions/results/list.vue:85
 #: ./src/pages/faults/results/list.vue:98
 #: ./src/pages/faults/results/list.vue:107
 #: ./src/pages/faults/results/list.vue:124
@@ -200,6 +201,7 @@ msgstr ""
 #: ./src/pages/faults/results/list.vue:148
 #: ./src/pages/formulas/results/list.vue:76
 #: ./src/pages/formulas/results/list.vue:89
+#: ./src/pages/formulas/results/list.vue:98
 #: ./src/pages/logical-devices/results/list.vue:96
 #: ./src/pages/messages/results/list.vue:91
 #: ./src/pages/migrations/results/list.vue:95
@@ -282,12 +284,12 @@ msgstr ""
 msgid "Architecture"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:625
+#: ./src/mixins/datagrid.js:626
 msgid "Are you sure you want to remove all these items?"
 msgstr ""
 
 #: ./src/components/ui/RemoveDialog.vue:22
-#: ./src/mixins/datagrid.js:620
+#: ./src/mixins/datagrid.js:621
 msgid "Are you sure you want to remove this item?"
 msgstr ""
 
@@ -473,8 +475,9 @@ msgstr ""
 msgid "By Uninstall Date (range)"
 msgstr ""
 
+#: ./src/components/computer/Software.vue:381
 #: ./src/components/ui/RemoveDialog.vue:38
-#: ./src/mixins/datagrid.js:643
+#: ./src/mixins/datagrid.js:644
 msgid "Cancel"
 msgstr ""
 
@@ -516,7 +519,7 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
-#: ./src/pages/computers/results/detail.vue:617
+#: ./src/pages/computers/results/detail.vue:618
 msgid "Center Markers"
 msgstr ""
 
@@ -541,7 +544,7 @@ msgstr ""
 msgid "Change Scope"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:733
+#: ./src/mixins/datagrid.js:734
 msgid "Changed item check value!"
 msgstr ""
 
@@ -609,11 +612,17 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
+#: ./src/components/computer/Software.vue:289
+#: ./src/components/computer/Software.vue:390
+msgid "Compare"
+msgstr ""
+
 #: ./src/pages/deployments/results/detail.vue:419
 msgid "Components"
 msgstr ""
 
 #: ./src/components/computer/ReplacementInfo.vue:4
+#: ./src/components/computer/Software.vue:323
 #: ./src/pages/computers/replacement.vue:50
 #: ./src/pages/computers/replacement.vue:145
 #: ./src/pages/computers/results/detail.vue:37
@@ -919,7 +928,7 @@ msgstr ""
 msgid "Date of entry into the migasfree system"
 msgstr ""
 
-#: ./src/components/computer/Software.vue:64
+#: ./src/components/computer/Software.vue:65
 #: ./src/components/computer/Software.vue:14
 msgid "dates"
 msgstr ""
@@ -945,7 +954,7 @@ msgstr ""
 msgid "Delay"
 msgstr ""
 
-#: ./src/components/ui/Alerts.vue:141
+#: ./src/components/ui/Alerts.vue:143
 msgid "Delayed Computers"
 msgstr ""
 
@@ -958,7 +967,7 @@ msgid "Delays count"
 msgstr ""
 
 #: ./src/components/ui/RemoveDialog.vue:46
-#: ./src/mixins/datagrid.js:638
+#: ./src/mixins/datagrid.js:639
 #: ./src/pages/applications/results/detail.vue:244
 #: ./src/pages/applications/results/detail.vue:341
 #: ./src/pages/applications/results/list.vue:119
@@ -972,13 +981,13 @@ msgstr ""
 #: ./src/pages/capabilities/results/detail.vue:103
 #: ./src/pages/capabilities/results/list.vue:117
 #: ./src/pages/capabilities/results/list.vue:161
-#: ./src/pages/computers/results/detail.vue:677
+#: ./src/pages/computers/results/detail.vue:678
 #: ./src/pages/computers/results/list.vue:304
 #: ./src/pages/computers/results/list.vue:427
 #: ./src/pages/connections/results/detail.vue:137
 #: ./src/pages/connections/results/list.vue:118
 #: ./src/pages/connections/results/list.vue:171
-#: ./src/pages/deployments/results/detail.vue:650
+#: ./src/pages/deployments/results/detail.vue:648
 #: ./src/pages/deployments/results/list.vue:166
 #: ./src/pages/deployments/results/list.vue:262
 #: ./src/pages/device-types/results/detail.vue:103
@@ -995,14 +1004,14 @@ msgstr ""
 #: ./src/pages/errors/results/list.vue:258
 #: ./src/pages/errors/results/list.vue:400
 #: ./src/pages/fault-definitions/results/detail.vue:272
-#: ./src/pages/fault-definitions/results/list.vue:119
-#: ./src/pages/fault-definitions/results/list.vue:170
+#: ./src/pages/fault-definitions/results/list.vue:120
+#: ./src/pages/fault-definitions/results/list.vue:173
 #: ./src/pages/faults/results/detail.vue:216
 #: ./src/pages/faults/results/list.vue:265
 #: ./src/pages/faults/results/list.vue:416
 #: ./src/pages/formulas/results/detail.vue:247
-#: ./src/pages/formulas/results/list.vue:133
-#: ./src/pages/formulas/results/list.vue:205
+#: ./src/pages/formulas/results/list.vue:134
+#: ./src/pages/formulas/results/list.vue:208
 #: ./src/pages/groups/results/detail.vue:160
 #: ./src/pages/groups/results/list.vue:115
 #: ./src/pages/groups/results/list.vue:150
@@ -1271,9 +1280,9 @@ msgstr ""
 #: ./src/pages/devices/results/list.vue:103
 #: ./src/pages/domains/results/list.vue:99
 #: ./src/pages/errors/results/list.vue:188
-#: ./src/pages/fault-definitions/results/list.vue:101
+#: ./src/pages/fault-definitions/results/list.vue:102
 #: ./src/pages/faults/results/list.vue:195
-#: ./src/pages/formulas/results/list.vue:115
+#: ./src/pages/formulas/results/list.vue:116
 #: ./src/pages/groups/results/list.vue:97
 #: ./src/pages/logical-devices/results/list.vue:143
 #: ./src/pages/manufacturers/results/list.vue:99
@@ -1421,8 +1430,8 @@ msgstr ""
 #: ./src/pages/errors/results/list.vue:383
 #: ./src/pages/faults/results/list.vue:69
 #: ./src/pages/faults/results/list.vue:399
-#: ./src/pages/formulas/results/list.vue:53
-#: ./src/pages/formulas/results/list.vue:189
+#: ./src/pages/formulas/results/list.vue:54
+#: ./src/pages/formulas/results/list.vue:192
 #: ./src/pages/migrations/results/list.vue:59
 #: ./src/pages/migrations/results/list.vue:234
 #: ./src/pages/projects/results/list.vue:53
@@ -1568,7 +1577,7 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
-#: ./src/components/ui/Alerts.vue:133
+#: ./src/components/ui/Alerts.vue:135
 msgid "Finished schedule Deployments"
 msgstr ""
 
@@ -1603,7 +1612,7 @@ msgstr ""
 msgid "Formulas List"
 msgstr ""
 
-#: ./src/components/computer/Info.vue:56
+#: ./src/components/computer/Info.vue:57
 msgid "forwarded ip address"
 msgstr ""
 
@@ -1640,7 +1649,7 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: ./src/components/ui/Alerts.vue:127
+#: ./src/components/ui/Alerts.vue:129
 msgid "Generating Repositories"
 msgstr ""
 
@@ -1673,7 +1682,7 @@ msgstr ""
 msgid "Hardware Information"
 msgstr ""
 
-#: ./src/components/computer/Software.vue:56
+#: ./src/components/computer/Software.vue:57
 #: ./src/components/computer/Software.vue:6
 msgid "History"
 msgstr ""
@@ -1756,7 +1765,7 @@ msgstr ""
 msgid "Invalid email"
 msgstr ""
 
-#: ./src/components/computer/Software.vue:15
+#: ./src/components/computer/Software.vue:16
 #: ./src/components/computer/Software.vue:6
 msgid "Inventory"
 msgstr ""
@@ -1773,7 +1782,7 @@ msgstr ""
 msgid "Is Super User?"
 msgstr ""
 
-#: ./src/mixins/datagrid.js:609
+#: ./src/mixins/datagrid.js:610
 msgid "Item deleted!"
 msgstr ""
 
@@ -1789,7 +1798,9 @@ msgid "Kind"
 msgstr ""
 
 #: ./src/pages/fault-definitions/results/detail.vue:120
+#: ./src/pages/fault-definitions/results/list.vue:81
 #: ./src/pages/formulas/results/detail.vue:163
+#: ./src/pages/formulas/results/list.vue:94
 msgid "Language"
 msgstr ""
 
@@ -2151,6 +2162,8 @@ msgstr ""
 #: ./src/components/computer/Devices.vue:17
 #: ./src/components/computer/Devices.vue:6
 #: ./src/components/computer/Devices.vue:3
+#: ./src/components/computer/Software.vue:113
+#: ./src/components/computer/Software.vue:2
 #: ./src/components/ui/SelectAttributes.vue:5
 #: ./src/components/ui/SelectAttributes.vue:2
 #: ./src/pages/computers/replacement.vue:19
@@ -2229,7 +2242,7 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: ./src/components/ui/Alerts.vue:118
+#: ./src/components/ui/Alerts.vue:120
 msgid "Orphan Packages"
 msgstr ""
 
@@ -2278,7 +2291,7 @@ msgstr ""
 msgid "Package Sets List"
 msgstr ""
 
-#: ./src/components/computer/Software.vue:23
+#: ./src/components/computer/Software.vue:24
 #: ./src/components/computer/Software.vue:14
 msgid "packages"
 msgstr ""
@@ -2546,7 +2559,7 @@ msgstr ""
 msgid "Projects List"
 msgstr ""
 
-#: ./src/pages/deployments/results/detail.vue:601
+#: ./src/pages/deployments/results/detail.vue:599
 msgid "Provided Computers / Delay"
 msgstr ""
 
@@ -2607,9 +2620,9 @@ msgstr ""
 #: ./src/pages/devices/results/list.vue:61
 #: ./src/pages/domains/results/list.vue:57
 #: ./src/pages/errors/results/list.vue:140
-#: ./src/pages/fault-definitions/results/list.vue:59
+#: ./src/pages/fault-definitions/results/list.vue:60
 #: ./src/pages/faults/results/list.vue:147
-#: ./src/pages/formulas/results/list.vue:73
+#: ./src/pages/formulas/results/list.vue:74
 #: ./src/pages/groups/results/list.vue:55
 #: ./src/pages/logical-devices/results/list.vue:95
 #: ./src/pages/manufacturers/results/list.vue:57
@@ -2698,7 +2711,7 @@ msgstr ""
 #: ./src/pages/attributes/results/detail.vue:174
 #: ./src/pages/capabilities/results/detail.vue:84
 #: ./src/pages/connections/results/detail.vue:118
-#: ./src/pages/deployments/results/detail.vue:636
+#: ./src/pages/deployments/results/detail.vue:634
 #: ./src/pages/device-types/results/detail.vue:84
 #: ./src/pages/devices/results/detail.vue:331
 #: ./src/pages/domains/results/detail.vue:249
@@ -2728,7 +2741,7 @@ msgstr ""
 #: ./src/pages/attribute-sets/results/detail.vue:125
 #: ./src/pages/capabilities/results/detail.vue:68
 #: ./src/pages/connections/results/detail.vue:102
-#: ./src/pages/deployments/results/detail.vue:620
+#: ./src/pages/deployments/results/detail.vue:618
 #: ./src/pages/device-types/results/detail.vue:68
 #: ./src/pages/devices/results/detail.vue:315
 #: ./src/pages/domains/results/detail.vue:233
@@ -2761,7 +2774,7 @@ msgstr ""
 #: ./src/pages/capabilities/results/detail.vue:77
 #: ./src/pages/computers/results/detail.vue:423
 #: ./src/pages/connections/results/detail.vue:111
-#: ./src/pages/deployments/results/detail.vue:629
+#: ./src/pages/deployments/results/detail.vue:627
 #: ./src/pages/device-types/results/detail.vue:77
 #: ./src/pages/devices/results/detail.vue:324
 #: ./src/pages/domains/results/detail.vue:242
@@ -2790,7 +2803,7 @@ msgstr ""
 msgid "Save as Image"
 msgstr ""
 
-#: ./src/pages/deployments/results/detail.vue:565
+#: ./src/pages/deployments/results/detail.vue:563
 #: ./src/pages/deployments/results/list.vue:130
 #: ./src/pages/schedules/results/detail.vue:25
 #: ./src/pages/schedules/results/detail.vue:42
@@ -2871,21 +2884,22 @@ msgstr ""
 msgid "Slot"
 msgstr ""
 
-#: ./src/components/computer/Software.vue:3
+#: ./src/components/computer/Software.vue:4
 msgid "Software"
 msgstr ""
 
+#: ./src/components/computer/Software.vue:104
 #: ./src/components/ui/AppMenu.vue:176
 #: ./src/pages/computers/softwareCompare.vue:22
 #: ./src/pages/computers/softwareCompare.vue:34
 msgid "Software Compare"
 msgstr ""
 
-#: ./src/components/computer/Software.vue:95
+#: ./src/components/computer/Software.vue:109
 msgid "Software History copied to clipboard"
 msgstr ""
 
-#: ./src/components/computer/Software.vue:73
+#: ./src/components/computer/Software.vue:87
 msgid "Software Inventory copied to clipboard"
 msgstr ""
 
@@ -3054,7 +3068,7 @@ msgstr ""
 msgid "Synchronized single computers / month"
 msgstr ""
 
-#: ./src/components/ui/Alerts.vue:138
+#: ./src/components/ui/Alerts.vue:140
 msgid "Synchronizing Computers Now"
 msgstr ""
 
@@ -3130,9 +3144,9 @@ msgstr ""
 #: ./src/pages/devices/results/list.vue:50
 #: ./src/pages/domains/results/list.vue:34
 #: ./src/pages/errors/results/list.vue:79
-#: ./src/pages/fault-definitions/results/list.vue:38
+#: ./src/pages/fault-definitions/results/list.vue:42
 #: ./src/pages/faults/results/list.vue:87
-#: ./src/pages/formulas/results/list.vue:46
+#: ./src/pages/formulas/results/list.vue:50
 #: ./src/pages/groups/results/list.vue:30
 #: ./src/pages/logical-devices/results/list.vue:56
 #: ./src/pages/manufacturers/results/list.vue:34
@@ -3179,7 +3193,7 @@ msgstr ""
 msgid "This procedure switches assigned computers between two devices."
 msgstr ""
 
-#: ./src/pages/deployments/results/detail.vue:581
+#: ./src/pages/deployments/results/detail.vue:579
 msgid "Timeline"
 msgstr ""
 
@@ -3192,19 +3206,19 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: ./src/components/ui/Alerts.vue:124
+#: ./src/components/ui/Alerts.vue:126
 #: ./src/pages/Dashboard.vue:25
 #: ./src/pages/errors/index.vue:42
 msgid "Unchecked Errors"
 msgstr ""
 
-#: ./src/components/ui/Alerts.vue:122
+#: ./src/components/ui/Alerts.vue:124
 #: ./src/pages/Dashboard.vue:26
 #: ./src/pages/faults/index.vue:42
 msgid "Unchecked Faults"
 msgstr ""
 
-#: ./src/components/ui/Alerts.vue:120
+#: ./src/components/ui/Alerts.vue:122
 msgid "Unchecked Notifications"
 msgstr ""
 
