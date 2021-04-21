@@ -3,7 +3,16 @@
   "version": "1.0.0",
   "description": "Systems Management System (frontend) (with Quasar framework)",
   "productName": "Migasfree Frontend",
-  "author": "jact <jachavar@gmail.com>",
+  "author": "Jose Antonio Chavarría <jachavar@gmail.com>",
+  "license": "GPLv3",
+  "homepage": "https://github.com/migasfree/migasfree-frontend",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/migasfree/migasfree-frontend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/migasfree/migasfree-frontend/issues"
+  },
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
@@ -12,12 +21,12 @@
     "gettext-compile": "gettext-compile --output src/i18n/translations.json src/i18n/*.po"
   },
   "dependencies": {
-    "@quasar/extras": "^1.10.2",
-    "@vue/composition-api": "^1.0.0-rc.6",
+    "@quasar/extras": "^1.10.4",
+    "@vue/composition-api": "^1.0.0-rc.7",
     "axios": "^0.21.1",
-    "core-js": "^3.10.0",
+    "core-js": "^3.10.2",
     "dayjs": "^1.10.4",
-    "echarts": "^5.0.2",
+    "echarts": "^5.1.0",
     "leaflet": "^1.7.1",
     "performant-array-to-tree": "^1.8.1",
     "quasar": "^1.15.10",
@@ -28,14 +37,14 @@
     "vue-codeditor": "^1.0.5",
     "vue-echarts": "^6.0.0-rc.4",
     "vue-gettext": "^2.1.12",
-    "vue-good-table": "^2.21.9",
+    "vue-good-table": "^2.21.10",
     "vue-pluralize": "^0.0.2",
     "vue2-leaflet": "^2.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",
     "@babel/eslint-parser": "^7.13.8",
-    "@quasar/app": "^2.2.3",
+    "@quasar/app": "^2.2.4",
     "@quasar/quasar-app-extension-dotenv": "^1.1.0",
     "@quasar/quasar-app-extension-qmarkdown": "^1.4.1",
     "easygettext": "^2.16.1",
