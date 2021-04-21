@@ -18,12 +18,24 @@
           icon="mdi-information"
           :label="$gettext('Package Information')"
           color="info"
+          text-color="black"
           @click="
             $router.push({
               name: 'package-information',
               params: { id: element.id }
             })
           "
+        />
+        <q-btn
+          v-if="element.url"
+          class="q-ma-md"
+          size="md"
+          icon="mdi-download"
+          :label="$gettext('Download')"
+          color="info"
+          text-color="black"
+          type="a"
+          :href="`${server}${element.url}`"
         />
       </template>
     </Header>
@@ -204,7 +216,8 @@ export default {
       addRoute: 'package-add',
       detailRoute: 'package-detail',
       projectStore: { items: [], selected: null },
-      confirmRemove: false
+      confirmRemove: false,
+      server: process.env.MIGASFREE_SERVER || 'http://localhost'
     }
   },
   computed: {
