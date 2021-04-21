@@ -86,7 +86,7 @@ export default {
         tooltip: {
           position: 'top',
           formatter: function(p) {
-            const formated = format(p.data[0], '{yyyy}-{MM}-{dd}', true)
+            const formated = format(p.data[0], '{yyyy}-{MM}-{dd}', false)
             return `${formated}: ${p.data[1]}`
           }
         },
