@@ -279,7 +279,7 @@ msgstr ""
 msgid "Applications List"
 msgstr ""
 
-#: ./src/pages/packages/results/detail.vue:60
+#: ./src/pages/packages/results/detail.vue:61
 #: ./src/pages/projects/results/detail.vue:113
 msgid "Architecture"
 msgstr ""
@@ -519,7 +519,7 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
-#: ./src/pages/computers/results/detail.vue:618
+#: ./src/pages/computers/results/detail.vue:616
 msgid "Center Markers"
 msgstr ""
 
@@ -981,7 +981,7 @@ msgstr ""
 #: ./src/pages/capabilities/results/detail.vue:103
 #: ./src/pages/capabilities/results/list.vue:117
 #: ./src/pages/capabilities/results/list.vue:161
-#: ./src/pages/computers/results/detail.vue:678
+#: ./src/pages/computers/results/detail.vue:676
 #: ./src/pages/computers/results/list.vue:304
 #: ./src/pages/computers/results/list.vue:427
 #: ./src/pages/connections/results/detail.vue:137
@@ -1034,9 +1034,9 @@ msgstr ""
 #: ./src/pages/package-sets/results/detail.vue:256
 #: ./src/pages/package-sets/results/list.vue:119
 #: ./src/pages/package-sets/results/list.vue:184
-#: ./src/pages/packages/results/detail.vue:265
+#: ./src/pages/packages/results/detail.vue:279
 #: ./src/pages/packages/results/list.vue:119
-#: ./src/pages/packages/results/list.vue:210
+#: ./src/pages/packages/results/list.vue:232
 #: ./src/pages/platforms/results/detail.vue:103
 #: ./src/pages/platforms/results/list.vue:117
 #: ./src/pages/platforms/results/list.vue:161
@@ -1257,6 +1257,11 @@ msgstr ""
 
 #: ./src/pages/domains/results/list.vue:11
 msgid "Domains List"
+msgstr ""
+
+#: ./src/pages/packages/results/detail.vue:91
+#: ./src/pages/packages/results/list.vue:166
+msgid "Download"
 msgstr ""
 
 #: ./src/pages/models/results/detail.vue:48
@@ -2091,7 +2096,7 @@ msgstr ""
 #: ./src/pages/models/results/list.vue:57
 #: ./src/pages/package-sets/results/detail.vue:72
 #: ./src/pages/package-sets/results/list.vue:58
-#: ./src/pages/packages/results/detail.vue:51
+#: ./src/pages/packages/results/detail.vue:52
 #: ./src/pages/platforms/results/detail.vue:54
 #: ./src/pages/platforms/results/list.vue:56
 #: ./src/pages/policies/results/detail.vue:87
@@ -2530,7 +2535,7 @@ msgstr ""
 #: ./src/pages/models/results/detail.vue:194
 #: ./src/pages/package-sets/results/list.vue:72
 #: ./src/pages/packages-history/results/list.vue:92
-#: ./src/pages/packages/results/detail.vue:21
+#: ./src/pages/packages/results/detail.vue:22
 #: ./src/pages/packages/results/detail.vue:1
 #: ./src/pages/packages/results/list.vue:72
 #: ./src/pages/projects/results/detail.vue:22
@@ -2543,7 +2548,7 @@ msgstr ""
 
 #: ./src/pages/package-sets/results/detail.vue:82
 #: ./src/pages/package-sets/results/detail.vue:112
-#: ./src/pages/packages/results/detail.vue:116
+#: ./src/pages/packages/results/detail.vue:130
 msgid "Project / Store"
 msgstr ""
 
@@ -2724,7 +2729,7 @@ msgstr ""
 #: ./src/pages/manufacturers/results/detail.vue:84
 #: ./src/pages/models/results/detail.vue:287
 #: ./src/pages/package-sets/results/detail.vue:239
-#: ./src/pages/packages/results/detail.vue:247
+#: ./src/pages/packages/results/detail.vue:261
 #: ./src/pages/platforms/results/detail.vue:84
 #: ./src/pages/policies/results/detail.vue:330
 #: ./src/pages/projects/results/detail.vue:143
@@ -2752,7 +2757,7 @@ msgstr ""
 #: ./src/pages/manufacturers/results/detail.vue:68
 #: ./src/pages/models/results/detail.vue:271
 #: ./src/pages/package-sets/results/detail.vue:231
-#: ./src/pages/packages/results/detail.vue:239
+#: ./src/pages/packages/results/detail.vue:253
 #: ./src/pages/platforms/results/detail.vue:68
 #: ./src/pages/policies/results/detail.vue:314
 #: ./src/pages/projects/results/detail.vue:127
@@ -2848,7 +2853,7 @@ msgstr ""
 msgid "Search..."
 msgstr ""
 
-#: ./src/pages/packages/results/detail.vue:182
+#: ./src/pages/packages/results/detail.vue:196
 msgid "Select one file"
 msgstr ""
 
@@ -2895,11 +2900,11 @@ msgstr ""
 msgid "Software Compare"
 msgstr ""
 
-#: ./src/components/computer/Software.vue:109
+#: ./src/components/computer/Software.vue:101
 msgid "Software History copied to clipboard"
 msgstr ""
 
-#: ./src/components/computer/Software.vue:87
+#: ./src/components/computer/Software.vue:79
 msgid "Software Inventory copied to clipboard"
 msgstr ""
 
@@ -2981,7 +2986,7 @@ msgid "Storage"
 msgstr ""
 
 #: ./src/pages/package-sets/results/list.vue:85
-#: ./src/pages/packages/results/detail.vue:37
+#: ./src/pages/packages/results/detail.vue:38
 #: ./src/pages/packages/results/detail.vue:1
 #: ./src/pages/packages/results/list.vue:85
 #: ./src/pages/stores/results/detail.vue:21
@@ -3156,7 +3161,7 @@ msgstr ""
 #: ./src/pages/notifications/results/list.vue:50
 #: ./src/pages/package-sets/results/list.vue:42
 #: ./src/pages/packages-history/results/list.vue:69
-#: ./src/pages/packages/results/list.vue:48
+#: ./src/pages/packages/results/list.vue:49
 #: ./src/pages/platforms/results/list.vue:34
 #: ./src/pages/policies/results/list.vue:42
 #: ./src/pages/projects/results/list.vue:46
@@ -3328,7 +3333,7 @@ msgstr ""
 #: ./src/pages/computers/results/hardware.vue:71
 #: ./src/pages/computers/results/hardware.vue:67
 #: ./src/pages/computers/results/hardware.vue:39
-#: ./src/pages/packages/results/detail.vue:55
+#: ./src/pages/packages/results/detail.vue:56
 msgid "Version"
 msgstr ""
 
