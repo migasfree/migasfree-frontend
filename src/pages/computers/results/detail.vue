@@ -326,11 +326,7 @@
 
       <div class="row q-pa-md q-gutter-md">
         <div v-if="element.has_software_inventory" class="col-md">
-          <ComputerSoftware
-            :cid="element.id"
-            :inventory-url="element.software_inventory"
-            :history-url="element.software_history"
-          />
+          <ComputerSoftware :cid="element.id" />
         </div>
 
         <div v-if="element.id" class="col-md">
