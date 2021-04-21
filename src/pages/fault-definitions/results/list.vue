@@ -84,6 +84,10 @@
           <BooleanView v-model="props.row.enabled" />
         </span>
 
+        <span v-else-if="props.column.field == 'language'">
+          {{ languages[props.row.language].name }}
+        </span>
+
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
         </span>
@@ -194,11 +198,49 @@ export default {
               { value: false, text: this.$gettext('No') }
             ]
           }
+        },
+        {
+          label: this.$gettext('Language'),
+          field: 'language',
+          filterOptions: {
+            enabled: true,
+            placeholder: this.$gettext('All'),
+            trigger: 'enter'
+          }
         }
       ],
       model: 'fault-definitions',
       detailRoute: 'fault-definition-detail',
-      kind: {}
+      kind: {},
+      languages: []
+    }
+  },
+  methods: {
+    async loadFilters() {
+      await this.$axios
+        .get(`/api/v1/public/languages/`)
+        .then((response) => {
+          Object.entries(response.data).map(([key, val]) => {
+            this.languages.push({
+              id: parseInt(key),
+              name: val
+            })
+          })
+
+          this.columns.find(
+            (x) => x.field === 'language'
+          ).filterOptions.filterDropdownItems = Object.entries(
+            response.data
+          ).map(([key, val]) => {
+            return {
+              value: parseInt(key),
+              text: val
+            }
+          })
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
     }
   }
 }
