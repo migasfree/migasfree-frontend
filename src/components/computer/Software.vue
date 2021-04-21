@@ -230,14 +230,6 @@ export default {
     cid: {
       type: Number,
       required: true
-    },
-    inventoryUrl: {
-      type: String,
-      required: true
-    },
-    historyUrl: {
-      type: String,
-      required: true
     }
   },
   data() {
@@ -268,7 +260,7 @@ export default {
       if (this.softwareInventory.length === 0) {
         this.loading.inventory = true
         await this.$axios
-          .get(this.inventoryUrl)
+          .get(`/api/v1/token/computers/${this.cid}/software/inventory/`)
           .then((response) => {
             this.softwareInventory = response.data
           })
@@ -283,7 +275,7 @@ export default {
       if (Object.keys(this.softwareHistory).length === 0) {
         this.loading.history = true
         await this.$axios
-          .get(this.historyUrl)
+          .get(`/api/v1/token/computers/${this.cid}/software/history/`)
           .then((response) => {
             this.softwareHistory = response.data
           })
