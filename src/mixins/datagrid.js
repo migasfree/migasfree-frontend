@@ -543,6 +543,7 @@ export const datagridMixin = {
             case 'is_active':
             case 'sort':
             case 'kind':
+            case 'language':
             case 'architecture':
             case 'machine':
             case 'product_system':
