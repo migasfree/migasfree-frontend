@@ -84,6 +84,17 @@
             "
             ><q-tooltip>{{ $gettext('Package Information') }}</q-tooltip></q-btn
           >
+          <q-btn
+            v-if="props.row.url"
+            class="q-ma-xs"
+            round
+            size="sm"
+            icon="mdi-download"
+            color="info"
+            type="a"
+            :href="`${server}${props.row.url}`"
+            ><q-tooltip>{{ $gettext('Download') }}</q-tooltip></q-btn
+          >
         </span>
 
         <span v-else-if="props.column.field == 'fullname'">
@@ -238,10 +249,15 @@ export default {
             placeholder: this.$gettext('All'),
             trigger: 'enter'
           }
+        },
+        {
+          field: 'url',
+          hidden: true
         }
       ],
       model: 'packages',
-      detailRoute: 'package-detail'
+      detailRoute: 'package-detail',
+      server: process.env.MIGASFREE_SERVER || 'http://localhost'
     }
   },
   methods: {
