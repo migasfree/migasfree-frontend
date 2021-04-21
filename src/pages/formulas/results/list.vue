@@ -100,6 +100,10 @@
           {{ kind[props.row.kind] }}
         </span>
 
+        <span v-else-if="props.column.field == 'language'">
+          {{ languages[props.row.language].name }}
+        </span>
+
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
         </span>
@@ -233,11 +237,21 @@ export default {
             placeholder: this.$gettext('All'),
             trigger: 'enter'
           }
+        },
+        {
+          label: this.$gettext('Language'),
+          field: 'language',
+          filterOptions: {
+            enabled: true,
+            placeholder: this.$gettext('All'),
+            trigger: 'enter'
+          }
         }
       ],
       model: 'formulas',
       detailRoute: 'formula-detail',
-      kind: {}
+      kind: {},
+      languages: []
     }
   },
   created() {
@@ -246,7 +260,7 @@ export default {
   methods: {
     async loadFilters() {
       await this.$axios
-        .get(`/api/v1/token/properties/kind`)
+        .get(`/api/v1/token/properties/kind/`)
         .then((response) => {
           this.kind = response.data
           this.columns.find(
@@ -256,6 +270,31 @@ export default {
           ).map(([key, val]) => {
             return {
               value: key,
+              text: val
+            }
+          })
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+
+      await this.$axios
+        .get(`/api/v1/public/languages/`)
+        .then((response) => {
+          Object.entries(response.data).map(([key, val]) => {
+            this.languages.push({
+              id: parseInt(key),
+              name: val
+            })
+          })
+
+          this.columns.find(
+            (x) => x.field === 'language'
+          ).filterOptions.filterDropdownItems = Object.entries(
+            response.data
+          ).map(([key, val]) => {
+            return {
+              value: parseInt(key),
               text: val
             }
           })
