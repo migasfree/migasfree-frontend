@@ -92,7 +92,7 @@
             icon="mdi-download"
             color="info"
             type="a"
-            :href="`${server}${props.row.url}`"
+            :href="`${$store.getters['ui/server']}${props.row.url}`"
             ><q-tooltip>{{ $gettext('Download') }}</q-tooltip></q-btn
           >
         </span>
@@ -256,8 +256,7 @@ export default {
         }
       ],
       model: 'packages',
-      detailRoute: 'package-detail',
-      server: process.env.MIGASFREE_SERVER || 'http://localhost'
+      detailRoute: 'package-detail'
     }
   },
   methods: {
