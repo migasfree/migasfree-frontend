@@ -40,14 +40,24 @@
 <script>
 import * as echarts from 'echarts/core'
 import { PieChart } from 'echarts/charts'
-import { TooltipComponent, ToolboxComponent } from 'echarts/components'
+import {
+  TooltipComponent,
+  ToolboxComponent,
+  TitleComponent
+} from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
 import {
   MIGASFREE_CHART_COLORS,
   MIGASFREE_CHART_DARK_COLORS
 } from 'config/app.conf'
 
-echarts.use([PieChart, TooltipComponent, ToolboxComponent, SVGRenderer])
+echarts.use([
+  PieChart,
+  TooltipComponent,
+  ToolboxComponent,
+  TitleComponent,
+  SVGRenderer
+])
 
 export default {
   name: 'PieChart',
