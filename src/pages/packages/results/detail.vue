@@ -35,7 +35,7 @@
           color="info"
           text-color="black"
           type="a"
-          :href="`${server}${element.url}`"
+          :href="`${$store.getters['ui/server']}${element.url}`"
         />
       </template>
     </Header>
@@ -216,8 +216,7 @@ export default {
       addRoute: 'package-add',
       detailRoute: 'package-detail',
       projectStore: { items: [], selected: null },
-      confirmRemove: false,
-      server: process.env.MIGASFREE_SERVER || 'http://localhost'
+      confirmRemove: false
     }
   },
   computed: {
