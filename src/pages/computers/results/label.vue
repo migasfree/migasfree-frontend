@@ -18,7 +18,7 @@
 
       <q-item class="text-center">
         <q-item-section>
-          {{ $gettext('Server') }}: {{ server }}
+          {{ $gettext('Server') }}: {{ $store.getters['ui/server'] }}
         </q-item-section>
       </q-item>
 
@@ -37,8 +37,7 @@
 export default {
   data() {
     return {
-      label: {},
-      server: process.env.MIGASFREE_SERVER || 'http://localhost'
+      label: {}
     }
   },
   async mounted() {
