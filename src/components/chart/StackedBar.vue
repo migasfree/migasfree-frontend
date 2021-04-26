@@ -103,7 +103,8 @@ export default {
         },
         series: [],
         title: {
-          text: this.title
+          text: this.title,
+          show: false
         },
         toolbox: {
           show: true,

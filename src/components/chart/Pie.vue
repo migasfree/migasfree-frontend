@@ -97,7 +97,8 @@ export default {
           : MIGASFREE_CHART_COLORS,
         series: [],
         title: {
-          text: this.title
+          text: this.title,
+          show: false
         },
         toolbox: {
           show: true,
