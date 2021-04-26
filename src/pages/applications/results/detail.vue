@@ -117,6 +117,7 @@
               v-model="element.description"
               outlined
               type="textarea"
+              autogrow
               :label="$gettext('Description')"
               :hint="$gettext('Allowed Markdown Syntax')"
             />
