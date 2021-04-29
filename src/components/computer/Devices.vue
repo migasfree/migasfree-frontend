@@ -63,6 +63,7 @@
           <q-select
             v-model="devices.default_logical_device"
             outlined
+            clearable
             :options="defaultLogicalDevices"
             :label="$gettext('By default')"
           />
