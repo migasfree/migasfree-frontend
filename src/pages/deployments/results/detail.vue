@@ -61,6 +61,7 @@
                 <q-select
                   v-model="element.domain"
                   outlined
+                  clearable
                   :label="$gettext('Editable by Domain Administrators')"
                   :options="domains"
                   option-value="id"
