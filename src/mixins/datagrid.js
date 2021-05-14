@@ -401,6 +401,9 @@ export const datagridMixin = {
             case 'domains_id':
               ret.domains__id = val
               break
+            case 'drivers_project_id':
+              ret.drivers__project__id = val
+              break
             case 'excluded_attributes_id':
               ret.excluded_attributes__id = val
               break
@@ -456,6 +459,9 @@ export const datagridMixin = {
               break
             case 'packageset_id':
               ret.packageset__id = val
+              break
+            case 'packages_by_project_project_id':
+              ret.packages_by_project__project__id = val
               break
             case 'platform':
               if (this.model === 'computers') ret[key] = val
