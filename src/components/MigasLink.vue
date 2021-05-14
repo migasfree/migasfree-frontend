@@ -34,9 +34,9 @@
             clickable
             @click="$router.push(item.to)"
           >
-            <q-avatar color="primary" text-color="white">{{
-              item.count
-            }}</q-avatar>
+            <q-avatar color="primary" text-color="white"
+              >{{ item.count }}<q-tooltip>{{ item.count }}</q-tooltip></q-avatar
+            >
             {{ item.text }}
           </q-chip>
 
