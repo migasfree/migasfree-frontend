@@ -25,6 +25,16 @@
         />
       </div>
     </div>
+
+    <div class="row">
+      <div class="col">
+        <StackedBarChart
+          :title="$gettext('Applications / Project')"
+          :initial-data="byProject"
+          @getLink="goTo"
+        />
+      </div>
+    </div>
   </q-page>
 </template>
 
@@ -33,6 +43,7 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
 import PieChart from 'components/chart/Pie'
+import StackedBarChart from 'components/chart/StackedBar'
 
 export default {
   meta() {
@@ -44,7 +55,8 @@ export default {
     Breadcrumbs,
     SearchFilter,
     Header,
-    PieChart
+    PieChart,
+    StackedBarChart
   },
   data() {
     return {
@@ -64,8 +76,33 @@ export default {
           icon: 'mdi-apps'
         }
       ],
-      url: { name: 'apps-list' }
+      url: { name: 'apps-list' },
+      byProject: {}
     }
+  },
+  async mounted() {
+    await this.$axios
+      .get('/api/v1/token/stats/applications/project/')
+      .then((response) => {
+        this.$set(this.byProject, 'xData', response.data.x_labels)
+        this.$set(this.byProject, 'series', {
+          type: 'bar',
+          data: response.data.data,
+          name: this.$gettext('Applications'),
+          markLine: {
+            data: [
+              {
+                label: { show: true },
+                name: this.$gettext('Total'),
+                yAxis: response.data.total
+              }
+            ]
+          }
+        })
+      })
+      .catch((error) => {
+        this.$store.dispatch('ui/notifyError', error)
+      })
   },
   methods: {
     goTo(params) {
@@ -81,6 +118,17 @@ export default {
         this.$router.push(
           Object.assign(this.url, {
             query: { level: params.data.level }
+          })
+        )
+      }
+
+      if (params.data.packages_by_project__project__id) {
+        this.$router.push(
+          Object.assign(this.url, {
+            query: {
+              packages_by_project_project_id:
+                params.data.packages_by_project__project__id
+            }
           })
         )
       }
