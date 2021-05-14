@@ -8,23 +8,46 @@
       :add-routes="[{ route: 'model-add' }]"
     />
 
-    <SearchFilter
-      v-model="tableFilters.search"
-      @search="onSearch"
-      @clear="onSearchClear"
-    />
-
-    <div class="row q-pa-md">
-      <div class="col-12">
-        <q-btn
-          icon="mdi-filter-remove"
-          color="info"
-          text-color="black"
-          :label="$gettext('Reset all filters')"
-          @click="resetFilters"
+    <q-list class="more-filters" bordered>
+      <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">
+        <SearchFilter
+          v-model="tableFilters.search"
+          @search="onSearch"
+          @clear="onSearchClear"
         />
-      </div>
-    </div>
+
+        <div class="row q-pa-md q-col-gutter-lg">
+          <div class="col-sm-6 col-md-4">
+            <q-select
+              v-model="tableFilters.project.selected"
+              :options="tableFilters.project.items"
+              :label="$gettext('By Project')"
+              dense
+              outlined
+              option-value="id"
+              option-label="name"
+              @input="onProjectFilter"
+            >
+              <template #before>
+                <q-icon name="mdi-filter" />
+              </template>
+            </q-select>
+          </div>
+        </div>
+
+        <div class="row q-pa-md">
+          <div class="col-12">
+            <q-btn
+              icon="mdi-filter-remove"
+              color="info"
+              text-color="black"
+              :label="$gettext('Reset all filters')"
+              @click="resetFilters"
+            />
+          </div>
+        </div>
+      </q-expansion-item>
+    </q-list>
 
     <vue-good-table
       ref="myTable"
@@ -223,12 +246,36 @@ export default {
           }
         }
       ],
+      tableFilters: {
+        search: '',
+        project: {
+          items: [{ id: '', name: this.$gettext('All') }],
+          selected: null
+        }
+      },
       model: 'devices/models',
       detailRoute: 'model-detail'
     }
   },
   methods: {
     async loadFilters() {
+      await this.$axios
+        .get('/api/v1/token/projects/')
+        .then((response) => {
+          this.tableFilters.project.items = this.tableFilters.project.items.concat(
+            response.data.results
+          )
+
+          if (this.$route.query.drivers_project_id) {
+            this.tableFilters.project.selected = this.tableFilters.project.items.find(
+              (x) => x.id == this.$route.query.drivers_project_id
+            )
+          }
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
+
       await this.$axios
         .get('/api/v1/token/devices/manufacturers/')
         .then((response) => {
@@ -264,6 +311,15 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
+    },
+
+    onProjectFilter(params) {
+      this.updateParams({
+        columnFilters: Object.assign(this.serverParams.columnFilters, {
+          drivers_project_id: params.id
+        })
+      })
+      this.loadItems()
     }
   }
 }
