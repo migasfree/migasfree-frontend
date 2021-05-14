@@ -33,7 +33,7 @@
               <q-spinner-dots color="primary" size="3em" />
             </div>
 
-            <pre>{{ information }}</pre>
+            <q-markdown :src="information" />
           </div>
         </div>
       </q-card-section>
