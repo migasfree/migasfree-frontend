@@ -25,12 +25,14 @@
 <script>
 import * as echarts from 'echarts/core'
 import { LineChart } from 'echarts/charts'
+import { BarChart } from 'echarts/charts'
 import {
   GridComponent,
   TooltipComponent,
   ToolboxComponent,
   LegendComponent,
-  MarkPointComponent
+  MarkPointComponent,
+  MarkLineComponent
 } from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
 import {
@@ -40,11 +42,13 @@ import {
 
 echarts.use([
   LineChart,
+  BarChart,
   GridComponent,
   TooltipComponent,
   ToolboxComponent,
   LegendComponent,
   MarkPointComponent,
+  MarkLineComponent,
   SVGRenderer
 ])
 
