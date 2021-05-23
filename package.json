@@ -21,15 +21,15 @@
     "gettext-compile": "gettext-compile --output src/i18n/translations.json src/i18n/*.po"
   },
   "dependencies": {
-    "@quasar/extras": "^1.10.4",
-    "@vue/composition-api": "^1.0.0-rc.8",
+    "@quasar/extras": "^1.10.5",
+    "@vue/composition-api": "^1.0.0-rc.9",
     "axios": "^0.21.1",
     "core-js": "^3.12.1",
     "dayjs": "^1.10.4",
     "echarts": "^5.1.1",
     "leaflet": "^1.7.1",
     "performant-array-to-tree": "^1.8.2",
-    "quasar": "^1.15.14",
+    "quasar": "^1.15.16",
     "text-clipper": "^2.1.0",
     "typeface-dosis": "^1.1.13",
     "validator": "^13.6.0",
