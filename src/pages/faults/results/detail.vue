@@ -18,19 +18,19 @@
           </div>
 
           <div class="col-6 col-md col-sm">
-            <translate>Fault Definition</translate>:
             <MigasLink
               v-if="element.fault_definition"
               model="fault-definitions"
               :pk="element.fault_definition.id"
               :value="element.fault_definition.name"
+              icon="mdi-alert-octagram-outline"
+              :tooltip="$gettext('Fault Definition')"
             />
           </div>
         </div>
 
         <div class="row q-pa-md q-gutter-md">
           <div class="col-6 col-md col-sm">
-            <translate>Computer</translate>:
             <MigasLink
               v-if="element.computer"
               model="computers"
@@ -42,21 +42,32 @@
           </div>
 
           <div class="col-6 col-md col-sm">
-            <translate>Project</translate>:
             <MigasLink
               v-if="element.project"
               model="projects"
               :pk="element.project.id"
               :value="element.project.name"
               icon="mdi-sitemap"
+              :tooltip="$gettext('Project')"
             />
           </div>
         </div>
 
         <div class="row q-pa-md q-gutter-md">
           <div class="col">
-            <translate>Date</translate>: {{ showDate(element.created_at) }}
-            <q-tooltip>{{ diffForHumans(element.created_at) }}</q-tooltip>
+            <q-icon
+              name="mdi-calendar-plus"
+              size="sm"
+              class="vertical-middle"
+            />
+            <span class="vertical-middle">{{
+              showDate(element.created_at)
+            }}</span>
+            <q-tooltip self="bottom middle"
+              >{{ $gettext('Date') }} ({{
+                diffForHumans(element.created_at)
+              }})</q-tooltip
+            >
           </div>
         </div>
 
