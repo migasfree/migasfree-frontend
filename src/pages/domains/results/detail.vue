@@ -317,24 +317,20 @@ export default {
       }
     },
 
-    filterTags(val, update, abort) {
+    async filterTags(val, update, abort) {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
         abort()
         return
       }
 
-      update(() => {
-        const needle = val.toLowerCase()
-        this.$axios
-          .get('/api/v1/token/tags/', { params: { search: needle } })
-          .then((response) => {
-            this.tags = response.data.results
-          })
-        /* this.tags = stringOptions.filter(
-          (v) => v.toLowerCase().indexOf(needle) > -1
-        ) */
-      })
+      await this.$axios
+        .get('/api/v1/token/tags/', { params: { search: val.toLowerCase() } })
+        .then((response) => {
+          this.tags = response.data.results
+        })
+
+      update(() => {})
     },
 
     abortFilterTags() {

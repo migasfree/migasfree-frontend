@@ -418,26 +418,22 @@ export default {
       }
     },
 
-    filterApplications(val, update, abort) {
+    async filterApplications(val, update, abort) {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
         abort()
         return
       }
 
-      update(() => {
-        const needle = val.toLowerCase()
-        this.$axios
-          .get('/api/v1/token/catalog/apps/', {
-            params: { search: needle }
-          })
-          .then((response) => {
-            this.applications = response.data.results
-          })
-        /* this.applications = stringOptions.filter(
-          (v) => v.toLowerCase().indexOf(needle) > -1
-        ) */
-      })
+      await this.$axios
+        .get('/api/v1/token/catalog/apps/', {
+          params: { search: val.toLowerCase() }
+        })
+        .then((response) => {
+          this.applications = response.data.results
+        })
+
+      update(() => {})
     },
 
     abortFilterApplications() {

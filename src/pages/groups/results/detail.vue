@@ -181,26 +181,22 @@ export default {
       }
     },
 
-    filterPermissions(val, update, abort) {
+    async filterPermissions(val, update, abort) {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
         abort()
         return
       }
 
-      update(() => {
-        const needle = val.toLowerCase()
-        this.$axios
-          .get('/api/v1/token/accounts/permissions', {
-            params: { search: needle }
-          })
-          .then((response) => {
-            this.permissions = response.data.results
-          })
-        /* this.permissions = stringOptions.filter(
-          (v) => v.toLowerCase().indexOf(needle) > -1
-        ) */
-      })
+      await this.$axios
+        .get('/api/v1/token/accounts/permissions', {
+          params: { search: val.toLowerCase() }
+        })
+        .then((response) => {
+          this.permissions = response.data.results
+        })
+
+      update(() => {})
     },
 
     abortFilterPermissions() {

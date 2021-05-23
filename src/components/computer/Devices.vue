@@ -153,24 +153,22 @@ export default {
         .finally(() => (this.loading = false))
     },
 
-    filterAssignedDevices(val, update, abort) {
+    async filterAssignedDevices(val, update, abort) {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
         abort()
         return
       }
 
-      update(() => {
-        const needle = val.toLowerCase()
-        this.$axios
-          .get(`/api/v1/token/devices/logical/`, { params: { search: needle } })
-          .then((response) => {
-            this.assignedDevices = response.data.results
-          })
-        /* this.assignedDevices = stringOptions.filter(
-          (v) => v.toLowerCase().indexOf(needle) > -1
-        ) */
-      })
+      await this.$axios
+        .get(`/api/v1/token/devices/logical/`, {
+          params: { search: val.toLowerCase() }
+        })
+        .then((response) => {
+          this.assignedDevices = response.data.results
+        })
+
+      update(() => {})
     },
 
     abortFilterAssignedDevices() {

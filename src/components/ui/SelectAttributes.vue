@@ -112,24 +112,22 @@ export default {
     this.updateAttributes()
   },
   methods: {
-    filterAttributes(val, update, abort) {
+    async filterAttributes(val, update, abort) {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
         abort()
         return
       }
 
-      update(() => {
-        const needle = val.toLowerCase()
-        this.$axios
-          .get(`/api/v1/token/${this.model}/`, { params: { search: needle } })
-          .then((response) => {
-            this.attributes = response.data.results
-          })
-        /* this.attributes = stringOptions.filter(
-          (v) => v.toLowerCase().indexOf(needle) > -1
-        ) */
-      })
+      await this.$axios
+        .get(`/api/v1/token/${this.model}/`, {
+          params: { search: val.toLowerCase() }
+        })
+        .then((response) => {
+          this.attributes = response.data.results
+        })
+
+      update(() => {})
     },
 
     abortFilterAttributes() {

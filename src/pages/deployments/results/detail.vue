@@ -756,52 +756,50 @@ export default {
       await this.updateSchedule()
     },
 
-    filterPackages(val, update, abort) {
+    async filterPackages(val, update, abort) {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3 || this.element.project === undefined) {
         abort()
         return
       }
 
-      update(() => {
-        const needle = val.toLowerCase()
-        this.$axios
-          .get('/api/v1/token/packages/', {
-            params: { search: needle, project__id: this.element.project.id }
-          })
-          .then((response) => {
-            this.packages = response.data.results
-          })
-        /* this.packages = stringOptions.filter(
-          (v) => v.toLowerCase().indexOf(needle) > -1
-        ) */
-      })
+      await this.$axios
+        .get('/api/v1/token/packages/', {
+          params: {
+            search: val.toLowerCase(),
+            project__id: this.element.project.id
+          }
+        })
+        .then((response) => {
+          this.packages = response.data.results
+        })
+
+      update(() => {})
     },
 
     abortFilterPackages() {
       // console.log('delayed filter aborted')
     },
 
-    filterPackageSets(val, update, abort) {
+    async filterPackageSets(val, update, abort) {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3 || this.element.project === undefined) {
         abort()
         return
       }
 
-      update(() => {
-        const needle = val.toLowerCase()
-        this.$axios
-          .get('/api/v1/token/package-sets/', {
-            params: { search: needle, project__id: this.element.project.id }
-          })
-          .then((response) => {
-            this.packageSets = response.data.results
-          })
-        /* this.packageSets = stringOptions.filter(
-          (v) => v.toLowerCase().indexOf(needle) > -1
-        ) */
-      })
+      await this.$axios
+        .get('/api/v1/token/package-sets/', {
+          params: {
+            search: val.toLowerCase(),
+            project__id: this.element.project.id
+          }
+        })
+        .then((response) => {
+          this.packageSets = response.data.results
+        })
+
+      update(() => {})
     },
 
     abortFilterPackageSets() {

@@ -186,24 +186,22 @@ export default {
     }
   },
   methods: {
-    filterDevices(val, update, abort) {
+    async filterDevices(val, update, abort) {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
         abort()
         return
       }
 
-      update(() => {
-        const needle = val.toLowerCase()
-        this.$axios
-          .get('/api/v1/token/devices/devices/', { params: { search: needle } })
-          .then((response) => {
-            this.devices = response.data.results
-          })
-        /* this.devices = stringOptions.filter(
-          (v) => v.toLowerCase().indexOf(needle) > -1
-        ) */
-      })
+      await this.$axios
+        .get('/api/v1/token/devices/devices/', {
+          params: { search: val.toLowerCase() }
+        })
+        .then((response) => {
+          this.devices = response.data.results
+        })
+
+      update(() => {})
     },
 
     abortFilterDevices() {

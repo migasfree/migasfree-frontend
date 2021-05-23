@@ -188,24 +188,22 @@ export default {
     }
   },
   methods: {
-    filterComputers(val, update, abort) {
+    async filterComputers(val, update, abort) {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
         abort()
         return
       }
 
-      update(() => {
-        const needle = val.toLowerCase()
-        this.$axios
-          .get('/api/v1/token/computers/', { params: { search: needle } })
-          .then((response) => {
-            this.computers = response.data.results
-          })
-        /* this.computers = stringOptions.filter(
-          (v) => v.toLowerCase().indexOf(needle) > -1
-        ) */
-      })
+      await this.$axios
+        .get('/api/v1/token/computers/', {
+          params: { search: val.toLowerCase() }
+        })
+        .then((response) => {
+          this.computers = response.data.results
+        })
+
+      update(() => {})
     },
 
     abortFilterComputers() {
