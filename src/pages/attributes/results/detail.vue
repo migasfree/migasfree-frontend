@@ -21,25 +21,21 @@
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
-              <q-field outlined :label="$gettext('Formula')" stack-label>
-                <template #control>
-                  <MigasLink
-                    model="properties"
-                    :pk="element.property_att.id"
-                    :value="element.property_att.name || ''"
-                    icon="mdi-function-variant"
-                  />
-                </template>
-              </q-field>
+              <MigasLink
+                model="properties"
+                :pk="element.property_att.id"
+                :value="element.property_att.name || ''"
+                icon="mdi-function-variant"
+                :tooltip="$gettext('Formula')"
+              />
             </div>
 
             <div class="col-6 col-md col-sm">
-              <q-input
-                v-model="element.value"
-                outlined
-                :label="$gettext('Value')"
-                readonly
-              />
+              <q-icon name="mdi-pound" size="sm" class="vertical-middle" />
+              <span class="vertical-middle">{{ element.value }}</span>
+              <q-tooltip self="bottom middle">{{
+                $gettext('Value')
+              }}</q-tooltip>
             </div>
           </div>
 
