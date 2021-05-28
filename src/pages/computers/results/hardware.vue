@@ -163,6 +163,7 @@
             :data="detailInfo.capability"
             :columns="columnsCapability"
             row-key="name"
+            :pagination="{ rowsPerPage: 0 }"
             hide-pagination
           />
           <q-banner v-else class="text-white bg-info q-ma-md">
@@ -176,6 +177,7 @@
             :data="detailInfo.logical_name"
             :columns="columnsLogicalName"
             row-key="name"
+            :pagination="{ rowsPerPage: 0 }"
             hide-pagination
           />
           <q-banner v-else class="text-white bg-info q-ma-md">
@@ -189,6 +191,7 @@
             :data="detailInfo.configuration"
             :columns="columnsConfiguration"
             row-key="name"
+            :pagination="{ rowsPerPage: 0 }"
             hide-pagination
           />
           <q-banner v-else class="text-white bg-info q-ma-md">
