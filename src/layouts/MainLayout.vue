@@ -59,6 +59,17 @@
     </q-drawer>
 
     <q-page-container>
+      <q-banner v-if="hasDomainOrScopePreference" class="bg-warning text-black">
+        <template #avatar>
+          <q-icon name="mdi-alert-outline" />
+        </template>
+        {{
+          $gettext(
+            'You have established a domain or a scope in the preferences'
+          )
+        }}
+      </q-banner>
+
       <router-view />
 
       <q-page-scroller
@@ -95,6 +106,12 @@ export default {
   computed: {
     loggedIn() {
       return this.$store.getters['auth/loggedIn']
+    },
+
+    hasDomainOrScopePreference() {
+      const user = this.$store.getters['auth/user']
+
+      return user.domain_preference !== null || user.scope_preference !== null
     }
   },
   created() {
