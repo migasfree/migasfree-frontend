@@ -76,20 +76,22 @@ export default {
       .get('/api/v1/token/stats/devices/models/project/')
       .then((response) => {
         this.$set(this.byProject, 'xData', response.data.x_labels)
-        this.$set(this.byProject, 'series', {
-          type: 'bar',
-          data: response.data.data,
-          name: this.$gettext('Models'),
-          markLine: {
-            data: [
-              {
-                label: { show: true },
-                name: this.$gettext('Total'),
-                yAxis: response.data.total
-              }
-            ]
+        this.$set(this.byProject, 'series', [
+          {
+            type: 'bar',
+            data: response.data.data,
+            name: this.$gettext('Models'),
+            markLine: {
+              data: [
+                {
+                  label: { show: true },
+                  name: this.$gettext('Total'),
+                  yAxis: response.data.total
+                }
+              ]
+            }
           }
-        })
+        ])
       })
       .catch((error) => {
         this.$store.dispatch('ui/notifyError', error)
