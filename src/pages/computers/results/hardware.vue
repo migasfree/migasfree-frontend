@@ -149,9 +149,15 @@
       <q-card>
         <q-card-section>
           <div class="text-h5">
-            <q-icon name="mdi-text-box-search" />
-            <translate>Details</translate>:
-            {{ detailInfo.name }}
+            <q-icon
+              name="mdi-text-box-search"
+              size="lg"
+              class="vertical-middle"
+            />
+            <span class="vertical-middle">
+              <translate>Details</translate>:
+              {{ detailInfo.name }}
+            </span>
           </div>
         </q-card-section>
 
