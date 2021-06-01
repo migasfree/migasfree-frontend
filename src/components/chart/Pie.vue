@@ -306,8 +306,31 @@ export default {
       downloadLink.click()
     },
 
+    /* groupBy(data, key) {
+      const result = data.reduce(function(r, a) {
+        r[a[key]] = r[a[key]] || []
+        r[a[key]].push(a)
+        return r
+      }, {})
+      console.log(result)
+      return result
+    }, */
+
     dataView() {
       this.viewData = true
+      /* console.log(this.options.series)
+      if (this.options.series.length === 2) {
+        const keys = Object.keys(this.options.series[0].data[0])
+        const groupByKey = keys.filter((x) => !['name', 'value'].includes(x))
+        console.log(groupByKey)
+        let result = this.options.series[1].data.reduce(function(r, a) {
+          r[a[groupByKey]] = r[a[groupByKey]] || []
+          r[a[groupByKey]].push(a)
+          return r
+        }, {})
+        console.log(result)
+        console.log(this.options.series[1].data, groupByKey)
+      } */
     }
   }
 }
