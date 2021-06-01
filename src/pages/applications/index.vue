@@ -91,9 +91,13 @@ export default {
             data: response.data.data,
             name: this.$gettext('Applications'),
             markLine: {
+              label: {
+                show: true,
+                formatter: '{b}: {c}',
+                color: this.$q.dark.isActive ? '#fff' : '#333'
+              },
               data: [
                 {
-                  label: { show: true },
                   name: this.$gettext('Total'),
                   yAxis: response.data.total
                 }
