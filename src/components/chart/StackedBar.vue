@@ -222,6 +222,12 @@ export default {
       this.options.legend.textStyle.color = val ? '#fff' : '#333'
       this.options.xAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
       this.options.yAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
+      if (
+        Array.isArray(this.options.series) &&
+        this.options.series.length > 0 &&
+        'markLine' in this.options.series[0]
+      )
+        this.options.series[0].markLine.label.color = val ? '#fff' : '#333'
     }
   },
   async mounted() {
