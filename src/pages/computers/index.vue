@@ -126,11 +126,11 @@ export default {
         })
       }
 
-      if (params.data.status__in) {
+      if (params.data.status_in) {
         this.$router.push({
           name: this.url.name,
           query: Object.assign(query, {
-            status_in: params.data.status__in
+            status_in: params.data.status_in
           })
         })
       }
