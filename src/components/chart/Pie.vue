@@ -62,9 +62,10 @@
 
         <q-card-section class="q-pt-none">
           <q-table
-            v-for="(serie, index) in options.series"
+            v-for="(serie, index) in dataGrid"
             :key="index"
             class="q-ma-md"
+            :title="serie.title"
             :data="serie.data"
             :columns="columns"
             :pagination="{ rowsPerPage: 0 }"
@@ -204,6 +205,7 @@ export default {
         maskColor: this.$q.dark.isActive ? '#3A4149' : 'white'
       },
       viewData: false,
+      dataGrid: [],
       columns: [
         {
           name: 'name',
@@ -306,31 +308,52 @@ export default {
       downloadLink.click()
     },
 
-    /* groupBy(data, key) {
-      const result = data.reduce(function(r, a) {
+    groupBy(data, key) {
+      return data.reduce(function(r, a) {
         r[a[key]] = r[a[key]] || []
         r[a[key]].push(a)
         return r
       }, {})
-      console.log(result)
-      return result
-    }, */
+    },
 
     dataView() {
       this.viewData = true
-      /* console.log(this.options.series)
       if (this.options.series.length === 2) {
         const keys = Object.keys(this.options.series[0].data[0])
         const groupByKey = keys.filter((x) => !['name', 'value'].includes(x))
-        console.log(groupByKey)
-        let result = this.options.series[1].data.reduce(function(r, a) {
-          r[a[groupByKey]] = r[a[groupByKey]] || []
-          r[a[groupByKey]].push(a)
-          return r
-        }, {})
-        console.log(result)
-        console.log(this.options.series[1].data, groupByKey)
-      } */
+        const groupByData = this.groupBy(
+          this.options.series[1].data,
+          groupByKey
+        )
+
+        this.dataGrid = []
+        this.options.series[0].data.forEach((item) => {
+          let data = []
+          if (groupByKey[0] !== 'status_in') {
+            data = groupByData[item[groupByKey]]
+          } else {
+            if (item[groupByKey].includes(',')) {
+              item[groupByKey].split(',').forEach((key) => {
+                if (groupByData[key]) data.push(groupByData[key][0])
+              })
+              if (data.length === 0) data = groupByData[item[groupByKey]]
+            } else {
+              data = groupByData[item[groupByKey]]
+            }
+          }
+          this.dataGrid.push({
+            title: `${item.name} (${item.value})`,
+            data
+          })
+        })
+      } else {
+        this.dataGrid = [
+          {
+            title: `${this.data.title} (${this.data.total})`,
+            data: this.data.data
+          }
+        ]
+      }
     }
   }
 }
