@@ -11,6 +11,14 @@
           :value="element.name"
           icon="mdi-rocket-launch"
         />
+        <q-btn
+          v-if="element.source === 'I'"
+          class="q-ma-sm float-right"
+          :label="$gettext('Regenerate Metadata')"
+          color="primary"
+          icon="mdi-autorenew"
+          @click="regenerate(element.id)"
+        />
       </template>
     </Header>
 
@@ -808,6 +816,17 @@ export default {
 
     updateStats() {
       if (this.element.schedule === null) this.stats = {}
+    },
+
+    async regenerate(id) {
+      await this.$axios
+        .get(`/api/v1/token/deployments/internal-sources/${id}/metadata/`)
+        .then((response) => {
+          this.$store.dispatch('ui/notifySuccess', response.data.detail)
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
     }
   }
 }
