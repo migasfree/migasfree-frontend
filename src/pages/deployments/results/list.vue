@@ -92,6 +92,16 @@
             @click="confirmRemove(props.row.id)"
             ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
           >
+          <q-btn
+            v-if="props.row.source === 'I'"
+            class="q-ma-xs"
+            round
+            size="sm"
+            icon="mdi-autorenew"
+            color="primary"
+            @click="regenerate(props.row.id)"
+            ><q-tooltip>{{ $gettext('Regenerate Metadata') }}</q-tooltip></q-btn
+          >
         </span>
 
         <span v-else-if="props.column.field == 'name'">
@@ -405,6 +415,17 @@ export default {
         default:
           return ''
       }
+    },
+
+    async regenerate(id) {
+      await this.$axios
+        .get(`/api/v1/token/deployments/internal-sources/${id}/metadata/`)
+        .then((response) => {
+          this.$store.dispatch('ui/notifySuccess', response.data.detail)
+        })
+        .catch((error) => {
+          this.$store.dispatch('ui/notifyError', error)
+        })
     }
   }
 }
