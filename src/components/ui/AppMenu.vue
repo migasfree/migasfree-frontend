@@ -175,6 +175,11 @@ export default {
               icon: 'mdi-apps'
             },
             {
+              title: this.$gettext('Application Categories'),
+              to: 'categories-list',
+              icon: 'mdi-format-list-bulleted-type'
+            },
+            {
               title: this.$gettext('Policies'),
               to: 'policies-list',
               icon: 'mdi-shield-half-full'
