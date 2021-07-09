@@ -344,14 +344,9 @@ export default {
         })
 
       await this.$axios
-        .get('/api/v1/token/catalog/apps/categories/')
+        .get('/api/v1/token/catalog/categories/')
         .then((response) => {
-          Object.entries(response.data).map(([key, val]) => {
-            this.categories.push({
-              id: parseInt(key),
-              name: val
-            })
-          })
+          this.categories = response.data.results
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
