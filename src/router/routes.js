@@ -334,6 +334,22 @@ const routes = [
       },
 
       {
+        path: '/categories/results',
+        name: 'categories-list',
+        component: () => import('pages/categories/results/list')
+      },
+      {
+        path: '/categories/add',
+        name: 'category-add',
+        component: () => import('pages/categories/results/detail')
+      },
+      {
+        path: '/categories/results/:id',
+        name: 'category-detail',
+        component: () => import('pages/categories/results/detail')
+      },
+
+      {
         path: '/policies/results',
         name: 'policies-list',
         component: () => import('pages/policies/results/list')
