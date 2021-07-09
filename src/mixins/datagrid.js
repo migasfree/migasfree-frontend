@@ -80,6 +80,10 @@ export const datagridMixin = {
           case 'capability_id':
             filterKey = 'capability.name'
             break
+          case 'category':
+          case 'category_id':
+            filterKey = 'category.name'
+            break
           case 'connection_id':
             filterKey = 'connection.name'
             break
@@ -88,6 +92,9 @@ export const datagridMixin = {
             break
           case 'fault_definition_id':
             filterKey = 'fault_definition.name'
+            break
+          case 'level':
+            filterKey = 'level.name'
             break
           case 'model_id':
             filterKey = 'model.name'
@@ -353,7 +360,7 @@ export const datagridMixin = {
               break
             case 'category':
             case 'category.name':
-              ret.category = val
+              ret.category__id = val
               break
             case 'computer.__str__':
               ret.computer__name__icontains = val
