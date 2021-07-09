@@ -294,18 +294,18 @@ export default {
         })
 
       await this.$axios
-        .get('/api/v1/token/catalog/apps/categories')
+        .get('/api/v1/token/catalog/categories')
         .then((response) => {
           this.columns.find(
             (x) => x.field === 'category.name'
-          ).filterOptions.filterDropdownItems = Object.entries(
-            response.data
-          ).map(([key, val]) => {
-            return {
-              value: key,
-              text: val
+          ).filterOptions.filterDropdownItems = response.data.results.map(
+            (item) => {
+              return {
+                value: item.id,
+                text: item.name
+              }
             }
-          })
+          )
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
