@@ -21,7 +21,7 @@
         </q-banner>
       </q-card-section>
 
-      <q-card-actions align="around">
+      <q-card-actions v-show="isChartVisible" align="around">
         <q-btn icon="mdi-database-search" flat @click="dataView">
           <q-tooltip>{{ $gettext('Data View') }}</q-tooltip>
         </q-btn>
