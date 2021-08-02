@@ -27,6 +27,7 @@
     "core-js": "^3.12.1",
     "dayjs": "^1.10.4",
     "echarts": "^5.1.2",
+    "js-abbreviation-number": "^1.2.0",
     "leaflet": "^1.7.1",
     "performant-array-to-tree": "^1.8.2",
     "quasar": "^1.15.20",
