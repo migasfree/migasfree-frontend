@@ -35,7 +35,8 @@
             @click="$router.push(item.to)"
           >
             <q-avatar color="primary" text-color="white"
-              >{{ item.count }}<q-tooltip>{{ item.count }}</q-tooltip></q-avatar
+              >{{ humanNumber(item.count)
+              }}<q-tooltip>{{ item.count }}</q-tooltip></q-avatar
             >
             {{ item.text }}
           </q-chip>
@@ -60,6 +61,8 @@
 </template>
 
 <script>
+import { abbreviateNumber } from 'js-abbreviation-number'
+
 export default {
   props: {
     model: { type: String, required: true },
@@ -186,6 +189,10 @@ export default {
           this.$store.dispatch('ui/notifyError', error)
         })
         .finally(() => (this.loading = false))
+    },
+
+    humanNumber(value) {
+      return abbreviateNumber(value, 0)
     }
   }
 }
