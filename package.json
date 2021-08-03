@@ -36,7 +36,7 @@
     "validator": "^13.6.0",
     "vue-code-diff": "^1.2.0",
     "vue-codeditor": "^1.0.5",
-    "vue-echarts": "^6.0.0-rc.6",
+    "vue-echarts": "^6.0.0",
     "vue-gettext": "^2.1.12",
     "vue-good-table": "^2.21.10",
     "vue-pluralize": "^0.0.2",
