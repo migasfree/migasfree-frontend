@@ -210,7 +210,7 @@ export default {
           Object.entries(response.data).map(([key, val]) => {
             this.pms.push({
               id: key,
-              name: val
+              name: val.module
             })
           })
         })
