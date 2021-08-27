@@ -665,14 +665,11 @@ export const datagridMixin = {
         })
     },
 
-    exportData() {
-      const items = this.selectedRows.map((item) => item.id)
-
-      if (items.length === 0) return
-
+    _export(url, params = {}) {
       this.isLoadingExport = true
       this.$axios
-        .get(`/api/v1/token/${this.model}/export/?id__in=${items.join(',')}`, {
+        .get(url, {
+          params,
           responseType: 'blob'
         })
         .then((response) => {
@@ -691,6 +688,16 @@ export const datagridMixin = {
         .finally(() => {
           this.isLoadingExport = false
         })
+    },
+
+    exportData() {
+      const items = this.selectedRows.map((item) => item.id)
+
+      if (items.length === 0) return
+
+      this._export(
+        `/api/v1/token/${this.model}/export/?id__in=${items.join(',')}`
+      )
     },
 
     paramsToBackend(obj) {
@@ -714,28 +721,7 @@ export const datagridMixin = {
       delete params.page
       delete params.page_size
 
-      this.isLoadingExport = true
-      this.$axios
-        .get(`/api/v1/token/${this.model}/export/`, {
-          params,
-          responseType: 'blob'
-        })
-        .then((response) => {
-          let fileURL = window.URL.createObjectURL(new Blob([response.data]))
-          let fileLink = document.createElement('a')
-
-          fileLink.href = fileURL
-          fileLink.setAttribute('download', `${this.model}.csv`)
-          document.body.appendChild(fileLink)
-
-          fileLink.click()
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-        .finally(() => {
-          this.isLoadingExport = false
-        })
+      this._export(`/api/v1/token/${this.model}/export/`, params)
     },
 
     updateChecked(id, value, reload = true) {
