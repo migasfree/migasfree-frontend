@@ -33,7 +33,7 @@ import {
   TooltipComponent,
   CalendarComponent,
   VisualMapComponent,
-  LegendComponent
+  LegendComponent,
 } from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
 import { format } from 'echarts/lib/util/time'
@@ -45,7 +45,7 @@ echarts.use([
   CalendarComponent,
   VisualMapComponent,
   LegendComponent,
-  SVGRenderer
+  SVGRenderer,
 ])
 
 export default {
@@ -53,26 +53,26 @@ export default {
   props: {
     data: {
       type: Array,
-      required: true
+      required: true,
     },
     start: {
       type: String,
-      required: true
+      required: true,
     },
     title: {
       type: String,
-      required: true
+      required: true,
     },
     total: {
       type: Number,
       required: false,
-      default: 0
-    }
+      default: 0,
+    },
   },
   data() {
     return {
       initOptions: {
-        renderer: 'svg'
+        renderer: 'svg',
       },
       options: {
         legend: {
@@ -80,15 +80,15 @@ export default {
           selectedMode: 'single',
           selected: {},
           textStyle: {
-            color: this.$q.dark.isActive ? '#fff' : '#000'
-          }
+            color: this.$q.dark.isActive ? '#fff' : '#000',
+          },
         },
         tooltip: {
           position: 'top',
-          formatter: function(p) {
+          formatter: function (p) {
             const formated = format(p.data[0], '{yyyy}-{MM}-{dd}', false)
             return `${formated}: ${p.data[1]}`
-          }
+          },
         },
         visualMap: {
           min: 1,
@@ -97,39 +97,32 @@ export default {
           calculable: true,
           left: 'left',
           top: 40,
-          textStyle: { color: this.$q.dark.isActive ? '#fff' : '#000' }
+          textStyle: { color: this.$q.dark.isActive ? '#fff' : '#000' },
         },
         calendar: {
           top: 120,
           left: 60,
           right: 30,
           cellSize: [25, 25],
-          range: 2021,
-          // range: [this.start, format(Date.now(), '{yyyy}-{MM}-{dd}', true)],
+          range: [this.start, format(Date.now(), '{yyyy}-{MM}-{dd}', true)],
           itemStyle: {
             borderWidth: 0.5,
-            color: this.$q.dark.isActive ? '#757575' : '#fff'
+            color: this.$q.dark.isActive ? '#757575' : '#fff',
           },
           yearLabel: { show: true, margin: 20 },
           dayLabel: {
             firstDay: 1,
-            color: this.$q.dark.isActive ? '#fff' : '#000'
+            color: this.$q.dark.isActive ? '#fff' : '#000',
           },
           monthLabel: {
-            color: this.$q.dark.isActive ? '#fff' : '#000'
-          }
+            color: this.$q.dark.isActive ? '#fff' : '#000',
+          },
         },
-        series: []
-        /* series: {
-          type: 'heatmap',
-          coordinateSystem: 'calendar',
-          data: []
-        } */
+        series: [],
       },
       updateOptions: {
-        // notMerge: true,
-        replaceMerge: ['series'] // , 'legend']
-      }
+        replaceMerge: ['series'],
+      },
     }
   },
   computed: {
@@ -140,13 +133,13 @@ export default {
         'days'
       )
       return {
-        '--variable-width': `${(diff / 7) * 25}px`
+        '--variable-width': `${(diff / 7) * 25}px`,
       }
-    }
+    },
   },
   watch: {
     data: {
-      handler: function(val) {
+      handler: function (val) {
         const series = []
         const years = {}
 
@@ -158,11 +151,11 @@ export default {
             coordinateSystem: 'calendar',
             calendarIndex: 0,
             data: year,
-            name: index
+            name: index,
           })
         })
 
-        const maxYear = Object.keys(years).reduce(function(a, b) {
+        const maxYear = Object.keys(years).reduce(function (a, b) {
           return Math.max(parseInt(a), parseInt(b))
         })
         console.log(maxYear)
@@ -174,16 +167,11 @@ export default {
         if (val.length > 0) {
           visualMapMax = Math.max.apply(
             Math,
-            val.map(function(o) {
+            val.map(function (o) {
               return o[1]
             })
           )
         }
-
-        /* this.$set(this.options, 'series', series)
-        this.$set(this.options.legend, 'selected', years)
-        this.$set(this.options.calendar, 'range', maxYear)
-        this.$set(this.options.visualMap, 'max', visualMapMax) */
 
         if (this.$refs.chart !== null && this.$refs.chart !== undefined) {
           this.$refs.chart.setOption(
@@ -191,23 +179,16 @@ export default {
               series,
               legend: { selected: years },
               calendar: { range: maxYear },
-              visualMap: { max: visualMapMax }
+              visualMap: { max: visualMapMax },
             },
             {
-              // notMerge: true
-              // replaceMerge: ['series', 'legend']
+              replaceMerge: ['series'],
             }
           )
-          /* this.$refs.chart.clear()
-          this.$refs.chart.setOption(this.options, {
-            // notMerge: true,
-            // replaceMerge: ['series', 'legend']
-          }) */
         } else {
-          // this.$set(this.options, 'series', [])
           this.$set(this.options, 'series', series)
 
-          // this.$set(this.options.legend, 'selected', {})
+          this.$set(this.options.legend, 'selected', {})
           this.$set(this.options.legend, 'selected', years)
 
           this.$set(this.options.calendar, 'range', maxYear)
@@ -217,7 +198,7 @@ export default {
         console.log(this.$refs.chart)
       },
       deep: true,
-      immediate: true
+      immediate: true,
     },
 
     '$q.dark.isActive'(val) {
@@ -226,7 +207,7 @@ export default {
       this.options.calendar.dayLabel.color = val ? '#fff' : '#000'
       this.options.calendar.itemStyle.color = val ? '#757575' : '#fff'
       this.options.legend.textStyle.color = val ? '#fff' : '#000'
-    }
+    },
   },
   beforeMount() {
     window.addEventListener('resize', this.windowResize)
@@ -260,11 +241,11 @@ export default {
     changeRange($evt) {
       this.$refs.chart.setOption({
         calendar: {
-          range: $evt.name
-        }
+          range: $evt.name,
+        },
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
