@@ -30,7 +30,7 @@
     "js-abbreviation-number": "^1.4.0",
     "leaflet": "^1.7.1",
     "performant-array-to-tree": "^1.9.1",
-    "quasar": "^1.17.6",
+    "quasar": "^1.17.8",
     "text-clipper": "^2.2.0",
     "typeface-dosis": "^1.1.13",
     "validator": "^13.7.0",
