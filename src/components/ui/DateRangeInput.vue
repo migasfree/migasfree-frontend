@@ -21,6 +21,7 @@
           <q-date
             v-model="date"
             range
+            today-btn
             mask="YYYY-MM-DD"
             @input="dateSelected"
           ></q-date>
@@ -39,24 +40,24 @@ export default {
   props: {
     label: {
       type: String,
-      required: true
+      required: true,
     },
     value: {
       type: Object,
-      required: true
+      required: true,
     },
     prependIcon: {
       type: String,
       required: false,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
       date: this.value || {
         from: null,
-        to: null
-      }
+        to: null,
+      },
     }
   },
   computed: {
@@ -72,7 +73,7 @@ export default {
       if (this.date.from) return `${this.showDate(this.date.from)} ~ ?`
 
       return ''
-    }
+    },
   },
   methods: {
     dateSelected() {
@@ -81,7 +82,7 @@ export default {
     },
     reset() {
       this.date = { from: null, to: null }
-    }
-  }
+    },
+  },
 }
 </script>
