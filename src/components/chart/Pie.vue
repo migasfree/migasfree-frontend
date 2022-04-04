@@ -72,6 +72,7 @@
             row-key="name"
             hide-header
             hide-pagination
+            @row-click="rowClick"
           />
           <q-banner
             v-if="options.series.length === 0"
@@ -101,7 +102,7 @@ import { TooltipComponent, TitleComponent } from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
 import {
   MIGASFREE_CHART_COLORS,
-  MIGASFREE_CHART_DARK_COLORS
+  MIGASFREE_CHART_DARK_COLORS,
 } from 'config/app.conf'
 
 echarts.use([PieChart, TooltipComponent, TitleComponent, SVGRenderer])
@@ -112,32 +113,32 @@ export default {
     title: { type: String, required: true },
     endPoint: {
       type: String,
-      required: true
+      required: true,
     },
     url: {
       type: Object,
       required: false,
       default() {
         return {}
-      }
+      },
     },
     critical: {
       type: Boolean,
       required: false,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       data: {},
       initOptions: {
-        renderer: 'svg'
+        renderer: 'svg',
       },
       options: {
         animation: false,
         tooltip: {
           trigger: 'item',
-          formatter: '{b} ({c}): <strong>{d}%</strong>'
+          formatter: '{b} ({c}): <strong>{d}%</strong>',
         },
         color: this.$q.dark.isActive
           ? MIGASFREE_CHART_DARK_COLORS
@@ -145,8 +146,8 @@ export default {
         series: [],
         title: {
           text: this.title,
-          show: false
-        }
+          show: false,
+        },
       },
       normalSeries: [
         {
@@ -158,13 +159,13 @@ export default {
             itemStyle: {
               shadowBlur: 10,
               shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
           },
           label: {
-            color: this.$q.dark.isActive ? 'white' : 'black'
-          }
-        }
+            color: this.$q.dark.isActive ? 'white' : 'black',
+          },
+        },
       ],
       nestedSeries: [
         {
@@ -172,12 +173,12 @@ export default {
           selectedMode: 'single',
           radius: [0, '30%'],
           label: {
-            position: 'inner'
+            position: 'inner',
           },
           labelLine: {
-            show: false
+            show: false,
           },
-          data: []
+          data: [],
         },
         {
           type: 'pie',
@@ -187,12 +188,12 @@ export default {
             formatter: '{b} ({c}): {per|{d}%}',
             rich: {
               per: {
-                fontWeight: 'bold'
-              }
-            }
+                fontWeight: 'bold',
+              },
+            },
           },
-          data: []
-        }
+          data: [],
+        },
       ],
       loading: false,
       loadingOptions: {
@@ -202,7 +203,7 @@ export default {
         textColor: this.$q.dark.isActive
           ? 'rgba(255, 255, 255, 0.5)'
           : 'rgba(0, 0, 0, 0.5)',
-        maskColor: this.$q.dark.isActive ? '#3A4149' : 'white'
+        maskColor: this.$q.dark.isActive ? '#3A4149' : 'white',
       },
       viewData: false,
       dataGrid: [],
@@ -211,14 +212,14 @@ export default {
           name: 'name',
           field: 'name',
           label: this.$gettext('Name'),
-          align: 'left'
+          align: 'left',
         },
         {
           name: 'value',
           field: 'value',
-          label: this.$gettext('Value')
-        }
-      ]
+          label: this.$gettext('Value'),
+        },
+      ],
     }
   },
   computed: {
@@ -228,11 +229,11 @@ export default {
 
     noData() {
       return !'total' in this.data || this.data.total === 0
-    }
+    },
   },
   watch: {
     data: {
-      handler: function(val, oldVal) {
+      handler: function (val, oldVal) {
         if ('inner' in val) {
           this.$set(this.options.series[0], 'data', val.inner)
           this.$set(this.options.series[1], 'data', val.outer)
@@ -240,7 +241,7 @@ export default {
           this.$set(this.options.series[0], 'data', val.data)
         }
       },
-      deep: true
+      deep: true,
     },
 
     '$q.dark.isActive'(val) {
@@ -253,7 +254,7 @@ export default {
           item.label.color = val ? 'white' : 'black'
         })
       }
-    }
+    },
   },
   async mounted() {
     this.loading = true
@@ -281,6 +282,12 @@ export default {
     window.removeEventListener('resize', this.windowResize)
   },
   methods: {
+    rowClick(evt, row, index) {
+      const params = new Object()
+      params.data = row
+      this.passData(params)
+    },
+
     passData(params) {
       this.$emit('getLink', Object.assign(params, { url: this.url }))
     },
@@ -309,7 +316,7 @@ export default {
     },
 
     groupBy(data, key) {
-      return data.reduce(function(r, a) {
+      return data.reduce(function (r, a) {
         r[a[key]] = r[a[key]] || []
         r[a[key]].push(a)
         return r
@@ -343,19 +350,19 @@ export default {
           }
           this.dataGrid.push({
             title: `${item.name} (${item.value})`,
-            data
+            data,
           })
         })
       } else {
         this.dataGrid = [
           {
             title: `${this.data.title} (${this.data.total})`,
-            data: this.data.data
-          }
+            data: this.data.data,
+          },
         ]
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
