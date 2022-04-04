@@ -46,7 +46,7 @@
                 { slot: 'errors', value: 'errors' },
                 { slot: 'faults', value: 'faults' },
                 { slot: 'statusLogs', value: 'statusLogs' },
-                { slot: 'migrations', value: 'migrations' }
+                { slot: 'migrations', value: 'migrations' },
               ]"
               @input="updateEvent"
             >
@@ -117,6 +117,7 @@
           :data="items"
           :columns="events[event].columns"
           hide-pagination
+          :rows-per-page-options="[0]"
           :visible-columns="events[event].visibleColumns"
         >
           <template #body="props">
@@ -219,7 +220,7 @@ const { addToDate } = date
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
@@ -229,7 +230,7 @@ export default {
     HeatMap,
     BooleanView,
     Truncate,
-    DateDiff
+    DateDiff,
   },
   mixins: [elementMixin, dateMixin],
   data() {
@@ -239,35 +240,35 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Data'),
-          icon: 'mdi-database-search'
+          icon: 'mdi-database-search',
         },
         {
           text: this.$gettext('Computers'),
           to: 'computers-dashboard',
-          icon: 'mdi-desktop-classic'
+          icon: 'mdi-desktop-classic',
         },
         {
           text: this.$gettext('Results'),
-          to: 'computers-list'
+          to: 'computers-list',
         },
         {
           text: 'Id',
-          to: { name: 'computer-detail', params: { id: 0 } }
+          to: { name: 'computer-detail', params: { id: 0 } },
         },
         {
-          text: this.$gettext('Events')
-        }
+          text: this.$gettext('Events'),
+        },
       ],
       computer: {},
       event: null,
       current: {
         title: '',
         data: [],
-        total: 0
+        total: 0,
       },
       events: {
         syncs: {
@@ -280,54 +281,54 @@ export default {
             'user.name',
             'project.name',
             'pms_status_ok',
-            'consumer'
+            'consumer',
           ],
           columns: [
             {
               name: 'start_date',
               label: this.$gettext('Start Date'),
               field: 'start_date',
-              align: 'left'
+              align: 'left',
             },
             {
               name: 'created_at',
               label: this.$gettext('End Date'),
               field: 'created_at',
-              align: 'left'
+              align: 'left',
             },
             {
               name: 'user.id',
-              field: 'user.id'
+              field: 'user.id',
             },
             {
               name: 'user.name',
               label: this.$gettext('User'),
               field: 'user.name',
-              align: 'left'
+              align: 'left',
             },
             {
               name: 'project.id',
-              field: 'project.id'
+              field: 'project.id',
             },
             {
               name: 'project.name',
               label: this.$gettext('Project'),
               field: 'project.name',
-              align: 'left'
+              align: 'left',
             },
             {
               name: 'pms_status_ok',
               label: this.$gettext('PMS Status Ok'),
               field: 'pms_status_ok',
-              align: 'center'
+              align: 'center',
             },
             {
               name: 'consumer',
               label: this.$gettext('Consumer'),
               field: 'consumer',
-              align: 'left'
-            }
-          ]
+              align: 'left',
+            },
+          ],
         },
         errors: {
           data: [],
@@ -337,38 +338,38 @@ export default {
             'created_at',
             'project.name',
             'checked',
-            'description'
+            'description',
           ],
           columns: [
             {
               name: 'created_at',
               label: this.$gettext('Date'),
               field: 'created_at',
-              align: 'left'
+              align: 'left',
             },
             {
               name: 'project.id',
-              field: 'project.id'
+              field: 'project.id',
             },
             {
               name: 'project.name',
               label: this.$gettext('Project'),
               field: 'project.name',
-              align: 'left'
+              align: 'left',
             },
             {
               name: 'checked',
               label: this.$gettext('Checked'),
               field: 'checked',
-              align: 'center'
+              align: 'center',
             },
             {
               name: 'description',
               label: this.$gettext('Description'),
               field: 'description',
-              align: 'left'
-            }
-          ]
+              align: 'left',
+            },
+          ],
         },
         faults: {
           data: [],
@@ -378,42 +379,42 @@ export default {
             'created_at',
             'project.name',
             'checked',
-            'fault_definition.name'
+            'fault_definition.name',
           ],
           columns: [
             {
               name: 'created_at',
               label: this.$gettext('Date'),
               field: 'created_at',
-              align: 'left'
+              align: 'left',
             },
             {
               name: 'project.id',
-              field: 'project.id'
+              field: 'project.id',
             },
             {
               name: 'project.name',
               label: this.$gettext('Project'),
               field: 'project.name',
-              align: 'left'
+              align: 'left',
             },
             {
               name: 'checked',
               label: this.$gettext('Checked'),
               field: 'checked',
-              align: 'center'
+              align: 'center',
             },
             {
               name: 'fault_definition.id',
-              field: 'fault_definition.id'
+              field: 'fault_definition.id',
             },
             {
               name: 'fault_definition.name',
               label: this.$gettext('Fault Definition'),
               field: 'fault_definition.name',
-              align: 'left'
-            }
-          ]
+              align: 'left',
+            },
+          ],
         },
         migrations: {
           data: [],
@@ -425,19 +426,19 @@ export default {
               name: 'created_at',
               label: this.$gettext('Date'),
               field: 'created_at',
-              align: 'left'
+              align: 'left',
             },
             {
               name: 'project.id',
-              field: 'project.id'
+              field: 'project.id',
             },
             {
               name: 'project.name',
               label: this.$gettext('Project'),
               field: 'project.name',
-              align: 'left'
-            }
-          ]
+              align: 'left',
+            },
+          ],
         },
         statusLogs: {
           data: [],
@@ -449,20 +450,20 @@ export default {
               name: 'created_at',
               label: this.$gettext('Date'),
               field: 'created_at',
-              align: 'left'
+              align: 'left',
             },
             {
               name: 'status',
               label: this.$gettext('Status'),
               field: 'status',
-              align: 'left'
-            }
-          ]
-        }
+              align: 'left',
+            },
+          ],
+        },
       },
       items: [],
       itemsDate: null,
-      loading: false
+      loading: false,
     }
   },
   async mounted() {
@@ -470,12 +471,10 @@ export default {
       .get(`/api/v1/token/computers/${this.$route.params.id}/`)
       .then((response) => {
         this.computer = response.data
-        this.breadcrumbs.find(
-          (x) => x.text === 'Id'
-        ).to.params.id = this.computer.id
-        this.breadcrumbs.find(
-          (x) => x.text === 'Id'
-        ).text = this.computer.__str__
+        this.breadcrumbs.find((x) => x.text === 'Id').to.params.id =
+          this.computer.id
+        this.breadcrumbs.find((x) => x.text === 'Id').text =
+          this.computer.__str__
         this.title = `${this.title}: ${this.computer.__str__}`
         this.loadItems()
       })
@@ -491,7 +490,7 @@ export default {
         end_date: this.showDate(
           addToDate(new Date(), { days: 1 }).toISOString(),
           'YYYY-MM-DD'
-        )
+        ),
       }
 
       this.loading = true
@@ -584,7 +583,7 @@ export default {
         created_at__lt: this.showDate(
           date.addToDate(Date.parse(params.data[0]), { days: 1 }),
           'YYYY-MM-DD'
-        )
+        ),
       }
       const url = `/api/v1/token/${this.camelToKebabCase(this.event)}/`
 
@@ -605,7 +604,7 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    }
-  }
+    },
+  },
 }
 </script>
