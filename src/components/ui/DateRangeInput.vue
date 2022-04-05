@@ -27,6 +27,13 @@
           ></q-date>
         </q-popup-proxy>
       </q-icon>
+
+      <q-icon
+        v-if="date.from || date.to"
+        name="mdi-close-circle"
+        class="cursor-pointer"
+        @click="reset"
+      />
     </template>
   </q-input>
 </template>
@@ -40,24 +47,24 @@ export default {
   props: {
     label: {
       type: String,
-      required: true,
+      required: true
     },
     value: {
       type: Object,
-      required: true,
+      required: true
     },
     prependIcon: {
       type: String,
       required: false,
-      default: null,
-    },
+      default: null
+    }
   },
   data() {
     return {
       date: this.value || {
         from: null,
-        to: null,
-      },
+        to: null
+      }
     }
   },
   computed: {
@@ -73,7 +80,7 @@ export default {
       if (this.date.from) return `${this.showDate(this.date.from)} ~ ?`
 
       return ''
-    },
+    }
   },
   methods: {
     dateSelected() {
@@ -82,7 +89,8 @@ export default {
     },
     reset() {
       this.date = { from: null, to: null }
-    },
-  },
+      this.$emit('select', this.date)
+    }
+  }
 }
 </script>
