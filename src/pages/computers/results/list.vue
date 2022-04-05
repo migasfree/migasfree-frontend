@@ -64,9 +64,11 @@
               v-model="tableFilters.serial"
               outlined
               dense
+              clearable
               :label="$gettext('By Serial Number')"
               @blur="onSerialFilter"
               @keydown.enter="onSerialFilter"
+              @clear="onSerialFilter"
             >
               <template #before>
                 <q-icon name="mdi-filter" />
@@ -254,7 +256,7 @@
             @click="
               $router.push({
                 name: 'computer-hardware',
-                params: { id: props.row.id }
+                params: { id: props.row.id },
               })
             "
             ><q-tooltip
@@ -327,7 +329,7 @@ import { dateMixin } from 'mixins/date'
 export default {
   meta() {
     return {
-      title: this.$gettext('Computers List')
+      title: this.$gettext('Computers List'),
     }
   },
   components: {
@@ -337,7 +339,7 @@ export default {
     DateRangeInput,
     Header,
     TablePagination,
-    MigasLink
+    MigasLink,
   },
   mixins: [elementMixin, datagridMixin, dateMixin],
   data() {
@@ -347,32 +349,32 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Data'),
-          icon: 'mdi-database-search'
+          icon: 'mdi-database-search',
         },
         {
           text: this.$gettext('Computers'),
           to: 'computers-dashboard',
-          icon: 'mdi-desktop-classic'
+          icon: 'mdi-desktop-classic',
         },
         {
-          text: this.$gettext('Results')
-        }
+          text: this.$gettext('Results'),
+        },
       ],
       columns: [
         {
           field: 'id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
-          globalSearchDisabled: true
+          globalSearchDisabled: true,
         },
         {
           label: this.$gettext('Name'),
@@ -381,16 +383,16 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           field: '__str__',
-          hidden: true
+          hidden: true,
         },
         {
           field: 'project.id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Project'),
@@ -399,12 +401,12 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('All'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           field: 'sync_user.id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('User'),
@@ -413,16 +415,16 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('Sync end Date'),
-          field: 'sync_end_date'
+          field: 'sync_end_date',
         },
         {
           field: 'product_system',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Product'),
@@ -431,20 +433,20 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           field: 'summary',
-          hidden: true
-        }
+          hidden: true,
+        },
       ],
       tableFilters: {
         search: '',
         serial: '',
         platform: {
           items: [{ id: '', name: this.$gettext('All') }],
-          selected: null
+          selected: null,
         },
         architecture: {
           items: [
@@ -452,17 +454,17 @@ export default {
             {
               id: 32,
               name: this.$gettextInterpolate(this.$gettext('%{n} bits'), {
-                n: 32
-              })
+                n: 32,
+              }),
             },
             {
               id: 64,
               name: this.$gettextInterpolate(this.$gettext('%{n} bits'), {
-                n: 64
-              })
-            }
+                n: 64,
+              }),
+            },
           ],
-          selected: null
+          selected: null,
         },
         machine: {
           items: [
@@ -472,19 +474,19 @@ export default {
               label: this.$gettext('Physical'),
               children: [
                 { id: 'desktop', label: this.$gettext('desktop') },
-                { id: 'laptop', label: this.$gettext('laptop') }
-              ]
+                { id: 'laptop', label: this.$gettext('laptop') },
+              ],
             },
             {
               id: 'V',
               label: this.$gettext('Virtual'),
               children: [
                 { id: 'virtual', label: this.$gettext('emulator') },
-                { id: 'docker', label: this.$gettext('container') }
-              ]
-            }
+                { id: 'docker', label: this.$gettext('container') },
+              ],
+            },
           ],
-          selected: null
+          selected: null,
         },
         syncEndDate: {
           items: [
@@ -493,65 +495,65 @@ export default {
             {
               id: 7,
               name: this.$gettextInterpolate(this.$gettext('%{n} days ago'), {
-                n: 7
-              })
+                n: 7,
+              }),
             },
             {
               id: 30,
               name: this.$gettextInterpolate(this.$gettext('%{n} days ago'), {
-                n: 30
-              })
+                n: 30,
+              }),
             },
             {
               id: 60,
               name: this.$gettextInterpolate(this.$gettext('%{n} days ago'), {
-                n: 60
-              })
+                n: 60,
+              }),
             },
             {
               id: 180,
               name: this.$gettextInterpolate(this.$gettext('%{n} days ago'), {
-                n: 180
-              })
+                n: 180,
+              }),
             },
             {
               id: 365,
               name: this.$gettextInterpolate(this.$gettext('%{n} days ago'), {
-                n: 365
-              })
-            }
+                n: 365,
+              }),
+            },
           ],
-          selected: null
+          selected: null,
         },
         softwareInventory: {
           items: [
             { id: '', name: this.$gettext('All') },
-            { id: 0, name: this.$gettext('without inventory') }
+            { id: 0, name: this.$gettext('without inventory') },
           ],
-          selected: null
+          selected: null,
         },
         statusIn: {
           items: [],
           selected: null,
-          choices: {}
+          choices: {},
         },
         createdAtRange: {
-          selected: { from: null, to: null }
+          selected: { from: null, to: null },
         },
         syncEndDateRange: {
-          selected: { from: null, to: null }
-        }
+          selected: { from: null, to: null },
+        },
       },
       model: 'computers',
-      detailRoute: 'computer-detail'
+      detailRoute: 'computer-detail',
     }
   },
   methods: {
     onArchitectureFilter(params) {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
-          architecture: params.id
-        })
+          architecture: params.id,
+        }),
       })
       this.loadItems()
     },
@@ -561,15 +563,15 @@ export default {
         this.updateParams({
           columnFilters: Object.assign(this.serverParams.columnFilters, {
             machine: params.id,
-            product_system: ''
-          })
+            product_system: '',
+          }),
         })
       } else {
         this.updateParams({
           columnFilters: Object.assign(this.serverParams.columnFilters, {
             machine: '',
-            product_system: params.id
-          })
+            product_system: params.id,
+          }),
         })
       }
       this.loadItems()
@@ -578,8 +580,8 @@ export default {
     onSyncEndDateFilter(params) {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
-          sync_end_date: params.id
-        })
+          sync_end_date: params.id,
+        }),
       })
       this.loadItems()
     },
@@ -587,8 +589,8 @@ export default {
     onSoftwareInventoryFilter(params) {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
-          has_software_inventory: params.id === 0 ? false : ''
-        })
+          has_software_inventory: params.id === 0 ? false : '',
+        }),
       })
       this.loadItems()
     },
@@ -602,35 +604,33 @@ export default {
             : '',
           sync_end_date__lt: this.tableFilters.syncEndDateRange.selected.to
             ? this.tableFilters.syncEndDateRange.selected.to + 'T23:59:59'
-            : ''
-        })
+            : '',
+        }),
       })
       this.loadItems()
     },
 
     onSerialFilter() {
-      if (this.tableFilters.serial) {
-        this.updateParams({
-          columnFilters: Object.assign(this.serverParams.columnFilters, {
-            serial: this.tableFilters.serial
-          })
-        })
-        this.loadItems()
-      }
+      this.updateParams({
+        columnFilters: Object.assign(this.serverParams.columnFilters, {
+          serial: this.tableFilters.serial,
+        }),
+      })
+      this.loadItems()
     },
 
     async loadFilters() {
       await this.$axios
         .get('/api/v1/token/platforms/')
         .then((response) => {
-          this.tableFilters.platform.items = this.tableFilters.platform.items.concat(
-            response.data.results
-          )
+          this.tableFilters.platform.items =
+            this.tableFilters.platform.items.concat(response.data.results)
 
           if (this.$route.query.platform_id) {
-            this.tableFilters.platform.selected = this.tableFilters.platform.items.find(
-              (x) => x.id == this.$route.query.platform_id
-            )
+            this.tableFilters.platform.selected =
+              this.tableFilters.platform.items.find(
+                (x) => x.id == this.$route.query.platform_id
+              )
           }
         })
         .catch((error) => {
@@ -646,7 +646,7 @@ export default {
             (item) => {
               return {
                 value: item.id,
-                text: item.name
+                text: item.name,
               }
             }
           )
@@ -663,7 +663,7 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    }
-  }
+    },
+  },
 }
 </script>
