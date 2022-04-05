@@ -161,7 +161,7 @@ import { datagridMixin } from 'mixins/datagrid'
 export default {
   meta() {
     return {
-      title: this.$gettext('Packages History List')
+      title: this.$gettext('Packages History List'),
     }
   },
   components: {
@@ -170,7 +170,7 @@ export default {
     Header,
     TablePagination,
     DateRangeInput,
-    MigasLink
+    MigasLink,
   },
   mixins: [dateMixin, elementMixin, datagridMixin],
   data() {
@@ -180,37 +180,37 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Data'),
-          icon: 'mdi-database-search'
+          icon: 'mdi-database-search',
         },
         {
           text: this.$gettext('Packages History'),
           icon: 'mdi-history',
-          to: 'packages-history-dashboard'
+          to: 'packages-history-dashboard',
         },
         {
-          text: this.$gettext('Results')
-        }
+          text: this.$gettext('Results'),
+        },
       ],
       columns: [
         {
           field: 'id',
-          hidden: true
+          hidden: true,
         },
         {
           field: 'computer.id',
-          hidden: true
+          hidden: true,
         },
         {
           field: 'computer.status',
-          hidden: true
+          hidden: true,
         },
         {
           field: 'computer.summary',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Computer'),
@@ -218,12 +218,12 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           field: 'package.id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Package'),
@@ -231,12 +231,12 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('All'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           field: 'package.project.id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Project'),
@@ -245,36 +245,36 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('All'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('Install Date'),
-          field: 'install_date'
+          field: 'install_date',
         },
         {
           label: this.$gettext('Uninstall Date'),
-          field: 'uninstall_date'
-        }
+          field: 'uninstall_date',
+        },
       ],
       tableFilters: {
         search: '',
         installDateRange: {
-          selected: { from: null, to: null }
+          selected: { from: null, to: null },
         },
         uninstallDateRange: {
-          selected: { from: null, to: null }
+          selected: { from: null, to: null },
         },
         uninstallDate: {
           items: [
             { id: '', name: this.$gettext('All') },
             { id: 1, name: this.$gettext('without date') },
-            { id: 0, name: this.$gettext('with date') }
+            { id: 0, name: this.$gettext('with date') },
           ],
-          selected: null
-        }
+          selected: null,
+        },
       },
-      model: 'packages-history'
+      model: 'packages-history',
     }
   },
   methods: {
@@ -288,7 +288,7 @@ export default {
             (item) => {
               return {
                 value: item.id,
-                text: item.name
+                text: item.name,
               }
             }
           )
@@ -302,11 +302,13 @@ export default {
       this.tableFilters.installDateRange.selected = params
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
-          install_date__gte:
-            this.tableFilters.installDateRange.selected.from + 'T00:00:00',
-          install_date__lt:
-            this.tableFilters.installDateRange.selected.to + 'T23:59:59'
-        })
+          install_date__gte: this.tableFilters.installDateRange.selected.from
+            ? this.tableFilters.installDateRange.selected.from + 'T00:00:00'
+            : '',
+          install_date__lt: this.tableFilters.installDateRange.selected.to
+            ? this.tableFilters.installDateRange.selected.to + 'T23:59:59'
+            : '',
+        }),
       })
       this.loadItems()
     },
@@ -315,11 +317,14 @@ export default {
       this.tableFilters.uninstallDateRange.selected = params
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
-          uninstall_date__gte:
-            this.tableFilters.uninstallDateRange.selected.from + 'T00:00:00',
-          uninstall_date__lt:
-            this.tableFilters.uninstallDateRange.selected.to + 'T23:59:59'
-        })
+          uninstall_date__gte: this.tableFilters.uninstallDateRange.selected
+            .from
+            ? this.tableFilters.uninstallDateRange.selected.from + 'T00:00:00'
+            : '',
+          uninstall_date__lt: this.tableFilters.uninstallDateRange.selected.to
+            ? this.tableFilters.uninstallDateRange.selected.to + 'T23:59:59'
+            : '',
+        }),
       })
       this.loadItems()
     },
@@ -327,11 +332,11 @@ export default {
     onUninstallDateFilter(params) {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
-          uninstall_date: params.id ? true : params.id === 0 ? false : ''
-        })
+          uninstall_date: params.id ? true : params.id === 0 ? false : '',
+        }),
       })
       this.loadItems()
-    }
-  }
+    },
+  },
 }
 </script>
