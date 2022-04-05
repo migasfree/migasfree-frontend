@@ -23,6 +23,7 @@
             range
             today-btn
             mask="YYYY-MM-DD"
+            :locale="locale"
             @input="dateSelected"
           ></q-date>
         </q-popup-proxy>
@@ -47,24 +48,75 @@ export default {
   props: {
     label: {
       type: String,
-      required: true
+      required: true,
     },
     value: {
       type: Object,
-      required: true
+      required: true,
     },
     prependIcon: {
       type: String,
       required: false,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
       date: this.value || {
         from: null,
-        to: null
-      }
+        to: null,
+      },
+      locale: {
+        days: [
+          this.$gettext('Sunday'),
+          this.$gettext('Monday'),
+          this.$gettext('Tuesday'),
+          this.$gettext('Wednesday'),
+          this.$gettext('Thursday'),
+          this.$gettext('Friday'),
+          this.$gettext('Saturday'),
+        ],
+        daysShort: [
+          this.$gettext('Sun'),
+          this.$gettext('Mon'),
+          this.$gettext('Tue'),
+          this.$gettext('Wed'),
+          this.$gettext('Thu'),
+          this.$gettext('Fri'),
+          this.$gettext('Sat'),
+        ],
+        months: [
+          this.$gettext('January'),
+          this.$gettext('February'),
+          this.$gettext('March'),
+          this.$gettext('April'),
+          this.$gettext('May'),
+          this.$gettext('June'),
+          this.$gettext('July'),
+          this.$gettext('August'),
+          this.$gettext('September'),
+          this.$gettext('October'),
+          this.$gettext('November'),
+          this.$gettext('December'),
+        ],
+        monthsShort: [
+          this.$gettext('Jan'),
+          this.$gettext('Feb'),
+          this.$gettext('Mar'),
+          this.$gettext('Apr'),
+          this.$gettext('May'),
+          this.$gettext('Jun'),
+          this.$gettext('Jul'),
+          this.$gettext('Aug'),
+          this.$gettext('Sep'),
+          this.$gettext('Oct'),
+          this.$gettext('Nov'),
+          this.$gettext('Dec'),
+        ],
+        firstDayOfWeek: this.$language.current.startsWith('es') ? 1 : 0,
+        format24h: true,
+        pluralDay: this.$gettext('days'),
+      },
     }
   },
   computed: {
@@ -80,7 +132,7 @@ export default {
       if (this.date.from) return `${this.showDate(this.date.from)} ~ ?`
 
       return ''
-    }
+    },
   },
   methods: {
     dateSelected() {
@@ -90,7 +142,7 @@ export default {
     reset() {
       this.date = { from: null, to: null }
       this.$emit('select', this.date)
-    }
-  }
+    },
+  },
 }
 </script>
