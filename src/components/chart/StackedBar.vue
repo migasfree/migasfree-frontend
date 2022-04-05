@@ -62,7 +62,12 @@
 
             <q-tr slot="body" slot-scope="props" :props="props">
               <q-th>{{ props.row.name }}</q-th>
-              <q-td v-for="(item, index) in props.row.data" :key="index">
+              <q-td
+                v-for="(item, index) in props.row.data"
+                :key="index"
+                class="cursor-pointer"
+                @click="selectCell(props.row.data[index])"
+              >
                 {{ item.value }}
               </q-td>
             </q-tr>
@@ -91,12 +96,12 @@ import {
   TooltipComponent,
   LegendComponent,
   MarkPointComponent,
-  MarkLineComponent
+  MarkLineComponent,
 } from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
 import {
   MIGASFREE_CHART_COLORS,
-  MIGASFREE_CHART_DARK_COLORS
+  MIGASFREE_CHART_DARK_COLORS,
 } from 'config/app.conf'
 
 echarts.use([
@@ -107,7 +112,7 @@ echarts.use([
   LegendComponent,
   MarkPointComponent,
   MarkLineComponent,
-  SVGRenderer
+  SVGRenderer,
 ])
 
 export default {
@@ -117,15 +122,15 @@ export default {
     endPoint: {
       type: String,
       required: false,
-      default: ''
+      default: '',
     },
     initialData: {
       type: Object,
       required: false,
       default() {
         return {}
-      }
-    }
+      },
+    },
   },
   data() {
     return {
@@ -137,40 +142,40 @@ export default {
           : MIGASFREE_CHART_COLORS,
         tooltip: {
           show: true,
-          trigger: 'axis'
+          trigger: 'axis',
         },
         legend: {
           show: true,
           bottom: 'bottom',
           textStyle: {
-            color: this.$q.dark.isActive ? '#fff' : '#333'
-          }
+            color: this.$q.dark.isActive ? '#fff' : '#333',
+          },
         },
         xAxis: {
           type: 'category',
           data: [],
           axisLine: {
             lineStyle: {
-              color: this.$q.dark.isActive ? '#fff' : '#333'
-            }
-          }
+              color: this.$q.dark.isActive ? '#fff' : '#333',
+            },
+          },
         },
         yAxis: {
           type: 'value',
           axisLine: {
             lineStyle: {
-              color: this.$q.dark.isActive ? '#fff' : '#333'
-            }
-          }
+              color: this.$q.dark.isActive ? '#fff' : '#333',
+            },
+          },
         },
         series: [],
         title: {
           text: this.title,
-          show: false
-        }
+          show: false,
+        },
       },
       initOptions: {
-        renderer: 'svg'
+        renderer: 'svg',
       },
       loading: false,
       loadingOptions: {
@@ -180,9 +185,9 @@ export default {
         textColor: this.$q.dark.isActive
           ? 'rgba(255, 255, 255, 0.5)'
           : 'rgba(0, 0, 0, 0.5)',
-        maskColor: this.$q.dark.isActive ? '#3A4149' : 'white'
+        maskColor: this.$q.dark.isActive ? '#3A4149' : 'white',
       },
-      viewData: false
+      viewData: false,
     }
   },
   computed: {
@@ -195,24 +200,24 @@ export default {
 
     noData() {
       return !'series' in this.data
-    }
+    },
   },
   watch: {
     data: {
-      handler: function(val, oldVal) {
+      handler: function (val, oldVal) {
         if ('series' in val) this.$set(this.options, 'series', val.series)
         if ('xData' in val) this.$set(this.options.xAxis, 'data', val.xData)
       },
       deep: true,
-      immediate: true
+      immediate: true,
     },
 
     initialData: {
-      handler: function(val, oldVal) {
+      handler: function (val, oldVal) {
         this.data = val
       },
       deep: true,
-      immediate: true
+      immediate: true,
     },
 
     '$q.dark.isActive'(val) {
@@ -228,7 +233,7 @@ export default {
         'markLine' in this.options.series[0]
       )
         this.options.series[0].markLine.label.color = val ? '#fff' : '#333'
-    }
+    },
   },
   async mounted() {
     if (!this.endPoint) return
@@ -244,12 +249,12 @@ export default {
             type: 'line',
             smooth: true,
             name: key,
-            data: val
+            data: val,
           })
         })
         this.data = {
           xData: response.data.x_labels,
-          series
+          series,
         }
       })
       .catch((error) => {
@@ -266,6 +271,12 @@ export default {
     window.removeEventListener('resize', this.windowResize)
   },
   methods: {
+    selectCell(data) {
+      const params = new Object()
+      params.data = data
+      this.passData(params)
+    },
+
     passData(params) {
       this.$emit('getLink', params)
     },
@@ -289,8 +300,8 @@ export default {
 
     dataView() {
       this.viewData = true
-    }
-  }
+    },
+  },
 }
 </script>
 
