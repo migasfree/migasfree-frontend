@@ -597,10 +597,12 @@ export default {
       this.tableFilters.syncEndDateRange.selected = params
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
-          sync_end_date__gte:
-            this.tableFilters.syncEndDateRange.selected.from + 'T00:00:00',
-          sync_end_date__lt:
-            this.tableFilters.syncEndDateRange.selected.to + 'T23:59:59'
+          sync_end_date__gte: this.tableFilters.syncEndDateRange.selected.from
+            ? this.tableFilters.syncEndDateRange.selected.from + 'T00:00:00'
+            : '',
+          sync_end_date__lt: this.tableFilters.syncEndDateRange.selected.to
+            ? this.tableFilters.syncEndDateRange.selected.to + 'T23:59:59'
+            : ''
         })
       })
       this.loadItems()
