@@ -1,6 +1,7 @@
-export default function() {
+export default function () {
   return {
     isLoading: false,
-    server: process.env.MIGASFREE_SERVER || 'http://localhost'
+    currentPageTable: 1,
+    server: process.env.MIGASFREE_SERVER || 'http://localhost',
   }
 }
