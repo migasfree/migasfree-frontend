@@ -90,24 +90,24 @@ export default {
   props: {
     total: {
       type: Number,
-      required: true
+      required: true,
     },
     pageChanged: {
       type: Function,
-      required: true
+      required: true,
     },
     perPageChanged: {
       type: Function,
-      required: true
+      required: true,
     },
     perPageDropdownEnabled: { type: Boolean, default: true },
-    paginationOptions: { type: Object, required: true }
+    paginationOptions: { type: Object, required: true },
   },
   data() {
     return {
       currentPage: 1,
       prevPage: 0,
-      currentPerPage: 10
+      currentPerPage: 10,
     }
   },
   computed: {
@@ -141,14 +141,18 @@ export default {
 
     perPageLabel() {
       return `${this.paginationOptions.rowsPerPageLabel} (${this.currentPerPage})`
-    }
+    },
+
+    currentPageTable() {
+      return this.$store.getters['ui/getCurrentPageTable']
+    },
   },
   watch: {
     currentPerPage: {
       handler(newValue, oldValue) {
         if (oldValue) this.perPageChanged(oldValue)
       },
-      immediate: true
+      immediate: true,
     },
 
     total: {
@@ -156,13 +160,19 @@ export default {
         if (this.rowsPerPageOptions.indexOf(this.currentPerPage) === -1) {
           this.currentPerPage = newValue
         }
-      }
-    }
+      },
+    },
+
+    currentPageTable: {
+      handler(val) {
+        this.currentPage = val
+      },
+    },
   },
   methods: {
     customPageChange(customCurrentPage) {
       this.pageChanged({
-        currentPage: customCurrentPage ? customCurrentPage : this.currentPage
+        currentPage: customCurrentPage ? customCurrentPage : this.currentPage,
       })
     },
 
@@ -211,7 +221,7 @@ export default {
         this.currentPage = pageNumber
         if (emit) this.customPageChange()
       }
-    }
-  }
+    },
+  },
 }
 </script>
