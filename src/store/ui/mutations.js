@@ -5,3 +5,7 @@ export function loading(state) {
 export function finished(state) {
   state.isLoading = false
 }
+
+export function setCurrentPageTable(state, value) {
+  state.currentPageTable = value
+}
