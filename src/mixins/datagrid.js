@@ -201,6 +201,7 @@ export const datagridMixin = {
       if (!('page' in newProps)) {
         this.$set(this.serverParams, 'page', 1)
         this.$set(this.paginationOptions, 'setCurrentPage', 1)
+        this.$store.commit('ui/setCurrentPageTable', 1)
       }
     },
 
@@ -210,6 +211,7 @@ export const datagridMixin = {
 
     onPageChange(params) {
       this.updateParams({ page: params.currentPage })
+      this.$store.commit('ui/setCurrentPageTable', params.currentPage)
       this.loadItems()
     },
 
