@@ -20,29 +20,29 @@ export const datagridMixin = {
         rowsPerPageLabel: this.$gettext('Results per page'),
         ofLabel: this.$gettext('of'),
         pageLabel: this.$gettext('page'), // for 'pages' mode
-        allLabel: this.$gettext('View All')
+        allLabel: this.$gettext('View All'),
       },
       serverParams: {
         columnFilters: {},
         sort: {
           field: '',
-          type: ''
+          type: '',
         },
         page: 1,
-        perPage
+        perPage,
       },
       selectOptions: {
         enabled: true,
         selectOnCheckboxOnly: true,
         selectionText: this.$gettext('rows selected'),
-        clearSelectionText: this.$gettext('Clear')
+        clearSelectionText: this.$gettext('Clear'),
       },
       tableFilters: {
-        search: ''
+        search: '',
       },
       selectedRows: [],
       model: '',
-      detailRoute: ''
+      detailRoute: '',
     }
   },
   computed: {
@@ -50,16 +50,16 @@ export const datagridMixin = {
       return {
         enabled: true,
         skipDiacritics: true,
-        externalQuery: this.tableFilters.search
+        externalQuery: this.tableFilters.search,
       }
-    }
+    },
   },
   watch: {
     $route() {
       this.resetFilters(false)
       this.loadQueryParams()
       this.loadItems()
-    }
+    },
   },
   created() {
     this.loadQueryParams()
@@ -125,7 +125,7 @@ export const datagridMixin = {
         }
 
         this.updateParams({
-          columnFilters: { [columnKey ? columnKey : key]: value }
+          columnFilters: { [columnKey ? columnKey : key]: value },
         })
 
         let filter = null
@@ -222,8 +222,8 @@ export const datagridMixin = {
       this.updateParams({
         sort: {
           type: params[0].type === 'desc' ? '-' : '',
-          field: params[0].field.split('.')[0]
-        }
+          field: params[0].field.split('.')[0],
+        },
       })
       this.loadItems()
     },
@@ -240,7 +240,7 @@ export const datagridMixin = {
     onSearch(value) {
       this.tableFilters.search = value
       this.updateParams({
-        columnFilters: { search: this.tableFilters.search }
+        columnFilters: { search: this.tableFilters.search },
       })
       this.loadItems()
     },
@@ -252,8 +252,8 @@ export const datagridMixin = {
     onPlatformFilter(params) {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
-          platform: params.id
-        })
+          platform: params.id,
+        }),
       })
       this.loadItems()
     },
@@ -263,8 +263,8 @@ export const datagridMixin = {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
           created_at__gte: this.tableFilters.createdAtRange.selected.from,
-          created_at__lt: this.tableFilters.createdAtRange.selected.to
-        })
+          created_at__lt: this.tableFilters.createdAtRange.selected.to,
+        }),
       })
       this.loadItems()
     },
@@ -272,8 +272,8 @@ export const datagridMixin = {
     onStatusInFilter(params) {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
-          status_in: params.id
-        })
+          status_in: params.id,
+        }),
       })
       this.loadItems()
     },
@@ -292,7 +292,7 @@ export const datagridMixin = {
               label: this.$gettext('productive'),
               children: Object.entries(options.productive).map(([key, val]) => {
                 return { id: val, label: options.choices[val] }
-              })
+              }),
             },
             {
               id: options.unproductive.join(','),
@@ -301,14 +301,14 @@ export const datagridMixin = {
                 ([key, val]) => {
                   return { id: val, label: options.choices[val] }
                 }
-              )
-            }
-          ]
+              ),
+            },
+          ],
         },
         {
           id: options.unsubscribed.join(','),
-          label: this.$gettext('unsubscribed')
-        }
+          label: this.$gettext('unsubscribed'),
+        },
       ]
 
       if (this.$route.query.status_in) {
@@ -323,7 +323,7 @@ export const datagridMixin = {
     queryParams() {
       let ret = {
         page_size: this.serverParams.perPage,
-        page: this.serverParams.page
+        page: this.serverParams.page,
       }
 
       if (this.serverParams.sort.field) {
@@ -650,13 +650,13 @@ export const datagridMixin = {
           ok: {
             color: 'negative',
             label: this.$gettext('Delete'),
-            icon: 'mdi-delete'
+            icon: 'mdi-delete',
           },
           cancel: {
             flat: true,
-            label: this.$gettext('Cancel')
+            label: this.$gettext('Cancel'),
           },
-          persistent: true
+          persistent: true,
         })
         .onOk(() => {
           items.forEach((id) => {
@@ -670,7 +670,7 @@ export const datagridMixin = {
       this.$axios
         .get(url, {
           params,
-          responseType: 'blob'
+          responseType: 'blob',
         })
         .then((response) => {
           let fileURL = window.URL.createObjectURL(new Blob([response.data]))
@@ -776,6 +776,6 @@ export const datagridMixin = {
       })
 
       if (loadItemsAfter) this.loadItems()
-    }
-  }
+    },
+  },
 }

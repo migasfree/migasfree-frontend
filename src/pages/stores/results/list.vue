@@ -132,7 +132,7 @@ import { datagridMixin } from 'mixins/datagrid'
 export default {
   meta() {
     return {
-      title: this.$gettext('Stores List')
+      title: this.$gettext('Stores List'),
     }
   },
   components: {
@@ -140,7 +140,7 @@ export default {
     SearchFilter,
     Header,
     TablePagination,
-    MigasLink
+    MigasLink,
   },
   mixins: [elementMixin, datagridMixin],
   data() {
@@ -150,32 +150,32 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Release'),
-          icon: 'mdi-truck-delivery'
+          icon: 'mdi-truck-delivery',
         },
         {
           text: this.$gettext('Stores'),
           icon: 'mdi-store-24-hour',
-          to: 'stores-dashboard'
+          to: 'stores-dashboard',
         },
         {
-          text: this.$gettext('Results')
-        }
+          text: this.$gettext('Results'),
+        },
       ],
       columns: [
         {
           field: 'id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
-          globalSearchDisabled: true
+          globalSearchDisabled: true,
         },
         {
           label: this.$gettext('Name'),
@@ -184,8 +184,8 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('Project'),
@@ -193,12 +193,12 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
-        }
+            trigger: 'enter',
+          },
+        },
       ],
       model: 'stores',
-      detailRoute: 'store-detail'
+      detailRoute: 'store-detail',
     }
   },
   methods: {
@@ -212,7 +212,7 @@ export default {
             (item) => {
               return {
                 value: item.id,
-                text: item.name
+                text: item.name,
               }
             }
           )
@@ -220,7 +220,7 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    }
-  }
+    },
+  },
 }
 </script>
