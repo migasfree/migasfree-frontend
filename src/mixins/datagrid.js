@@ -762,7 +762,7 @@ export const datagridMixin = {
           case 'syncEndDateRange':
           case 'uninstallDateRange':
             this.tableFilters[key].selected = { from: null, to: null }
-            this.$refs[key].reset()
+            this.$refs[key].reset(loadItemsAfter)
             break
           case 'serial':
           case 'search':
