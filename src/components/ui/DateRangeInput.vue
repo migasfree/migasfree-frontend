@@ -139,9 +139,9 @@ export default {
       this.$refs.qDateProxy.hide()
       this.$emit('select', this.date)
     },
-    reset() {
+    reset(emit = true) {
       this.date = { from: null, to: null }
-      this.$emit('select', this.date)
+      if (emit) this.$emit('select', this.date)
     },
   },
 }
