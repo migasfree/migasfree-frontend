@@ -29,6 +29,7 @@
             v-model="model.username"
             autofocus
             lazy-rules
+            outlined
             :rules="[(val) => !!val || $gettext('* Required')]"
           >
             <template #label>
@@ -44,6 +45,7 @@
             id="password"
             v-model="model.password"
             lazy-rules
+            outlined
             counter
             :rules="[
               (val) => !!val || $gettext('* Required'),
