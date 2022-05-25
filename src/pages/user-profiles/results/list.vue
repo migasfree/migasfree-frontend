@@ -6,7 +6,19 @@
       :title="title"
       :results="totalRecords"
       :add-routes="[{ route: 'user-profile-add' }]"
-    />
+    >
+      <template #append>
+        <q-btn
+          class="q-ma-sm float-right"
+          color="info"
+          text-color="black"
+          :label="$gettext('Export')"
+          icon="mdi-file-export"
+          :loading="isLoadingExport"
+          @click="exportAll"
+        />
+      </template>
+    </Header>
 
     <SearchFilter
       v-model="tableFilters.search"
@@ -78,7 +90,7 @@
             @click="
               $router.push({
                 name: 'user-profile-change-password',
-                params: { id: props.row.id }
+                params: { id: props.row.id },
               })
             "
             ><q-tooltip>{{ $gettext('Change Password') }}</q-tooltip></q-btn
@@ -118,6 +130,16 @@
 
       <div slot="selected-row-actions">
         <q-btn
+          class="q-ma-xs"
+          size="sm"
+          color="info"
+          text-color="black"
+          icon="mdi-file-export"
+          :loading="isLoadingExport"
+          @click="exportData"
+          ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
+        >
+        <q-btn
           size="sm"
           color="negative"
           icon="mdi-delete"
@@ -150,7 +172,7 @@ import { datagridMixin } from 'mixins/datagrid'
 export default {
   meta() {
     return {
-      title: this.$gettext('User Profiles List')
+      title: this.$gettext('User Profiles List'),
     }
   },
   components: {
@@ -159,7 +181,7 @@ export default {
     Header,
     TablePagination,
     MigasLink,
-    BooleanView
+    BooleanView,
   },
   mixins: [datagridMixin],
   data() {
@@ -169,31 +191,31 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs'
+          icon: 'mdi-cogs',
         },
         {
           text: this.$gettext('User Profiles'),
-          icon: 'mdi-account-cog'
+          icon: 'mdi-account-cog',
         },
         {
-          text: this.$gettext('Results')
-        }
+          text: this.$gettext('Results'),
+        },
       ],
       columns: [
         {
           field: 'id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
-          globalSearchDisabled: true
+          globalSearchDisabled: true,
         },
         {
           label: this.$gettext('Username'),
@@ -202,8 +224,8 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('First Name'),
@@ -211,8 +233,8 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('Last Name'),
@@ -220,8 +242,8 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('Enabled'),
@@ -232,22 +254,22 @@ export default {
             trigger: 'enter',
             filterDropdownItems: [
               { value: true, text: this.$gettext('Yes') },
-              { value: false, text: this.$gettext('No') }
-            ]
-          }
+              { value: false, text: this.$gettext('No') },
+            ],
+          },
         },
         {
           field: 'domain_preference.id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Domain Preference'),
-          field: 'domain_preference.name'
-        }
+          field: 'domain_preference.name',
+        },
       ],
       model: 'user-profiles',
-      detailRoute: 'user-profile-detail'
+      detailRoute: 'user-profile-detail',
     }
-  }
+  },
 }
 </script>
