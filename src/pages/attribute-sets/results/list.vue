@@ -6,7 +6,19 @@
       :title="title"
       :results="totalRecords"
       :add-routes="[{ route: 'attribute-set-add' }]"
-    />
+    >
+      <template #append>
+        <q-btn
+          class="q-ma-sm float-right"
+          color="info"
+          text-color="black"
+          :label="$gettext('Export')"
+          icon="mdi-file-export"
+          :loading="isLoadingExport"
+          @click="exportAll"
+        />
+      </template>
+    </Header>
 
     <SearchFilter
       v-model="tableFilters.search"
@@ -103,6 +115,16 @@
 
       <div slot="selected-row-actions">
         <q-btn
+          class="q-ma-xs"
+          size="sm"
+          color="info"
+          text-color="black"
+          icon="mdi-file-export"
+          :loading="isLoadingExport"
+          @click="exportData"
+          ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
+        >
+        <q-btn
           size="sm"
           color="negative"
           icon="mdi-delete"
@@ -136,7 +158,7 @@ import { datagridMixin } from 'mixins/datagrid'
 export default {
   meta() {
     return {
-      title: this.$gettext('Attribute Sets List')
+      title: this.$gettext('Attribute Sets List'),
     }
   },
   components: {
@@ -146,7 +168,7 @@ export default {
     TablePagination,
     BooleanView,
     MigasLink,
-    Truncate
+    Truncate,
   },
   mixins: [datagridMixin],
   data() {
@@ -156,31 +178,31 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs'
+          icon: 'mdi-cogs',
         },
         {
           text: this.$gettext('Attribute Sets'),
-          icon: 'mdi-set-none'
+          icon: 'mdi-set-none',
         },
         {
-          text: this.$gettext('Results')
-        }
+          text: this.$gettext('Results'),
+        },
       ],
       columns: [
         {
           field: 'id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
-          globalSearchDisabled: true
+          globalSearchDisabled: true,
         },
         {
           label: this.$gettext('Name'),
@@ -189,8 +211,8 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('Enabled'),
@@ -201,19 +223,19 @@ export default {
             trigger: 'enter',
             filterDropdownItems: [
               { value: true, text: this.$gettext('Yes') },
-              { value: false, text: this.$gettext('No') }
-            ]
-          }
+              { value: false, text: this.$gettext('No') },
+            ],
+          },
         },
         {
           label: this.$gettext('Description'),
-          field: 'description'
-        }
+          field: 'description',
+        },
       ],
       model: 'attribute-sets',
       detailRoute: 'attribute-set-detail',
-      kind: {}
+      kind: {},
     }
-  }
+  },
 }
 </script>
