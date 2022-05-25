@@ -2,7 +2,11 @@
   <q-page class="flex bg-image flex-center">
     <q-card :style="$q.screen.lt.sm ? { width: '80%' } : { width: '30%' }">
       <q-card-section>
-        <q-avatar size="110px" class="absolute-center shadow-10">
+        <q-avatar
+          size="110px"
+          class="absolute-center shadow-10"
+          :color="$q.dark.isActive ? 'blue-grey-9' : 'white'"
+        >
           <img
             id="logo"
             src="../assets/migasfree-logo.svg"
@@ -48,9 +52,9 @@
                 $gettextInterpolate(
                   $gettext('Please use minimum %{n} characters'),
                   {
-                    n: 4
+                    n: 4,
                   }
-                )
+                ),
             ]"
             :type="showPassword ? 'text' : 'password'"
           >
@@ -91,7 +95,7 @@ export default {
   name: 'Login',
   meta() {
     return {
-      title: this.$gettext('Log In')
+      title: this.$gettext('Log In'),
     }
   },
   data: () => ({
@@ -99,13 +103,13 @@ export default {
     showPassword: false,
     model: {
       username: '',
-      password: ''
-    }
+      password: '',
+    },
   }),
   computed: {
     isValid() {
       return this.model.username !== '' && this.model.password.length > 3
-    }
+    },
   },
   created() {
     this.$q.dark.set(this.$q.cookies.get('darkMode'), { expires: '30d' })
@@ -127,8 +131,8 @@ export default {
           this.$store.dispatch('ui/notifyError', error)
         })
         .finally(() => (this.loading = false))
-    }
-  }
+    },
+  },
 }
 </script>
 
