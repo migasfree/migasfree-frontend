@@ -103,6 +103,16 @@
 
       <div slot="selected-row-actions">
         <q-btn
+          class="q-ma-xs"
+          size="sm"
+          color="info"
+          text-color="black"
+          icon="mdi-file-export"
+          :loading="isLoadingExport"
+          @click="exportData"
+          ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
+        >
+        <q-btn
           size="sm"
           color="negative"
           icon="mdi-delete"
