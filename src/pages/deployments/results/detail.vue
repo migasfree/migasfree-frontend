@@ -335,7 +335,7 @@
             </div>
 
             <div class="row q-pa-md q-gutter-md">
-              <div class="col-4 col-md col-sm">
+              <div class="col">
                 <q-input
                   v-model="element.default_preincluded_packages"
                   outlined
@@ -343,8 +343,10 @@
                   :label="$gettext('Default Preincluded Packages')"
                 />
               </div>
+            </div>
 
-              <div class="col-4 col-md col-sm">
+            <div class="row q-pa-md q-gutter-md">
+              <div class="col">
                 <q-input
                   v-model="element.default_included_packages"
                   outlined
@@ -352,8 +354,10 @@
                   :label="$gettext('Default Included Packages')"
                 />
               </div>
+            </div>
 
-              <div class="col-4 col-md col-sm">
+            <div class="row q-pa-md q-gutter-md">
+              <div class="col">
                 <q-input
                   v-model="element.default_excluded_packages"
                   outlined
@@ -384,7 +388,9 @@
                   outlined
                   clearable
                   landscape
+                  :today-btn="true"
                   target="self"
+                  :locale="localeDate"
                   :display-value="showDate(element.start_date, 'YYYY-MM-DD')"
                 />
                 <q-tooltip v-if="element.start_date">{{
@@ -501,7 +507,7 @@ import { dateMixin } from 'mixins/date'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
@@ -511,7 +517,7 @@ export default {
     RemoveDialog,
     StackedBarChart,
     Timeline,
-    SelectAttributes
+    SelectAttributes,
   },
   mixins: [detailMixin, elementMixin, dateMixin],
   data() {
@@ -527,7 +533,7 @@ export default {
       default_included_packages: null,
       default_excluded_packages: null,
       expire: 1440,
-      frozen: false
+      frozen: false,
     }
 
     return {
@@ -539,17 +545,17 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Release'),
-          icon: 'mdi-truck-delivery'
+          icon: 'mdi-truck-delivery',
         },
         {
           text: this.$gettext('Deployments'),
           to: 'deployments-dashboard',
-          icon: 'mdi-rocket-launch'
-        }
+          icon: 'mdi-rocket-launch',
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
@@ -563,15 +569,15 @@ export default {
       sources: [
         {
           id: 'I',
-          name: this.$gettext('Internal')
+          name: this.$gettext('Internal'),
         },
         {
           id: 'E',
-          name: this.$gettext('External')
-        }
+          name: this.$gettext('External'),
+        },
       ],
       stats: {},
-      confirmRemove: false
+      confirmRemove: false,
     }
   },
   computed: {
@@ -582,7 +588,7 @@ export default {
         this.element.project !== undefined &&
         this.element.start_date !== undefined
       )
-    }
+    },
   },
   methods: {
     async loadRelated() {
@@ -601,7 +607,7 @@ export default {
           Object.entries(response.data.results).map(([index, item]) => {
             this.domains.push({
               id: item.id,
-              name: item.name
+              name: item.name,
             })
           })
         })
@@ -615,7 +621,7 @@ export default {
           Object.entries(response.data.results).map(([index, item]) => {
             this.schedules.push({
               id: item.id,
-              name: item.name
+              name: item.name,
             })
           })
         })
@@ -624,21 +630,16 @@ export default {
         })
 
       if (this.element.id) {
-        this.element.packages_to_install = this.element.packages_to_install.join(
-          '\n'
-        )
-        this.element.packages_to_remove = this.element.packages_to_remove.join(
-          '\n'
-        )
-        this.element.default_preincluded_packages = this.element.default_preincluded_packages.join(
-          '\n'
-        )
-        this.element.default_included_packages = this.element.default_included_packages.join(
-          '\n'
-        )
-        this.element.default_excluded_packages = this.element.default_excluded_packages.join(
-          '\n'
-        )
+        this.element.packages_to_install =
+          this.element.packages_to_install.join('\n')
+        this.element.packages_to_remove =
+          this.element.packages_to_remove.join('\n')
+        this.element.default_preincluded_packages =
+          this.element.default_preincluded_packages.join('\n')
+        this.element.default_included_packages =
+          this.element.default_included_packages.join('\n')
+        this.element.default_excluded_packages =
+          this.element.default_excluded_packages.join('\n')
       }
       this.updateSchedule()
     },
@@ -667,7 +668,7 @@ export default {
                   type: 'line',
                   smooth: true,
                   name: key,
-                  data: val
+                  data: val,
                 })
               })
 
@@ -683,15 +684,15 @@ export default {
                     {
                       coord: [today, madeValue],
                       label: { show: true },
-                      value: madeValue
-                    }
-                  ]
-                }
+                      value: madeValue,
+                    },
+                  ],
+                },
               })
 
               this.stats = {
                 xData: response.data.x_labels,
-                series
+                series,
               }
             })
             .catch((error) => {
@@ -736,7 +737,7 @@ export default {
             ? this.element.default_excluded_packages.split('\n')
             : [],
         start_date: this.showDate(this.element.start_date, 'YYYY-MM-DD'),
-        schedule: this.element.schedule ? this.element.schedule.id : null
+        schedule: this.element.schedule ? this.element.schedule.id : null,
       }
 
       if (this.element.source === 'I') {
@@ -775,8 +776,8 @@ export default {
         .get('/api/v1/token/packages/', {
           params: {
             search: val.toLowerCase(),
-            project__id: this.element.project.id
-          }
+            project__id: this.element.project.id,
+          },
         })
         .then((response) => {
           this.packages = response.data.results
@@ -800,8 +801,8 @@ export default {
         .get('/api/v1/token/package-sets/', {
           params: {
             search: val.toLowerCase(),
-            project__id: this.element.project.id
-          }
+            project__id: this.element.project.id,
+          },
         })
         .then((response) => {
           this.packageSets = response.data.results
@@ -827,7 +828,7 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    }
-  }
+    },
+  },
 }
 </script>
