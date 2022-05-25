@@ -12,6 +12,28 @@
       >
       <q-separator />
 
+      <!--q-item>
+        <q-tooltip><translate>Change App Language</translate></q-tooltip>
+
+        <q-item-section avatar>
+          <q-icon name="mdi-web" />
+        </q-item-section>
+
+        <q-item-section>
+          <q-select
+            v-model="currentLanguage"
+            standout
+            :options="languages"
+            option-value="label"
+            option-label="value"
+            :dense="true"
+            :options-dense="true"
+            @input="changeAppLanguage"
+          >
+          </q-select>
+        </q-item-section>
+      </q-item-->
+
       <q-item>
         <q-tooltip><translate>Change Domain</translate></q-tooltip>
 
@@ -89,11 +111,19 @@
 export default {
   name: 'UserAccount',
   data() {
+    const languages = []
+
+    Object.entries(this.$language.available).map(([label, value]) => {
+      languages.push({ label, value })
+    })
+
     return {
       domainPreference: { id: 0, name: this.$gettext('All').toUpperCase() },
       scopePreference: { id: 0, name: this.$gettext('All').toLowerCase() },
       isLoadingDomain: false,
-      isLoadingScope: false
+      isLoadingScope: false,
+      currentLanguage: this.$language.available[this.$language.current],
+      languages,
     }
   },
   computed: {
@@ -113,7 +143,7 @@ export default {
       }
 
       return scopes
-    }
+    },
   },
   async mounted() {
     if (this.user.domain_preference)
@@ -129,12 +159,16 @@ export default {
       })
     },
 
+    changeAppLanguage() {
+      this.$language.current = this.currentLanguage.label
+    },
+
     async updateDomainPreference() {
       await this.updatePreferences({
         domain_preference: this.domainPreference.id
           ? this.domainPreference.id
           : null,
-        scope_preference: null
+        scope_preference: null,
       })
     },
 
@@ -142,7 +176,7 @@ export default {
       await this.updatePreferences({
         scope_preference: this.scopePreference.id
           ? this.scopePreference.id
-          : null
+          : null,
       })
       if (this.scopePreference.id) {
         this.$store.dispatch('auth/loadScopes')
@@ -165,14 +199,14 @@ export default {
           this.$router.go({
             path: this.$router.path,
             query: {
-              t: +new Date()
-            }
+              t: +new Date(),
+            },
           })
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    }
-  }
+    },
+  },
 }
 </script>
