@@ -6,7 +6,19 @@
       :title="title"
       :results="totalRecords"
       :add-routes="[{ route: 'fault-definition-add' }]"
-    />
+    >
+      <template #append>
+        <q-btn
+          class="q-ma-sm float-right"
+          color="info"
+          text-color="black"
+          :label="$gettext('Export')"
+          icon="mdi-file-export"
+          :loading="isLoadingExport"
+          @click="exportAll"
+        />
+      </template>
+    </Header>
 
     <SearchFilter
       v-model="tableFilters.search"
@@ -99,6 +111,16 @@
 
       <div slot="selected-row-actions">
         <q-btn
+          class="q-ma-xs"
+          size="sm"
+          color="info"
+          text-color="black"
+          icon="mdi-file-export"
+          :loading="isLoadingExport"
+          @click="exportData"
+          ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
+        >
+        <q-btn
           size="sm"
           color="negative"
           icon="mdi-delete"
@@ -131,7 +153,7 @@ import { datagridMixin } from 'mixins/datagrid'
 export default {
   meta() {
     return {
-      title: this.$gettext('Fault Definitions List')
+      title: this.$gettext('Fault Definitions List'),
     }
   },
   components: {
@@ -140,7 +162,7 @@ export default {
     Header,
     TablePagination,
     BooleanView,
-    MigasLink
+    MigasLink,
   },
   mixins: [datagridMixin],
   data() {
@@ -150,31 +172,31 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs'
+          icon: 'mdi-cogs',
         },
         {
           text: this.$gettext('Fault Definitions'),
-          icon: 'mdi-alert-octagram-outline'
+          icon: 'mdi-alert-octagram-outline',
         },
         {
-          text: this.$gettext('Results')
-        }
+          text: this.$gettext('Results'),
+        },
       ],
       columns: [
         {
           field: 'id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
-          globalSearchDisabled: true
+          globalSearchDisabled: true,
         },
         {
           label: this.$gettext('Name'),
@@ -183,8 +205,8 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('Enabled'),
@@ -195,9 +217,9 @@ export default {
             trigger: 'enter',
             filterDropdownItems: [
               { value: true, text: this.$gettext('Yes') },
-              { value: false, text: this.$gettext('No') }
-            ]
-          }
+              { value: false, text: this.$gettext('No') },
+            ],
+          },
         },
         {
           label: this.$gettext('Language'),
@@ -205,14 +227,14 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('All'),
-            trigger: 'enter'
-          }
-        }
+            trigger: 'enter',
+          },
+        },
       ],
       model: 'fault-definitions',
       detailRoute: 'fault-definition-detail',
       kind: {},
-      languages: []
+      languages: [],
     }
   },
   methods: {
@@ -223,7 +245,7 @@ export default {
           Object.entries(response.data).map(([key, val]) => {
             this.languages.push({
               id: parseInt(key),
-              name: val
+              name: val,
             })
           })
 
@@ -234,14 +256,14 @@ export default {
           ).map(([key, val]) => {
             return {
               value: parseInt(key),
-              text: val
+              text: val,
             }
           })
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    }
-  }
+    },
+  },
 }
 </script>
