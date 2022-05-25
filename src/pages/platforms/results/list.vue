@@ -6,7 +6,19 @@
       :title="title"
       :results="totalRecords"
       :add-routes="[{ route: 'platform-add' }]"
-    />
+    >
+      <template #append>
+        <q-btn
+          class="q-ma-sm float-right"
+          color="info"
+          text-color="black"
+          :label="$gettext('Export')"
+          icon="mdi-file-export"
+          :loading="isLoadingExport"
+          @click="exportAll"
+        />
+      </template>
+    </Header>
 
     <SearchFilter
       v-model="tableFilters.search"
@@ -122,7 +134,7 @@ import { datagridMixin } from 'mixins/datagrid'
 export default {
   meta() {
     return {
-      title: this.$gettext('Platforms List')
+      title: this.$gettext('Platforms List'),
     }
   },
   components: {
@@ -130,7 +142,7 @@ export default {
     SearchFilter,
     Header,
     TablePagination,
-    MigasLink
+    MigasLink,
   },
   mixins: [datagridMixin],
   data() {
@@ -140,31 +152,31 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs'
+          icon: 'mdi-cogs',
         },
         {
           text: this.$gettext('Platforms'),
-          icon: 'mdi-layers'
+          icon: 'mdi-layers',
         },
         {
-          text: this.$gettext('Results')
-        }
+          text: this.$gettext('Results'),
+        },
       ],
       columns: [
         {
           field: 'id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
-          globalSearchDisabled: true
+          globalSearchDisabled: true,
         },
         {
           label: this.$gettext('Name'),
@@ -173,13 +185,13 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
-        }
+            trigger: 'enter',
+          },
+        },
       ],
       model: 'platforms',
-      detailRoute: 'platform-detail'
+      detailRoute: 'platform-detail',
     }
-  }
+  },
 }
 </script>
