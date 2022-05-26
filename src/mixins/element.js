@@ -20,7 +20,7 @@ export const elementMixin = {
         case 'set':
           return 'mdi-set-none'
         case 'domain':
-          return 'mdi-earth'
+          return 'mdi-web'
         default:
           return 'mdi-pound'
       }
@@ -92,6 +92,6 @@ export const elementMixin = {
         default:
           return 'pk' in att ? att.pk : att.id
       }
-    }
-  }
+    },
+  },
 }
