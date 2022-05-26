@@ -6,7 +6,19 @@
       :title="title"
       :results="totalRecords"
       :add-routes="[{ route: 'logical-device-add' }]"
-    />
+    >
+      <template #append>
+        <q-btn
+          class="q-ma-sm float-right"
+          color="info"
+          text-color="black"
+          :label="$gettext('Export')"
+          icon="mdi-file-export"
+          :loading="isLoadingExport"
+          @click="exportAll"
+        />
+      </template>
+    </Header>
 
     <q-list class="more-filters" bordered>
       <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">
@@ -132,6 +144,16 @@
 
       <div slot="selected-row-actions">
         <q-btn
+          class="q-ma-xs"
+          size="sm"
+          color="info"
+          text-color="black"
+          icon="mdi-file-export"
+          :loading="isLoadingExport"
+          @click="exportData"
+          ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
+        >
+        <q-btn
           size="sm"
           color="negative"
           icon="mdi-delete"
@@ -163,7 +185,7 @@ import { datagridMixin } from 'mixins/datagrid'
 export default {
   meta() {
     return {
-      title: this.$gettext('Logical Devices List')
+      title: this.$gettext('Logical Devices List'),
     }
   },
   components: {
@@ -171,7 +193,7 @@ export default {
     SearchFilter,
     Header,
     TablePagination,
-    MigasLink
+    MigasLink,
   },
   mixins: [datagridMixin],
   data() {
@@ -181,40 +203,40 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Devices'),
-          icon: 'mdi-printer-eye'
+          icon: 'mdi-printer-eye',
         },
         {
           text: this.$gettext('Logical Devices'),
-          icon: 'mdi-printer-settings'
+          icon: 'mdi-printer-settings',
         },
         {
-          text: this.$gettext('Results')
-        }
+          text: this.$gettext('Results'),
+        },
       ],
       columns: [
         {
           field: 'id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
-          globalSearchDisabled: true
+          globalSearchDisabled: true,
         },
         {
           label: this.$gettext('Logical Device'),
           field: '__str__',
-          html: true
+          html: true,
         },
         {
           field: 'device.id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Device'),
@@ -223,12 +245,12 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           field: 'capability.id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Capability'),
@@ -237,23 +259,23 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('Alternative Capability Name'),
-          field: 'alternative_capability_name'
-        }
+          field: 'alternative_capability_name',
+        },
       ],
       tableFilters: {
         search: '',
         model: {
           items: [{ id: '', name: this.$gettext('All') }],
-          selected: null
-        }
+          selected: null,
+        },
       },
       model: 'devices/logical',
-      detailRoute: 'logical-device-detail'
+      detailRoute: 'logical-device-detail',
     }
   },
   methods: {
@@ -266,9 +288,10 @@ export default {
           )
 
           if (this.$route.query.model_id) {
-            this.tableFilters.model.selected = this.tableFilters.model.items.find(
-              (x) => x.id == this.$route.query.model_id
-            )
+            this.tableFilters.model.selected =
+              this.tableFilters.model.items.find(
+                (x) => x.id == this.$route.query.model_id
+              )
           }
         })
         .catch((error) => {
@@ -284,7 +307,7 @@ export default {
             (item) => {
               return {
                 value: item.id,
-                text: item.name
+                text: item.name,
               }
             }
           )
@@ -297,11 +320,11 @@ export default {
     onModelFilter(params) {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
-          model: params.id
-        })
+          model: params.id,
+        }),
       })
       this.loadItems()
-    }
-  }
+    },
+  },
 }
 </script>
