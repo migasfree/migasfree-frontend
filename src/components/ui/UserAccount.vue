@@ -108,8 +108,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
-
 export default {
   name: 'UserAccount',
   data() {
@@ -164,7 +162,6 @@ export default {
     changeAppLanguage() {
       if (this.$language.current !== this.currentLanguage.label) {
         this.$language.current = this.currentLanguage.label
-        Vue.config.language = this.currentLanguage.label
         this.$q.cookies.set('language', this.$language.current)
       }
     },
