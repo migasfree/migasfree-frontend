@@ -12,11 +12,11 @@
       >
       <q-separator />
 
-      <!--q-item>
+      <q-item>
         <q-tooltip><translate>Change App Language</translate></q-tooltip>
 
         <q-item-section avatar>
-          <q-icon name="mdi-web" />
+          <q-icon name="mdi-earth" />
         </q-item-section>
 
         <q-item-section>
@@ -32,13 +32,13 @@
           >
           </q-select>
         </q-item-section>
-      </q-item-->
+      </q-item>
 
       <q-item>
         <q-tooltip><translate>Change Domain</translate></q-tooltip>
 
         <q-item-section avatar>
-          <q-icon name="mdi-earth" />
+          <q-icon name="mdi-web" />
         </q-item-section>
 
         <q-item-section>
@@ -108,6 +108,8 @@
 </template>
 
 <script>
+import Vue from 'vue'
+
 export default {
   name: 'UserAccount',
   data() {
@@ -160,7 +162,11 @@ export default {
     },
 
     changeAppLanguage() {
-      this.$language.current = this.currentLanguage.label
+      if (this.$language.current !== this.currentLanguage.label) {
+        this.$language.current = this.currentLanguage.label
+        Vue.config.language = this.currentLanguage.label
+        this.$q.cookies.set('language', this.$language.current)
+      }
     },
 
     async updateDomainPreference() {
