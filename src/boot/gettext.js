@@ -5,15 +5,16 @@ import translations from '../i18n/translations.json'
 Vue.use(GetTextPlugin, {
   availableLanguages: {
     en_US: 'American English',
-    es_ES: 'Español'
+    es_ES: 'Español',
   },
+  muteLanguages: ['en_US'],
   languageVmMixin: {
     computed: {
-      currentKebabCase: function() {
+      currentKebabCase: function () {
         return this.current.toLowerCase().replace('_', '-')
-      }
-    }
+      },
+    },
   },
   translations,
-  defaultLanguage: 'es_ES'
+  defaultLanguage: 'es_ES',
 })
