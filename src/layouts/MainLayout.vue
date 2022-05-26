@@ -27,18 +27,7 @@
 
         <q-space />
 
-        <q-btn
-          flat
-          round
-          :icon="$q.dark.isActive ? 'nights_stay' : 'wb_sunny'"
-          @click="toggleDarkMode"
-        >
-          <q-tooltip>{{
-            $q.dark.isActive
-              ? $gettext('Switch to Light mode')
-              : $gettext('Switch to Dark mode')
-          }}</q-tooltip>
-        </q-btn>
+        <ToggleDarkMode />
 
         <Alerts />
 
@@ -91,13 +80,21 @@ import AppFooter from 'components/ui/AppFooter'
 import Alerts from 'components/ui/Alerts'
 import SearchBox from 'components/ui/SearchBox'
 import UserAccount from 'components/ui/UserAccount'
+import ToggleDarkMode from 'components/ui/ToggleDarkMode'
 
 export default {
   name: 'MainLayout',
   meta: {
     titleTemplate: (title) => `${title} | Migasfree`,
   },
-  components: { AppMenu, AppFooter, Alerts, SearchBox, UserAccount },
+  components: {
+    AppMenu,
+    AppFooter,
+    Alerts,
+    SearchBox,
+    UserAccount,
+    ToggleDarkMode,
+  },
   data() {
     return {
       leftDrawerOpen: false,
@@ -112,12 +109,6 @@ export default {
       const user = this.$store.getters['auth/user']
 
       return user.domain_preference !== null || user.scope_preference !== null
-    },
-  },
-  methods: {
-    toggleDarkMode() {
-      this.$q.dark.toggle()
-      this.$q.cookies.set('darkMode', this.$q.dark.isActive, { expires: '30d' })
     },
   },
 }
