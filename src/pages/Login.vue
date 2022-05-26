@@ -113,9 +113,6 @@ export default {
       return this.model.username !== '' && this.model.password.length > 3
     },
   },
-  created() {
-    this.$q.dark.set(this.$q.cookies.get('darkMode'), { expires: '30d' })
-  },
   methods: {
     async login() {
       this.loading = true
