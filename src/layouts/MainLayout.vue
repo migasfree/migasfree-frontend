@@ -95,12 +95,12 @@ import UserAccount from 'components/ui/UserAccount'
 export default {
   name: 'MainLayout',
   meta: {
-    titleTemplate: (title) => `${title} | Migasfree`
+    titleTemplate: (title) => `${title} | Migasfree`,
   },
   components: { AppMenu, AppFooter, Alerts, SearchBox, UserAccount },
   data() {
     return {
-      leftDrawerOpen: false
+      leftDrawerOpen: false,
     }
   },
   computed: {
@@ -112,16 +112,13 @@ export default {
       const user = this.$store.getters['auth/user']
 
       return user.domain_preference !== null || user.scope_preference !== null
-    }
-  },
-  created() {
-    this.$q.dark.set(this.$q.cookies.get('darkMode'), { expires: '30d' })
+    },
   },
   methods: {
     toggleDarkMode() {
       this.$q.dark.toggle()
       this.$q.cookies.set('darkMode', this.$q.dark.isActive, { expires: '30d' })
-    }
-  }
+    },
+  },
 }
 </script>
