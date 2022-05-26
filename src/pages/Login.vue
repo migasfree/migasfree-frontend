@@ -87,12 +87,40 @@
             >
           </div>
         </q-form>
+
+        <q-toolbar class="q-pa-md">
+          <q-btn-dropdown ref="changeLanguage" flat stretch>
+            <template #label>
+              <q-icon name="mdi-earth" />
+              <q-tooltip>
+                <translate>Change App Language</translate>
+              </q-tooltip>
+            </template>
+            <q-list>
+              <q-item
+                v-for="(language, key) in $language.available"
+                :key="key"
+                :active="key === $language.current"
+                clickable
+                @click="changeAppLanguage(key)"
+              >
+                {{ language }}
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+
+          <q-space />
+
+          <ToggleDarkMode />
+        </q-toolbar>
       </q-card-section>
     </q-card>
   </q-page>
 </template>
 
 <script>
+import ToggleDarkMode from 'components/ui/ToggleDarkMode'
+
 export default {
   name: 'Login',
   meta() {
@@ -100,6 +128,7 @@ export default {
       title: this.$gettext('Log In'),
     }
   },
+  components: { ToggleDarkMode },
   data: () => ({
     loading: false,
     showPassword: false,
@@ -130,6 +159,14 @@ export default {
           this.$store.dispatch('ui/notifyError', error)
         })
         .finally(() => (this.loading = false))
+    },
+
+    changeAppLanguage(key) {
+      if (this.$language.current !== key) {
+        this.$language.current = key
+        this.$q.cookies.set('language', key)
+      }
+      this.$refs.changeLanguage.hide()
     },
   },
 }
