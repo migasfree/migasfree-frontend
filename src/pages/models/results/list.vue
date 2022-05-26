@@ -6,7 +6,19 @@
       :title="title"
       :results="totalRecords"
       :add-routes="[{ route: 'model-add' }]"
-    />
+    >
+      <template #append>
+        <q-btn
+          class="q-ma-sm float-right"
+          color="info"
+          text-color="black"
+          :label="$gettext('Export')"
+          icon="mdi-file-export"
+          :loading="isLoadingExport"
+          @click="exportAll"
+        />
+      </template>
+    </Header>
 
     <q-list class="more-filters" bordered>
       <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">
@@ -132,6 +144,16 @@
 
       <div slot="selected-row-actions">
         <q-btn
+          class="q-ma-xs"
+          size="sm"
+          color="info"
+          text-color="black"
+          icon="mdi-file-export"
+          :loading="isLoadingExport"
+          @click="exportData"
+          ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
+        >
+        <q-btn
           size="sm"
           color="negative"
           icon="mdi-delete"
@@ -163,7 +185,7 @@ import { datagridMixin } from 'mixins/datagrid'
 export default {
   meta() {
     return {
-      title: this.$gettext('Models List')
+      title: this.$gettext('Models List'),
     }
   },
   components: {
@@ -171,7 +193,7 @@ export default {
     SearchFilter,
     Header,
     TablePagination,
-    MigasLink
+    MigasLink,
   },
   mixins: [datagridMixin],
   data() {
@@ -181,32 +203,32 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Devices'),
-          icon: 'mdi-printer-eye'
+          icon: 'mdi-printer-eye',
         },
         {
           text: this.$gettext('Models'),
           icon: 'mdi-shape',
-          to: 'models-dashboard'
+          to: 'models-dashboard',
         },
         {
-          text: this.$gettext('Results')
-        }
+          text: this.$gettext('Results'),
+        },
       ],
       columns: [
         {
           field: 'id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
-          globalSearchDisabled: true
+          globalSearchDisabled: true,
         },
         {
           label: this.$gettext('Name'),
@@ -215,12 +237,12 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           field: 'manufacturer.id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Manufacturer'),
@@ -229,12 +251,12 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           field: 'device_type.id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Type'),
@@ -242,19 +264,19 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
-        }
+            trigger: 'enter',
+          },
+        },
       ],
       tableFilters: {
         search: '',
         project: {
           items: [{ id: '', name: this.$gettext('All') }],
-          selected: null
-        }
+          selected: null,
+        },
       },
       model: 'devices/models',
-      detailRoute: 'model-detail'
+      detailRoute: 'model-detail',
     }
   },
   methods: {
@@ -262,14 +284,14 @@ export default {
       await this.$axios
         .get('/api/v1/token/projects/')
         .then((response) => {
-          this.tableFilters.project.items = this.tableFilters.project.items.concat(
-            response.data.results
-          )
+          this.tableFilters.project.items =
+            this.tableFilters.project.items.concat(response.data.results)
 
           if (this.$route.query.drivers_project_id) {
-            this.tableFilters.project.selected = this.tableFilters.project.items.find(
-              (x) => x.id == this.$route.query.drivers_project_id
-            )
+            this.tableFilters.project.selected =
+              this.tableFilters.project.items.find(
+                (x) => x.id == this.$route.query.drivers_project_id
+              )
           }
         })
         .catch((error) => {
@@ -285,7 +307,7 @@ export default {
             (item) => {
               return {
                 value: item.id,
-                text: item.name
+                text: item.name,
               }
             }
           )
@@ -303,7 +325,7 @@ export default {
             (item) => {
               return {
                 value: item.id,
-                text: item.name
+                text: item.name,
               }
             }
           )
@@ -316,11 +338,11 @@ export default {
     onProjectFilter(params) {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
-          drivers_project_id: params.id
-        })
+          drivers_project_id: params.id,
+        }),
       })
       this.loadItems()
-    }
-  }
+    },
+  },
 }
 </script>
