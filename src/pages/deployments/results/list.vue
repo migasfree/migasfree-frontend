@@ -128,7 +128,7 @@
             model="domains"
             :pk="props.row.domain.id"
             :value="props.row.domain.name"
-            icon="mdi-earth"
+            icon="mdi-web"
           />
         </span>
 
@@ -199,7 +199,7 @@ import { dateMixin } from 'mixins/date'
 export default {
   meta() {
     return {
-      title: this.$gettext('Deployments List')
+      title: this.$gettext('Deployments List'),
     }
   },
   components: {
@@ -208,7 +208,7 @@ export default {
     Header,
     TablePagination,
     BooleanView,
-    MigasLink
+    MigasLink,
   },
   mixins: [datagridMixin, dateMixin],
   data() {
@@ -218,32 +218,32 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Release'),
-          icon: 'mdi-truck-delivery'
+          icon: 'mdi-truck-delivery',
         },
         {
           text: this.$gettext('Deployments'),
           icon: 'mdi-rocket-launch',
-          to: 'deployments-dashboard'
+          to: 'deployments-dashboard',
         },
         {
-          text: this.$gettext('Results')
-        }
+          text: this.$gettext('Results'),
+        },
       ],
       columns: [
         {
           field: 'id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
-          globalSearchDisabled: true
+          globalSearchDisabled: true,
         },
         {
           label: this.$gettext('Name'),
@@ -252,12 +252,12 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           field: 'project.id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Project'),
@@ -265,12 +265,12 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           field: 'domain.id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Domain'),
@@ -278,8 +278,8 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('Source'),
@@ -290,9 +290,9 @@ export default {
             trigger: 'enter',
             filterDropdownItems: [
               { value: 'I', text: this.$gettext('Internal') },
-              { value: 'E', text: this.$gettext('External') }
-            ]
-          }
+              { value: 'E', text: this.$gettext('External') },
+            ],
+          },
         },
         {
           label: this.$gettext('Enabled'),
@@ -303,17 +303,17 @@ export default {
             trigger: 'enter',
             filterDropdownItems: [
               { value: true, text: this.$gettext('Yes') },
-              { value: false, text: this.$gettext('No') }
-            ]
-          }
+              { value: false, text: this.$gettext('No') },
+            ],
+          },
         },
         {
           label: this.$gettext('Start Date'),
-          field: 'start_date'
+          field: 'start_date',
         },
         {
           field: 'schedule.id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Schedule'),
@@ -321,9 +321,9 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
-        }
+            trigger: 'enter',
+          },
+        },
       ],
       tableFilters: {
         search: '',
@@ -331,13 +331,13 @@ export default {
           items: [
             { id: '', name: this.$gettext('All') },
             { id: 1, name: this.$gettext('without schedule') },
-            { id: 0, name: this.$gettext('with schedule') }
+            { id: 0, name: this.$gettext('with schedule') },
           ],
-          selected: null
-        }
+          selected: null,
+        },
       },
       model: 'deployments',
-      detailRoute: 'deployment-detail'
+      detailRoute: 'deployment-detail',
     }
   },
   methods: {
@@ -351,7 +351,7 @@ export default {
             (item) => {
               return {
                 value: item.id,
-                text: item.name
+                text: item.name,
               }
             }
           )
@@ -369,7 +369,7 @@ export default {
             (item) => {
               return {
                 value: item.id,
-                text: item.name
+                text: item.name,
               }
             }
           )
@@ -387,7 +387,7 @@ export default {
             (item) => {
               return {
                 value: item.id,
-                text: item.name
+                text: item.name,
               }
             }
           )
@@ -400,8 +400,8 @@ export default {
     onScheduleFilter(params) {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
-          schedule: params.id ? true : params.id === 0 ? false : ''
-        })
+          schedule: params.id ? true : params.id === 0 ? false : '',
+        }),
       })
       this.loadItems()
     },
@@ -426,7 +426,7 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    }
-  }
+    },
+  },
 }
 </script>

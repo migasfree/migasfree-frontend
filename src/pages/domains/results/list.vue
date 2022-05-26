@@ -88,7 +88,7 @@
             model="domains"
             :pk="props.row.id"
             :value="props.row.name"
-            icon="mdi-earth"
+            icon="mdi-web"
           />
         </span>
 
@@ -170,7 +170,7 @@ export default {
         },
         {
           text: this.$gettext('Domains'),
-          icon: 'mdi-earth',
+          icon: 'mdi-web',
         },
         {
           text: this.$gettext('Results'),

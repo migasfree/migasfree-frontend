@@ -158,7 +158,7 @@
 
               <OverflowList
                 :label="$gettext('Domains')"
-                icon="mdi-earth"
+                icon="mdi-web"
                 :items="onlyDomains"
                 model="domains"
               />
@@ -174,7 +174,7 @@
                     text-color="white"
                     :to="{
                       name: 'errors-list',
-                      query: { computer_id: element.id, checked: false }
+                      query: { computer_id: element.id, checked: false },
                     }"
                     >{{ errors.unchecked }}</q-btn
                   >
@@ -186,7 +186,7 @@
                     text-color="black"
                     :to="{
                       name: 'errors-list',
-                      query: { computer_id: element.id }
+                      query: { computer_id: element.id },
                     }"
                     >{{ errors.total }}</q-btn
                   >
@@ -202,7 +202,7 @@
                     text-color="white"
                     :to="{
                       name: 'faults-list',
-                      query: { computer_id: element.id, checked: false }
+                      query: { computer_id: element.id, checked: false },
                     }"
                     >{{ faults.unchecked }}</q-btn
                   >
@@ -214,7 +214,7 @@
                     text-color="black"
                     :to="{
                       name: 'faults-list',
-                      query: { computer_id: element.id }
+                      query: { computer_id: element.id },
                     }"
                     >{{ faults.total }}</q-btn
                   >
@@ -289,7 +289,7 @@
                     class="col-md"
                     :class="{
                       'bg-warning text-black':
-                        syncInfo.sync_end_date < syncInfo.sync_start_date
+                        syncInfo.sync_end_date < syncInfo.sync_start_date,
                     }"
                   >
                     <q-tooltip self="bottom middle"
@@ -376,7 +376,7 @@
                   @click="
                     $router.push({
                       name: `${$pluralize.singular(item.model)}-detail`,
-                      params: { id: item.id }
+                      params: { id: item.id },
                     })
                   "
                 >
@@ -436,7 +436,7 @@ import { MIGASFREE_SECONDS_MESSAGE_ALERT } from 'config/app.conf'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
@@ -449,7 +449,7 @@ export default {
     ComputerInfo,
     ComputerHardwareResume,
     ComputerSoftware,
-    ComputerDevices
+    ComputerDevices,
   },
   mixins: [elementMixin, dateMixin, detailMixin],
   data() {
@@ -465,17 +465,17 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Data'),
-          icon: 'mdi-database-search'
+          icon: 'mdi-database-search',
         },
         {
           text: this.$gettext('Computers'),
           to: 'computers-dashboard',
-          icon: 'mdi-desktop-classic'
-        }
+          icon: 'mdi-desktop-classic',
+        },
       ],
       element: {},
       syncInfo: {},
@@ -498,14 +498,14 @@ export default {
       iconMarker: L.icon({
         iconUrl: require('leaflet/dist/images/marker-icon.png'),
         iconSize: [32, 40],
-        iconAnchor: [16, 37]
-      })
+        iconAnchor: [16, 37],
+      }),
     }
   },
   computed: {
     elementText() {
       return this.element.__str__
-    }
+    },
   },
   async mounted() {
     await this.$axios
@@ -527,7 +527,7 @@ export default {
           this.status.push({
             label: val,
             value: key,
-            icon: this.elementIcon(key)
+            icon: this.elementIcon(key),
           })
         })
       })
@@ -547,7 +547,7 @@ export default {
             tooltip: this.attributeValue(val),
             description: val.description
               ? val.description.replaceAll('\n', '<br />')
-              : null
+              : null,
           })
         }
       })
@@ -568,7 +568,7 @@ export default {
                     id: response.data.pk,
                     icon: 'mdi-set-none',
                     value: this.attributeValue(val),
-                    summary: response.data.summary
+                    summary: response.data.summary,
                   })
                 })
                 .catch((error) => {
@@ -580,9 +580,9 @@ export default {
                 .then((response) => {
                   this.onlyDomains.push({
                     id: response.data.pk,
-                    icon: 'mdi-earth',
+                    icon: 'mdi-web',
                     value: this.attributeValue(val),
-                    summary: response.data.summary
+                    summary: response.data.summary,
                   })
                 })
                 .catch((error) => {
@@ -593,7 +593,7 @@ export default {
                 id: val.id,
                 value: this.attributeValue(val),
                 icon:
-                  val.property_att.sort === 'server' ? 'mdi-tag' : 'mdi-pound'
+                  val.property_att.sort === 'server' ? 'mdi-tag' : 'mdi-pound',
               })
             }
 
@@ -607,7 +607,7 @@ export default {
                 tooltip: this.attributeValue(val),
                 description: val.description
                   ? val.description.replaceAll('\n', '<br />')
-                  : null
+                  : null,
               })
               this.centerMarkers()
             }
@@ -669,7 +669,7 @@ export default {
         .patch(`/api/v1/token/${this.model}/${this.element.id}/`, {
           status: this.element.status,
           comment: this.element.comment,
-          tags: this.element.tags.map((item) => item.id)
+          tags: this.element.tags.map((item) => item.id),
         })
         .then((response) => {
           this.$store.dispatch(
@@ -693,8 +693,8 @@ export default {
           )
         })
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

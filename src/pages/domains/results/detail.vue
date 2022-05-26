@@ -9,7 +9,7 @@
           model="domains"
           :pk="element.id"
           :value="element.name"
-          icon="mdi-earth"
+          icon="mdi-web"
         />
       </template>
     </Header>
@@ -210,7 +210,7 @@ import { elementMixin } from 'mixins/element'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
@@ -218,7 +218,7 @@ export default {
     Header,
     RemoveDialog,
     MigasLink,
-    SelectAttributes
+    SelectAttributes,
   },
   mixins: [detailMixin, elementMixin],
   data() {
@@ -229,7 +229,7 @@ export default {
       included_attributes: [],
       excluded_attributes: [],
       tags: [],
-      domain_admins: []
+      domain_admins: [],
     }
 
     return {
@@ -243,29 +243,29 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs'
+          icon: 'mdi-cogs',
         },
         {
           text: this.$gettext('Domains'),
-          icon: 'mdi-earth',
-          to: route
-        }
+          icon: 'mdi-web',
+          to: route,
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
       tags: [],
       userProfiles: [],
-      confirmRemove: false
+      confirmRemove: false,
     }
   },
   computed: {
     isValid() {
       return this.element.name !== undefined && this.element.name !== ''
-    }
+    },
   },
   methods: {
     async loadRelated() {
@@ -275,7 +275,7 @@ export default {
           Object.entries(response.data).map(([index, item]) => {
             this.userProfiles.push({
               id: item.id,
-              name: item.username
+              name: item.username,
             })
           })
         })
@@ -294,7 +294,7 @@ export default {
       if (this.element.id)
         this.$store.dispatch('auth/addDomain', {
           id: this.element.id,
-          name: this.element.name
+          name: this.element.name,
         })
     },
 
@@ -313,7 +313,7 @@ export default {
           (item) => item.id
         ),
         tags: this.element.tags.map((item) => item.id),
-        domain_admins: this.element.domain_admins.map((item) => item.id)
+        domain_admins: this.element.domain_admins.map((item) => item.id),
       }
     },
 
@@ -335,7 +335,7 @@ export default {
 
     abortFilterTags() {
       // console.log('delayed filter aborted')
-    }
-  }
+    },
+  },
 }
 </script>

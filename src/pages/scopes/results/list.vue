@@ -98,7 +98,7 @@
             model="domains"
             :pk="props.row.domain.id"
             :value="props.row.domain.name"
-            icon="mdi-earth"
+            icon="mdi-web"
           />
         </span>
 

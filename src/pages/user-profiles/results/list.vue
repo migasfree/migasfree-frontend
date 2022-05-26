@@ -111,7 +111,7 @@
             model="domains"
             :pk="props.row.domain_preference.id"
             :value="props.row.domain_preference.name"
-            icon="mdi-earth"
+            icon="mdi-web"
           />
         </span>
 

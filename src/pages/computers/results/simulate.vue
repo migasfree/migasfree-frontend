@@ -97,7 +97,7 @@
 
                 <OverflowList
                   :label="$gettext('Domains')"
-                  icon="mdi-earth"
+                  icon="mdi-web"
                   :items="onlyDomains"
                   model="domains"
                 />
@@ -347,7 +347,7 @@ import { copyToClipboard } from 'quasar'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: { Breadcrumbs, Header, OverflowList, MigasLink },
@@ -359,28 +359,28 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Data'),
-          icon: 'mdi-database-search'
+          icon: 'mdi-database-search',
         },
         {
           text: this.$gettext('Computers'),
           to: 'computers-dashboard',
-          icon: 'mdi-desktop-classic'
+          icon: 'mdi-desktop-classic',
         },
         {
           text: this.$gettext('Results'),
-          to: 'computers-list'
+          to: 'computers-list',
         },
         {
           text: 'Id',
-          to: { name: 'computer-detail', params: { id: 0 } }
+          to: { name: 'computer-detail', params: { id: 0 } },
         },
         {
-          text: this.$gettext('Simulate Synchronization')
-        }
+          text: this.$gettext('Simulate Synchronization'),
+        },
       ],
       computer: {},
       platform: {},
@@ -391,8 +391,8 @@ export default {
       simulation: {},
       loading: {
         input: false,
-        output: false
-      }
+        output: false,
+      },
     }
   },
   async mounted() {
@@ -400,12 +400,10 @@ export default {
       .get(`/api/v1/token/computers/${this.$route.params.id}/`)
       .then((response) => {
         this.computer = response.data
-        this.breadcrumbs.find(
-          (x) => x.text === 'Id'
-        ).to.params.id = this.computer.id
-        this.breadcrumbs.find(
-          (x) => x.text === 'Id'
-        ).text = this.computer.__str__
+        this.breadcrumbs.find((x) => x.text === 'Id').to.params.id =
+          this.computer.id
+        this.breadcrumbs.find((x) => x.text === 'Id').text =
+          this.computer.__str__
         this.title = `${this.title}: ${this.computer.__str__}`
         this.loadProject()
         this.loadSyncInfo()
@@ -415,7 +413,7 @@ export default {
           this.onlyTags.push({
             id: val.id,
             icon: 'mdi-tag',
-            value: this.attributeValue(val)
+            value: this.attributeValue(val),
           })
         })
       })
@@ -449,7 +447,7 @@ export default {
                     id: response.data.pk,
                     icon: 'mdi-set-none',
                     value: this.attributeValue(val),
-                    summary: response.data.summary
+                    summary: response.data.summary,
                   })
                 })
                 .catch((error) => {
@@ -461,9 +459,9 @@ export default {
                 .then((response) => {
                   this.onlyDomains.push({
                     id: response.data.pk,
-                    icon: 'mdi-earth',
+                    icon: 'mdi-web',
                     value: this.attributeValue(val),
-                    summary: response.data.summary
+                    summary: response.data.summary,
                   })
                 })
                 .catch((error) => {
@@ -474,7 +472,7 @@ export default {
                 id: val.id,
                 value: this.attributeValue(val),
                 icon:
-                  val.property_att.sort === 'server' ? 'mdi-tag' : 'mdi-pound'
+                  val.property_att.sort === 'server' ? 'mdi-tag' : 'mdi-pound',
               })
             }
           })
@@ -530,7 +528,7 @@ export default {
           this.$gettext('Content copied to clipboard')
         )
       })
-    }
-  }
+    },
+  },
 }
 </script>

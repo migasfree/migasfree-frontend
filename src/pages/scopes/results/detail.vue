@@ -55,7 +55,7 @@
                     model="domains"
                     :pk="scope.opt.id"
                     :value="scope.opt.name"
-                    icon="mdi-earth"
+                    icon="mdi-web"
                   />
                 </q-chip>
               </template>
@@ -177,7 +177,7 @@ import { elementMixin } from 'mixins/element'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
@@ -185,7 +185,7 @@ export default {
     Header,
     RemoveDialog,
     MigasLink,
-    SelectAttributes
+    SelectAttributes,
   },
   mixins: [detailMixin, elementMixin],
   data() {
@@ -195,7 +195,7 @@ export default {
       id: 0,
       domain: null,
       included_attributes: [],
-      excluded_attributes: []
+      excluded_attributes: [],
     }
 
     return {
@@ -209,29 +209,29 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs'
+          icon: 'mdi-cogs',
         },
         {
           text: this.$gettext('Scopes'),
           icon: 'mdi-eye-outline',
-          to: route
-        }
+          to: route,
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
       domains: [],
       userProfiles: [],
-      confirmRemove: false
+      confirmRemove: false,
     }
   },
   computed: {
     isValid() {
       return this.element.name !== undefined && this.element.name !== ''
-    }
+    },
   },
   methods: {
     async loadRelated() {
@@ -241,7 +241,7 @@ export default {
           Object.entries(response.data.results).map(([index, item]) => {
             this.domains.push({
               id: item.id,
-              name: item.name
+              name: item.name,
             })
           })
         })
@@ -256,7 +256,7 @@ export default {
             Object.entries(response.data.results).map(([index, item]) => {
               this.userProfiles.push({
                 id: item.id,
-                name: item.username
+                name: item.username,
               })
             })
           })
@@ -278,7 +278,7 @@ export default {
         this.$store.dispatch('auth/addScope', {
           id: this.element.id,
           name: this.element.name,
-          domain: this.element.domain
+          domain: this.element.domain,
         })
     },
 
@@ -299,9 +299,9 @@ export default {
         ),
         excluded_attributes: this.element.excluded_attributes.map(
           (item) => item.id
-        )
+        ),
       }
-    }
-  }
+    },
+  },
 }
 </script>

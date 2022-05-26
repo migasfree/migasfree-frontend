@@ -19,7 +19,7 @@
           @click="
             $router.push({
               name: 'user-profile-change-password',
-              params: { id: element.id }
+              params: { id: element.id },
             })
           "
         />
@@ -198,7 +198,7 @@
                     model="domains"
                     :pk="scope.opt.id"
                     :value="scope.opt.name"
-                    icon="mdi-earth"
+                    icon="mdi-web"
                   />
                 </q-chip>
               </template>
@@ -276,7 +276,7 @@
                     model="domains"
                     :pk="scope.opt.id"
                     :value="scope.opt.name"
-                    icon="mdi-earth"
+                    icon="mdi-web"
                   />
                 </q-chip>
               </template>
@@ -304,7 +304,7 @@
                     model="scopes"
                     :pk="scope.opt.id"
                     :value="scope.opt.name"
-                    icon="mdi-earth"
+                    icon="mdi-web"
                   />
                 </q-chip>
               </template>
@@ -372,14 +372,14 @@ import { dateMixin } from 'mixins/date'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
     Breadcrumbs,
     Header,
     RemoveDialog,
-    MigasLink
+    MigasLink,
   },
   mixins: [detailMixin, dateMixin],
   data() {
@@ -392,7 +392,7 @@ export default {
       is_staff: false,
       groups: [],
       domains: [],
-      user_permissions: []
+      user_permissions: [],
     }
 
     return {
@@ -406,17 +406,17 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs'
+          icon: 'mdi-cogs',
         },
         {
           text: this.$gettext('User Profiles'),
           icon: 'mdi-account-cog',
-          to: route
-        }
+          to: route,
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
@@ -424,7 +424,7 @@ export default {
       domains: [],
       scopes: [],
       userPermissions: [],
-      confirmRemove: false
+      confirmRemove: false,
     }
   },
   computed: {
@@ -434,12 +434,13 @@ export default {
 
     elementText() {
       return this.element.id ? this.element.username : ''
-    }
+    },
   },
   methods: {
     isValidEmail(val) {
       if (val === undefined || val === '') return true
-      const emailPattern = /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/
+      const emailPattern =
+        /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/
       return emailPattern.test(val) || this.$gettext('Invalid email')
     },
 
@@ -450,7 +451,7 @@ export default {
           Object.entries(response.data.results).map(([index, item]) => {
             this.groups.push({
               id: item.id,
-              name: item.name
+              name: item.name,
             })
           })
         })
@@ -464,7 +465,7 @@ export default {
           Object.entries(response.data.results).map(([index, item]) => {
             this.domains.push({
               id: item.id,
-              name: item.name
+              name: item.name,
             })
           })
         })
@@ -478,7 +479,7 @@ export default {
           Object.entries(response.data.results).map(([index, item]) => {
             this.scopes.push({
               id: item.id,
-              name: item.name
+              name: item.name,
             })
           })
         })
@@ -503,7 +504,7 @@ export default {
           : null,
         domains: this.element.domains.map((item) => item.id),
         groups: this.element.groups.map((item) => item.id),
-        user_permissions: this.element.user_permissions.map((item) => item.id)
+        user_permissions: this.element.user_permissions.map((item) => item.id),
       }
     },
 
@@ -516,7 +517,7 @@ export default {
 
       await this.$axios
         .get('/api/v1/token/accounts/permissions', {
-          params: { search: val.toLowerCase() }
+          params: { search: val.toLowerCase() },
         })
         .then((response) => {
           this.userPermissions = response.data.results
@@ -527,7 +528,7 @@ export default {
 
     abortFilterUserPermissions() {
       // console.log('delayed filter aborted')
-    }
-  }
+    },
+  },
 }
 </script>
