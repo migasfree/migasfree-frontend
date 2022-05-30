@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
   paramsSerializer: (params) => {
     return qs.stringify(params, { arrayFormat: 'repeat' })
   },
-  baseURL: process.env.MIGASFREE_SERVER || 'http://localhost'
+  baseURL: process.env.MIGASFREE_SERVER || 'http://localhost',
 })
 
 axiosInstance.interceptors.request.use(
@@ -45,8 +45,25 @@ axiosInstance.interceptors.response.use(
   },
 
   (error) => {
-    // TODO https://haxzie.com/architecting-http-clients-vue-js-network-layer
-    console.error(error.response.status, error.message)
+    switch (error.response.status) {
+      case 400:
+        console.error(error.response.status, error.message)
+        // notify.warn('Nothing to display', 'Data Not Found')
+        break
+
+      // authentication error, logout the user
+      case 401:
+      case 403:
+        // notify.warn('Please login again', 'Session Expired')
+        localStorage.removeItem('auth.token')
+        router.push('login')
+        break
+
+      default:
+        console.error(error.response.status, error.message)
+      // notify.error('Server Error')
+    }
+
     return Promise.reject(error)
   }
 )
