@@ -167,7 +167,7 @@ export default {
         const years = {}
 
         Object.entries(this.seriesByYear(val)).map(([index, year]) => {
-          console.log(index, year)
+          // console.log(index, year)
           years[index] = false
           series.push({
             type: 'heatmap',
@@ -181,10 +181,10 @@ export default {
         const maxYear = Object.keys(years).reduce(function (a, b) {
           return Math.max(parseInt(a), parseInt(b))
         })
-        console.log(maxYear)
+        // console.log(maxYear)
 
         years[maxYear] = true
-        console.log(years)
+        // console.log(years)
 
         let visualMapMax = 1
         if (val.length > 0) {
@@ -217,8 +217,8 @@ export default {
           this.$set(this.options.calendar, 'range', maxYear)
           this.$set(this.options.visualMap, 'max', visualMapMax)
         }
-        console.log('*******************', this.options)
-        console.log(this.$refs.chart)
+        // console.log('*******************', this.options)
+        // console.log(this.$refs.chart)
       },
       deep: true,
       immediate: true,
