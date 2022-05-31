@@ -31,7 +31,7 @@
 
         <Alerts />
 
-        <UserAccount v-if="loggedIn" />
+        <UserAccount v-if="loggedIn" ref="userAccount" />
         <q-btn
           v-else
           flat
@@ -57,6 +57,28 @@
             'You have established a domain or a scope in the preferences'
           )
         }}
+        <q-chip
+          v-if="domainPreference"
+          class="q-ml-md"
+          color="info"
+          icon="mdi-web"
+          removable
+          @remove="removeDomainPreference"
+        >
+          <q-tooltip><translate>Domain</translate></q-tooltip
+          >{{ domainPreference }}</q-chip
+        >
+        <q-chip
+          v-if="scopePreference"
+          class="q-ml-md"
+          color="info"
+          icon="mdi-eye-outline"
+          removable
+          @remove="removeScopePreference"
+        >
+          <q-tooltip><translate>Scope</translate></q-tooltip
+          >{{ scopePreference }}</q-chip
+        >
       </q-banner>
 
       <router-view />
@@ -109,6 +131,31 @@ export default {
       const user = this.$store.getters['auth/user']
 
       return user.domain_preference !== null || user.scope_preference !== null
+    },
+
+    domainPreference() {
+      const user = this.$store.getters['auth/user']
+
+      return user.domain_preference ? user.domain_preference.name : null
+    },
+
+    scopePreference() {
+      const user = this.$store.getters['auth/user']
+
+      return user.scope_preference ? user.scope_preference.name : null
+    },
+  },
+  methods: {
+    async removeDomainPreference() {
+      await this.$refs.userAccount.updatePreferences({
+        domain_preference: null,
+      })
+    },
+
+    async removeScopePreference() {
+      await this.$refs.userAccount.updatePreferences({
+        scope_preference: null,
+      })
     },
   },
 }
