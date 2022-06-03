@@ -2,6 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import qs from 'qs'
 import { LocalStorage } from 'quasar'
+import { router } from 'src/router'
 
 export const cancelSource = axios.CancelToken.source()
 
@@ -53,7 +54,6 @@ axiosInstance.interceptors.response.use(
 
       // authentication error, logout the user
       case 401:
-      case 403:
         // notify.warn('Please login again', 'Session Expired')
         localStorage.removeItem('auth.token')
         router.push('login')
