@@ -190,8 +190,9 @@
       @on-per-page-change="onPerPageChange"
       @on-selected-rows-change="onSelectionChanged"
     >
-      <span slot="loadingContent" v-translate class="vgt-loading__content"
-        >Loading data...
+      <span slot="loadingContent" class="vgt-loading__content">
+        <q-spinner size="sm" />
+        <translate>Loading data...</translate>
       </span>
 
       <template slot="table-row" slot-scope="props">
