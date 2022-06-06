@@ -93,7 +93,12 @@
         </span>
       </template>
 
-      <q-banner slot="emptystate" rounded class="bg-warning text-black">
+      <q-banner
+        v-if="!isLoading"
+        slot="emptystate"
+        rounded
+        class="bg-warning text-black"
+      >
         <translate>There are no results</translate>
       </q-banner>
 
@@ -141,7 +146,7 @@ import { datagridMixin } from 'mixins/datagrid'
 export default {
   meta() {
     return {
-      title: this.$gettext('Users List')
+      title: this.$gettext('Users List'),
     }
   },
   components: {
@@ -149,7 +154,7 @@ export default {
     SearchFilter,
     Header,
     TablePagination,
-    MigasLink
+    MigasLink,
   },
   mixins: [datagridMixin],
   data() {
@@ -159,31 +164,31 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Data'),
-          icon: 'mdi-database-search'
+          icon: 'mdi-database-search',
         },
         {
           text: this.$gettext('Users'),
-          icon: 'mdi-account'
+          icon: 'mdi-account',
         },
         {
-          text: this.$gettext('Results')
-        }
+          text: this.$gettext('Results'),
+        },
       ],
       columns: [
         {
           field: 'id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
-          globalSearchDisabled: true
+          globalSearchDisabled: true,
         },
         {
           label: this.$gettext('Name'),
@@ -191,8 +196,8 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('Fullname'),
@@ -200,16 +205,16 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('All'),
-            trigger: 'enter'
-          }
-        }
+            trigger: 'enter',
+          },
+        },
       ],
       tableFilters: {
-        search: ''
+        search: '',
       },
       model: 'users',
-      detailRoute: 'user-detail'
+      detailRoute: 'user-detail',
     }
-  }
+  },
 }
 </script>

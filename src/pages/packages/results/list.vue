@@ -142,7 +142,12 @@
         </span>
       </template>
 
-      <q-banner slot="emptystate" rounded class="bg-warning text-black">
+      <q-banner
+        v-if="!isLoading"
+        slot="emptystate"
+        rounded
+        class="bg-warning text-black"
+      >
         <translate>There are no results</translate>
       </q-banner>
 

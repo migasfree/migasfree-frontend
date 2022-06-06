@@ -109,7 +109,12 @@
         </span>
       </template>
 
-      <q-banner slot="emptystate" rounded class="bg-warning text-black">
+      <q-banner
+        v-if="!isLoading"
+        slot="emptystate"
+        rounded
+        class="bg-warning text-black"
+      >
         <translate>There are no results</translate>
       </q-banner>
 
@@ -157,7 +162,7 @@ import { datagridMixin } from 'mixins/datagrid'
 export default {
   meta() {
     return {
-      title: this.$gettext('Formulas List')
+      title: this.$gettext('Formulas List'),
     }
   },
   components: {
@@ -166,7 +171,7 @@ export default {
     Header,
     TablePagination,
     BooleanView,
-    MigasLink
+    MigasLink,
   },
   mixins: [datagridMixin],
   data() {
@@ -176,31 +181,31 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs'
+          icon: 'mdi-cogs',
         },
         {
           text: this.$gettext('Formulas'),
-          icon: 'mdi-function-variant'
+          icon: 'mdi-function-variant',
         },
         {
-          text: this.$gettext('Results')
-        }
+          text: this.$gettext('Results'),
+        },
       ],
       columns: [
         {
           field: 'id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
-          globalSearchDisabled: true
+          globalSearchDisabled: true,
         },
         {
           label: this.$gettext('Name'),
@@ -209,12 +214,12 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('Prefix'),
-          field: 'prefix'
+          field: 'prefix',
         },
         {
           label: this.$gettext('Enabled'),
@@ -225,9 +230,9 @@ export default {
             trigger: 'enter',
             filterDropdownItems: [
               { value: true, text: this.$gettext('Yes') },
-              { value: false, text: this.$gettext('No') }
-            ]
-          }
+              { value: false, text: this.$gettext('No') },
+            ],
+          },
         },
         {
           label: this.$gettext('Kind'),
@@ -235,8 +240,8 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('All'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('Language'),
@@ -244,14 +249,14 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('All'),
-            trigger: 'enter'
-          }
-        }
+            trigger: 'enter',
+          },
+        },
       ],
       model: 'formulas',
       detailRoute: 'formula-detail',
       kind: {},
-      languages: []
+      languages: [],
     }
   },
   created() {
@@ -270,7 +275,7 @@ export default {
           ).map(([key, val]) => {
             return {
               value: key,
-              text: val
+              text: val,
             }
           })
         })
@@ -284,7 +289,7 @@ export default {
           Object.entries(response.data).map(([key, val]) => {
             this.languages.push({
               id: parseInt(key),
-              name: val
+              name: val,
             })
           })
 
@@ -295,14 +300,14 @@ export default {
           ).map(([key, val]) => {
             return {
               value: parseInt(key),
-              text: val
+              text: val,
             }
           })
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    }
-  }
+    },
+  },
 }
 </script>

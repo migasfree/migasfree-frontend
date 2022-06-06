@@ -180,7 +180,12 @@
         </span>
       </template>
 
-      <q-banner slot="emptystate" rounded class="bg-warning text-black">
+      <q-banner
+        v-if="!isLoading"
+        slot="emptystate"
+        rounded
+        class="bg-warning text-black"
+      >
         <translate>There are no results</translate>
       </q-banner>
 
@@ -250,7 +255,7 @@ import { datagridMixin } from 'mixins/datagrid'
 export default {
   meta() {
     return {
-      title: this.$gettext('Errors List')
+      title: this.$gettext('Errors List'),
     }
   },
   components: {
@@ -262,7 +267,7 @@ export default {
     Truncate,
     SelectTree,
     DateRangeInput,
-    MigasLink
+    MigasLink,
   },
   mixins: [dateMixin, elementMixin, datagridMixin],
   data() {
@@ -272,48 +277,48 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Data'),
-          icon: 'mdi-database-search'
+          icon: 'mdi-database-search',
         },
         {
           text: this.$gettext('Errors'),
           icon: 'mdi-bug',
-          to: 'errors-dashboard'
+          to: 'errors-dashboard',
         },
         {
-          text: this.$gettext('Results')
-        }
+          text: this.$gettext('Results'),
+        },
       ],
       columns: [
         {
           field: 'id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
-          globalSearchDisabled: true
+          globalSearchDisabled: true,
         },
         {
           label: this.$gettext('Date'),
-          field: 'created_at'
+          field: 'created_at',
         },
         {
           field: 'computer.id',
-          hidden: true
+          hidden: true,
         },
         {
           field: 'computer.status',
-          hidden: true
+          hidden: true,
         },
         {
           field: 'computer.summary',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Computer'),
@@ -321,12 +326,12 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           field: 'project.id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Project'),
@@ -334,8 +339,8 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('All'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('Checked'),
@@ -346,9 +351,9 @@ export default {
             trigger: 'enter',
             filterDropdownItems: [
               { value: true, text: this.$gettext('Yes') },
-              { value: false, text: this.$gettext('No') }
-            ]
-          }
+              { value: false, text: this.$gettext('No') },
+            ],
+          },
         },
         {
           label: this.$gettext('Description'),
@@ -356,27 +361,27 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
-        }
+            trigger: 'enter',
+          },
+        },
       ],
       tableFilters: {
         search: '',
         platform: {
           items: [{ id: '', name: this.$gettext('All') }],
-          selected: null
+          selected: null,
         },
         statusIn: {
           items: [],
           selected: null,
-          choices: {}
+          choices: {},
         },
         createdAtRange: {
-          selected: { from: null, to: null }
-        }
+          selected: { from: null, to: null },
+        },
       },
       model: 'errors',
-      detailRoute: 'error-detail'
+      detailRoute: 'error-detail',
     }
   },
   methods: {
@@ -384,14 +389,14 @@ export default {
       await this.$axios
         .get('/api/v1/token/platforms/')
         .then((response) => {
-          this.tableFilters.platform.items = this.tableFilters.platform.items.concat(
-            response.data.results
-          )
+          this.tableFilters.platform.items =
+            this.tableFilters.platform.items.concat(response.data.results)
 
           if (this.$route.query.platform_id) {
-            this.tableFilters.platform.selected = this.tableFilters.platform.items.find(
-              (x) => x.id == this.$route.query.platform_id
-            )
+            this.tableFilters.platform.selected =
+              this.tableFilters.platform.items.find(
+                (x) => x.id == this.$route.query.platform_id
+              )
           }
         })
         .catch((error) => {
@@ -407,7 +412,7 @@ export default {
             (item) => {
               return {
                 value: item.id,
-                text: item.name
+                text: item.name,
               }
             }
           )
@@ -424,7 +429,7 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    }
-  }
+    },
+  },
 }
 </script>

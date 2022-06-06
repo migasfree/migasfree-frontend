@@ -121,7 +121,12 @@
         </span>
       </template>
 
-      <q-banner slot="emptystate" rounded class="bg-warning text-black">
+      <q-banner
+        v-if="!isLoading"
+        slot="emptystate"
+        rounded
+        class="bg-warning text-black"
+      >
         <translate>There are no results</translate>
       </q-banner>
 
@@ -173,7 +178,7 @@ import { datagridMixin } from 'mixins/datagrid'
 export default {
   meta() {
     return {
-      title: this.$gettext('Status Logs List')
+      title: this.$gettext('Status Logs List'),
     }
   },
   components: {
@@ -183,7 +188,7 @@ export default {
     TablePagination,
     SelectTree,
     DateRangeInput,
-    MigasLink
+    MigasLink,
   },
   mixins: [dateMixin, elementMixin, datagridMixin],
   data() {
@@ -193,48 +198,48 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Data'),
-          icon: 'mdi-database-search'
+          icon: 'mdi-database-search',
         },
         {
           text: this.$gettext('Status Logs'),
           icon: 'mdi-flag-variant',
-          to: 'status-logs-dashboard'
+          to: 'status-logs-dashboard',
         },
         {
-          text: this.$gettext('Results')
-        }
+          text: this.$gettext('Results'),
+        },
       ],
       columns: [
         {
           field: 'id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
-          globalSearchDisabled: true
+          globalSearchDisabled: true,
         },
         {
           label: this.$gettext('Date'),
-          field: 'created_at'
+          field: 'created_at',
         },
         {
           field: 'computer.id',
-          hidden: true
+          hidden: true,
         },
         {
           field: 'computer.status',
-          hidden: true
+          hidden: true,
         },
         {
           field: 'computer.summary',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Computer'),
@@ -242,8 +247,8 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('Status'),
@@ -252,22 +257,22 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('All'),
-            trigger: 'enter'
-          }
-        }
+            trigger: 'enter',
+          },
+        },
       ],
       tableFilters: {
         search: '',
         statusIn: {
           items: [],
           selected: null,
-          choices: {}
+          choices: {},
         },
         createdAtRange: {
-          selected: { from: null, to: null }
-        }
+          selected: { from: null, to: null },
+        },
       },
-      model: 'status-logs'
+      model: 'status-logs',
     }
   },
   methods: {
@@ -284,14 +289,14 @@ export default {
           ).map(([key, val]) => {
             return {
               value: key,
-              text: val
+              text: val,
             }
           })
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    }
-  }
+    },
+  },
 }
 </script>

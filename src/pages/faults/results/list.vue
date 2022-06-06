@@ -195,7 +195,12 @@
         </span>
       </template>
 
-      <q-banner slot="emptystate" rounded class="bg-warning text-black">
+      <q-banner
+        v-if="!isLoading"
+        slot="emptystate"
+        rounded
+        class="bg-warning text-black"
+      >
         <translate>There are no results</translate>
       </q-banner>
 
@@ -264,7 +269,7 @@ import { datagridMixin } from 'mixins/datagrid'
 export default {
   meta() {
     return {
-      title: this.$gettext('Faults List')
+      title: this.$gettext('Faults List'),
     }
   },
   components: {
@@ -275,7 +280,7 @@ export default {
     BooleanView,
     Truncate,
     DateRangeInput,
-    MigasLink
+    MigasLink,
   },
   mixins: [dateMixin, elementMixin, datagridMixin],
   data() {
@@ -285,48 +290,48 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Data'),
-          icon: 'mdi-database-search'
+          icon: 'mdi-database-search',
         },
         {
           text: this.$gettext('Faults'),
           icon: 'mdi-bug',
-          to: 'faults-dashboard'
+          to: 'faults-dashboard',
         },
         {
-          text: this.$gettext('Results')
-        }
+          text: this.$gettext('Results'),
+        },
       ],
       columns: [
         {
           field: 'id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
-          globalSearchDisabled: true
+          globalSearchDisabled: true,
         },
         {
           label: this.$gettext('Date'),
-          field: 'created_at'
+          field: 'created_at',
         },
         {
           field: 'computer.id',
-          hidden: true
+          hidden: true,
         },
         {
           field: 'computer.status',
-          hidden: true
+          hidden: true,
         },
         {
           field: 'computer.summary',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Computer'),
@@ -334,12 +339,12 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           field: 'project.id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Project'),
@@ -347,8 +352,8 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('All'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('Checked'),
@@ -359,13 +364,13 @@ export default {
             trigger: 'enter',
             filterDropdownItems: [
               { value: true, text: this.$gettext('Yes') },
-              { value: false, text: this.$gettext('No') }
-            ]
-          }
+              { value: false, text: this.$gettext('No') },
+            ],
+          },
         },
         {
           field: 'fault_definition.id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Fault Definition'),
@@ -373,8 +378,8 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('All'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('Result'),
@@ -382,34 +387,34 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
-        }
+            trigger: 'enter',
+          },
+        },
       ],
       tableFilters: {
         search: '',
         platform: {
           items: [{ id: '', name: this.$gettext('All') }],
-          selected: null
+          selected: null,
         },
         createdAtRange: {
-          selected: { from: null, to: null }
+          selected: { from: null, to: null },
         },
         user: {
           items: [{ id: '', name: this.$gettext('All') }],
-          selected: null
-        }
+          selected: null,
+        },
       },
       model: 'faults',
-      detailRoute: 'fault-detail'
+      detailRoute: 'fault-detail',
     }
   },
   methods: {
     onUserFilter(params) {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
-          user: params.id
-        })
+          user: params.id,
+        }),
       })
       this.loadItems()
     },
@@ -418,14 +423,14 @@ export default {
       await this.$axios
         .get('/api/v1/token/platforms/')
         .then((response) => {
-          this.tableFilters.platform.items = this.tableFilters.platform.items.concat(
-            response.data.results
-          )
+          this.tableFilters.platform.items =
+            this.tableFilters.platform.items.concat(response.data.results)
 
           if (this.$route.query.platform_id) {
-            this.tableFilters.platform.selected = this.tableFilters.platform.items.find(
-              (x) => x.id == this.$route.query.platform_id
-            )
+            this.tableFilters.platform.selected =
+              this.tableFilters.platform.items.find(
+                (x) => x.id == this.$route.query.platform_id
+              )
           }
         })
         .catch((error) => {
@@ -441,7 +446,7 @@ export default {
             (item) => {
               return {
                 value: item.id,
-                text: item.name
+                text: item.name,
               }
             }
           )
@@ -459,7 +464,7 @@ export default {
             (item) => {
               return {
                 value: item.id,
-                text: item.name
+                text: item.name,
               }
             }
           )
@@ -484,7 +489,7 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    }
-  }
+    },
+  },
 }
 </script>

@@ -171,7 +171,12 @@
         </span>
       </template>
 
-      <q-banner slot="emptystate" rounded class="bg-warning text-black">
+      <q-banner
+        v-if="!isLoading"
+        slot="emptystate"
+        rounded
+        class="bg-warning text-black"
+      >
         <translate>There are no results</translate>
       </q-banner>
 
@@ -224,7 +229,7 @@ import { datagridMixin } from 'mixins/datagrid'
 export default {
   meta() {
     return {
-      title: this.$gettext('Syncs List')
+      title: this.$gettext('Syncs List'),
     }
   },
   components: {
@@ -235,7 +240,7 @@ export default {
     BooleanView,
     DateRangeInput,
     DateDiff,
-    MigasLink
+    MigasLink,
   },
   mixins: [dateMixin, elementMixin, datagridMixin],
   data() {
@@ -245,44 +250,44 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Data'),
-          icon: 'mdi-database-search'
+          icon: 'mdi-database-search',
         },
         {
           text: this.$gettext('Synchronizations'),
           icon: 'mdi-sync',
-          to: 'syncs-dashboard'
+          to: 'syncs-dashboard',
         },
         {
-          text: this.$gettext('Results')
-        }
+          text: this.$gettext('Results'),
+        },
       ],
       columns: [
         {
           field: 'id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Actions'),
           field: 'actions',
           html: true,
           sortable: false,
-          globalSearchDisabled: true
+          globalSearchDisabled: true,
         },
         {
           label: this.$gettext('Start Date'),
-          field: 'start_date'
+          field: 'start_date',
         },
         {
           label: this.$gettext('End Date'),
-          field: 'created_at'
+          field: 'created_at',
         },
         {
           field: 'user.id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('User'),
@@ -290,20 +295,20 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('All'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           field: 'computer.id',
-          hidden: true
+          hidden: true,
         },
         {
           field: 'computer.status',
-          hidden: true
+          hidden: true,
         },
         {
           field: 'computer.summary',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Computer'),
@@ -311,12 +316,12 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('Filter'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           field: 'project.id',
-          hidden: true
+          hidden: true,
         },
         {
           label: this.$gettext('Project'),
@@ -324,8 +329,8 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('All'),
-            trigger: 'enter'
-          }
+            trigger: 'enter',
+          },
         },
         {
           label: this.$gettext('PMS Status Ok'),
@@ -336,9 +341,9 @@ export default {
             trigger: 'enter',
             filterDropdownItems: [
               { value: true, text: this.$gettext('Yes') },
-              { value: false, text: this.$gettext('No') }
-            ]
-          }
+              { value: false, text: this.$gettext('No') },
+            ],
+          },
         },
         {
           label: this.$gettext('Consumer'),
@@ -346,24 +351,24 @@ export default {
           filterOptions: {
             enabled: true,
             placeholder: this.$gettext('All'),
-            trigger: 'enter'
-          }
-        }
+            trigger: 'enter',
+          },
+        },
       ],
       tableFilters: {
         search: '',
         platform: {
           items: [{ id: '', name: this.$gettext('All') }],
-          selected: null
+          selected: null,
         },
         createdAtRange: {
-          selected: { from: null, to: null }
+          selected: { from: null, to: null },
         },
         startDateRange: {
-          selected: { from: null, to: null }
-        }
+          selected: { from: null, to: null },
+        },
       },
-      model: 'syncs'
+      model: 'syncs',
     }
   },
   methods: {
@@ -372,8 +377,8 @@ export default {
       this.updateParams({
         columnFilters: Object.assign(this.serverParams.columnFilters, {
           start_date__gte: this.tableFilters.startDateRange.selected.from,
-          start_date__lt: this.tableFilters.startDateRange.selected.to
-        })
+          start_date__lt: this.tableFilters.startDateRange.selected.to,
+        }),
       })
       this.loadItems()
     },
@@ -382,14 +387,14 @@ export default {
       await this.$axios
         .get('/api/v1/token/platforms/')
         .then((response) => {
-          this.tableFilters.platform.items = this.tableFilters.platform.items.concat(
-            response.data.results
-          )
+          this.tableFilters.platform.items =
+            this.tableFilters.platform.items.concat(response.data.results)
 
           if (this.$route.query.platform_id) {
-            this.tableFilters.platform.selected = this.tableFilters.platform.items.find(
-              (x) => x.id == this.$route.query.platform_id
-            )
+            this.tableFilters.platform.selected =
+              this.tableFilters.platform.items.find(
+                (x) => x.id == this.$route.query.platform_id
+              )
           }
         })
         .catch((error) => {
@@ -405,7 +410,7 @@ export default {
             (item) => {
               return {
                 value: item.id,
-                text: item.name
+                text: item.name,
               }
             }
           )
@@ -413,7 +418,7 @@ export default {
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    }
-  }
+    },
+  },
 }
 </script>
