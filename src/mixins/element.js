@@ -26,6 +26,29 @@ export const elementMixin = {
       }
     },
 
+    computerStatus(value) {
+      switch (value) {
+        case 'intended':
+        case 'Intended':
+          return this.$gettext('Intended')
+        case 'available':
+        case 'Available':
+          return this.$gettext('Available')
+        case 'in repair':
+        case 'In repair':
+          return this.$gettext('In repair')
+        case 'reserved':
+        case 'Reserved':
+          return this.$gettext('Reserved')
+        case 'unknown':
+        case 'Unknown':
+          return this.$gettext('Unknown')
+        case 'unsubscribed':
+        case 'Unsubscribed':
+          return this.$gettext('Unsubscribed')
+      }
+    },
+
     productIcon(value) {
       switch (value) {
         case 'desktop':
