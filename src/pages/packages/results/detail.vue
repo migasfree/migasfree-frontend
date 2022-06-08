@@ -22,7 +22,7 @@
           @click="
             $router.push({
               name: 'package-information',
-              params: { id: element.id }
+              params: { id: element.id },
             })
           "
         />
@@ -151,7 +151,8 @@
       <q-btn
         flat
         icon="mdi-delete"
-        color="negative"
+        :color="$q.dark.isActive ? 'white' : 'negative'"
+        :class="{ 'reversed-delete': $q.dark.isActive }"
         :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
@@ -176,14 +177,14 @@ import { detailMixin } from 'mixins/detail'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
     Breadcrumbs,
     Header,
     RemoveDialog,
-    MigasLink
+    MigasLink,
   },
   mixins: [elementMixin, detailMixin],
   data() {
@@ -197,17 +198,17 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Release'),
-          icon: 'mdi-truck-delivery'
+          icon: 'mdi-truck-delivery',
         },
         {
           text: this.$gettext('Packages'),
           to: 'packages-dashboard',
-          icon: 'mdi-package-variant'
-        }
+          icon: 'mdi-package-variant',
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
@@ -216,7 +217,7 @@ export default {
       addRoute: 'package-add',
       detailRoute: 'package-detail',
       projectStore: { items: [], selected: null },
-      confirmRemove: false
+      confirmRemove: false,
     }
   },
   computed: {
@@ -226,7 +227,7 @@ export default {
 
     elementText() {
       return this.element.id ? this.element.fullname : ''
-    }
+    },
   },
   methods: {
     nodeSelected(value) {
@@ -241,7 +242,7 @@ export default {
       this.projectStore.selected = `${nodeProject.label} / ${nodeStore.label}`
       Object.assign(this.element, {
         project: { id: nodeProject.id },
-        store: { id: nodeStore.store_id }
+        store: { id: nodeStore.store_id },
       })
 
       this.$refs.menu.hide()
@@ -257,7 +258,7 @@ export default {
                 id: `${key}|${item.id}`,
                 label: item.name,
                 icon: 'mdi-store-24-hour',
-                store_id: item.id
+                store_id: item.id,
               }
             })
           )
@@ -279,7 +280,7 @@ export default {
                 id: item.id,
                 label: item.name,
                 icon: 'mdi-sitemap',
-                lazy: true
+                lazy: true,
               }
             }
           )
@@ -294,7 +295,7 @@ export default {
         return {
           property_att: this.element.property_att.id,
           value: this.element.value,
-          description: this.element.description
+          description: this.element.description,
         }
       }
 
@@ -308,7 +309,7 @@ export default {
 
     resetRelated() {
       this.projectStore.selected = null
-    }
-  }
+    },
+  },
 }
 </script>

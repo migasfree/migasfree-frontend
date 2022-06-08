@@ -90,7 +90,8 @@
       <q-btn
         flat
         icon="mdi-delete"
-        color="negative"
+        :color="$q.dark.isActive ? 'white' : 'negative'"
+        :class="{ 'reversed-delete': $q.dark.isActive }"
         :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
@@ -114,14 +115,14 @@ import { detailMixin } from 'mixins/detail'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
     Breadcrumbs,
     Header,
     RemoveDialog,
-    MigasLink
+    MigasLink,
   },
   mixins: [detailMixin],
   data() {
@@ -140,22 +141,22 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Devices'),
-          icon: 'mdi-printer-eye'
+          icon: 'mdi-printer-eye',
         },
         {
           text: this.$gettext('Connections'),
           icon: 'mdi-connection',
-          to: route
-        }
+          to: route,
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
       deviceTypes: [],
-      confirmRemove: false
+      confirmRemove: false,
     }
   },
   computed: {
@@ -165,7 +166,7 @@ export default {
         this.element.name !== '' &&
         this.element.device_type !== undefined
       )
-    }
+    },
   },
   methods: {
     async loadRelated() {
@@ -183,9 +184,9 @@ export default {
       return {
         name: this.element.name,
         device_type: this.element.device_type.id,
-        fields: this.element.fields
+        fields: this.element.fields,
       }
-    }
-  }
+    },
+  },
 }
 </script>

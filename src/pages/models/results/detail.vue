@@ -205,7 +205,8 @@
       <q-btn
         flat
         icon="mdi-delete"
-        color="negative"
+        :color="$q.dark.isActive ? 'white' : 'negative'"
+        :class="{ 'reversed-delete': $q.dark.isActive }"
         :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
@@ -230,14 +231,14 @@ import { elementMixin } from 'mixins/element'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
     Breadcrumbs,
     Header,
     RemoveDialog,
-    MigasLink
+    MigasLink,
   },
   mixins: [detailMixin, elementMixin],
   data() {
@@ -256,17 +257,17 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Devices'),
-          icon: 'mdi-printer-eye'
+          icon: 'mdi-printer-eye',
         },
         {
           text: this.$gettext('Models'),
           icon: 'mdi-shape',
-          to: route
-        }
+          to: route,
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
@@ -277,7 +278,7 @@ export default {
       removedDrivers: [],
       projects: [],
       capabilities: [],
-      confirmRemove: false
+      confirmRemove: false,
     }
   },
   computed: {
@@ -288,7 +289,7 @@ export default {
         this.element.name !== undefined &&
         this.element.name !== ''
       )
-    }
+    },
   },
   methods: {
     async loadRelated() {
@@ -357,7 +358,7 @@ export default {
         device_type: this.element.device_type.id,
         manufacturer: this.element.manufacturer.id,
         name: this.element.name,
-        connections: this.element.connections.map((item) => item.id)
+        connections: this.element.connections.map((item) => item.id),
       }
     },
 
@@ -367,7 +368,7 @@ export default {
         project: null,
         capability: null,
         name: null,
-        packages_to_install: null
+        packages_to_install: null,
       })
     },
 
@@ -394,7 +395,7 @@ export default {
               packages_to_install:
                 driver.packages_to_install !== null
                   ? driver.packages_to_install.split('\n')
-                  : []
+                  : [],
             })
             .catch((error) => {
               this.$store.dispatch('ui/notifyError', error)
@@ -409,7 +410,7 @@ export default {
               packages_to_install:
                 driver.packages_to_install !== null
                   ? driver.packages_to_install.split('\n')
-                  : []
+                  : [],
             })
             .catch((error) => {
               this.$store.dispatch('ui/notifyError', error)
@@ -424,7 +425,7 @@ export default {
             this.$store.dispatch('ui/notifyError', error)
           })
       })
-    }
-  }
+    },
+  },
 }
 </script>

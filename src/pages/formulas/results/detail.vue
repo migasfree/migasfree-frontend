@@ -62,9 +62,9 @@
                     $gettextInterpolate(
                       $gettext('Please use maximum %{n} characters'),
                       {
-                        n: 3
+                        n: 3,
                       }
-                    )
+                    ),
                 ]"
                 @input="
                   (v) => {
@@ -162,7 +162,8 @@
         <q-btn
           flat
           icon="mdi-delete"
-          color="negative"
+          :color="$q.dark.isActive ? 'white' : 'negative'"
+          :class="{ 'reversed-delete': $q.dark.isActive }"
           :label="$gettext('Delete')"
           @click="confirmRemove = true"
         />
@@ -188,7 +189,7 @@ import { detailMixin } from 'mixins/detail'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
@@ -196,7 +197,7 @@ export default {
     Header,
     RemoveDialog,
     MigasLink,
-    CodeEditor
+    CodeEditor,
   },
   mixins: [detailMixin],
   data() {
@@ -215,23 +216,23 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs'
+          icon: 'mdi-cogs',
         },
         {
           text: this.$gettext('Formulas'),
           icon: 'mdi-function-variant',
-          to: route
-        }
+          to: route,
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
       languages: [],
       kind: [],
-      confirmRemove: false
+      confirmRemove: false,
     }
   },
   computed: {
@@ -258,7 +259,7 @@ export default {
       )
         return this.element.language.name
       return 'python'
-    }
+    },
   },
   methods: {
     async loadRelated() {
@@ -268,7 +269,7 @@ export default {
           Object.entries(response.data).map(([key, val]) => {
             this.kind.push({
               id: key,
-              name: val
+              name: val,
             })
           })
           if (this.element.id && typeof this.element.kind === 'string')
@@ -284,7 +285,7 @@ export default {
           Object.entries(response.data).map(([key, val]) => {
             this.languages.push({
               id: parseInt(key),
-              name: val
+              name: val,
             })
           })
           if (this.element.id && typeof this.element.language === 'number')
@@ -304,9 +305,9 @@ export default {
         enabled: this.element.enabled,
         kind: this.element.kind.id,
         language: this.element.language.id,
-        code: this.element.code
+        code: this.element.code,
       }
-    }
-  }
+    },
+  },
 }
 </script>

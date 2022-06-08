@@ -231,7 +231,8 @@
       <q-btn
         flat
         icon="mdi-delete"
-        color="negative"
+        :color="$q.dark.isActive ? 'white' : 'negative'"
+        :class="{ 'reversed-delete': $q.dark.isActive }"
         :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
@@ -257,7 +258,7 @@ import { elementMixin } from 'mixins/element'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
@@ -265,7 +266,7 @@ export default {
     Header,
     RemoveDialog,
     MigasLink,
-    SelectAttributes
+    SelectAttributes,
   },
   mixins: [detailMixin, elementMixin],
   data() {
@@ -274,7 +275,7 @@ export default {
       id: 0,
       score: 0,
       available_for_attributes: [],
-      description: ''
+      description: '',
     }
 
     return {
@@ -288,17 +289,17 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Release'),
-          icon: 'mdi-truck-delivery'
+          icon: 'mdi-truck-delivery',
         },
         {
           text: this.$gettext('Applications'),
           to: 'apps-dashboard',
-          icon: 'mdi-apps'
-        }
+          icon: 'mdi-apps',
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
@@ -309,7 +310,7 @@ export default {
       removedProjects: [],
       iconFile: null,
       confirmRemove: false,
-      rand: 1
+      rand: 1,
     }
   },
   computed: {
@@ -325,7 +326,7 @@ export default {
 
     iconPath() {
       return `${this.element.icon}?rand=${this.rand}`
-    }
+    },
   },
   methods: {
     async loadRelated() {
@@ -335,7 +336,7 @@ export default {
           Object.entries(response.data).map(([key, val]) => {
             this.levels.push({
               id: key,
-              name: val
+              name: val,
             })
           })
         })
@@ -394,7 +395,7 @@ export default {
       this.packagesByProject.push({
         id: 0,
         project: null,
-        packages_to_install: null
+        packages_to_install: null,
       })
     },
 
@@ -411,7 +412,7 @@ export default {
         this.$gettextInterpolate(
           this.$gettext('%{n} file(s) did not pass validation constraints'),
           {
-            n: rejectedEntries.length
+            n: rejectedEntries.length,
           }
         )
       )
@@ -435,7 +436,7 @@ export default {
               packages_to_install:
                 project.packages_to_install !== null
                   ? project.packages_to_install.split('\n')
-                  : []
+                  : [],
             })
             .catch((error) => {
               this.$store.dispatch('ui/notifyError', error)
@@ -448,7 +449,7 @@ export default {
               packages_to_install:
                 project.packages_to_install !== null
                   ? project.packages_to_install.split('\n')
-                  : []
+                  : [],
             })
             .catch((error) => {
               this.$store.dispatch('ui/notifyError', error)
@@ -465,8 +466,8 @@ export default {
       })
 
       this.rand = Date.now()
-    }
-  }
+    },
+  },
 }
 </script>
 

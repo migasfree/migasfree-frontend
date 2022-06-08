@@ -55,9 +55,9 @@
                   $gettextInterpolate(
                     $gettext('Please use maximum %{n} characters'),
                     {
-                      n: 3
+                      n: 3,
                     }
-                  )
+                  ),
               ]"
               @input="
                 (v) => {
@@ -113,7 +113,8 @@
       <q-btn
         flat
         icon="mdi-delete"
-        color="negative"
+        :color="$q.dark.isActive ? 'white' : 'negative'"
+        :class="{ 'reversed-delete': $q.dark.isActive }"
         :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
@@ -137,14 +138,14 @@ import { detailMixin } from 'mixins/detail'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
     Breadcrumbs,
     Header,
     RemoveDialog,
-    MigasLink
+    MigasLink,
   },
   mixins: [detailMixin],
   data() {
@@ -163,23 +164,23 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs'
+          icon: 'mdi-cogs',
         },
         {
           text: this.$gettext('Stamps'),
           icon: 'mdi-stamper',
-          to: route
-        }
+          to: route,
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
       languages: [],
       kind: [],
-      confirmRemove: false
+      confirmRemove: false,
     }
   },
   computed: {
@@ -191,7 +192,7 @@ export default {
         this.element.prefix !== undefined &&
         this.element.prefix.length <= 3
       )
-    }
+    },
   },
   methods: {
     async loadRelated() {
@@ -201,7 +202,7 @@ export default {
           Object.entries(response.data).map(([key, val]) => {
             this.kind.push({
               id: key,
-              name: val
+              name: val,
             })
           })
           if (this.element.id)
@@ -220,9 +221,9 @@ export default {
         name: this.element.name,
         prefix: this.element.prefix,
         enabled: this.element.enabled,
-        kind: this.element.kind.id
+        kind: this.element.kind.id,
       }
-    }
-  }
+    },
+  },
 }
 </script>

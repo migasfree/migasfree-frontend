@@ -99,7 +99,8 @@
       <q-btn
         flat
         icon="mdi-delete"
-        color="negative"
+        :color="$q.dark.isActive ? 'white' : 'negative'"
+        :class="{ 'reversed-delete': $q.dark.isActive }"
         :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
@@ -122,13 +123,13 @@ import { detailMixin } from 'mixins/detail'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
     Breadcrumbs,
     Header,
-    RemoveDialog
+    RemoveDialog,
   },
   mixins: [detailMixin],
   data() {
@@ -136,7 +137,7 @@ export default {
     const title = this.$gettext('Group')
     const element = {
       id: 0,
-      permissions: []
+      permissions: [],
     }
 
     return {
@@ -150,34 +151,34 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs'
+          icon: 'mdi-cogs',
         },
         {
           text: this.$gettext('Groups'),
           icon: 'mdi-account-group',
-          to: route
-        }
+          to: route,
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
       permissions: [],
-      confirmRemove: false
+      confirmRemove: false,
     }
   },
   computed: {
     isValid() {
       return this.element.name !== undefined && this.element.name !== ''
-    }
+    },
   },
   methods: {
     elementData() {
       return {
         name: this.element.name,
-        permissions: this.element.permissions.map((item) => item.id)
+        permissions: this.element.permissions.map((item) => item.id),
       }
     },
 
@@ -190,7 +191,7 @@ export default {
 
       await this.$axios
         .get('/api/v1/token/accounts/permissions', {
-          params: { search: val.toLowerCase() }
+          params: { search: val.toLowerCase() },
         })
         .then((response) => {
           this.permissions = response.data.results
@@ -201,7 +202,7 @@ export default {
 
     abortFilterPermissions() {
       // console.log('delayed filter aborted')
-    }
-  }
+    },
+  },
 }
 </script>

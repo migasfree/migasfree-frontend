@@ -121,7 +121,8 @@
         <q-btn
           flat
           icon="mdi-delete"
-          color="negative"
+          :color="$q.dark.isActive ? 'white' : 'negative'"
+          :class="{ 'reversed-delete': $q.dark.isActive }"
           :label="$gettext('Delete')"
           @click="confirmRemove = true"
         />
@@ -148,7 +149,7 @@ import { detailMixin } from 'mixins/detail'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
@@ -156,7 +157,7 @@ export default {
     Header,
     RemoveDialog,
     MigasLink,
-    AddLocation
+    AddLocation,
   },
   mixins: [elementMixin, detailMixin],
   data() {
@@ -172,17 +173,17 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Data'),
-          icon: 'mdi-database-search'
+          icon: 'mdi-database-search',
         },
         {
           text: this.$gettext('Attributes'),
           to: 'attributes-dashboard',
-          icon: 'mdi-pound'
-        }
+          icon: 'mdi-pound',
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
@@ -190,20 +191,20 @@ export default {
       confirmRemove: false,
 
       viewMap: false,
-      coords: [0, 0]
+      coords: [0, 0],
     }
   },
   computed: {
     elementText() {
       return this.element.id ? this.attributeValue(this.element) : ''
-    }
+    },
   },
   methods: {
     elementData() {
       return {
         description: this.element.description,
         latitude: this.element.latitude,
-        longitude: this.element.longitude
+        longitude: this.element.longitude,
       }
     },
 
@@ -230,7 +231,7 @@ export default {
 
     updateMapCoords() {
       this.coords = [this.element.latitude, this.element.longitude]
-    }
-  }
+    },
+  },
 }
 </script>

@@ -76,9 +76,7 @@
                   <MigasLink
                     model="devices/models"
                     :pk="scope.opt.id"
-                    :value="
-                      `${scope.opt.name} (${scope.opt.manufacturer.name})`
-                    "
+                    :value="`${scope.opt.name} (${scope.opt.manufacturer.name})`"
                     icon="mdi-shape"
                   />
                 </q-chip>
@@ -230,7 +228,8 @@
       <q-btn
         flat
         icon="mdi-delete"
-        color="negative"
+        :color="$q.dark.isActive ? 'white' : 'negative'"
+        :class="{ 'reversed-delete': $q.dark.isActive }"
         :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
@@ -256,7 +255,7 @@ import { elementMixin } from 'mixins/element'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
@@ -264,7 +263,7 @@ export default {
     Header,
     RemoveDialog,
     MigasLink,
-    SelectAttributes
+    SelectAttributes,
   },
   mixins: [detailMixin, elementMixin],
   data() {
@@ -283,17 +282,17 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Devices'),
-          icon: 'mdi-printer-eye'
+          icon: 'mdi-printer-eye',
         },
         {
           text: this.$gettext('Devices'),
           icon: 'mdi-printer',
-          to: route
-        }
+          to: route,
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
@@ -301,7 +300,7 @@ export default {
       logicalDevices: [],
       removedLogicalDevices: [],
       capabilities: [],
-      confirmRemove: false
+      confirmRemove: false,
     }
   },
   computed: {
@@ -312,13 +311,13 @@ export default {
         this.element.model !== undefined &&
         this.element.connection !== null
       )
-    }
+    },
   },
   watch: {
     logicalDevices: {
-      handler: function(val, oldVal) {},
-      deep: true
-    }
+      handler: function (val, oldVal) {},
+      deep: true,
+    },
   },
   methods: {
     async loadRelated() {
@@ -356,7 +355,7 @@ export default {
         data: this.element.connection.fields.reduce((obj, v) => {
           if (v.value) obj[v.id] = v.value
           return obj
-        }, {})
+        }, {}),
       }
     },
 
@@ -369,7 +368,7 @@ export default {
 
       await this.$axios
         .get('/api/v1/token/devices/models/', {
-          params: { search: val.toLowerCase() }
+          params: { search: val.toLowerCase() },
         })
         .then((response) => {
           this.models = response.data.results
@@ -405,7 +404,7 @@ export default {
                     'data' in this.element && field[0] in this.element.data
                       ? this.element.data[field[0]]
                       : null,
-                  hint: field[1] ? field[1] : null
+                  hint: field[1] ? field[1] : null,
                 }
               })
             )
@@ -420,7 +419,7 @@ export default {
         id: 0,
         capability: null,
         alternative_capability_name: null,
-        attributes: []
+        attributes: [],
       })
     },
 
@@ -447,7 +446,7 @@ export default {
               attributes:
                 logical.attributes !== null
                   ? logical.attributes.map((item) => item.id)
-                  : []
+                  : [],
             })
             .catch((error) => {
               this.$store.dispatch('ui/notifyError', error)
@@ -461,7 +460,7 @@ export default {
               attributes:
                 logical.attributes !== null
                   ? logical.attributes.map((item) => item.id)
-                  : []
+                  : [],
             })
             .catch((error) => {
               this.$store.dispatch('ui/notifyError', error)
@@ -484,7 +483,7 @@ export default {
 
     resetRelated() {
       this.logicalDevices = []
-    }
-  }
+    },
+  },
 }
 </script>

@@ -131,7 +131,8 @@
       <q-btn
         flat
         icon="mdi-delete"
-        color="negative"
+        :color="$q.dark.isActive ? 'white' : 'negative'"
+        :class="{ 'reversed-delete': $q.dark.isActive }"
         :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
@@ -157,7 +158,7 @@ import { elementMixin } from 'mixins/element'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
@@ -165,7 +166,7 @@ export default {
     Header,
     RemoveDialog,
     MigasLink,
-    SelectAttributes
+    SelectAttributes,
   },
   mixins: [detailMixin, elementMixin],
   data() {
@@ -184,23 +185,23 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Devices'),
-          icon: 'mdi-printer-eye'
+          icon: 'mdi-printer-eye',
         },
         {
           text: this.$gettext('Logical Devices'),
           icon: 'mdi-printer-settings',
-          to: route
-        }
+          to: route,
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
       devices: [],
       capabilities: [],
-      confirmRemove: false
+      confirmRemove: false,
     }
   },
   computed: {
@@ -209,7 +210,7 @@ export default {
         this.element.device !== undefined &&
         this.element.capability !== undefined
       )
-    }
+    },
   },
   methods: {
     async loadRelated() {
@@ -228,7 +229,7 @@ export default {
         device: this.element.device.id,
         capability: this.element.capability.id,
         attributes: this.element.attributes.map((item) => item.id),
-        alternative_capability_name: this.element.alternative_capability_name
+        alternative_capability_name: this.element.alternative_capability_name,
       }
     },
 
@@ -241,7 +242,7 @@ export default {
 
       await this.$axios
         .get('/api/v1/token/devices/devices/', {
-          params: { search: val.toLowerCase() }
+          params: { search: val.toLowerCase() },
         })
         .then((response) => {
           this.devices = response.data.results
@@ -252,7 +253,7 @@ export default {
 
     abortFilterDevices() {
       // console.log('delayed filter aborted')
-    }
-  }
+    },
+  },
 }
 </script>

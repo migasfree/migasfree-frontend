@@ -179,7 +179,8 @@
       <q-btn
         flat
         icon="mdi-delete"
-        color="negative"
+        :color="$q.dark.isActive ? 'white' : 'negative'"
+        :class="{ 'reversed-delete': $q.dark.isActive }"
         :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
@@ -206,7 +207,7 @@ import { elementMixin } from 'mixins/element'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
@@ -215,7 +216,7 @@ export default {
     RemoveDialog,
     MigasLink,
     SelectAttributes,
-    CodeEditor
+    CodeEditor,
   },
   mixins: [detailMixin, elementMixin],
   data() {
@@ -227,7 +228,7 @@ export default {
       included_attributes: [],
       excluded_attributes: [],
       users: [],
-      code: ''
+      code: '',
     }
 
     return {
@@ -241,23 +242,23 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs'
+          icon: 'mdi-cogs',
         },
         {
           text: this.$gettext('Fault Definitions'),
           icon: 'mdi-alert-octagram-outline',
-          to: route
-        }
+          to: route,
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
       languages: [],
       userProfiles: [],
-      confirmRemove: false
+      confirmRemove: false,
     }
   },
   computed: {
@@ -277,7 +278,7 @@ export default {
       )
         return this.element.language.name
       return 'python'
-    }
+    },
   },
   methods: {
     async loadRelated() {
@@ -287,7 +288,7 @@ export default {
           Object.entries(response.data).map(([key, val]) => {
             this.languages.push({
               id: parseInt(key),
-              name: val
+              name: val,
             })
           })
           if (this.element.id && typeof this.element.language === 'number')
@@ -313,7 +314,7 @@ export default {
         excluded_attributes: this.element.excluded_attributes.map(
           (item) => item.id
         ),
-        users: this.element.users.map((item) => item.id)
+        users: this.element.users.map((item) => item.id),
       }
     },
 
@@ -326,7 +327,7 @@ export default {
 
       await this.$axios
         .get('/api/v1/token/user-profiles/', {
-          params: { search: val.toLowerCase() }
+          params: { search: val.toLowerCase() },
         })
         .then((response) => {
           this.userProfiles = response.data.results
@@ -337,7 +338,7 @@ export default {
 
     abortFilterUserProfiles() {
       // console.log('delayed filter aborted')
-    }
-  }
+    },
+  },
 }
 </script>

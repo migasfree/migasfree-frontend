@@ -104,7 +104,8 @@
       <q-btn
         flat
         icon="mdi-delete"
-        color="negative"
+        :color="$q.dark.isActive ? 'white' : 'negative'"
+        :class="{ 'reversed-delete': $q.dark.isActive }"
         :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
@@ -130,7 +131,7 @@ import { elementMixin } from 'mixins/element'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
@@ -138,7 +139,7 @@ export default {
     Header,
     RemoveDialog,
     MigasLink,
-    SelectAttributes
+    SelectAttributes,
   },
   mixins: [detailMixin, elementMixin],
   data() {
@@ -148,7 +149,7 @@ export default {
       id: 0,
       enabled: false,
       included_attributes: [],
-      excluded_attributes: []
+      excluded_attributes: [],
     }
 
     return {
@@ -162,27 +163,27 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs'
+          icon: 'mdi-cogs',
         },
         {
           text: this.$gettext('Attribute Sets'),
           icon: 'mdi-set-none',
-          to: route
-        }
+          to: route,
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
-      confirmRemove: false
+      confirmRemove: false,
     }
   },
   computed: {
     isValid() {
       return this.element.name !== undefined && this.element.name !== ''
-    }
+    },
   },
   methods: {
     elementData() {
@@ -195,9 +196,9 @@ export default {
         ),
         excluded_attributes: this.element.excluded_attributes.map(
           (item) => item.id
-        )
+        ),
       }
-    }
-  }
+    },
+  },
 }
 </script>

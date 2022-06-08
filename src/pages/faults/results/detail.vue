@@ -120,7 +120,8 @@
       <q-btn
         flat
         icon="mdi-delete"
-        color="negative"
+        :color="$q.dark.isActive ? 'white' : 'negative'"
+        :class="{ 'reversed-delete': $q.dark.isActive }"
         :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
@@ -147,14 +148,14 @@ import { copyToClipboard } from 'quasar'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
     Breadcrumbs,
     Header,
     RemoveDialog,
-    MigasLink
+    MigasLink,
   },
   mixins: [elementMixin, dateMixin, detailMixin],
   data() {
@@ -171,33 +172,33 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Data'),
-          icon: 'mdi-database-search'
+          icon: 'mdi-database-search',
         },
         {
           text: this.$gettext('Faults'),
           to: 'faults-dashboard',
-          icon: 'mdi-bomb'
-        }
+          icon: 'mdi-bomb',
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
       confirmRemove: false,
-      isValid: true
+      isValid: true,
     }
   },
   computed: {
     elementText() {
       return this.element.id ? this.element.__str__ : ''
-    }
+    },
   },
   methods: {
     elementData() {
       return {
-        checked: this.element.checked
+        checked: this.element.checked,
       }
     },
 
@@ -208,7 +209,7 @@ export default {
           this.$gettext('Text copied to clipboard')
         )
       })
-    }
-  }
+    },
+  },
 }
 </script>

@@ -113,7 +113,8 @@
       <q-btn
         flat
         icon="mdi-delete"
-        color="negative"
+        :color="$q.dark.isActive ? 'white' : 'negative'"
+        :class="{ 'reversed-delete': $q.dark.isActive }"
         :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
@@ -137,14 +138,14 @@ import { detailMixin } from 'mixins/detail'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
     Breadcrumbs,
     Header,
     RemoveDialog,
-    MigasLink
+    MigasLink,
   },
   mixins: [detailMixin],
   data() {
@@ -163,23 +164,23 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs'
+          icon: 'mdi-cogs',
         },
         {
           text: this.$gettext('Projects'),
           icon: 'mdi-sitemap',
-          to: route
-        }
+          to: route,
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
       platforms: [],
       pms: [],
-      confirmRemove: false
+      confirmRemove: false,
     }
   },
   computed: {
@@ -191,7 +192,7 @@ export default {
         this.element.pms !== undefined &&
         this.element.architecture !== undefined
       )
-    }
+    },
   },
   methods: {
     async loadRelated() {
@@ -210,7 +211,7 @@ export default {
           Object.entries(response.data).map(([key, val]) => {
             this.pms.push({
               id: key,
-              name: val.module
+              name: val.module,
             })
           })
         })
@@ -228,9 +229,9 @@ export default {
         architecture: this.element.architecture,
         platform: this.element.platform.id,
         auto_register_computers: this.element.auto_register_computers,
-        pms: this.element.pms.id
+        pms: this.element.pms.id,
       }
-    }
-  }
+    },
+  },
 }
 </script>

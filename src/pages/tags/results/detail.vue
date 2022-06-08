@@ -195,7 +195,8 @@
       <q-btn
         flat
         icon="mdi-delete"
-        color="negative"
+        :color="$q.dark.isActive ? 'white' : 'negative'"
+        :class="{ 'reversed-delete': $q.dark.isActive }"
         :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
@@ -222,7 +223,7 @@ import { detailMixin } from 'mixins/detail'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
@@ -231,7 +232,7 @@ export default {
     RemoveDialog,
     MigasLink,
     OverflowList,
-    AddLocation
+    AddLocation,
   },
   mixins: [elementMixin, detailMixin],
   data() {
@@ -249,17 +250,17 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Data'),
-          icon: 'mdi-database-search'
+          icon: 'mdi-database-search',
         },
         {
           text: this.$gettext('Tags'),
           to: 'tags-dashboard',
-          icon: 'mdi-tag'
-        }
+          icon: 'mdi-tag',
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
@@ -269,7 +270,7 @@ export default {
       confirmRemove: false,
 
       viewMap: false,
-      coords: [0, 0]
+      coords: [0, 0],
     }
   },
   computed: {
@@ -282,7 +283,7 @@ export default {
     },
     elementText() {
       return this.element.id ? this.attributeValue(this.element) : ''
-    }
+    },
   },
   methods: {
     async loadRelated() {
@@ -314,7 +315,7 @@ export default {
         value: this.element.value,
         description: this.element.description,
         latitude: this.element.latitude,
-        longitude: this.element.longitude
+        longitude: this.element.longitude,
       }
     },
 
@@ -352,7 +353,7 @@ export default {
 
       await this.$axios
         .get('/api/v1/token/computers/', {
-          params: { search: val.toLowerCase() }
+          params: { search: val.toLowerCase() },
         })
         .then((response) => {
           this.computers = response.data.results
@@ -370,12 +371,12 @@ export default {
         .patch(`/api/v1/token/${this.model}/${this.element.id}/computers/`, {
           computers: this.element.computers
             ? this.element.computers.map((item) => item.id)
-            : []
+            : [],
         })
         .catch((error) => {
           this.$store.dispatch('ui/notifyError', error)
         })
-    }
-  }
+    },
+  },
 }
 </script>

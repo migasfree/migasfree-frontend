@@ -137,7 +137,8 @@
       <q-btn
         flat
         icon="mdi-delete"
-        color="negative"
+        :color="$q.dark.isActive ? 'white' : 'negative'"
+        :class="{ 'reversed-delete': $q.dark.isActive }"
         :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
@@ -163,7 +164,7 @@ import { elementMixin } from 'mixins/element'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
@@ -171,7 +172,7 @@ export default {
     Header,
     RemoveDialog,
     MigasLink,
-    SelectAttributes
+    SelectAttributes,
   },
   mixins: [detailMixin, elementMixin],
   data() {
@@ -190,29 +191,29 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Release'),
-          icon: 'mdi-truck-delivery'
+          icon: 'mdi-truck-delivery',
         },
         {
           text: this.$gettext('Schedules'),
           icon: 'mdi-calendar-start',
-          to: route
-        }
+          to: route,
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
       delays: [],
       removedDelays: [],
-      confirmRemove: false
+      confirmRemove: false,
     }
   },
   computed: {
     isValid() {
       return this.element.name !== undefined && this.element.name !== ''
-    }
+    },
   },
   methods: {
     async loadRelated() {
@@ -231,7 +232,7 @@ export default {
     elementData() {
       return {
         name: this.element.name,
-        description: this.element.description
+        description: this.element.description,
       }
     },
 
@@ -242,7 +243,7 @@ export default {
           ? parseInt(this.delays[this.delays.length - 1].delay) + 1
           : 0,
         duration: 1,
-        attributes: null
+        attributes: null,
       })
     },
 
@@ -265,7 +266,7 @@ export default {
               schedule: this.element.id,
               delay: delay.delay,
               duration: delay.duration,
-              attributes: delay.attributes.map((item) => item.id)
+              attributes: delay.attributes.map((item) => item.id),
             })
             .catch((error) => {
               this.$store.dispatch('ui/notifyError', error)
@@ -276,7 +277,7 @@ export default {
               schedule: this.element.id,
               delay: delay.delay,
               duration: delay.duration,
-              attributes: delay.attributes.map((item) => item.id)
+              attributes: delay.attributes.map((item) => item.id),
             })
             .catch((error) => {
               this.$store.dispatch('ui/notifyError', error)
@@ -291,7 +292,7 @@ export default {
             this.$store.dispatch('ui/notifyError', error)
           })
       })
-    }
-  }
+    },
+  },
 }
 </script>

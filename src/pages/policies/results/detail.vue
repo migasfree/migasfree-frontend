@@ -233,7 +233,8 @@
       <q-btn
         flat
         icon="mdi-delete"
-        color="negative"
+        :color="$q.dark.isActive ? 'white' : 'negative'"
+        :class="{ 'reversed-delete': $q.dark.isActive }"
         :label="$gettext('Delete')"
         @click="confirmRemove = true"
       />
@@ -259,7 +260,7 @@ import { elementMixin } from 'mixins/element'
 export default {
   meta() {
     return {
-      title: this.title
+      title: this.title,
     }
   },
   components: {
@@ -267,7 +268,7 @@ export default {
     Header,
     RemoveDialog,
     MigasLink,
-    SelectAttributes
+    SelectAttributes,
   },
   mixins: [detailMixin, elementMixin],
   data() {
@@ -278,7 +279,7 @@ export default {
       enabled: false,
       exclusive: false,
       included_attributes: [],
-      excluded_attributes: []
+      excluded_attributes: [],
     }
 
     return {
@@ -292,30 +293,30 @@ export default {
         {
           text: this.$gettext('Dashboard'),
           to: 'home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
         },
         {
           text: this.$gettext('Release'),
-          icon: 'mdi-truck-delivery'
+          icon: 'mdi-truck-delivery',
         },
         {
           text: this.$gettext('Policies'),
           icon: 'mdi-shield-half-full',
-          to: route
-        }
+          to: route,
+        },
       ],
       element,
       emptyElement: Object.assign({}, element),
       applications: [],
       policyGroups: [],
       removedPolicyGroups: [],
-      confirmRemove: false
+      confirmRemove: false,
     }
   },
   computed: {
     isValid() {
       return this.element.name !== undefined && this.element.name !== ''
-    }
+    },
   },
   methods: {
     async loadRelated() {
@@ -344,7 +345,7 @@ export default {
         ),
         excluded_attributes: this.element.excluded_attributes.map(
           (item) => item.id
-        )
+        ),
       }
     },
 
@@ -365,7 +366,7 @@ export default {
               excluded_attributes: line.excluded_attributes.map(
                 (item) => item.id
               ),
-              applications: line.applications.map((item) => item.id)
+              applications: line.applications.map((item) => item.id),
             })
             .catch((error) => {
               this.$store.dispatch('ui/notifyError', error)
@@ -381,7 +382,7 @@ export default {
               excluded_attributes: line.excluded_attributes.map(
                 (item) => item.id
               ),
-              applications: line.applications.map((item) => item.id)
+              applications: line.applications.map((item) => item.id),
             })
             .catch((error) => {
               this.$store.dispatch('ui/notifyError', error)
@@ -407,7 +408,7 @@ export default {
           : 1,
         includes_attributes: [],
         excluded_attributes: [],
-        applications: []
+        applications: [],
       })
     },
 
@@ -427,7 +428,7 @@ export default {
 
       await this.$axios
         .get('/api/v1/token/catalog/apps/', {
-          params: { search: val.toLowerCase() }
+          params: { search: val.toLowerCase() },
         })
         .then((response) => {
           this.applications = response.data.results
@@ -438,7 +439,7 @@ export default {
 
     abortFilterApplications() {
       // console.log('delayed filter aborted')
-    }
-  }
+    },
+  },
 }
 </script>
