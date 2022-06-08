@@ -69,8 +69,10 @@
 
 <script>
 import { abbreviateNumber } from 'js-abbreviation-number'
+import { elementMixin } from 'mixins/element'
 
 export default {
+  mixins: [elementMixin],
   props: {
     model: { type: String, required: true },
     pk: { type: Number, required: true },
@@ -95,7 +97,10 @@ export default {
           const pieces = this.tooltip.split(',')
 
           return [
-            { icon: 'mdi-tag-text-outline', text: pieces[0].trim() },
+            {
+              icon: this.elementIcon(pieces[0].trim()),
+              text: this.computerStatus(pieces[0].trim()),
+            },
             { icon: 'mdi-sitemap', text: pieces[1].trim() },
             { icon: 'mdi-ip-network', text: pieces[2].trim() },
             { icon: 'mdi-account', text: pieces[3].trim() },
