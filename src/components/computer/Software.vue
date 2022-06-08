@@ -105,9 +105,26 @@
                 v-for="(value, key) in softwareHistory"
                 :key="key"
                 expand-separator
-                :label="key"
-                icon="mdi-calendar-range"
               >
+                <template #header>
+                  <q-item-section avatar>
+                    <q-avatar icon="mdi-calendar-range" />
+                  </q-item-section>
+
+                  <q-item-section>{{ key }}</q-item-section>
+
+                  <q-item-section side>
+                    <div class="row items-center">
+                      <q-chip color="positive" text-color="black">{{
+                        value.filter((item) => item.startsWith('+')).length
+                      }}</q-chip>
+
+                      <q-chip color="negative" text-color="white">{{
+                        value.filter((item) => item.startsWith('-')).length
+                      }}</q-chip>
+                    </div>
+                  </q-item-section>
+                </template>
                 <q-card>
                   <q-card-section>
                     <p v-for="(item, index) in sortArray(value)" :key="index">
@@ -230,26 +247,26 @@ export default {
   props: {
     cid: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       loading: {
         inventory: false,
-        history: false
+        history: false,
       },
       softwareInventory: [],
       softwareHistory: {},
       showingCompare: false,
       computers: [],
-      target: null
+      target: null,
     }
   },
   computed: {
     isCompareEnabled() {
       return this.target !== null
-    }
+    },
   },
   methods: {
     sortArray(array) {
@@ -333,7 +350,7 @@ export default {
 
       await this.$axios
         .get('/api/v1/token/computers/', {
-          params: { search: val.toLowerCase() }
+          params: { search: val.toLowerCase() },
         })
         .then((response) => {
           this.computers = response.data.results
@@ -349,9 +366,9 @@ export default {
     compare() {
       this.$router.push({
         name: 'computers-software-compare',
-        params: { source: this.cid, target: this.target.id }
+        params: { source: this.cid, target: this.target.id },
       })
-    }
-  }
+    },
+  },
 }
 </script>
