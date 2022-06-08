@@ -14,7 +14,14 @@
       <q-icon v-if="icon" left :name="icon" />
       {{ value }}
       <q-tooltip v-if="tooltip">
-        {{ tooltip }}
+        <q-list v-for="(item, index) in tooltipToView" :key="index" dense>
+          <q-item>
+            <q-item-section v-if="item.icon" avatar>
+              <q-icon :name="item.icon" />
+            </q-item-section>
+            <q-item-section>{{ item.text }}</q-item-section>
+          </q-item>
+        </q-list>
       </q-tooltip>
     </template>
 
@@ -69,17 +76,33 @@ export default {
     pk: { type: Number, required: true },
     value: { type: String, required: true },
     tooltip: { type: String, required: false, default: '' },
-    icon: { type: String, required: false, default: '' }
+    icon: { type: String, required: false, default: '' },
   },
   data() {
     return {
       relations: [],
-      loading: false
+      loading: false,
     }
   },
   computed: {
     link() {
       return `/${this.normalizeModel(this.model)}/results/${this.pk}`
+    },
+
+    tooltipToView() {
+      switch (this.model) {
+        case 'computers':
+          const pieces = this.tooltip.split(',')
+
+          return [
+            { icon: 'mdi-tag-text-outline', text: pieces[0].trim() },
+            { icon: 'mdi-sitemap', text: pieces[1].trim() },
+            { icon: 'mdi-ip-network', text: pieces[2].trim() },
+            { icon: 'mdi-account', text: pieces[3].trim() },
+          ]
+        default:
+          return [{ icon: '', text: this.tooltip.trim() }]
+      }
     },
 
     validRelations() {
@@ -103,8 +126,8 @@ export default {
               this.$pluralize.singular(item.model)
             )}-detail`,
             params: {
-              id: item.pk
-            }
+              id: item.pk,
+            },
           }
         } else if (item.model) {
           name = `${item.model.replaceAll(' ', '-')}-list`
@@ -112,7 +135,7 @@ export default {
             return
 
           to = {
-            name: `${item.model.replaceAll(' ', '-')}-list`
+            name: `${item.model.replaceAll(' ', '-')}-list`,
           }
         } else if (item.api) {
           name = `${this.normalizeModel(item.api.model)}-list`
@@ -121,7 +144,7 @@ export default {
 
           to = {
             name: `${this.normalizeModel(item.api.model)}-list`,
-            query: this.normalizeQuery(item.api.query)
+            query: this.normalizeQuery(item.api.query),
           }
         }
 
@@ -129,12 +152,12 @@ export default {
           count: item.count,
           text: item.text,
           actions: item.actions,
-          to
+          to,
         })
       })
 
       return valid
-    }
+    },
   },
   methods: {
     normalizeQuery(obj) {
@@ -193,7 +216,7 @@ export default {
 
     humanNumber(value) {
       return abbreviateNumber(value, 0)
-    }
-  }
+    },
+  },
 }
 </script>
