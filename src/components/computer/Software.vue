@@ -115,13 +115,21 @@
 
                   <q-item-section side>
                     <div class="row items-center">
-                      <q-chip color="positive" text-color="black">{{
-                        value.filter((item) => item.startsWith('+')).length
-                      }}</q-chip>
+                      <q-chip color="positive" text-color="black"
+                        >{{ value.filter((item) => item.startsWith('+')).length
+                        }}<q-tooltip
+                          ><translate>Installed Packages</translate></q-tooltip
+                        ></q-chip
+                      >
 
-                      <q-chip color="negative" text-color="white">{{
-                        value.filter((item) => item.startsWith('-')).length
-                      }}</q-chip>
+                      <q-chip color="negative" text-color="white"
+                        >{{ value.filter((item) => item.startsWith('-')).length
+                        }}<q-tooltip
+                          ><translate
+                            >Uninstalled Packages</translate
+                          ></q-tooltip
+                        ></q-chip
+                      >
                     </div>
                   </q-item-section>
                 </template>
