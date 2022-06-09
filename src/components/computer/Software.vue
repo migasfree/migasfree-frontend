@@ -83,7 +83,11 @@
                   <q-avatar color="info" text-color="white">{{
                     Object.keys(softwareHistory).length
                   }}</q-avatar>
-                  <translate>dates</translate>
+                  <translate
+                    :translate-n="Object.keys(softwareHistory).length"
+                    translate-plural="dates"
+                    >date</translate
+                  >
                 </q-chip>
               </q-item-section>
 
@@ -111,7 +115,12 @@
                     <q-avatar icon="mdi-calendar-range" />
                   </q-item-section>
 
-                  <q-item-section>{{ key }}</q-item-section>
+                  <q-item-section
+                    >{{ key
+                    }}<q-tooltip>{{
+                      diffForHumans(key)
+                    }}</q-tooltip></q-item-section
+                  >
 
                   <q-item-section side>
                     <div class="row items-center">
@@ -139,8 +148,8 @@
                       <span
                         :class="
                           item.startsWith('+')
-                            ? 'text-light-green-8'
-                            : 'text-red'
+                            ? 'text-positive'
+                            : 'text-negative'
                         "
                         >{{ item }}</span
                       >
@@ -245,13 +254,14 @@
 
 <script>
 import MigasLink from 'components/MigasLink'
+import { dateMixin } from 'mixins/date'
 import { elementMixin } from 'mixins/element'
 import { copyToClipboard } from 'quasar'
 
 export default {
   name: 'ComputerSoftware',
   components: { MigasLink },
-  mixins: [elementMixin],
+  mixins: [dateMixin, elementMixin],
   props: {
     cid: {
       type: Number,
