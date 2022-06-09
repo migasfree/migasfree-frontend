@@ -57,6 +57,8 @@ export const dateMixin = {
         firstDayOfWeek: this.$language.current.startsWith('es') ? 1 : 0,
         format24h: true,
         pluralDay: this.$gettext('days'),
+        date: this.$gettext('Date'),
+        time: this.$gettext('Time'),
       },
     }
   },
