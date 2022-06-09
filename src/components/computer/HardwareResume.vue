@@ -33,6 +33,7 @@
               landscape
               target="self"
               format24h
+              :locale="localeDate"
               :display-value="showDate(hardwareDate)"
             />
 
@@ -55,7 +56,7 @@
 
       <div class="row q-pa-md">
         <div class="col-md-4">
-          <q-icon :name="productIcon(productSystem)" style="font-size: 6em;">
+          <q-icon :name="productIcon(productSystem)" style="font-size: 6em">
             <q-tooltip>{{ productSystem }}</q-tooltip>
             <q-badge floating transparent>
               {{ architecture }} <translate>bits</translate>
@@ -84,7 +85,7 @@
               @click="
                 $router.push({
                   name: 'computer-hardware',
-                  params: { id: cid }
+                  params: { id: cid },
                 })
               "
               ><q-tooltip
@@ -180,68 +181,68 @@ export default {
   props: {
     cid: {
       type: Number,
-      required: true
+      required: true,
     },
     lastHardwareCapture: {
       type: String,
       required: false,
-      default: null
+      default: null,
     },
     product: {
       type: String,
       required: false,
-      default: ''
+      default: '',
     },
     productSystem: {
       type: String,
       required: false,
-      default: null
+      default: null,
     },
     architecture: {
       type: Number,
       required: false,
-      default: 64
+      default: 64,
     },
     uuid: {
       type: String,
       required: false,
-      default: null
+      default: null,
     },
     cpu: {
       type: String,
       required: false,
-      default: null
+      default: null,
     },
     ram: {
       type: Number,
       required: false,
-      default: 0
+      default: 0,
     },
     storage: {
       type: Number,
       required: false,
-      default: 0
+      default: 0,
     },
     disks: {
       type: Number,
       required: false,
-      default: 0
+      default: 0,
     },
     macAddress: {
       type: String,
       required: false,
-      default: ''
+      default: '',
     },
     readonly: {
       type: Boolean,
       required: false,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       loading: false,
-      hardwareDate: this.lastHardwareCapture
+      hardwareDate: this.lastHardwareCapture,
     }
   },
   methods: {
@@ -251,7 +252,7 @@ export default {
       if (this.hardwareDate === '') this.hardwareDate = null
       await this.$axios
         .patch(`/api/v1/token/computers/${this.cid}/`, {
-          last_hardware_capture: this.hardwareDate
+          last_hardware_capture: this.hardwareDate,
         })
         .then((response) => {
           this.$store.dispatch(
@@ -266,7 +267,7 @@ export default {
           )
         })
         .finally(() => (this.loading = false))
-    }
-  }
+    },
+  },
 }
 </script>
