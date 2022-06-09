@@ -975,6 +975,7 @@ msgid_plural "dates"
 msgstr[0] ""
 msgstr[1] ""
 
+#: ./src/mixins/date.js:60
 #: ./src/pages/computers/results/events.vue:140
 #: ./src/pages/computers/results/events.vue:181
 #: ./src/pages/computers/results/events.vue:221
@@ -1831,7 +1832,7 @@ msgstr ""
 msgid "Hardware"
 msgstr ""
 
-#: ./src/components/computer/HardwareResume.vue:206
+#: ./src/components/computer/HardwareResume.vue:207
 #: ./src/pages/computers/results/hardware.vue:28
 #: ./src/pages/computers/results/hardware.vue:54
 #: ./src/pages/computers/results/hardware.vue:107
@@ -3496,6 +3497,10 @@ msgstr ""
 
 #: ./src/mixins/date.js:16
 msgid "Thursday"
+msgstr ""
+
+#: ./src/mixins/date.js:61
+msgid "Time"
 msgstr ""
 
 #: ./src/pages/deployments/results/detail.vue:618
