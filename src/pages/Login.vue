@@ -139,7 +139,7 @@ export default {
   }),
   computed: {
     isValid() {
-      return this.model.username !== '' && this.model.password.length > 3
+      return this.model.username.trim() !== '' && this.model.password.length > 3
     },
   },
   methods: {

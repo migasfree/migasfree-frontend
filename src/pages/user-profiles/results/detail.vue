@@ -430,7 +430,10 @@ export default {
   },
   computed: {
     isValid() {
-      return this.element.username !== undefined && this.element.username !== ''
+      return (
+        this.element.username !== undefined &&
+        this.element.username.trim() !== ''
+      )
     },
 
     elementText() {

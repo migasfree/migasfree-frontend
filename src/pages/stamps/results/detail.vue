@@ -187,7 +187,7 @@ export default {
     isValid() {
       return (
         this.element.name !== undefined &&
-        this.element.name !== '' &&
+        this.element.name.trim() !== '' &&
         this.element.kind !== undefined &&
         this.element.prefix !== undefined &&
         this.element.prefix.length <= 3

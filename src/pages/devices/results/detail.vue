@@ -307,7 +307,7 @@ export default {
     isValid() {
       return (
         this.element.name !== undefined &&
-        this.element.name !== '' &&
+        this.element.name.trim() !== '' &&
         this.element.model !== undefined &&
         this.element.connection !== null
       )

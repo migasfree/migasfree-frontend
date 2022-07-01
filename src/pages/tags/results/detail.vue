@@ -277,7 +277,7 @@ export default {
     isValid() {
       return (
         this.element.value !== undefined &&
-        this.element.value !== '' &&
+        this.element.value.trim() !== '' &&
         this.element.hasOwnProperty('property_att')
       )
     },

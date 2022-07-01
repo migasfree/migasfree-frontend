@@ -133,7 +133,7 @@ export default {
   },
   computed: {
     isValid() {
-      return this.element.name !== undefined && this.element.name !== ''
+      return this.element.name !== undefined && this.element.name.trim() !== ''
     },
   },
   methods: {

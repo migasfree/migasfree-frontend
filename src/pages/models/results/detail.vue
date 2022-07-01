@@ -287,7 +287,7 @@ export default {
         this.element.device_type !== undefined &&
         this.element.manufacturer !== undefined &&
         this.element.name !== undefined &&
-        this.element.name !== ''
+        this.element.name.trim() !== ''
       )
     },
   },
