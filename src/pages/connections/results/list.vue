@@ -15,6 +15,7 @@
           :label="$gettext('Export')"
           icon="mdi-file-export"
           :loading="isLoadingExport"
+          :disable="totalRecords === 0"
           @click="exportAll"
         />
       </template>
