@@ -54,7 +54,7 @@ export default ({ store, Vue, router }) => {
         // authentication error, logout the user
         case 401:
           // notify.warn('Please login again', 'Session Expired')
-          localStorage.removeItem('auth.token')
+          LocalStorage.removeItem('auth.token')
           router.push('login')
           break
 
