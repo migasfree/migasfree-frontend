@@ -81,18 +81,18 @@ export default {
   props: {
     value: {
       type: Array,
-      required: true
+      required: true,
     },
     label: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       localValue: this.value,
       attributes: [],
-      model: 'attributes'
+      model: 'attributes',
     }
   },
   watch: {
@@ -101,12 +101,12 @@ export default {
       this.$emit('input', newValue)
     },
     value: {
-      handler: function(val, oldVal) {
+      handler: function (val, oldVal) {
         this.localValue = val
         this.updateAttributes()
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   mounted() {
     this.updateAttributes()
@@ -121,7 +121,7 @@ export default {
 
       await this.$axios
         .get(`/api/v1/token/${this.model}/`, {
-          params: { search: val.toLowerCase() }
+          params: { search: val.toLowerCase() },
         })
         .then((response) => {
           this.attributes = response.data.results
@@ -153,8 +153,11 @@ export default {
               this.$set(this.value[key], 'description', response.data.text)
             })
         }
+        if (!('status' in val) && val.property_att.sort === 'server') {
+          this.$set(this.value[key], 'status', 'tag')
+        }
       })
-    }
-  }
+    },
+  },
 }
 </script>
