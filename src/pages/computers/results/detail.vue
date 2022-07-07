@@ -593,6 +593,8 @@ export default {
               this.onlyAttributes.push({
                 id: val.id,
                 value: this.attributeValue(val),
+                model:
+                  val.property_att.sort === 'server' ? 'tags' : 'attributes',
                 icon:
                   val.property_att.sort === 'server' ? 'mdi-tag' : 'mdi-pound',
               })
