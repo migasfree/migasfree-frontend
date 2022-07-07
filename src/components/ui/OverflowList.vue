@@ -16,7 +16,7 @@
         <q-item v-for="(item, index) in items" :key="index">
           <MigasLink
             v-if="model"
-            :model="model"
+            :model="getModel(item)"
             :pk="item.id"
             :icon="item.icon || elementIcon(item.status) || ''"
             :value="item.value || item.name || item.__str__"
@@ -40,22 +40,28 @@ export default {
   props: {
     label: {
       type: String,
-      required: true
+      required: true,
     },
     icon: {
       type: String,
       required: false,
-      default: ''
+      default: '',
     },
     items: {
       type: Array,
-      required: true
+      required: true,
     },
     model: {
       type: String,
       required: false,
-      default: ''
-    }
-  }
+      default: '',
+    },
+  },
+  methods: {
+    getModel(item) {
+      if ('model' in item) return item.model
+      return this.model
+    },
+  },
 }
 </script>
