@@ -21,6 +21,8 @@ export const elementMixin = {
           return 'mdi-set-none'
         case 'domain':
           return 'mdi-web'
+        case 'tag':
+          return 'mdi-tag'
         default:
           return 'mdi-pound'
       }
@@ -104,6 +106,8 @@ export const elementMixin = {
         case 'DMN':
           return 'domains'
         default:
+          if ('sort' in att.property_att && att.property_att.sort === 'server')
+            return 'tags'
           return 'attributes'
       }
     },
