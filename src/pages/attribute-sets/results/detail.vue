@@ -70,6 +70,50 @@
         </div>
       </q-card-section>
 
+      <q-card-section>
+        <div v-translate class="text-h5 q-mt-sm q-mb-xs">Location</div>
+
+        <q-toggle
+          v-model="viewMap"
+          :label="
+            viewMap
+              ? $gettext('Remove Coordinates')
+              : $gettext('Add Coordinates')
+          "
+          :false-value="false"
+          :true-value="true"
+          @input="updateCoords"
+        />
+
+        <template v-if="viewMap">
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-input
+                v-model="element.latitude"
+                outlined
+                :label="$gettext('Latitude')"
+                @input="updateMapCoords"
+              />
+            </div>
+
+            <div class="col-6 col-md col-sm">
+              <q-input
+                v-model="element.longitude"
+                outlined
+                :label="$gettext('Longitude')"
+                @input="updateMapCoords"
+              />
+            </div>
+          </div>
+
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col">
+              <AddLocation v-model="coords" @update-coords="updateCoords" />
+            </div>
+          </div>
+        </template>
+      </q-card-section>
+
       <q-card-actions class="justify-around">
         <q-btn
           flat
@@ -124,6 +168,7 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import SelectAttributes from 'components/ui/SelectAttributes'
+import AddLocation from 'components/map/AddLocation'
 import RemoveDialog from 'components/ui/RemoveDialog'
 import { detailMixin } from 'mixins/detail'
 import { elementMixin } from 'mixins/element'
@@ -140,6 +185,7 @@ export default {
     RemoveDialog,
     MigasLink,
     SelectAttributes,
+    AddLocation,
   },
   mixins: [detailMixin, elementMixin],
   data() {
@@ -178,6 +224,9 @@ export default {
       element,
       emptyElement: Object.assign({}, element),
       confirmRemove: false,
+
+      viewMap: false,
+      coords: [0, 0],
     }
   },
   computed: {
@@ -197,7 +246,34 @@ export default {
         excluded_attributes: this.element.excluded_attributes.map(
           (item) => item.id
         ),
+        latitude: this.element.latitude,
+        longitude: this.element.longitude,
       }
+    },
+
+    setRelated() {
+      if (this.element.latitude !== null) {
+        this.coords = [this.element.latitude, this.element.longitude]
+        this.viewMap = true
+      } else if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          this.coords = [position.coords.latitude, position.coords.longitude]
+        })
+      }
+    },
+
+    updateCoords(params) {
+      if (this.viewMap) {
+        this.element.latitude = params[0]
+        this.element.longitude = params[1]
+      } else {
+        this.element.latitude = null
+        this.element.longitude = null
+      }
+    },
+
+    updateMapCoords() {
+      this.coords = [this.element.latitude, this.element.longitude]
     },
   },
 }
