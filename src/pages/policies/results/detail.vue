@@ -406,7 +406,7 @@ export default {
           ? parseInt(this.policyGroups[this.policyGroups.length - 1].priority) +
             1
           : 1,
-        includes_attributes: [],
+        included_attributes: [],
         excluded_attributes: [],
         applications: [],
       })
