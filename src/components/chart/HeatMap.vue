@@ -180,7 +180,7 @@ export default {
 
         const maxYear = Object.keys(years).reduce(function (a, b) {
           return Math.max(parseInt(a), parseInt(b))
-        })
+        }, new Date().getFullYear())
         // console.log(maxYear)
 
         years[maxYear] = true
