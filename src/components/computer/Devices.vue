@@ -91,13 +91,13 @@ import MigasLink from 'components/MigasLink'
 export default {
   name: 'ComputerDevices',
   components: {
-    MigasLink
+    MigasLink,
   },
   props: {
     cid: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
 
   data() {
@@ -105,7 +105,7 @@ export default {
       loading: false,
       devices: {},
       assignedDevices: [],
-      defaultLogicalDevices: []
+      defaultLogicalDevices: [],
     }
   },
   async mounted() {
@@ -136,10 +136,13 @@ export default {
       this.loading = true
       await this.$axios
         .patch(`/api/v1/token/computers/${this.cid}/`, {
-          default_logical_device: this.devices.default_logical_device.id,
-          assigned_logical_devices_to_cid: this.devices.assigned_logical_devices_to_cid.map(
-            (item) => item.id
-          )
+          default_logical_device:
+            this.devices.default_logical_device !== undefined &&
+            this.devices.default_logical_device !== null
+              ? this.devices.default_logical_device.id
+              : null,
+          assigned_logical_devices_to_cid:
+            this.devices.assigned_logical_devices_to_cid.map((item) => item.id),
         })
         .then((response) => {
           this.$store.dispatch(
@@ -162,7 +165,7 @@ export default {
 
       await this.$axios
         .get(`/api/v1/token/devices/logical/`, {
-          params: { search: val.toLowerCase() }
+          params: { search: val.toLowerCase() },
         })
         .then((response) => {
           this.assignedDevices = response.data.results
@@ -180,7 +183,7 @@ export default {
       this.devices.assigned_logical_devices_to_cid.forEach((item) => {
         this.defaultLogicalDevices.push({ id: item.id, label: item.__str__ })
       })
-    }
-  }
+    },
+  },
 }
 </script>
