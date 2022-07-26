@@ -189,6 +189,8 @@ export default {
           return 'app'
         case 'type':
           return 'device-type'
+        case 'types':
+          return 'device-types'
         case 'logical':
           return 'logical-devices'
         case 'apps':
