@@ -194,7 +194,7 @@ import { datagridMixin } from 'mixins/datagrid'
 export default {
   meta() {
     return {
-      title: this.$gettext('Errors List'),
+      title: this.$gettext('Notifications List'),
     }
   },
   components: {
