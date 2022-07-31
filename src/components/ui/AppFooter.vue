@@ -53,11 +53,13 @@
 </template>
 
 <script>
+import { api } from 'boot/axios'
+
 export default {
-  data() {
-    return {
-      apiLink: `${this.$axios.defaults.baseURL}/docs/`
-    }
-  }
+  setup() {
+    const apiLink = `${api.defaults.baseURL}/docs/`
+
+    return { apiLink }
+  },
 }
 </script>
