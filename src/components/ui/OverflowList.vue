@@ -31,12 +31,12 @@
 
 <script>
 import MigasLink from 'components/MigasLink'
-import { elementMixin } from 'mixins/element'
+
+import { useElement } from 'composables/element'
 
 export default {
   name: 'OverflowList',
   components: { MigasLink },
-  mixins: [elementMixin],
   props: {
     label: {
       type: String,
@@ -57,11 +57,15 @@ export default {
       default: '',
     },
   },
-  methods: {
-    getModel(item) {
+  setup(props) {
+    const { elementIcon } = useElement()
+
+    const getModel = (item) => {
       if ('model' in item) return item.model
-      return this.model
-    },
+      return props.model
+    }
+
+    return { elementIcon, getModel }
   },
 }
 </script>
