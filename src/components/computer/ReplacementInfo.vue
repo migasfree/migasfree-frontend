@@ -14,12 +14,7 @@
       <q-list v-if="'tags' in element && element.tags.length > 0">
         <q-item-label header><translate>Tags</translate></q-item-label>
         <q-item v-for="tag in element.tags" :key="tag.id">
-          <MigasLink
-            model="tags"
-            :pk="tag.id"
-            :value="attributeValue(tag)"
-            icon="mdi-tag"
-          />
+          <MigasLink model="tags" :pk="tag.id" :value="attributeValue(tag)" />
         </q-item>
       </q-list>
 
@@ -39,7 +34,6 @@
               model="devices/devices"
               :pk="device.id"
               :value="device.name"
-              icon="mdi-printer"
             />
           </q-item>
         </q-list>
@@ -56,13 +50,12 @@
               model="devices/devices"
               :pk="device.id"
               :value="device.name"
-              icon="mdi-printer"
             />
           </q-item>
         </q-list>
       </template>
     </div>
-    <div v-if="isLoading">
+    <div v-else-if="isLoading">
       <q-spinner-dots color="primary" size="3em" />
     </div>
   </transition>
@@ -70,31 +63,30 @@
 
 <script>
 import MigasLink from 'components/MigasLink'
-import { elementMixin } from 'mixins/element'
+
+import { useElement } from 'composables/element'
 
 export default {
   name: 'ReplacementInfo',
   components: {
-    MigasLink
+    MigasLink,
   },
-  mixins: [elementMixin],
   props: {
     element: {
       type: Object,
-      required: true
+      required: true,
     },
     isLoading: {
       type: Boolean,
       required: false,
-      default: false
-    }
-  }
-  /* watch: {
-    element: {
-      handler: function(val, oldVal) {},
-      deep: true
-    }
-  } */
+      default: false,
+    },
+  },
+  setup() {
+    const { elementIcon } = useElement()
+
+    return { elementIcon }
+  },
 }
 </script>
 
