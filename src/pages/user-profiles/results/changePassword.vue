@@ -2,14 +2,13 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="$gettext('Change Password')">
+    <Header :title="title" :is-export-btn="false">
       <template v-if="element.id" #append
         >:
         <MigasLink
           model="user-profiles"
           :pk="element.id"
-          :value="element.username"
-          icon="mdi-account-cog"
+          :value="elementText"
         />
       </template>
     </Header>
@@ -101,186 +100,225 @@
 </template>
 
 <script>
+import { ref, computed, reactive } from 'vue'
+import { useRoute } from 'vue-router'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+import { useAuthStore } from 'stores/auth'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
-import { detailMixin } from 'mixins/detail'
+
+import useDetail from 'composables/detail'
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title
-    }
-  },
   components: {
     Breadcrumbs,
     Header,
-    MigasLink
+    MigasLink,
   },
-  mixins: [detailMixin],
-  data() {
-    const title = this.$gettext('Change Password')
-
-    return {
-      title,
-      originalTitle: title,
-      model: 'user-profiles',
-      listRoute: 'user-profiles-list',
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home'
-        },
-        {
-          text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs'
-        },
-        {
-          text: this.$gettext('User Profiles'),
-          icon: 'mdi-account-cog',
-          to: 'user-profiles-list'
-        }
-      ],
-      element: { id: 0 },
-      loading: false,
-      showPassword: false,
-      oldPassword: null,
-      password: null,
-      passwordConfirm: null
-    }
-  },
-  computed: {
-    isValid() {
-      const hasNewPasswords =
-        this.password &&
-        this.password.length > 7 &&
-        this.passwordConfirm &&
-        this.passwordConfirm.length > 7 &&
-        this.password === this.passwordConfirm
-
-      return this.element.id === this.currentUser.id
-        ? hasNewPasswords && this.oldPassword && this.oldPassword.length > 3
-        : hasNewPasswords
-    },
-
-    elementText() {
-      return this.element.id ? this.element.username : ''
-    },
-
-    currentUser() {
-      return this.$store.getters['auth/user']
-    },
-
-    confirmPassword() {
-      return [
-        (v) => !!v || this.$gettext('* Required'),
-        (v) =>
-          v.length > 7 ||
-          this.$gettextInterpolate(
-            this.$gettext('Please use minimum %{n} characters'),
-            {
-              n: 8
-            }
-          ),
-        (v) =>
-          v == this.$refs.fldPasswordChange.value ||
-          this.$gettext('The passwords are different')
-      ]
-    },
-
-    required() {
-      return [
-        (v) => !!v || this.$gettext('* Required'),
-        (v) =>
-          v.length > 7 ||
-          this.$gettextInterpolate(
-            this.$gettext('Please use minimum %{n} characters'),
-            {
-              n: 8
-            }
-          )
-      ]
-    },
-
-    requiredOldPassword() {
-      return [
-        (v) => !!v || this.$gettext('* Required'),
-        (v) =>
-          v.length > 3 ||
-          this.$gettextInterpolate(
-            this.$gettext('Please use minimum %{n} characters'),
-            {
-              n: 4
-            }
-          )
-      ]
-    }
-  },
-  created() {
-    if (this.$route.params.id) {
-      this.breadcrumbs.push({
-        text: this.originalTitle
-      })
-    }
-  },
-  methods: {
-    setRelated() {
-      this.breadcrumbs.find((x) => x.text === 'Id').to = {
-        name: 'user-profile-detail',
-        params: { id: this.element.id }
+  /*events: {
+    setRelated: () => {
+      console.log('setRelated fired!!!')
+      breadcrumbs.find((x) => x.text === 'Id').to = {
+        name: routes.detail,
+        params: { id: element.id },
       }
     },
+  },*/
+  emits: ['setRelated', 'setTitle', 'loadRelated'],
+  setup() {
+    const { $gettext, interpolate } = useGettext()
+    const route = useRoute()
+    const uiStore = useUiStore()
+    const authStore = useAuthStore()
 
-    elementData() {
-      if (this.element.id === this.currentUser.id) {
+    const title = ref($gettext('Change Password'))
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
+
+    const routes = {
+      list: 'user-profiles-list',
+      detail: 'user-profile-detail',
+    }
+    const model = 'user-profiles'
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Configuration'),
+        icon: 'mdi-cogs',
+      },
+      {
+        text: $gettext('User Profiles'),
+        icon: modelIcon(model),
+        to: routes.list,
+      },
+    ])
+
+    const showPassword = ref(false)
+
+    const oldPassword = ref(null)
+    const password = ref(null)
+    const passwordConfirm = ref(null)
+
+    const fldPasswordChange = ref(null)
+
+    let element = reactive({ id: 0 })
+
+    const isValid = computed(() => {
+      const hasNewPasswords =
+        password.value &&
+        password.value.length > 7 &&
+        passwordConfirm &&
+        passwordConfirm.value.length > 7 &&
+        password.value === passwordConfirm.value
+
+      return element.id === currentUser.value.id
+        ? hasNewPasswords && oldPassword.value && oldPassword.value.length > 3
+        : hasNewPasswords
+    })
+
+    const currentUser = computed(() => {
+      return authStore.user
+    })
+
+    const confirmPassword = computed(() => {
+      return [
+        (v) => !!v || $gettext('* Required'),
+        (v) =>
+          v.length > 7 ||
+          interpolate($gettext('Please use minimum %{n} characters'), {
+            n: 8,
+          }),
+        (v) =>
+          v == fldPasswordChange.value ||
+          $gettext('The passwords are different'),
+      ]
+    })
+
+    const required = computed(() => {
+      return [
+        (v) => !!v || $gettext('* Required'),
+        (v) =>
+          v.length > 7 ||
+          interpolate($gettext('Please use minimum %{n} characters'), {
+            n: 8,
+          }),
+      ]
+    })
+
+    const requiredOldPassword = computed(() => {
+      return [
+        (v) => !!v || $gettext('* Required'),
+        (v) =>
+          v.length > 3 ||
+          interpolate($gettext('Please use minimum %{n} characters'), {
+            n: 4,
+          }),
+      ]
+    })
+
+    // FIXME fire this function as listener
+    const setRelated = () => {
+      breadcrumbs.find((x) => x.text === 'Id').to = {
+        name: routes.detail,
+        params: { id: element.id },
+      }
+    }
+
+    const elementData = () => {
+      if (element.id === currentUser.value.id) {
         return {
-          old_password: this.oldPassword,
-          new_password1: this.password,
-          new_password2: this.passwordConfirm
+          old_password: oldPassword.value,
+          new_password1: password.value,
+          new_password2: passwordConfirm.value,
         }
       }
 
       return {
-        password: this.password,
-        password2: this.passwordConfirm
-      }
-    },
-
-    async changePassword() {
-      if (this.element.id && this.element.id === this.currentUser.id) {
-        this.loading = true
-        await this.$axios
-          .post('/rest-auth/password/change/', this.elementData())
-          .then((response) => {
-            this.$store.dispatch(
-              'ui/notifySuccess',
-              this.$gettext('Password changed!')
-            )
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-          .finally(() => (this.loading = false))
-      } else if (this.element.id) {
-        this.loading = true
-        await this.$axios
-          .put(
-            `/api/v1/token/user-profiles/${this.element.id}/change-password/`,
-            this.elementData()
-          )
-          .then((response) => {
-            this.$store.dispatch(
-              'ui/notifySuccess',
-              this.$gettext('Password changed!')
-            )
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-          .finally(() => (this.loading = false))
+        password: password.value,
+        password2: passwordConfirm.value,
       }
     }
-  }
+
+    const { loading, elementText } = useDetail(
+      title.value,
+      model,
+      routes,
+      breadcrumbs,
+      element,
+      elementData
+    )
+
+    const changePassword = async () => {
+      if (element.id && element.id === currentUser.value.id) {
+        loading.value = true
+        await api
+          .post('/rest-auth/password/change/', elementData())
+          .then((response) => {
+            uiStore.notifySuccess($gettext('Password changed!'))
+          })
+          .catch((error) => {
+            uiStore.notifyError(error)
+          })
+          .finally(() => (loading.value = false))
+      } else if (element.id) {
+        loading.value = true
+        await api
+          .put(
+            `/api/v1/token/user-profiles/${element.id}/change-password/`,
+            elementData()
+          )
+          .then((response) => {
+            uiStore.notifySuccess($gettext('Password changed!'))
+          })
+          .catch((error) => {
+            uiStore.notifyError(error)
+          })
+          .finally(() => (loading.value = false))
+      }
+    }
+
+    // created
+    if (route.params.id) {
+      breadcrumbs.push({
+        text: windowTitle.value,
+      })
+    }
+
+    return {
+      title,
+      breadcrumbs,
+      loading,
+      showPassword,
+      oldPassword,
+      password,
+      passwordConfirm,
+      fldPasswordChange,
+      element,
+      isValid,
+      elementText,
+      currentUser,
+      confirmPassword,
+      required,
+      requiredOldPassword,
+      changePassword,
+      setRelated,
+    }
+  },
 }
 </script>
