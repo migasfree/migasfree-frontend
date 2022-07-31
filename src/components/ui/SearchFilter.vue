@@ -21,24 +21,29 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+
 export default {
   name: 'SearchFilter',
   props: {
-    value: {
+    modelValue: {
       type: String,
       required: false,
-      default: ''
-    }
+      default: '',
+    },
   },
-  data() {
+  emits: ['update:model-value', 'search', 'clear'],
+  setup(props, { emit }) {
+    const searchText = computed({
+      get: () => props.modelValue,
+      set: (val) => {
+        emit('update:model-value', val)
+      },
+    })
+
     return {
-      searchText: this.value
+      searchText,
     }
   },
-  watch: {
-    value(val) {
-      this.searchText = val
-    }
-  }
 }
 </script>
