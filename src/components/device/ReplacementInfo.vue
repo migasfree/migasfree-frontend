@@ -16,12 +16,11 @@
             >Computers in Logical Devices (by Capability)</translate
           ></q-item-label
         >
-        <q-item v-for="item in element.logical_devices" :key="item.id">
+        <q-item v-for="item in mutableElement.logical_devices" :key="item.id">
           <MigasLink
             model="devices/capabilities"
             :pk="item.capability.id"
             :value="item.capability.name"
-            icon="mdi-format-list-bulleted-type"
           />
           <q-list v-for="computer in item.computers" :key="computer.id">
             <q-item>
@@ -37,78 +36,87 @@
       </q-list>
     </div>
 
-    <div v-if="isLoading || loading">
+    <div v-else-if="isLoading || loading">
       <q-spinner-dots color="primary" size="3em" />
     </div>
   </transition>
 </template>
 
 <script>
+import { ref, watch } from 'vue'
+
+import { api } from 'boot/axios'
+
 import MigasLink from 'components/MigasLink'
-import { elementMixin } from 'mixins/element'
+
+import { useElement } from 'composables/element'
 
 export default {
   name: 'ReplacementInfo',
   components: {
-    MigasLink
+    MigasLink,
   },
-  mixins: [elementMixin],
   props: {
     element: {
       type: Object,
-      required: true
+      required: true,
     },
     isLoading: {
       type: Boolean,
       required: false,
-      default: false
-    }
+      default: false,
+    },
   },
-  data() {
-    return {
-      sentinel: false,
-      loading: true
-    }
-  },
-  watch: {
-    element: {
-      handler: function(val, oldVal) {
-        if (
-          !this.sentinel &&
-          'logical_devices' in val &&
-          val.logical_devices.length > 0
-        ) {
-          this.sentinel = true
-          this.loading = true
-          this.loadComputers()
-        }
-      },
-      deep: true
-    }
-  },
-  methods: {
-    async loadComputers() {
-      Object.entries(this.element.logical_devices).map(([key, item]) => {
+  setup(props) {
+    const { elementIcon } = useElement()
+
+    const mutableElement = ref(props.element)
+    const sentinel = ref(false)
+    const loading = ref(true)
+
+    const loadComputers = async () => {
+      Object.entries(props.element.logical_devices).map(([key, item]) => {
         if ('attributes' in item) {
           Object.entries(item.attributes).map(async ([keyAtt, att]) => {
             let computers = []
             if (att.property_att.prefix === 'CID') {
-              await this.$axios
+              await api
                 .get(`/api/v1/token/computers/${parseInt(att.value)}`)
                 .then((response) => {
                   computers.push(response.data)
                 })
             }
-            this.$set(this.element.logical_devices[key], 'computers', computers)
+            mutableElement.value.logical_devices[key].computers = computers
 
             if (!item.attributes[key + 1]) {
-              this.loading = false
+              loading.value = false
             }
           })
+        } else {
+          loading.value = false
         }
       })
     }
-  }
+
+    watch(
+      () => props.element,
+      (val) => {
+        if (
+          !sentinel.value &&
+          'logical_devices' in val &&
+          val.logical_devices.length > 0
+        ) {
+          Object.assign(mutableElement, val)
+          sentinel.value = true
+          loading.value = true
+          loadComputers()
+        }
+      },
+      { deep: true }
+    )
+
+    return { mutableElement, sentinel, loading, elementIcon }
+  },
 }
 </script>
 
