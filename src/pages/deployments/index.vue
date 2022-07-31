@@ -2,9 +2,9 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :add-routes="[{ route: 'deployment-add' }]" />
+    <Header :title="title" :add-routes="addRoutes" :is-export-btn="false" />
 
-    <SearchFilter @search="search" />
+    <SearchFilter v-model="searchText" @search="search" />
 
     <div class="row">
       <div class="col-4 col-md">
@@ -12,7 +12,7 @@
           :title="$gettext('Enabled Deployments')"
           end-point="/api/v1/token/stats/deployments/enabled/project/"
           :url="enabledUrl"
-          @getLink="goTo"
+          @get-link="goTo"
         />
       </div>
 
@@ -21,7 +21,7 @@
           :title="$gettext('Deployments / Enabled')"
           end-point="/api/v1/token/stats/deployments/enabled/"
           :url="url"
-          @getLink="goTo"
+          @get-link="goTo"
         />
       </div>
 
@@ -30,7 +30,7 @@
           :title="$gettext('Deployments / Schedule')"
           end-point="/api/v1/token/stats/deployments/schedule/"
           :url="url"
-          @getLink="goTo"
+          @get-link="goTo"
         />
       </div>
     </div>
@@ -38,54 +38,61 @@
 </template>
 
 <script>
+import { ref, reactive, computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+import { useRouter } from 'vue-router'
+import _merge from 'lodash/merge'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
 import PieChart from 'components/chart/Pie'
-import _merge from 'lodash/merge'
+
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title
-    }
-  },
   components: {
     Breadcrumbs,
     Header,
     SearchFilter,
-    PieChart
+    PieChart,
   },
-  data() {
-    return {
-      title: this.$gettext('Deployments'),
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home'
-        },
-        {
-          text: this.$gettext('Release'),
-          icon: 'mdi-truck-delivery'
-        },
-        {
-          text: this.$gettext('Deployments'),
-          icon: 'mdi-rocket-launch'
-        }
-      ],
-      url: { name: 'deployments-list' }
-    }
-  },
-  computed: {
-    enabledUrl() {
-      return Object.assign({}, this.url, {
-        query: { enabled: true }
+  setup() {
+    const router = useRouter()
+    const { $gettext } = useGettext()
+
+    const title = ref($gettext('Deployments'))
+    useMeta({ title: title.value })
+
+    const searchText = ref('')
+    const addRoutes = reactive([{ route: 'deployment-add' }])
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Release'),
+        icon: 'mdi-truck-delivery',
+      },
+      {
+        text: $gettext('Deployments'),
+        icon: modelIcon('deployments'),
+      },
+    ])
+
+    const url = reactive({ name: 'deployments-list' })
+
+    const enabledUrl = computed(() => {
+      return Object.assign({}, url, {
+        query: { enabled: true },
       })
-    }
-  },
-  methods: {
-    goTo(params) {
+    })
+
+    const goTo = (params) => {
       let query = params.url.query || {}
 
       if (params.data.project_id) {
@@ -100,15 +107,26 @@ export default {
         query = _merge(query, { enabled: params.data.enabled })
       }
 
-      this.$router.push({
-        name: this.url.name,
-        query
+      router.push({
+        name: url.name,
+        query,
       })
-    },
-
-    search(value) {
-      this.$router.push(Object.assign(this.url, { query: { search: value } }))
     }
-  }
+
+    const search = (value) => {
+      router.push(Object.assign(url, { query: { search: value } }))
+    }
+
+    return {
+      title,
+      searchText,
+      addRoutes,
+      breadcrumbs,
+      url,
+      enabledUrl,
+      goTo,
+      search,
+    }
+  },
 }
 </script>

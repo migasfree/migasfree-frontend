@@ -2,9 +2,9 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :add-routes="[{ route: 'model-add' }]" />
+    <Header :title="title" :add-routes="addRoutes" :is-export-btn="false" />
 
-    <SearchFilter @search="search" />
+    <SearchFilter v-model="searchText" @search="search" />
 
     <div class="row">
       <div class="col">
@@ -12,7 +12,7 @@
           :title="$gettext('Models / Manufacturer')"
           end-point="/api/v1/token/stats/devices/models/manufacturer/"
           :url="url"
-          @getLink="goTo"
+          @get-link="goTo"
         />
       </div>
     </div>
@@ -22,7 +22,7 @@
         <StackedBarChart
           :title="$gettext('Models / Project')"
           :initial-data="byProject"
-          @getLink="goTo"
+          @get-link="goTo"
         />
       </div>
     </div>
@@ -30,95 +30,119 @@
 </template>
 
 <script>
+import { ref, reactive, onMounted } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+import { useRouter } from 'vue-router'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
 import PieChart from 'components/chart/Pie'
 import StackedBarChart from 'components/chart/StackedBar'
 
+import { modelIcon } from 'composables/element'
+
 export default {
-  meta() {
-    return {
-      title: this.title
-    }
-  },
   components: {
     Breadcrumbs,
     SearchFilter,
     Header,
     PieChart,
-    StackedBarChart
+    StackedBarChart,
   },
-  data() {
-    return {
-      title: this.$gettext('Models'),
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home'
-        },
-        {
-          text: this.$gettext('Devices'),
-          icon: 'mdi-printer-eye'
-        },
-        {
-          text: this.$gettext('Models'),
-          icon: 'mdi-shape'
-        }
-      ],
-      url: { name: 'models-list' },
-      byProject: {}
-    }
-  },
-  async mounted() {
-    await this.$axios
-      .get('/api/v1/token/stats/devices/models/project/')
-      .then((response) => {
-        this.$set(this.byProject, 'xData', response.data.x_labels)
-        this.$set(this.byProject, 'series', [
-          {
-            type: 'bar',
-            data: response.data.data,
-            name: this.$gettext('Models'),
-            markLine: {
-              data: [
-                {
-                  label: { show: true },
-                  name: this.$gettext('Total'),
-                  yAxis: response.data.total
-                }
-              ]
-            }
-          }
-        ])
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-  },
-  methods: {
-    goTo(params) {
+  setup() {
+    const router = useRouter()
+    const { $gettext } = useGettext()
+    const uiStore = useUiStore()
+
+    const title = ref($gettext('Models'))
+    useMeta({ title: title.value })
+
+    const searchText = ref('')
+    const addRoutes = reactive([{ route: 'model-add' }])
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Devices'),
+        icon: 'mdi-printer-eye',
+      },
+      {
+        text: $gettext('Models'),
+        icon: modelIcon('devices/models'),
+      },
+    ])
+
+    const url = reactive({ name: 'models-list' })
+    const byProject = reactive({})
+
+    const goTo = (params) => {
       if (params.data.manufacturer_id) {
-        this.$router.push(
-          Object.assign(this.url, {
-            query: { manufacturer_id: params.data.manufacturer_id }
+        router.push(
+          Object.assign(url, {
+            query: { manufacturer_id: params.data.manufacturer_id },
           })
         )
       }
 
       if (params.data.drivers__project__id) {
-        this.$router.push(
-          Object.assign(this.url, {
-            query: { drivers_project_id: params.data.drivers__project__id }
+        router.push(
+          Object.assign(url, {
+            query: { drivers_project_id: params.data.drivers__project__id },
           })
         )
       }
-    },
-
-    search(value) {
-      this.$router.push(Object.assign(this.url, { query: { search: value } }))
     }
-  }
+
+    const search = (value) => {
+      router.push(Object.assign(url, { query: { search: value } }))
+    }
+
+    onMounted(async () => {
+      await api
+        .get('/api/v1/token/stats/devices/models/project/')
+        .then((response) => {
+          byProject.xData = response.data.x_labels
+          byProject.series = [
+            {
+              type: 'bar',
+              data: response.data.data,
+              name: $gettext('Models'),
+              markLine: {
+                data: [
+                  {
+                    label: { show: true },
+                    name: $gettext('Total'),
+                    yAxis: response.data.total,
+                  },
+                ],
+              },
+            },
+          ]
+        })
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+    })
+
+    return {
+      title,
+      searchText,
+      addRoutes,
+      breadcrumbs,
+      url,
+      byProject,
+      goTo,
+      search,
+    }
+  },
 }
 </script>
