@@ -16,45 +16,45 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
+    "format": "prettier --write \"**/*.{js,vue,css,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
-    "gettext-extract": "gettext-extract --attribute v-translate --output src/i18n/app.pot $(find ./src -type f -name '*.vue' -o -name '*.js')",
-    "gettext-compile": "gettext-compile --output src/i18n/translations.json src/i18n/*.po"
+    "gettext-extract": "vue-gettext-extract",
+    "gettext-compile": "vue-gettext-compile"
   },
   "dependencies": {
-    "@quasar/extras": "^1.14.0",
-    "@vue/composition-api": "^1.6.2",
-    "axios": "^0.27.2",
-    "core-js": "^3.22.7",
-    "dayjs": "^1.11.2",
-    "echarts": "^5.3.2",
+    "@quasar/extras": "^1.0.0",
+    "@vue-leaflet/vue-leaflet": "^0.6.1",
+    "axios": "^0.21.1",
+    "core-js": "^3.6.5",
+    "dayjs": "^1.11.3",
+    "echarts": "^5.3.3",
     "js-abbreviation-number": "^1.4.0",
     "leaflet": "^1.8.0",
     "performant-array-to-tree": "^1.11.0",
-    "quasar": "^1.19.1",
+    "pinia": "^2.0.11",
+    "pluralize": "^8.0.0",
+    "quasar": "^2.7.5",
     "text-clipper": "^2.2.0",
     "typeface-dosis": "^1.1.13",
-    "validator": "^13.7.0",
-    "vue-code-diff": "^1.2.0",
-    "vue-codeditor": "^1.0.5",
-    "vue-echarts": "6.0.0-rc.6",
-    "vue-gettext": "^2.1.12",
-    "vue-good-table": "^2.21.11",
-    "vue-pluralize": "^0.0.2",
-    "vue2-leaflet": "^2.7.1"
+    "v-code-diff": "^0.3.11",
+    "vue": "^3.2.37",
+    "vue-echarts": "^6.2.3",
+    "vue-good-table-next": "^0.2.1",
+    "vue-router": "^4.0.0",
+    "vue3-ace-editor": "^2.2.2",
+    "vue3-gettext": "^2.2.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.18.2",
-    "@babel/eslint-parser": "^7.18.2",
-    "@quasar/app": "^2.3.1",
+    "@babel/eslint-parser": "^7.13.14",
+    "@quasar/app-webpack": "^3.0.0",
     "@quasar/quasar-app-extension-dotenv": "^1.1.0",
-    "@quasar/quasar-app-extension-qmarkdown": "^1.4.4",
-    "easygettext": "^2.17.0",
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-loader": "^3.0.4",
-    "eslint-plugin-prettier": "^3.4.1",
-    "eslint-plugin-vue": "^7.20.0",
-    "quasar-app-extension-qdatetimepicker": "^1.0.0-rc.17"
+    "@quasar/quasar-app-extension-qmarkdown": "^2.0.0-beta.7",
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-vue": "^8.5.0",
+    "eslint-webpack-plugin": "^3.1.1",
+    "prettier": "^2.5.1"
   },
   "browserslist": [
     "last 10 Chrome versions",
@@ -68,7 +68,7 @@
     "last 5 Opera versions"
   ],
   "engines": {
-    "node": ">= 12.18.1",
+    "node": ">= 12.22.1",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
   }
