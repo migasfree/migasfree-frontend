@@ -39,91 +39,71 @@
 </template>
 
 <script>
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useAuthStore } from 'stores/auth'
+import { useUiStore } from 'stores/ui'
+import { api } from 'boot/axios'
+
 export default {
   name: 'Alerts',
-  data() {
-    return {
-      alerts: [],
-      totalAlerts: 0,
-      socket: null
-    }
-  },
-  computed: {
-    loggedIn() {
-      return this.$store.getters['auth/loggedIn']
-    },
-    isAlertsVisible() {
-      return this.loggedIn && this.alerts.length > 0
-    }
-  },
-  watch: {
-    loggedIn(newValue, oldValue) {
-      if (newValue) this.loadAlerts()
-    }
-  },
-  created() {
-    const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws'
+  setup() {
+    const authStore = useAuthStore()
+    const uiStore = useUiStore()
+    const { $gettext } = useGettext()
 
-    this.socket = new WebSocket(
-      `${wsScheme}://${this.$store.getters['ui/server'].split('//')[1]}/alerts/`
-    )
+    const alerts = ref([])
+    const totalAlerts = ref(0)
+    const socket = ref(null)
 
-    let self = this
+    const loggedIn = computed(() => {
+      return authStore.isLoggedIn
+    })
 
-    this.socket.onmessage = (event) => {
-      const response = JSON.parse(event.data)
-      self.updateData(response)
-    }
-  },
-  destroyed() {
-    this.socket.close()
-  },
-  async mounted() {
-    if (this.loggedIn) {
-      await this.loadAlerts()
-    }
-  },
-  methods: {
-    async loadAlerts() {
-      await this.$axios
+    const isAlertsVisible = computed(() => {
+      return loggedIn.value && alerts.value.length > 0
+    })
+
+    const loadAlerts = async () => {
+      await api
         .get('/api/v1/token/stats/alerts/')
         .then((response) => {
-          this.updateData(response.data)
+          updateData(response.data)
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
 
-    updateData(newData) {
-      this.alerts = newData.filter((item) => parseInt(item.result) > 0)
+    const updateData = (newData) => {
+      alerts.value = newData.filter((item) => parseInt(item.result) > 0)
 
-      this.totalAlerts = this.alerts.reduce(
+      totalAlerts.value = alerts.value.reduce(
         (accumulator, current) => accumulator + parseInt(current.result),
         0
       )
-    },
+    }
 
-    target(value) {
+    const target = (value) => {
       return value === 'computer' ? 'mdi-laptop' : 'mdi-cloud'
-    },
+    }
 
-    level(value) {
+    const level = (value) => {
       if (value === 'critical') return 'negative'
 
       return value
-    },
+    }
 
-    textColor(value) {
+    const textColor = (value) => {
       switch (value) {
         case 'critical':
           return 'white'
         default:
           return 'black'
       }
-    },
+    }
 
-    resolveAlertLink(value) {
+    const resolveAlertLink = (value) => {
       let query = {}
       if ('query' in value) {
         Object.entries(value.query).forEach(([key, value]) => {
@@ -150,38 +130,36 @@ export default {
       }
 
       return value
-    },
+    }
 
-    resolveAlertText(value) {
-      const api = value.api
-
-      if ('model' in api) {
-        switch (api.model) {
+    const resolveAlertText = (value) => {
+      if ('model' in value.api) {
+        switch (value.api.model) {
           case 'packages':
-            return this.$gettext('Orphan Packages')
+            return $gettext('Orphan Packages')
           case 'notifications':
-            return this.$gettext('Unchecked Notifications')
+            return $gettext('Unchecked Notifications')
           case 'faults':
-            return this.$gettext('Unchecked Faults')
+            return $gettext('Unchecked Faults')
           case 'errors':
-            return this.$gettext('Unchecked Errors')
+            return $gettext('Unchecked Errors')
           case 'deployments':
-            if ('id_in' in api.query)
-              return this.$gettext('Generating Repositories')
+            if ('id_in' in value.api.query)
+              return $gettext('Generating Repositories')
 
-            if ('percent__lt' in api.query)
-              return this.$gettext('Active schedule Deployments')
+            if ('percent__lt' in value.api.query)
+              return $gettext('Active schedule Deployments')
 
-            if ('percent__gte' in api.query)
-              return this.$gettext('Finished schedule Deployments')
+            if ('percent__gte' in value.api.query)
+              return $gettext('Finished schedule Deployments')
 
             break
           case 'messages':
-            if ('created_at__gte' in api.query)
-              return this.$gettext('Synchronizing Computers Now')
+            if ('created_at__gte' in value.api.query)
+              return $gettext('Synchronizing Computers Now')
 
-            if ('created_at__lt' in api.query)
-              return this.$gettext('Delayed Computers')
+            if ('created_at__lt' in value.api.query)
+              return $gettext('Delayed Computers')
 
             break
         }
@@ -189,6 +167,46 @@ export default {
 
       return value.msg
     }
-  }
+
+    const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws'
+
+    socket.value = new WebSocket(
+      `${wsScheme}://${uiStore.getServer.split('//')[1]}/alerts/`
+    )
+
+    socket.value.onmessage = (event) => {
+      const response = JSON.parse(event.data)
+      updateData(response)
+    }
+
+    onMounted(async () => {
+      if (loggedIn.value) {
+        await loadAlerts()
+      }
+    })
+
+    onUnmounted(() => {
+      socket.value.close()
+    })
+
+    watch(loggedIn, (newValue) => {
+      if (newValue) loadAlerts()
+    })
+
+    return {
+      alerts,
+      totalAlerts,
+      socket,
+      loggedIn,
+      isAlertsVisible,
+      loadAlerts,
+      updateData,
+      target,
+      level,
+      textColor,
+      resolveAlertLink,
+      resolveAlertText,
+    }
+  },
 }
 </script>
