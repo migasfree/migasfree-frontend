@@ -23,6 +23,17 @@
           <q-chip v-if="results !== null" outline size="lg" color="info">{{
             results
           }}</q-chip>
+          <q-btn
+            v-if="isExportBtn"
+            class="q-ma-sm float-right"
+            color="info"
+            text-color="black"
+            :label="$gettext('Export')"
+            icon="mdi-file-export"
+            :loading="isLoadingExport"
+            :disable="results === 0"
+            @click="$emit('exportAll')"
+          />
           <slot name="append"></slot>
         </h2>
       </q-item-section>
@@ -41,8 +52,11 @@ export default {
       required: false,
       default() {
         return []
-      }
-    }
-  }
+      },
+    },
+    isExportBtn: { type: Boolean, required: false, default: true },
+    isLoadingExport: { type: Boolean, required: false, default: false },
+  },
+  emits: ['exportAll'],
 }
 </script>
