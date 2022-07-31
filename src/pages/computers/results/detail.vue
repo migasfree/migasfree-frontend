@@ -1,450 +1,453 @@
 <template>
   <q-page padding>
-    <Breadcrumbs :items="breadcrumbs" />
+    <ItemDetail
+      :breadcrumbs="breadcrumbs"
+      :original-title="title"
+      :model="model"
+      :routes="routes"
+      :element="element"
+      :is-valid="false"
+      :add-button="false"
+      :continue-button="false"
+      :save-button="false"
+      :borderless="true"
+      @set-related="setRelated"
+      @set-title="setTitle"
+    >
+      <template #fields>
+        <q-card-section v-if="!('id' in element)">
+          <p class="items-center">
+            <q-spinner-dots color="primary" size="3em" />
+          </p>
+        </q-card-section>
 
-    <template v-if="element.id">
-      <Header :title="$gettext('Computer')">
-        <template v-if="element.id" #append
-          >:
-          <MigasLink
-            model="computers"
-            :pk="element.id"
-            :value="element.__str__ || ''"
-            :icon="elementIcon(element.status)"
-            :tooltip="element.summary"
-          />
-        </template>
-      </Header>
+        <q-card-section v-else>
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-md">
+              <ComputerInfo
+                :cid="element.id"
+                :name="element.name"
+                :fqdn="element.fqdn"
+                :project="element.project"
+                :created-at="element.created_at"
+                :ip-address="element.ip_address"
+                :forwarded-ip-address="element.forwarded_ip_address"
+              />
+            </div>
 
-      <div class="row q-pa-md q-gutter-md">
-        <div class="col-md">
-          <ComputerInfo
-            :cid="element.id"
-            :name="element.name"
-            :fqdn="element.fqdn"
-            :project="element.project"
-            :created-at="element.created_at"
-            :ip-address="element.ip_address"
-            :forwarded-ip-address="element.forwarded_ip_address"
-          />
-        </div>
+            <div class="col-md">
+              <ComputerHardwareResume
+                :cid="element.id"
+                :last-hardware-capture="showDate(element.last_hardware_capture)"
+                :product="element.product"
+                :product-system="element.product_system"
+                :architecture="element.architecture"
+                :uuid="element.uuid"
+                :cpu="element.cpu"
+                :ram="element.ram"
+                :storage="element.storage"
+                :disks="element.disks"
+                :mac-address="element.mac_address"
+              />
+            </div>
+          </div>
 
-        <div class="col-md">
-          <ComputerHardwareResume
-            :cid="element.id"
-            :last-hardware-capture="element.last_hardware_capture"
-            :product="element.product"
-            :product-system="element.product_system"
-            :architecture="element.architecture"
-            :uuid="element.uuid"
-            :cpu="element.cpu"
-            :ram="element.ram"
-            :storage="element.storage"
-            :disks="element.disks"
-            :mac-address="element.mac_address"
-          />
-        </div>
-      </div>
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-md">
+              <q-card>
+                <q-card-section>
+                  <div v-translate class="text-h5">Current Situation</div>
+                </q-card-section>
 
-      <div class="row q-pa-md q-gutter-md">
-        <div class="col-md">
-          <q-card>
-            <q-card-section>
-              <div v-translate class="text-h5">Current Situation</div>
-            </q-card-section>
-
-            <q-card-section>
-              <p>
-                <q-select
-                  v-model="element.status"
-                  outlined
-                  emit-value
-                  map-options
-                  :label="$gettext('Status')"
-                  :options="status"
-                >
-                  <template #option="scope">
-                    <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                      <q-item-section avatar>
-                        <q-icon :name="scope.opt.icon" />
-                      </q-item-section>
-                      <q-item-section>
-                        <q-item-label>{{ scope.opt.label }}</q-item-label>
-                        <q-item-label caption>{{
-                          scope.opt.description
-                        }}</q-item-label>
-                      </q-item-section>
-                    </q-item>
-                  </template>
-
-                  <template #selected-item="scope">
-                    <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                      <q-item-section avatar>
-                        <q-icon :name="scope.opt.icon" />
-                      </q-item-section>
-                      <q-item-section>
-                        <q-item-label>{{ scope.opt.label }}</q-item-label>
-                        <q-item-label caption>{{
-                          scope.opt.description
-                        }}</q-item-label>
-                      </q-item-section>
-                    </q-item>
-                  </template>
-                </q-select>
-              </p>
-
-              <p>
-                <q-input
-                  v-model="element.comment"
-                  outlined
-                  type="textarea"
-                  :label="$gettext('Comment')"
-                />
-              </p>
-
-              <p>
-                <q-select
-                  v-model="element.tags"
-                  outlined
-                  use-input
-                  map-options
-                  multiple
-                  counter
-                  input-debounce="0"
-                  :label="$gettext('Tags')"
-                  :options="tags"
-                  @filter="filterTags"
-                  @filter-abort="abortFilterTags"
-                >
-                  <template #no-option>
-                    <q-item>
-                      <q-item-section v-translate class="text-grey">
-                        No results
-                      </q-item-section>
-                    </q-item>
-                  </template>
-
-                  <template #option="scope">
-                    <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                      {{ attributeValue(scope.opt) }}
-                    </q-item>
-                  </template>
-
-                  <template #selected-item="scope">
-                    <q-chip
-                      removable
-                      dense
-                      :tabindex="scope.tabindex"
-                      class="q-ma-md"
-                      @remove="scope.removeAtIndex(scope.index)"
+                <q-card-section>
+                  <p>
+                    <q-select
+                      v-model="element.status"
+                      outlined
+                      emit-value
+                      map-options
+                      :label="$gettext('Status')"
+                      :options="status"
                     >
-                      <MigasLink
-                        model="tags"
-                        :pk="scope.opt.id"
-                        :value="attributeValue(scope.opt)"
-                        icon="mdi-tag"
-                      />
-                    </q-chip>
-                  </template>
-                </q-select>
-              </p>
+                      <template #option="scope">
+                        <q-item v-bind="scope.itemProps">
+                          <q-item-section avatar>
+                            <q-icon :name="scope.opt.icon" />
+                          </q-item-section>
+                          <q-item-section>
+                            <q-item-label>{{ scope.opt.label }}</q-item-label>
+                            <q-item-label caption>{{
+                              scope.opt.description
+                            }}</q-item-label>
+                          </q-item-section>
+                        </q-item>
+                      </template>
 
-              <OverflowList
-                :label="$gettext('Attribute Sets')"
-                icon="mdi-set-none"
-                :items="onlyAttributeSets"
-                model="attribute-sets"
-              />
+                      <template #selected-item="scope">
+                        <q-item v-bind="scope.itemProps">
+                          <q-item-section avatar>
+                            <q-icon :name="scope.opt.icon" />
+                          </q-item-section>
+                          <q-item-section>
+                            <q-item-label>{{ scope.opt.label }}</q-item-label>
+                            <q-item-label caption>{{
+                              scope.opt.description
+                            }}</q-item-label>
+                          </q-item-section>
+                        </q-item>
+                      </template>
+                    </q-select>
+                  </p>
 
-              <OverflowList
-                :label="$gettext('Domains')"
-                icon="mdi-web"
-                :items="onlyDomains"
-                model="domains"
-              />
+                  <p>
+                    <q-input
+                      v-model="element.comment"
+                      outlined
+                      type="textarea"
+                      :label="$gettext('Comment')"
+                    />
+                  </p>
 
-              <div class="row q-pa-md text-center">
-                <div class="col-md">
-                  <q-tooltip><translate>Errors</translate></q-tooltip>
-                  <q-icon name="mdi-bug" size="xl" />
-                  <q-btn
-                    round
-                    size="md"
-                    color="negative"
-                    text-color="white"
-                    :to="{
-                      name: 'errors-list',
-                      query: { computer_id: element.id, checked: false },
-                    }"
-                    >{{ errors.unchecked }}</q-btn
-                  >
-                  /
-                  <q-btn
-                    round
-                    size="md"
-                    color="grey-3"
-                    text-color="black"
-                    :to="{
-                      name: 'errors-list',
-                      query: { computer_id: element.id },
-                    }"
-                    >{{ errors.total }}</q-btn
-                  >
-                </div>
+                  <p>
+                    <q-select
+                      v-model="element.tags"
+                      outlined
+                      use-input
+                      map-options
+                      multiple
+                      counter
+                      input-debounce="0"
+                      :label="$gettext('Tags')"
+                      :options="tags"
+                      @filter="filterTags"
+                      @filter-abort="abortFilterTags"
+                    >
+                      <template #no-option>
+                        <q-item>
+                          <q-item-section v-translate class="text-grey">
+                            No results
+                          </q-item-section>
+                        </q-item>
+                      </template>
 
-                <div class="col-md">
-                  <q-tooltip><translate>Faults</translate></q-tooltip>
-                  <q-icon name="mdi-bomb" size="xl" />
-                  <q-btn
-                    round
-                    size="md"
-                    color="negative"
-                    text-color="white"
-                    :to="{
-                      name: 'faults-list',
-                      query: { computer_id: element.id, checked: false },
-                    }"
-                    >{{ faults.unchecked }}</q-btn
-                  >
-                  /
-                  <q-btn
-                    round
-                    size="md"
-                    color="grey-3"
-                    text-color="black"
-                    :to="{
-                      name: 'faults-list',
-                      query: { computer_id: element.id },
-                    }"
-                    >{{ faults.total }}</q-btn
-                  >
-                </div>
-              </div>
-            </q-card-section>
+                      <template #option="scope">
+                        <q-item v-bind="scope.itemProps">
+                          {{ attributeValue(scope.opt) }}
+                        </q-item>
+                      </template>
 
-            <q-card-actions>
-              <q-btn
-                class="full-width"
-                color="primary"
-                icon="mdi-content-save-edit"
-                :label="$gettext('Save and continue editing')"
-                :loading="loading"
-                :disabled="loading"
-                @click="updateCurrentSituation"
-              />
-            </q-card-actions>
-          </q-card>
-        </div>
+                      <template #selected-item="scope">
+                        <q-chip
+                          removable
+                          dense
+                          :tabindex="scope.tabindex"
+                          class="q-ma-md"
+                          @remove="scope.removeAtIndex(scope.index)"
+                        >
+                          <MigasLink
+                            model="tags"
+                            :pk="scope.opt.id"
+                            :value="attributeValue(scope.opt)"
+                          />
+                        </q-chip>
+                      </template>
+                    </q-select>
+                  </p>
 
-        <div class="col-md">
-          <q-card>
-            <q-card-section>
-              <div class="row">
-                <div class="col">
-                  <div v-translate class="text-h5">Synchronization</div>
-                </div>
-
-                <div v-if="element.id" class="col-auto">
-                  <DateDiff
-                    :begin="new Date(element.sync_end_date)"
-                    :tooltip="$gettext('unsynchronized from')"
+                  <OverflowList
+                    model="attribute-sets"
+                    :label="$gettext('Attribute Sets')"
+                    :items="onlyAttributeSets"
                   />
-                </div>
-              </div>
-            </q-card-section>
 
-            <q-card-section>
-              <div v-if="element.sync_user" class="row q-pa-md">
-                <q-tooltip self="bottom middle"
-                  ><translate>User</translate></q-tooltip
-                >
-                <MigasLink
-                  model="users"
-                  :pk="element.sync_user.id"
-                  :value="element.sync_user.__str__ || ''"
-                  icon="mdi-account"
-                />
-              </div>
+                  <OverflowList
+                    model="domains"
+                    :label="$gettext('Domains')"
+                    :items="onlyDomains"
+                  />
 
-              <div
-                v-if="loadingSync || Object.keys(syncInfo).length == 0"
-                class="justify-center"
-              >
-                <q-spinner-dots color="primary" size="3em" />
-              </div>
+                  <div class="row q-pa-md text-center">
+                    <div class="col-md">
+                      <q-tooltip><translate>Errors</translate></q-tooltip>
+                      <q-icon :name="modelIcon('errors')" size="xl" />
+                      <q-btn
+                        round
+                        size="md"
+                        color="negative"
+                        text-color="white"
+                        :to="{
+                          name: 'errors-list',
+                          query: { computer_id: element.id, checked: false },
+                        }"
+                        >{{ errors.unchecked }}</q-btn
+                      >
+                      /
+                      <q-btn
+                        round
+                        size="md"
+                        color="grey-3"
+                        text-color="black"
+                        :to="{
+                          name: 'errors-list',
+                          query: { computer_id: element.id },
+                        }"
+                        >{{ errors.total }}</q-btn
+                      >
+                    </div>
 
-              <template v-else>
-                <div class="row q-pa-md items-baseline">
-                  <div class="col-md">
+                    <div class="col-md">
+                      <q-tooltip><translate>Faults</translate></q-tooltip>
+                      <q-icon :name="modelIcon('faults')" size="xl" />
+                      <q-btn
+                        round
+                        size="md"
+                        color="negative"
+                        text-color="white"
+                        :to="{
+                          name: 'faults-list',
+                          query: { computer_id: element.id, checked: false },
+                        }"
+                        >{{ faults.unchecked }}</q-btn
+                      >
+                      /
+                      <q-btn
+                        round
+                        size="md"
+                        color="grey-3"
+                        text-color="black"
+                        :to="{
+                          name: 'faults-list',
+                          query: { computer_id: element.id },
+                        }"
+                        >{{ faults.total }}</q-btn
+                      >
+                    </div>
+                  </div>
+                </q-card-section>
+
+                <q-card-actions>
+                  <q-btn
+                    class="full-width"
+                    color="primary"
+                    icon="mdi-content-save-edit"
+                    :label="$gettext('Save and continue editing')"
+                    :loading="loading"
+                    :disabled="loading"
+                    @click="updateCurrentSituation"
+                  />
+                </q-card-actions>
+              </q-card>
+            </div>
+
+            <div class="col-md">
+              <q-card>
+                <q-card-section>
+                  <div class="row">
+                    <div class="col">
+                      <div v-translate class="text-h5">Synchronization</div>
+                    </div>
+
+                    <div v-if="element.id" class="col-auto">
+                      <DateDiff
+                        :begin="new Date(element.sync_end_date)"
+                        :tooltip="$gettext('unsynchronized from')"
+                      />
+                    </div>
+                  </div>
+                </q-card-section>
+
+                <q-card-section>
+                  <div v-if="element.sync_user" class="row q-pa-md">
                     <q-tooltip self="bottom middle"
-                      ><translate>sync start date</translate></q-tooltip
+                      ><translate>User</translate></q-tooltip
                     >
-                    <q-icon name="mdi-play" size="sm" class="vertical-middle" />
-                    <span class="vertical-middle">
-                      {{ showDate(syncInfo.sync_start_date) }}</span
-                    >
+                    <MigasLink
+                      model="users"
+                      :pk="element.sync_user.id"
+                      :value="element.sync_user.__str__ || ''"
+                    />
                   </div>
 
                   <div
-                    class="col-md"
-                    :class="{
-                      'bg-warning text-black':
-                        syncInfo.sync_end_date < syncInfo.sync_start_date,
-                    }"
+                    v-if="loadingSync || Object.keys(syncInfo).length == 0"
+                    class="justify-center"
                   >
-                    <q-tooltip self="bottom middle"
-                      ><translate>sync end date</translate></q-tooltip
-                    >
-                    <q-icon name="mdi-stop" size="sm" class="vertical-middle" />
-                    <span class="vertical-middle">
-                      {{ showDate(syncInfo.sync_end_date) }}</span
-                    >
+                    <q-spinner-dots color="primary" size="3em" />
                   </div>
 
-                  <div class="col-auto">
-                    <DateDiff
-                      v-if="syncInfo.sync_start_date"
-                      class="vertical-middle"
-                      :begin="new Date(syncInfo.sync_start_date)"
-                      :end="new Date(syncInfo.sync_end_date)"
-                      :tooltip="$gettext('last sync time')"
+                  <template v-else>
+                    <div class="row q-pa-md items-baseline">
+                      <div class="col-md">
+                        <q-tooltip self="bottom middle"
+                          ><translate>sync start date</translate> ({{
+                            diffForHumans(syncInfo.sync_start_date)
+                          }})</q-tooltip
+                        >
+                        <q-icon
+                          name="mdi-play"
+                          size="sm"
+                          class="vertical-middle"
+                        />
+                        <span class="vertical-middle">
+                          {{ showDate(syncInfo.sync_start_date) }}</span
+                        >
+                      </div>
+
+                      <div
+                        class="col-md"
+                        :class="{
+                          'bg-warning text-black':
+                            syncInfo.sync_end_date < syncInfo.sync_start_date,
+                        }"
+                      >
+                        <q-tooltip self="bottom middle"
+                          ><translate>sync end date</translate> ({{
+                            diffForHumans(syncInfo.sync_end_date)
+                          }})</q-tooltip
+                        >
+                        <q-icon
+                          name="mdi-stop"
+                          size="sm"
+                          class="vertical-middle"
+                        />
+                        <span class="vertical-middle">
+                          {{ showDate(syncInfo.sync_end_date) }}</span
+                        >
+                      </div>
+
+                      <div class="col-auto">
+                        <DateDiff
+                          v-if="syncInfo.sync_start_date"
+                          class="vertical-middle"
+                          :begin="new Date(syncInfo.sync_start_date)"
+                          :end="new Date(syncInfo.sync_end_date)"
+                          :tooltip="$gettext('last sync time')"
+                        />
+                      </div>
+                    </div>
+
+                    <OverflowList
+                      model="attributes"
+                      :label="$gettext('Attributes')"
+                      :items="onlyAttributes"
                     />
-                  </div>
-                </div>
+                  </template>
+                </q-card-section>
+              </q-card>
+            </div>
+          </div>
 
-                <OverflowList
-                  :label="$gettext('Attributes')"
-                  icon="mdi-pound"
-                  :items="onlyAttributes"
-                  model="attributes"
-                />
-              </template>
-            </q-card-section>
-          </q-card>
-        </div>
-      </div>
+          <div class="row q-pa-md q-gutter-md">
+            <div v-if="element.has_software_inventory" class="col-md">
+              <ComputerSoftware :cid="element.id" />
+            </div>
 
-      <div class="row q-pa-md q-gutter-md">
-        <div v-if="element.has_software_inventory" class="col-md">
-          <ComputerSoftware :cid="element.id" />
-        </div>
+            <div v-if="element.id" class="col-md">
+              <ComputerDevices :cid="element.id" />
+            </div>
+          </div>
 
-        <div v-if="element.id" class="col-md">
-          <ComputerDevices :cid="element.id" />
-        </div>
-      </div>
+          <div v-if="markers.length > 0" class="row q-pa-md q-gutter-md">
+            <div class="col-md">
+              <q-card>
+                <q-card-section>
+                  <div v-translate class="text-h5">Locations</div>
+                </q-card-section>
 
-      <div v-if="markers.length > 0" class="row q-pa-md q-gutter-md">
-        <div class="col-md">
-          <q-card>
-            <q-card-section>
-              <div v-translate class="text-h5">Locations</div>
-            </q-card-section>
-
-            <q-card-section>
-              <l-map
-                id="map"
-                ref="map"
-                :zoom="zoom"
-                :center="[markers[0].lat, markers[0].lng]"
-                @ready="centerMarkers"
-              >
-                <l-tile-layer
-                  :url="url"
-                  :attribution="attribution"
-                ></l-tile-layer>
-
-                <l-control position="topright">
-                  <q-btn
-                    icon="mdi-crosshairs-gps"
-                    padding="xs"
-                    color="white"
-                    text-color="black"
-                    size="md"
-                    @click="centerMarkers"
-                    ><q-tooltip>{{
-                      $gettext('Center Markers')
-                    }}</q-tooltip></q-btn
+                <q-card-section>
+                  <l-map
+                    id="map"
+                    ref="map"
+                    :zoom="zoom"
+                    :center="[markers[0].lat, markers[0].lng]"
+                    @ready="centerMarkers"
                   >
-                </l-control>
+                    <l-tile-layer
+                      :url="url"
+                      :attribution="attribution"
+                    ></l-tile-layer>
 
-                <l-marker
-                  v-for="(item, key) in markers"
-                  :key="key"
-                  :lat-lng="[item.lat, item.lng]"
-                  :icon="iconMarker"
-                  @click="
-                    $router.push({
-                      name: `${$pluralize.singular(item.model)}-detail`,
-                      params: { id: item.id },
-                    })
-                  "
-                >
-                  <l-tooltip>
-                    <p>
-                      <strong>{{ item.tooltip }}</strong>
-                    </p>
-                    <p
-                      v-if="
-                        item.description && item.description !== item.tooltip
+                    <l-control position="topright">
+                      <q-btn
+                        icon="mdi-crosshairs-gps"
+                        padding="xs"
+                        color="white"
+                        text-color="black"
+                        size="md"
+                        @click="centerMarkers"
+                        ><q-tooltip>{{
+                          $gettext('Center Markers')
+                        }}</q-tooltip></q-btn
+                      >
+                    </l-control>
+
+                    <l-marker
+                      v-for="(item, key) in markers"
+                      :key="key"
+                      :lat-lng="[item.lat, item.lng]"
+                      @click="
+                        $router.push({
+                          name: `${pluralize.singular(item.model)}-detail`,
+                          params: { id: item.id },
+                        })
                       "
-                      v-html="item.description"
-                    ></p
-                  ></l-tooltip>
-                </l-marker>
-              </l-map>
-            </q-card-section>
-          </q-card>
-        </div>
-      </div>
+                    >
+                      <l-icon
+                        :icon-url="iconUrl"
+                        :icon-size="iconSize"
+                        :icon-anchor="iconAnchor"
+                      />
 
-      <div class="row q-pa-md">
-        <q-btn
-          flat
-          icon="mdi-delete"
-          :color="$q.dark.isActive ? 'white' : 'negative'"
-          :class="{ 'reversed-delete': $q.dark.isActive }"
-          :label="$gettext('Delete')"
-          @click="confirmRemove = true"
-        />
-      </div>
-
-      <RemoveDialog
-        v-model="confirmRemove"
-        @confirmed="remove"
-        @canceled="confirmRemove = !confirmRemove"
-      />
-    </template>
+                      <l-tooltip>
+                        <p>
+                          <strong>{{ item.tooltip }}</strong>
+                        </p>
+                        <p
+                          v-if="
+                            item.description &&
+                            item.description !== item.tooltip
+                          "
+                          v-html="item.description"
+                        ></p
+                      ></l-tooltip>
+                    </l-marker>
+                  </l-map>
+                </q-card-section>
+              </q-card>
+            </div>
+          </div>
+        </q-card-section>
+      </template>
+    </ItemDetail>
   </q-page>
 </template>
 
 <script>
-import Breadcrumbs from 'components/ui/Breadcrumbs'
-import Header from 'components/ui/Header'
+import { ref, reactive, onMounted, nextTick } from 'vue'
+import { useRoute } from 'vue-router'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import OverflowList from 'components/ui/OverflowList'
-import RemoveDialog from 'components/ui/RemoveDialog'
+import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
 import DateDiff from 'components/DateDiff'
+
 import ComputerInfo from 'components/computer/Info'
 import ComputerHardwareResume from 'components/computer/HardwareResume'
 import ComputerSoftware from 'components/computer/Software'
 import ComputerDevices from 'components/computer/Devices'
-import { elementMixin } from 'mixins/element'
-import { dateMixin } from 'mixins/date'
-import { detailMixin } from 'mixins/detail'
-import { MIGASFREE_SECONDS_MESSAGE_ALERT } from 'config/app.conf'
+
+import { modelIcon, useElement } from 'composables/element'
+import useDate from 'composables/date'
 
 export default {
-  meta() {
-    return {
-      title: this.title,
-    }
-  },
   components: {
-    Breadcrumbs,
-    Header,
     OverflowList,
-    RemoveDialog,
+    ItemDetail,
     MigasLink,
     DateDiff,
     ComputerInfo,
@@ -452,251 +455,300 @@ export default {
     ComputerSoftware,
     ComputerDevices,
   },
-  mixins: [elementMixin, dateMixin, detailMixin],
-  data() {
-    const route = 'computers-list'
-    const title = this.$gettext('Computer')
+  setup() {
+    const { $gettext } = useGettext()
+    const route = useRoute()
+    const uiStore = useUiStore()
+    const { elementIcon, attributeValue } = useElement()
+    const { showDate, diffForHumans } = useDate()
+    const pluralize = require('pluralize')
 
-    return {
-      title,
-      originalTitle: title,
-      model: 'computers',
-      listRoute: route,
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Data'),
-          icon: 'mdi-database-search',
-        },
-        {
-          text: this.$gettext('Computers'),
-          to: 'computers-dashboard',
-          icon: 'mdi-desktop-classic',
-        },
-      ],
-      element: {},
-      syncInfo: {},
-      onlyAttributes: [],
-      onlyAttributeSets: [],
-      onlyDomains: [],
-      status: [],
-      tags: [],
-      errors: {},
-      faults: {},
-      loading: false,
-      loadingSync: false,
-      confirmRemove: false,
-
-      markers: [],
-      zoom: 12,
-      url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-      attribution:
-        '© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      iconMarker: L.icon({
-        iconUrl: require('leaflet/dist/images/marker-icon.png'),
-        iconSize: [32, 40],
-        iconAnchor: [16, 37],
-      }),
+    const routes = {
+      list: 'computers-list',
     }
-  },
-  computed: {
-    elementText() {
-      return this.element.__str__
-    },
-  },
-  async mounted() {
-    await this.$axios
-      .get(`/api/v1/token/${this.model}/${this.$route.params.id}/`)
-      .then((response) => {
-        this.element = response.data
-        this.loadSyncInfo()
-        this.loadErrors()
-        this.loadFaults()
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
+    const model = 'computers'
 
-    await this.$axios
-      .get('/api/v1/token/computers/status/')
-      .then((response) => {
-        Object.entries(response.data.choices).map(([key, val]) => {
-          this.status.push({
-            label: val,
-            value: key,
-            icon: this.elementIcon(key),
-          })
+    const title = ref($gettext('Computer'))
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
+
+    const loading = ref(false)
+    const loadingSync = ref(false)
+    const map = ref(null)
+
+    const element = reactive({})
+
+    const status = ref([])
+    const syncInfo = reactive({})
+    const onlyAttributes = ref([])
+    const onlyAttributeSets = ref([])
+    const onlyDomains = ref([])
+    const tags = ref([])
+    const errors = reactive({})
+    const faults = reactive({})
+
+    const markers = ref([])
+    const zoom = 12
+    const url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+    const attribution =
+      '© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    const iconUrl = require('leaflet/dist/images/marker-icon.png')
+    const iconSize = [32, 40]
+    const iconAnchor = [16, 37]
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        icon: 'mdi-home',
+        to: 'home',
+      },
+      {
+        text: $gettext('Data'),
+        icon: 'mdi-database-search',
+      },
+      {
+        text: $gettext('Computers'),
+        icon: modelIcon(model),
+        to: 'computers-dashboard',
+      },
+    ])
+
+    const centerMarkers = () => {
+      if (map.value !== null && markers.value.length) {
+        nextTick(() => {
+          // FIXME fitBounds -> new version of @vue-leaflet???
+          /*map.value.fitBounds(
+            markers.value.map((m) => {
+              return [m.lat, m.lng]
+            })
+          )*/
         })
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-  },
-  methods: {
-    setRelated() {
-      Object.entries(this.element.tags).map(([key, val]) => {
-        if (val.latitude !== null) {
-          this.markers.push({
-            id: val.id,
-            model: 'tags',
-            lat: val.latitude,
-            lng: val.longitude,
-            tooltip: this.attributeValue(val),
-            description: val.description
-              ? val.description.replaceAll('\n', '<br />')
-              : null,
-          })
-        }
-      })
-    },
+        // console.log('centerMarkers', map.value)
+      }
+    }
 
-    async loadSyncInfo() {
-      this.loadingSync = true
-      await this.$axios
-        .get(`/api/v1/token/${this.model}/${this.$route.params.id}/sync/`)
+    const loadSyncInfo = async () => {
+      loadingSync.value = true
+      await api
+        .get(`/api/v1/token/${model}/${route.params.id}/sync/`)
         .then((response) => {
-          this.syncInfo = response.data
+          Object.assign(syncInfo, response.data)
           Object.entries(response.data.sync_attributes).map(([key, val]) => {
             if (val.property_att.prefix === 'SET') {
-              this.$axios
+              api
                 .get(`/api/v1/token/attributes/${val.id}/badge/`)
                 .then((response) => {
-                  this.onlyAttributeSets.push({
+                  onlyAttributeSets.value.push({
                     id: response.data.pk,
-                    icon: 'mdi-set-none',
-                    value: this.attributeValue(val),
+                    icon: modelIcon('attribute-sets'),
+                    value: attributeValue(val),
                     summary: response.data.summary,
                   })
                 })
                 .catch((error) => {
-                  this.$store.dispatch('ui/notifyError', error)
+                  uiStore.notifyError(error)
                 })
             } else if (val.property_att.prefix === 'DMN') {
-              this.$axios
+              api
                 .get(`/api/v1/token/attributes/${val.id}/badge/`)
                 .then((response) => {
-                  this.onlyDomains.push({
+                  onlyDomains.value.push({
                     id: response.data.pk,
-                    icon: 'mdi-web',
-                    value: this.attributeValue(val),
+                    icon: modelIcon('domains'),
+                    value: attributeValue(val),
                     summary: response.data.summary,
                   })
                 })
                 .catch((error) => {
-                  this.$store.dispatch('ui/notifyError', error)
+                  uiStore.notifyError(error)
                 })
             } else {
-              this.onlyAttributes.push({
+              onlyAttributes.value.push({
                 id: val.id,
-                value: this.attributeValue(val),
+                value: attributeValue(val),
                 model:
                   val.property_att.sort === 'server' ? 'tags' : 'attributes',
                 icon:
-                  val.property_att.sort === 'server' ? 'mdi-tag' : 'mdi-pound',
+                  val.property_att.sort === 'server'
+                    ? modelIcon('tags')
+                    : modelIcon('attributes'),
               })
             }
 
             if (val.latitude !== null) {
-              this.markers.push({
+              markers.value.push({
                 id: val.id,
                 model:
                   val.property_att.sort === 'server' ? 'tags' : 'attributes',
                 lat: val.latitude,
                 lng: val.longitude,
-                tooltip: this.attributeValue(val),
+                tooltip: attributeValue(val),
                 description: val.description
                   ? val.description.replaceAll('\n', '<br />')
                   : null,
               })
-              this.centerMarkers()
+              centerMarkers()
             }
           })
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
         .finally(() => {
-          this.loadingSync = false
+          loadingSync.value = false
         })
-    },
+    }
 
-    async loadErrors() {
-      await this.$axios
-        .get(`/api/v1/token/${this.model}/${this.$route.params.id}/errors/`)
+    const loadErrors = async () => {
+      await api
+        .get(`/api/v1/token/${model}/${route.params.id}/errors/`)
         .then((response) => {
-          this.errors = response.data
+          Object.assign(errors, response.data)
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
 
-    async loadFaults() {
-      await this.$axios
-        .get(`/api/v1/token/${this.model}/${this.$route.params.id}/faults/`)
+    const loadFaults = async () => {
+      await api
+        .get(`/api/v1/token/${model}/${route.params.id}/faults/`)
         .then((response) => {
-          this.faults = response.data
+          Object.assign(faults, response.data)
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
 
-    async filterTags(val, update, abort) {
+    const updateCurrentSituation = async () => {
+      loading.value = true
+      await api
+        .patch(`/api/v1/token/${model}/${element.id}/`, {
+          status: element.status,
+          comment: element.comment,
+          tags: element.tags.map((item) => item.id),
+        })
+        .then((response) => {
+          uiStore.notifySuccess($gettext('Current Situation has been changed!'))
+        })
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+        .finally(() => (loading.value = false))
+    }
+
+    const filterTags = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
         abort()
         return
       }
 
-      await this.$axios
+      await api
         .get('/api/v1/token/tags/', { params: { search: val.toLowerCase() } })
         .then((response) => {
-          this.tags = response.data.results
+          tags.value = response.data.results
         })
 
       update(() => {})
-    },
+    }
 
-    abortFilterTags() {
+    const abortFilterTags = () => {
       // console.log('delayed filter aborted')
-    },
+    }
 
-    async updateCurrentSituation() {
-      this.loading = true
-      await this.$axios
-        .patch(`/api/v1/token/${this.model}/${this.element.id}/`, {
-          status: this.element.status,
-          comment: this.element.comment,
-          tags: this.element.tags.map((item) => item.id),
-        })
+    const setRelated = () => {
+      Object.entries(element.tags).map(([key, val]) => {
+        if (val.latitude !== null) {
+          markers.value.push({
+            id: val.id,
+            model: 'tags',
+            lat: val.latitude,
+            lng: val.longitude,
+            tooltip: attributeValue(val),
+            description: val.description
+              ? val.description.replaceAll('\n', '<br />')
+              : null,
+          })
+        }
+      })
+    }
+
+    const setTitle = (value) => {
+      windowTitle.value = value
+    }
+
+    onMounted(async () => {
+      await api
+        .get(`/api/v1/token/${model}/${route.params.id}/`)
         .then((response) => {
-          this.$store.dispatch(
-            'ui/notifySuccess',
-            this.$gettext('Current Situation has been changed!')
-          )
+          Object.assign(element, response.data)
+          loadSyncInfo()
+          loadErrors()
+          loadFaults()
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-        .finally(() => (this.loading = false))
-    },
 
-    centerMarkers() {
-      if (this.markers.length) {
-        this.$nextTick(() => {
-          this.$refs.map.mapObject.fitBounds(
-            this.markers.map((m) => {
-              return [m.lat, m.lng]
+      await api
+        .get(`/api/v1/token/${model}/status/`)
+        .then((response) => {
+          Object.entries(response.data.choices).map(([key, val]) => {
+            status.value.push({
+              label: val,
+              value: key,
+              icon: elementIcon(key),
             })
-          )
+          })
         })
-      }
-    },
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+    })
+
+    return {
+      title,
+      breadcrumbs,
+      loading,
+      loadingSync,
+      map,
+      routes,
+      model,
+      element,
+      status,
+      syncInfo,
+      onlyAttributes,
+      onlyAttributeSets,
+      onlyDomains,
+      tags,
+      errors,
+      faults,
+      markers,
+      zoom,
+      url,
+      attribution,
+      iconUrl,
+      iconSize,
+      iconAnchor,
+      elementIcon,
+      attributeValue,
+      showDate,
+      diffForHumans,
+      centerMarkers,
+      updateCurrentSituation,
+      filterTags,
+      abortFilterTags,
+      pluralize,
+      setRelated,
+      setTitle,
+      modelIcon,
+    }
   },
 }
 </script>

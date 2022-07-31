@@ -1,489 +1,478 @@
 <template>
   <q-page padding>
-    <Breadcrumbs :items="breadcrumbs" />
+    <ItemDetail
+      :breadcrumbs="breadcrumbs"
+      :original-title="title"
+      :model="model"
+      :routes="routes"
+      :element="element"
+      :element-data="elementData"
+      :is-valid="isValid"
+      @load-related="loadRelated"
+      @update-related="updateRelated"
+      @set-related="setRelated"
+      @reset-element="resetElement"
+      @reset-related="resetRelated"
+      @set-title="setTitle"
+    >
+      <template #fields>
+        <q-card-section>
+          <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
-    <Header :title="$gettext('Device')">
-      <template v-if="element.id" #append
-        >:
-        <MigasLink
-          model="devices/devices"
-          :pk="element.id"
-          :value="element.name"
-          icon="mdi-printer"
-        />
-      </template>
-    </Header>
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-input
+                v-model="element.name"
+                outlined
+                :label="$gettext('Name')"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+              />
+            </div>
 
-    <q-card>
-      <q-card-section>
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-input
-              v-model="element.name"
-              outlined
-              :label="$gettext('Name')"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-            />
+            <div class="col-6 col-md col-sm">
+              <SelectAttributes
+                v-model="element.available_for_attributes"
+                :label="$gettext('Available for Attributes')"
+              />
+            </div>
           </div>
 
-          <div class="col-6 col-md col-sm">
-            <SelectAttributes
-              v-model="element.available_for_attributes"
-              :label="$gettext('Available for Attributes')"
-            />
-          </div>
-        </div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-select
-              v-model="element.model"
-              outlined
-              use-input
-              map-options
-              input-debounce="0"
-              :label="$gettext('Model')"
-              :options="models"
-              @filter="filterModels"
-              @filter-abort="abortFilterModels"
-              @input="resetConnections"
-            >
-              <template #no-option>
-                <q-item>
-                  <q-item-section v-translate class="text-grey">
-                    No results
-                  </q-item-section>
-                </q-item>
-              </template>
-
-              <template #option="scope">
-                <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                  {{ scope.opt.name }}
-                </q-item>
-              </template>
-
-              <template #selected-item="scope">
-                <q-chip
-                  removable
-                  dense
-                  :tabindex="scope.tabindex"
-                  class="q-ma-md"
-                  @remove="scope.removeAtIndex(scope.index)"
-                >
-                  <MigasLink
-                    model="devices/models"
-                    :pk="scope.opt.id"
-                    :value="`${scope.opt.name} (${scope.opt.manufacturer.name})`"
-                    icon="mdi-shape"
-                  />
-                </q-chip>
-              </template>
-            </q-select>
-          </div>
-
-          <div class="col-6 col-md col-sm">
-            <q-select
-              v-if="element.model"
-              v-model="element.connection"
-              outlined
-              :label="$gettext('Connection')"
-              :options="element.model.connections"
-              option-value="id"
-              option-label="name"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-              @input="localConnectionFields"
-              ><template #prepend>
-                <q-icon name="mdi-connection" />
-              </template>
-            </q-select>
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-section v-if="element.connection">
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">Connection Fields</div>
-
-        <div
-          v-for="(field, index) in element.connection.fields"
-          :key="index"
-          class="row q-pa-md q-gutter-md"
-        >
-          <div class="col-md">
-            <q-input
-              v-model="field.value"
-              outlined
-              :label="field.id"
-              :hint="field.hint"
-            />
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-section>
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">Logical Devices</div>
-
-        <q-list
-          v-if="logicalDevices.length > 0"
-          class="q-pa-md"
-          bordered
-          separator
-        >
-          <q-item v-for="(logical, index) in logicalDevices" :key="index">
-            <q-item-section side top>
-              <q-btn
-                flat
-                dense
-                round
-                color="negative"
-                icon="mdi-delete"
-                @click="removeInline(index)"
-                ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-select
+                v-model="element.model"
+                outlined
+                use-input
+                map-options
+                input-debounce="0"
+                :label="$gettext('Model')"
+                :options="models"
+                @filter="filterModels"
+                @filter-abort="abortFilterModels"
+                @update:model-value="resetConnections"
               >
-            </q-item-section>
+                <template #no-option>
+                  <q-item>
+                    <q-item-section v-translate class="text-grey">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
 
-            <q-item-section>
-              <div class="row q-pa-md q-gutter-md">
-                <div class="col-5 col-md col-sm">
-                  <q-select
-                    v-model="logical.capability"
-                    outlined
-                    :label="$gettext('Capability')"
-                    :options="capabilities"
-                    option-value="id"
-                    option-label="name"
-                    lazy-rules
-                    :rules="[(val) => !!val || $gettext('* Required')]"
+                <template #option="scope">
+                  <q-item v-bind="scope.itemProps">
+                    {{ scope.opt.name }}
+                  </q-item>
+                </template>
+
+                <template #selected-item="scope">
+                  <q-chip
+                    removable
+                    dense
+                    :tabindex="scope.tabindex"
+                    class="q-ma-md"
+                    @remove="scope.removeAtIndex(scope.index)"
                   >
-                    <template #prepend>
-                      <q-icon name="mdi-format-list-bulleted-type" />
-                    </template>
-                  </q-select>
+                    <MigasLink
+                      model="devices/models"
+                      :pk="scope.opt.id"
+                      :value="`${scope.opt.name} (${scope.opt.manufacturer.name})`"
+                    />
+                  </q-chip>
+                </template>
+              </q-select>
+            </div>
+
+            <div class="col-6 col-md col-sm">
+              <q-select
+                v-if="element.model"
+                v-model="element.connection"
+                outlined
+                :label="$gettext('Connection')"
+                :options="element.model.connections"
+                option-value="id"
+                option-label="name"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+                @update:model-value="localConnectionFields"
+                ><template #prepend>
+                  <q-icon :name="modelIcon('devices/connections')" />
+                </template>
+              </q-select>
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section v-if="element.connection">
+          <div v-translate class="text-h5 q-mt-sm q-mb-xs">
+            Connection Fields
+          </div>
+
+          <div
+            v-for="(field, index) in element.connection.fields"
+            :key="index"
+            class="row q-pa-md q-gutter-md"
+          >
+            <div class="col-md">
+              <q-input
+                v-model="field.value"
+                outlined
+                :label="field.id"
+                :hint="field.hint"
+              />
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section>
+          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Logical Devices</div>
+
+          <q-list
+            v-if="logicalDevices.length > 0"
+            class="q-pa-md"
+            bordered
+            separator
+          >
+            <q-item v-for="(logical, index) in logicalDevices" :key="index">
+              <q-item-section side top>
+                <q-btn
+                  flat
+                  dense
+                  round
+                  color="negative"
+                  icon="mdi-delete"
+                  @click="removeInline(index)"
+                  ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
+                >
+              </q-item-section>
+
+              <q-item-section>
+                <div class="row q-pa-md q-gutter-md">
+                  <div class="col-5 col-md col-sm">
+                    <q-select
+                      v-model="logical.capability"
+                      outlined
+                      :label="$gettext('Capability')"
+                      :options="capabilities"
+                      option-value="id"
+                      option-label="name"
+                      lazy-rules
+                      :rules="[(val) => !!val || $gettext('* Required')]"
+                    >
+                      <template #prepend>
+                        <q-icon :name="modelIcon('devices/capabilities')" />
+                      </template>
+                    </q-select>
+                  </div>
+
+                  <div class="col-5 col-md col-sm">
+                    <q-input
+                      v-model="logical.alternative_capability_name"
+                      outlined
+                      :label="$gettext('Alternative Capability Name')"
+                    />
+                  </div>
                 </div>
 
-                <div class="col-5 col-md col-sm">
-                  <q-input
-                    v-model="logical.alternative_capability_name"
-                    outlined
-                    :label="$gettext('Alternative Capability Name')"
-                  />
+                <div class="row q-pa-md q-gutter-md">
+                  <div class="col-10 col-md col-sm">
+                    <SelectAttributes
+                      v-model="logical.attributes"
+                      :label="$gettext('Attributes')"
+                    />
+                  </div>
                 </div>
-              </div>
+              </q-item-section>
+            </q-item>
+          </q-list>
 
-              <div class="row q-pa-md q-gutter-md">
-                <div class="col-10 col-md col-sm">
-                  <SelectAttributes
-                    v-model="logical.attributes"
-                    :label="$gettext('Attributes')"
-                  />
-                </div>
-              </div>
-            </q-item-section>
-          </q-item>
-        </q-list>
-
-        <div class="q-pa-md">
-          <q-btn
-            icon="mdi-plus"
-            :label="$gettext('Add other Logical Device')"
-            @click="addInline"
-          />
-        </div>
-      </q-card-section>
-
-      <q-card-actions class="justify-around">
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and add other')"
-          icon="mdi-plus"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('add')"
-        />
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and continue editing')"
-          icon="mdi-content-save-edit"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement"
-        />
-        <q-btn
-          :label="$gettext('Save')"
-          color="primary"
-          icon="mdi-content-save-move"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('return')"
-        />
-      </q-card-actions>
-    </q-card>
-
-    <div v-if="$route.params.id && element.id" class="row q-pa-md">
-      <q-btn
-        flat
-        icon="mdi-delete"
-        :color="$q.dark.isActive ? 'white' : 'negative'"
-        :class="{ 'reversed-delete': $q.dark.isActive }"
-        :label="$gettext('Delete')"
-        @click="confirmRemove = true"
-      />
-    </div>
-
-    <RemoveDialog
-      v-model="confirmRemove"
-      @confirmed="remove"
-      @canceled="confirmRemove = !confirmRemove"
-    />
+          <div class="q-pa-md">
+            <q-btn
+              icon="mdi-plus"
+              :label="$gettext('Add other Logical Device')"
+              @click="addInline"
+            />
+          </div>
+        </q-card-section>
+      </template>
+    </ItemDetail>
   </q-page>
 </template>
 
 <script>
-import Breadcrumbs from 'components/ui/Breadcrumbs'
-import Header from 'components/ui/Header'
+import { ref, reactive, computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
+import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
 import SelectAttributes from 'components/ui/SelectAttributes'
-import RemoveDialog from 'components/ui/RemoveDialog'
-import { detailMixin } from 'mixins/detail'
-import { elementMixin } from 'mixins/element'
+
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title,
-    }
-  },
   components: {
-    Breadcrumbs,
-    Header,
-    RemoveDialog,
+    ItemDetail,
     MigasLink,
     SelectAttributes,
   },
-  mixins: [detailMixin, elementMixin],
-  data() {
-    const route = 'devices-list'
-    const title = this.$gettext('Device')
-    const element = { id: 0, available_for_attributes: [] }
+  setup() {
+    const { $gettext } = useGettext()
+    const uiStore = useUiStore()
 
-    return {
-      title,
-      originalTitle: title,
-      model: 'devices/devices',
-      listRoute: route,
-      addRoute: 'device-add',
-      detailRoute: 'device-detail',
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Devices'),
-          icon: 'mdi-printer-eye',
-        },
-        {
-          text: this.$gettext('Devices'),
-          icon: 'mdi-printer',
-          to: route,
-        },
-      ],
-      element,
-      emptyElement: Object.assign({}, element),
-      models: [],
-      logicalDevices: [],
-      removedLogicalDevices: [],
-      capabilities: [],
-      confirmRemove: false,
+    const title = ref($gettext('Device'))
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
+
+    const routes = {
+      list: 'devices-list',
+      add: 'device-add',
+      detail: 'device-detail',
     }
-  },
-  computed: {
-    isValid() {
-      return (
-        this.element.name !== undefined &&
-        this.element.name.trim() !== '' &&
-        this.element.model !== undefined &&
-        this.element.connection !== null
-      )
-    },
-  },
-  watch: {
-    logicalDevices: {
-      handler: function (val, oldVal) {},
-      deep: true,
-    },
-  },
-  methods: {
-    async loadRelated() {
-      await this.$axios
-        .get('/api/v1/token/devices/capabilities/')
-        .then((response) => {
-          this.capabilities = response.data.results
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
+    const model = 'devices/devices'
 
-      if (this.element.id) {
-        await this.$axios
-          .get(`/api/v1/token/devices/logical/?device__id=${this.element.id}`)
+    let element = reactive({ id: 0, available_for_attributes: [] })
+
+    const models = ref([])
+    const logicalDevices = ref([])
+    const removedLogicalDevices = ref([])
+    const capabilities = ref([])
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Devices'),
+        icon: 'mdi-printer-eye',
+      },
+      {
+        text: $gettext('Devices'),
+        icon: modelIcon(model),
+        to: routes.list,
+      },
+    ])
+
+    const isValid = computed(() => {
+      return (
+        element.name !== undefined &&
+        element.name.trim() !== '' &&
+        element.model !== undefined &&
+        element.connection !== null
+      )
+    })
+
+    const localConnectionFields = async () => {
+      if (element.connection.id)
+        await api
+          .get(`/api/v1/token/devices/connections/${element.connection.id}/`)
           .then((response) => {
-            this.logicalDevices = response.data.results
+            element.connection.fields = response.data.fields
+              .split(',')
+              .map((item) => {
+                const field = item.trim().split(':')
+
+                return {
+                  id: field[0],
+                  value:
+                    'data' in element && field[0] in element.data
+                      ? element.data[field[0]]
+                      : null,
+                  hint: field[1] ? field[1] : null,
+                }
+              })
           })
           .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
+            uiStore.notifyError(error)
+          })
+    }
+
+    const loadRelated = async () => {
+      await api
+        .get('/api/v1/token/devices/capabilities/')
+        .then((response) => {
+          capabilities.value = response.data.results
+        })
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+
+      if (element.id) {
+        await api
+          .get(`/api/v1/token/devices/logical/?device__id=${element.id}`)
+          .then((response) => {
+            logicalDevices.value = response.data.results
+          })
+          .catch((error) => {
+            uiStore.notifyError(error)
           })
 
-        this.localConnectionFields()
+        localConnectionFields()
       }
-    },
+    }
 
-    elementData() {
+    const elementData = () => {
       return {
-        name: this.element.name,
-        model: this.element.model.id,
-        connection: this.element.connection.id,
-        available_for_attributes: this.element.available_for_attributes
-          ? this.element.available_for_attributes.map((item) => item.id)
+        name: element.name,
+        model: element.model.id,
+        connection: element.connection.id,
+        available_for_attributes: element.available_for_attributes
+          ? element.available_for_attributes.map((item) => item.id)
           : [],
-        data: this.element.connection.fields.reduce((obj, v) => {
+        data: element.connection.fields.reduce((obj, v) => {
           if (v.value) obj[v.id] = v.value
           return obj
         }, {}),
       }
-    },
+    }
 
-    async filterModels(val, update, abort) {
+    const updateRelated = async () => {
+      logicalDevices.value.forEach((logical) => {
+        if (logical.capability === undefined) {
+          return
+        }
+
+        if (logical.id > 0) {
+          api
+            .patch(`/api/v1/token/devices/logical/${logical.id}/`, {
+              id: logical.id,
+              device: element.id,
+              capability: logical.capability.id,
+              alternative_capability_name: logical.alternative_capability_name,
+              attributes:
+                logical.attributes !== null
+                  ? logical.attributes.map((item) => item.id)
+                  : [],
+            })
+            .catch((error) => {
+              uiStore.notifyError(error)
+            })
+        } else {
+          api
+            .post('/api/v1/token/devices/logical/', {
+              device: element.id,
+              capability: logical.capability.id,
+              alternative_capability_name: logical.alternative_capability_name,
+              attributes:
+                logical.attributes !== null
+                  ? logical.attributes.map((item) => item.id)
+                  : [],
+            })
+            .catch((error) => {
+              uiStore.notifyError(error)
+            })
+        }
+      })
+
+      removedLogicalDevices.value.forEach((id) => {
+        api.delete(`/api/v1/token/devices/logical/${id}/`).catch((error) => {
+          uiStore.notifyError(error)
+        })
+      })
+    }
+
+    const setRelated = async () => {
+      await localConnectionFields()
+    }
+
+    const resetElement = () => {
+      Object.assign(element, {
+        id: 0,
+        name: undefined,
+        model: null,
+        connection: null,
+        available_for_attributes: [],
+        data: {},
+      })
+    }
+
+    const resetRelated = () => {
+      logicalDevices.value = []
+      removedLogicalDevices.value = []
+    }
+
+    const setTitle = (value) => {
+      windowTitle.value = value
+    }
+
+    const resetConnections = () => {
+      element.connection = null
+    }
+
+    const addInline = () => {
+      logicalDevices.value.push({
+        id: 0,
+        capability: null,
+        alternative_capability_name: null,
+        attributes: [],
+      })
+    }
+
+    const removeInline = (index) => {
+      const removedItem = logicalDevices.value.splice(index, 1)[0]
+      if (removedItem.id > 0) {
+        removedLogicalDevices.value.push(removedItem.id)
+      }
+    }
+
+    const filterModels = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
         abort()
         return
       }
 
-      await this.$axios
+      await api
         .get('/api/v1/token/devices/models/', {
           params: { search: val.toLowerCase() },
         })
         .then((response) => {
-          this.models = response.data.results
+          models.value = response.data.results
         })
 
       update(() => {})
-    },
+    }
 
-    abortFilterModels() {
+    const abortFilterModels = () => {
       // console.log('delayed filter aborted')
-    },
+    }
 
-    resetConnections() {
-      this.$set(this.element, 'connection', null)
-    },
-
-    async localConnectionFields() {
-      if (this.element.connection.id)
-        await this.$axios
-          .get(
-            `/api/v1/token/devices/connections/${this.element.connection.id}/`
-          )
-          .then((response) => {
-            this.$set(
-              this.element.connection,
-              'fields',
-              response.data.fields.split(',').map((item) => {
-                const field = item.trim().split(':')
-
-                return {
-                  id: field[0],
-                  value:
-                    'data' in this.element && field[0] in this.element.data
-                      ? this.element.data[field[0]]
-                      : null,
-                  hint: field[1] ? field[1] : null,
-                }
-              })
-            )
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-    },
-
-    addInline() {
-      this.logicalDevices.push({
-        id: 0,
-        capability: null,
-        alternative_capability_name: null,
-        attributes: [],
-      })
-    },
-
-    removeInline(index) {
-      const removedItem = this.logicalDevices.splice(index, 1)[0]
-      if (removedItem.id > 0) {
-        this.removedLogicalDevices.push(removedItem.id)
-      }
-    },
-
-    async updateRelated() {
-      this.logicalDevices.forEach((logical) => {
-        if (logical.capability === undefined) {
-          return
-        }
-
-        if (logical.id > 0) {
-          this.$axios
-            .patch(`/api/v1/token/devices/logical/${logical.id}/`, {
-              id: logical.id,
-              device: this.element.id,
-              capability: logical.capability.id,
-              alternative_capability_name: logical.alternative_capability_name,
-              attributes:
-                logical.attributes !== null
-                  ? logical.attributes.map((item) => item.id)
-                  : [],
-            })
-            .catch((error) => {
-              this.$store.dispatch('ui/notifyError', error)
-            })
-        } else {
-          this.$axios
-            .post('/api/v1/token/devices/logical/', {
-              device: this.element.id,
-              capability: logical.capability.id,
-              alternative_capability_name: logical.alternative_capability_name,
-              attributes:
-                logical.attributes !== null
-                  ? logical.attributes.map((item) => item.id)
-                  : [],
-            })
-            .catch((error) => {
-              this.$store.dispatch('ui/notifyError', error)
-            })
-        }
-      })
-
-      this.removedLogicalDevices.forEach((id) => {
-        this.$axios
-          .delete(`/api/v1/token/devices/logical/${id}/`)
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-      })
-    },
-
-    async setRelated() {
-      await this.localConnectionFields()
-    },
-
-    resetRelated() {
-      this.logicalDevices = []
-    },
+    return {
+      breadcrumbs,
+      title,
+      model,
+      routes,
+      element,
+      models,
+      logicalDevices,
+      removedLogicalDevices,
+      capabilities,
+      isValid,
+      elementData,
+      loadRelated,
+      localConnectionFields,
+      updateRelated,
+      setRelated,
+      resetElement,
+      resetRelated,
+      setTitle,
+      resetConnections,
+      addInline,
+      removeInline,
+      filterModels,
+      abortFilterModels,
+      modelIcon,
+    }
   },
 }
 </script>

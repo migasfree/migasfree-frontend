@@ -1,192 +1,171 @@
 <template>
   <q-page padding>
-    <Breadcrumbs :items="breadcrumbs" />
+    <ItemDetail
+      :breadcrumbs="breadcrumbs"
+      :original-title="title"
+      :model="model"
+      :routes="routes"
+      :element="element"
+      :element-data="elementData"
+      :is-valid="isValid"
+      @load-related="loadRelated"
+      @reset-element="resetElement"
+      @set-title="setTitle"
+    >
+      <template #fields>
+        <q-card-section>
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-input
+                v-model="element.name"
+                outlined
+                :label="$gettext('Name')"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+              />
+            </div>
 
-    <Header :title="$gettext('Connection')">
-      <template v-if="element.id" #append
-        >:
-        <MigasLink
-          model="devices/connections"
-          :pk="element.id"
-          :value="element.name"
-          icon="mdi-connection"
-        />
+            <div class="col-6 col-md col-sm">
+              <q-select
+                v-model="element.device_type"
+                outlined
+                :label="$gettext('Device Type')"
+                :options="deviceTypes"
+                option-value="id"
+                option-label="name"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+                ><template #prepend>
+                  <q-icon :name="modelIcon('devices/types')" />
+                </template>
+              </q-select>
+            </div>
+          </div>
+
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-12 col-md col-sm">
+              <q-input
+                v-model="element.fields"
+                outlined
+                :label="$gettext('Fields')"
+                :hint="$gettext('Format: NAME[:Placeholder],...')"
+              />
+            </div>
+          </div>
+        </q-card-section>
       </template>
-    </Header>
-
-    <q-card>
-      <q-card-section>
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-input
-              v-model="element.name"
-              outlined
-              :label="$gettext('Name')"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-            />
-          </div>
-
-          <div class="col-6 col-md col-sm">
-            <q-select
-              v-model="element.device_type"
-              outlined
-              :label="$gettext('Device Type')"
-              :options="deviceTypes"
-              option-value="id"
-              option-label="name"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-              ><template #prepend>
-                <q-icon name="mdi-devices" />
-              </template>
-            </q-select>
-          </div>
-        </div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-12 col-md col-sm">
-            <q-input
-              v-model="element.fields"
-              outlined
-              :label="$gettext('Fields')"
-              :hint="$gettext('Format: NAME[:Placeholder],...')"
-            />
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-actions class="justify-around">
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and add other')"
-          icon="mdi-plus"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('add')"
-        />
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and continue editing')"
-          icon="mdi-content-save-edit"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement"
-        />
-        <q-btn
-          :label="$gettext('Save')"
-          color="primary"
-          icon="mdi-content-save-move"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('return')"
-        />
-      </q-card-actions>
-    </q-card>
-
-    <div v-if="$route.params.id && element.id" class="row q-pa-md">
-      <q-btn
-        flat
-        icon="mdi-delete"
-        :color="$q.dark.isActive ? 'white' : 'negative'"
-        :class="{ 'reversed-delete': $q.dark.isActive }"
-        :label="$gettext('Delete')"
-        @click="confirmRemove = true"
-      />
-    </div>
-
-    <RemoveDialog
-      v-model="confirmRemove"
-      @confirmed="remove"
-      @canceled="confirmRemove = !confirmRemove"
-    />
+    </ItemDetail>
   </q-page>
 </template>
 
 <script>
-import Breadcrumbs from 'components/ui/Breadcrumbs'
-import Header from 'components/ui/Header'
-import MigasLink from 'components/MigasLink'
-import RemoveDialog from 'components/ui/RemoveDialog'
-import { detailMixin } from 'mixins/detail'
+import { ref, reactive, computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
+import ItemDetail from 'components/ui/ItemDetail'
+
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title,
-    }
-  },
-  components: {
-    Breadcrumbs,
-    Header,
-    RemoveDialog,
-    MigasLink,
-  },
-  mixins: [detailMixin],
-  data() {
-    const route = 'connections-list'
-    const title = this.$gettext('Connection')
-    const element = { id: 0 }
+  components: { ItemDetail },
+  setup() {
+    const { $gettext } = useGettext()
+    const uiStore = useUiStore()
 
-    return {
-      title,
-      originalTitle: title,
-      model: 'devices/connections',
-      listRoute: route,
-      addRoute: 'connection-add',
-      detailRoute: 'connection-detail',
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Devices'),
-          icon: 'mdi-printer-eye',
-        },
-        {
-          text: this.$gettext('Connections'),
-          icon: 'mdi-connection',
-          to: route,
-        },
-      ],
-      element,
-      emptyElement: Object.assign({}, element),
-      deviceTypes: [],
-      confirmRemove: false,
+    const title = ref($gettext('Connection'))
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
+
+    const routes = {
+      list: 'connections-list',
+      add: 'connection-add',
+      detail: 'connection-detail',
     }
-  },
-  computed: {
-    isValid() {
+    const model = 'devices/connections'
+
+    let element = reactive({ id: 0 })
+
+    const deviceTypes = ref([])
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Devices'),
+        icon: 'mdi-printer-eye',
+      },
+      {
+        text: $gettext('Connections'),
+        icon: modelIcon(model),
+        to: routes.list,
+      },
+    ])
+
+    const isValid = computed(() => {
       return (
-        this.element.name !== undefined &&
-        this.element.name.trim() !== '' &&
-        this.element.device_type !== undefined
+        element.name !== undefined &&
+        element.name.trim() !== '' &&
+        element.device_type !== undefined
       )
-    },
-  },
-  methods: {
-    async loadRelated() {
-      await this.$axios
+    })
+
+    const loadRelated = async () => {
+      await api
         .get('/api/v1/token/devices/types/')
         .then((response) => {
-          this.deviceTypes = response.data.results
+          deviceTypes.value = response.data.results
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
 
-    elementData() {
+    const elementData = () => {
       return {
-        name: this.element.name,
-        device_type: this.element.device_type.id,
-        fields: this.element.fields,
+        name: element.name,
+        device_type: element.device_type.id,
+        fields: element.fields,
       }
-    },
+    }
+
+    const resetElement = () => {
+      Object.assign(element, {
+        id: 0,
+        name: undefined,
+        device_type: null,
+        fields: undefined,
+      })
+    }
+
+    const setTitle = (value) => {
+      windowTitle.value = value
+    }
+
+    return {
+      breadcrumbs,
+      title,
+      model,
+      routes,
+      element,
+      deviceTypes,
+      isValid,
+      loadRelated,
+      elementData,
+      resetElement,
+      setTitle,
+      modelIcon,
+    }
   },
 }
 </script>

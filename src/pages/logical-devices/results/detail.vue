@@ -1,259 +1,241 @@
 <template>
   <q-page padding>
-    <Breadcrumbs :items="breadcrumbs" />
+    <ItemDetail
+      :breadcrumbs="breadcrumbs"
+      :original-title="title"
+      :model="model"
+      :routes="routes"
+      :element="element"
+      :element-data="elementData"
+      :is-valid="isValid"
+      @load-related="loadRelated"
+      @reset-element="resetElement"
+      @set-title="setTitle"
+    >
+      <template #fields>
+        <q-card-section>
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-select
+                v-model="element.device"
+                outlined
+                use-input
+                map-options
+                input-debounce="0"
+                :label="$gettext('Device')"
+                :options="devices"
+                @filter="filterDevices"
+                @filter-abort="abortFilterDevices"
+              >
+                <template #no-option>
+                  <q-item>
+                    <q-item-section v-translate class="text-grey">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
 
-    <Header :title="$gettext('Logical Device')">
-      <template v-if="element.id" #append
-        >:
-        <MigasLink
-          model="devices/logical"
-          :pk="element.id"
-          :value="element.__str__"
-          icon="mdi-printer-settings"
-        />
+                <template #option="scope">
+                  <q-item v-bind="scope.itemProps">
+                    {{ scope.opt.name }}
+                  </q-item>
+                </template>
+
+                <template #selected-item="scope">
+                  <q-chip
+                    removable
+                    dense
+                    :tabindex="scope.tabindex"
+                    class="q-ma-md"
+                    @remove="scope.removeAtIndex(scope.index)"
+                  >
+                    <MigasLink
+                      model="devices/devices"
+                      :pk="scope.opt.id"
+                      :value="scope.opt.name"
+                    />
+                  </q-chip>
+                </template>
+              </q-select>
+            </div>
+
+            <div class="col-6 col-md col-sm">
+              <SelectAttributes
+                v-model="element.attributes"
+                :label="$gettext('Attributes')"
+              />
+            </div>
+          </div>
+
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-select
+                v-model="element.capability"
+                outlined
+                :label="$gettext('Capability')"
+                :options="capabilities"
+                option-value="id"
+                option-label="name"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+                ><template #prepend>
+                  <q-icon :name="modelIcon('devices/capabilities')" />
+                </template>
+              </q-select>
+            </div>
+
+            <div class="col-6 col-md col-sm">
+              <q-input
+                v-model="element.alternative_capability_name"
+                outlined
+                :label="$gettext('Alternative Capability Name')"
+              />
+            </div>
+          </div>
+        </q-card-section>
       </template>
-    </Header>
-
-    <q-card>
-      <q-card-section>
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-select
-              v-model="element.device"
-              outlined
-              use-input
-              map-options
-              input-debounce="0"
-              :label="$gettext('Device')"
-              :options="devices"
-              @filter="filterDevices"
-              @filter-abort="abortFilterDevices"
-            >
-              <template #no-option>
-                <q-item>
-                  <q-item-section v-translate class="text-grey">
-                    No results
-                  </q-item-section>
-                </q-item>
-              </template>
-
-              <template #option="scope">
-                <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                  {{ scope.opt.name }}
-                </q-item>
-              </template>
-
-              <template #selected-item="scope">
-                <q-chip
-                  removable
-                  dense
-                  :tabindex="scope.tabindex"
-                  class="q-ma-md"
-                  @remove="scope.removeAtIndex(scope.index)"
-                >
-                  <MigasLink
-                    model="devices/devices"
-                    :pk="scope.opt.id"
-                    :value="scope.opt.name"
-                    icon="mdi-printer"
-                  />
-                </q-chip>
-              </template>
-            </q-select>
-          </div>
-
-          <div class="col-6 col-md col-sm">
-            <SelectAttributes
-              v-model="element.attributes"
-              :label="$gettext('Attributes')"
-            />
-          </div>
-        </div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-select
-              v-model="element.capability"
-              outlined
-              :label="$gettext('Capability')"
-              :options="capabilities"
-              option-value="id"
-              option-label="name"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-              ><template #prepend>
-                <q-icon name="mdi-format-list-bulleted-type" />
-              </template>
-            </q-select>
-          </div>
-
-          <div class="col-6 col-md col-sm">
-            <q-input
-              v-model="element.alternative_capability_name"
-              outlined
-              :label="$gettext('Alternative Capability Name')"
-            />
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-actions class="justify-around">
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and add other')"
-          icon="mdi-plus"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('add')"
-        />
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and continue editing')"
-          icon="mdi-content-save-edit"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement"
-        />
-        <q-btn
-          :label="$gettext('Save')"
-          color="primary"
-          icon="mdi-content-save-move"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('return')"
-        />
-      </q-card-actions>
-    </q-card>
-
-    <div v-if="$route.params.id && element.id" class="row q-pa-md">
-      <q-btn
-        flat
-        icon="mdi-delete"
-        :color="$q.dark.isActive ? 'white' : 'negative'"
-        :class="{ 'reversed-delete': $q.dark.isActive }"
-        :label="$gettext('Delete')"
-        @click="confirmRemove = true"
-      />
-    </div>
-
-    <RemoveDialog
-      v-model="confirmRemove"
-      @confirmed="remove"
-      @canceled="confirmRemove = !confirmRemove"
-    />
+    </ItemDetail>
   </q-page>
 </template>
 
 <script>
-import Breadcrumbs from 'components/ui/Breadcrumbs'
-import Header from 'components/ui/Header'
+import { ref, reactive, computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
+import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
 import SelectAttributes from 'components/ui/SelectAttributes'
-import RemoveDialog from 'components/ui/RemoveDialog'
-import { detailMixin } from 'mixins/detail'
-import { elementMixin } from 'mixins/element'
+
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title,
-    }
-  },
   components: {
-    Breadcrumbs,
-    Header,
-    RemoveDialog,
+    ItemDetail,
     MigasLink,
     SelectAttributes,
   },
-  mixins: [detailMixin, elementMixin],
-  data() {
-    const route = 'logical-devices-list'
-    const title = this.$gettext('Logical Device')
-    const element = { id: 0, attributes: [] }
+  setup() {
+    const { $gettext } = useGettext()
+    const uiStore = useUiStore()
 
-    return {
-      title,
-      originalTitle: title,
-      model: 'devices/logical',
-      listRoute: route,
-      addRoute: 'logical-device-add',
-      detailRoute: 'logical-device-detail',
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Devices'),
-          icon: 'mdi-printer-eye',
-        },
-        {
-          text: this.$gettext('Logical Devices'),
-          icon: 'mdi-printer-settings',
-          to: route,
-        },
-      ],
-      element,
-      emptyElement: Object.assign({}, element),
-      devices: [],
-      capabilities: [],
-      confirmRemove: false,
+    const title = ref($gettext('Logical Device'))
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
+
+    const routes = {
+      list: 'logical-devices-list',
+      add: 'logical-device-add',
+      detail: 'logical-device-detail',
     }
-  },
-  computed: {
-    isValid() {
-      return (
-        this.element.device !== undefined &&
-        this.element.capability !== undefined
-      )
-    },
-  },
-  methods: {
-    async loadRelated() {
-      await this.$axios
+    const model = 'devices/logical'
+
+    let element = reactive({ id: 0, attributes: [] })
+
+    const devices = ref([])
+    const capabilities = ref([])
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Devices'),
+        icon: 'mdi-printer-eye',
+      },
+      {
+        text: $gettext('Logical Devices'),
+        icon: modelIcon(model),
+        to: routes.list,
+      },
+    ])
+
+    const isValid = computed(() => {
+      return element.device !== undefined && element.capability !== undefined
+    })
+
+    const loadRelated = async () => {
+      await api
         .get('/api/v1/token/devices/capabilities/')
         .then((response) => {
-          this.capabilities = response.data.results
+          capabilities.value = response.data.results
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
 
-    elementData() {
+    const elementData = () => {
       return {
-        device: this.element.device.id,
-        capability: this.element.capability.id,
-        attributes: this.element.attributes.map((item) => item.id),
-        alternative_capability_name: this.element.alternative_capability_name,
+        device: element.device.id,
+        capability: element.capability.id,
+        attributes: element.attributes.map((item) => item.id),
+        alternative_capability_name: element.alternative_capability_name,
       }
-    },
+    }
 
-    async filterDevices(val, update, abort) {
+    const resetElement = () => {
+      Object.assign(element, {
+        id: 0,
+        device: null,
+        capability: null,
+        attributes: [],
+        alternative_capability_name: undefined,
+      })
+    }
+
+    const setTitle = (value) => {
+      windowTitle.value = value
+    }
+
+    const filterDevices = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
         abort()
         return
       }
 
-      await this.$axios
+      await api
         .get('/api/v1/token/devices/devices/', {
           params: { search: val.toLowerCase() },
         })
         .then((response) => {
-          this.devices = response.data.results
+          devices.value = response.data.results
         })
 
       update(() => {})
-    },
+    }
 
-    abortFilterDevices() {
+    const abortFilterDevices = () => {
       // console.log('delayed filter aborted')
-    },
+    }
+
+    return {
+      breadcrumbs,
+      title,
+      model,
+      routes,
+      element,
+      devices,
+      capabilities,
+      isValid,
+      loadRelated,
+      elementData,
+      resetElement,
+      setTitle,
+      modelIcon,
+      filterDevices,
+      abortFilterDevices,
+    }
   },
 }
 </script>

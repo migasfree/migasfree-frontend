@@ -1,342 +1,336 @@
 <template>
   <q-page padding>
-    <Breadcrumbs :items="breadcrumbs" />
+    <ItemDetail
+      :breadcrumbs="breadcrumbs"
+      :original-title="title"
+      :model="model"
+      :routes="routes"
+      :element="element"
+      :element-data="elementData"
+      :is-valid="isValid"
+      @load-related="loadRelated"
+      @set-related="setRelated"
+      @update-related="updateRelated"
+      @post-remove="postRemove"
+      @reset-element="resetElement"
+      @set-title="setTitle"
+    >
+      <template #fields>
+        <q-card-section>
+          <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
-    <Header :title="$gettext('Domain')">
-      <template v-if="element.id" #append
-        >:
-        <MigasLink
-          model="domains"
-          :pk="element.id"
-          :value="element.name"
-          icon="mdi-web"
-        />
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-12 col-md col-sm">
+              <q-input
+                v-model="element.name"
+                outlined
+                :label="$gettext('Name')"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+                @update:model-value="
+                  (v) => {
+                    element.name = v.toUpperCase()
+                  }
+                "
+              />
+            </div>
+          </div>
+
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-12 col-md col-sm">
+              <q-input
+                v-model="element.comment"
+                outlined
+                type="textarea"
+                :label="$gettext('Comment')"
+              />
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section>
+          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Attributes</div>
+
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <SelectAttributes
+                v-model="element.included_attributes"
+                :label="$gettext('Included')"
+              />
+            </div>
+
+            <div class="col-6 col-md col-sm">
+              <SelectAttributes
+                v-model="element.excluded_attributes"
+                :label="$gettext('Excluded')"
+              />
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section>
+          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Others</div>
+
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-select
+                v-model="element.tags"
+                outlined
+                use-input
+                map-options
+                multiple
+                counter
+                input-debounce="0"
+                :label="$gettext('Available Tags')"
+                :options="tags"
+                @filter="filterTags"
+                @filter-abort="abortFilterTags"
+              >
+                <template #no-option>
+                  <q-item>
+                    <q-item-section v-translate class="text-grey">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
+
+                <template #option="scope">
+                  <q-item v-bind="scope.itemProps">
+                    {{ attributeValue(scope.opt) }}
+                  </q-item>
+                </template>
+
+                <template #selected-item="scope">
+                  <q-chip
+                    removable
+                    dense
+                    :tabindex="scope.tabindex"
+                    class="q-ma-md"
+                    @remove="scope.removeAtIndex(scope.index)"
+                  >
+                    <MigasLink
+                      model="tags"
+                      :pk="scope.opt.id"
+                      :value="attributeValue(scope.opt)"
+                    />
+                  </q-chip>
+                </template>
+              </q-select>
+            </div>
+
+            <div class="col-6 col-md col-sm">
+              <q-select
+                v-model="element.domain_admins"
+                :options="userProfiles"
+                :label="$gettext('Domain Admins')"
+                outlined
+                multiple
+                counter
+                option-value="id"
+                option-label="name"
+              >
+                <template #selected-item="scope">
+                  <q-chip
+                    removable
+                    dense
+                    :tabindex="scope.tabindex"
+                    class="q-ma-md"
+                    @remove="scope.removeAtIndex(scope.index)"
+                  >
+                    <MigasLink
+                      model="user-profiles"
+                      :pk="scope.opt.id"
+                      :value="scope.opt.name"
+                    />
+                  </q-chip>
+                </template>
+              </q-select>
+            </div>
+          </div>
+        </q-card-section>
       </template>
-    </Header>
-
-    <q-card>
-      <q-card-section>
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-12 col-md col-sm">
-            <q-input
-              v-model="element.name"
-              outlined
-              :label="$gettext('Name')"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-              @input="
-                (v) => {
-                  element.name = v.toUpperCase()
-                }
-              "
-            />
-          </div>
-        </div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-12 col-md col-sm">
-            <q-input
-              v-model="element.comment"
-              outlined
-              type="textarea"
-              :label="$gettext('Comment')"
-            />
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-section>
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">Attributes</div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <SelectAttributes
-              v-model="element.included_attributes"
-              :label="$gettext('Included')"
-            />
-          </div>
-
-          <div class="col-6 col-md col-sm">
-            <SelectAttributes
-              v-model="element.excluded_attributes"
-              :label="$gettext('Excluded')"
-            />
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-section>
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">Others</div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-select
-              v-model="element.tags"
-              outlined
-              use-input
-              map-options
-              multiple
-              counter
-              input-debounce="0"
-              :label="$gettext('Available Tags')"
-              :options="tags"
-              @filter="filterTags"
-              @filter-abort="abortFilterTags"
-            >
-              <template #no-option>
-                <q-item>
-                  <q-item-section v-translate class="text-grey">
-                    No results
-                  </q-item-section>
-                </q-item>
-              </template>
-
-              <template #option="scope">
-                <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                  {{ attributeValue(scope.opt) }}
-                </q-item>
-              </template>
-
-              <template #selected-item="scope">
-                <q-chip
-                  removable
-                  dense
-                  :tabindex="scope.tabindex"
-                  class="q-ma-md"
-                  @remove="scope.removeAtIndex(scope.index)"
-                >
-                  <MigasLink
-                    model="tags"
-                    :pk="scope.opt.id"
-                    :value="attributeValue(scope.opt)"
-                    icon="mdi-tag"
-                  />
-                </q-chip>
-              </template>
-            </q-select>
-          </div>
-
-          <div class="col-6 col-md col-sm">
-            <q-select
-              v-model="element.domain_admins"
-              :options="userProfiles"
-              :label="$gettext('Domain Admins')"
-              outlined
-              multiple
-              counter
-              option-value="id"
-              option-label="name"
-            >
-              <template #selected-item="scope">
-                <q-chip
-                  removable
-                  dense
-                  :tabindex="scope.tabindex"
-                  class="q-ma-md"
-                  @remove="scope.removeAtIndex(scope.index)"
-                >
-                  <MigasLink
-                    model="user-profiles"
-                    :pk="scope.opt.id"
-                    :value="scope.opt.name"
-                    icon="mdi-account-cog"
-                  />
-                </q-chip>
-              </template>
-            </q-select>
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-actions class="justify-around">
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and add other')"
-          icon="mdi-plus"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('add')"
-        />
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and continue editing')"
-          icon="mdi-content-save-edit"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement"
-        />
-        <q-btn
-          :label="$gettext('Save')"
-          color="primary"
-          icon="mdi-content-save-move"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('return')"
-        />
-      </q-card-actions>
-    </q-card>
-
-    <div v-if="$route.params.id && element.id" class="row q-pa-md">
-      <q-btn
-        flat
-        icon="mdi-delete"
-        :color="$q.dark.isActive ? 'white' : 'negative'"
-        :class="{ 'reversed-delete': $q.dark.isActive }"
-        :label="$gettext('Delete')"
-        @click="confirmRemove = true"
-      />
-    </div>
-
-    <RemoveDialog
-      v-model="confirmRemove"
-      @confirmed="remove"
-      @canceled="confirmRemove = !confirmRemove"
-    />
+    </ItemDetail>
   </q-page>
 </template>
 
 <script>
-import Breadcrumbs from 'components/ui/Breadcrumbs'
-import Header from 'components/ui/Header'
+import { ref, reactive, computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+import { useAuthStore } from 'stores/auth'
+
+import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
 import SelectAttributes from 'components/ui/SelectAttributes'
-import RemoveDialog from 'components/ui/RemoveDialog'
-import { detailMixin } from 'mixins/detail'
-import { elementMixin } from 'mixins/element'
+
+import { useElement, modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title,
-    }
-  },
   components: {
-    Breadcrumbs,
-    Header,
-    RemoveDialog,
+    ItemDetail,
     MigasLink,
     SelectAttributes,
   },
-  mixins: [detailMixin, elementMixin],
-  data() {
-    const route = 'domains-list'
-    const title = this.$gettext('Domain')
-    const element = {
+  setup() {
+    const uiStore = useUiStore()
+    const authStore = useAuthStore()
+    const { attributeValue } = useElement()
+    const { $gettext } = useGettext()
+
+    const title = ref($gettext('Domain'))
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
+
+    const routes = {
+      list: 'domains-list',
+      add: 'domain-add',
+      detail: 'domain-detail',
+    }
+    const model = 'domains'
+
+    let element = reactive({
       id: 0,
+      name: undefined,
+      comment: undefined,
       included_attributes: [],
       excluded_attributes: [],
       tags: [],
       domain_admins: [],
-    }
+    })
 
-    return {
-      title,
-      originalTitle: title,
-      model: 'domains',
-      listRoute: route,
-      addRoute: 'domain-add',
-      detailRoute: 'domain-detail',
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs',
-        },
-        {
-          text: this.$gettext('Domains'),
-          icon: 'mdi-web',
-          to: route,
-        },
-      ],
-      element,
-      emptyElement: Object.assign({}, element),
-      tags: [],
-      userProfiles: [],
-      confirmRemove: false,
-    }
-  },
-  computed: {
-    isValid() {
-      return this.element.name !== undefined && this.element.name.trim() !== ''
-    },
-  },
-  methods: {
-    async loadRelated() {
-      await this.$axios
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Configuration'),
+        icon: 'mdi-cogs',
+      },
+      {
+        text: $gettext('Domains'),
+        icon: modelIcon(model),
+        to: routes.list,
+      },
+    ])
+
+    const tags = reactive([])
+    const userProfiles = reactive([])
+
+    const isValid = computed(() => {
+      return element.name !== undefined && element.name.trim() !== ''
+    })
+
+    const loadRelated = async () => {
+      await api
         .get('/api/v1/token/user-profiles/domain-admins/')
         .then((response) => {
           Object.entries(response.data).map(([index, item]) => {
-            this.userProfiles.push({
+            userProfiles.push({
               id: item.id,
               name: item.username,
             })
           })
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
 
-    setRelated() {
-      this.element.domain_admins = this.element.domain_admins.map(
-        ({ id, username }) => ({ id, name: username })
-      )
-    },
+    const setRelated = () => {
+      element.domain_admins = element.domain_admins.map(({ id, username }) => ({
+        id,
+        name: username,
+      }))
+    }
 
-    updateRelated() {
-      if (this.element.id)
-        this.$store.dispatch('auth/addDomain', {
-          id: this.element.id,
-          name: this.element.name,
+    const updateRelated = () => {
+      if (element.id)
+        authStore.addDomain({
+          id: element.id,
+          name: element.name,
         })
-    },
+    }
 
-    postRemove() {
-      this.$store.commit('auth/deleteDomain', this.element.id)
-    },
+    const postRemove = () => {
+      authStore.deleteDomain(element.id)
+    }
 
-    elementData() {
+    const elementData = () => {
       return {
-        name: this.element.name,
-        comment: this.element.comment,
-        included_attributes: this.element.included_attributes.map(
-          (item) => item.id
-        ),
-        excluded_attributes: this.element.excluded_attributes.map(
-          (item) => item.id
-        ),
-        tags: this.element.tags.map((item) => item.id),
-        domain_admins: this.element.domain_admins.map((item) => item.id),
+        name: element.name,
+        comment: element.comment,
+        included_attributes: element.included_attributes.map((item) => item.id),
+        excluded_attributes: element.excluded_attributes.map((item) => item.id),
+        tags: element.tags.map((item) => item.id),
+        domain_admins: element.domain_admins.map((item) => item.id),
       }
-    },
+    }
 
-    async filterTags(val, update, abort) {
+    const filterTags = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
         abort()
         return
       }
 
-      await this.$axios
+      await api
         .get('/api/v1/token/tags/', { params: { search: val.toLowerCase() } })
         .then((response) => {
-          this.tags = response.data.results
+          Object.assign(tags, response.data.results)
         })
 
       update(() => {})
-    },
+    }
 
-    abortFilterTags() {
+    const abortFilterTags = () => {
       // console.log('delayed filter aborted')
-    },
+    }
+
+    const resetElement = () => {
+      Object.assign(element, {
+        id: 0,
+        name: undefined,
+        comment: '',
+        included_attributes: [],
+        excluded_attributes: [],
+        tags: [],
+        domain_admins: [],
+      })
+    }
+
+    const setTitle = (value) => {
+      windowTitle.value = value
+    }
+
+    return {
+      breadcrumbs,
+      title,
+      model,
+      routes,
+      element,
+      userProfiles,
+      tags,
+      isValid,
+      filterTags,
+      abortFilterTags,
+      attributeValue,
+      loadRelated,
+      setRelated,
+      updateRelated,
+      postRemove,
+      elementData,
+      resetElement,
+      setTitle,
+    }
   },
 }
 </script>

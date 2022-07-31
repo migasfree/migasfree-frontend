@@ -1,431 +1,427 @@
 <template>
   <q-page padding>
-    <Breadcrumbs :items="breadcrumbs" />
+    <ItemDetail
+      :breadcrumbs="breadcrumbs"
+      :original-title="title"
+      :model="model"
+      :routes="routes"
+      :element="element"
+      :element-data="elementData"
+      :is-valid="isValid"
+      @load-related="loadRelated"
+      @update-related="updateRelated"
+      @reset-element="resetElement"
+      @reset-related="resetRelated"
+      @set-title="setTitle"
+    >
+      <template #fields>
+        <q-card-section>
+          <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
-    <Header :title="$gettext('Model')">
-      <template v-if="element.id" #append
-        >:
-        <MigasLink
-          model="devices/models"
-          :pk="element.id"
-          :value="element.name"
-          icon="mdi-shape"
-        />
-      </template>
-    </Header>
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-select
+                v-model="element.device_type"
+                outlined
+                :label="$gettext('Type')"
+                :options="deviceTypes"
+                option-value="id"
+                option-label="name"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+              >
+                <template #prepend>
+                  <q-icon :name="modelIcon('devices/types')" />
+                </template>
+              </q-select>
+            </div>
 
-    <q-card>
-      <q-card-section>
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-select
-              v-model="element.device_type"
-              outlined
-              :label="$gettext('Type')"
-              :options="deviceTypes"
-              option-value="id"
-              option-label="name"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-            >
-              <template #prepend>
-                <q-icon name="mdi-devices" />
-              </template>
-            </q-select>
+            <div class="col-6 col-md col-sm">
+              <q-select
+                v-model="element.manufacturer"
+                outlined
+                :label="$gettext('Manufacturer')"
+                :options="manufacturers"
+                option-value="id"
+                option-label="name"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+              >
+                <template #prepend>
+                  <q-icon :name="modelIcon('devices/manufacturers')" />
+                </template>
+              </q-select>
+            </div>
           </div>
 
-          <div class="col-6 col-md col-sm">
-            <q-select
-              v-model="element.manufacturer"
-              outlined
-              :label="$gettext('Manufacturer')"
-              :options="manufacturers"
-              option-value="id"
-              option-label="name"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-            >
-              <template #prepend>
-                <q-icon name="mdi-factory" />
-              </template>
-            </q-select>
-          </div>
-        </div>
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-select
+                v-model="element.connections"
+                outlined
+                multiple
+                counter
+                :label="$gettext('Connections')"
+                :options="connections"
+                option-value="id"
+                option-label="name"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+              >
+                <template #prepend>
+                  <q-icon :name="modelIcon('devices/connections')" />
+                </template>
+              </q-select>
+            </div>
 
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-select
-              v-model="element.connections"
-              outlined
-              multiple
-              counter
-              :label="$gettext('Connections')"
-              :options="connections"
-              option-value="id"
-              option-label="name"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-            >
-              <template #prepend>
-                <q-icon name="mdi-connection" />
-              </template>
-            </q-select>
+            <div class="col-6 col-md col-sm">
+              <q-input
+                v-model="element.name"
+                outlined
+                :label="$gettext('Name')"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+              />
+            </div>
           </div>
+        </q-card-section>
 
-          <div class="col-6 col-md col-sm">
-            <q-input
-              v-model="element.name"
-              outlined
-              :label="$gettext('Name')"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
+        <q-card-section>
+          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Drivers</div>
+
+          <q-list v-if="drivers.length > 0" class="q-pa-md" bordered separator>
+            <q-item v-for="(driver, index) in drivers" :key="index">
+              <q-item-section side top>
+                <q-btn
+                  flat
+                  dense
+                  round
+                  color="negative"
+                  icon="mdi-delete"
+                  @click="removeInline(index)"
+                  ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
+                >
+              </q-item-section>
+
+              <q-item-section>
+                <div class="row q-pa-md q-gutter-md">
+                  <div class="col-5 col-md col-sm">
+                    <q-select
+                      v-model="driver.project"
+                      outlined
+                      :label="$gettext('Project')"
+                      :options="projects"
+                      option-value="id"
+                      option-label="name"
+                      lazy-rules
+                      :rules="[(val) => !!val || $gettext('* Required')]"
+                    >
+                      <template #prepend>
+                        <q-icon :name="modelIcon('projects')" />
+                      </template>
+                    </q-select>
+                  </div>
+
+                  <div class="col-5 col-md col-sm">
+                    <q-select
+                      v-model="driver.capability"
+                      outlined
+                      :label="$gettext('Capability')"
+                      :options="capabilities"
+                      option-value="id"
+                      option-label="name"
+                      lazy-rules
+                      :rules="[(val) => !!val || $gettext('* Required')]"
+                    >
+                      <template #prepend>
+                        <q-icon :name="modelIcon('devices/capabilities')" />
+                      </template>
+                    </q-select>
+                  </div>
+                </div>
+
+                <div class="row q-pa-md q-gutter-md">
+                  <div class="col-5 col-md col-sm">
+                    <q-input
+                      v-model="driver.name"
+                      outlined
+                      :label="$gettext('Name')"
+                    />
+                  </div>
+
+                  <div class="col-5 col-md col-sm">
+                    <q-input
+                      v-model="driver.packages_to_install"
+                      outlined
+                      type="textarea"
+                      :label="$gettext('Packages to Install')"
+                    />
+                  </div>
+                </div>
+              </q-item-section>
+            </q-item>
+          </q-list>
+
+          <div class="q-pa-md">
+            <q-btn
+              icon="mdi-plus"
+              :label="$gettext('Add other Driver')"
+              @click="addInline"
             />
           </div>
-        </div>
-      </q-card-section>
-
-      <q-card-section>
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">Drivers</div>
-
-        <q-list v-if="drivers.length > 0" class="q-pa-md" bordered separator>
-          <q-item v-for="(driver, index) in drivers" :key="index">
-            <q-item-section side top>
-              <q-btn
-                flat
-                dense
-                round
-                color="negative"
-                icon="mdi-delete"
-                @click="removeInline(index)"
-                ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-              >
-            </q-item-section>
-
-            <q-item-section>
-              <div class="row q-pa-md q-gutter-md">
-                <div class="col-5 col-md col-sm">
-                  <q-select
-                    v-model="driver.project"
-                    outlined
-                    :label="$gettext('Project')"
-                    :options="projects"
-                    option-value="id"
-                    option-label="name"
-                    lazy-rules
-                    :rules="[(val) => !!val || $gettext('* Required')]"
-                  >
-                    <template #prepend>
-                      <q-icon name="mdi-sitemap" />
-                    </template>
-                  </q-select>
-                </div>
-
-                <div class="col-5 col-md col-sm">
-                  <q-select
-                    v-model="driver.capability"
-                    outlined
-                    :label="$gettext('Capability')"
-                    :options="capabilities"
-                    option-value="id"
-                    option-label="name"
-                    lazy-rules
-                    :rules="[(val) => !!val || $gettext('* Required')]"
-                  >
-                    <template #prepend>
-                      <q-icon name="mdi-format-list-bulleted-type" />
-                    </template>
-                  </q-select>
-                </div>
-              </div>
-
-              <div class="row q-pa-md q-gutter-md">
-                <div class="col-5 col-md col-sm">
-                  <q-input
-                    v-model="driver.name"
-                    outlined
-                    :label="$gettext('Name')"
-                  />
-                </div>
-
-                <div class="col-5 col-md col-sm">
-                  <q-input
-                    v-model="driver.packages_to_install"
-                    outlined
-                    type="textarea"
-                    :label="$gettext('Packages to Install')"
-                  />
-                </div>
-              </div>
-            </q-item-section>
-          </q-item>
-        </q-list>
-
-        <div class="q-pa-md">
-          <q-btn
-            icon="mdi-plus"
-            :label="$gettext('Add other Driver')"
-            @click="addInline"
-          />
-        </div>
-      </q-card-section>
-
-      <q-card-actions class="justify-around">
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and add other')"
-          icon="mdi-plus"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('add')"
-        />
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and continue editing')"
-          icon="mdi-content-save-edit"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement"
-        />
-        <q-btn
-          :label="$gettext('Save')"
-          color="primary"
-          icon="mdi-content-save-move"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('return')"
-        />
-      </q-card-actions>
-    </q-card>
-
-    <div v-if="$route.params.id && element.id" class="row q-pa-md">
-      <q-btn
-        flat
-        icon="mdi-delete"
-        :color="$q.dark.isActive ? 'white' : 'negative'"
-        :class="{ 'reversed-delete': $q.dark.isActive }"
-        :label="$gettext('Delete')"
-        @click="confirmRemove = true"
-      />
-    </div>
-
-    <RemoveDialog
-      v-model="confirmRemove"
-      @confirmed="remove"
-      @canceled="confirmRemove = !confirmRemove"
-    />
+        </q-card-section>
+      </template>
+    </ItemDetail>
   </q-page>
 </template>
 
 <script>
-import Breadcrumbs from 'components/ui/Breadcrumbs'
-import Header from 'components/ui/Header'
-import MigasLink from 'components/MigasLink'
-import RemoveDialog from 'components/ui/RemoveDialog'
-import { detailMixin } from 'mixins/detail'
-import { elementMixin } from 'mixins/element'
+import { ref, reactive, computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
+import ItemDetail from 'components/ui/ItemDetail'
+
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title,
-    }
-  },
   components: {
-    Breadcrumbs,
-    Header,
-    RemoveDialog,
-    MigasLink,
+    ItemDetail,
   },
-  mixins: [detailMixin, elementMixin],
-  data() {
-    const route = 'models-list'
-    const title = this.$gettext('Model')
-    const element = { id: 0, connections: [] }
+  setup() {
+    const { $gettext } = useGettext()
+    const uiStore = useUiStore()
 
-    return {
-      title,
-      originalTitle: title,
-      model: 'devices/models',
-      listRoute: route,
-      addRoute: 'model-add',
-      detailRoute: 'model-detail',
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Devices'),
-          icon: 'mdi-printer-eye',
-        },
-        {
-          text: this.$gettext('Models'),
-          icon: 'mdi-shape',
-          to: route,
-        },
-      ],
-      element,
-      emptyElement: Object.assign({}, element),
-      deviceTypes: [],
-      manufacturers: [],
-      connections: [],
-      drivers: [],
-      removedDrivers: [],
-      projects: [],
-      capabilities: [],
-      confirmRemove: false,
+    const title = ref($gettext('Model'))
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
+
+    const routes = {
+      list: 'models-list',
+      add: 'model-add',
+      detail: 'model-detail',
     }
-  },
-  computed: {
-    isValid() {
+    const model = 'devices/models'
+
+    let element = reactive({ id: 0, connections: [] })
+
+    const deviceTypes = ref([])
+    const manufacturers = ref([])
+    const connections = ref([])
+    const drivers = ref([])
+    const removedDrivers = ref([])
+    const projects = ref([])
+    const capabilities = ref([])
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Devices'),
+        icon: 'mdi-printer-eye',
+      },
+      {
+        text: $gettext('Models'),
+        icon: modelIcon(model),
+        to: routes.list,
+      },
+    ])
+
+    const isValid = computed(() => {
       return (
-        this.element.device_type !== undefined &&
-        this.element.manufacturer !== undefined &&
-        this.element.name !== undefined &&
-        this.element.name.trim() !== ''
+        element.device_type !== undefined &&
+        element.manufacturer !== undefined &&
+        element.name !== undefined &&
+        element.name.trim() !== ''
       )
-    },
-  },
-  methods: {
-    async loadRelated() {
-      await this.$axios
+    })
+
+    const loadRelated = async () => {
+      await api
         .get('/api/v1/token/devices/types/')
         .then((response) => {
-          this.deviceTypes = response.data.results
+          deviceTypes.value = response.data.results
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      await this.$axios
+      await api
         .get('/api/v1/token/devices/manufacturers/')
         .then((response) => {
-          this.manufacturers = response.data.results
+          manufacturers.value = response.data.results
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      await this.$axios
+      await api
         .get('/api/v1/token/devices/connections/')
         .then((response) => {
-          this.connections = response.data.results
+          connections.value = response.data.results
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      await this.$axios
+      await api
         .get('/api/v1/token/projects/')
         .then((response) => {
-          this.projects = response.data.results
+          projects.value = response.data.results
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      await this.$axios
+      await api
         .get('/api/v1/token/devices/capabilities/')
         .then((response) => {
-          this.capabilities = response.data.results
+          capabilities.value = response.data.results
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      if (this.element.id) {
-        await this.$axios
-          .get(`/api/v1/token/devices/drivers/?model__id=${this.element.id}`)
+      if (element.id) {
+        await api
+          .get(`/api/v1/token/devices/drivers/?model__id=${element.id}`)
           .then((response) => {
-            this.drivers = response.data.results
-            this.drivers.forEach((item) => {
+            drivers.value = response.data.results
+            drivers.value.forEach((item) => {
               item.packages_to_install = item.packages_to_install.join('\n')
             })
           })
           .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
+            uiStore.notifyError(error)
           })
       }
-    },
+    }
 
-    elementData() {
+    const elementData = () => {
       return {
-        device_type: this.element.device_type.id,
-        manufacturer: this.element.manufacturer.id,
-        name: this.element.name,
-        connections: this.element.connections.map((item) => item.id),
+        device_type: element.device_type.id,
+        manufacturer: element.manufacturer.id,
+        name: element.name,
+        connections: element.connections.map((item) => item.id),
       }
-    },
+    }
 
-    addInline() {
-      this.drivers.push({
+    const updateRelated = async () => {
+      drivers.value.forEach((driver) => {
+        if (driver.project === undefined || driver.capability === undefined) {
+          return
+        }
+
+        if (driver.id > 0) {
+          api
+            .patch(`/api/v1/token/devices/drivers/${driver.id}/`, {
+              model: element.id,
+              project: driver.project.id,
+              capability: driver.capability.id,
+              name: driver.name,
+              packages_to_install:
+                driver.packages_to_install !== null
+                  ? driver.packages_to_install.split('\n')
+                  : [],
+            })
+            .catch((error) => {
+              uiStore.notifyError(error)
+            })
+        } else {
+          api
+            .post('/api/v1/token/devices/drivers/', {
+              model: element.id,
+              project: driver.project.id,
+              capability: driver.capability.id,
+              name: driver.name,
+              packages_to_install:
+                driver.packages_to_install !== null
+                  ? driver.packages_to_install.split('\n')
+                  : [],
+            })
+            .catch((error) => {
+              uiStore.notifyError(error)
+            })
+        }
+      })
+
+      removedDrivers.value.forEach((id) => {
+        api.delete(`/api/v1/token/devices/drivers/${id}/`).catch((error) => {
+          uiStore.notifyError(error)
+        })
+      })
+    }
+
+    const resetElement = () => {
+      Object.assign(element, {
+        id: 0,
+        name: undefined,
+        device_type: null,
+        manufacturer: null,
+        connections: [],
+      })
+    }
+
+    const resetRelated = () => {
+      drivers.value = []
+      removedDrivers.value = []
+    }
+
+    const setTitle = (value) => {
+      windowTitle.value = value
+    }
+
+    const addInline = () => {
+      drivers.value.push({
         id: 0,
         project: null,
         capability: null,
         name: null,
         packages_to_install: null,
       })
-    },
+    }
 
-    removeInline(index) {
-      const removedItem = this.drivers.splice(index, 1)[0]
+    const removeInline = (index) => {
+      const removedItem = drivers.value.splice(index, 1)[0]
       if (removedItem.id > 0) {
-        this.removedDrivers.push(removedItem.id)
+        removedDrivers.value.push(removedItem.id)
       }
-    },
+    }
 
-    async updateRelated() {
-      this.drivers.forEach((driver) => {
-        if (driver.project === undefined || driver.capability === undefined) {
-          return
-        }
-
-        if (driver.id > 0) {
-          this.$axios
-            .patch(`/api/v1/token/devices/drivers/${driver.id}/`, {
-              model: this.element.id,
-              project: driver.project.id,
-              capability: driver.capability.id,
-              name: driver.name,
-              packages_to_install:
-                driver.packages_to_install !== null
-                  ? driver.packages_to_install.split('\n')
-                  : [],
-            })
-            .catch((error) => {
-              this.$store.dispatch('ui/notifyError', error)
-            })
-        } else {
-          this.$axios
-            .post('/api/v1/token/devices/drivers/', {
-              model: this.element.id,
-              project: driver.project.id,
-              capability: driver.capability.id,
-              name: driver.name,
-              packages_to_install:
-                driver.packages_to_install !== null
-                  ? driver.packages_to_install.split('\n')
-                  : [],
-            })
-            .catch((error) => {
-              this.$store.dispatch('ui/notifyError', error)
-            })
-        }
-      })
-
-      this.removedDrivers.forEach((id) => {
-        this.$axios
-          .delete(`/api/v1/token/devices/drivers/${id}/`)
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-      })
-    },
+    return {
+      breadcrumbs,
+      title,
+      model,
+      routes,
+      element,
+      deviceTypes,
+      manufacturers,
+      connections,
+      drivers,
+      removedDrivers,
+      projects,
+      capabilities,
+      isValid,
+      elementData,
+      loadRelated,
+      updateRelated,
+      resetElement,
+      resetRelated,
+      setTitle,
+      addInline,
+      removeInline,
+      modelIcon,
+    }
   },
 }
 </script>

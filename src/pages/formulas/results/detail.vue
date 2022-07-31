@@ -1,25 +1,19 @@
 <template>
   <q-page padding>
-    <Breadcrumbs :items="breadcrumbs" />
-
-    <Header :title="$gettext('Formula')">
-      <template v-if="element.id" #append
-        >:
-        <MigasLink
-          model="formulas"
-          :pk="element.id"
-          :value="element.name"
-          icon="mdi-function-variant"
-        />
-      </template>
-    </Header>
-
-    <q-banner v-if="isBasic" rounded class="bg-warning text-black">
-      <translate>No data available.</translate>
-    </q-banner>
-
-    <template v-else>
-      <q-card>
+    <ItemDetail
+      :breadcrumbs="breadcrumbs"
+      :original-title="title"
+      :model="model"
+      :routes="routes"
+      :element="element"
+      :element-data="elementData"
+      :is-valid="isValid"
+      :no-data="isBasic"
+      @load-related="loadRelated"
+      @reset-element="resetElement"
+      @set-title="setTitle"
+    >
+      <template #fields>
         <q-card-section>
           <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
@@ -66,7 +60,7 @@
                       }
                     ),
                 ]"
-                @input="
+                @update:model-value="
                   (v) => {
                     element.prefix = v.toUpperCase()
                   }
@@ -127,188 +121,172 @@
             </div>
           </div>
         </q-card-section>
-
-        <q-card-actions class="justify-around">
-          <q-btn
-            flat
-            color="primary"
-            :label="$gettext('Save and add other')"
-            icon="mdi-plus"
-            :loading="loading"
-            :disabled="!isValid || loading"
-            @click="updateElement('add')"
-          />
-          <q-btn
-            flat
-            color="primary"
-            :label="$gettext('Save and continue editing')"
-            icon="mdi-content-save-edit"
-            :loading="loading"
-            :disabled="!isValid || loading"
-            @click="updateElement"
-          />
-          <q-btn
-            :label="$gettext('Save')"
-            color="primary"
-            icon="mdi-content-save-move"
-            :loading="loading"
-            :disabled="!isValid || loading"
-            @click="updateElement('return')"
-          />
-        </q-card-actions>
-      </q-card>
-
-      <div v-if="$route.params.id && element.id" class="row q-pa-md">
-        <q-btn
-          flat
-          icon="mdi-delete"
-          :color="$q.dark.isActive ? 'white' : 'negative'"
-          :class="{ 'reversed-delete': $q.dark.isActive }"
-          :label="$gettext('Delete')"
-          @click="confirmRemove = true"
-        />
-      </div>
-
-      <RemoveDialog
-        v-model="confirmRemove"
-        @confirmed="remove"
-        @canceled="confirmRemove = !confirmRemove"
-      />
-    </template>
+      </template>
+    </ItemDetail>
   </q-page>
 </template>
 
 <script>
-import Breadcrumbs from 'components/ui/Breadcrumbs'
-import Header from 'components/ui/Header'
-import MigasLink from 'components/MigasLink'
+import { ref, reactive, computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
+import ItemDetail from 'components/ui/ItemDetail'
 import CodeEditor from 'components/ui/CodeEditor'
-import RemoveDialog from 'components/ui/RemoveDialog'
-import { detailMixin } from 'mixins/detail'
+
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title,
-    }
-  },
   components: {
-    Breadcrumbs,
-    Header,
-    RemoveDialog,
-    MigasLink,
+    ItemDetail,
     CodeEditor,
   },
-  mixins: [detailMixin],
-  data() {
-    const route = 'formulas-list'
-    const title = this.$gettext('Formula')
-    const element = { id: 0, enabled: false, code: '' }
+  setup() {
+    const uiStore = useUiStore()
+    const { $gettext } = useGettext()
 
-    return {
-      title,
-      originalTitle: title,
-      model: 'formulas',
-      listRoute: route,
-      addRoute: 'formula-add',
-      detailRoute: 'formula-detail',
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs',
-        },
-        {
-          text: this.$gettext('Formulas'),
-          icon: 'mdi-function-variant',
-          to: route,
-        },
-      ],
-      element,
-      emptyElement: Object.assign({}, element),
-      languages: [],
-      kind: [],
-      confirmRemove: false,
+    const title = ref($gettext('Formula'))
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
+
+    const routes = {
+      list: 'formulas-list',
+      add: 'formula-add',
+      detail: 'formula-detail',
     }
-  },
-  computed: {
-    isValid() {
+    const model = 'formulas'
+
+    let element = reactive({ id: 0, enabled: false, code: '' })
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Configuration'),
+        icon: 'mdi-cogs',
+      },
+      {
+        text: $gettext('Formulas'),
+        icon: modelIcon(model),
+        to: routes.list,
+      },
+    ])
+
+    const languages = ref([])
+    const kind = ref([])
+
+    const isValid = computed(() => {
       return (
-        this.element.name !== undefined &&
-        this.element.name.trim() !== '' &&
-        this.element.language !== undefined &&
-        this.element.kind !== undefined &&
-        this.element.prefix !== undefined &&
-        this.element.prefix.length <= 3 &&
-        this.element.code !== undefined &&
-        this.element.code.trim() !== ''
+        element.name !== undefined &&
+        element.name.trim() !== '' &&
+        element.language !== undefined &&
+        element.kind !== undefined &&
+        element.prefix !== undefined &&
+        element.prefix.length <= 3 &&
+        element.code !== undefined &&
+        element.code.trim() !== ''
       )
-    },
+    })
 
-    isBasic() {
-      return this.element.id && this.element.sort === 'basic'
-    },
+    const isBasic = computed(() => {
+      return element.id && element.sort === 'basic'
+    })
 
-    highlightLang() {
-      if (
-        'language' in this.element &&
-        typeof this.element.language === 'object'
-      )
-        return this.element.language.name
+    const highlightLang = computed(() => {
+      if ('language' in element && typeof element.language === 'object')
+        return element.language.name
       return 'python'
-    },
-  },
-  methods: {
-    async loadRelated() {
-      await this.$axios
+    })
+
+    const loadRelated = async () => {
+      await api
         .get(`/api/v1/token/properties/kind/`)
         .then((response) => {
           Object.entries(response.data).map(([key, val]) => {
-            this.kind.push({
+            kind.value.push({
               id: key,
               name: val,
             })
           })
-          if (this.element.id && typeof this.element.kind === 'string')
-            this.element.kind = this.kind.find((x) => x.id == this.element.kind)
+          if (element.id && typeof element.kind === 'string')
+            element.kind = kind.value.find((x) => x.id == element.kind)
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      await this.$axios
+      await api
         .get(`/api/v1/public/languages/`)
         .then((response) => {
           Object.entries(response.data).map(([key, val]) => {
-            this.languages.push({
+            languages.value.push({
               id: parseInt(key),
               name: val,
             })
           })
-          if (this.element.id && typeof this.element.language === 'number')
-            this.element.language = this.languages.find(
-              (x) => x.id === this.element.language
+          if (element.id && typeof element.language === 'number')
+            element.language = languages.value.find(
+              (x) => x.id === element.language
             )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
 
-    elementData() {
+    const elementData = () => {
       return {
-        name: this.element.name,
-        prefix: this.element.prefix,
-        enabled: this.element.enabled,
-        kind: this.element.kind.id,
-        language: this.element.language.id,
-        code: this.element.code,
+        name: element.name,
+        prefix: element.prefix,
+        enabled: element.enabled,
+        kind: element.kind.id,
+        language: element.language.id,
+        code: element.code,
       }
-    },
+    }
+
+    const resetElement = () => {
+      Object.assign(element, {
+        id: 0,
+        name: undefined,
+        prefix: undefined,
+        enabled: false,
+        kind: undefined,
+        language: undefined,
+        code: '',
+      })
+    }
+
+    const setTitle = (value) => {
+      windowTitle.value = value
+    }
+
+    return {
+      breadcrumbs,
+      title,
+      model,
+      routes,
+      element,
+      kind,
+      languages,
+      isBasic,
+      isValid,
+      highlightLang,
+      elementData,
+      loadRelated,
+      resetElement,
+      setTitle,
+    }
   },
 }
 </script>

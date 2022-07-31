@@ -1,255 +1,192 @@
 <template>
   <q-page padding>
-    <Breadcrumbs :items="breadcrumbs" />
-
-    <Header :title="$gettext('Package')">
-      <template v-if="element.id" #append
-        >:
-        <MigasLink
-          model="packages"
-          :pk="element.id"
-          :value="element.fullname"
-          icon="mdi-package-variant"
-        />
-        <q-btn
-          v-if="element.store.id"
-          class="q-ma-md"
-          size="md"
-          icon="mdi-information"
-          :label="$gettext('Package Information')"
-          color="info"
-          text-color="black"
-          @click="
-            $router.push({
-              name: 'package-information',
-              params: { id: element.id },
-            })
-          "
-        />
-        <q-btn
-          v-if="element.url"
-          class="q-ma-md"
-          size="md"
-          icon="mdi-download"
-          :label="$gettext('Download')"
-          color="info"
-          text-color="black"
-          type="a"
-          :href="`${$store.getters['ui/server']}${element.url}`"
-        />
-      </template>
-    </Header>
-
-    <q-card>
-      <q-card-section>
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <template v-if="element.id">
-              <translate>Project</translate>:
-              <MigasLink
-                model="projects"
-                :pk="element.project.id"
-                :value="element.project.name"
-                icon="mdi-sitemap"
-              />
-            </template>
-            <q-input
-              v-else
-              v-model="projectStore.selected"
-              outlined
-              readonly
-              :label="$gettext('Project / Store')"
-              @input="$refs.menu.show()"
-            >
-              <template #append>
-                <q-icon name="mdi-menu-down" class="cursor-pointer" />
-              </template>
-
-              <q-menu ref="menu" fit auto-close>
-                <q-tree
-                  ref="tree"
-                  class="q-ma-sm"
-                  :nodes="projectStore.items"
-                  node-key="id"
-                  label-key="label"
-                  :default-expand-all="true"
-                  :selected="projectStore.selected"
-                  @update:selected="nodeSelected"
-                  @lazy-load="onLazyLoad"
+    <ItemDetail
+      :breadcrumbs="breadcrumbs"
+      :original-title="title"
+      :model="model"
+      :routes="routes"
+      :element="element"
+      :element-data="elementData"
+      :is-valid="isValid"
+      :visible-actions="element.id === 0"
+      @load-related="loadRelated"
+      @reset-element="resetElement"
+      @reset-related="resetRelated"
+      @set-title="setTitle"
+    >
+      <template #fields>
+        <q-card-section>
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <template v-if="element.id">
+                <translate>Project</translate>:
+                <MigasLink
+                  model="projects"
+                  :pk="element.project.id"
+                  :value="element.project.name"
                 />
-              </q-menu>
-            </q-input>
+              </template>
+              <q-input
+                v-else
+                v-model="projectStore.selected"
+                outlined
+                readonly
+                :label="$gettext('Project / Store')"
+                @update:model-value="menu.value.show()"
+              >
+                <template #append>
+                  <q-icon name="mdi-menu-down" class="cursor-pointer" />
+                </template>
+
+                <q-menu ref="menu" fit auto-close>
+                  <q-tree
+                    ref="tree"
+                    class="q-ma-sm"
+                    :nodes="projectStore.items"
+                    node-key="id"
+                    label-key="label"
+                    :default-expand-all="true"
+                    :selected="projectStore.selected"
+                    @update:selected="nodeSelected"
+                    @lazy-load="onLazyLoad"
+                  />
+                </q-menu>
+              </q-input>
+            </div>
+
+            <div class="col-6 col-md col-sm">
+              <template v-if="element.id">
+                <translate>Store</translate>:
+                <MigasLink
+                  v-if="element.store.id > 0"
+                  model="stores"
+                  :pk="element.store.id"
+                  :value="element.store.name"
+                />
+              </template>
+            </div>
           </div>
 
-          <div class="col-6 col-md col-sm">
-            <template v-if="element.id">
-              <translate>Store</translate>:
-              <MigasLink
-                v-if="element.store.id > 0"
-                model="stores"
-                :pk="element.store.id"
-                :value="element.store.name"
-                icon="mdi-store-24-hour"
-              />
-            </template>
-          </div>
-        </div>
-
-        <div v-if="element.id === 0" class="row q-pa-md q-gutter-md">
-          <div class="col-12 col-md col-sm">
-            <q-file
-              v-model="element.files"
-              clearable
-              outlined
-              counter
-              :label="$gettext('Select one file')"
-              ><template #prepend
-                ><q-icon name="mdi-package-variant" /> </template
-            ></q-file>
-          </div>
-        </div>
-
-        <div v-if="element.id" class="row q-pa-md q-gutter-md">
-          <div class="col-4 col-md col-sm">
-            <translate>Name</translate>: <strong>{{ element.name }}</strong>
+          <div v-if="element.id === 0" class="row q-pa-md q-gutter-md">
+            <div class="col-12 col-md col-sm">
+              <q-file
+                v-model="element.files"
+                clearable
+                outlined
+                counter
+                :label="$gettext('Select one file')"
+                ><template #prepend
+                  ><q-icon :name="modelIcon('packages')" /> </template
+              ></q-file>
+            </div>
           </div>
 
-          <div class="col-4 col-md col-sm">
-            <translate>Version</translate>:
-            <strong>{{ element.version }}</strong>
+          <div v-if="element.id" class="row q-pa-md q-gutter-md">
+            <div class="col-4 col-md col-sm">
+              <translate>Name</translate>: <strong>{{ element.name }}</strong>
+            </div>
+
+            <div class="col-4 col-md col-sm">
+              <translate>Version</translate>:
+              <strong>{{ element.version }}</strong>
+            </div>
+
+            <div class="col-4 col-md col-sm">
+              <translate>Architecture</translate>:
+              <strong>{{ element.architecture }}</strong>
+            </div>
           </div>
-
-          <div class="col-4 col-md col-sm">
-            <translate>Architecture</translate>:
-            <strong>{{ element.architecture }}</strong>
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-actions v-if="element.id === 0" class="justify-around">
-        <q-btn
-          flat
-          color="primary"
-          icon="mdi-plus"
-          :label="$gettext('Save and add other')"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('add')"
-        />
-        <q-btn
-          color="primary"
-          icon="mdi-content-save-move"
-          :label="$gettext('Save')"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('return')"
-        />
-      </q-card-actions>
-    </q-card>
-
-    <div v-if="$route.params.id && element.id" class="row q-pa-md">
-      <q-btn
-        flat
-        icon="mdi-delete"
-        :color="$q.dark.isActive ? 'white' : 'negative'"
-        :class="{ 'reversed-delete': $q.dark.isActive }"
-        :label="$gettext('Delete')"
-        @click="confirmRemove = true"
-      />
-    </div>
-
-    <RemoveDialog
-      v-model="confirmRemove"
-      @confirmed="remove"
-      @canceled="confirmRemove = !confirmRemove"
-    />
+        </q-card-section>
+      </template>
+    </ItemDetail>
   </q-page>
 </template>
 
 <script>
-import Breadcrumbs from 'components/ui/Breadcrumbs'
-import Header from 'components/ui/Header'
+import { ref, reactive, computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
+import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
-import RemoveDialog from 'components/ui/RemoveDialog'
-import { elementMixin } from 'mixins/element'
-import { detailMixin } from 'mixins/detail'
+
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title,
-    }
-  },
   components: {
-    Breadcrumbs,
-    Header,
-    RemoveDialog,
+    ItemDetail,
     MigasLink,
   },
-  mixins: [elementMixin, detailMixin],
-  data() {
-    const title = this.$gettext('Package')
-    const element = { id: 0, files: null }
+  setup() {
+    const uiStore = useUiStore()
+    const { $gettext } = useGettext()
 
-    return {
-      title,
-      originalTitle: title,
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Release'),
-          icon: 'mdi-truck-delivery',
-        },
-        {
-          text: this.$gettext('Packages'),
-          to: 'packages-dashboard',
-          icon: 'mdi-package-variant',
-        },
-      ],
-      element,
-      emptyElement: Object.assign({}, element),
-      model: 'packages',
-      listRoute: 'packages-list',
-      addRoute: 'package-add',
-      detailRoute: 'package-detail',
-      projectStore: { items: [], selected: null },
-      confirmRemove: false,
+    const title = ref($gettext('Package'))
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
+
+    const routes = {
+      list: 'packages-list',
+      add: 'package-add',
+      detail: 'package-detail',
     }
-  },
-  computed: {
-    isValid() {
-      return this.projectStore.selected !== null && this.element.files !== null
-    },
+    const model = 'packages'
 
-    elementText() {
-      return this.element.id ? this.element.fullname : ''
-    },
-  },
-  methods: {
-    nodeSelected(value) {
+    let element = reactive({ id: 0, files: null })
+
+    const projectStore = reactive({ items: [], selected: null })
+
+    const menu = ref(null)
+    const tree = ref(null)
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Release'),
+        icon: 'mdi-truck-delivery',
+      },
+      {
+        text: $gettext('Packages'),
+        icon: modelIcon(model),
+        to: 'packages-dashboard',
+      },
+    ])
+
+    const isValid = computed(() => {
+      return projectStore.selected !== null && element.files !== null
+    })
+
+    const nodeSelected = (value) => {
       if (typeof value !== 'string') return
 
       const keys = value.split('|')
       if (keys.length != 2) return
 
-      const nodeProject = this.$refs.tree.getNodeByKey(parseInt(keys[0]))
-      const nodeStore = this.$refs.tree.getNodeByKey(value)
+      const nodeProject = tree.value.getNodeByKey(parseInt(keys[0]))
+      const nodeStore = tree.value.getNodeByKey(value)
 
-      this.projectStore.selected = `${nodeProject.label} / ${nodeStore.label}`
-      Object.assign(this.element, {
+      projectStore.selected = `${nodeProject.label} / ${nodeStore.label}`
+      Object.assign(element, {
         project: { id: nodeProject.id },
         store: { id: nodeStore.store_id },
       })
 
-      this.$refs.menu.hide()
-    },
+      menu.value.hide()
+    }
 
-    onLazyLoad({ node, key, done, fail }) {
-      this.$axios
+    const onLazyLoad = ({ node, key, done, fail }) => {
+      api
         .get('/api/v1/token/stores/', { params: { project__id: key } })
         .then((response) => {
           done(
@@ -257,59 +194,89 @@ export default {
               return {
                 id: `${key}|${item.id}`,
                 label: item.name,
-                icon: 'mdi-store-24-hour',
+                icon: modelIcon('stores'),
                 store_id: item.id,
               }
             })
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
 
-    async loadRelated() {
-      await this.$axios
+    const loadRelated = async () => {
+      await api
         .get(`/api/v1/token/projects/`)
         .then((response) => {
-          this.projects = response.data.results
+          const projects = response.data.results
 
-          this.projectStore.items = Object.entries(this.projects).map(
-            ([key, item]) => {
-              return {
-                id: item.id,
-                label: item.name,
-                icon: 'mdi-sitemap',
-                lazy: true,
-              }
+          projectStore.items = Object.entries(projects).map(([key, item]) => {
+            return {
+              id: item.id,
+              label: item.name,
+              icon: modelIcon('projects'),
+              lazy: true,
             }
-          )
+          })
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
 
-    elementData() {
-      if (this.element.id) {
+    const elementData = () => {
+      if (element.id) {
         return {
-          property_att: this.element.property_att.id,
-          value: this.element.value,
-          description: this.element.description,
+          property_att: element.property_att.id,
+          value: element.value,
+          description: element.description,
         }
       }
 
       let data = new FormData()
-      data.append('project', this.element.project.id)
-      data.append('store', this.element.store.id)
-      data.append('files', this.element.files)
+      data.append('project', element.project.id)
+      data.append('store', element.store.id)
+      data.append('files', element.files)
 
       return data
-    },
+    }
 
-    resetRelated() {
-      this.projectStore.selected = null
-    },
+    const resetRelated = () => {
+      projectStore.selected = null
+    }
+
+    const resetElement = () => {
+      Object.assign(element, {
+        id: 0,
+        value: undefined,
+        description: undefined,
+      })
+    }
+
+    const setTitle = (value) => {
+      windowTitle.value = value
+    }
+
+    return {
+      breadcrumbs,
+      title,
+      model,
+      routes,
+      element,
+      projectStore,
+      menu,
+      tree,
+      isValid,
+      nodeSelected,
+      onLazyLoad,
+      elementData,
+      loadRelated,
+      resetElement,
+      resetRelated,
+      setTitle,
+      modelIcon,
+    }
   },
 }
 </script>
