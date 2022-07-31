@@ -66,7 +66,7 @@
             :key="index"
             class="q-ma-md"
             :title="serie.title"
-            :data="serie.data"
+            :rows="serie.itemData"
             :columns="columns"
             :pagination="{ rowsPerPage: 0 }"
             row-key="name"
@@ -96,6 +96,22 @@
 </template>
 
 <script>
+import {
+  ref,
+  reactive,
+  computed,
+  watch,
+  onMounted,
+  onBeforeMount,
+  onBeforeUnmount,
+} from 'vue'
+import { useRouter } from 'vue-router'
+import { useQuasar } from 'quasar'
+import { useGettext } from 'vue3-gettext'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import * as echarts from 'echarts/core'
 import { PieChart } from 'echarts/charts'
 import { TooltipComponent, TitleComponent } from 'echarts/components'
@@ -128,240 +144,281 @@ export default {
       default: false,
     },
   },
-  data() {
-    return {
-      data: {},
-      initOptions: {
-        renderer: 'svg',
+  emits: ['get-link'],
+  setup(props, { emit }) {
+    const { $gettext } = useGettext()
+    const router = useRouter()
+    const $q = useQuasar()
+    const uiStore = useUiStore()
+
+    const chart = ref(null)
+    const data = reactive({})
+    const initOptions = reactive({
+      renderer: 'svg',
+    })
+
+    const options = reactive({
+      animation: false,
+      tooltip: {
+        trigger: 'item',
+        formatter: '{b} ({c}): <strong>{d}%</strong>',
       },
-      options: {
-        animation: false,
-        tooltip: {
-          trigger: 'item',
-          formatter: '{b} ({c}): <strong>{d}%</strong>',
+      color: $q.dark.isActive
+        ? MIGASFREE_CHART_DARK_COLORS
+        : MIGASFREE_CHART_COLORS,
+      series: [],
+      title: {
+        text: props.title,
+        show: false,
+      },
+    })
+
+    const normalSeries = [
+      {
+        type: 'pie',
+        radius: ['30%', '65%'],
+        center: ['50%', '60%'],
+        data: [],
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)',
+          },
         },
-        color: this.$q.dark.isActive
-          ? MIGASFREE_CHART_DARK_COLORS
-          : MIGASFREE_CHART_COLORS,
-        series: [],
-        title: {
-          text: this.title,
+        label: {
+          color: $q.dark.isActive ? 'white' : 'black',
+        },
+      },
+    ]
+
+    const nestedSeries = [
+      {
+        type: 'pie',
+        selectedMode: 'single',
+        radius: [0, '30%'],
+        label: {
+          position: 'inner',
+        },
+        labelLine: {
           show: false,
         },
+        data: [],
       },
-      normalSeries: [
-        {
-          type: 'pie',
-          radius: ['30%', '65%'],
-          center: ['50%', '60%'],
-          data: [],
-          emphasis: {
-            itemStyle: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)',
+      {
+        type: 'pie',
+        radius: ['40%', '55%'],
+        label: {
+          color: $q.dark.isActive ? 'white' : 'black',
+          formatter: '{b} ({c}): {per|{d}%}',
+          rich: {
+            per: {
+              fontWeight: 'bold',
             },
           },
-          label: {
-            color: this.$q.dark.isActive ? 'white' : 'black',
-          },
         },
-      ],
-      nestedSeries: [
-        {
-          type: 'pie',
-          selectedMode: 'single',
-          radius: [0, '30%'],
-          label: {
-            position: 'inner',
-          },
-          labelLine: {
-            show: false,
-          },
-          data: [],
-        },
-        {
-          type: 'pie',
-          radius: ['40%', '55%'],
-          label: {
-            color: this.$q.dark.isActive ? 'white' : 'black',
-            formatter: '{b} ({c}): {per|{d}%}',
-            rich: {
-              per: {
-                fontWeight: 'bold',
-              },
-            },
-          },
-          data: [],
-        },
-      ],
-      loading: false,
-      loadingOptions: {
-        showSpinner: true,
-        text: this.$gettext('Loading data...'),
-        color: '#39BEDA',
-        textColor: this.$q.dark.isActive
-          ? 'rgba(255, 255, 255, 0.5)'
-          : 'rgba(0, 0, 0, 0.5)',
-        maskColor: this.$q.dark.isActive ? '#3A4149' : 'white',
+        data: [],
       },
-      viewData: false,
-      dataGrid: [],
-      columns: [
-        {
-          name: 'name',
-          field: 'name',
-          label: this.$gettext('Name'),
-          align: 'left',
-        },
-        {
-          name: 'value',
-          field: 'value',
-          label: this.$gettext('Value'),
-        },
-      ],
-    }
-  },
-  computed: {
-    isChartVisible() {
-      return Object.keys(this.data).length === 0 || this.data.total > 0
-    },
+    ]
 
-    noData() {
-      return !'total' in this.data || this.data.total === 0
-    },
-  },
-  watch: {
-    data: {
-      handler: function (val, oldVal) {
-        if ('inner' in val) {
-          this.$set(this.options.series[0], 'data', val.inner)
-          this.$set(this.options.series[1], 'data', val.outer)
-        } else {
-          this.$set(this.options.series[0], 'data', val.data)
-        }
+    const loading = ref(false)
+    const loadingOptions = reactive({
+      showSpinner: true,
+      text: $gettext('Loading data...'),
+      color: '#39BEDA',
+      textColor: $q.dark.isActive
+        ? 'rgba(255, 255, 255, 0.5)'
+        : 'rgba(0, 0, 0, 0.5)',
+      maskColor: $q.dark.isActive ? '#3A4149' : 'white',
+    })
+
+    const viewData = ref(false)
+    const dataGrid = ref([])
+
+    const columns = reactive([
+      {
+        name: 'name',
+        field: 'name',
+        label: $gettext('Name'),
+        align: 'left',
       },
-      deep: true,
-    },
+      {
+        name: 'value',
+        field: 'value',
+        label: $gettext('Value'),
+      },
+    ])
 
-    '$q.dark.isActive'(val) {
-      this.options.color = val
-        ? MIGASFREE_CHART_DARK_COLORS
-        : MIGASFREE_CHART_COLORS
+    const isChartVisible = computed(() => {
+      return Object.keys(data).length === 0 || data.total > 0
+    })
 
-      if ('series' in this.options) {
-        this.options.series.map((item) => {
-          item.label.color = val ? 'white' : 'black'
+    const noData = computed(() => {
+      return !'total' in data || data.total === 0
+    })
+
+    onMounted(async () => {
+      loading.value = true
+      await api
+        .get(props.endPoint)
+        .then((response) => {
+          if ('inner' in response.data) {
+            options.series = nestedSeries
+          } else {
+            options.series = normalSeries
+          }
+
+          Object.assign(data, response.data)
+
+          if ('inner' in data) {
+            options.series[0].data = data.inner
+            options.series[1].data = data.outer
+          } else {
+            options.series[0].data = data.data
+          }
         })
-      }
-    },
-  },
-  async mounted() {
-    this.loading = true
-    await this.$axios
-      .get(this.endPoint)
-      .then((response) => {
-        if ('inner' in response.data) {
-          this.$set(this.options, 'series', this.nestedSeries)
-        } else {
-          this.$set(this.options, 'series', this.normalSeries)
-        }
-        this.data = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-      .finally(() => {
-        this.loading = false
-      })
-  },
-  beforeMount() {
-    window.addEventListener('resize', this.windowResize)
-  },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.windowResize)
-  },
-  methods: {
-    rowClick(evt, row, index) {
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+        .finally(() => {
+          loading.value = false
+        })
+    })
+
+    onBeforeMount(() => {
+      window.addEventListener('resize', windowResize)
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', windowResize)
+    })
+
+    const rowClick = (evt, row, index) => {
       const params = new Object()
       params.data = row
-      this.passData(params)
-    },
+      passData(params)
+    }
 
-    passData(params) {
-      this.$emit('getLink', Object.assign(params, { url: this.url }))
-    },
+    const passData = (params) => {
+      emit('get-link', Object.assign(params, { url: props.url }))
+    }
 
-    windowResize() {
-      if (this.$refs.chart !== null && this.$refs.chart !== undefined) {
-        this.$refs.chart.resize()
+    const windowResize = () => {
+      if (chart.value !== null && chart.value !== undefined) {
+        chart.value.resize()
       }
-    },
+    }
 
-    goTo() {
-      if (this.url) {
-        this.$router.push(this.url)
+    const goTo = () => {
+      if (props.url) {
+        router.push(props.url)
       }
-    },
+    }
 
-    saveImage() {
-      const linkSource = this.$refs.chart.getDataURL()
+    const saveImage = () => {
+      const linkSource = chart.value.getDataURL()
       const downloadLink = document.createElement('a')
 
       document.body.appendChild(downloadLink)
       downloadLink.href = linkSource
       downloadLink.target = '_self'
-      downloadLink.download = `${this.title}.svg`
+      downloadLink.download = `${props.title}.svg`
       downloadLink.click()
-    },
+    }
 
-    groupBy(data, key) {
+    const groupBy = (data, key) => {
       return data.reduce(function (r, a) {
         r[a[key]] = r[a[key]] || []
         r[a[key]].push(a)
         return r
       }, {})
-    },
+    }
 
-    dataView() {
-      this.viewData = true
-      if (this.options.series.length === 2) {
-        const keys = Object.keys(this.options.series[0].data[0])
+    const dataView = () => {
+      viewData.value = true
+      if (options.series.length === 2) {
+        const keys = Object.keys(options.series[0].data[0])
         const groupByKey = keys.filter((x) => !['name', 'value'].includes(x))
-        const groupByData = this.groupBy(
-          this.options.series[1].data,
-          groupByKey
-        )
+        const groupByData = groupBy(options.series[1].data, groupByKey)
 
-        this.dataGrid = []
-        this.options.series[0].data.forEach((item) => {
-          let data = []
+        dataGrid.value = []
+        options.series[0].data.forEach((item) => {
+          let itemData = []
           if (groupByKey[0] !== 'status_in') {
-            data = groupByData[item[groupByKey]]
+            itemData = groupByData[item[groupByKey]]
           } else {
             if (item[groupByKey].includes(',')) {
               item[groupByKey].split(',').forEach((key) => {
-                if (groupByData[key]) data.push(groupByData[key][0])
+                if (groupByData[key]) itemData.push(groupByData[key][0])
               })
-              if (data.length === 0) data = groupByData[item[groupByKey]]
+              if (itemData.length === 0)
+                itemData = groupByData[item[groupByKey]]
             } else {
-              data = groupByData[item[groupByKey]]
+              itemData = groupByData[item[groupByKey]]
             }
           }
-          this.dataGrid.push({
+          dataGrid.value.push({
             title: `${item.name} (${item.value})`,
-            data,
+            itemData,
           })
         })
       } else {
-        this.dataGrid = [
+        dataGrid.value = [
           {
-            title: `${this.data.title} (${this.data.total})`,
-            data: this.data.data,
+            title: `${data.title} (${data.total})`,
+            itemData: data.data,
           },
         ]
       }
-    },
+    }
+
+    watch(
+      () => $q.dark.isActive,
+      (val) => {
+        options.color = val
+          ? MIGASFREE_CHART_DARK_COLORS
+          : MIGASFREE_CHART_COLORS
+
+        if ('series' in options) {
+          options.series.map((item) => {
+            item.label.color = val ? 'white' : 'black'
+          })
+        }
+      }
+
+      /*data,
+      (val) => {
+        if ('inner' in val) {
+          // this.$set(this.options.series[0], 'data', val.inner)
+          // this.$set(this.options.series[1], 'data', val.outer)
+          options.series[0].data = val.inner
+          options.series[1].data = val.outer
+        } else {
+          // this.$set(this.options.series[0], 'data', val.data)
+          options.series[0].data = val.data
+        }
+      },
+      { deep: true }*/
+    )
+
+    return {
+      chart,
+      data,
+      initOptions,
+      options,
+      loading,
+      loadingOptions,
+      viewData,
+      dataGrid,
+      columns,
+      isChartVisible,
+      noData,
+      rowClick,
+      passData,
+      goTo,
+      saveImage,
+      dataView,
+    }
   },
 }
 </script>
