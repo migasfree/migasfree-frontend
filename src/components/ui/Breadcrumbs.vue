@@ -16,11 +16,11 @@ export default {
   props: {
     items: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
-  methods: {
-    goTo(to) {
+  setup() {
+    const goTo = (to) => {
       if (typeof to === 'object') {
         return to
       } else if (typeof to === 'string') {
@@ -28,7 +28,11 @@ export default {
       }
       return ''
     }
-  }
+
+    return {
+      goTo,
+    }
+  },
 }
 </script>
 
