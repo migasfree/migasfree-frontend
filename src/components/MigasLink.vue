@@ -11,7 +11,7 @@
     @show="getRelations"
   >
     <template #label>
-      <q-icon v-if="icon" left :name="icon" />
+      <q-icon v-if="hasIcon" left :name="getIcon" />
       {{ value }}
       <q-tooltip v-if="tooltip">
         <q-list v-for="(item, index) in tooltipToView" :key="index" dense>
@@ -68,11 +68,17 @@
 </template>
 
 <script>
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { abbreviateNumber } from 'js-abbreviation-number'
-import { elementMixin } from 'mixins/element'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
+import { modelIcon } from 'composables/element'
 
 export default {
-  mixins: [elementMixin],
+  name: 'MigasLink',
   props: {
     model: { type: String, required: true },
     pk: { type: Number, required: true },
@@ -80,76 +86,67 @@ export default {
     tooltip: { type: String, required: false, default: '' },
     icon: { type: String, required: false, default: '' },
   },
-  data() {
-    return {
-      relations: [],
-      loading: false,
-    }
-  },
-  computed: {
-    link() {
-      return `/${this.normalizeModel(this.model)}/results/${this.pk}`
-    },
+  setup(props) {
+    const uiStore = useUiStore()
+    const router = useRouter()
+    const pluralize = require('pluralize')
 
-    tooltipToView() {
-      switch (this.model) {
+    const relations = ref([])
+    const loading = ref(false)
+
+    const link = computed(() => {
+      return `/${normalizeModel(props.model)}/results/${props.pk}`
+    })
+
+    const tooltipToView = computed(() => {
+      switch (props.model) {
         case 'computers':
-          const pieces = this.tooltip.split(',')
-
+          const pieces = props.tooltip.split(',')
           return [
-            {
-              icon: this.elementIcon(pieces[0].trim()),
-              text: this.computerStatus(pieces[0].trim()),
-            },
-            { icon: 'mdi-sitemap', text: pieces[1].trim() },
+            { icon: 'mdi-tag-text-outline', text: pieces[0].trim() },
+            { icon: modelIcon('projects'), text: pieces[1].trim() },
             { icon: 'mdi-ip-network', text: pieces[2].trim() },
-            { icon: 'mdi-account', text: pieces[3].trim() },
+            { icon: modelIcon('users'), text: pieces[3].trim() },
           ]
         default:
-          return [{ icon: '', text: this.tooltip.trim() }]
+          return [{ icon: '', text: props.tooltip.trim() }]
       }
-    },
+    })
 
-    validRelations() {
+    const validRelations = computed(() => {
       const valid = []
       let name = ''
 
-      Object.entries(this.relations).map(([key, item]) => {
+      Object.entries(relations.value).map(([key, item]) => {
         let to = '#'
         if (item.model && item.pk) {
-          name = `${this.normalizeModel(
-            this.$pluralize.singular(item.model)
-          )}-detail`
+          name = `${normalizeModel(pluralize.singular(item.model))}-detail`
           if (
-            !this.$router.resolve({ name, params: { id: item.pk } }).resolved
-              .matched.length > 0
+            !router.resolve({ name, params: { id: item.pk } }).matched.length >
+            0
           )
             return
 
           to = {
-            name: `${this.normalizeModel(
-              this.$pluralize.singular(item.model)
-            )}-detail`,
+            name: `${normalizeModel(pluralize.singular(item.model))}-detail`,
             params: {
               id: item.pk,
             },
           }
         } else if (item.model) {
           name = `${item.model.replaceAll(' ', '-')}-list`
-          if (!this.$router.resolve({ name }).resolved.matched.length > 0)
-            return
+          if (!router.resolve({ name }).matched.length > 0) return
 
           to = {
             name: `${item.model.replaceAll(' ', '-')}-list`,
           }
         } else if (item.api) {
-          name = `${this.normalizeModel(item.api.model)}-list`
-          if (!this.$router.resolve({ name }).resolved.matched.length > 0)
-            return
+          name = `${normalizeModel(item.api.model)}-list`
+          if (!router.resolve({ name }).matched.length > 0) return
 
           to = {
-            name: `${this.normalizeModel(item.api.model)}-list`,
-            query: this.normalizeQuery(item.api.query),
+            name: `${normalizeModel(item.api.model)}-list`,
+            query: normalizeQuery(item.api.query),
           }
         }
 
@@ -162,10 +159,18 @@ export default {
       })
 
       return valid
-    },
-  },
-  methods: {
-    normalizeQuery(obj) {
+    })
+
+    const getIcon = computed(() => {
+      if (props.icon) return props.icon
+      return modelIcon(props.model)
+    })
+
+    const hasIcon = computed(() => {
+      return getIcon.value !== ''
+    })
+
+    const normalizeQuery = (obj) => {
       const normalizedObj = {}
       Object.entries(obj).map(([key, val]) => {
         if (key.includes('__')) normalizedObj[key.replaceAll('__', '_')] = val
@@ -173,9 +178,9 @@ export default {
       })
 
       return normalizedObj
-    },
+    }
 
-    normalizeModel(model) {
+    const normalizeModel = (model) => {
       model = model
         .replaceAll(' ', '-')
         .replace('devices/', '')
@@ -202,28 +207,42 @@ export default {
         default:
           return model
       }
-    },
+    }
 
-    async getRelations() {
-      const url = `/api/v1/token/${this.model}/${this.pk}/relations/`
+    const humanNumber = (value) => {
+      return abbreviateNumber(value, 0)
+    }
 
-      if (this.relations.length > 0) return
+    const getRelations = async () => {
+      const url = `/api/v1/token/${props.model}/${props.pk}/relations/`
 
-      this.loading = true
-      await this.$axios
+      if (relations.value.length > 0) return
+
+      loading.value = true
+      await api
         .get(url)
         .then((response) => {
-          this.relations = response.data
+          relations.value = response.data
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-        .finally(() => (this.loading = false))
-    },
+        .finally(() => {
+          loading.value = false
+        })
+    }
 
-    humanNumber(value) {
-      return abbreviateNumber(value, 0)
-    },
+    return {
+      relations,
+      loading,
+      link,
+      tooltipToView,
+      validRelations,
+      getIcon,
+      hasIcon,
+      humanNumber,
+      getRelations,
+    }
   },
 }
 </script>
