@@ -18,7 +18,7 @@
 
       <q-item class="text-center">
         <q-item-section>
-          {{ $gettext('Server') }}: {{ $store.getters['ui/server'] }}
+          {{ $gettext('Server') }}: {{ server }}
         </q-item-section>
       </q-item>
 
@@ -34,22 +34,36 @@
 </template>
 
 <script>
+import { reactive, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 export default {
-  data() {
-    return {
-      label: {}
-    }
+  setup() {
+    const { $gettext } = useGettext()
+    const route = useRoute()
+    const uiStore = useUiStore()
+
+    const label = reactive({})
+
+    onMounted(async () => {
+      await api
+        .get(`/api/v1/token/computers/${route.params.id}/label`)
+        .then((response) => {
+          Object.assign(label, response.data)
+          useMeta({ title: `${$gettext('Identification')}: ${label.search}` })
+        })
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+    })
+
+    return { label, server: uiStore.server }
   },
-  async mounted() {
-    await this.$axios
-      .get(`/api/v1/token/computers/${this.$route.params.id}/label`)
-      .then((response) => {
-        this.label = response.data
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-  }
 }
 </script>
 
