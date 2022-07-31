@@ -8,7 +8,7 @@
           round
           icon="mdi-menu"
           aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
+          @click="toggleLeftDrawer"
           ><q-tooltip>{{ $gettext('Menu') }}</q-tooltip>
         </q-btn>
 
@@ -100,66 +100,82 @@
 </template>
 
 <script>
+import { defineComponent, ref, computed } from 'vue'
+import { useMeta } from 'quasar'
 import AppMenu from 'components/ui/AppMenu'
 import AppFooter from 'components/ui/AppFooter'
 import Alerts from 'components/ui/Alerts'
 import SearchBox from 'components/ui/SearchBox'
 import UserAccount from 'components/ui/UserAccount'
 import ToggleDarkMode from 'components/ui/ToggleDarkMode'
+import { useAuthStore } from 'stores/auth'
 
-export default {
+export default defineComponent({
   name: 'MainLayout',
-  meta: {
-    titleTemplate: (title) => `${title} | Migasfree`,
-  },
+
   components: {
     AppMenu,
-    AppFooter,
     Alerts,
+    AppFooter,
     SearchBox,
     UserAccount,
     ToggleDarkMode,
   },
-  data() {
-    return {
-      leftDrawerOpen: false,
-    }
-  },
-  computed: {
-    loggedIn() {
-      return this.$store.getters['auth/loggedIn']
-    },
 
-    hasDomainOrScopePreference() {
-      const user = this.$store.getters['auth/user']
+  setup() {
+    const authStore = useAuthStore()
 
-      return user.domain_preference !== null || user.scope_preference !== null
-    },
+    const leftDrawerOpen = ref(false)
+    const userAccount = ref(null)
 
-    domainPreference() {
-      const user = this.$store.getters['auth/user']
+    useMeta({
+      titleTemplate: (title) => `${title} | Migasfree`,
+    })
 
-      return user.domain_preference ? user.domain_preference.name : null
-    },
+    const hasDomainOrScopePreference = computed(() => {
+      return (
+        authStore.user.domain_preference !== null ||
+        authStore.user.scope_preference !== null
+      )
+    })
 
-    scopePreference() {
-      const user = this.$store.getters['auth/user']
+    const domainPreference = computed(() => {
+      return authStore.user.domain_preference
+        ? authStore.user.domain_preference.name
+        : null
+    })
 
-      return user.scope_preference ? user.scope_preference.name : null
-    },
-  },
-  methods: {
-    async removeDomainPreference() {
-      await this.$refs.userAccount.updatePreferences({
+    const scopePreference = computed(() => {
+      return authStore.user.scope_preference
+        ? authStore.user.scope_preference.name
+        : null
+    })
+
+    const removeDomainPreference = async () => {
+      await userAccount.value.updatePreferences({
         domain_preference: null,
       })
-    },
+    }
 
-    async removeScopePreference() {
-      await this.$refs.userAccount.updatePreferences({
+    const removeScopePreference = async () => {
+      await userAccount.value.updatePreferences({
         scope_preference: null,
       })
-    },
+    }
+
+    return {
+      leftDrawerOpen,
+      userAccount,
+      toggleLeftDrawer() {
+        leftDrawerOpen.value = !leftDrawerOpen.value
+      },
+      loggedIn: authStore.isLoggedIn,
+      hasDomainOrScopePreference,
+      domainPreference,
+      scopePreference,
+      removeDomainPreference,
+      removeScopePreference,
+    }
   },
-}
+})
 </script>
