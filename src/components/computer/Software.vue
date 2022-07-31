@@ -55,7 +55,6 @@
                       model="packages"
                       :pk="item.id"
                       :value="item.name"
-                      icon="mdi-package-variant"
                     />
                   </q-item>
                 </template>
@@ -204,7 +203,7 @@
             </template>
 
             <template #option="scope">
-              <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+              <q-item v-bind="scope.itemProps">
                 {{ scope.opt.__str__ }}
               </q-item>
             </template>
@@ -253,140 +252,165 @@
 </template>
 
 <script>
-import MigasLink from 'components/MigasLink'
-import { dateMixin } from 'mixins/date'
-import { elementMixin } from 'mixins/element'
+import { ref, reactive, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useGettext } from 'vue3-gettext'
 import { copyToClipboard } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
+import MigasLink from 'components/MigasLink'
+
+import { useElement } from 'composables/element'
+import useDate from 'composables/date'
 
 export default {
   name: 'ComputerSoftware',
   components: { MigasLink },
-  mixins: [dateMixin, elementMixin],
   props: {
     cid: {
       type: Number,
       required: true,
     },
   },
-  data() {
-    return {
-      loading: {
-        inventory: false,
-        history: false,
-      },
-      softwareInventory: [],
-      softwareHistory: {},
-      showingCompare: false,
-      computers: [],
-      target: null,
-    }
-  },
-  computed: {
-    isCompareEnabled() {
-      return this.target !== null
-    },
-  },
-  methods: {
-    sortArray(array) {
+  setup(props) {
+    const { $gettext } = useGettext()
+    const router = useRouter()
+    const uiStore = useUiStore()
+    const { elementIcon } = useElement()
+    const { diffForHumans } = useDate()
+
+    const loading = reactive({
+      inventory: false,
+      history: false,
+    })
+    const softwareInventory = ref([])
+    const softwareHistory = reactive({})
+    const showingCompare = ref(false)
+    const computers = ref([])
+    const target = ref(null)
+
+    const isCompareEnabled = computed(() => {
+      return target.value !== null
+    })
+
+    const sortArray = (array) => {
       const originalCopy = array.slice()
       return originalCopy.sort()
-    },
+    }
 
-    async loadSoftwareInventory() {
-      if (this.softwareInventory.length === 0) {
-        this.loading.inventory = true
-        await this.$axios
-          .get(`/api/v1/token/computers/${this.cid}/software/inventory/`)
+    const loadSoftwareInventory = async () => {
+      if (softwareInventory.value.length === 0) {
+        loading.inventory = true
+        await api
+          .get(`/api/v1/token/computers/${props.cid}/software/inventory/`)
           .then((response) => {
-            this.softwareInventory = response.data
+            softwareInventory.value = response.data
           })
           .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
+            uiStore.notifyError(error)
           })
-          .finally(() => (this.loading.inventory = false))
+          .finally(() => (loading.inventory = false))
       }
-    },
+    }
 
-    async loadSoftwareHistory() {
-      if (Object.keys(this.softwareHistory).length === 0) {
-        this.loading.history = true
-        await this.$axios
-          .get(`/api/v1/token/computers/${this.cid}/software/history/`)
+    const loadSoftwareHistory = async () => {
+      if (Object.keys(softwareHistory).length === 0) {
+        loading.history = true
+        await api
+          .get(`/api/v1/token/computers/${props.cid}/software/history/`)
           .then((response) => {
-            this.softwareHistory = response.data
+            Object.assign(softwareHistory, response.data)
           })
           .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
+            uiStore.notifyError(error)
           })
-          .finally(() => (this.loading.history = false))
+          .finally(() => (loading.history = false))
       }
-    },
+    }
 
-    async copyInventory() {
-      if (this.softwareInventory.length === 0) {
-        await this.loadSoftwareInventory()
+    const copyInventory = async () => {
+      if (softwareInventory.value.length === 0) {
+        await loadSoftwareInventory()
       }
 
-      const inventory = this.softwareInventory.map((item) => item.name)
+      const inventory = softwareInventory.value.map((item) => item.name)
 
-      copyToClipboard(this.sortArray(inventory).join('\n')).then(() => {
-        this.$store.dispatch(
-          'ui/notifySuccess',
-          this.$gettext('Software Inventory copied to clipboard')
+      copyToClipboard(sortArray(inventory).join('\n')).then(() => {
+        uiStore.notifySuccess(
+          $gettext('Software Inventory copied to clipboard')
         )
       })
-    },
+    }
 
-    async copyHistory() {
-      if (Object.keys(this.softwareHistory).length === 0) {
-        await this.loadSoftwareHistory()
+    const copyHistory = async () => {
+      if (Object.keys(softwareHistory).length === 0) {
+        await loadSoftwareHistory()
       }
 
       let history = []
-      Object.entries(this.softwareHistory).map(([key, val]) => {
+      Object.entries(softwareHistory).map(([key, val]) => {
         history.push(key)
-        this.sortArray(val).forEach((item) => {
+        sortArray(val).forEach((item) => {
           history.push(item)
         })
         history.push('')
       })
 
       copyToClipboard(history.join('\n')).then(() => {
-        this.$store.dispatch(
-          'ui/notifySuccess',
-          this.$gettext('Software History copied to clipboard')
-        )
+        uiStore.notifySuccess($gettext('Software History copied to clipboard'))
       })
-    },
+    }
 
-    async filterComputers(val, update, abort) {
+    const compare = () => {
+      router.push({
+        name: 'computers-software-compare',
+        params: { source: props.cid, target: target.value.id },
+      })
+    }
+
+    const filterComputers = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
         abort()
         return
       }
 
-      await this.$axios
+      await api
         .get('/api/v1/token/computers/', {
           params: { search: val.toLowerCase() },
         })
         .then((response) => {
-          this.computers = response.data.results
+          computers.value = response.data.results
         })
 
       update(() => {})
-    },
+    }
 
-    abortFilterComputers() {
+    const abortFilterComputers = () => {
       // console.log('delayed filter aborted')
-    },
+    }
 
-    compare() {
-      this.$router.push({
-        name: 'computers-software-compare',
-        params: { source: this.cid, target: this.target.id },
-      })
-    },
+    return {
+      loading,
+      softwareInventory,
+      softwareHistory,
+      showingCompare,
+      computers,
+      target,
+      isCompareEnabled,
+      sortArray,
+      loadSoftwareInventory,
+      loadSoftwareHistory,
+      copyInventory,
+      copyHistory,
+      compare,
+      filterComputers,
+      abortFilterComputers,
+      elementIcon,
+      diffForHumans,
+    }
   },
 }
 </script>
