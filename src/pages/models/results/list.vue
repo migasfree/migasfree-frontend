@@ -2,313 +2,156 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header
+    <TableResults
       :title="title"
-      :results="totalRecords"
-      :add-routes="[{ route: 'model-add' }]"
-    >
-      <template #append>
-        <q-btn
-          class="q-ma-sm float-right"
-          color="info"
-          text-color="black"
-          :label="$gettext('Export')"
-          icon="mdi-file-export"
-          :loading="isLoadingExport"
-          :disable="totalRecords === 0"
-          @click="exportAll"
-        />
-      </template>
-    </Header>
-
-    <q-list class="more-filters" bordered>
-      <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">
-        <SearchFilter
-          v-model="tableFilters.search"
-          @search="onSearch"
-          @clear="onSearchClear"
-        />
-
-        <div class="row q-pa-md q-col-gutter-lg">
-          <div class="col-sm-6 col-md-4">
-            <q-select
-              v-model="tableFilters.project.selected"
-              :options="tableFilters.project.items"
-              :label="$gettext('By Project')"
-              dense
-              outlined
-              option-value="id"
-              option-label="name"
-              @input="onProjectFilter"
-            >
-              <template #before>
-                <q-icon name="mdi-filter" />
-              </template>
-            </q-select>
-          </div>
-        </div>
-
-        <div class="row q-pa-md">
-          <div class="col-12">
-            <q-btn
-              icon="mdi-filter-remove"
-              color="info"
-              text-color="black"
-              :label="$gettext('Reset all filters')"
-              @click="resetFilters"
-            />
-          </div>
-        </div>
-      </q-expansion-item>
-    </q-list>
-
-    <vue-good-table
-      ref="myTable"
       :columns="columns"
-      :rows="rows"
-      mode="remote"
-      compact-mode
-      :total-rows="totalRecords"
-      :is-loading.sync="isLoading"
-      :line-numbers="false"
-      :select-options="selectOptions"
-      :pagination-options="paginationOptions"
-      :search-options="searchOptions"
-      style-class="vgt-table striped condensed"
-      @on-page-change="onPageChange"
-      @on-sort-change="onSortChange"
-      @on-column-filter="onColumnFilter"
-      @on-per-page-change="onPerPageChange"
-      @on-selected-rows-change="onSelectionChanged"
+      :model="model"
+      :detail-route="detailRoute"
+      :add-routes="addRoutes"
+      :more-filters="moreFilters"
     >
-      <span slot="loadingContent" class="vgt-loading__content">
-        <q-spinner size="sm" />
-        <translate>Loading data...</translate>
-      </span>
-
-      <template slot="table-row" slot-scope="props">
-        <span v-if="props.column.field == 'actions'">
-          <q-btn
-            class="q-ma-xs"
-            round
-            size="sm"
-            icon="mdi-pencil"
-            color="primary"
-            @click="edit(props.row.id)"
-            ><q-tooltip>{{ $gettext('Edit') }}</q-tooltip></q-btn
-          >
-          <q-btn
-            class="q-ma-xs"
-            round
-            size="sm"
-            icon="mdi-delete"
-            color="negative"
-            @click="confirmRemove(props.row.id)"
-            ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-          >
-        </span>
-
-        <span v-else-if="props.column.field == 'name'">
+      <template #fields="slotProps">
+        <span v-if="slotProps.props.column.field == 'name'">
           <MigasLink
             model="devices/models"
-            :pk="props.row.id"
-            :value="props.row.name"
-            icon="mdi-shape"
+            :pk="slotProps.props.row.id"
+            :value="slotProps.props.row.name"
           />
         </span>
 
-        <span v-else-if="props.column.field == 'manufacturer.name'">
+        <span v-else-if="slotProps.props.column.field == 'manufacturer.name'">
           <MigasLink
             model="devices/manufacturers"
-            :pk="props.row.manufacturer.id"
-            :value="props.row.manufacturer.name"
-            icon="mdi-factory"
+            :pk="slotProps.props.row.manufacturer.id"
+            :value="slotProps.props.row.manufacturer.name"
           />
         </span>
 
-        <span v-else-if="props.column.field == 'device_type.name'">
+        <span v-else-if="slotProps.props.column.field == 'device_type.name'">
           <MigasLink
             model="devices/types"
-            :pk="props.row.device_type.id"
-            :value="props.row.device_type.name"
-            icon="mdi-devices"
+            :pk="slotProps.props.row.device_type.id"
+            :value="slotProps.props.row.device_type.name"
           />
         </span>
 
         <span v-else>
-          {{ props.formattedRow[props.column.field] }}
+          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
         </span>
       </template>
-
-      <q-banner
-        v-if="!isLoading"
-        slot="emptystate"
-        rounded
-        class="bg-warning text-black"
-      >
-        <translate>There are no results</translate>
-      </q-banner>
-
-      <div slot="selected-row-actions">
-        <q-btn
-          class="q-ma-xs"
-          size="sm"
-          color="info"
-          text-color="black"
-          icon="mdi-file-export"
-          :loading="isLoadingExport"
-          @click="exportData"
-          ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
-        >
-        <q-btn
-          size="sm"
-          color="negative"
-          icon="mdi-delete"
-          @click="confirmRemove"
-          ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-        >
-      </div>
-
-      <template slot="pagination-bottom" slot-scope="props">
-        <TablePagination
-          :total="props.total"
-          :page-changed="props.pageChanged"
-          :per-page-changed="props.perPageChanged"
-          :pagination-options="paginationOptions"
-        />
-      </template>
-    </vue-good-table>
+    </TableResults>
   </q-page>
 </template>
 
 <script>
+import { ref, reactive, onMounted } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
-import SearchFilter from 'components/ui/SearchFilter'
-import Header from 'components/ui/Header'
-import TablePagination from 'components/ui/TablePagination'
+import TableResults from 'components/ui/TableResults'
 import MigasLink from 'components/MigasLink'
-import { datagridMixin } from 'mixins/datagrid'
+
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.$gettext('Models List'),
-    }
-  },
   components: {
     Breadcrumbs,
-    SearchFilter,
-    Header,
-    TablePagination,
+    TableResults,
     MigasLink,
   },
-  mixins: [datagridMixin],
-  data() {
-    return {
-      title: this.$gettext('Models'),
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Devices'),
-          icon: 'mdi-printer-eye',
-        },
-        {
-          text: this.$gettext('Models'),
-          icon: 'mdi-shape',
-          to: 'models-dashboard',
-        },
-        {
-          text: this.$gettext('Results'),
-        },
-      ],
-      columns: [
-        {
-          field: 'id',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Actions'),
-          field: 'actions',
-          html: true,
-          sortable: false,
-          globalSearchDisabled: true,
-        },
-        {
-          label: this.$gettext('Name'),
-          field: 'name',
-          html: true,
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('Filter'),
-            trigger: 'enter',
-          },
-        },
-        {
-          field: 'manufacturer.id',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Manufacturer'),
-          field: 'manufacturer.name',
-          html: true,
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('Filter'),
-            trigger: 'enter',
-          },
-        },
-        {
-          field: 'device_type.id',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Type'),
-          field: 'device_type.name',
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('Filter'),
-            trigger: 'enter',
-          },
-        },
-      ],
-      tableFilters: {
-        search: '',
-        project: {
-          items: [{ id: '', name: this.$gettext('All') }],
-          selected: null,
+  setup() {
+    const { $gettext } = useGettext()
+    const uiStore = useUiStore()
+
+    useMeta({ title: $gettext('Models List') })
+
+    const model = ref('devices/models')
+    const detailRoute = ref('model-detail')
+    const addRoutes = reactive([{ route: 'model-add' }])
+    const moreFilters = ['project']
+
+    const title = ref($gettext('Models'))
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Devices'),
+        icon: 'mdi-printer-eye',
+      },
+      {
+        text: title.value,
+        icon: modelIcon(model.value),
+        to: 'models-dashboard',
+      },
+      {
+        text: $gettext('Results'),
+      },
+    ])
+
+    const columns = reactive([
+      {
+        field: 'id',
+        hidden: true,
+      },
+      {
+        label: $gettext('Actions'),
+        field: 'actions',
+        html: true,
+        sortable: false,
+        globalSearchDisabled: true,
+      },
+      {
+        label: $gettext('Name'),
+        field: 'name',
+        html: true,
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
         },
       },
-      model: 'devices/models',
-      detailRoute: 'model-detail',
-    }
-  },
-  methods: {
-    async loadFilters() {
-      await this.$axios
-        .get('/api/v1/token/projects/')
-        .then((response) => {
-          this.tableFilters.project.items =
-            this.tableFilters.project.items.concat(response.data.results)
+      {
+        field: 'manufacturer.id',
+        hidden: true,
+      },
+      {
+        label: $gettext('Manufacturer'),
+        field: 'manufacturer.name',
+        html: true,
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
+        },
+      },
+      {
+        field: 'device_type.id',
+        hidden: true,
+      },
+      {
+        label: $gettext('Type'),
+        field: 'device_type.name',
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
+        },
+      },
+    ])
 
-          if (this.$route.query.drivers_project_id) {
-            this.tableFilters.project.selected =
-              this.tableFilters.project.items.find(
-                (x) => x.id == this.$route.query.drivers_project_id
-              )
-          }
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-
-      await this.$axios
+    const loadFilters = async () => {
+      await api
         .get('/api/v1/token/devices/manufacturers/')
         .then((response) => {
-          this.columns.find(
+          columns.find(
             (x) => x.field === 'manufacturer.name'
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
@@ -320,13 +163,13 @@ export default {
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      await this.$axios
+      await api
         .get('/api/v1/token/devices/types/')
         .then((response) => {
-          this.columns.find(
+          columns.find(
             (x) => x.field === 'device_type.name'
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
@@ -338,18 +181,23 @@ export default {
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
 
-    onProjectFilter(params) {
-      this.updateParams({
-        columnFilters: Object.assign(this.serverParams.columnFilters, {
-          drivers_project_id: params.id,
-        }),
-      })
-      this.loadItems()
-    },
+    onMounted(async () => {
+      await loadFilters()
+    })
+
+    return {
+      model,
+      detailRoute,
+      addRoutes,
+      moreFilters,
+      title,
+      breadcrumbs,
+      columns,
+    }
   },
 }
 </script>

@@ -2,313 +2,155 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header
+    <TableResults
       :title="title"
-      :results="totalRecords"
-      :add-routes="[{ route: 'logical-device-add' }]"
-    >
-      <template #append>
-        <q-btn
-          class="q-ma-sm float-right"
-          color="info"
-          text-color="black"
-          :label="$gettext('Export')"
-          icon="mdi-file-export"
-          :loading="isLoadingExport"
-          :disable="totalRecords === 0"
-          @click="exportAll"
-        />
-      </template>
-    </Header>
-
-    <q-list class="more-filters" bordered>
-      <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">
-        <SearchFilter
-          v-model="tableFilters.search"
-          @search="onSearch"
-          @clear="onSearchClear"
-        />
-
-        <div class="row q-pa-md q-col-gutter-lg">
-          <div class="col-12 col-sm-6 col-md-4">
-            <q-select
-              v-model="tableFilters.model.selected"
-              :options="tableFilters.model.items"
-              :label="$gettext('By Model')"
-              dense
-              outlined
-              option-value="id"
-              option-label="name"
-              @input="onModelFilter"
-            >
-              <template #before>
-                <q-icon name="mdi-filter" />
-              </template>
-            </q-select>
-          </div>
-        </div>
-
-        <div class="row q-pa-md">
-          <div class="col-12">
-            <q-btn
-              icon="mdi-filter-remove"
-              color="info"
-              text-color="black"
-              :label="$gettext('Reset all filters')"
-              @click="resetFilters"
-            />
-          </div>
-        </div>
-      </q-expansion-item>
-    </q-list>
-
-    <vue-good-table
-      ref="myTable"
       :columns="columns"
-      :rows="rows"
-      mode="remote"
-      compact-mode
-      :total-rows="totalRecords"
-      :is-loading.sync="isLoading"
-      :line-numbers="false"
-      :select-options="selectOptions"
-      :pagination-options="paginationOptions"
-      :search-options="searchOptions"
-      style-class="vgt-table striped condensed"
-      @on-page-change="onPageChange"
-      @on-sort-change="onSortChange"
-      @on-column-filter="onColumnFilter"
-      @on-per-page-change="onPerPageChange"
-      @on-selected-rows-change="onSelectionChanged"
+      :model="model"
+      :detail-route="detailRoute"
+      :add-routes="addRoutes"
+      :more-filters="moreFilters"
     >
-      <span slot="loadingContent" class="vgt-loading__content">
-        <q-spinner size="sm" />
-        <translate>Loading data...</translate>
-      </span>
-
-      <template slot="table-row" slot-scope="props">
-        <span v-if="props.column.field == 'actions'">
-          <q-btn
-            class="q-ma-xs"
-            round
-            size="sm"
-            icon="mdi-pencil"
-            color="primary"
-            @click="edit(props.row.id)"
-            ><q-tooltip>{{ $gettext('Edit') }}</q-tooltip></q-btn
-          >
-          <q-btn
-            class="q-ma-xs"
-            round
-            size="sm"
-            icon="mdi-delete"
-            color="negative"
-            @click="confirmRemove(props.row.id)"
-            ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-          >
-        </span>
-
-        <span v-else-if="props.column.field == '__str__'">
+      <template #fields="slotProps">
+        <span v-if="slotProps.props.column.field == '__str__'">
           <MigasLink
             model="devices/logical"
-            :pk="props.row.id"
-            :value="props.row.__str__"
-            icon="mdi-printer-settings"
+            :pk="slotProps.props.row.id"
+            :value="slotProps.props.row.__str__"
           />
         </span>
 
-        <span v-else-if="props.column.field == 'device.name'">
+        <span v-else-if="slotProps.props.column.field == 'device.name'">
           <MigasLink
             model="devices/devices"
-            :pk="props.row.device.id"
-            :value="props.row.device.name"
-            icon="mdi-printer"
+            :pk="slotProps.props.row.device.id"
+            :value="slotProps.props.row.device.name"
           />
         </span>
 
-        <span v-else-if="props.column.field == 'capability.name'">
+        <span v-else-if="slotProps.props.column.field == 'capability.name'">
           <MigasLink
             model="devices/capabilities"
-            :pk="props.row.capability.id"
-            :value="props.row.capability.name"
-            icon="mdi-format-list-bulleted-type"
+            :pk="slotProps.props.row.capability.id"
+            :value="slotProps.props.row.capability.name"
           />
         </span>
 
         <span v-else>
-          {{ props.formattedRow[props.column.field] }}
+          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
         </span>
       </template>
-
-      <q-banner
-        v-if="!isLoading"
-        slot="emptystate"
-        rounded
-        class="bg-warning text-black"
-      >
-        <translate>There are no results</translate>
-      </q-banner>
-
-      <div slot="selected-row-actions">
-        <q-btn
-          class="q-ma-xs"
-          size="sm"
-          color="info"
-          text-color="black"
-          icon="mdi-file-export"
-          :loading="isLoadingExport"
-          @click="exportData"
-          ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
-        >
-        <q-btn
-          size="sm"
-          color="negative"
-          icon="mdi-delete"
-          @click="confirmRemove"
-          ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-        >
-      </div>
-
-      <template slot="pagination-bottom" slot-scope="props">
-        <TablePagination
-          :total="props.total"
-          :page-changed="props.pageChanged"
-          :per-page-changed="props.perPageChanged"
-          :pagination-options="paginationOptions"
-        />
-      </template>
-    </vue-good-table>
+    </TableResults>
   </q-page>
 </template>
 
 <script>
+import { ref, reactive, onMounted } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
-import SearchFilter from 'components/ui/SearchFilter'
-import Header from 'components/ui/Header'
-import TablePagination from 'components/ui/TablePagination'
+import TableResults from 'components/ui/TableResults'
 import MigasLink from 'components/MigasLink'
-import { datagridMixin } from 'mixins/datagrid'
+
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.$gettext('Logical Devices List'),
-    }
-  },
   components: {
     Breadcrumbs,
-    SearchFilter,
-    Header,
-    TablePagination,
+    TableResults,
     MigasLink,
   },
-  mixins: [datagridMixin],
-  data() {
-    return {
-      title: this.$gettext('Logical Devices'),
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Devices'),
-          icon: 'mdi-printer-eye',
-        },
-        {
-          text: this.$gettext('Logical Devices'),
-          icon: 'mdi-printer-settings',
-        },
-        {
-          text: this.$gettext('Results'),
-        },
-      ],
-      columns: [
-        {
-          field: 'id',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Actions'),
-          field: 'actions',
-          html: true,
-          sortable: false,
-          globalSearchDisabled: true,
-        },
-        {
-          label: this.$gettext('Logical Device'),
-          field: '__str__',
-          html: true,
-        },
-        {
-          field: 'device.id',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Device'),
-          field: 'device.name',
-          html: true,
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('Filter'),
-            trigger: 'enter',
-          },
-        },
-        {
-          field: 'capability.id',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Capability'),
-          field: 'capability.name',
-          html: true,
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('Filter'),
-            trigger: 'enter',
-          },
-        },
-        {
-          label: this.$gettext('Alternative Capability Name'),
-          field: 'alternative_capability_name',
-        },
-      ],
-      tableFilters: {
-        search: '',
-        model: {
-          items: [{ id: '', name: this.$gettext('All') }],
-          selected: null,
+  setup() {
+    const { $gettext } = useGettext()
+    const uiStore = useUiStore()
+
+    useMeta({ title: $gettext('Logical Devices List') })
+
+    const model = ref('devices/logical')
+    const detailRoute = ref('logical-device-detail')
+    const addRoutes = reactive([{ route: 'logical-device-add' }])
+    const moreFilters = ['model']
+
+    const title = ref($gettext('Logical Devices'))
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Devices'),
+        icon: 'mdi-printer-eye',
+      },
+      {
+        text: title.value,
+        icon: modelIcon(model.value),
+      },
+      {
+        text: $gettext('Results'),
+      },
+    ])
+
+    const columns = reactive([
+      {
+        field: 'id',
+        hidden: true,
+      },
+      {
+        label: $gettext('Actions'),
+        field: 'actions',
+        html: true,
+        sortable: false,
+        globalSearchDisabled: true,
+      },
+      {
+        label: $gettext('Logical Device'),
+        field: '__str__',
+        html: true,
+      },
+      {
+        field: 'device.id',
+        hidden: true,
+      },
+      {
+        label: $gettext('Device'),
+        field: 'device.name',
+        html: true,
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
         },
       },
-      model: 'devices/logical',
-      detailRoute: 'logical-device-detail',
-    }
-  },
-  methods: {
-    async loadFilters() {
-      await this.$axios
-        .get('/api/v1/token/devices/models/')
-        .then((response) => {
-          this.tableFilters.model.items = this.tableFilters.model.items.concat(
-            response.data.results
-          )
+      {
+        field: 'capability.id',
+        hidden: true,
+      },
+      {
+        label: $gettext('Capability'),
+        field: 'capability.name',
+        html: true,
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
+        },
+      },
+      {
+        label: $gettext('Alternative Capability Name'),
+        field: 'alternative_capability_name',
+      },
+    ])
 
-          if (this.$route.query.model_id) {
-            this.tableFilters.model.selected =
-              this.tableFilters.model.items.find(
-                (x) => x.id == this.$route.query.model_id
-              )
-          }
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-
-      await this.$axios
+    const loadFilters = async () => {
+      await api
         .get('/api/v1/token/devices/capabilities/')
         .then((response) => {
-          this.columns.find(
+          columns.find(
             (x) => x.field === 'capability.name'
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
@@ -320,18 +162,23 @@ export default {
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
 
-    onModelFilter(params) {
-      this.updateParams({
-        columnFilters: Object.assign(this.serverParams.columnFilters, {
-          model: params.id,
-        }),
-      })
-      this.loadItems()
-    },
+    onMounted(async () => {
+      await loadFilters()
+    })
+
+    return {
+      model,
+      detailRoute,
+      addRoutes,
+      moreFilters,
+      title,
+      breadcrumbs,
+      columns,
+    }
   },
 }
 </script>

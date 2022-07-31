@@ -2,379 +2,227 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header
+    <TableResults
       :title="title"
-      :results="totalRecords"
-      :add-routes="[{ route: 'deployment-add' }]"
-    >
-      <template #append>
-        <q-btn
-          class="q-ma-sm float-right"
-          color="info"
-          text-color="black"
-          :label="$gettext('Export')"
-          icon="mdi-file-export"
-          :loading="isLoadingExport"
-          :disable="totalRecords === 0"
-          @click="exportAll"
-        />
-      </template>
-    </Header>
-
-    <q-list class="more-filters" bordered>
-      <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">
-        <SearchFilter
-          v-model="tableFilters.search"
-          @search="onSearch"
-          @clear="onSearchClear"
-        />
-
-        <div class="row q-pa-md q-col-gutter-lg">
-          <div class="col-sm-6 col-md-4">
-            <q-select
-              v-model="tableFilters.schedule.selected"
-              :options="tableFilters.schedule.items"
-              :label="$gettext('By Schedule')"
-              dense
-              outlined
-              option-value="id"
-              option-label="name"
-              @input="onScheduleFilter"
-            >
-              <template #before>
-                <q-icon name="mdi-filter" />
-              </template>
-            </q-select>
-          </div>
-        </div>
-
-        <div class="row q-pa-md">
-          <div class="col-12">
-            <q-btn
-              icon="mdi-filter-remove"
-              color="info"
-              text-color="black"
-              :label="$gettext('Reset all filters')"
-              @click="resetFilters"
-            />
-          </div>
-        </div>
-      </q-expansion-item>
-    </q-list>
-
-    <vue-good-table
-      ref="myTable"
       :columns="columns"
-      :rows="rows"
-      mode="remote"
-      compact-mode
-      :total-rows="totalRecords"
-      :is-loading.sync="isLoading"
-      :line-numbers="false"
-      :select-options="selectOptions"
-      :pagination-options="paginationOptions"
-      :search-options="searchOptions"
-      style-class="vgt-table striped condensed"
-      @on-page-change="onPageChange"
-      @on-sort-change="onSortChange"
-      @on-column-filter="onColumnFilter"
-      @on-per-page-change="onPerPageChange"
-      @on-selected-rows-change="onSelectionChanged"
+      :model="model"
+      :detail-route="detailRoute"
+      :add-routes="addRoutes"
+      :more-filters="moreFilters"
     >
-      <span slot="loadingContent" class="vgt-loading__content">
-        <q-spinner size="sm" />
-        <translate>Loading data...</translate>
-      </span>
-
-      <template slot="table-row" slot-scope="props">
-        <span v-if="props.column.field == 'actions'">
-          <q-btn
-            class="q-ma-xs"
-            round
-            size="sm"
-            icon="mdi-pencil"
-            color="primary"
-            @click="edit(props.row.id)"
-            ><q-tooltip>{{ $gettext('Edit') }}</q-tooltip></q-btn
-          >
-          <q-btn
-            class="q-ma-xs"
-            round
-            size="sm"
-            icon="mdi-delete"
-            color="negative"
-            @click="confirmRemove(props.row.id)"
-            ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-          >
-          <q-btn
-            v-if="props.row.source === 'I'"
-            class="q-ma-xs"
-            round
-            size="sm"
-            icon="mdi-autorenew"
-            color="primary"
-            @click="regenerate(props.row.id)"
-            ><q-tooltip>{{ $gettext('Regenerate Metadata') }}</q-tooltip></q-btn
-          >
-        </span>
-
-        <span v-else-if="props.column.field == 'name'">
+      <template #fields="slotProps">
+        <span v-if="slotProps.props.column.field == 'name'">
           <MigasLink
             :model="model"
-            :pk="props.row.id"
-            :value="props.row.name"
-            icon="mdi-rocket-launch"
+            :pk="slotProps.props.row.id"
+            :value="slotProps.props.row.name"
           />
         </span>
 
-        <span v-else-if="props.column.field == 'project.name'">
+        <span v-else-if="slotProps.props.column.field == 'project.name'">
           <MigasLink
             model="projects"
-            :pk="props.row.project.id"
-            :value="props.row.project.name"
-            icon="mdi-sitemap"
+            :pk="slotProps.props.row.project.id"
+            :value="slotProps.props.row.project.name"
           />
         </span>
 
-        <span v-else-if="props.column.field == 'domain.name'">
+        <span v-else-if="slotProps.props.column.field == 'domain.name'">
           <MigasLink
-            v-if="props.row.domain"
+            v-if="slotProps.props.row.domain"
             model="domains"
-            :pk="props.row.domain.id"
-            :value="props.row.domain.name"
-            icon="mdi-web"
+            :pk="slotProps.props.row.domain.id"
+            :value="slotProps.props.row.domain.name"
           />
         </span>
 
-        <span v-else-if="props.column.field == 'schedule.name'">
+        <span v-else-if="slotProps.props.column.field == 'schedule.name'">
           <MigasLink
-            v-if="props.row.schedule"
+            v-if="slotProps.props.row.schedule"
             model="schedules"
-            :pk="props.row.schedule.id"
-            :value="props.row.schedule.name"
-            icon="mdi-calendar-start"
+            :pk="slotProps.props.row.schedule.id"
+            :value="slotProps.props.row.schedule.name"
           />
         </span>
 
-        <span v-else-if="props.column.field == 'enabled'">
-          <BooleanView v-model="props.row.enabled" />
+        <span v-else-if="slotProps.props.column.field == 'enabled'">
+          <BooleanView :value="slotProps.props.row.enabled" />
         </span>
 
-        <span v-else-if="props.column.field == 'start_date'">
-          {{ showDate(props.row.start_date, 'YYYY-MM-DD') }}
-          <q-tooltip>{{ diffForHumans(props.row.start_date) }}</q-tooltip>
+        <span v-else-if="slotProps.props.column.field == 'start_date'">
+          {{ showDate(slotProps.props.row.start_date, 'YYYY-MM-DD') }}
+          <q-tooltip>{{
+            diffForHumans(slotProps.props.row.start_date)
+          }}</q-tooltip>
         </span>
 
-        <span v-else-if="props.column.field == 'source'">
-          {{ resolveSource(props.row.source) }}
+        <span v-else-if="slotProps.props.column.field == 'source'">
+          {{ resolveSource(slotProps.props.row.source) }}
         </span>
 
         <span v-else>
-          {{ props.formattedRow[props.column.field] }}
+          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
         </span>
       </template>
-
-      <q-banner
-        v-if="!isLoading"
-        slot="emptystate"
-        rounded
-        class="bg-warning text-black"
-      >
-        <translate>There are no results</translate>
-      </q-banner>
-
-      <div slot="selected-row-actions">
-        <q-btn
-          class="q-ma-xs"
-          size="sm"
-          color="info"
-          text-color="black"
-          icon="mdi-file-export"
-          :loading="isLoadingExport"
-          @click="exportData"
-          ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
-        >
-        <q-btn
-          size="sm"
-          color="negative"
-          icon="mdi-delete"
-          @click="confirmRemove"
-          ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-        >
-      </div>
-
-      <template slot="pagination-bottom" slot-scope="props">
-        <TablePagination
-          :total="props.total"
-          :page-changed="props.pageChanged"
-          :per-page-changed="props.perPageChanged"
-          :pagination-options="paginationOptions"
-        />
-      </template>
-    </vue-good-table>
+    </TableResults>
   </q-page>
 </template>
 
 <script>
+import { ref, reactive, onMounted } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
-import SearchFilter from 'components/ui/SearchFilter'
-import Header from 'components/ui/Header'
-import TablePagination from 'components/ui/TablePagination'
+import TableResults from 'components/ui/TableResults'
 import BooleanView from 'components/ui/BooleanView'
 import MigasLink from 'components/MigasLink'
-import { datagridMixin } from 'mixins/datagrid'
-import { dateMixin } from 'mixins/date'
+
+import useDate from 'composables/date'
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.$gettext('Deployments List'),
-    }
-  },
   components: {
     Breadcrumbs,
-    SearchFilter,
-    Header,
-    TablePagination,
+    TableResults,
     BooleanView,
     MigasLink,
   },
-  mixins: [datagridMixin, dateMixin],
-  data() {
-    return {
-      title: this.$gettext('Deployments'),
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Release'),
-          icon: 'mdi-truck-delivery',
-        },
-        {
-          text: this.$gettext('Deployments'),
-          icon: 'mdi-rocket-launch',
-          to: 'deployments-dashboard',
-        },
-        {
-          text: this.$gettext('Results'),
-        },
-      ],
-      columns: [
-        {
-          field: 'id',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Actions'),
-          field: 'actions',
-          html: true,
-          sortable: false,
-          globalSearchDisabled: true,
-        },
-        {
-          label: this.$gettext('Name'),
-          field: 'name',
-          html: true,
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('Filter'),
-            trigger: 'enter',
-          },
-        },
-        {
-          field: 'project.id',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Project'),
-          field: 'project.name',
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('Filter'),
-            trigger: 'enter',
-          },
-        },
-        {
-          field: 'domain.id',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Domain'),
-          field: 'domain.name',
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('Filter'),
-            trigger: 'enter',
-          },
-        },
-        {
-          label: this.$gettext('Source'),
-          field: 'source',
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('All'),
-            trigger: 'enter',
-            filterDropdownItems: [
-              { value: 'I', text: this.$gettext('Internal') },
-              { value: 'E', text: this.$gettext('External') },
-            ],
-          },
-        },
-        {
-          label: this.$gettext('Enabled'),
-          field: 'enabled',
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('All'),
-            trigger: 'enter',
-            filterDropdownItems: [
-              { value: true, text: this.$gettext('Yes') },
-              { value: false, text: this.$gettext('No') },
-            ],
-          },
-        },
-        {
-          label: this.$gettext('Start Date'),
-          field: 'start_date',
-        },
-        {
-          field: 'schedule.id',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Schedule'),
-          field: 'schedule.name',
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('Filter'),
-            trigger: 'enter',
-          },
-        },
-      ],
-      tableFilters: {
-        search: '',
-        schedule: {
-          items: [
-            { id: '', name: this.$gettext('All') },
-            { id: 1, name: this.$gettext('without schedule') },
-            { id: 0, name: this.$gettext('with schedule') },
-          ],
-          selected: null,
+  setup() {
+    const { $gettext } = useGettext()
+    const uiStore = useUiStore()
+    const { showDate, diffForHumans } = useDate()
+
+    useMeta({ title: $gettext('Deployments List') })
+
+    const model = ref('deployments')
+    const detailRoute = ref('deployment-detail')
+    const addRoutes = reactive([{ route: 'deployment-add' }])
+    const moreFilters = ['schedule']
+
+    const title = ref($gettext('Deployments'))
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Release'),
+        icon: 'mdi-truck-delivery',
+      },
+      {
+        text: $gettext('Deployments'),
+        icon: modelIcon(model.value),
+        to: 'deployments-dashboard',
+      },
+      {
+        text: $gettext('Results'),
+      },
+    ])
+
+    const columns = reactive([
+      {
+        field: 'id',
+        hidden: true,
+      },
+      {
+        label: $gettext('Actions'),
+        field: 'actions',
+        html: true,
+        sortable: false,
+        globalSearchDisabled: true,
+      },
+      {
+        label: $gettext('Name'),
+        field: 'name',
+        html: true,
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
         },
       },
-      model: 'deployments',
-      detailRoute: 'deployment-detail',
-    }
-  },
-  methods: {
-    async loadFilters() {
-      await this.$axios
+      {
+        field: 'project.id',
+        hidden: true,
+      },
+      {
+        label: $gettext('Project'),
+        field: 'project.name',
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
+        },
+      },
+      {
+        field: 'domain.id',
+        hidden: true,
+      },
+      {
+        label: $gettext('Domain'),
+        field: 'domain.name',
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
+        },
+      },
+      {
+        label: $gettext('Source'),
+        field: 'source',
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('All'),
+          trigger: 'enter',
+          filterDropdownItems: [
+            { value: 'I', text: $gettext('Internal') },
+            { value: 'E', text: $gettext('External') },
+          ],
+        },
+      },
+      {
+        label: $gettext('Enabled'),
+        field: 'enabled',
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('All'),
+          trigger: 'enter',
+          filterDropdownItems: [
+            { value: true, text: $gettext('Yes') },
+            { value: false, text: $gettext('No') },
+          ],
+        },
+      },
+      {
+        label: $gettext('Start Date'),
+        field: 'start_date',
+      },
+      {
+        field: 'schedule.id',
+        hidden: true,
+      },
+      {
+        label: $gettext('Schedule'),
+        field: 'schedule.name',
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
+        },
+      },
+    ])
+
+    const loadFilters = async () => {
+      await api
         .get('/api/v1/token/projects/')
         .then((response) => {
-          this.columns.find(
+          columns.find(
             (x) => x.field === 'project.name'
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
@@ -386,13 +234,13 @@ export default {
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      await this.$axios
+      await api
         .get('/api/v1/token/domains/')
         .then((response) => {
-          this.columns.find(
+          columns.find(
             (x) => x.field === 'domain.name'
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
@@ -404,13 +252,13 @@ export default {
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      await this.$axios
+      await api
         .get('/api/v1/token/schedules/')
         .then((response) => {
-          this.columns.find(
+          columns.find(
             (x) => x.field === 'schedule.name'
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
@@ -422,40 +270,37 @@ export default {
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
 
-    onScheduleFilter(params) {
-      this.updateParams({
-        columnFilters: Object.assign(this.serverParams.columnFilters, {
-          schedule: params.id ? true : params.id === 0 ? false : '',
-        }),
-      })
-      this.loadItems()
-    },
-
-    resolveSource(value) {
+    const resolveSource = (value) => {
       switch (value) {
         case 'I':
-          return this.$gettext('Internal')
+          return $gettext('Internal')
         case 'E':
-          return this.$gettext('External')
+          return $gettext('External')
         default:
           return ''
       }
-    },
+    }
 
-    async regenerate(id) {
-      await this.$axios
-        .get(`/api/v1/token/deployments/internal-sources/${id}/metadata/`)
-        .then((response) => {
-          this.$store.dispatch('ui/notifySuccess', response.data.detail)
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-    },
+    onMounted(async () => {
+      await loadFilters()
+    })
+
+    return {
+      model,
+      detailRoute,
+      addRoutes,
+      moreFilters,
+      title,
+      breadcrumbs,
+      columns,
+      showDate,
+      diffForHumans,
+      resolveSource,
+    }
   },
 }
 </script>
