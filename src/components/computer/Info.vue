@@ -9,7 +9,7 @@
 
       <div class="row q-pa-md">
         <div class="col col-md col-sm">
-          <q-btn-group v-if="$store.getters['auth/user'].is_superuser">
+          <q-btn-group v-if="isSuperUser">
             <q-input v-model="value" outlined :label="$gettext('Name')" />
             <q-btn
               color="primary"
@@ -56,7 +56,6 @@
             model="platforms"
             :pk="project.platform.id"
             :value="project.platform.name"
-            icon="mdi-layers"
           />
         </div>
 
@@ -64,12 +63,7 @@
           <q-tooltip self="bottom middle"
             ><translate>project</translate></q-tooltip
           >
-          <MigasLink
-            model="projects"
-            :pk="project.id"
-            :value="project.name"
-            icon="mdi-sitemap"
-          />
+          <MigasLink model="projects" :pk="project.id" :value="project.name" />
         </div>
       </div>
 
@@ -100,7 +94,7 @@
         no-caps
         :to="{
           name: 'computer-events',
-          params: { id: cid }
+          params: { id: cid },
         }"
         :label="$gettext('Events')"
       />
@@ -112,7 +106,7 @@
         no-caps
         :to="{
           name: 'computer-simulate',
-          params: { id: cid }
+          params: { id: cid },
         }"
         :label="$gettext('Simulate synchronization')"
       />
@@ -124,7 +118,7 @@
         no-caps
         :to="{
           name: 'computer-label',
-          params: { id: cid }
+          params: { id: cid },
         }"
         :label="$gettext('Identification')"
       />
@@ -133,72 +127,87 @@
 </template>
 
 <script>
-import { dateMixin } from 'mixins/date'
+import { ref } from 'vue'
+import { useGettext } from 'vue3-gettext'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+import { useAuthStore } from 'stores/auth'
+
 import MigasLink from 'components/MigasLink'
+
+import useDate from 'composables/date'
 
 export default {
   name: 'ComputerInfo',
   components: {
-    MigasLink
+    MigasLink,
   },
-  mixins: [dateMixin],
   props: {
     cid: {
       type: Number,
-      required: true
+      required: true,
     },
     name: {
       type: String,
-      required: true
+      required: true,
     },
     fqdn: {
       type: String,
       required: false,
-      default: null
+      default: null,
     },
     project: {
       type: Object,
-      required: true
+      required: true,
     },
     createdAt: {
       type: String,
-      required: true
+      required: true,
     },
     ipAddress: {
       type: String,
       required: false,
-      default: null
+      default: null,
     },
     forwardedIpAddress: {
       type: String,
       required: false,
-      default: null
-    }
+      default: null,
+    },
   },
-  data() {
-    return {
-      loading: false,
-      value: this.name
-    }
-  },
-  methods: {
-    async updateName() {
-      this.loading = true
-      await this.$axios
-        .patch(`/api/v1/token/computers/${this.cid}/`, {
-          name: this.value
+  setup(props) {
+    const { $gettext } = useGettext()
+    const uiStore = useUiStore()
+    const authStore = useAuthStore()
+    const { showDate, diffForHumans } = useDate()
+
+    const loading = ref(false)
+    const value = ref(props.name)
+
+    const updateName = async () => {
+      loading.value = true
+      await api
+        .patch(`/api/v1/token/computers/${props.cid}/`, {
+          name: value.value,
         })
         .then((response) => {
-          this.$store.dispatch(
-            'ui/notifySuccess',
-            this.$gettext('Name has been changed!')
-          )
+          uiStore.notifySuccess($gettext('Name has been changed!'))
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-        .finally(() => (this.loading = false))
+        .finally(() => (loading.value = false))
     }
-  }
+
+    return {
+      loading,
+      value,
+      isSuperUser: authStore.user.is_superuser,
+      updateName,
+      showDate,
+      diffForHumans,
+    }
+  },
 }
 </script>
