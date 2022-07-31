@@ -6,9 +6,7 @@
     "create_env_files": false,
     "add_env_to_gitignore": true
   },
-  "qdatetimepicker": {},
   "@quasar/qmarkdown": {
-    "import_md": false,
-    "import_vmd": false
+    "import_md": false
   }
 }
