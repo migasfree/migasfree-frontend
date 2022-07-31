@@ -27,36 +27,43 @@
 </template>
 
 <script>
+import { ref, computed, watch } from 'vue'
+import { useGettext } from 'vue3-gettext'
+
 export default {
   name: 'RemoveDialog',
   props: {
     message: {
       type: String,
       required: false,
-      default: ''
+      default: '',
     },
-    value: {
+    modelValue: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
-  data() {
-    return {
-      showing: this.value
-    }
-  },
-  computed: {
-    text() {
-      if (this.message === '')
-        return this.$gettext('Are you sure you want to remove this item?')
+  emits: ['canceled', 'confirmed'],
+  setup(props) {
+    const { $gettext } = useGettext()
 
-      return this.message
-    }
+    const showing = ref(props.modelValue)
+
+    const text = computed(() => {
+      if (props.message === '')
+        return $gettext('Are you sure you want to remove this item?')
+
+      return props.message
+    })
+
+    watch(
+      () => props.modelValue,
+      (newValue) => {
+        showing.value = newValue
+      }
+    )
+
+    return { showing, text }
   },
-  watch: {
-    value(newVal) {
-      this.showing = newVal
-    }
-  }
 }
 </script>
