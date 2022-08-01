@@ -125,16 +125,21 @@ export default {
     const uiStore = useUiStore()
 
     const userAccount = ref(null)
+    const user = ref(authStore.user)
     const languages = ref([])
     const currentLanguage = ref(gettext.available[gettext.current])
-    const domainPreference = ref({
-      id: 0,
-      name: $gettext('All').toUpperCase(),
-    })
-    const scopePreference = ref({
-      id: 0,
-      name: $gettext('All').toLowerCase(),
-    })
+    const domainPreference = ref(
+      authStore.user.domain_preference || {
+        id: 0,
+        name: $gettext('All').toUpperCase(),
+      }
+    )
+    const scopePreference = ref(
+      authStore.user.scope_preference || {
+        id: 0,
+        name: $gettext('All').toLowerCase(),
+      }
+    )
 
     const logout = () => {
       authStore.logout().then(() => {
@@ -191,16 +196,22 @@ export default {
         })
     }
 
-    Object.entries(gettext.available).map(([label, value]) => {
-      languages.value.push({ label, value })
-    })
+    authStore.$subscribe((mutation, state) => {
+      user.value = authStore.user
 
-    onMounted(async () => {
+      console.log('subscribe', authStore.user, scopePreference)
+
       if (authStore.user.domain_preference)
         domainPreference.value = authStore.user.domain_preference
 
       if (authStore.user.scope_preference && authStore.user.scope_preference.id)
         scopePreference.value = authStore.user.scope_preference
+    })
+
+    onMounted(async () => {
+      Object.entries(gettext.available).map(([label, value]) => {
+        languages.value.push({ label, value })
+      })
     })
 
     return {
@@ -210,7 +221,7 @@ export default {
       domains: authStore.domains,
       domainPreference,
       scopePreference,
-      user: authStore.user,
+      user,
       filteredScopes: authStore.filteredScopes,
       logout,
       changeAppLanguage,
