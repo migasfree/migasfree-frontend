@@ -142,6 +142,7 @@ export default {
     )
 
     const logout = () => {
+      console.log('logout UserAccount')
       authStore.logout().then(() => {
         router.push({ name: 'login' })
       })
@@ -198,8 +199,6 @@ export default {
 
     authStore.$subscribe((mutation, state) => {
       user.value = authStore.user
-
-      console.log('subscribe', authStore.user, scopePreference)
 
       if (authStore.user.domain_preference)
         domainPreference.value = authStore.user.domain_preference
