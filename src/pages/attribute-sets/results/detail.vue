@@ -1,280 +1,264 @@
 <template>
   <q-page padding>
-    <Breadcrumbs :items="breadcrumbs" />
+    <ItemDetail
+      :breadcrumbs="breadcrumbs"
+      :original-title="title"
+      :model="model"
+      :routes="routes"
+      :element="element"
+      :element-data="elementData"
+      :is-valid="isValid"
+      @reset-element="resetElement"
+      @reset-related="resetRelated"
+      @set-related="setRelated"
+      @set-title="setTitle"
+    >
+      <template #fields>
+        <q-card-section>
+          <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
-    <Header :title="$gettext('Attribute Set')">
-      <template v-if="element.id" #append
-        >:
-        <MigasLink
-          model="attribute-sets"
-          :pk="element.id"
-          :value="element.name"
-          icon="mdi-set-none"
-        />
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-checkbox
+                v-model="element.enabled"
+                left-label
+                :label="$gettext('Enabled?')"
+              />
+            </div>
+
+            <div class="col-6 col-md col-sm">
+              <q-input
+                v-model="element.name"
+                outlined
+                :label="$gettext('Name')"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+              />
+            </div>
+          </div>
+
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-12 col-md col-sm">
+              <q-input
+                v-model="element.description"
+                outlined
+                type="textarea"
+                :label="$gettext('Description')"
+              />
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section>
+          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Attributes</div>
+
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <SelectAttributes
+                v-model="element.included_attributes"
+                :label="$gettext('Included')"
+              />
+            </div>
+
+            <div class="col-6 col-md col-sm">
+              <SelectAttributes
+                v-model="element.excluded_attributes"
+                :label="$gettext('Excluded')"
+              />
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section>
+          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Location</div>
+
+          <q-toggle
+            v-model="viewMap"
+            :label="
+              viewMap
+                ? $gettext('Remove Coordinates')
+                : $gettext('Add Coordinates')
+            "
+            :false-value="false"
+            :true-value="true"
+            @update:model-value="updateCoords"
+          />
+
+          <template v-if="viewMap">
+            <div class="row q-pa-md q-gutter-md">
+              <div class="col-6 col-md col-sm">
+                <q-input
+                  v-model="element.latitude"
+                  outlined
+                  :label="$gettext('Latitude')"
+                  @update:model-value="updateMapCoords"
+                />
+              </div>
+
+              <div class="col-6 col-md col-sm">
+                <q-input
+                  v-model="element.longitude"
+                  outlined
+                  :label="$gettext('Longitude')"
+                  @update:model-value="updateMapCoords"
+                />
+              </div>
+            </div>
+
+            <div class="row q-pa-md q-gutter-md">
+              <div class="col">
+                <AddLocation v-model="coords" @update-coords="updateCoords" />
+              </div>
+            </div>
+          </template>
+        </q-card-section>
       </template>
-    </Header>
-
-    <q-card>
-      <q-card-section>
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-checkbox
-              v-model="element.enabled"
-              left-label
-              :label="$gettext('Enabled?')"
-            />
-          </div>
-
-          <div class="col-6 col-md col-sm">
-            <q-input
-              v-model="element.name"
-              outlined
-              :label="$gettext('Name')"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-            />
-          </div>
-        </div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-12 col-md col-sm">
-            <q-input
-              v-model="element.description"
-              outlined
-              type="textarea"
-              :label="$gettext('Description')"
-            />
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-section>
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">Attributes</div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <SelectAttributes
-              v-model="element.included_attributes"
-              :label="$gettext('Included')"
-            />
-          </div>
-
-          <div class="col-6 col-md col-sm">
-            <SelectAttributes
-              v-model="element.excluded_attributes"
-              :label="$gettext('Excluded')"
-            />
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-section>
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">Location</div>
-
-        <q-toggle
-          v-model="viewMap"
-          :label="
-            viewMap
-              ? $gettext('Remove Coordinates')
-              : $gettext('Add Coordinates')
-          "
-          :false-value="false"
-          :true-value="true"
-          @input="updateCoords"
-        />
-
-        <template v-if="viewMap">
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md col-sm">
-              <q-input
-                v-model="element.latitude"
-                outlined
-                :label="$gettext('Latitude')"
-                @input="updateMapCoords"
-              />
-            </div>
-
-            <div class="col-6 col-md col-sm">
-              <q-input
-                v-model="element.longitude"
-                outlined
-                :label="$gettext('Longitude')"
-                @input="updateMapCoords"
-              />
-            </div>
-          </div>
-
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col">
-              <AddLocation v-model="coords" @update-coords="updateCoords" />
-            </div>
-          </div>
-        </template>
-      </q-card-section>
-
-      <q-card-actions class="justify-around">
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and add other')"
-          icon="mdi-plus"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('add')"
-        />
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and continue editing')"
-          icon="mdi-content-save-edit"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement"
-        />
-        <q-btn
-          :label="$gettext('Save')"
-          color="primary"
-          icon="mdi-content-save-move"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('return')"
-        />
-      </q-card-actions>
-    </q-card>
-
-    <div v-if="$route.params.id && element.id" class="row q-pa-md">
-      <q-btn
-        flat
-        icon="mdi-delete"
-        :color="$q.dark.isActive ? 'white' : 'negative'"
-        :class="{ 'reversed-delete': $q.dark.isActive }"
-        :label="$gettext('Delete')"
-        @click="confirmRemove = true"
-      />
-    </div>
-
-    <RemoveDialog
-      v-model="confirmRemove"
-      @confirmed="remove"
-      @canceled="confirmRemove = !confirmRemove"
-    />
+    </ItemDetail>
   </q-page>
 </template>
 
 <script>
-import Breadcrumbs from 'components/ui/Breadcrumbs'
-import Header from 'components/ui/Header'
-import MigasLink from 'components/MigasLink'
+import { ref, reactive, computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import ItemDetail from 'components/ui/ItemDetail'
 import SelectAttributes from 'components/ui/SelectAttributes'
 import AddLocation from 'components/map/AddLocation'
-import RemoveDialog from 'components/ui/RemoveDialog'
-import { detailMixin } from 'mixins/detail'
-import { elementMixin } from 'mixins/element'
+
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title,
-    }
-  },
   components: {
-    Breadcrumbs,
-    Header,
-    RemoveDialog,
-    MigasLink,
+    ItemDetail,
     SelectAttributes,
     AddLocation,
   },
-  mixins: [detailMixin, elementMixin],
-  data() {
-    const route = 'attribute-sets-list'
-    const title = this.$gettext('Attribute Set')
-    const element = {
+  setup() {
+    const { $gettext } = useGettext()
+
+    const title = ref($gettext('Attribute Set'))
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
+
+    const routes = {
+      list: 'attribute-sets-list',
+      add: 'attribute-set-add',
+      detail: 'attribute-set-detail',
+    }
+    const model = 'attribute-sets'
+
+    let element = reactive({
       id: 0,
       enabled: false,
       included_attributes: [],
       excluded_attributes: [],
+      latitude: null,
+      longitude: null,
+    })
+
+    const viewMap = ref(false)
+    const coords = ref([0, 0])
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Configuration'),
+        icon: 'mdi-cogs',
+      },
+      {
+        text: $gettext('Attribute Sets'),
+        icon: modelIcon(model.value),
+        to: routes.list,
+      },
+    ])
+
+    const isValid = computed(() => {
+      return element.name !== undefined && element.name.trim() !== ''
+    })
+
+    const elementData = () => {
+      return {
+        name: element.name,
+        description: element.description,
+        enabled: element.enabled,
+        included_attributes: element.included_attributes.map((item) => item.id),
+        excluded_attributes: element.excluded_attributes.map((item) => item.id),
+        latitude: element.latitude,
+        longitude: element.longitude,
+      }
+    }
+
+    const setRelated = () => {
+      if (element.latitude !== null) {
+        coords.value = [element.latitude, element.longitude]
+        viewMap.value = true
+      } else if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          coords.value = [position.coords.latitude, position.coords.longitude]
+        })
+      }
+    }
+
+    const resetElement = () => {
+      Object.assign(element, {
+        id: 0,
+        name: undefined,
+        description: undefined,
+        included_attributes: [],
+        excluded_attributes: [],
+        latitude: null,
+        longitude: null,
+      })
+    }
+
+    const resetRelated = () => {
+      viewMap.value = false
+    }
+
+    const setTitle = (value) => {
+      windowTitle.value = value
+    }
+
+    const updateCoords = (params) => {
+      if (viewMap.value) {
+        element.latitude = params[0]
+        element.longitude = params[1]
+      } else {
+        element.latitude = null
+        element.longitude = null
+      }
+    }
+
+    const updateMapCoords = () => {
+      coords.value = [element.latitude, element.longitude]
     }
 
     return {
+      breadcrumbs,
       title,
-      originalTitle: title,
-      model: 'attribute-sets',
-      listRoute: route,
-      addRoute: 'attribute-set-add',
-      detailRoute: 'attribute-set-detail',
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs',
-        },
-        {
-          text: this.$gettext('Attribute Sets'),
-          icon: 'mdi-set-none',
-          to: route,
-        },
-      ],
+      model,
+      routes,
       element,
-      emptyElement: Object.assign({}, element),
-      confirmRemove: false,
-
-      viewMap: false,
-      coords: [0, 0],
+      viewMap,
+      coords,
+      isValid,
+      elementData,
+      setRelated,
+      resetElement,
+      resetRelated,
+      setTitle,
+      updateCoords,
+      updateMapCoords,
     }
-  },
-  computed: {
-    isValid() {
-      return this.element.name !== undefined && this.element.name.trim() !== ''
-    },
-  },
-  methods: {
-    elementData() {
-      return {
-        name: this.element.name,
-        description: this.element.description,
-        enabled: this.element.enabled,
-        included_attributes: this.element.included_attributes.map(
-          (item) => item.id
-        ),
-        excluded_attributes: this.element.excluded_attributes.map(
-          (item) => item.id
-        ),
-        latitude: this.element.latitude,
-        longitude: this.element.longitude,
-      }
-    },
-
-    setRelated() {
-      if (this.element.latitude !== null) {
-        this.coords = [this.element.latitude, this.element.longitude]
-        this.viewMap = true
-      } else if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          this.coords = [position.coords.latitude, position.coords.longitude]
-        })
-      }
-    },
-
-    updateCoords(params) {
-      if (this.viewMap) {
-        this.element.latitude = params[0]
-        this.element.longitude = params[1]
-      } else {
-        this.element.latitude = null
-        this.element.longitude = null
-      }
-    },
-
-    updateMapCoords() {
-      this.coords = [this.element.latitude, this.element.longitude]
-    },
   },
 }
 </script>

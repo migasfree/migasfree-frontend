@@ -1,18 +1,21 @@
 <template>
-  <div id="q-app">
-    <router-view />
-  </div>
+  <router-view />
 </template>
 
 <script>
-export default {
-  name: 'App',
+import { defineComponent } from 'vue'
+import { useQuasar } from 'quasar'
+import { gettext } from 'boot/gettext'
 
-  created() {
-    this.$q.dark.set(this.$q.cookies.get('darkMode'), { expires: '30d' })
-    this.$language.current = this.$q.cookies.has('language')
-      ? this.$q.cookies.get('language')
-      : this.$language.current
+export default defineComponent({
+  name: 'App',
+  setup() {
+    const $q = useQuasar()
+
+    $q.dark.set($q.cookies.get('darkMode'), { expires: '30d' })
+    gettext.current = $q.cookies.has('language')
+      ? $q.cookies.get('language')
+      : gettext.current
   },
-}
+})
 </script>

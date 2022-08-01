@@ -14,13 +14,19 @@
 </template>
 
 <script>
+import { useQuasar } from 'quasar'
+
 export default {
   name: 'ToggleDarkMode',
-  methods: {
-    toggleDarkMode() {
-      this.$q.dark.toggle()
-      this.$q.cookies.set('darkMode', this.$q.dark.isActive, { expires: '30d' })
-    },
+  setup() {
+    const $q = useQuasar()
+
+    const toggleDarkMode = () => {
+      $q.dark.toggle()
+      $q.cookies.set('darkMode', $q.dark.isActive, { expires: '30d' })
+    }
+
+    return { toggleDarkMode }
   },
 }
 </script>

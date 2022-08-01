@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" />
+    <Header :title="title" :is-export-btn="false" />
 
     <p v-translate>
       This procedure changes status, tags and devices between two computers.
@@ -24,7 +24,7 @@
               :options="computers"
               @filter="filterComputers"
               @filter-abort="abortFilterComputers"
-              @input="loadComputer(source)"
+              @update:model-value="loadComputer(source)"
             >
               <template #no-option>
                 <q-item>
@@ -35,7 +35,7 @@
               </template>
 
               <template #option="scope">
-                <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                <q-item v-bind="scope.itemProps">
                   {{ scope.opt.__str__ }}
                 </q-item>
               </template>
@@ -93,7 +93,7 @@
               :options="computers"
               @filter="filterComputers"
               @filter-abort="abortFilterComputers"
-              @input="loadComputer(target)"
+              @update:model-value="loadComputer(target)"
             >
               <template #no-option>
                 <q-item>
@@ -104,7 +104,7 @@
               </template>
 
               <template #option="scope">
-                <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                <q-item v-bind="scope.itemProps">
                   {{ scope.opt.__str__ }}
                 </q-item>
               </template>
@@ -139,137 +139,154 @@
 </template>
 
 <script>
+import { ref, reactive, computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import ReplacementInfo from 'components/computer/ReplacementInfo'
-import { elementMixin } from 'mixins/element'
+
+import { useElement } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title
-    }
-  },
   components: {
     Breadcrumbs,
     Header,
     MigasLink,
-    ReplacementInfo
+    ReplacementInfo,
   },
-  mixins: [elementMixin],
-  data() {
-    return {
-      title: this.$gettext('Computers Replacement'),
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home'
-        },
-        {
-          text: this.$gettext('Data'),
-          icon: 'mdi-database-search'
-        },
-        {
-          text: this.$gettext('Computers Replacement'),
-          icon: 'mdi-compare-horizontal'
-        }
-      ],
-      computers: [],
-      source: null,
-      target: null,
-      loading: false
+  setup() {
+    const { $gettext } = useGettext()
+    const { elementIcon } = useElement()
+    const uiStore = useUiStore()
+
+    const title = ref($gettext('Computers Replacement'))
+    useMeta({ title: title.value })
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Data'),
+        icon: 'mdi-database-search',
+      },
+      {
+        text: title.value,
+        icon: 'mdi-compare-horizontal',
+      },
+    ])
+
+    const computers = ref([])
+    const source = ref(null)
+    const target = ref(null)
+    const loading = ref(false)
+
+    const isEnabled = computed(() => {
+      return source.value !== null && target.value !== null
+    })
+
+    const loadComputer = async (obj) => {
+      if (obj !== null) {
+        await api
+          .get(`/api/v1/token/computers/${obj.id}/`)
+          .then((response) => {
+            obj = Object.assign(obj, response.data)
+            loadDevices(obj)
+          })
+          .catch((error) => {
+            uiStore.notifyError(error)
+          })
+      }
     }
-  },
-  computed: {
-    isEnabled() {
-      return this.source !== null && this.target !== null
+
+    const loadDevices = async (obj) => {
+      if (obj !== null) {
+        await api
+          .get(`/api/v1/token/computers/${obj.id}/devices/`)
+          .then((response) => {
+            obj.devices = response.data
+          })
+          .catch((error) => {
+            uiStore.notifyError(error)
+          })
+      }
     }
-  },
-  methods: {
-    async filterComputers(val, update, abort) {
+
+    const replace = async () => {
+      if (source.value !== null && target.value !== null) {
+        loading.value = true
+        await api
+          .post(`/api/v1/token/computers/${source.value.id}/replacement/`, {
+            target: target.value.id,
+          })
+          .then((response) => {
+            let tmp = null
+
+            tmp = source.value.status
+            source.value.status = target.value.status
+            target.value.status = tmp
+
+            tmp = source.value.tags
+            source.value.tags = target.value.tags
+            target.value.tags = tmp
+
+            tmp = source.value.devices
+            source.value.devices = target.value.devices
+            target.value.devices = tmp
+
+            uiStore.notifySuccess($gettext('Replacement done!'))
+          })
+          .catch((error) => {
+            uiStore.notifyError(error)
+          })
+          .finally(() => (loading.value = false))
+      }
+    }
+
+    const filterComputers = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
         abort()
         return
       }
 
-      await this.$axios
+      await api
         .get('/api/v1/token/computers/', {
-          params: { search: val.toLowerCase() }
+          params: { search: val.toLowerCase() },
         })
         .then((response) => {
-          this.computers = response.data.results
+          computers.value = response.data.results
         })
 
       update(() => {})
-    },
-
-    abortFilterComputers() {
-      // console.log('delayed filter aborted')
-    },
-
-    async loadComputer(obj) {
-      if (obj !== null) {
-        await this.$axios
-          .get(`/api/v1/token/computers/${obj.id}/`)
-          .then((response) => {
-            obj = Object.assign(obj, response.data)
-            this.loadDevices(obj)
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-      }
-    },
-
-    async loadDevices(obj) {
-      if (obj !== null) {
-        await this.$axios
-          .get(`/api/v1/token/computers/${obj.id}/devices/`)
-          .then((response) => {
-            this.$set(obj, 'devices', response.data)
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-      }
-    },
-
-    async replace() {
-      if (this.source !== null && this.target !== null) {
-        this.loading = true
-        await this.$axios
-          .post(`/api/v1/token/computers/${this.source.id}/replacement/`, {
-            target: this.target.id
-          })
-          .then((response) => {
-            let tmp = null
-
-            tmp = this.source.status
-            this.$set(this.source, 'status', this.target.status)
-            this.$set(this.target, 'status', tmp)
-
-            tmp = this.source.tags
-            this.$set(this.source, 'tags', this.target.tags)
-            this.$set(this.target, 'tags', tmp)
-
-            tmp = this.source.devices
-            this.$set(this.source, 'devices', this.target.devices)
-            this.$set(this.target, 'devices', tmp)
-
-            this.$store.dispatch(
-              'ui/notifySuccess',
-              this.$gettext('Replacement done!')
-            )
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-          .finally(() => (this.loading = false))
-      }
     }
-  }
+
+    const abortFilterComputers = () => {
+      // console.log('delayed filter aborted')
+    }
+
+    return {
+      title,
+      breadcrumbs,
+      computers,
+      source,
+      target,
+      loading,
+      isEnabled,
+      loadComputer,
+      replace,
+      filterComputers,
+      abortFilterComputers,
+      elementIcon,
+    }
+  },
 }
 </script>

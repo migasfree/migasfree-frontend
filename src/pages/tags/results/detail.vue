@@ -1,382 +1,383 @@
 <template>
   <q-page padding>
-    <Breadcrumbs :items="breadcrumbs" />
+    <ItemDetail
+      :breadcrumbs="breadcrumbs"
+      :original-title="title"
+      :model="model"
+      :routes="routes"
+      :element="element"
+      :element-data="elementData"
+      :is-valid="isValid"
+      @load-related="loadRelated"
+      @set-related="setRelated"
+      @update-related="updateRelated"
+      @reset-element="resetElement"
+      @reset-related="resetRelated"
+      @set-title="setTitle"
+    >
+      <template #fields>
+        <q-card-section>
+          <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
-    <Header :title="$gettext('Tag')">
-      <template v-if="element.id" #append
-        >:
-        <MigasLink
-          model="tags"
-          :pk="element.id"
-          :value="attributeValue(element)"
-          icon="mdi-tag"
-        />
-      </template>
-    </Header>
-
-    <q-card>
-      <q-card-section>
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-select
-              v-model="element.property_att"
-              outlined
-              :label="$gettext('Stamp')"
-              :options="stamps"
-              option-value="id"
-              option-label="name"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-            />
-          </div>
-
-          <div class="col-6 col-md col-sm">
-            <q-input
-              v-model="element.value"
-              outlined
-              label="Valor"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-            />
-          </div>
-        </div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col">
-            <q-input
-              v-model="element.description"
-              outlined
-              type="textarea"
-              :label="$gettext('Description')"
-            />
-          </div>
-        </div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-select
-              v-model="element.computers"
-              outlined
-              use-input
-              map-options
-              multiple
-              counter
-              input-debounce="0"
-              :label="$gettext('Computers')"
-              :options="computers"
-              @filter="filterComputers"
-              @filter-abort="abortFilterComputers"
-            >
-              <template #no-option>
-                <q-item>
-                  <q-item-section v-translate class="text-grey">
-                    No results
-                  </q-item-section>
-                </q-item>
-              </template>
-
-              <template #option="scope">
-                <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                  {{ scope.opt.__str__ }}
-                </q-item>
-              </template>
-
-              <template #selected-item="scope">
-                <q-chip
-                  removable
-                  dense
-                  :tabindex="scope.tabindex"
-                  class="q-ma-md"
-                  @remove="scope.removeAtIndex(scope.index)"
-                >
-                  <MigasLink
-                    model="computers"
-                    :pk="scope.opt.id"
-                    :value="scope.opt.__str__ || ''"
-                    :icon="elementIcon(scope.opt.status)"
-                    :tooltip="scope.opt.summary"
-                  />
-                </q-chip>
-              </template>
-            </q-select>
-          </div>
-
-          <div
-            v-if="element.id && inflicted.length > 0"
-            class="col-6 col-md col-sm"
-          >
-            <OverflowList
-              :label="$gettext('Inflicted Computers')"
-              icon="mdi-desktop-classic"
-              :items="inflicted"
-              model="computers"
-            />
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-section>
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">Location</div>
-
-        <q-toggle
-          v-model="viewMap"
-          :label="
-            viewMap
-              ? $gettext('Remove Coordinates')
-              : $gettext('Add Coordinates')
-          "
-          :false-value="false"
-          :true-value="true"
-          @input="updateCoords"
-        />
-
-        <template v-if="viewMap">
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
-              <q-input
-                v-model="element.latitude"
+              <q-select
+                v-model="element.property_att"
                 outlined
-                :label="$gettext('Latitude')"
-                @input="updateMapCoords"
+                :label="$gettext('Stamp')"
+                :options="stamps"
+                option-value="id"
+                option-label="name"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
               />
             </div>
 
             <div class="col-6 col-md col-sm">
               <q-input
-                v-model="element.longitude"
+                v-model="element.value"
                 outlined
-                :label="$gettext('Longitude')"
-                @input="updateMapCoords"
+                label="Valor"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
               />
             </div>
           </div>
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col">
-              <AddLocation v-model="coords" @update-coords="updateCoords" />
+              <q-input
+                v-model="element.description"
+                outlined
+                type="textarea"
+                :label="$gettext('Description')"
+              />
             </div>
           </div>
-        </template>
-      </q-card-section>
 
-      <q-card-actions class="justify-around">
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and add other')"
-          icon="mdi-plus"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('add')"
-        />
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and continue editing')"
-          icon="mdi-content-save-edit"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement"
-        />
-        <q-btn
-          :label="$gettext('Save')"
-          color="primary"
-          icon="mdi-content-save-move"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('return')"
-        />
-      </q-card-actions>
-    </q-card>
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-select
+                v-model="element.computers"
+                outlined
+                use-input
+                map-options
+                multiple
+                counter
+                input-debounce="0"
+                :label="$gettext('Computers')"
+                :options="computers"
+                @filter="filterComputers"
+                @filter-abort="abortFilterComputers"
+              >
+                <template #no-option>
+                  <q-item>
+                    <q-item-section v-translate class="text-grey">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
 
-    <div v-if="$route.params.id && element.id" class="row q-pa-md">
-      <q-btn
-        flat
-        icon="mdi-delete"
-        :color="$q.dark.isActive ? 'white' : 'negative'"
-        :class="{ 'reversed-delete': $q.dark.isActive }"
-        :label="$gettext('Delete')"
-        @click="confirmRemove = true"
-      />
-    </div>
+                <template #option="scope">
+                  <q-item v-bind="scope.itemProps">
+                    {{ scope.opt.__str__ }}
+                  </q-item>
+                </template>
 
-    <RemoveDialog
-      v-model="confirmRemove"
-      @confirmed="remove"
-      @canceled="confirmRemove = !confirmRemove"
-    />
+                <template #selected-item="scope">
+                  <q-chip
+                    removable
+                    dense
+                    :tabindex="scope.tabindex"
+                    class="q-ma-md"
+                    @remove="scope.removeAtIndex(scope.index)"
+                  >
+                    <MigasLink
+                      model="computers"
+                      :pk="scope.opt.id"
+                      :value="scope.opt.__str__ || ''"
+                      :icon="elementIcon(scope.opt.status)"
+                      :tooltip="scope.opt.summary"
+                    />
+                  </q-chip>
+                </template>
+              </q-select>
+            </div>
+
+            <div
+              v-if="element.id && inflicted.length > 0"
+              class="col-6 col-md col-sm"
+            >
+              <OverflowList
+                model="computers"
+                :label="$gettext('Inflicted Computers')"
+                :items="inflicted"
+              />
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section>
+          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Location</div>
+
+          <q-toggle
+            v-model="viewMap"
+            :label="
+              viewMap
+                ? $gettext('Remove Coordinates')
+                : $gettext('Add Coordinates')
+            "
+            :false-value="false"
+            :true-value="true"
+            @update:model-value="updateCoords"
+          />
+
+          <template v-if="viewMap">
+            <div class="row q-pa-md q-gutter-md">
+              <div class="col-6 col-md col-sm">
+                <q-input
+                  v-model="element.latitude"
+                  outlined
+                  :label="$gettext('Latitude')"
+                  @update:model-value="updateMapCoords"
+                />
+              </div>
+
+              <div class="col-6 col-md col-sm">
+                <q-input
+                  v-model="element.longitude"
+                  outlined
+                  :label="$gettext('Longitude')"
+                  @update:model-value="updateMapCoords"
+                />
+              </div>
+            </div>
+
+            <div class="row q-pa-md q-gutter-md">
+              <div class="col">
+                <AddLocation v-model="coords" @update-coords="updateCoords" />
+              </div>
+            </div>
+          </template>
+        </q-card-section>
+      </template>
+    </ItemDetail>
   </q-page>
 </template>
 
 <script>
-import Breadcrumbs from 'components/ui/Breadcrumbs'
-import Header from 'components/ui/Header'
-import MigasLink from 'components/MigasLink'
+import { ref, reactive, computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
+import ItemDetail from 'components/ui/ItemDetail'
 import OverflowList from 'components/ui/OverflowList'
-import RemoveDialog from 'components/ui/RemoveDialog'
 import AddLocation from 'components/map/AddLocation'
-import { elementMixin } from 'mixins/element'
-import { detailMixin } from 'mixins/detail'
+import MigasLink from 'components/MigasLink'
+
+import { modelIcon, useElement } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title,
-    }
-  },
   components: {
-    Breadcrumbs,
-    Header,
-    RemoveDialog,
+    ItemDetail,
     MigasLink,
     OverflowList,
     AddLocation,
   },
-  mixins: [elementMixin, detailMixin],
-  data() {
-    const title = this.$gettext('Tag')
-    const element = { id: 0, computers: [] }
+  setup() {
+    const { $gettext } = useGettext()
+    const { elementIcon } = useElement()
+    const uiStore = useUiStore()
 
-    return {
-      title,
-      originalTitle: title,
-      model: 'tags',
-      listRoute: 'tags-list',
-      addRoute: 'tag-add',
-      detailRoute: 'tag-detail',
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Data'),
-          icon: 'mdi-database-search',
-        },
-        {
-          text: this.$gettext('Tags'),
-          to: 'tags-dashboard',
-          icon: 'mdi-tag',
-        },
-      ],
-      element,
-      emptyElement: Object.assign({}, element),
-      stamps: [],
-      computers: [],
-      inflicted: [],
-      confirmRemove: false,
+    const title = ref($gettext('Tag'))
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
 
-      viewMap: false,
-      coords: [0, 0],
+    const routes = {
+      list: 'tags-list',
+      add: 'tag-add',
+      detail: 'tag-detail',
     }
-  },
-  computed: {
-    isValid() {
+    const model = 'tags'
+
+    let element = reactive({ id: 0, computers: [] })
+
+    const stamps = ref([])
+    const computers = ref([])
+    const inflicted = ref([])
+
+    const viewMap = ref(false)
+    const coords = ref([0, 0])
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Data'),
+        icon: 'mdi-database-search',
+      },
+      {
+        text: $gettext('Tags'),
+        icon: modelIcon(model),
+        to: 'tags-dashboard',
+      },
+    ])
+
+    const isValid = computed(() => {
       return (
-        this.element.value !== undefined &&
-        this.element.value.trim() !== '' &&
-        this.element.hasOwnProperty('property_att')
+        element.value !== undefined &&
+        element.value.trim() !== '' &&
+        element.hasOwnProperty('property_att')
       )
-    },
-    elementText() {
-      return this.element.id ? this.attributeValue(this.element) : ''
-    },
-  },
-  methods: {
-    async loadRelated() {
-      await this.$axios
+    })
+
+    const loadRelated = async () => {
+      await api
         .get('/api/v1/token/stamps/')
         .then((response) => {
-          this.stamps = response.data.results
+          stamps.value = response.data.results
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      if (this.element.id) {
-        await this.$axios
-          .get(`/api/v1/token/tags/${this.element.id}/computers/`)
+      if (element.id) {
+        await api
+          .get(`/api/v1/token/tags/${element.id}/computers/`)
           .then((response) => {
-            this.$set(this.element, 'computers', response.data.computers)
-            this.inflicted = response.data.inflicted
+            element.computers = response.data.computers
+            inflicted.value = response.data.inflicted
           })
           .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
+            uiStore.notifyError(error)
           })
       }
-    },
+    }
 
-    elementData() {
+    const elementData = () => {
       return {
-        property_att: this.element.property_att.id,
-        value: this.element.value,
-        description: this.element.description,
-        latitude: this.element.latitude,
-        longitude: this.element.longitude,
+        property_att: element.property_att.id,
+        value: element.value,
+        description: element.description,
+        latitude: element.latitude,
+        longitude: element.longitude,
       }
-    },
+    }
 
-    setRelated() {
-      if (this.element.latitude !== null) {
-        this.coords = [this.element.latitude, this.element.longitude]
-        this.viewMap = true
+    const setRelated = () => {
+      if (element.latitude !== null) {
+        coords.value = [element.latitude, element.longitude]
+        viewMap.value = true
       } else if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
-          this.coords = [position.coords.latitude, position.coords.longitude]
+          coords.value = [position.coords.latitude, position.coords.longitude]
         })
       }
-    },
+    }
 
-    updateCoords(params) {
-      if (this.viewMap) {
-        this.element.latitude = params[0]
-        this.element.longitude = params[1]
+    const updateRelated = async () => {
+      await api
+        .patch(`/api/v1/token/${model}/${element.id}/computers/`, {
+          computers: element.computers
+            ? element.computers.map((item) => item.id)
+            : [],
+        })
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+    }
+
+    const resetElement = () => {
+      Object.assign(element, {
+        id: 0,
+        property_att: null,
+        value: undefined,
+        description: undefined,
+        computers: [],
+        latitude: null,
+        longitude: null,
+      })
+    }
+
+    const resetRelated = () => {
+      viewMap.value = false
+    }
+
+    const setTitle = (value) => {
+      windowTitle.value = value
+    }
+
+    const updateCoords = (params) => {
+      if (viewMap.value) {
+        element.latitude = params[0]
+        element.longitude = params[1]
       } else {
-        this.element.latitude = null
-        this.element.longitude = null
+        element.latitude = null
+        element.longitude = null
       }
-    },
+    }
 
-    updateMapCoords() {
-      this.coords = [this.element.latitude, this.element.longitude]
-    },
+    const updateMapCoords = () => {
+      coords.value = [element.latitude, element.longitude]
+    }
 
-    async filterComputers(val, update, abort) {
+    const filterComputers = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
         abort()
         return
       }
 
-      await this.$axios
+      await api
         .get('/api/v1/token/computers/', {
           params: { search: val.toLowerCase() },
         })
         .then((response) => {
-          this.computers = response.data.results
+          computers.value = response.data.results
         })
 
       update(() => {})
-    },
+    }
 
-    abortFilterComputers() {
+    const abortFilterComputers = () => {
       // console.log('delayed filter aborted')
-    },
+    }
 
-    async updateRelated() {
-      await this.$axios
-        .patch(`/api/v1/token/${this.model}/${this.element.id}/computers/`, {
-          computers: this.element.computers
-            ? this.element.computers.map((item) => item.id)
-            : [],
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-    },
+    return {
+      breadcrumbs,
+      title,
+      model,
+      routes,
+      element,
+      stamps,
+      computers,
+      inflicted,
+      viewMap,
+      coords,
+      isValid,
+      elementData,
+      loadRelated,
+      setRelated,
+      updateRelated,
+      resetElement,
+      resetRelated,
+      setTitle,
+      updateCoords,
+      updateMapCoords,
+      filterComputers,
+      abortFilterComputers,
+      elementIcon,
+    }
   },
 }
 </script>

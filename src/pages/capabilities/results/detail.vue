@@ -1,147 +1,117 @@
 <template>
   <q-page padding>
-    <Breadcrumbs :items="breadcrumbs" />
-
-    <Header :title="$gettext('Capability')">
-      <template v-if="element.id" #append
-        >:
-        <MigasLink
-          model="devices/capabilities"
-          :pk="element.id"
-          :value="element.name"
-          icon="mdi-format-list-bulleted-type"
-        />
-      </template>
-    </Header>
-
-    <q-card>
-      <q-card-section>
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-12 col-md col-sm">
-            <q-input
-              v-model="element.name"
-              outlined
-              :label="$gettext('Name')"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-            />
+    <ItemDetail
+      :breadcrumbs="breadcrumbs"
+      :original-title="title"
+      :model="model"
+      :routes="routes"
+      :element="element"
+      :element-data="elementData"
+      :is-valid="isValid"
+      @reset-element="resetElement"
+      @set-title="setTitle"
+    >
+      <template #fields>
+        <q-card-section>
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-12 col-md col-sm">
+              <q-input
+                v-model="element.name"
+                outlined
+                :label="$gettext('Name')"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+              />
+            </div>
           </div>
-        </div>
-      </q-card-section>
-
-      <q-card-actions class="justify-around">
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and add other')"
-          icon="mdi-plus"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('add')"
-        />
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and continue editing')"
-          icon="mdi-content-save-edit"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement"
-        />
-        <q-btn
-          :label="$gettext('Save')"
-          color="primary"
-          icon="mdi-content-save-move"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('return')"
-        />
-      </q-card-actions>
-    </q-card>
-
-    <div v-if="$route.params.id && element.id" class="row q-pa-md">
-      <q-btn
-        flat
-        icon="mdi-delete"
-        :color="$q.dark.isActive ? 'white' : 'negative'"
-        :class="{ 'reversed-delete': $q.dark.isActive }"
-        :label="$gettext('Delete')"
-        @click="confirmRemove = true"
-      />
-    </div>
-
-    <RemoveDialog
-      v-model="confirmRemove"
-      @confirmed="remove"
-      @canceled="confirmRemove = !confirmRemove"
-    />
+        </q-card-section>
+      </template>
+    </ItemDetail>
   </q-page>
 </template>
 
 <script>
-import Breadcrumbs from 'components/ui/Breadcrumbs'
-import Header from 'components/ui/Header'
-import MigasLink from 'components/MigasLink'
-import RemoveDialog from 'components/ui/RemoveDialog'
-import { detailMixin } from 'mixins/detail'
+import { ref, reactive, computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import ItemDetail from 'components/ui/ItemDetail'
+
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title,
-    }
-  },
   components: {
-    Breadcrumbs,
-    Header,
-    RemoveDialog,
-    MigasLink,
+    ItemDetail,
   },
-  mixins: [detailMixin],
-  data() {
-    const route = 'capabilities-list'
-    const title = this.$gettext('Capability')
-    const element = { id: 0 }
+  setup() {
+    const { $gettext } = useGettext()
+
+    const title = ref($gettext('Capability'))
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
+
+    const routes = {
+      list: 'capabilities-list',
+      add: 'capability-add',
+      detail: 'capability-detail',
+    }
+    const model = 'devices/capabilities'
+
+    let element = reactive({ id: 0 })
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Devices'),
+        icon: 'mdi-printer-eye',
+      },
+      {
+        text: $gettext('Capabilities'),
+        icon: modelIcon(model),
+        to: routes.list,
+      },
+    ])
+
+    const isValid = computed(() => {
+      return element.name !== undefined && element.name.trim() !== ''
+    })
+
+    const elementData = () => {
+      return {
+        name: element.name,
+      }
+    }
+
+    const resetElement = () => {
+      Object.assign(element, {
+        id: 0,
+        name: undefined,
+      })
+    }
+
+    const setTitle = (value) => {
+      windowTitle.value = value
+    }
 
     return {
+      breadcrumbs,
       title,
-      originalTitle: title,
-      model: 'devices/capabilities',
-      listRoute: route,
-      addRoute: 'capability-add',
-      detailRoute: 'capability-detail',
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Devices'),
-          icon: 'mdi-printer-eye',
-        },
-        {
-          text: this.$gettext('Capabilities'),
-          icon: 'mdi-format-list-bulleted-type',
-          to: route,
-        },
-      ],
+      model,
+      routes,
       element,
-      emptyElement: Object.assign({}, element),
-      confirmRemove: false,
+      isValid,
+      elementData,
+      resetElement,
+      setTitle,
     }
-  },
-  computed: {
-    isValid() {
-      return this.element.name !== undefined && this.element.name.trim() !== ''
-    },
-  },
-  methods: {
-    elementData() {
-      return {
-        name: this.element.name,
-      }
-    },
   },
 }
 </script>

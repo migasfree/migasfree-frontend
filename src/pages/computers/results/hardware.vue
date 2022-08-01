@@ -3,7 +3,7 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <template v-if="element.id">
-      <Header :title="$gettext('Hardware Information')">
+      <Header :title="title" :is-export-btn="false">
         <template v-if="element.id" #append
           >:
           <MigasLink
@@ -76,12 +76,12 @@
 
                 <p>
                   <translate>Enabled</translate>:
-                  <BooleanView v-model="prop.node.enabled" />
+                  <BooleanView :value="prop.node.enabled" />
                 </p>
 
                 <p>
                   <translate>Claimed</translate>:
-                  <BooleanView v-model="prop.node.claimed" />
+                  <BooleanView :value="prop.node.claimed" />
                 </p>
 
                 <p v-if="prop.node.vendor">
@@ -166,7 +166,7 @@
           <q-table
             v-if="detailInfo.capability.length > 0"
             class="q-ma-md"
-            :data="detailInfo.capability"
+            :rows="detailInfo.capability"
             :columns="columnsCapability"
             row-key="name"
             :pagination="{ rowsPerPage: 0 }"
@@ -180,7 +180,7 @@
           <q-table
             v-if="detailInfo.logical_name.length > 0"
             class="q-ma-md"
-            :data="detailInfo.logical_name"
+            :rows="detailInfo.logical_name"
             :columns="columnsLogicalName"
             row-key="name"
             :pagination="{ rowsPerPage: 0 }"
@@ -194,7 +194,7 @@
           <q-table
             v-if="detailInfo.configuration.length > 0"
             class="q-ma-md"
-            :data="detailInfo.configuration"
+            :rows="detailInfo.configuration"
             :columns="columnsConfiguration"
             row-key="name"
             :pagination="{ rowsPerPage: 0 }"
@@ -219,156 +219,181 @@
 </template>
 
 <script>
+import { ref, reactive, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { useGettext } from 'vue3-gettext'
+import { arrayToTree } from 'performant-array-to-tree'
+import { format, useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import BooleanView from 'components/ui/BooleanView'
 import ComputerHardwareResume from 'components/computer/HardwareResume'
-import { elementMixin } from 'mixins/element'
-import { arrayToTree } from 'performant-array-to-tree'
-import { format } from 'quasar'
 
-const { humanStorageSize } = format
+import { modelIcon, useElement } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title
-    }
-  },
   components: {
     Breadcrumbs,
     Header,
     MigasLink,
     BooleanView,
-    ComputerHardwareResume
+    ComputerHardwareResume,
   },
-  mixins: [elementMixin],
-  data() {
-    return {
-      title: this.$gettext('Hardware Information'),
-      model: 'computers',
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home'
-        },
-        {
-          text: this.$gettext('Data'),
-          icon: 'mdi-database-search'
-        },
-        {
-          text: this.$gettext('Computers'),
-          to: 'computers-dashboard',
-          icon: 'mdi-desktop-classic'
-        },
-        {
-          text: this.$gettext('Results'),
-          to: 'computers-list'
-        },
-        {
-          text: 'Id',
-          to: { name: 'computer-detail', params: { id: 0 } }
-        },
-        {
-          text: this.$gettext('Hardware Information')
-        }
-      ],
-      element: {},
-      hardwareInfo: [],
-      details: false,
-      detailInfo: { capability: [], logical_name: [], configuration: [] },
-      columnsCapability: [
-        {
-          name: 'name',
-          field: 'name',
-          label: this.$gettext('Name'),
-          align: 'left'
-        },
-        {
-          name: 'description',
-          field: 'description',
-          label: this.$gettext('Description'),
-          align: 'left'
-        }
-      ],
-      columnsLogicalName: [
-        {
-          name: 'name',
-          field: 'name',
-          label: this.$gettext('Name'),
-          align: 'left'
-        }
-      ],
-      columnsConfiguration: [
-        {
-          name: 'name',
-          field: 'name',
-          label: this.$gettext('Name'),
-          align: 'left'
-        },
-        {
-          name: 'value',
-          field: 'value',
-          label: this.$gettext('Value')
-        }
-      ]
-    }
-  },
-  async mounted() {
-    await this.$axios
-      .get(`/api/v1/token/${this.model}/${this.$route.params.id}/`)
-      .then((response) => {
-        this.element = response.data
-        this.breadcrumbs.find(
-          (x) => x.text === 'Id'
-        ).to.params.id = this.element.id
-        this.breadcrumbs.find(
-          (x) => x.text === 'Id'
-        ).text = this.element.__str__
-        this.title = `${this.title}: ${this.element.__str__}`
-        this.loadHardwareInfo()
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-  },
-  methods: {
-    humanStorageSize,
+  setup() {
+    const { $gettext } = useGettext()
+    const route = useRoute()
+    const { humanStorageSize } = format
+    const { elementIcon, productIcon, cpuIcon } = useElement()
+    const uiStore = useUiStore()
 
-    async loadHardwareInfo() {
-      await this.$axios
-        .get(`/api/v1/token/${this.model}/${this.$route.params.id}/hardware/`)
+    const title = ref($gettext('Hardware Information'))
+    useMeta({ title: title.value })
+
+    const model = 'computers'
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        icon: 'mdi-home',
+        to: 'home',
+      },
+      {
+        text: $gettext('Data'),
+        icon: 'mdi-database-search',
+      },
+      {
+        text: $gettext('Computers'),
+        icon: modelIcon(model),
+        to: 'computers-dashboard',
+      },
+      {
+        text: $gettext('Results'),
+        to: 'computers-list',
+      },
+      {
+        text: 'Id',
+        to: { name: 'computer-detail', params: { id: 0 } },
+      },
+      {
+        text: title.value,
+      },
+    ])
+
+    let element = reactive({})
+    const hardwareInfo = ref([])
+    const details = ref(false)
+    const detailInfo = reactive({
+      capability: [],
+      logical_name: [],
+      configuration: [],
+    })
+
+    const columnsCapability = [
+      {
+        name: 'name',
+        field: 'name',
+        label: $gettext('Name'),
+        align: 'left',
+      },
+      {
+        name: 'description',
+        field: 'description',
+        label: $gettext('Description'),
+        align: 'left',
+      },
+    ]
+    const columnsLogicalName = [
+      {
+        name: 'name',
+        field: 'name',
+        label: $gettext('Name'),
+        align: 'left',
+      },
+    ]
+    const columnsConfiguration = [
+      {
+        name: 'name',
+        field: 'name',
+        label: $gettext('Name'),
+        align: 'left',
+      },
+      {
+        name: 'value',
+        field: 'value',
+        label: $gettext('Value'),
+      },
+    ]
+
+    const loadHardwareInfo = async () => {
+      await api
+        .get(`/api/v1/token/${model}/${route.params.id}/hardware/`)
         .then((response) => {
-          this.hardwareInfo = arrayToTree(response.data, {
+          hardwareInfo.value = arrayToTree(response.data, {
             dataField: null,
-            parentId: 'parent'
+            parentId: 'parent',
           })
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
 
-    header(row) {
+    const header = (row) => {
       if (row.description !== null && row.description !== 'NULL')
         return row.description
 
       return row.product
-    },
+    }
 
-    async showDetails(id) {
-      await this.$axios
+    const showDetails = async (id) => {
+      await api
         .get(`/api/v1/token/hardware/${id}/info/`)
         .then((response) => {
-          this.detailInfo = response.data
-          this.details = true
+          Object.assign(detailInfo, response.data)
+          details.value = true
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
     }
-  }
+
+    onMounted(async () => {
+      await api
+        .get(`/api/v1/token/${model}/${route.params.id}/`)
+        .then((response) => {
+          Object.assign(element, response.data)
+          breadcrumbs.find((x) => x.text === 'Id').to.params.id = element.id
+          breadcrumbs.find((x) => x.text === 'Id').text = element.__str__
+          useMeta({ title: `${title.value}: ${element.__str__}` })
+          loadHardwareInfo()
+        })
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+    })
+
+    return {
+      title,
+      breadcrumbs,
+      element,
+      hardwareInfo,
+      details,
+      detailInfo,
+      columnsCapability,
+      columnsLogicalName,
+      columnsConfiguration,
+      elementIcon,
+      productIcon,
+      cpuIcon,
+      humanStorageSize,
+      header,
+      showDetails,
+    }
+  },
 }
 </script>

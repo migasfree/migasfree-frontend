@@ -27,9 +27,21 @@
 </template>
 
 <script>
+import {
+  ref,
+  reactive,
+  computed,
+  watch,
+  onBeforeMount,
+  onBeforeUnmount,
+} from 'vue'
+import { useQuasar, date } from 'quasar'
+import { useGettext } from 'vue3-gettext'
+
 import * as echarts from 'echarts/core'
 import { HeatmapChart } from 'echarts/charts'
 import {
+  TitleComponent,
   TooltipComponent,
   CalendarComponent,
   VisualMapComponent,
@@ -37,10 +49,12 @@ import {
 } from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
 import { format } from 'echarts/lib/util/time'
-import { date } from 'quasar'
+
+import useDate from 'composables/date'
 
 echarts.use([
   HeatmapChart,
+  TitleComponent,
   TooltipComponent,
   CalendarComponent,
   VisualMapComponent,
@@ -69,105 +83,127 @@ export default {
       default: 0,
     },
   },
-  data() {
-    return {
-      initOptions: {
-        renderer: 'svg',
+  emits: ['get-date'],
+  setup(props, { emit }) {
+    const $q = useQuasar()
+    const { current } = useGettext()
+    const { localeDate } = useDate()
+
+    const chart = ref(null)
+
+    const initOptions = reactive({
+      renderer: 'svg',
+    })
+
+    const options = reactive({
+      legend: {
+        bottom: 20,
+        selectedMode: 'single',
+        selected: {},
+        textStyle: {
+          color: $q.dark.isActive ? '#fff' : '#000',
+        },
       },
-      options: {
-        legend: {
-          bottom: 20,
-          selectedMode: 'single',
-          selected: {},
-          textStyle: {
-            color: this.$q.dark.isActive ? '#fff' : '#000',
-          },
+      tooltip: {
+        position: 'top',
+        formatter: function (p) {
+          const formated = format(p.data[0], '{yyyy}-{MM}-{dd}', false)
+          return `${formated}: ${p.data[1]}`
         },
-        tooltip: {
-          position: 'top',
-          formatter: function (p) {
-            const formated = format(p.data[0], '{yyyy}-{MM}-{dd}', false)
-            return `${formated}: ${p.data[1]}`
-          },
-        },
-        visualMap: {
-          min: 1,
-          max: 100,
-          orient: 'horizontal',
-          calculable: true,
-          left: 'left',
-          top: 40,
-          textStyle: { color: this.$q.dark.isActive ? '#fff' : '#000' },
-        },
-        calendar: {
-          top: 120,
-          left: 60,
-          right: 30,
-          cellSize: [25, 25],
-          range: [this.start, format(Date.now(), '{yyyy}-{MM}-{dd}', true)],
-          itemStyle: {
-            borderWidth: 0.5,
-            color: this.$q.dark.isActive ? '#757575' : '#fff',
-          },
-          yearLabel: { show: true, margin: 30 },
-          dayLabel: {
-            firstDay: this.$language.current.startsWith('es') ? 1 : 0,
-            color: this.$q.dark.isActive ? '#fff' : '#000',
-            nameMap: [
-              this.$gettext('Sun'),
-              this.$gettext('Mon'),
-              this.$gettext('Tue'),
-              this.$gettext('Wed'),
-              this.$gettext('Thu'),
-              this.$gettext('Fri'),
-              this.$gettext('Sat'),
-            ],
-          },
-          monthLabel: {
-            color: this.$q.dark.isActive ? '#fff' : '#000',
-            nameMap: [
-              this.$gettext('Jan'),
-              this.$gettext('Feb'),
-              this.$gettext('Mar'),
-              this.$gettext('Apr'),
-              this.$gettext('May'),
-              this.$gettext('Jun'),
-              this.$gettext('Jul'),
-              this.$gettext('Aug'),
-              this.$gettext('Sep'),
-              this.$gettext('Oct'),
-              this.$gettext('Nov'),
-              this.$gettext('Dec'),
-            ],
-          },
-        },
-        series: [],
       },
-      updateOptions: {
-        replaceMerge: ['series'],
+      visualMap: {
+        min: 1,
+        max: 100,
+        orient: 'horizontal',
+        calculable: true,
+        left: 'left',
+        top: 40,
+        textStyle: { color: $q.dark.isActive ? '#fff' : '#000' },
       },
-    }
-  },
-  computed: {
-    cssVars() {
+      calendar: {
+        top: 120,
+        left: 60,
+        right: 30,
+        cellSize: [25, 25],
+        range: [props.start, format(Date.now(), '{yyyy}-{MM}-{dd}', true)],
+        itemStyle: {
+          borderWidth: 0.5,
+          color: $q.dark.isActive ? '#757575' : '#fff',
+        },
+        yearLabel: { show: true, margin: 30 },
+        dayLabel: {
+          firstDay: current.startsWith('es') ? 1 : 0,
+          color: $q.dark.isActive ? '#fff' : '#000',
+          nameMap: localeDate.daysShort,
+        },
+        monthLabel: {
+          color: $q.dark.isActive ? '#fff' : '#000',
+          nameMap: localeDate.monthsShort,
+        },
+      },
+      series: [],
+    })
+
+    const updateOptions = reactive({
+      replaceMerge: ['series'],
+    })
+
+    const cssVars = computed(() => {
       const diff = date.getDateDiff(
-        this.options.calendar.range[1],
-        this.options.calendar.range[0],
+        options.calendar.range[1],
+        options.calendar.range[0],
         'days'
       )
       return {
         '--variable-width': `${(diff / 7) * 25}px`,
       }
-    },
-  },
-  watch: {
-    data: {
-      handler: function (val) {
+    })
+
+    const windowResize = () => {
+      if (chart.value !== null && chart.value !== undefined) {
+        chart.value.resize()
+      }
+    }
+
+    const passData = (params) => {
+      emit('get-date', params)
+    }
+
+    const seriesByYear = (data) => {
+      const series = {}
+
+      data.forEach((item) => {
+        const year = item[0].split('-')[0]
+        if (year in series) series[year].push(item)
+        else series[year] = [item]
+      })
+
+      return series
+    }
+
+    const changeRange = ($evt) => {
+      chart.value.setOption({
+        calendar: {
+          range: $evt.name,
+        },
+      })
+    }
+
+    onBeforeMount(() => {
+      window.addEventListener('resize', windowResize)
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', windowResize)
+    })
+
+    watch(
+      () => props.data,
+      (val) => {
         const series = []
         const years = {}
 
-        Object.entries(this.seriesByYear(val)).map(([index, year]) => {
-          // console.log(index, year)
+        Object.entries(seriesByYear(val)).map(([index, year]) => {
           years[index] = false
           series.push({
             type: 'heatmap',
@@ -181,10 +217,8 @@ export default {
         const maxYear = Object.keys(years).reduce(function (a, b) {
           return Math.max(parseInt(a), parseInt(b))
         }, new Date().getFullYear())
-        // console.log(maxYear)
 
         years[maxYear] = true
-        // console.log(years)
 
         let visualMapMax = 1
         if (val.length > 0) {
@@ -196,8 +230,8 @@ export default {
           )
         }
 
-        if (this.$refs.chart !== null && this.$refs.chart !== undefined) {
-          this.$refs.chart.setOption(
+        if (chart.value !== null && chart.value !== undefined) {
+          chart.value.setOption(
             {
               series,
               legend: { selected: years },
@@ -209,65 +243,37 @@ export default {
             }
           )
         } else {
-          this.$set(this.options, 'series', series)
+          options.series = series
 
-          this.$set(this.options.legend, 'selected', {})
-          this.$set(this.options.legend, 'selected', years)
+          options.legend.selected = years
 
-          this.$set(this.options.calendar, 'range', maxYear)
-          this.$set(this.options.visualMap, 'max', visualMapMax)
+          options.calendar.range = maxYear
+          options.visualMap.max = visualMapMax
         }
-        // console.log('*******************', this.options)
-        // console.log(this.$refs.chart)
       },
-      deep: true,
-      immediate: true,
-    },
+      { deep: true, immediate: true }
+    )
 
-    '$q.dark.isActive'(val) {
-      this.options.visualMap.textStyle.color = val ? '#fff' : '#000'
-      this.options.calendar.monthLabel.color = val ? '#fff' : '#000'
-      this.options.calendar.dayLabel.color = val ? '#fff' : '#000'
-      this.options.calendar.itemStyle.color = val ? '#757575' : '#fff'
-      this.options.legend.textStyle.color = val ? '#fff' : '#000'
-    },
-  },
-  beforeMount() {
-    window.addEventListener('resize', this.windowResize)
-  },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.windowResize)
-  },
-  methods: {
-    windowResize() {
-      if (this.$refs.chart !== null && this.$refs.chart !== undefined) {
-        this.$refs.chart.resize()
+    watch(
+      () => $q.dark.isActive,
+      (val) => {
+        options.visualMap.textStyle.color = val ? '#fff' : '#000'
+        options.calendar.monthLabel.color = val ? '#fff' : '#000'
+        options.calendar.dayLabel.color = val ? '#fff' : '#000'
+        options.calendar.itemStyle.color = val ? '#757575' : '#fff'
+        options.legend.textStyle.color = val ? '#fff' : '#000'
       }
-    },
+    )
 
-    passData(params) {
-      this.$emit('getDate', params)
-    },
-
-    seriesByYear(data) {
-      const series = {}
-
-      data.forEach((item) => {
-        const year = item[0].split('-')[0]
-        if (year in series) series[year].push(item)
-        else series[year] = [item]
-      })
-
-      return series
-    },
-
-    changeRange($evt) {
-      this.$refs.chart.setOption({
-        calendar: {
-          range: $evt.name,
-        },
-      })
-    },
+    return {
+      chart,
+      initOptions,
+      options,
+      updateOptions,
+      cssVars,
+      passData,
+      changeRange,
+    }
   },
 }
 </script>

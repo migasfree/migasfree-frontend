@@ -2,413 +2,193 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :results="totalRecords">
-      <template #append>
-        <q-btn
-          class="q-ma-sm float-right"
-          color="info"
-          text-color="black"
-          :label="$gettext('Export')"
-          icon="mdi-file-export"
-          :loading="isLoadingExport"
-          :disable="totalRecords === 0"
-          @click="exportAll"
-        />
-      </template>
-    </Header>
-
-    <q-list class="more-filters" bordered>
-      <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">
-        <SearchFilter
-          v-model="tableFilters.search"
-          @search="onSearch"
-          @clear="onSearchClear"
-        />
-
-        <div class="row q-pa-md q-col-gutter-lg">
-          <div class="col-sm-6 col-md-4">
-            <q-select
-              v-model="tableFilters.platform.selected"
-              :options="tableFilters.platform.items"
-              :label="$gettext('By Platform')"
-              dense
-              outlined
-              option-value="id"
-              option-label="name"
-              @input="onPlatformFilter"
-            >
-              <template #before>
-                <q-icon name="mdi-filter" />
-              </template>
-            </q-select>
-          </div>
-
-          <div class="col-md-4 col-sm-6">
-            <SelectTree
-              ref="statusTree"
-              v-model="tableFilters.statusIn.selected"
-              :placeholder="$gettext('By Status')"
-              prepend-icon="mdi-filter"
-              :options="tableFilters.statusIn.items"
-              @select="onStatusInFilter"
-            />
-          </div>
-
-          <div class="col-sm-6 col-md-4">
-            <DateRangeInput
-              ref="createdAtRange"
-              v-model="tableFilters.createdAtRange.selected"
-              prepend-icon="mdi-filter"
-              :label="$gettext('By Subscribed Date (range)')"
-              @select="onCreatedAtRangeFilter"
-            />
-          </div>
-        </div>
-
-        <div class="row q-pa-md">
-          <div class="col-12">
-            <q-btn
-              icon="mdi-filter-remove"
-              color="info"
-              text-color="black"
-              :label="$gettext('Reset all filters')"
-              @click="resetFilters"
-            />
-          </div>
-        </div>
-      </q-expansion-item>
-    </q-list>
-
-    <vue-good-table
-      ref="myTable"
+    <TableResults
+      :title="title"
       :columns="columns"
-      :rows="rows"
-      mode="remote"
-      compact-mode
-      :total-rows="totalRecords"
-      :is-loading.sync="isLoading"
-      :line-numbers="false"
-      :select-options="selectOptions"
-      :pagination-options="paginationOptions"
-      :search-options="searchOptions"
-      style-class="vgt-table striped condensed"
-      @on-page-change="onPageChange"
-      @on-sort-change="onSortChange"
-      @on-column-filter="onColumnFilter"
-      @on-per-page-change="onPerPageChange"
-      @on-selected-rows-change="onSelectionChanged"
+      :model="model"
+      :detail-route="detailRoute"
+      :more-filters="moreFilters"
     >
-      <span slot="loadingContent" class="vgt-loading__content">
-        <q-spinner size="sm" />
-        <translate>Loading data...</translate>
-      </span>
-
-      <template slot="table-row" slot-scope="props">
-        <span v-if="props.column.field == 'actions'">
-          <q-btn
-            class="q-ma-xs"
-            round
-            size="sm"
-            icon="mdi-pencil"
-            color="primary"
-            @click="edit(props.row.id)"
-            ><q-tooltip>{{ $gettext('Edit') }}</q-tooltip></q-btn
-          >
-          <q-btn
-            v-if="!props.row.checked"
-            class="q-ma-xs"
-            round
-            size="sm"
-            icon="mdi-eye-check"
-            color="positive"
-            @click="updateChecked(props.row.id, true)"
-            ><q-tooltip><translate>Check</translate></q-tooltip></q-btn
-          >
-          <q-btn
-            v-if="props.row.checked"
-            class="q-ma-xs"
-            round
-            size="sm"
-            icon="mdi-eye-remove"
-            color="negative"
-            @click="updateChecked(props.row.id, false)"
-            ><q-tooltip><translate>Not Check</translate></q-tooltip></q-btn
-          >
-          <q-btn
-            class="q-ma-xs"
-            round
-            size="sm"
-            icon="mdi-delete"
-            color="negative"
-            @click="confirmRemove(props.row.id)"
-            ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-          >
-        </span>
-
-        <span v-else-if="props.column.field == 'computer.__str__'">
+      <template #fields="slotProps">
+        <span v-if="slotProps.props.column.field == 'computer.__str__'">
           <MigasLink
             model="computers"
-            :pk="props.row.computer.id"
-            :value="props.row.computer.__str__"
-            :icon="elementIcon(props.row.computer.status)"
-            :tooltip="props.row.computer.summary"
+            :pk="slotProps.props.row.computer.id"
+            :value="slotProps.props.row.computer.__str__"
+            :icon="elementIcon(slotProps.props.row.computer.status)"
+            :tooltip="slotProps.props.row.computer.summary"
           />
         </span>
 
-        <span v-else-if="props.column.field == 'project.name'">
+        <span v-else-if="slotProps.props.column.field == 'project.name'">
           <MigasLink
             model="projects"
-            :pk="props.row.project.id"
-            :value="props.row.project.name || ''"
-            icon="mdi-sitemap"
+            :pk="slotProps.props.row.project.id"
+            :value="slotProps.props.row.project.name || ''"
           />
         </span>
 
-        <span v-else-if="props.column.field == 'created_at'">
-          {{ showDate(props.row.created_at) }}
-          <q-tooltip>{{ diffForHumans(props.row.created_at) }}</q-tooltip>
+        <span v-else-if="slotProps.props.column.field == 'created_at'">
+          {{ showDate(slotProps.props.row.created_at) }}
+          <q-tooltip>{{
+            diffForHumans(slotProps.props.row.created_at)
+          }}</q-tooltip>
         </span>
 
-        <span v-else-if="props.column.field == 'description'">
-          <Truncate v-model="props.row.description" />
+        <span v-else-if="slotProps.props.column.field == 'description'">
+          <Truncate v-model="slotProps.props.row.description" />
         </span>
 
-        <span v-else-if="props.column.field == 'checked'">
-          <BooleanView v-model="props.row.checked" />
+        <span v-else-if="slotProps.props.column.field == 'checked'">
+          <BooleanView :value="slotProps.props.row.checked" />
         </span>
 
         <span v-else>
-          {{ props.formattedRow[props.column.field] }}
+          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
         </span>
       </template>
-
-      <q-banner
-        v-if="!isLoading"
-        slot="emptystate"
-        rounded
-        class="bg-warning text-black"
-      >
-        <translate>There are no results</translate>
-      </q-banner>
-
-      <div slot="selected-row-actions">
-        <q-btn
-          class="q-ma-xs"
-          size="sm"
-          icon="mdi-eye-check"
-          color="positive"
-          @click="updateItemsChecked(true)"
-          ><q-tooltip><translate>Check</translate></q-tooltip></q-btn
-        >
-        <q-btn
-          class="q-ma-xs"
-          size="sm"
-          icon="mdi-eye-remove"
-          color="negative"
-          @click="updateItemsChecked(false)"
-          ><q-tooltip><translate>Not Check</translate></q-tooltip></q-btn
-        >
-        <q-btn
-          class="q-ma-xs"
-          size="sm"
-          color="info"
-          text-color="black"
-          icon="mdi-file-export"
-          :loading="isLoadingExport"
-          @click="exportData"
-          ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
-        >
-        <q-btn
-          class="q-ma-xs"
-          size="sm"
-          color="negative"
-          icon="mdi-delete"
-          @click="confirmRemove"
-          ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-        >
-      </div>
-
-      <template slot="pagination-bottom" slot-scope="props">
-        <TablePagination
-          :total="props.total"
-          :page-changed="props.pageChanged"
-          :per-page-changed="props.perPageChanged"
-          :pagination-options="paginationOptions"
-        />
-      </template>
-    </vue-good-table>
+    </TableResults>
   </q-page>
 </template>
 
 <script>
+import { ref, reactive, onMounted } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
-import SearchFilter from 'components/ui/SearchFilter'
-import Header from 'components/ui/Header'
-import TablePagination from 'components/ui/TablePagination'
+import TableResults from 'components/ui/TableResults'
 import BooleanView from 'components/ui/BooleanView'
 import Truncate from 'components/ui/Truncate'
-import SelectTree from 'components/ui/SelectTree'
-import DateRangeInput from 'components/ui/DateRangeInput'
 import MigasLink from 'components/MigasLink'
-import { dateMixin } from 'mixins/date'
-import { elementMixin } from 'mixins/element'
-import { datagridMixin } from 'mixins/datagrid'
+
+import useDate from 'composables/date'
+import { useElement, modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.$gettext('Errors List'),
-    }
-  },
   components: {
     Breadcrumbs,
-    SearchFilter,
-    Header,
-    TablePagination,
+    TableResults,
     BooleanView,
     Truncate,
-    SelectTree,
-    DateRangeInput,
     MigasLink,
   },
-  mixins: [dateMixin, elementMixin, datagridMixin],
-  data() {
-    return {
-      title: this.$gettext('Errors'),
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Data'),
-          icon: 'mdi-database-search',
-        },
-        {
-          text: this.$gettext('Errors'),
-          icon: 'mdi-bug',
-          to: 'errors-dashboard',
-        },
-        {
-          text: this.$gettext('Results'),
-        },
-      ],
-      columns: [
-        {
-          field: 'id',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Actions'),
-          field: 'actions',
-          html: true,
-          sortable: false,
-          globalSearchDisabled: true,
-        },
-        {
-          label: this.$gettext('Date'),
-          field: 'created_at',
-        },
-        {
-          field: 'computer.id',
-          hidden: true,
-        },
-        {
-          field: 'computer.status',
-          hidden: true,
-        },
-        {
-          field: 'computer.summary',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Computer'),
-          field: 'computer.__str__',
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('Filter'),
-            trigger: 'enter',
-          },
-        },
-        {
-          field: 'project.id',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Project'),
-          field: 'project.name',
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('All'),
-            trigger: 'enter',
-          },
-        },
-        {
-          label: this.$gettext('Checked'),
-          field: 'checked',
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('All'),
-            trigger: 'enter',
-            filterDropdownItems: [
-              { value: true, text: this.$gettext('Yes') },
-              { value: false, text: this.$gettext('No') },
-            ],
-          },
-        },
-        {
-          label: this.$gettext('Description'),
-          field: 'description',
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('Filter'),
-            trigger: 'enter',
-          },
-        },
-      ],
-      tableFilters: {
-        search: '',
-        platform: {
-          items: [{ id: '', name: this.$gettext('All') }],
-          selected: null,
-        },
-        statusIn: {
-          items: [],
-          selected: null,
-          choices: {},
-        },
-        createdAtRange: {
-          selected: { from: null, to: null },
+  setup() {
+    const { $gettext } = useGettext()
+    const uiStore = useUiStore()
+    const { showDate, diffForHumans } = useDate()
+    const { elementIcon } = useElement()
+
+    useMeta({ title: $gettext('Errors List') })
+
+    const model = ref('errors')
+    const detailRoute = ref('error-detail')
+    const moreFilters = ['platform', 'statusIn', 'createdAtRange']
+
+    const title = ref($gettext('Errors'))
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Data'),
+        icon: 'mdi-database-search',
+      },
+      {
+        text: title.value,
+        icon: modelIcon(model.value),
+        to: 'errors-dashboard',
+      },
+      {
+        text: $gettext('Results'),
+      },
+    ])
+
+    const columns = reactive([
+      {
+        field: 'id',
+        hidden: true,
+      },
+      {
+        label: $gettext('Actions'),
+        field: 'actions',
+        html: true,
+        sortable: false,
+        globalSearchDisabled: true,
+      },
+      {
+        label: $gettext('Date'),
+        field: 'created_at',
+      },
+      {
+        field: 'computer.id',
+        hidden: true,
+      },
+      {
+        field: 'computer.status',
+        hidden: true,
+      },
+      {
+        field: 'computer.summary',
+        hidden: true,
+      },
+      {
+        label: $gettext('Computer'),
+        field: 'computer.__str__',
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
         },
       },
-      model: 'errors',
-      detailRoute: 'error-detail',
-    }
-  },
-  methods: {
-    async loadFilters() {
-      await this.$axios
-        .get('/api/v1/token/platforms/')
-        .then((response) => {
-          this.tableFilters.platform.items =
-            this.tableFilters.platform.items.concat(response.data.results)
+      {
+        field: 'project.id',
+        hidden: true,
+      },
+      {
+        label: $gettext('Project'),
+        field: 'project.name',
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('All'),
+          trigger: 'enter',
+        },
+      },
+      {
+        label: $gettext('Checked'),
+        field: 'checked',
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('All'),
+          trigger: 'enter',
+          filterDropdownItems: [
+            { value: true, text: $gettext('Yes') },
+            { value: false, text: $gettext('No') },
+          ],
+        },
+      },
+      {
+        label: $gettext('Description'),
+        field: 'description',
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
+        },
+      },
+    ])
 
-          if (this.$route.query.platform_id) {
-            this.tableFilters.platform.selected =
-              this.tableFilters.platform.items.find(
-                (x) => x.id == this.$route.query.platform_id
-              )
-          }
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-
-      await this.$axios
+    const loadFilters = async () => {
+      await api
         .get('/api/v1/token/projects/')
         .then((response) => {
-          this.columns.find(
+          columns.find(
             (x) => x.field === 'project.name'
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
@@ -420,18 +200,25 @@ export default {
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
+    }
 
-      await this.$axios
-        .get('/api/v1/token/computers/status/')
-        .then((response) => {
-          this.updateStatusInFilter(response.data)
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-    },
+    onMounted(async () => {
+      await loadFilters()
+    })
+
+    return {
+      model,
+      detailRoute,
+      moreFilters,
+      title,
+      breadcrumbs,
+      columns,
+      showDate,
+      diffForHumans,
+      elementIcon,
+    }
   },
 }
 </script>

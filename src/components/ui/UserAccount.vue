@@ -1,7 +1,7 @@
 <template>
   <q-btn-dropdown ref="userAccount" flat stretch>
     <template #label>
-      <q-icon name="mdi-account-cog" />
+      <q-icon :name="modelIcon('user-profiles')" />
       <q-tooltip>
         <translate>User Account</translate>
       </q-tooltip>
@@ -28,9 +28,8 @@
             option-label="value"
             :dense="true"
             :options-dense="true"
-            @input="changeAppLanguage"
-          >
-          </q-select>
+            @update:model-value="changeAppLanguage"
+          />
         </q-item-section>
       </q-item>
 
@@ -38,23 +37,20 @@
         <q-tooltip><translate>Change Domain</translate></q-tooltip>
 
         <q-item-section avatar>
-          <q-icon name="mdi-web" />
+          <q-icon :name="modelIcon('domains')" />
         </q-item-section>
 
         <q-item-section>
           <q-select
             v-model="domainPreference"
             standout
-            :options="$store.getters['auth/domains']"
+            :options="domains"
             option-value="id"
             option-label="name"
             :dense="true"
             :options-dense="true"
-            :loading="isLoadingDomain"
-            :disabled="isLoadingDomain"
-            @input="updateDomainPreference"
-          >
-          </q-select>
+            @update:model-value="updateDomainPreference"
+          />
         </q-item-section>
       </q-item>
 
@@ -62,7 +58,7 @@
         <q-tooltip><translate>Change Scope</translate></q-tooltip>
 
         <q-item-section avatar>
-          <q-icon name="mdi-eye-outline" />
+          <q-icon :name="modelIcon('scopes')" />
         </q-item-section>
 
         <q-item-section>
@@ -74,11 +70,8 @@
             option-label="name"
             :dense="true"
             :options-dense="true"
-            :loading="isLoadingScope"
-            :disabled="isLoadingScope"
-            @input="updateScopePreference"
-          >
-          </q-select>
+            @update:model-value="updateScopePreference"
+          />
         </q-item-section>
       </q-item>
 
@@ -90,6 +83,7 @@
         <q-item-section avatar>
           <q-icon name="mdi-account-key" />
         </q-item-section>
+
         <q-item-section>
           <q-item-label v-translate>Change Password</q-item-label>
         </q-item-section>
@@ -99,6 +93,7 @@
         <q-item-section avatar>
           <q-icon name="mdi-power-standby" />
         </q-item-section>
+
         <q-item-section>
           <q-item-label v-translate>Logout</q-item-label>
         </q-item-section>
@@ -108,108 +103,132 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useGettext } from 'vue3-gettext'
+import { useQuasar } from 'quasar'
+
+import { api } from 'boot/axios'
+import { gettext } from 'boot/gettext'
+import { useAuthStore } from 'stores/auth'
+import { useUiStore } from 'stores/ui'
+
+import { modelIcon } from 'composables/element'
+
 export default {
   name: 'UserAccount',
-  data() {
-    const languages = []
+  setup() {
+    const $q = useQuasar()
+    const router = useRouter()
+    const { $gettext } = useGettext()
+    const authStore = useAuthStore()
+    const uiStore = useUiStore()
 
-    Object.entries(this.$language.available).map(([label, value]) => {
-      languages.push({ label, value })
-    })
-
-    return {
-      domainPreference: { id: 0, name: this.$gettext('All').toUpperCase() },
-      scopePreference: { id: 0, name: this.$gettext('All').toLowerCase() },
-      isLoadingDomain: false,
-      isLoadingScope: false,
-      currentLanguage: this.$language.available[this.$language.current],
-      languages,
-    }
-  },
-  computed: {
-    user() {
-      return this.$store.getters['auth/user']
-    },
-
-    filteredScopes() {
-      const scopes = this.$store.getters['auth/scopes']
-
-      if (this.user.domain_preference) {
-        return scopes.filter(
-          (el) =>
-            (el.domain && el.domain.id === this.user.domain_preference.id) ||
-            el.id === 0
-        )
+    const userAccount = ref(null)
+    const user = ref(authStore.user)
+    const languages = ref([])
+    const currentLanguage = ref(gettext.available[gettext.current])
+    const domainPreference = ref(
+      authStore.user.domain_preference || {
+        id: 0,
+        name: $gettext('All').toUpperCase(),
       }
+    )
+    const scopePreference = ref(
+      authStore.user.scope_preference || {
+        id: 0,
+        name: $gettext('All').toLowerCase(),
+      }
+    )
 
-      return scopes
-    },
-  },
-  async mounted() {
-    if (this.user.domain_preference)
-      this.domainPreference = this.user.domain_preference
-
-    if (this.user.scope_preference && this.user.scope_preference.id)
-      this.scopePreference = this.user.scope_preference
-  },
-  methods: {
-    logout() {
-      this.$store.dispatch('auth/logout').then(() => {
-        this.$router.push({ name: 'login' })
+    const logout = () => {
+      console.log('logout UserAccount')
+      authStore.logout().then(() => {
+        router.push({ name: 'login' })
       })
-    },
+    }
 
-    changeAppLanguage() {
-      if (this.$language.current !== this.currentLanguage.label) {
-        this.$language.current = this.currentLanguage.label
-        this.$q.cookies.set('language', this.$language.current)
+    const changeAppLanguage = () => {
+      if (gettext.current !== currentLanguage.value.label) {
+        gettext.current = currentLanguage.value.label
+        $q.cookies.set('language', gettext.current)
       }
-    },
+    }
 
-    async updateDomainPreference() {
-      await this.updatePreferences({
-        domain_preference: this.domainPreference.id
-          ? this.domainPreference.id
+    const updateDomainPreference = async () => {
+      await updatePreferences({
+        domain_preference: domainPreference.value.id
+          ? domainPreference.value.id
           : null,
         scope_preference: null,
       })
-    },
+    }
 
-    async updateScopePreference() {
-      await this.updatePreferences({
-        scope_preference: this.scopePreference.id
-          ? this.scopePreference.id
+    const updateScopePreference = async () => {
+      await updatePreferences({
+        scope_preference: scopePreference.value.id
+          ? scopePreference.value.id
           : null,
       })
-      if (this.scopePreference.id) {
-        this.$store.dispatch('auth/loadScopes')
+      if (scopePreference.value.id) {
+        authStore.loadScopes()
       }
-    },
+    }
 
-    async updatePreferences(data) {
-      await this.$axios
-        .patch(`/api/v1/token/user-profiles/${this.user.id}/`, data)
+    const updatePreferences = async (data) => {
+      await api
+        .patch(`/api/v1/token/user-profiles/${authStore.user.id}/`, data)
         .then((response) => {
-          this.$store.dispatch(
-            'ui/notifySuccess',
-            this.$gettext('Preferences changed!')
-          )
+          uiStore.notifySuccess($gettext('Preferences changed!'))
 
-          this.$store.commit('auth/setUser', response.data)
-          this.$refs.userAccount.hide()
+          authStore.setUser(response.data)
+          userAccount.value.hide()
 
           // FIXME find more elegant way to refresh route
-          this.$router.go({
-            path: this.$router.path,
+          router.go({
+            path: router.path,
             query: {
               t: +new Date(),
             },
           })
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
+
+    authStore.$subscribe((mutation, state) => {
+      user.value = authStore.user
+
+      if (authStore.user.domain_preference)
+        domainPreference.value = authStore.user.domain_preference
+
+      if (authStore.user.scope_preference && authStore.user.scope_preference.id)
+        scopePreference.value = authStore.user.scope_preference
+    })
+
+    onMounted(async () => {
+      Object.entries(gettext.available).map(([label, value]) => {
+        languages.value.push({ label, value })
+      })
+    })
+
+    return {
+      userAccount,
+      languages,
+      currentLanguage,
+      domains: authStore.domains,
+      domainPreference,
+      scopePreference,
+      user,
+      filteredScopes: authStore.filteredScopes,
+      logout,
+      changeAppLanguage,
+      updateDomainPreference,
+      updateScopePreference,
+      updatePreferences,
+      modelIcon,
+    }
   },
 }
 </script>

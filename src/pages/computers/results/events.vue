@@ -3,7 +3,7 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <template v-if="computer.id">
-      <Header :title="$gettext('Events')">
+      <Header :title="title" :is-export-btn="false">
         <template v-if="computer.id" #append
           >:
           <MigasLink
@@ -48,10 +48,10 @@
                 { slot: 'statusLogs', value: 'statusLogs' },
                 { slot: 'migrations', value: 'migrations' },
               ]"
-              @input="updateEvent"
+              @update:model-value="updateEvent"
             >
               <template #syncs>
-                <q-icon name="mdi-sync" class="vertical-middle" />
+                <q-icon :name="modelIcon('syncs')" class="vertical-middle" />
                 <span class="vertical-middle">
                   <translate>Synchronizations</translate> ({{
                     events.syncs.total
@@ -60,7 +60,7 @@
               </template>
 
               <template #errors>
-                <q-icon name="mdi-bug" class="vertical-middle" />
+                <q-icon :name="modelIcon('errors')" class="vertical-middle" />
                 <span class="vertical-middle">
                   <translate>Errors</translate> ({{
                     events.errors.total
@@ -69,7 +69,7 @@
               </template>
 
               <template #faults>
-                <q-icon name="mdi-bomb" class="vertical-middle" />
+                <q-icon :name="modelIcon('faults')" class="vertical-middle" />
                 <span class="vertical-middle">
                   <translate>Faults</translate> ({{
                     events.faults.total
@@ -78,7 +78,10 @@
               </template>
 
               <template #statusLogs>
-                <q-icon name="mdi-flag-variant" class="vertical-middle" />
+                <q-icon
+                  :name="modelIcon('status-logs')"
+                  class="vertical-middle"
+                />
                 <span class="vertical-middle">
                   <translate>Status Logs</translate> ({{
                     events.statusLogs.total
@@ -87,7 +90,10 @@
               </template>
 
               <template #migrations>
-                <q-icon name="mdi-map-marker-right" class="vertical-middle" />
+                <q-icon
+                  :name="modelIcon('migrations')"
+                  class="vertical-middle"
+                />
                 <span class="vertical-middle">
                   <translate>Migrations</translate> ({{
                     events.migrations.total
@@ -105,7 +111,7 @@
               :data="current.data"
               :total="current.total"
               :start="showDate(computer.created_at, 'YYYY-MM-DD')"
-              @getDate="showItems"
+              @get-date="showItems"
             />
           </div>
         </div>
@@ -114,7 +120,7 @@
       <div v-if="items.length > 0" id="events" class="q-pa-lg">
         <q-table
           :title="`${events[event].title} (${itemsDate}: ${items.length})`"
-          :data="items"
+          :rows="items"
           :columns="events[event].columns"
           hide-pagination
           :rows-per-page-options="[0]"
@@ -122,11 +128,11 @@
         >
           <template #body="props">
             <q-tr :props="props">
-              <q-td v-if="event === 'syncs'" key="start_date" :props="props">
+              <q-td v-if="event === 'syncs'" key="start_date">
                 {{ showDate(props.row.start_date) }}
               </q-td>
 
-              <q-td key="created_at" :props="props">
+              <q-td key="created_at">
                 {{ showDate(props.row.created_at) }}
                 <DateDiff
                   v-if="props.row.created_at && props.row.start_date"
@@ -137,12 +143,11 @@
                 />
               </q-td>
 
-              <q-td v-if="event === 'syncs'" key="user.name" :props="props">
+              <q-td v-if="event === 'syncs'" key="user.name">
                 <MigasLink
                   model="users"
                   :pk="props.row.user.id"
                   :value="props.row.user.__str__"
-                  icon="mdi-account"
                 />
               </q-td>
 
@@ -155,44 +160,34 @@
                   model="projects"
                   :pk="props.row.project.id"
                   :value="props.row.project.name || ''"
-                  icon="mdi-sitemap"
                 />
               </q-td>
 
-              <q-td v-if="event === 'syncs'" key="pms_status_ok" :props="props">
-                <BooleanView v-model="props.row.pms_status_ok" />
+              <q-td v-if="event === 'syncs'" key="pms_status_ok">
+                <BooleanView :value="props.row.pms_status_ok" />
               </q-td>
 
-              <q-td v-if="event === 'syncs'" key="consumer" :props="props">
+              <q-td v-if="event === 'syncs'" key="consumer">
                 {{ props.row.consumer }}
               </q-td>
 
-              <q-td
-                v-if="['errors', 'faults'].includes(event)"
-                key="checked"
-                :props="props"
-              >
-                <BooleanView v-model="props.row.checked" />
+              <q-td v-if="['errors', 'faults'].includes(event)" key="checked">
+                <BooleanView :value="props.row.checked" />
               </q-td>
 
-              <q-td v-if="event === 'errors'" key="description" :props="props">
+              <q-td v-if="event === 'errors'" key="description">
                 <Truncate v-model="props.row.description" />
               </q-td>
 
-              <q-td
-                v-if="event === 'faults'"
-                key="fault_definition.name"
-                :props="props"
-              >
+              <q-td v-if="event === 'faults'" key="fault_definition.name">
                 <MigasLink
                   model="fault-definitions"
                   :pk="props.row.fault_definition.id"
                   :value="props.row.fault_definition.name || ''"
-                  icon="mdi-alert-octagram-outline"
                 />
               </q-td>
 
-              <q-td v-if="event === 'statusLogs'" key="status" :props="props">
+              <q-td v-if="event === 'statusLogs'" key="status">
                 {{ props.row.status }}
               </q-td>
             </q-tr>
@@ -204,6 +199,14 @@
 </template>
 
 <script>
+import { ref, reactive, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { useGettext } from 'vue3-gettext'
+import { date, useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import Truncate from 'components/ui/Truncate'
@@ -211,18 +214,13 @@ import BooleanView from 'components/ui/BooleanView'
 import MigasLink from 'components/MigasLink'
 import DateDiff from 'components/DateDiff'
 import HeatMap from 'components/chart/HeatMap'
-import { elementMixin } from 'mixins/element'
-import { dateMixin } from 'mixins/date'
-import { date } from 'quasar'
+
+import { modelIcon, useElement } from 'composables/element'
+import useDate from 'composables/date'
 
 const { addToDate } = date
 
 export default {
-  meta() {
-    return {
-      title: this.title,
-    }
-  },
   components: {
     Breadcrumbs,
     Header,
@@ -232,379 +230,399 @@ export default {
     Truncate,
     DateDiff,
   },
-  mixins: [elementMixin, dateMixin],
-  data() {
-    return {
-      title: this.$gettext('Events'),
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Data'),
-          icon: 'mdi-database-search',
-        },
-        {
-          text: this.$gettext('Computers'),
-          to: 'computers-dashboard',
-          icon: 'mdi-desktop-classic',
-        },
-        {
-          text: this.$gettext('Results'),
-          to: 'computers-list',
-        },
-        {
-          text: 'Id',
-          to: { name: 'computer-detail', params: { id: 0 } },
-        },
-        {
-          text: this.$gettext('Events'),
-        },
-      ],
-      computer: {},
-      event: null,
-      current: {
-        title: '',
+  setup() {
+    const route = useRoute()
+    const { $gettext } = useGettext()
+    const uiStore = useUiStore()
+    const { showDate, diffForHumans } = useDate()
+    const { elementIcon } = useElement()
+
+    const title = ref($gettext('Events'))
+    useMeta({ title: title.value })
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Data'),
+        icon: 'mdi-database-search',
+      },
+      {
+        text: $gettext('Computers'),
+        icon: modelIcon('computers'),
+        to: 'computers-dashboard',
+      },
+      {
+        text: $gettext('Results'),
+        to: 'computers-list',
+      },
+      {
+        text: 'Id',
+        to: { name: 'computer-detail', params: { id: 0 } },
+      },
+      {
+        text: title.value,
+      },
+    ])
+
+    let computer = reactive({})
+    const event = ref(null)
+    const current = reactive({
+      title: '',
+      data: [],
+      total: 0,
+    })
+    const items = ref([])
+    const itemsDate = ref(null)
+    const loading = ref(false)
+
+    const events = reactive({
+      syncs: {
         data: [],
         total: 0,
+        title: $gettext('Synchronizations'),
+        visibleColumns: [
+          'start_date',
+          'created_at',
+          'user.name',
+          'project.name',
+          'pms_status_ok',
+          'consumer',
+        ],
+        columns: [
+          {
+            name: 'start_date',
+            label: $gettext('Start Date'),
+            field: 'start_date',
+            align: 'left',
+          },
+          {
+            name: 'created_at',
+            label: $gettext('End Date'),
+            field: 'created_at',
+            align: 'left',
+          },
+          {
+            name: 'user.id',
+            field: 'user.id',
+          },
+          {
+            name: 'user.name',
+            label: $gettext('User'),
+            field: 'user.name',
+            align: 'left',
+          },
+          {
+            name: 'project.id',
+            field: 'project.id',
+          },
+          {
+            name: 'project.name',
+            label: $gettext('Project'),
+            field: 'project.name',
+            align: 'left',
+          },
+          {
+            name: 'pms_status_ok',
+            label: $gettext('PMS Status Ok'),
+            field: 'pms_status_ok',
+            align: 'center',
+          },
+          {
+            name: 'consumer',
+            label: $gettext('Consumer'),
+            field: 'consumer',
+            align: 'left',
+          },
+        ],
       },
-      events: {
-        syncs: {
-          data: [],
-          total: 0,
-          title: this.$gettext('Synchronizations'),
-          visibleColumns: [
-            'start_date',
-            'created_at',
-            'user.name',
-            'project.name',
-            'pms_status_ok',
-            'consumer',
-          ],
-          columns: [
-            {
-              name: 'start_date',
-              label: this.$gettext('Start Date'),
-              field: 'start_date',
-              align: 'left',
-            },
-            {
-              name: 'created_at',
-              label: this.$gettext('End Date'),
-              field: 'created_at',
-              align: 'left',
-            },
-            {
-              name: 'user.id',
-              field: 'user.id',
-            },
-            {
-              name: 'user.name',
-              label: this.$gettext('User'),
-              field: 'user.name',
-              align: 'left',
-            },
-            {
-              name: 'project.id',
-              field: 'project.id',
-            },
-            {
-              name: 'project.name',
-              label: this.$gettext('Project'),
-              field: 'project.name',
-              align: 'left',
-            },
-            {
-              name: 'pms_status_ok',
-              label: this.$gettext('PMS Status Ok'),
-              field: 'pms_status_ok',
-              align: 'center',
-            },
-            {
-              name: 'consumer',
-              label: this.$gettext('Consumer'),
-              field: 'consumer',
-              align: 'left',
-            },
-          ],
-        },
-        errors: {
-          data: [],
-          total: 0,
-          title: this.$gettext('Errors'),
-          visibleColumns: [
-            'created_at',
-            'project.name',
-            'checked',
-            'description',
-          ],
-          columns: [
-            {
-              name: 'created_at',
-              label: this.$gettext('Date'),
-              field: 'created_at',
-              align: 'left',
-            },
-            {
-              name: 'project.id',
-              field: 'project.id',
-            },
-            {
-              name: 'project.name',
-              label: this.$gettext('Project'),
-              field: 'project.name',
-              align: 'left',
-            },
-            {
-              name: 'checked',
-              label: this.$gettext('Checked'),
-              field: 'checked',
-              align: 'center',
-            },
-            {
-              name: 'description',
-              label: this.$gettext('Description'),
-              field: 'description',
-              align: 'left',
-            },
-          ],
-        },
-        faults: {
-          data: [],
-          total: 0,
-          title: this.$gettext('Faults'),
-          visibleColumns: [
-            'created_at',
-            'project.name',
-            'checked',
-            'fault_definition.name',
-          ],
-          columns: [
-            {
-              name: 'created_at',
-              label: this.$gettext('Date'),
-              field: 'created_at',
-              align: 'left',
-            },
-            {
-              name: 'project.id',
-              field: 'project.id',
-            },
-            {
-              name: 'project.name',
-              label: this.$gettext('Project'),
-              field: 'project.name',
-              align: 'left',
-            },
-            {
-              name: 'checked',
-              label: this.$gettext('Checked'),
-              field: 'checked',
-              align: 'center',
-            },
-            {
-              name: 'fault_definition.id',
-              field: 'fault_definition.id',
-            },
-            {
-              name: 'fault_definition.name',
-              label: this.$gettext('Fault Definition'),
-              field: 'fault_definition.name',
-              align: 'left',
-            },
-          ],
-        },
-        migrations: {
-          data: [],
-          total: 0,
-          title: this.$gettext('Migrations'),
-          visibleColumns: ['created_at', 'project.name'],
-          columns: [
-            {
-              name: 'created_at',
-              label: this.$gettext('Date'),
-              field: 'created_at',
-              align: 'left',
-            },
-            {
-              name: 'project.id',
-              field: 'project.id',
-            },
-            {
-              name: 'project.name',
-              label: this.$gettext('Project'),
-              field: 'project.name',
-              align: 'left',
-            },
-          ],
-        },
-        statusLogs: {
-          data: [],
-          total: 0,
-          title: this.$gettext('Status Logs'),
-          visibleColumns: ['created_at', 'status'],
-          columns: [
-            {
-              name: 'created_at',
-              label: this.$gettext('Date'),
-              field: 'created_at',
-              align: 'left',
-            },
-            {
-              name: 'status',
-              label: this.$gettext('Status'),
-              field: 'status',
-              align: 'left',
-            },
-          ],
-        },
+      errors: {
+        data: [],
+        total: 0,
+        title: $gettext('Errors'),
+        visibleColumns: [
+          'created_at',
+          'project.name',
+          'checked',
+          'description',
+        ],
+        columns: [
+          {
+            name: 'created_at',
+            label: $gettext('Date'),
+            field: 'created_at',
+            align: 'left',
+          },
+          {
+            name: 'project.id',
+            field: 'project.id',
+          },
+          {
+            name: 'project.name',
+            label: $gettext('Project'),
+            field: 'project.name',
+            align: 'left',
+          },
+          {
+            name: 'checked',
+            label: $gettext('Checked'),
+            field: 'checked',
+            align: 'center',
+          },
+          {
+            name: 'description',
+            label: $gettext('Description'),
+            field: 'description',
+            align: 'left',
+          },
+        ],
       },
-      items: [],
-      itemsDate: null,
-      loading: false,
-    }
-  },
-  async mounted() {
-    await this.$axios
-      .get(`/api/v1/token/computers/${this.$route.params.id}/`)
-      .then((response) => {
-        this.computer = response.data
-        this.breadcrumbs.find((x) => x.text === 'Id').to.params.id =
-          this.computer.id
-        this.breadcrumbs.find((x) => x.text === 'Id').text =
-          this.computer.__str__
-        this.title = `${this.title}: ${this.computer.__str__}`
-        this.loadItems()
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-  },
-  methods: {
-    async loadItems() {
+      faults: {
+        data: [],
+        total: 0,
+        title: $gettext('Faults'),
+        visibleColumns: [
+          'created_at',
+          'project.name',
+          'checked',
+          'fault_definition.name',
+        ],
+        columns: [
+          {
+            name: 'created_at',
+            label: $gettext('Date'),
+            field: 'created_at',
+            align: 'left',
+          },
+          {
+            name: 'project.id',
+            field: 'project.id',
+          },
+          {
+            name: 'project.name',
+            label: $gettext('Project'),
+            field: 'project.name',
+            align: 'left',
+          },
+          {
+            name: 'checked',
+            label: $gettext('Checked'),
+            field: 'checked',
+            align: 'center',
+          },
+          {
+            name: 'fault_definition.id',
+            field: 'fault_definition.id',
+          },
+          {
+            name: 'fault_definition.name',
+            label: $gettext('Fault Definition'),
+            field: 'fault_definition.name',
+            align: 'left',
+          },
+        ],
+      },
+      migrations: {
+        data: [],
+        total: 0,
+        title: $gettext('Migrations'),
+        visibleColumns: ['created_at', 'project.name'],
+        columns: [
+          {
+            name: 'created_at',
+            label: $gettext('Date'),
+            field: 'created_at',
+            align: 'left',
+          },
+          {
+            name: 'project.id',
+            field: 'project.id',
+          },
+          {
+            name: 'project.name',
+            label: $gettext('Project'),
+            field: 'project.name',
+            align: 'left',
+          },
+        ],
+      },
+      statusLogs: {
+        data: [],
+        total: 0,
+        title: $gettext('Status Logs'),
+        visibleColumns: ['created_at', 'status'],
+        columns: [
+          {
+            name: 'created_at',
+            label: $gettext('Date'),
+            field: 'created_at',
+            align: 'left',
+          },
+          {
+            name: 'status',
+            label: $gettext('Status'),
+            field: 'status',
+            align: 'left',
+          },
+        ],
+      },
+    })
+
+    const loadItems = async () => {
       const queryString = {
-        computer_id: this.computer.id,
-        start_date: this.showDate(this.computer.created_at, 'YYYY-MM-DD'),
-        end_date: this.showDate(
+        computer_id: computer.id,
+        start_date: showDate(computer.created_at, 'YYYY-MM-DD'),
+        end_date: showDate(
           addToDate(new Date(), { days: 1 }).toISOString(),
           'YYYY-MM-DD'
         ),
       }
 
-      this.loading = true
-      await this.$axios
+      loading.value = true
+      await api
         .get(`/api/v1/token/stats/syncs/by-day/`, { params: queryString })
         .then((response) => {
-          this.events.syncs.data = response.data
-          this.events.syncs.total = response.data.reduce(
+          events.syncs.data = response.data
+          events.syncs.total = response.data.reduce(
             (accumulator, current) => accumulator + parseInt(current[1]),
             0
           )
 
           // default event
-          this.event = 'syncs'
-          this.updateEvent(this.event)
+          event.value = 'syncs'
+          updateEvent(event.value)
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
         .finally(() => {
-          this.loading = false
+          loading.value = false
         })
 
-      await this.$axios
+      await api
         .get(`/api/v1/token/stats/errors/by-day/`, { params: queryString })
         .then((response) => {
-          this.events.errors.data = response.data
-          this.events.errors.total = response.data.reduce(
+          events.errors.data = response.data
+          events.errors.total = response.data.reduce(
             (accumulator, current) => accumulator + parseInt(current[1]),
             0
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      await this.$axios
+      await api
         .get(`/api/v1/token/stats/faults/by-day/`, { params: queryString })
         .then((response) => {
-          this.events.faults.data = response.data
-          this.events.faults.total = response.data.reduce(
+          events.faults.data = response.data
+          events.faults.total = response.data.reduce(
             (accumulator, current) => accumulator + parseInt(current[1]),
             0
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      await this.$axios
+      await api
         .get(`/api/v1/token/stats/migrations/by-day/`, { params: queryString })
         .then((response) => {
-          this.events.migrations.data = response.data
-          this.events.migrations.total = response.data.reduce(
+          events.migrations.data = response.data
+          events.migrations.total = response.data.reduce(
             (accumulator, current) => accumulator + parseInt(current[1]),
             0
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      await this.$axios
+      await api
         .get(`/api/v1/token/stats/status-logs/by-day/`, { params: queryString })
         .then((response) => {
-          this.events.statusLogs.data = response.data
-          this.events.statusLogs.total = response.data.reduce(
+          events.statusLogs.data = response.data
+          events.statusLogs.total = response.data.reduce(
             (accumulator, current) => accumulator + parseInt(current[1]),
             0
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
 
-    updateEvent(evt) {
-      this.current = this.events[evt]
-      this.items = []
-    },
+    const updateEvent = (evt) => {
+      Object.assign(current, events[evt])
+      items.value = []
+    }
 
-    camelToKebabCase(str) {
+    const camelToKebabCase = (str) => {
       return str.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)
-    },
+    }
 
-    async showItems(params) {
+    const showItems = async (params) => {
       const queryString = {
-        computer__id: this.computer.id,
+        computer__id: computer.id,
         created_at__gte: params.data[0],
-        created_at__lt: this.showDate(
+        created_at__lt: showDate(
           date.addToDate(Date.parse(params.data[0]), { days: 1 }),
           'YYYY-MM-DD'
         ),
       }
-      const url = `/api/v1/token/${this.camelToKebabCase(this.event)}/`
+      const url = `/api/v1/token/${camelToKebabCase(event.value)}/`
 
-      this.itemsDate = params.data[0]
+      itemsDate.value = params.data[0]
 
-      await this.$axios
+      await api
         .get(url, { params: queryString })
         .then((response) => {
-          this.items = response.data.results
+          items.value = response.data.results
 
           setTimeout(() => {
-            this.$store.dispatch(
-              'ui/scrollToElement',
-              document.getElementById('events')
-            )
+            uiStore.scrollToElement(document.getElementById('events'))
           }, 250)
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
+
+    onMounted(async () => {
+      await api
+        .get(`/api/v1/token/computers/${route.params.id}/`)
+        .then((response) => {
+          Object.assign(computer, response.data)
+          breadcrumbs.find((x) => x.text === 'Id').to.params.id = computer.id
+          breadcrumbs.find((x) => x.text === 'Id').text = computer.__str__
+          useMeta({ title: `${title.value}: ${computer.__str__}` })
+          loadItems()
+        })
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+    })
+
+    return {
+      title,
+      breadcrumbs,
+      computer,
+      event,
+      current,
+      items,
+      itemsDate,
+      loading,
+      events,
+      updateEvent,
+      showItems,
+      elementIcon,
+      modelIcon,
+      showDate,
+      diffForHumans,
+    }
   },
 }
 </script>

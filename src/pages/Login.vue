@@ -37,7 +37,7 @@
             </template>
 
             <template #prepend>
-              <q-icon name="mdi-account" />
+              <q-icon :name="modelIcon('users')" />
             </template>
           </q-input>
 
@@ -119,55 +119,77 @@
 </template>
 
 <script>
+import { ref, reactive, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useGettext } from 'vue3-gettext'
+import { useMeta, useQuasar } from 'quasar'
+
+import { useAuthStore } from 'stores/auth'
+import { useUiStore } from 'stores/ui'
+import { gettext } from 'boot/gettext'
+
 import ToggleDarkMode from 'components/ui/ToggleDarkMode'
+
+import { modelIcon } from 'composables/element'
 
 export default {
   name: 'Login',
-  meta() {
-    return {
-      title: this.$gettext('Log In'),
-    }
-  },
   components: { ToggleDarkMode },
-  data: () => ({
-    loading: false,
-    showPassword: false,
-    model: {
-      username: '',
-      password: '',
-    },
-  }),
-  computed: {
-    isValid() {
-      return this.model.username.trim() !== '' && this.model.password.length > 3
-    },
-  },
-  methods: {
-    async login() {
-      this.loading = true
-      this.$store.dispatch('auth/reset')
-      await this.$store
-        .dispatch('auth/login', this.model)
+  setup() {
+    const $q = useQuasar()
+    const { $gettext } = useGettext()
+    const route = useRoute()
+    const router = useRouter()
+    const authStore = useAuthStore()
+    const uiStore = useUiStore()
+
+    useMeta({ title: $gettext('Log In') })
+
+    const loading = ref(false)
+    const showPassword = ref(false)
+    const model = reactive({ username: '', password: '' })
+    const changeLanguage = ref(null)
+
+    const isValid = computed(() => {
+      return model.username.trim() !== '' && model.password.length > 3
+    })
+
+    const login = async () => {
+      loading.value = true
+      authStore.reset()
+      await authStore
+        .login(model)
         .then(() => {
-          if (this.$route.params.nextUrl != null) {
-            this.$router.push(this.$route.params.nextUrl)
+          if (route.params.nextUrl != null) {
+            router.push(route.params.nextUrl)
           } else {
-            this.$router.push({ name: 'home' })
+            router.push({ name: 'home' })
           }
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-        .finally(() => (this.loading = false))
-    },
+        .finally(() => (loading.value = false))
+    }
 
-    changeAppLanguage(key) {
-      if (this.$language.current !== key) {
-        this.$language.current = key
-        this.$q.cookies.set('language', key)
+    const changeAppLanguage = (key) => {
+      if (gettext.current !== key) {
+        gettext.current = key
+        $q.cookies.set('language', key)
       }
-      this.$refs.changeLanguage.hide()
-    },
+      changeLanguage.value.hide()
+    }
+
+    return {
+      loading,
+      showPassword,
+      model,
+      changeLanguage,
+      isValid,
+      login,
+      changeAppLanguage,
+      modelIcon,
+    }
   },
 }
 </script>

@@ -82,7 +82,10 @@
 </template>
 
 <script>
-import VgtPaginationPageInfo from 'vue-good-table/src/components/pagination/VgtPaginationPageInfo.vue'
+import { ref, computed, watch } from 'vue'
+import { useUiStore } from 'stores/ui'
+
+import VgtPaginationPageInfo from 'vue-good-table-next/src/components/pagination/VgtPaginationPageInfo.vue'
 
 export default {
   name: 'TablePagination',
@@ -103,125 +106,126 @@ export default {
     perPageDropdownEnabled: { type: Boolean, default: true },
     paginationOptions: { type: Object, required: true },
   },
-  data() {
-    return {
-      currentPage: 1,
-      prevPage: 0,
-      currentPerPage: 10,
-    }
-  },
-  computed: {
-    rowsPerPageOptions() {
-      return this.paginationOptions.perPageDropdown
-    },
+  setup(props) {
+    const uiStore = useUiStore()
 
-    showPagination() {
-      return this.total > this.currentPerPage
-    },
+    const currentPage = ref(1)
+    const prevPage = ref(0)
+    const currentPerPage = ref(10)
 
-    showAllOption() {
-      // TODO create constant
-      return this.total ? this.total <= 200 : false
-    },
-
-    pagesCount() {
-      const quotient = Math.floor(this.total / this.currentPerPage)
-      const remainder = this.total % this.currentPerPage
+    const rowsPerPageOptions = computed(
+      () => props.paginationOptions.perPageDropdown
+    )
+    const showPagination = computed(() => props.total > currentPerPage.value)
+    const showAllOption = computed(() =>
+      props.total ? props.total <= 200 : false
+    )
+    const pagesCount = computed(() => {
+      const quotient = Math.floor(props.total / currentPerPage.value)
+      const remainder = props.total % currentPerPage.value
 
       return remainder === 0 ? quotient : quotient + 1
-    },
+    })
+    const nextIsPossible = computed(() => currentPage.value < pagesCount.value)
+    const prevIsPossible = computed(
+      () => currentPage.value > 1 && currentPage.value <= pagesCount.value
+    )
+    const currentPageTable = computed(() => uiStore.getCurrentPageTable)
+    const perPageLabel = computed(
+      () =>
+        `${props.paginationOptions.rowsPerPageLabel} (${currentPerPage.value})`
+    )
 
-    nextIsPossible() {
-      return this.currentPage < this.pagesCount
-    },
-
-    prevIsPossible() {
-      return this.currentPage > 1 && this.currentPage <= this.pagesCount
-    },
-
-    perPageLabel() {
-      return `${this.paginationOptions.rowsPerPageLabel} (${this.currentPerPage})`
-    },
-
-    currentPageTable() {
-      return this.$store.getters['ui/getCurrentPageTable']
-    },
-  },
-  watch: {
-    currentPerPage: {
-      handler(newValue, oldValue) {
-        if (oldValue) this.perPageChanged(oldValue)
+    watch(
+      currentPerPage,
+      (newValue, oldValue) => {
+        if (oldValue) props.perPageChanged(oldValue)
       },
-      immediate: true,
-    },
+      { immediate: true }
+    )
 
-    total: {
-      handler(newValue, oldValue) {
-        if (this.rowsPerPageOptions.indexOf(this.currentPerPage) === -1) {
-          this.currentPerPage = newValue
-        }
-      },
-    },
+    /*watch(() => props.total, (newValue, oldValue) => {
+      if (props.rowsPerPageOptions.indexOf(currentPerPage.value) === -1) {
+        currentPerPage.value = newValue;
+      }
+    })*/
 
-    currentPageTable: {
-      handler(val) {
-        this.currentPage = val
-      },
-    },
-  },
-  methods: {
-    customPageChange(customCurrentPage) {
-      this.pageChanged({
-        currentPage: customCurrentPage ? customCurrentPage : this.currentPage,
+    watch(currentPageTable, (val) => {
+      currentPage.value = val
+    })
+
+    const customPageChange = (customCurrentPage) => {
+      props.pageChanged({
+        currentPage: customCurrentPage ? customCurrentPage : currentPage.value,
       })
-    },
+    }
 
-    customPerPageChange(customPerPage) {
-      this.perPageChanged({ currentPerPage: customPerPage })
-      this.currentPerPage = customPerPage
-      if (customPerPage === this.total) this.currentPage = 1
-    },
+    const customPerPageChange = (customPerPage) => {
+      props.perPageChanged({ currentPerPage: customPerPage })
+      currentPerPage.value = customPerPage
+      if (customPerPage === props.total) currentPage.value = 1
+    }
 
-    nextPage() {
-      if (this.nextIsPossible) {
-        this.prevPage = this.currentPage
-        ++this.currentPage
-        this.customPageChange()
+    const nextPage = () => {
+      if (nextIsPossible.value) {
+        prevPage.value = currentPage.value
+        ++currentPage.value
+        customPageChange()
       }
-    },
+    }
 
-    previousPage() {
-      if (this.prevIsPossible) {
-        this.prevPage = this.currentPage
-        --this.currentPage
-        this.customPageChange()
+    const previousPage = () => {
+      if (prevIsPossible.value) {
+        prevPage.value = currentPage.value
+        --currentPage.value
+        customPageChange()
       }
-    },
+    }
 
-    firstPage() {
-      if (this.prevIsPossible) {
-        this.currentPage = 1
-        this.customPageChange()
+    const firstPage = () => {
+      if (prevIsPossible.value) {
+        currentPage.value = 1
+        customPageChange()
       }
-    },
+    }
 
-    lastPage() {
-      if (this.nextIsPossible) {
-        this.currentPage = this.pagesCount
-        this.customPageChange()
+    const lastPage = () => {
+      if (nextIsPossible.value) {
+        currentPage.value = pagesCount.value
+        customPageChange()
       }
-    },
+    }
 
-    changePage(pageNumber, emit = true) {
+    const changePage = (pageNumber, emit = true) => {
       if (
         pageNumber > 0 &&
-        this.total > this.currentPerPage * (pageNumber - 1)
+        props.total > currentPerPage.value * (pageNumber - 1)
       ) {
-        this.prevPage = this.currentPage
-        this.currentPage = pageNumber
-        if (emit) this.customPageChange()
+        prevPage.value = currentPage.value
+        currentPage.value = pageNumber
+        if (emit) customPageChange()
       }
-    },
+    }
+
+    return {
+      currentPage,
+      prevPage,
+      currentPerPage,
+      rowsPerPageOptions,
+      showPagination,
+      showAllOption,
+      pagesCount,
+      nextIsPossible,
+      prevIsPossible,
+      perPageLabel,
+      customPageChange,
+      customPerPageChange,
+      nextPage,
+      previousPage,
+      firstPage,
+      lastPage,
+      changePage,
+    }
   },
 }
 </script>

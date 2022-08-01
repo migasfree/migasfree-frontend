@@ -53,50 +53,58 @@
 </template>
 
 <script>
+import { ref, watch } from 'vue'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 export default {
   name: 'Timeline',
   props: {
-    value: {
+    modelValue: {
       type: Object,
-      required: true
+      required: true,
     },
     id: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
-  data() {
-    return {
-      loading: false,
-      showing: this.value
-    }
-  },
-  watch: {
-    value: {
-      handler: function(val, oldVal) {
-        this.showing = val
-      },
-      deep: true
-    }
-  },
-  methods: {
-    goToComputers() {
-      if (this.id > 0) {
-        this.loading = true
-        this.$axios
-          .get(`/api/v1/token/stats/deployments/${this.id}/computers/assigned/`)
+  setup(props) {
+    const uiStore = useUiStore()
+
+    const loading = ref(false)
+    const showing = ref(props.modelValue)
+
+    const goToComputers = () => {
+      if (props.id > 0) {
+        loading.value = true
+        api
+          .get(
+            `/api/v1/token/stats/deployments/${props.id}/computers/assigned/`
+          )
           .then((response) => {
-            this.$router.push({
+            router.push({
               name: 'computers-list',
-              query: { id_in: response.data.join(',') }
+              query: { id_in: response.data.join(',') },
             })
           })
           .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
+            uiStore.notifyError(error)
           })
-          .finally(() => (this.loading = false))
+          .finally(() => (loading.value = false))
       }
     }
-  }
+
+    watch(
+      () => props.modelValue,
+      (newValue) => {
+        showing.value = newValue
+      },
+      { deep: true }
+    )
+
+    return { loading, showing, goToComputers }
+  },
 }
 </script>

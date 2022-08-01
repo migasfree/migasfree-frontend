@@ -2,289 +2,150 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :results="totalRecords">
-      <template #append>
-        <q-btn
-          class="q-ma-sm float-right"
-          color="info"
-          text-color="black"
-          :label="$gettext('Export')"
-          icon="mdi-file-export"
-          :loading="isLoadingExport"
-          :disable="totalRecords === 0"
-          @click="exportAll"
-        />
-      </template>
-    </Header>
-
-    <q-list class="more-filters" bordered>
-      <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">
-        <SearchFilter
-          v-model="tableFilters.search"
-          @search="onSearch"
-          @clear="onSearchClear"
-        />
-
-        <div class="row q-pa-md q-col-gutter-lg">
-          <div class="col-6 col-md">
-            <SelectTree
-              ref="statusTree"
-              v-model="tableFilters.statusIn.selected"
-              :placeholder="$gettext('By Status')"
-              prepend-icon="mdi-filter"
-              :options="tableFilters.statusIn.items"
-              @select="onStatusInFilter"
-            />
-          </div>
-
-          <div class="col-6 col-md">
-            <DateRangeInput
-              ref="createdAtRange"
-              v-model="tableFilters.createdAtRange.selected"
-              prepend-icon="mdi-filter"
-              :label="$gettext('By Subscribed Date (range)')"
-              @select="onCreatedAtRangeFilter"
-            />
-          </div>
-        </div>
-
-        <div class="row q-pa-md">
-          <div class="col-12">
-            <q-btn
-              icon="mdi-filter-remove"
-              color="info"
-              text-color="black"
-              :label="$gettext('Reset all filters')"
-              @click="resetFilters"
-            />
-          </div>
-        </div>
-      </q-expansion-item>
-    </q-list>
-
-    <vue-good-table
-      ref="myTable"
+    <TableResults
+      :title="title"
       :columns="columns"
-      :rows="rows"
-      mode="remote"
-      compact-mode
-      :total-rows="totalRecords"
-      :is-loading.sync="isLoading"
-      :line-numbers="false"
-      :select-options="selectOptions"
-      :pagination-options="paginationOptions"
-      :search-options="searchOptions"
-      style-class="vgt-table striped condensed"
-      @on-page-change="onPageChange"
-      @on-sort-change="onSortChange"
-      @on-column-filter="onColumnFilter"
-      @on-per-page-change="onPerPageChange"
-      @on-selected-rows-change="onSelectionChanged"
+      :model="model"
+      :more-filters="moreFilters"
     >
-      <span slot="loadingContent" class="vgt-loading__content">
-        <q-spinner size="sm" />
-        <translate>Loading data...</translate>
-      </span>
-
-      <template slot="table-row" slot-scope="props">
-        <span v-if="props.column.field == 'actions'">
-          <q-btn
-            class="q-ma-xs"
-            round
-            size="sm"
-            icon="mdi-delete"
-            color="negative"
-            @click="confirmRemove(props.row.id)"
-            ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-          >
-        </span>
-
-        <span v-else-if="props.column.field == 'computer.__str__'">
+      <template #fields="slotProps">
+        <span v-if="slotProps.props.column.field == 'computer.__str__'">
           <MigasLink
             model="computers"
-            :pk="props.row.computer.id"
-            :value="props.row.computer.__str__"
-            :icon="elementIcon(props.row.computer.status)"
-            :tooltip="props.row.computer.summary"
+            :pk="slotProps.props.row.computer.id"
+            :value="slotProps.props.row.computer.__str__"
+            :icon="elementIcon(slotProps.props.row.computer.status)"
+            :tooltip="slotProps.props.row.computer.summary"
           />
         </span>
 
-        <span v-else-if="props.column.field == 'created_at'">
-          {{ showDate(props.row.created_at) }}
-          <q-tooltip>{{ diffForHumans(props.row.created_at) }}</q-tooltip>
+        <span v-else-if="slotProps.props.column.field == 'created_at'">
+          {{ showDate(slotProps.props.row.created_at) }}
+          <q-tooltip>{{
+            diffForHumans(slotProps.props.row.created_at)
+          }}</q-tooltip>
         </span>
 
-        <span v-else-if="props.column.field == 'status'">
-          {{ props.row.status }}
+        <span v-else-if="slotProps.props.column.field == 'status'">
+          {{ slotProps.props.row.status }}
         </span>
 
         <span v-else>
-          {{ props.formattedRow[props.column.field] }}
+          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
         </span>
       </template>
-
-      <q-banner
-        v-if="!isLoading"
-        slot="emptystate"
-        rounded
-        class="bg-warning text-black"
-      >
-        <translate>There are no results</translate>
-      </q-banner>
-
-      <div slot="selected-row-actions">
-        <q-btn
-          class="q-ma-xs"
-          size="sm"
-          color="info"
-          text-color="black"
-          icon="mdi-file-export"
-          :loading="isLoadingExport"
-          @click="exportData"
-          ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
-        >
-        <q-btn
-          class="q-ma-xs"
-          size="sm"
-          color="negative"
-          icon="mdi-delete"
-          @click="confirmRemove"
-          ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-        >
-      </div>
-
-      <template slot="pagination-bottom" slot-scope="props">
-        <TablePagination
-          :total="props.total"
-          :page-changed="props.pageChanged"
-          :per-page-changed="props.perPageChanged"
-          :pagination-options="paginationOptions"
-        />
-      </template>
-    </vue-good-table>
+    </TableResults>
   </q-page>
 </template>
 
 <script>
+import { ref, reactive, onMounted } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
-import SearchFilter from 'components/ui/SearchFilter'
-import Header from 'components/ui/Header'
-import TablePagination from 'components/ui/TablePagination'
-import SelectTree from 'components/ui/SelectTree'
-import DateRangeInput from 'components/ui/DateRangeInput'
+import TableResults from 'components/ui/TableResults'
 import MigasLink from 'components/MigasLink'
-import { dateMixin } from 'mixins/date'
-import { elementMixin } from 'mixins/element'
-import { datagridMixin } from 'mixins/datagrid'
+
+import { modelIcon, useElement } from 'composables/element'
+import useDate from 'composables/date'
 
 export default {
-  meta() {
-    return {
-      title: this.$gettext('Status Logs List'),
-    }
-  },
   components: {
     Breadcrumbs,
-    SearchFilter,
-    Header,
-    TablePagination,
-    SelectTree,
-    DateRangeInput,
+    TableResults,
     MigasLink,
   },
-  mixins: [dateMixin, elementMixin, datagridMixin],
-  data() {
-    return {
-      title: this.$gettext('Status Logs'),
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Data'),
-          icon: 'mdi-database-search',
-        },
-        {
-          text: this.$gettext('Status Logs'),
-          icon: 'mdi-flag-variant',
-          to: 'status-logs-dashboard',
-        },
-        {
-          text: this.$gettext('Results'),
-        },
-      ],
-      columns: [
-        {
-          field: 'id',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Actions'),
-          field: 'actions',
-          html: true,
-          sortable: false,
-          globalSearchDisabled: true,
-        },
-        {
-          label: this.$gettext('Date'),
-          field: 'created_at',
-        },
-        {
-          field: 'computer.id',
-          hidden: true,
-        },
-        {
-          field: 'computer.status',
-          hidden: true,
-        },
-        {
-          field: 'computer.summary',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Computer'),
-          field: 'computer.__str__',
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('Filter'),
-            trigger: 'enter',
-          },
-        },
-        {
-          label: this.$gettext('Status'),
-          field: 'status',
-          html: true,
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('All'),
-            trigger: 'enter',
-          },
-        },
-      ],
-      tableFilters: {
-        search: '',
-        statusIn: {
-          items: [],
-          selected: null,
-          choices: {},
-        },
-        createdAtRange: {
-          selected: { from: null, to: null },
+  setup() {
+    const { $gettext } = useGettext()
+    const { elementIcon } = useElement()
+    const { showDate, diffForHumans } = useDate()
+    const uiStore = useUiStore()
+
+    useMeta({ title: $gettext('Status Logs List') })
+
+    const model = ref('status-logs')
+    const moreFilters = ['statusIn', 'createdAtRange']
+
+    const title = ref($gettext('Status Logs'))
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Data'),
+        icon: 'mdi-database-search',
+      },
+      {
+        text: title.value,
+        icon: modelIcon(model.value),
+        to: 'status-logs-dashboard',
+      },
+      {
+        text: $gettext('Results'),
+      },
+    ])
+
+    const columns = reactive([
+      {
+        field: 'id',
+        hidden: true,
+      },
+      {
+        label: $gettext('Actions'),
+        field: 'actions',
+        html: true,
+        sortable: false,
+        globalSearchDisabled: true,
+      },
+      {
+        label: $gettext('Date'),
+        field: 'created_at',
+      },
+      {
+        field: 'computer.id',
+        hidden: true,
+      },
+      {
+        field: 'computer.status',
+        hidden: true,
+      },
+      {
+        field: 'computer.summary',
+        hidden: true,
+      },
+      {
+        label: $gettext('Computer'),
+        field: 'computer.__str__',
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
         },
       },
-      model: 'status-logs',
-    }
-  },
-  methods: {
-    async loadFilters() {
-      await this.$axios
+      {
+        label: $gettext('Status'),
+        field: 'status',
+        html: true,
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('All'),
+          trigger: 'enter',
+        },
+      },
+    ])
+
+    const loadFilters = async () => {
+      await api
         .get('/api/v1/token/computers/status/')
         .then((response) => {
-          this.updateStatusInFilter(response.data)
-
-          this.columns.find(
+          columns.find(
             (x) => x.field === 'status'
           ).filterOptions.filterDropdownItems = Object.entries(
             response.data.choices
@@ -296,9 +157,24 @@ export default {
           })
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
+
+    onMounted(async () => {
+      await loadFilters()
+    })
+
+    return {
+      model,
+      moreFilters,
+      title,
+      breadcrumbs,
+      columns,
+      elementIcon,
+      showDate,
+      diffForHumans,
+    }
   },
 }
 </script>

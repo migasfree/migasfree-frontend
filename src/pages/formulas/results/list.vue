@@ -2,275 +2,169 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header
+    <TableResults
       :title="title"
-      :results="totalRecords"
-      :add-routes="[{ route: 'formula-add' }]"
-    >
-      <template #append>
-        <q-btn
-          class="q-ma-sm float-right"
-          color="info"
-          text-color="black"
-          :label="$gettext('Export')"
-          icon="mdi-file-export"
-          :loading="isLoadingExport"
-          :disable="totalRecords === 0"
-          @click="exportAll"
-        />
-      </template>
-    </Header>
-
-    <SearchFilter
-      v-model="tableFilters.search"
-      @search="onSearch"
-      @clear="onSearchClear"
-    />
-
-    <div class="row q-pa-md">
-      <div class="col-12">
-        <q-btn
-          icon="mdi-filter-remove"
-          color="info"
-          text-color="black"
-          :label="$gettext('Reset all filters')"
-          @click="resetFilters"
-        />
-      </div>
-    </div>
-
-    <vue-good-table
-      ref="myTable"
       :columns="columns"
-      :rows="rows"
-      mode="remote"
-      compact-mode
-      :total-rows="totalRecords"
-      :is-loading.sync="isLoading"
-      :line-numbers="false"
-      :select-options="selectOptions"
-      :pagination-options="paginationOptions"
-      :search-options="searchOptions"
-      style-class="vgt-table striped condensed"
-      @on-page-change="onPageChange"
-      @on-sort-change="onSortChange"
-      @on-column-filter="onColumnFilter"
-      @on-per-page-change="onPerPageChange"
-      @on-selected-rows-change="onSelectionChanged"
+      :model="model"
+      :detail-route="detailRoute"
+      :add-routes="addRoutes"
+      :column-params="columnParams"
     >
-      <span slot="loadingContent" class="vgt-loading__content">
-        <q-spinner size="sm" />
-        <translate>Loading data...</translate>
-      </span>
-
-      <template slot="table-row" slot-scope="props">
-        <span v-if="props.column.field == 'actions'">
-          <q-btn
-            class="q-ma-xs"
-            round
-            size="sm"
-            icon="mdi-pencil"
-            color="primary"
-            @click="edit(props.row.id)"
-            ><q-tooltip>{{ $gettext('Edit') }}</q-tooltip></q-btn
-          >
-          <q-btn
-            class="q-ma-xs"
-            round
-            size="sm"
-            icon="mdi-delete"
-            color="negative"
-            @click="confirmRemove(props.row.id)"
-            ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-          >
-        </span>
-
-        <span v-else-if="props.column.field == 'name'">
+      <template #fields="slotProps">
+        <span v-if="slotProps.props.column.field == 'name'">
           <MigasLink
             model="formulas"
-            :pk="props.row.id"
-            :value="props.row.name"
-            icon="mdi-function-variant"
+            :pk="slotProps.props.row.id"
+            :value="slotProps.props.row.name"
           />
         </span>
 
-        <span v-else-if="props.column.field == 'enabled'">
-          <BooleanView v-model="props.row.enabled" />
+        <span v-else-if="slotProps.props.column.field == 'enabled'">
+          <BooleanView :value="slotProps.props.row.enabled" />
         </span>
 
-        <span v-else-if="props.column.field == 'kind'">
-          {{ kind[props.row.kind] }}
+        <span v-else-if="slotProps.props.column.field == 'kind'">
+          {{ kind[slotProps.props.row.kind] }}
         </span>
 
-        <span v-else-if="props.column.field == 'language'">
-          {{ languages[props.row.language].name }}
+        <span
+          v-else-if="
+            slotProps.props.column.field == 'language' && languages.length > 0
+          "
+        >
+          {{ languages[slotProps.props.row.language].name }}
         </span>
 
         <span v-else>
-          {{ props.formattedRow[props.column.field] }}
+          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
         </span>
       </template>
-
-      <q-banner
-        v-if="!isLoading"
-        slot="emptystate"
-        rounded
-        class="bg-warning text-black"
-      >
-        <translate>There are no results</translate>
-      </q-banner>
-
-      <div slot="selected-row-actions">
-        <q-btn
-          class="q-ma-xs"
-          size="sm"
-          color="info"
-          text-color="black"
-          icon="mdi-file-export"
-          :loading="isLoadingExport"
-          @click="exportData"
-          ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
-        >
-        <q-btn
-          size="sm"
-          color="negative"
-          icon="mdi-delete"
-          @click="confirmRemove"
-          ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-        >
-      </div>
-
-      <template slot="pagination-bottom" slot-scope="props">
-        <TablePagination
-          :total="props.total"
-          :page-changed="props.pageChanged"
-          :per-page-changed="props.perPageChanged"
-          :pagination-options="paginationOptions"
-        />
-      </template>
-    </vue-good-table>
+    </TableResults>
   </q-page>
 </template>
 
 <script>
+import { ref, reactive, onMounted } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
-import SearchFilter from 'components/ui/SearchFilter'
-import Header from 'components/ui/Header'
-import TablePagination from 'components/ui/TablePagination'
+import TableResults from 'components/ui/TableResults'
 import BooleanView from 'components/ui/BooleanView'
 import MigasLink from 'components/MigasLink'
-import { datagridMixin } from 'mixins/datagrid'
+
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.$gettext('Formulas List'),
-    }
-  },
   components: {
     Breadcrumbs,
-    SearchFilter,
-    Header,
-    TablePagination,
+    TableResults,
     BooleanView,
     MigasLink,
   },
-  mixins: [datagridMixin],
-  data() {
-    return {
-      title: this.$gettext('Formulas'),
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
+  setup() {
+    const uiStore = useUiStore()
+    const { $gettext } = useGettext()
+
+    useMeta({ title: $gettext('Formulas List') })
+
+    const kind = ref({})
+    const languages = ref([])
+
+    const model = ref('formulas')
+    const detailRoute = ref('formula-detail')
+    const addRoutes = reactive([{ route: 'formula-add' }])
+    const columnParams = reactive({ columnFilters: { sort: 'client' } })
+
+    const title = ref($gettext('Formulas'))
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Configuration'),
+        icon: 'mdi-cogs',
+      },
+      {
+        text: $gettext('Formulas'),
+        icon: modelIcon(model.value),
+      },
+      {
+        text: $gettext('Results'),
+      },
+    ])
+
+    const columns = reactive([
+      {
+        field: 'id',
+        hidden: true,
+      },
+      {
+        label: $gettext('Actions'),
+        field: 'actions',
+        html: true,
+        sortable: false,
+        globalSearchDisabled: true,
+      },
+      {
+        label: $gettext('Name'),
+        field: 'name',
+        html: true,
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
         },
-        {
-          text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs',
+      },
+      {
+        label: $gettext('Prefix'),
+        field: 'prefix',
+      },
+      {
+        label: $gettext('Enabled'),
+        field: 'enabled',
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('All'),
+          trigger: 'enter',
+          filterDropdownItems: [
+            { value: true, text: $gettext('Yes') },
+            { value: false, text: $gettext('No') },
+          ],
         },
-        {
-          text: this.$gettext('Formulas'),
-          icon: 'mdi-function-variant',
+      },
+      {
+        label: $gettext('Kind'),
+        field: 'kind',
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('All'),
+          trigger: 'enter',
         },
-        {
-          text: this.$gettext('Results'),
+      },
+      {
+        label: $gettext('Language'),
+        field: 'language',
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('All'),
+          trigger: 'enter',
         },
-      ],
-      columns: [
-        {
-          field: 'id',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Actions'),
-          field: 'actions',
-          html: true,
-          sortable: false,
-          globalSearchDisabled: true,
-        },
-        {
-          label: this.$gettext('Name'),
-          field: 'name',
-          html: true,
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('Filter'),
-            trigger: 'enter',
-          },
-        },
-        {
-          label: this.$gettext('Prefix'),
-          field: 'prefix',
-        },
-        {
-          label: this.$gettext('Enabled'),
-          field: 'enabled',
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('All'),
-            trigger: 'enter',
-            filterDropdownItems: [
-              { value: true, text: this.$gettext('Yes') },
-              { value: false, text: this.$gettext('No') },
-            ],
-          },
-        },
-        {
-          label: this.$gettext('Kind'),
-          field: 'kind',
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('All'),
-            trigger: 'enter',
-          },
-        },
-        {
-          label: this.$gettext('Language'),
-          field: 'language',
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('All'),
-            trigger: 'enter',
-          },
-        },
-      ],
-      model: 'formulas',
-      detailRoute: 'formula-detail',
-      kind: {},
-      languages: [],
-    }
-  },
-  created() {
-    this.updateParams({ columnFilters: { sort: 'client' } })
-  },
-  methods: {
-    async loadFilters() {
-      await this.$axios
+      },
+    ])
+
+    const loadFilters = async () => {
+      await api
         .get(`/api/v1/token/properties/kind/`)
         .then((response) => {
-          this.kind = response.data
-          this.columns.find(
+          kind.value = response.data
+          columns.find(
             (x) => x.field === 'kind'
           ).filterOptions.filterDropdownItems = Object.entries(
             response.data
@@ -282,20 +176,20 @@ export default {
           })
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      await this.$axios
+      await api
         .get(`/api/v1/public/languages/`)
         .then((response) => {
           Object.entries(response.data).map(([key, val]) => {
-            this.languages.push({
+            languages.value.push({
               id: parseInt(key),
               name: val,
             })
           })
 
-          this.columns.find(
+          columns.find(
             (x) => x.field === 'language'
           ).filterOptions.filterDropdownItems = Object.entries(
             response.data
@@ -307,9 +201,25 @@ export default {
           })
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
+
+    onMounted(async () => {
+      await loadFilters()
+    })
+
+    return {
+      title,
+      breadcrumbs,
+      columns,
+      model,
+      detailRoute,
+      addRoutes,
+      columnParams,
+      kind,
+      languages,
+    }
   },
 }
 </script>

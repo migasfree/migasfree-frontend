@@ -24,7 +24,7 @@
             :options="assignedDevices"
             @filter="filterAssignedDevices"
             @filter-abort="abortFilterAssignedDevices"
-            @input="updateDefaultLogicalDeviceSelect"
+            @update:model-value="updateDefaultLogicalDeviceSelect"
           >
             <template #no-option>
               <q-item>
@@ -35,7 +35,7 @@
             </template>
 
             <template #option="scope">
-              <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+              <q-item v-bind="scope.itemProps">
                 {{ scope.opt.__str__ }}
               </q-item>
             </template>
@@ -52,14 +52,13 @@
                   model="devices/logical"
                   :pk="scope.opt.id"
                   :value="scope.opt.__str__"
-                  icon="mdi-printer-settings"
                 />
               </q-chip>
             </template>
           </q-select>
         </p>
 
-        <p>
+        <p v-if="devices.assigned_logical_devices_to_cid.length">
           <q-select
             v-model="devices.default_logical_device"
             outlined
@@ -86,6 +85,12 @@
 </template>
 
 <script>
+import { ref, reactive, onMounted } from 'vue'
+import { useGettext } from 'vue3-gettext'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import MigasLink from 'components/MigasLink'
 
 export default {
@@ -99,91 +104,99 @@ export default {
       required: true,
     },
   },
+  setup(props) {
+    const { $gettext } = useGettext()
+    const uiStore = useUiStore()
 
-  data() {
-    return {
-      loading: false,
-      devices: {},
-      assignedDevices: [],
-      defaultLogicalDevices: [],
+    const loading = ref(false)
+    const devices = reactive({})
+    const assignedDevices = ref([])
+    const defaultLogicalDevices = ref([])
+
+    const updateDefaultLogicalDeviceSelect = () => {
+      defaultLogicalDevices.value = []
+      devices.assigned_logical_devices_to_cid.forEach((item) => {
+        defaultLogicalDevices.value.push({ id: item.id, label: item.__str__ })
+      })
     }
-  },
-  async mounted() {
-    await this.loadDevices()
-  },
-  methods: {
-    async loadDevices() {
-      this.loading = true
-      await this.$axios
-        .get(`/api/v1/token/computers/${this.cid}/devices/`)
-        .then((response) => {
-          this.devices = response.data
-          this.updateDefaultLogicalDeviceSelect()
 
-          this.devices.default_logical_device = this.defaultLogicalDevices.find(
-            (x) => x.id === this.devices.default_logical_device
+    const loadDevices = async () => {
+      loading.value = true
+      await api
+        .get(`/api/v1/token/computers/${props.cid}/devices/`)
+        .then((response) => {
+          Object.assign(devices, response.data)
+          updateDefaultLogicalDeviceSelect()
+
+          devices.default_logical_device = defaultLogicalDevices.value.find(
+            (x) => x.id === devices.default_logical_device
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
         .finally(() => {
-          this.loading = false
+          loading.value = false
         })
-    },
+    }
 
-    async updateDevices() {
-      this.loading = true
-      await this.$axios
-        .patch(`/api/v1/token/computers/${this.cid}/`, {
+    const updateDevices = async () => {
+      loading.value = true
+      await api
+        .patch(`/api/v1/token/computers/${props.cid}/`, {
           default_logical_device:
-            this.devices.default_logical_device !== undefined &&
-            this.devices.default_logical_device !== null
-              ? this.devices.default_logical_device.id
+            devices.default_logical_device !== undefined &&
+            devices.default_logical_device !== null
+              ? devices.default_logical_device.id
               : null,
           assigned_logical_devices_to_cid:
-            this.devices.assigned_logical_devices_to_cid.map((item) => item.id),
+            devices.assigned_logical_devices_to_cid.map((item) => item.id),
         })
         .then((response) => {
-          this.$store.dispatch(
-            'ui/notifySuccess',
-            this.$gettext('Devices have been changed!')
-          )
+          uiStore.notifySuccess($gettext('Devices have been changed!'))
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-        .finally(() => (this.loading = false))
-    },
+        .finally(() => (loading.value = false))
+    }
 
-    async filterAssignedDevices(val, update, abort) {
+    const filterAssignedDevices = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
         abort()
         return
       }
 
-      await this.$axios
+      await api
         .get(`/api/v1/token/devices/logical/`, {
           params: { search: val.toLowerCase() },
         })
         .then((response) => {
-          this.assignedDevices = response.data.results
+          assignedDevices.value = response.data.results
         })
 
       update(() => {})
-    },
+    }
 
-    abortFilterAssignedDevices() {
+    const abortFilterAssignedDevices = () => {
       // console.log('delayed filter aborted')
-    },
+    }
 
-    updateDefaultLogicalDeviceSelect() {
-      this.defaultLogicalDevices = []
-      this.devices.assigned_logical_devices_to_cid.forEach((item) => {
-        this.defaultLogicalDevices.push({ id: item.id, label: item.__str__ })
-      })
-    },
+    onMounted(async () => {
+      await loadDevices()
+    })
+
+    return {
+      loading,
+      devices,
+      assignedDevices,
+      defaultLogicalDevices,
+      updateDevices,
+      updateDefaultLogicalDeviceSelect,
+      filterAssignedDevices,
+      abortFilterAssignedDevices,
+    }
   },
 }
 </script>

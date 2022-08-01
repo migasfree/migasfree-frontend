@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" />
+    <Header :title="title" :is-export-btn="false" />
 
     <div class="row q-pa-md q-gutter-sm justify-around">
       <div class="col-6 col-md col-sm col-xs">
@@ -20,7 +20,7 @@
               :options="computers"
               @filter="filterComputers"
               @filter-abort="abortFilterComputers"
-              @input="loadSoftware(source)"
+              @update:model-value="loadSoftware(source)"
             >
               <template #no-option>
                 <q-item>
@@ -31,7 +31,7 @@
               </template>
 
               <template #option="scope">
-                <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                <q-item v-bind="scope.itemProps">
                   {{ scope.opt.__str__ }}
                 </q-item>
               </template>
@@ -73,7 +73,7 @@
               :options="computers"
               @filter="filterComputers"
               @filter-abort="abortFilterComputers"
-              @input="loadSoftware(target)"
+              @update:model-value="loadSoftware(target)"
             >
               <template #no-option>
                 <q-item>
@@ -84,7 +84,7 @@
               </template>
 
               <template #option="scope">
-                <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                <q-item v-bind="scope.itemProps">
                   {{ scope.opt.__str__ }}
                 </q-item>
               </template>
@@ -132,125 +132,143 @@
 </template>
 
 <script>
+import { ref, reactive, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
-import CodeDiff from 'vue-code-diff'
-import { elementMixin } from 'mixins/element'
+import { CodeDiff } from 'v-code-diff'
+
+import { useElement } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title
-    }
-  },
   components: {
     Breadcrumbs,
     Header,
     MigasLink,
-    CodeDiff
+    CodeDiff,
   },
-  mixins: [elementMixin],
-  data() {
-    return {
-      title: this.$gettext('Software Compare'),
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home'
-        },
-        {
-          text: this.$gettext('Data'),
-          icon: 'mdi-database-search'
-        },
-        {
-          text: this.$gettext('Software Compare'),
-          icon: 'mdi-file-compare'
-        }
-      ],
-      computers: [],
-      source: null,
-      target: null
-    }
-  },
-  computed: {
-    isEnabled() {
-      return (
-        this.source !== null &&
-        this.target !== null &&
-        'inventory' in this.source &&
-        'inventory' in this.target
-      )
-    },
+  setup() {
+    const { $gettext } = useGettext()
+    const route = useRoute()
+    const { elementIcon } = useElement()
+    const uiStore = useUiStore()
 
-    isLoading() {
-      return this.source !== null && this.target !== null
-    }
-  },
-  created() {
+    const title = ref($gettext('Software Compare'))
+    useMeta({ title: title.value })
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Data'),
+        icon: 'mdi-database-search',
+      },
+      {
+        text: title.value,
+        icon: 'mdi-file-compare',
+      },
+    ])
+
+    const computers = ref([])
+    const source = ref(null)
+    const target = ref(null)
+
     const url = '/api/v1/token/computers/'
 
-    if (this.$route.params.source) {
-      this.$axios
-        .get(`${url}${this.$route.params.source}/`)
-        .then((response) => {
-          this.source = response.data
-          this.loadSoftware(this.source)
-        })
-    }
+    const isEnabled = computed(() => {
+      return (
+        source.value !== null &&
+        target.value !== null &&
+        'inventory' in source.value &&
+        'inventory' in target.value
+      )
+    })
 
-    if (this.$route.params.target) {
-      this.$axios
-        .get(`${url}${this.$route.params.target}/`)
-        .then((response) => {
-          this.target = response.data
-          this.loadSoftware(this.target)
-        })
-    }
-  },
-  methods: {
-    async filterComputers(val, update, abort) {
+    const isLoading = computed(() => {
+      return source.value !== null && target.value !== null
+    })
+
+    const filterComputers = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
         abort()
         return
       }
 
-      await this.$axios
+      await api
         .get('/api/v1/token/computers/', {
-          params: { search: val.toLowerCase() }
+          params: { search: val.toLowerCase() },
         })
         .then((response) => {
-          this.computers = response.data.results
+          computers.value = response.data.results
         })
 
       update(() => {})
-    },
+    }
 
-    abortFilterComputers() {
+    const abortFilterComputers = () => {
       // console.log('delayed filter aborted')
-    },
+    }
 
-    sortArray(array) {
+    const sortArray = (array) => {
       const originalCopy = array.slice()
       return originalCopy.sort()
-    },
+    }
 
-    async loadSoftware(obj) {
+    const loadSoftware = async (obj) => {
       if (obj !== null) {
-        await this.$axios
+        await api
           .get(`/api/v1/token/computers/${obj.id}/software/inventory/`)
           .then((response) => {
             const inventory = response.data.map((item) => item.name)
 
-            this.$set(obj, 'inventory', this.sortArray(inventory).join('\n'))
+            obj.inventory = sortArray(inventory).join('\n')
           })
           .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
+            uiStore.notifyError(error)
           })
       }
     }
-  }
+
+    // created
+    if (route.params.source) {
+      api.get(`${url}${route.params.source}/`).then((response) => {
+        source.value = response.data
+        loadSoftware(source.value)
+      })
+    }
+
+    if (route.params.target) {
+      api.get(`${url}${route.params.target}/`).then((response) => {
+        target.value = response.data
+        loadSoftware(target.value)
+      })
+    }
+    // end created
+
+    return {
+      title,
+      breadcrumbs,
+      computers,
+      source,
+      target,
+      isEnabled,
+      isLoading,
+      loadSoftware,
+      filterComputers,
+      abortFilterComputers,
+      elementIcon,
+    }
+  },
 }
 </script>

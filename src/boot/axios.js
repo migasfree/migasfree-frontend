@@ -1,32 +1,26 @@
+import { LocalStorage } from 'quasar'
+import { boot } from 'quasar/wrappers'
 import axios from 'axios'
 import qs from 'qs'
-import { LocalStorage } from 'quasar'
 
-export default ({ store, Vue, router }) => {
-  const cancelSource = axios.CancelToken.source()
+const api = axios.create({
+  paramsSerializer: (params) => {
+    return qs.stringify(params, { arrayFormat: 'repeat' })
+  },
+  baseURL: process.env.MIGASFREE_SERVER || 'http://localhost',
+})
 
-  const axiosInstance = axios.create({
-    paramsSerializer: (params) => {
-      return qs.stringify(params, { arrayFormat: 'repeat' })
-    },
-    baseURL: process.env.MIGASFREE_SERVER || 'http://localhost',
-  })
-
-  axiosInstance.interceptors.request.use(
+export default boot(({ app, router }) => {
+  api.interceptors.request.use(
     (config) => {
       const authToken = LocalStorage.getItem('auth.token')
 
-      if (authToken) {
-        config.headers.Authorization = `Token ${authToken}`
-      }
+      if (authToken) config.headers.common.Authorization = `Token ${authToken}`
 
-      config.headers['Accept-Language'] = `${Vue.config.language.replace(
-        '_',
-        '-'
-      )},${Vue.config.language.split('_')[0]};q=0.9`
-
-      // config.timeout = 10000
-      config.cancelToken = cancelSource.token
+      const currentLang = app.config.globalProperties.$language.current
+      config.headers['Accept-Language'] = `${currentLang.replace('_', '-')},${
+        currentLang.split('_')[0]
+      };q=0.9`
 
       console.log('[ REQUEST ]', config.url, config.params)
 
@@ -38,7 +32,7 @@ export default ({ store, Vue, router }) => {
     }
   )
 
-  axiosInstance.interceptors.response.use(
+  api.interceptors.response.use(
     (response) => {
       console.log('[ RESPONSE ]', response.config.url, response)
       return response
@@ -67,10 +61,15 @@ export default ({ store, Vue, router }) => {
     }
   )
 
-  const setBaseURL = (baseURL) => {
-    axiosInstance.defaults.baseURL = baseURL
-  }
+  // for use inside Vue files (Options API) through this.$axios and this.$api
 
-  Vue.prototype.$axios = axiosInstance
-  store.$axios = axiosInstance
-}
+  app.config.globalProperties.$axios = axios
+  // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
+  //       so you won't necessarily have to import axios in each vue file
+
+  app.config.globalProperties.$api = api
+  // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
+  //       so you can easily perform requests against your app's API
+})
+
+export { api }

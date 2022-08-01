@@ -2,652 +2,226 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :results="totalRecords">
-      <template #append>
-        <q-btn
-          class="q-ma-sm float-right"
-          color="info"
-          text-color="black"
-          :label="$gettext('Export')"
-          icon="mdi-file-export"
-          :loading="isLoadingExport"
-          :disable="totalRecords === 0"
-          @click="exportAll"
-        />
-      </template>
-    </Header>
-
-    <q-list class="more-filters" bordered>
-      <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">
-        <SearchFilter
-          v-model="tableFilters.search"
-          @search="onSearch"
-          @clear="onSearchClear"
-        />
-
-        <div class="row q-pa-md q-col-gutter-lg">
-          <div class="col-12 col-sm-6 col-md-4">
-            <q-select
-              v-model="tableFilters.platform.selected"
-              :options="tableFilters.platform.items"
-              :label="$gettext('By Platform')"
-              dense
-              outlined
-              option-value="id"
-              option-label="name"
-              @input="onPlatformFilter"
-            >
-              <template #before>
-                <q-icon name="mdi-filter" />
-              </template>
-            </q-select>
-          </div>
-
-          <div class="col-12 col-sm-6 col-md-4">
-            <q-select
-              v-model="tableFilters.architecture.selected"
-              :options="tableFilters.architecture.items"
-              :label="$gettext('By Architecture')"
-              dense
-              outlined
-              option-value="id"
-              option-label="name"
-              @input="onArchitectureFilter"
-            >
-              <template #before>
-                <q-icon name="mdi-filter" />
-              </template>
-            </q-select>
-          </div>
-
-          <div class="col-12 col-sm-6 col-md-4">
-            <q-input
-              v-model="tableFilters.serial"
-              outlined
-              dense
-              clearable
-              :label="$gettext('By Serial Number')"
-              @blur="onSerialFilter"
-              @keydown.enter="onSerialFilter"
-              @clear="onSerialFilter"
-            >
-              <template #before>
-                <q-icon name="mdi-filter" />
-              </template>
-            </q-input>
-          </div>
-        </div>
-
-        <div class="row q-pa-md q-col-gutter-lg">
-          <div class="col-12 col-sm-6 col-md-4">
-            <q-select
-              v-model="tableFilters.softwareInventory.selected"
-              :options="tableFilters.softwareInventory.items"
-              :label="$gettext('By Software Inventory')"
-              dense
-              outlined
-              option-value="id"
-              option-label="name"
-              @input="onSoftwareInventoryFilter"
-            >
-              <template #before>
-                <q-icon name="mdi-filter" />
-              </template>
-            </q-select>
-          </div>
-
-          <div class="col-12 col-sm-6 col-md-4">
-            <SelectTree
-              ref="statusTree"
-              v-model="tableFilters.statusIn.selected"
-              :placeholder="$gettext('By Status')"
-              prepend-icon="mdi-filter"
-              :options="tableFilters.statusIn.items"
-              @select="onStatusInFilter"
-            />
-          </div>
-
-          <div class="col-12 col-sm-6 col-md-4">
-            <SelectTree
-              ref="machineTree"
-              v-model="tableFilters.machine.selected"
-              :placeholder="$gettext('By Machine')"
-              prepend-icon="mdi-filter"
-              :options="tableFilters.machine.items"
-              @select="onMachineFilter"
-            />
-          </div>
-        </div>
-
-        <div class="row q-pa-md q-col-gutter-lg">
-          <div class="col-12 col-sm-6 col-md-4">
-            <DateRangeInput
-              ref="createdAtRange"
-              v-model="tableFilters.createdAtRange.selected"
-              prepend-icon="mdi-filter"
-              :label="$gettext('By Subscribed Date (range)')"
-              @select="onCreatedAtRangeFilter"
-            />
-          </div>
-
-          <div class="col-12 col-sm-6 col-md-4">
-            <DateRangeInput
-              ref="syncEndDateRange"
-              v-model="tableFilters.syncEndDateRange.selected"
-              prepend-icon="mdi-filter"
-              :label="$gettext('By Last Sync Date (range)')"
-              @select="onSyncEndDateRangeFilter"
-            />
-          </div>
-
-          <div class="col-12 col-sm-6 col-md-4">
-            <q-select
-              v-model="tableFilters.syncEndDate.selected"
-              :options="tableFilters.syncEndDate.items"
-              :label="$gettext('By last sync date')"
-              dense
-              outlined
-              option-value="id"
-              option-label="name"
-              @input="onSyncEndDateFilter"
-            >
-              <template #before>
-                <q-icon name="mdi-filter" />
-              </template>
-            </q-select>
-          </div>
-        </div>
-
-        <div class="row q-pa-md">
-          <div class="col-12">
-            <q-btn
-              icon="mdi-filter-remove"
-              color="info"
-              text-color="black"
-              :label="$gettext('Reset all filters')"
-              @click="resetFilters"
-            />
-          </div>
-        </div>
-      </q-expansion-item>
-    </q-list>
-
-    <vue-good-table
-      ref="myTable"
+    <TableResults
+      :title="title"
       :columns="columns"
-      :rows="rows"
-      mode="remote"
-      compact-mode
-      :total-rows="totalRecords"
-      :is-loading.sync="isLoading"
-      :line-numbers="false"
-      :select-options="selectOptions"
-      :pagination-options="paginationOptions"
-      :search-options="searchOptions"
-      style-class="vgt-table striped condensed"
-      @on-page-change="onPageChange"
-      @on-sort-change="onSortChange"
-      @on-column-filter="onColumnFilter"
-      @on-per-page-change="onPerPageChange"
-      @on-selected-rows-change="onSelectionChanged"
+      :model="model"
+      :detail-route="detailRoute"
+      :more-filters="moreFilters"
     >
-      <span slot="loadingContent" class="vgt-loading__content">
-        <q-spinner size="sm" />
-        <translate>Loading data...</translate>
-      </span>
-
-      <template slot="table-row" slot-scope="props">
-        <span v-if="props.column.field == 'actions'">
-          <q-btn
-            class="q-ma-xs"
-            round
-            size="sm"
-            icon="mdi-pencil"
-            color="primary"
-            @click="edit(props.row.id)"
-            ><q-tooltip>{{ $gettext('Edit') }}</q-tooltip></q-btn
-          >
-          <q-btn
-            class="q-ma-xs"
-            round
-            size="sm"
-            icon="mdi-delete"
-            color="negative"
-            @click="confirmRemove(props.row.id)"
-            ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-          >
-        </span>
-
-        <span v-else-if="props.column.field == 'name'">
+      <template #fields="slotProps">
+        <span v-if="slotProps.props.column.field == 'name'">
           <MigasLink
             model="computers"
-            :pk="props.row.id"
-            :icon="elementIcon(props.row.status)"
-            :value="props.row.__str__ || ''"
-            :tooltip="props.row.summary"
+            :pk="slotProps.props.row.id"
+            :icon="elementIcon(slotProps.props.row.status)"
+            :value="slotProps.props.row.__str__ || ''"
+            :tooltip="slotProps.props.row.summary"
           />
         </span>
 
-        <span v-else-if="props.column.field == 'project.name'">
+        <span v-else-if="slotProps.props.column.field == 'project.name'">
           <MigasLink
             model="projects"
-            :pk="props.row.project.id"
-            :value="props.row.project.name || ''"
-            icon="mdi-sitemap"
+            :pk="slotProps.props.row.project.id"
+            :value="slotProps.props.row.project.name || ''"
           />
         </span>
 
-        <span v-else-if="props.column.field == 'sync_user.name'">
+        <span v-else-if="slotProps.props.column.field == 'sync_user.name'">
           <MigasLink
-            v-if="props.row.sync_user"
+            v-if="slotProps.props.row.sync_user"
             model="users"
-            :pk="props.row.sync_user.id"
-            :value="props.row.sync_user.__str__ || ''"
-            icon="mdi-account"
+            :pk="slotProps.props.row.sync_user.id"
+            :value="slotProps.props.row.sync_user.__str__ || ''"
           />
         </span>
 
-        <span v-else-if="props.column.field == 'product'">
+        <span v-else-if="slotProps.props.column.field == 'product'">
           <q-btn
             no-caps
             dense
             color="info"
             text-color="black"
-            :icon="productIcon(props.row.product_system)"
-            :label="props.row.product || ''"
+            :icon="productIcon(slotProps.props.row.product_system)"
+            :label="slotProps.props.row.product || ''"
             @click="
               $router.push({
                 name: 'computer-hardware',
-                params: { id: props.row.id },
+                params: { id: slotProps.props.row.id },
               })
             "
             ><q-tooltip
-              >{{ props.row.product_system }} ({{
+              >{{ slotProps.props.row.product_system }} ({{
                 $gettext('Hardware Information')
               }})</q-tooltip
             ></q-btn
           >
         </span>
 
-        <span v-else-if="props.column.field == 'sync_end_date'">
-          {{ showDate(props.row.sync_end_date) }}
-          <q-tooltip>{{ diffForHumans(props.row.sync_end_date) }}</q-tooltip>
+        <span v-else-if="slotProps.props.column.field == 'sync_end_date'">
+          {{ showDate(slotProps.props.row.sync_end_date) }}
+          <q-tooltip>{{
+            diffForHumans(slotProps.props.row.sync_end_date)
+          }}</q-tooltip>
         </span>
 
         <span v-else>
-          {{ props.formattedRow[props.column.field] }}
+          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
         </span>
       </template>
-
-      <q-banner
-        v-if="!isLoading"
-        slot="emptystate"
-        rounded
-        class="bg-warning text-black"
-      >
-        <translate>There are no results</translate>
-      </q-banner>
-
-      <div slot="selected-row-actions">
-        <q-btn
-          class="q-ma-xs"
-          size="sm"
-          color="info"
-          text-color="black"
-          icon="mdi-file-export"
-          :loading="isLoadingExport"
-          @click="exportData"
-          ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
-        >
-        <q-btn
-          class="q-ma-xs"
-          size="sm"
-          color="negative"
-          icon="mdi-delete"
-          @click="confirmRemove"
-          ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-        >
-      </div>
-
-      <template slot="pagination-bottom" slot-scope="props">
-        <TablePagination
-          :total="props.total"
-          :page-changed="props.pageChanged"
-          :per-page-changed="props.perPageChanged"
-          :pagination-options="paginationOptions"
-        />
-      </template>
-    </vue-good-table>
+    </TableResults>
   </q-page>
 </template>
 
 <script>
+import { ref, reactive, onMounted } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
-import SearchFilter from 'components/ui/SearchFilter'
-import SelectTree from 'components/ui/SelectTree'
-import DateRangeInput from 'components/ui/DateRangeInput'
-import Header from 'components/ui/Header'
-import TablePagination from 'components/ui/TablePagination'
+import TableResults from 'components/ui/TableResults'
 import MigasLink from 'components/MigasLink'
-import { elementMixin } from 'mixins/element'
-import { datagridMixin } from 'mixins/datagrid'
-import { dateMixin } from 'mixins/date'
+
+import { modelIcon, useElement } from 'composables/element'
+import useDate from 'composables/date'
 
 export default {
-  meta() {
-    return {
-      title: this.$gettext('Computers List'),
-    }
-  },
   components: {
     Breadcrumbs,
-    SearchFilter,
-    SelectTree,
-    DateRangeInput,
-    Header,
-    TablePagination,
+    TableResults,
     MigasLink,
   },
-  mixins: [elementMixin, datagridMixin, dateMixin],
-  data() {
-    return {
-      title: this.$gettext('Computers'),
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Data'),
-          icon: 'mdi-database-search',
-        },
-        {
-          text: this.$gettext('Computers'),
-          to: 'computers-dashboard',
-          icon: 'mdi-desktop-classic',
-        },
-        {
-          text: this.$gettext('Results'),
-        },
-      ],
-      columns: [
-        {
-          field: 'id',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Actions'),
-          field: 'actions',
-          html: true,
-          sortable: false,
-          globalSearchDisabled: true,
-        },
-        {
-          label: this.$gettext('Name'),
-          field: 'name',
-          html: true,
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('Filter'),
-            trigger: 'enter',
-          },
-        },
-        {
-          field: '__str__',
-          hidden: true,
-        },
-        {
-          field: 'project.id',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Project'),
-          field: 'project.name',
-          html: true,
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('All'),
-            trigger: 'enter',
-          },
-        },
-        {
-          field: 'sync_user.id',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('User'),
-          field: 'sync_user.name',
-          html: true,
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('Filter'),
-            trigger: 'enter',
-          },
-        },
-        {
-          label: this.$gettext('Sync end Date'),
-          field: 'sync_end_date',
-        },
-        {
-          field: 'product_system',
-          hidden: true,
-        },
-        {
-          label: this.$gettext('Product'),
-          field: 'product',
-          html: true,
-          filterOptions: {
-            enabled: true,
-            placeholder: this.$gettext('Filter'),
-            trigger: 'enter',
-          },
-        },
-        {
-          field: 'summary',
-          hidden: true,
-        },
-      ],
-      tableFilters: {
-        search: '',
-        serial: '',
-        platform: {
-          items: [{ id: '', name: this.$gettext('All') }],
-          selected: null,
-        },
-        architecture: {
-          items: [
-            { id: '', name: this.$gettext('All') },
-            {
-              id: 32,
-              name: this.$gettextInterpolate(this.$gettext('%{n} bits'), {
-                n: 32,
-              }),
-            },
-            {
-              id: 64,
-              name: this.$gettextInterpolate(this.$gettext('%{n} bits'), {
-                n: 64,
-              }),
-            },
-          ],
-          selected: null,
-        },
-        machine: {
-          items: [
-            { id: '', label: this.$gettext('All') },
-            {
-              id: 'P',
-              label: this.$gettext('Physical'),
-              children: [
-                { id: 'desktop', label: this.$gettext('desktop') },
-                { id: 'laptop', label: this.$gettext('laptop') },
-              ],
-            },
-            {
-              id: 'V',
-              label: this.$gettext('Virtual'),
-              children: [
-                { id: 'virtual', label: this.$gettext('emulator') },
-                { id: 'docker', label: this.$gettext('container') },
-              ],
-            },
-          ],
-          selected: null,
-        },
-        syncEndDate: {
-          items: [
-            { id: '', name: this.$gettext('All') },
-            { id: 0, name: this.$gettext('without date') },
-            {
-              id: 7,
-              name: this.$gettextInterpolate(this.$gettext('%{n} days ago'), {
-                n: 7,
-              }),
-            },
-            {
-              id: 30,
-              name: this.$gettextInterpolate(this.$gettext('%{n} days ago'), {
-                n: 30,
-              }),
-            },
-            {
-              id: 60,
-              name: this.$gettextInterpolate(this.$gettext('%{n} days ago'), {
-                n: 60,
-              }),
-            },
-            {
-              id: 180,
-              name: this.$gettextInterpolate(this.$gettext('%{n} days ago'), {
-                n: 180,
-              }),
-            },
-            {
-              id: 365,
-              name: this.$gettextInterpolate(this.$gettext('%{n} days ago'), {
-                n: 365,
-              }),
-            },
-          ],
-          selected: null,
-        },
-        softwareInventory: {
-          items: [
-            { id: '', name: this.$gettext('All') },
-            { id: 0, name: this.$gettext('without inventory') },
-          ],
-          selected: null,
-        },
-        statusIn: {
-          items: [],
-          selected: null,
-          choices: {},
-        },
-        createdAtRange: {
-          selected: { from: null, to: null },
-        },
-        syncEndDateRange: {
-          selected: { from: null, to: null },
+  setup() {
+    const { $gettext } = useGettext()
+    const { elementIcon, productIcon } = useElement()
+    const { showDate, diffForHumans } = useDate()
+    const uiStore = useUiStore()
+
+    useMeta({ title: $gettext('Computers List') })
+
+    const model = ref('computers')
+    const detailRoute = ref('computer-detail')
+    const moreFilters = [
+      'platform',
+      'architecture',
+      'serial',
+      'softwareInventory',
+      'statusIn',
+      'machine',
+      'createdAtRange',
+      'syncEndDateRange',
+      'syncEndDate',
+    ]
+
+    const title = ref($gettext('Computers'))
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Data'),
+        icon: 'mdi-database-search',
+      },
+      {
+        text: title.value,
+        icon: modelIcon(model.value),
+        to: 'computers-dashboard',
+      },
+      {
+        text: $gettext('Results'),
+      },
+    ])
+
+    const columns = reactive([
+      {
+        field: 'id',
+        hidden: true,
+      },
+      {
+        label: $gettext('Actions'),
+        field: 'actions',
+        html: true,
+        sortable: false,
+        globalSearchDisabled: true,
+      },
+      {
+        label: $gettext('Name'),
+        field: 'name',
+        html: true,
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
         },
       },
-      model: 'computers',
-      detailRoute: 'computer-detail',
-    }
-  },
-  methods: {
-    onArchitectureFilter(params) {
-      this.updateParams({
-        columnFilters: Object.assign(this.serverParams.columnFilters, {
-          architecture: params.id,
-        }),
-      })
-      this.loadItems()
-    },
+      {
+        field: '__str__',
+        hidden: true,
+      },
+      {
+        field: 'project.id',
+        hidden: true,
+      },
+      {
+        label: $gettext('Project'),
+        field: 'project.name',
+        html: true,
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('All'),
+          trigger: 'enter',
+        },
+      },
+      {
+        field: 'sync_user.id',
+        hidden: true,
+      },
+      {
+        label: $gettext('User'),
+        field: 'sync_user.name',
+        html: true,
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
+        },
+      },
+      {
+        label: $gettext('Sync end Date'),
+        field: 'sync_end_date',
+      },
+      {
+        field: 'product_system',
+        hidden: true,
+      },
+      {
+        label: $gettext('Product'),
+        field: 'product',
+        html: true,
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
+        },
+      },
+      {
+        field: 'summary',
+        hidden: true,
+      },
+    ])
 
-    onMachineFilter(params) {
-      if (params.id === '' || params.id === 'P' || params.id === 'V') {
-        this.updateParams({
-          columnFilters: Object.assign(this.serverParams.columnFilters, {
-            machine: params.id,
-            product_system: '',
-          }),
-        })
-      } else {
-        this.updateParams({
-          columnFilters: Object.assign(this.serverParams.columnFilters, {
-            machine: '',
-            product_system: params.id,
-          }),
-        })
-      }
-      this.loadItems()
-    },
-
-    onSyncEndDateFilter(params) {
-      this.updateParams({
-        columnFilters: Object.assign(this.serverParams.columnFilters, {
-          sync_end_date: params.id,
-        }),
-      })
-      this.loadItems()
-    },
-
-    onSoftwareInventoryFilter(params) {
-      this.updateParams({
-        columnFilters: Object.assign(this.serverParams.columnFilters, {
-          has_software_inventory: params.id === 0 ? false : '',
-        }),
-      })
-      this.loadItems()
-    },
-
-    onSyncEndDateRangeFilter(params) {
-      this.tableFilters.syncEndDateRange.selected = params
-      this.updateParams({
-        columnFilters: Object.assign(this.serverParams.columnFilters, {
-          sync_end_date__gte: this.tableFilters.syncEndDateRange.selected.from
-            ? this.tableFilters.syncEndDateRange.selected.from + 'T00:00:00'
-            : '',
-          sync_end_date__lt: this.tableFilters.syncEndDateRange.selected.to
-            ? this.tableFilters.syncEndDateRange.selected.to + 'T23:59:59'
-            : '',
-        }),
-      })
-      this.loadItems()
-    },
-
-    onSerialFilter() {
-      this.updateParams({
-        columnFilters: Object.assign(this.serverParams.columnFilters, {
-          serial: this.tableFilters.serial,
-        }),
-      })
-      this.loadItems()
-    },
-
-    async loadFilters() {
-      await this.$axios
-        .get('/api/v1/token/platforms/')
-        .then((response) => {
-          this.tableFilters.platform.items =
-            this.tableFilters.platform.items.concat(response.data.results)
-
-          if (this.$route.query.platform_id) {
-            this.tableFilters.platform.selected =
-              this.tableFilters.platform.items.find(
-                (x) => x.id == this.$route.query.platform_id
-              )
-          }
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-
-      await this.$axios
+    const loadFilters = async () => {
+      await api
         .get('/api/v1/token/projects/')
         .then((response) => {
-          this.columns.find(
+          columns.find(
             (x) => x.field === 'project.name'
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
@@ -659,18 +233,26 @@ export default {
           )
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
+    }
 
-      await this.$axios
-        .get('/api/v1/token/computers/status/')
-        .then((response) => {
-          this.updateStatusInFilter(response.data)
-        })
-        .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
-        })
-    },
+    onMounted(async () => {
+      await loadFilters()
+    })
+
+    return {
+      title,
+      breadcrumbs,
+      columns,
+      model,
+      detailRoute,
+      moreFilters,
+      elementIcon,
+      productIcon,
+      showDate,
+      diffForHumans,
+    }
   },
 }
 </script>

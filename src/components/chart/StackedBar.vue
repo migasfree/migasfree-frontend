@@ -50,27 +50,31 @@
             v-if="isChartVisible"
             class="q-ma-md"
             :pagination="{ rowsPerPage: 0 }"
-            :data="data.series"
+            :rows="data.series"
             hide-pagination
           >
-            <q-tr slot="header">
-              <q-th></q-th>
-              <q-th v-for="(item, index) in data.xData" :key="index">{{
-                item
-              }}</q-th>
-            </q-tr>
+            <template #header>
+              <q-tr>
+                <q-th></q-th>
+                <q-th v-for="(item, index) in data.xData" :key="index">{{
+                  item
+                }}</q-th>
+              </q-tr>
+            </template>
 
-            <q-tr slot="body" slot-scope="props" :props="props">
-              <q-th>{{ props.row.name }}</q-th>
-              <q-td
-                v-for="(item, index) in props.row.data"
-                :key="index"
-                class="cursor-pointer"
-                @click="selectCell(props.row.data[index])"
-              >
-                {{ item.value }}
-              </q-td>
-            </q-tr>
+            <template #body="props">
+              <q-tr :props="props">
+                <q-th>{{ props.row.name }}</q-th>
+                <q-td
+                  v-for="(item, index) in props.row.data"
+                  :key="index"
+                  class="cursor-pointer"
+                  @click="selectCell(props.row.data[index])"
+                >
+                  {{ item.value }}
+                </q-td>
+              </q-tr>
+            </template>
           </q-table>
         </q-card-section>
 
@@ -88,10 +92,26 @@
 </template>
 
 <script>
+import {
+  ref,
+  reactive,
+  computed,
+  watch,
+  onMounted,
+  onBeforeMount,
+  onBeforeUnmount,
+} from 'vue'
+import { useQuasar } from 'quasar'
+import { useGettext } from 'vue3-gettext'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import * as echarts from 'echarts/core'
 import { LineChart } from 'echarts/charts'
 import { BarChart } from 'echarts/charts'
 import {
+  TitleComponent,
   GridComponent,
   TooltipComponent,
   LegendComponent,
@@ -107,6 +127,7 @@ import {
 echarts.use([
   LineChart,
   BarChart,
+  TitleComponent,
   GridComponent,
   TooltipComponent,
   LegendComponent,
@@ -132,175 +153,206 @@ export default {
       },
     },
   },
-  data() {
-    return {
-      data: this.initialData,
-      options: {
-        animation: false,
-        color: this.$q.dark.isActive
-          ? MIGASFREE_CHART_DARK_COLORS
-          : MIGASFREE_CHART_COLORS,
-        tooltip: {
-          show: true,
-          trigger: 'axis',
-        },
-        legend: {
-          show: true,
-          bottom: 'bottom',
-          textStyle: {
-            color: this.$q.dark.isActive ? '#fff' : '#333',
-          },
-        },
-        xAxis: {
-          type: 'category',
-          data: [],
-          axisLine: {
-            lineStyle: {
-              color: this.$q.dark.isActive ? '#fff' : '#333',
-            },
-          },
-        },
-        yAxis: {
-          type: 'value',
-          axisLine: {
-            lineStyle: {
-              color: this.$q.dark.isActive ? '#fff' : '#333',
-            },
-          },
-        },
-        series: [],
-        title: {
-          text: this.title,
-          show: false,
-        },
-      },
-      initOptions: {
-        renderer: 'svg',
-      },
-      loading: false,
-      loadingOptions: {
-        showSpinner: true,
-        text: this.$gettext('Loading data...'),
-        color: '#39BEDA',
-        textColor: this.$q.dark.isActive
-          ? 'rgba(255, 255, 255, 0.5)'
-          : 'rgba(0, 0, 0, 0.5)',
-        maskColor: this.$q.dark.isActive ? '#3A4149' : 'white',
-      },
-      viewData: false,
-    }
-  },
-  computed: {
-    isChartVisible() {
-      return (
-        Object.keys(this.data).length > 0 ||
-        ('series' in this.data && this.data.series.length > 0)
-      )
-    },
+  emits: ['get-link'],
+  setup(props, { emit }) {
+    const { $gettext } = useGettext()
+    const $q = useQuasar()
+    const uiStore = useUiStore()
 
-    noData() {
-      return !'series' in this.data
-    },
-  },
-  watch: {
-    data: {
-      handler: function (val, oldVal) {
-        if ('series' in val) this.$set(this.options, 'series', val.series)
-        if ('xData' in val) this.$set(this.options.xAxis, 'data', val.xData)
-      },
-      deep: true,
-      immediate: true,
-    },
-
-    initialData: {
-      handler: function (val, oldVal) {
-        this.data = val
-      },
-      deep: true,
-      immediate: true,
-    },
-
-    '$q.dark.isActive'(val) {
-      this.options.color = val
+    const chart = ref(null)
+    const data = reactive(props.initialData)
+    const options = reactive({
+      animation: false,
+      color: $q.dark.isActive
         ? MIGASFREE_CHART_DARK_COLORS
-        : MIGASFREE_CHART_COLORS
-      this.options.legend.textStyle.color = val ? '#fff' : '#333'
-      this.options.xAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
-      this.options.yAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
-      if (
-        Array.isArray(this.options.series) &&
-        this.options.series.length > 0 &&
-        'markLine' in this.options.series[0]
+        : MIGASFREE_CHART_COLORS,
+      tooltip: {
+        show: true,
+        trigger: 'axis',
+      },
+      legend: {
+        show: true,
+        bottom: 'bottom',
+        textStyle: {
+          color: $q.dark.isActive ? '#fff' : '#333',
+        },
+      },
+      xAxis: {
+        type: 'category',
+        data: [],
+        axisLine: {
+          lineStyle: {
+            color: $q.dark.isActive ? '#fff' : '#333',
+          },
+        },
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: {
+          lineStyle: {
+            color: $q.dark.isActive ? '#fff' : '#333',
+          },
+        },
+      },
+      series: [],
+      title: {
+        text: props.title,
+        show: false,
+      },
+    })
+
+    const initOptions = reactive({
+      renderer: 'svg',
+    })
+
+    const loading = ref(false)
+    const loadingOptions = reactive({
+      showSpinner: true,
+      text: $gettext('Loading data...'),
+      color: '#39BEDA',
+      textColor: $q.dark.isActive
+        ? 'rgba(255, 255, 255, 0.5)'
+        : 'rgba(0, 0, 0, 0.5)',
+      maskColor: $q.dark.isActive ? '#3A4149' : 'white',
+    })
+
+    const viewData = ref(false)
+
+    const isChartVisible = computed(() => {
+      return (
+        Object.keys(data).length > 0 ||
+        ('series' in data && data.series.length > 0)
       )
-        this.options.series[0].markLine.label.color = val ? '#fff' : '#333'
-    },
-  },
-  async mounted() {
-    if (!this.endPoint) return
+    })
 
-    this.loading = true
-    await this.$axios
-      .get(this.endPoint)
-      .then((response) => {
-        const series = []
+    const noData = computed(() => {
+      return !('series' in data)
+    })
 
-        Object.entries(response.data.data).map(([key, val]) => {
-          series.push({
-            type: 'line',
-            smooth: true,
-            name: key,
-            data: val,
+    onMounted(async () => {
+      if (!props.endPoint) return
+
+      loading.value = true
+      await api
+        .get(props.endPoint)
+        .then((response) => {
+          const series = []
+
+          Object.entries(response.data.data).map(([key, val]) => {
+            series.push({
+              type: 'line',
+              smooth: true,
+              name: key,
+              data: val,
+            })
           })
+
+          Object.assign(data, {
+            xData: response.data.x_labels,
+            series,
+          })
+
+          if ('series' in data) {
+            options.series = data.series
+          }
+          if ('xData' in data) {
+            options.xAxis.data = data.xData
+          }
         })
-        this.data = {
-          xData: response.data.x_labels,
-          series,
-        }
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-      .finally(() => {
-        this.loading = false
-      })
-  },
-  beforeMount() {
-    window.addEventListener('resize', this.windowResize)
-  },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.windowResize)
-  },
-  methods: {
-    selectCell(data) {
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+        .finally(() => {
+          loading.value = false
+        })
+    })
+
+    onBeforeMount(() => {
+      window.addEventListener('resize', windowResize)
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', windowResize)
+    })
+
+    const selectCell = (data) => {
       const params = new Object()
       params.data = data
-      this.passData(params)
-    },
+      passData(params)
+    }
 
-    passData(params) {
-      this.$emit('getLink', params)
-    },
+    const passData = (params) => {
+      emit('get-link', params)
+    }
 
-    windowResize() {
-      if (this.$refs.chart !== null && this.$refs.chart !== undefined) {
-        this.$refs.chart.resize()
+    const windowResize = () => {
+      if (chart.value !== null && chart.value !== undefined) {
+        chart.value.resize()
       }
-    },
+    }
 
-    saveImage() {
-      const linkSource = this.$refs.chart.getDataURL()
+    const saveImage = () => {
+      const linkSource = chart.value.getDataURL()
       const downloadLink = document.createElement('a')
 
       document.body.appendChild(downloadLink)
       downloadLink.href = linkSource
       downloadLink.target = '_self'
-      downloadLink.download = `${this.title}.svg`
+      downloadLink.download = `${props.title}.svg`
       downloadLink.click()
-    },
+    }
 
-    dataView() {
-      this.viewData = true
-    },
+    const dataView = () => {
+      viewData.value = true
+    }
+
+    watch(
+      () => props.initialData,
+      (val) => {
+        Object.assign(data, val)
+        if ('series' in data) {
+          options.series = data.series
+        }
+        if ('xData' in data) {
+          options.xAxis.data = data.xData
+        }
+      },
+      { deep: true, immediate: true }
+    )
+
+    watch(
+      () => $q.dark.isActive,
+      (val) => {
+        options.color = val
+          ? MIGASFREE_CHART_DARK_COLORS
+          : MIGASFREE_CHART_COLORS
+        options.legend.textStyle.color = val ? '#fff' : '#333'
+        options.xAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
+        options.yAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
+        if (
+          Array.isArray(options.series) &&
+          options.series.length > 0 &&
+          'markLine' in options.series[0]
+        )
+          options.series[0].markLine.label.color = val ? '#fff' : '#333'
+      }
+    )
+
+    return {
+      chart,
+      data,
+      options,
+      initOptions,
+      loading,
+      loadingOptions,
+      viewData,
+      isChartVisible,
+      noData,
+      selectCell,
+      passData,
+      saveImage,
+      dataView,
+    }
   },
 }
 </script>

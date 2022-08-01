@@ -21,28 +21,42 @@
 </template>
 
 <script>
+import { useGettext } from 'vue3-gettext'
+
+import { useAuthStore } from 'stores/auth'
+
+import { modelIcon } from 'composables/element'
+
 export default {
   name: 'AppMenu',
-  data() {
+  setup() {
+    const { $gettext } = useGettext()
+    const authStore = useAuthStore()
+
     let extraDevices = []
 
-    if (this.$store.getters['auth/user'].is_superuser)
+    if (authStore.user.is_superuser)
       extraDevices = [
         {
-          title: this.$gettext('Connections'),
+          title: $gettext('Connections'),
           to: 'connections-list',
-          icon: 'mdi-connection',
+          icon: modelIcon('devices/connections'),
           separatorBefore: true,
         },
         {
-          title: this.$gettext('Device Types'),
+          title: $gettext('Device Types'),
           to: 'device-types-list',
-          icon: 'mdi-devices',
+          icon: modelIcon('devices/types'),
         },
         {
-          title: this.$gettext('Logical Devices'),
+          title: $gettext('Logical Devices'),
           to: 'logical-devices-list',
-          icon: 'mdi-printer-settings',
+          icon: modelIcon('devices/logical'),
+        },
+        {
+          title: $gettext('Drivers'),
+          to: 'drivers-list',
+          icon: modelIcon('devices/drivers'),
         },
       ]
 
@@ -50,89 +64,89 @@ export default {
       items: [
         {
           icon: 'mdi-cogs',
-          title: this.$gettext('Configuration'),
+          title: $gettext('Configuration'),
           options: [
             {
-              title: this.$gettext('Platforms'),
+              title: $gettext('Platforms'),
               to: 'platforms-list',
-              icon: 'mdi-layers',
+              icon: modelIcon('platforms'),
             },
             {
-              title: this.$gettext('Projects'),
+              title: $gettext('Projects'),
               to: 'projects-list',
-              icon: 'mdi-sitemap',
+              icon: modelIcon('projects'),
               separatorAfter: true,
             },
             {
-              title: this.$gettext('Formulas'),
+              title: $gettext('Formulas'),
               to: 'formulas-list',
-              icon: 'mdi-function-variant',
+              icon: modelIcon('formulas'),
             },
             {
-              title: this.$gettext('Stamps'),
+              title: $gettext('Stamps'),
               to: 'stamps-list',
-              icon: 'mdi-stamper',
+              icon: modelIcon('stamps'),
             },
             {
-              title: this.$gettext('Attribute Sets'),
+              title: $gettext('Attribute Sets'),
               to: 'attribute-sets-list',
-              icon: 'mdi-set-none',
+              icon: modelIcon('attribute-sets'),
             },
             {
-              title: this.$gettext('Fault Definitions'),
+              title: $gettext('Fault Definitions'),
               to: 'fault-definitions-list',
-              icon: 'mdi-alert-octagram-outline',
+              icon: modelIcon('fault-definitions'),
               separatorAfter: true,
             },
             {
-              title: this.$gettext('User Profiles'),
+              title: $gettext('User Profiles'),
               to: 'user-profiles-list',
-              icon: 'mdi-account-cog',
+              icon: modelIcon('user-profiles'),
             },
             {
-              title: this.$gettext('Groups'),
+              title: $gettext('Groups'),
               to: 'groups-list',
-              icon: 'mdi-account-group',
+              icon: modelIcon('accounts/groups'),
             },
             {
-              title: this.$gettext('Domains'),
+              title: $gettext('Domains'),
               to: 'domains-list',
-              icon: 'mdi-web',
+              icon: modelIcon('domains'),
             },
             {
-              title: this.$gettext('Scopes'),
+              title: $gettext('Scopes'),
               to: 'scopes-list',
-              icon: 'mdi-eye-outline',
+              icon: modelIcon('scopes'),
             },
           ],
         },
         {
           icon: 'mdi-printer-eye',
-          title: this.$gettext('Devices'),
+          title: $gettext('Devices'),
           options: [
             {
-              title: this.$gettext('Manufacturers'),
+              title: $gettext('Manufacturers'),
               to: 'manufacturers-list',
-              icon: 'mdi-factory',
+              icon: modelIcon('devices/manufacturers'),
             },
             {
-              title: this.$gettext('Models'),
+              title: $gettext('Models'),
               to: 'models-dashboard',
-              icon: 'mdi-shape',
+              icon: modelIcon('devices/models'),
             },
             {
-              title: this.$gettext('Capabilities'),
+              title: $gettext('Capabilities'),
               to: 'capabilities-list',
-              icon: 'mdi-format-list-bulleted-type',
+              icon: modelIcon('devices/capabilities'),
             },
             {
-              title: this.$gettext('Devices'),
+              title: $gettext('Devices'),
               to: 'devices-dashboard',
-              icon: 'mdi-printer',
+              icon: modelIcon('devices/devices'),
               separatorAfter: true,
             },
             {
-              title: this.$gettext('Devices Replacement'),
+              title: $gettext('Devices Replacement'),
               to: 'devices-replacement',
               icon: 'mdi-compare-horizontal',
             },
@@ -140,128 +154,128 @@ export default {
         },
         {
           icon: 'mdi-truck-delivery',
-          title: this.$gettext('Release'),
+          title: $gettext('Release'),
           options: [
             {
-              title: this.$gettext('Deployments'),
+              title: $gettext('Deployments'),
               to: 'deployments-dashboard',
-              icon: 'mdi-rocket-launch',
+              icon: modelIcon('deployments'),
             },
             {
-              title: this.$gettext('Schedules'),
+              title: $gettext('Schedules'),
               to: 'schedules-list',
-              icon: 'mdi-calendar-start',
+              icon: modelIcon('schedules'),
               separatorAfter: true,
             },
             {
-              title: this.$gettext('Stores'),
+              title: $gettext('Stores'),
               to: 'stores-dashboard',
-              icon: 'mdi-store-24-hour',
+              icon: modelIcon('stores'),
             },
             {
-              title: this.$gettext('Packages'),
+              title: $gettext('Packages'),
               to: 'packages-dashboard',
-              icon: 'mdi-package-variant',
+              icon: modelIcon('packages'),
             },
             {
-              title: this.$gettext('Package Sets'),
+              title: $gettext('Package Sets'),
               to: 'package-sets-list',
-              icon: 'mdi-apps-box',
+              icon: modelIcon('package-sets'),
               separatorAfter: true,
             },
             {
-              title: this.$gettext('Applications'),
+              title: $gettext('Applications'),
               to: 'apps-dashboard',
-              icon: 'mdi-apps',
+              icon: modelIcon('catalog/apps'),
             },
             {
-              title: this.$gettext('Application Categories'),
+              title: $gettext('Application Categories'),
               to: 'categories-list',
-              icon: 'mdi-format-list-bulleted-type',
+              icon: modelIcon('catalog/categories'),
             },
             {
-              title: this.$gettext('Policies'),
+              title: $gettext('Policies'),
               to: 'policies-list',
-              icon: 'mdi-shield-half-full',
+              icon: modelIcon('catalog/policies'),
             },
           ],
         },
         {
           icon: 'mdi-database-search',
-          title: this.$gettext('Data'),
+          title: $gettext('Data'),
           options: [
             {
-              title: this.$gettext('Computers'),
+              title: $gettext('Computers'),
               to: 'computers-dashboard',
-              icon: 'mdi-desktop-classic',
+              icon: modelIcon('computers'),
             },
             {
-              title: this.$gettext('Computers Replacement'),
+              title: $gettext('Computers Replacement'),
               to: 'computers-replacement',
               icon: 'mdi-compare-horizontal',
             },
             {
-              title: this.$gettext('Software Compare'),
+              title: $gettext('Software Compare'),
               to: 'computers-software-compare',
               icon: 'mdi-file-compare',
             },
             {
-              title: this.$gettext('Packages History'),
+              title: $gettext('Packages History'),
               to: 'packages-history-dashboard',
-              icon: 'mdi-history',
+              icon: modelIcon('packages-history'),
             },
             {
-              title: this.$gettext('Users'),
+              title: $gettext('Users'),
               to: 'users-list',
-              icon: 'mdi-account',
+              icon: modelIcon('users'),
               separatorAfter: true,
             },
             {
-              title: this.$gettext('Attributes'),
+              title: $gettext('Attributes'),
               to: 'attributes-dashboard',
-              icon: 'mdi-pound',
+              icon: modelIcon('attributes'),
             },
             {
-              title: this.$gettext('Tags'),
+              title: $gettext('Tags'),
               to: 'tags-dashboard',
-              icon: 'mdi-tag',
+              icon: modelIcon('tags'),
               separatorAfter: true,
             },
             {
-              title: this.$gettext('Synchronizations'),
+              title: $gettext('Synchronizations'),
               to: 'syncs-dashboard',
-              icon: 'mdi-sync',
+              icon: modelIcon('syncs'),
             },
             {
-              title: this.$gettext('Errors'),
+              title: $gettext('Errors'),
               to: 'errors-dashboard',
-              icon: 'mdi-bug',
+              icon: modelIcon('errors'),
             },
             {
-              title: this.$gettext('Faults'),
+              title: $gettext('Faults'),
               to: 'faults-dashboard',
-              icon: 'mdi-bomb',
+              icon: modelIcon('faults'),
             },
             {
-              title: this.$gettext('Status Logs'),
+              title: $gettext('Status Logs'),
               to: 'status-logs-dashboard',
-              icon: 'mdi-flag-variant',
+              icon: modelIcon('status-logs'),
             },
             {
-              title: this.$gettext('Migrations'),
+              title: $gettext('Migrations'),
               to: 'migrations-dashboard',
-              icon: 'mdi-map-marker-right',
+              icon: modelIcon('migrations'),
               separatorAfter: true,
             },
             {
-              title: this.$gettext('Messages'),
+              title: $gettext('Messages'),
               to: 'messages-list',
-              icon: 'mdi-message-text',
+              icon: modelIcon('messages'),
             },
             {
-              title: this.$gettext('Notifications'),
+              title: $gettext('Notifications'),
               to: 'notifications-dashboard',
-              icon: 'mdi-android-messages',
+              icon: modelIcon('notifications'),
             },
           ],
         },

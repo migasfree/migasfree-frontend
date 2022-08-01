@@ -2,9 +2,9 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :add-routes="[{ route: 'store-add' }]" />
+    <Header :title="title" :add-routes="addRoutes" :is-export-btn="false" />
 
-    <SearchFilter @search="search" />
+    <SearchFilter v-model="searchText" @search="search" />
 
     <div class="row">
       <div class="col">
@@ -12,7 +12,7 @@
           :title="$gettext('Stores / Project')"
           end-point="/api/v1/token/stats/stores/project/"
           :url="url"
-          @getLink="goTo"
+          @get-link="goTo"
         />
       </div>
     </div>
@@ -20,58 +20,76 @@
 </template>
 
 <script>
+import { ref, reactive } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+import { useRouter } from 'vue-router'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
 import PieChart from 'components/chart/Pie'
 
+import { modelIcon } from 'composables/element'
+
 export default {
-  meta() {
-    return {
-      title: this.title
-    }
-  },
   components: {
     Breadcrumbs,
     SearchFilter,
     Header,
-    PieChart
+    PieChart,
   },
-  data() {
-    return {
-      title: this.$gettext('Stores'),
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home'
-        },
-        {
-          text: this.$gettext('Release'),
-          icon: 'mdi-truck-delivery'
-        },
-        {
-          text: this.$gettext('Stores'),
-          icon: 'mdi-store-24-hour'
-        }
-      ],
-      url: { name: 'stores-list' }
-    }
-  },
-  methods: {
-    goTo(params) {
+  setup() {
+    const router = useRouter()
+    const { $gettext } = useGettext()
+
+    const title = ref($gettext('Stores'))
+    useMeta({ title: title.value })
+
+    const searchText = ref('')
+    const addRoutes = reactive([{ route: 'store-add' }])
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Release'),
+        icon: 'mdi-truck-delivery',
+      },
+      {
+        text: title.value,
+        icon: modelIcon('stores'),
+      },
+    ])
+
+    const url = reactive({ name: 'stores-list' })
+
+    const goTo = (params) => {
       if (params.data.project_id) {
-        this.$router.push(
-          Object.assign(this.url, {
-            query: { project_id: params.data.project_id }
+        router.push(
+          Object.assign(url, {
+            query: { project_id: params.data.project_id },
           })
         )
       }
-    },
-
-    search(value) {
-      this.$router.push(Object.assign(this.url, { query: { search: value } }))
     }
-  }
+
+    const search = (value) => {
+      router.push(Object.assign(url, { query: { search: value } }))
+    }
+
+    return {
+      title,
+      searchText,
+      addRoutes,
+      breadcrumbs,
+      url,
+      goTo,
+      search,
+    }
+  },
 }
 </script>

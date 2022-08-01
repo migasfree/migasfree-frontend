@@ -1,112 +1,112 @@
 <template>
   <q-page padding>
-    <Breadcrumbs :items="breadcrumbs" />
+    <ItemDetail
+      :breadcrumbs="breadcrumbs"
+      :original-title="title"
+      :model="model"
+      :routes="routes"
+      :element="element"
+      :is-valid="false"
+      :add-button="false"
+      :continue-button="false"
+      :save-button="false"
+      @reset-element="resetElement"
+      @set-title="setTitle"
+    >
+      <template #fields>
+        <q-card-section>
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-input
+                v-model="element.name"
+                outlined
+                readonly
+                :label="$gettext('Name')"
+              />
+            </div>
 
-    <Header :title="$gettext('User')">
-      <template v-if="element.id" #append
-        >:
-        <MigasLink
-          model="users"
-          :pk="element.id"
-          :value="element.__str__"
-          icon="mdi-account"
-        />
+            <div class="col-6 col-md col-sm">
+              <q-input
+                v-model="element.fullname"
+                outlined
+                readonly
+                :label="$gettext('Fullname')"
+              />
+            </div>
+          </div>
+        </q-card-section>
       </template>
-    </Header>
-
-    <q-card>
-      <q-card-section>
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-input
-              v-model="element.name"
-              outlined
-              readonly
-              :label="$gettext('Name')"
-            />
-          </div>
-
-          <div class="col-6 col-md col-sm">
-            <q-input
-              v-model="element.fullname"
-              outlined
-              readonly
-              :label="$gettext('Fullname')"
-            />
-          </div>
-        </div>
-      </q-card-section>
-    </q-card>
-
-    <div v-if="$route.params.id && element.id" class="row q-pa-md">
-      <q-btn
-        flat
-        icon="mdi-delete"
-        :color="$q.dark.isActive ? 'white' : 'negative'"
-        :class="{ 'reversed-delete': $q.dark.isActive }"
-        :label="$gettext('Delete')"
-        @click="confirmRemove = true"
-      />
-    </div>
-
-    <RemoveDialog
-      v-model="confirmRemove"
-      @confirmed="remove"
-      @canceled="confirmRemove = !confirmRemove"
-    />
+    </ItemDetail>
   </q-page>
 </template>
 
 <script>
-import Breadcrumbs from 'components/ui/Breadcrumbs'
-import Header from 'components/ui/Header'
-import MigasLink from 'components/MigasLink'
-import RemoveDialog from 'components/ui/RemoveDialog'
-import { detailMixin } from 'mixins/detail'
+import { ref, reactive, computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import ItemDetail from 'components/ui/ItemDetail'
+
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title,
+  components: { ItemDetail },
+  setup() {
+    const { $gettext } = useGettext()
+
+    const title = ref($gettext('User'))
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
+
+    const routes = {
+      list: 'users-list',
+      detail: 'user-detail',
     }
-  },
-  components: {
-    Breadcrumbs,
-    Header,
-    RemoveDialog,
-    MigasLink,
-  },
-  mixins: [detailMixin],
-  data() {
-    const route = 'users-list'
-    const title = this.$gettext('User')
-    const element = { id: 0 }
+    const model = 'users'
+
+    let element = reactive({ id: 0 })
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Data'),
+        icon: 'mdi-database-search',
+      },
+      {
+        text: $gettext('Users'),
+        icon: modelIcon(model),
+        to: routes.list,
+      },
+    ])
+
+    const resetElement = () => {
+      Object.assign(element, {
+        id: 0,
+        name: undefined,
+        fullname: undefined,
+      })
+    }
+
+    const setTitle = (value) => {
+      windowTitle.value = value
+    }
 
     return {
+      breadcrumbs,
       title,
-      originalTitle: title,
-      model: 'users',
-      listRoute: route,
-      detailRoute: 'user-detail',
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Data'),
-          icon: 'mdi-database-search',
-        },
-        {
-          text: this.$gettext('Users'),
-          icon: 'mdi-account',
-          to: route,
-        },
-      ],
+      model,
+      routes,
       element,
-      emptyElement: Object.assign({}, element),
-      confirmRemove: false,
+      resetElement,
+      setTitle,
     }
   },
 }

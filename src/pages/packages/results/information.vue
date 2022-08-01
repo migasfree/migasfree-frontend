@@ -2,14 +2,13 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="$gettext('Package Information')">
+    <Header :title="$gettext('Package Information')" :is-export-btn="false">
       <template v-if="element.id" #append
         >:
         <MigasLink
           model="packages"
           :pk="element.id"
           :value="element.fullname"
-          icon="mdi-package-variant"
         />
         <q-btn
           v-if="element.url"
@@ -20,7 +19,7 @@
           color="info"
           text-color="black"
           type="a"
-          :href="`${$store.getters['ui/server']}${element.url}`"
+          :href="`${server}${element.url}`"
         />
       </template>
     </Header>
@@ -42,91 +41,104 @@
 </template>
 
 <script>
+import { ref, reactive, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 
+import { modelIcon } from 'composables/element'
+
 export default {
-  meta() {
-    return {
-      title: this.title
-    }
-  },
   components: {
     Breadcrumbs,
     Header,
-    MigasLink
+    MigasLink,
   },
-  data() {
-    const title = this.$gettext('Package Information')
+  setup() {
+    const uiStore = useUiStore()
+    const route = useRoute()
+    const { $gettext } = useGettext()
 
-    return {
-      title,
-      originalTitle: title,
-      model: 'packages',
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home'
-        },
-        {
-          text: this.$gettext('Release'),
-          icon: 'mdi-truck-delivery'
-        },
-        {
-          text: this.$gettext('Packages'),
-          icon: 'mdi-package-variant',
-          to: 'packages-dashboard'
-        },
-        {
-          text: this.$gettext('Results'),
-          to: 'packages-list'
-        },
-        {
-          text: 'Id',
-          to: { name: 'package-detail', params: { id: 0 } }
-        },
-        {
-          text: this.$gettext('Package Information')
-        }
-      ],
-      element: { id: 0 },
-      information: null,
-      loading: false
-    }
-  },
-  async mounted() {
-    await this.$axios
-      .get(`/api/v1/token/${this.model}/${this.$route.params.id}/`)
-      .then((response) => {
-        this.element = response.data
-        this.breadcrumbs.find(
-          (x) => x.text === 'Id'
-        ).to.params.id = this.element.id
-        this.breadcrumbs.find(
-          (x) => x.text === 'Id'
-        ).text = this.element.fullname
-        this.title = `${this.title}: ${this.element.fullname}`
-        this.loadInfo()
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-  },
-  methods: {
-    async loadInfo() {
-      this.loading = true
-      await this.$axios
-        .get(`/api/v1/token/${this.model}/${this.element.id}/info/`)
+    const title = ref($gettext('Package Information'))
+    useMeta({ title: title.value })
+
+    const model = 'packages'
+
+    const element = reactive({ id: 0 })
+    const information = ref(null)
+    const loading = ref(false)
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Release'),
+        icon: 'mdi-truck-delivery',
+      },
+      {
+        text: $gettext('Packages'),
+        icon: modelIcon(model),
+        to: 'packages-dashboard',
+      },
+      {
+        text: $gettext('Results'),
+        to: 'packages-list',
+      },
+      {
+        text: 'Id',
+        to: { name: 'package-detail', params: { id: 0 } },
+      },
+      {
+        text: title.value,
+      },
+    ])
+
+    const loadInfo = async () => {
+      loading.value = true
+      await api
+        .get(`/api/v1/token/${model}/${element.id}/info/`)
         .then((response) => {
-          this.information = response.data.data
+          information.value = response.data.data
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-        .finally(() => (this.loading = false))
+        .finally(() => (loading.value = false))
     }
-  }
+
+    onMounted(async () => {
+      await api
+        .get(`/api/v1/token/${model}/${route.params.id}/`)
+        .then((response) => {
+          Object.assign(element, response.data)
+          breadcrumbs.find((x) => x.text === 'Id').to.params.id = element.id
+          breadcrumbs.find((x) => x.text === 'Id').text = element.fullname
+          title.value = `${title.value}: ${element.fullname}`
+          loadInfo()
+        })
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+    })
+
+    return {
+      server: uiStore.server,
+      title,
+      breadcrumbs,
+      element,
+      information,
+      loading,
+    }
+  },
 }
 </script>

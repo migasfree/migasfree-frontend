@@ -1,11 +1,11 @@
 <template>
   <q-input
+    :model-value="dateView"
     outlined
     dense
     readonly
-    :value="dateView"
     :label="label"
-    @click="$refs.qDateProxy.show()"
+    @click="qDateProxy.show()"
   >
     <template v-if="prependIcon" #before>
       <q-icon :name="prependIcon" />
@@ -24,7 +24,7 @@
             today-btn
             mask="YYYY-MM-DD"
             :locale="localeDate"
-            @input="dateSelected"
+            @update:model-value="dateSelected"
           ></q-date>
         </q-popup-proxy>
       </q-icon>
@@ -40,18 +40,18 @@
 </template>
 
 <script>
-import { dateMixin } from 'mixins/date'
+import { ref, reactive, computed, watch } from 'vue'
+import useDate from 'composables/date'
 
 export default {
   name: 'DateRangeInput',
-  mixins: [dateMixin],
   props: {
-    label: {
-      type: String,
+    modelValue: {
+      type: Object,
       required: true,
     },
-    value: {
-      type: Object,
+    label: {
+      type: String,
       required: true,
     },
     prependIcon: {
@@ -60,38 +60,53 @@ export default {
       default: null,
     },
   },
-  data() {
-    return {
-      date: this.value || {
-        from: null,
-        to: null,
-      },
-    }
-  },
-  computed: {
-    dateView() {
-      if (this.date.to && this.date.from) {
-        return `${this.showDate(this.date.from)} ~ ${this.showDate(
-          this.date.to
-        )}`
+  emits: ['select'],
+  setup(props, { emit }) {
+    const qDateProxy = ref(null)
+    const date = reactive(props.modelValue || { from: null, to: null })
+
+    const { showDate, localeDate } = useDate()
+
+    const dateView = computed(() => {
+      if (date.to && date.from) {
+        return `${showDate(date.from)} ~ ${showDate(date.to)}`
       }
 
-      if (this.date.to) return `? ~ ${this.showDate(this.date.to)}`
+      if (date.to) return `? ~ ${showDate(date.to)}`
 
-      if (this.date.from) return `${this.showDate(this.date.from)} ~ ?`
+      if (date.from) return `${showDate(date.from)} ~ ?`
 
       return ''
-    },
-  },
-  methods: {
-    dateSelected() {
-      this.$refs.qDateProxy.hide()
-      this.$emit('select', this.date)
-    },
-    reset(emit = true) {
-      this.date = { from: null, to: null }
-      if (emit) this.$emit('select', this.date)
-    },
+    })
+
+    const dateSelected = (value) => {
+      if (value === null) return
+
+      Object.assign(date, value)
+      qDateProxy.value.hide()
+      emit('select', value)
+    }
+
+    const reset = (emitEvent = true) => {
+      if (emitEvent) emit('select', { from: null, to: null })
+    }
+
+    watch(
+      () => props.modelValue,
+      (newValue) => {
+        Object.assign(date, newValue)
+      }
+    )
+
+    return {
+      qDateProxy,
+      date,
+      showDate,
+      localeDate,
+      dateView,
+      dateSelected,
+      reset,
+    }
   },
 }
 </script>

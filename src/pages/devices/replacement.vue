@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" />
+    <Header :title="title" :is-export-btn="false" />
 
     <p v-translate>
       This procedure switches assigned computers between two devices.
@@ -24,7 +24,7 @@
               :options="devices"
               @filter="filterDevices"
               @filter-abort="abortFilterDevices"
-              @input="loadInfo(source)"
+              @update:model-value="loadInfo(source)"
             >
               <template #no-option>
                 <q-item>
@@ -35,7 +35,7 @@
               </template>
 
               <template #option="scope">
-                <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                <q-item v-bind="scope.itemProps">
                   {{ scope.opt.name }}
                 </q-item>
               </template>
@@ -52,7 +52,6 @@
                     model="devices/devices"
                     :pk="scope.opt.id"
                     :value="scope.opt.name || ''"
-                    icon="mdi-printer"
                   />
                 </q-chip>
               </template>
@@ -92,7 +91,7 @@
               :options="devices"
               @filter="filterDevices"
               @filter-abort="abortFilterDevices"
-              @input="loadInfo(target)"
+              @update:model-value="loadInfo(target)"
             >
               <template #no-option>
                 <q-item>
@@ -103,7 +102,7 @@
               </template>
 
               <template #option="scope">
-                <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                <q-item v-bind="scope.itemProps">
                   {{ scope.opt.name }}
                 </q-item>
               </template>
@@ -120,7 +119,6 @@
                     model="devices/devices"
                     :pk="scope.opt.id"
                     :value="scope.opt.name || ''"
-                    icon="mdi-printer"
                   />
                 </q-chip>
               </template>
@@ -137,122 +135,131 @@
 </template>
 
 <script>
+import { ref, reactive, computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import ReplacementInfo from 'components/device/ReplacementInfo'
-import { elementMixin } from 'mixins/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title
-    }
-  },
   components: {
     Breadcrumbs,
     Header,
     MigasLink,
-    ReplacementInfo
+    ReplacementInfo,
   },
-  mixins: [elementMixin],
-  data() {
-    return {
-      title: this.$gettext('Devices Replacement'),
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home'
-        },
-        {
-          text: this.$gettext('Devices'),
-          icon: 'mdi-printer-eye'
-        },
-        {
-          text: this.$gettext('Devices Replacement'),
-          icon: 'mdi-compare-horizontal'
-        }
-      ],
-      devices: [],
-      source: null,
-      target: null,
-      loading: false
+  setup() {
+    const { $gettext } = useGettext()
+    const uiStore = useUiStore()
+
+    const title = ref($gettext('Devices Replacement'))
+    useMeta({ title: title.value })
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Devices'),
+        icon: 'mdi-printer-eye',
+      },
+      {
+        text: $gettext('Devices Replacement'),
+        icon: 'mdi-compare-horizontal',
+      },
+    ])
+
+    const devices = ref([])
+    const source = ref(null)
+    const target = ref(null)
+    const loading = ref(false)
+
+    const isEnabled = computed(() => {
+      return source.value !== null && target.value !== null
+    })
+
+    const loadInfo = async (obj) => {
+      if (obj !== null) {
+        await api
+          .get(`/api/v1/token/devices/logical/?device__id=${obj.id}`)
+          .then((response) => {
+            obj.logical_devices = response.data.results
+          })
+          .catch((error) => {
+            uiStore.notifyError(error)
+          })
+      }
     }
-  },
-  computed: {
-    isEnabled() {
-      return this.source !== null && this.target !== null
+
+    const replace = async () => {
+      if (isEnabled.value) {
+        loading.value = true
+        await api
+          .post(
+            `/api/v1/token/devices/devices/${source.value.id}/replacement/`,
+            {
+              target: target.value.id,
+            }
+          )
+          .then((response) => {
+            let tmp = null
+
+            tmp = source.value.logical_devices
+            source.value.logical_devices = target.value.logical_devices
+            target.value.logical_devices = tmp
+
+            uiStore.notifySuccess($gettext('Replacement done!'))
+          })
+          .catch((error) => {
+            uiStore.notifyError(error)
+          })
+          .finally(() => (loading.value = false))
+      }
     }
-  },
-  methods: {
-    async filterDevices(val, update, abort) {
+
+    const filterDevices = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
         abort()
         return
       }
 
-      await this.$axios
+      await api
         .get('/api/v1/token/devices/devices/', {
-          params: { search: val.toLowerCase() }
+          params: { search: val.toLowerCase() },
         })
         .then((response) => {
-          this.devices = response.data.results
+          devices.value = response.data.results
         })
 
       update(() => {})
-    },
-
-    abortFilterDevices() {
-      // console.log('delayed filter aborted')
-    },
-
-    async loadInfo(obj) {
-      if (obj !== null) {
-        await this.$axios
-          .get(`/api/v1/token/devices/logical/?device__id=${obj.id}`)
-          .then((response) => {
-            this.$set(obj, 'logical_devices', response.data.results)
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-      }
-    },
-
-    async replace() {
-      if (this.source !== null && this.target !== null) {
-        this.loading = true
-        await this.$axios
-          .post(
-            `/api/v1/token/devices/devices/${this.source.id}/replacement/`,
-            {
-              target: this.target.id
-            }
-          )
-          .then((response) => {
-            let tmp = null
-
-            tmp = this.source.logical_devices
-            this.$set(
-              this.source,
-              'logical_devices',
-              this.target.logical_devices
-            )
-            this.$set(this.target, 'logical_devices', tmp)
-
-            this.$store.dispatch(
-              'ui/notifySuccess',
-              this.$gettext('Replacement done!')
-            )
-          })
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
-          .finally(() => (this.loading = false))
-      }
     }
-  }
+
+    const abortFilterDevices = () => {
+      // console.log('delayed filter aborted')
+    }
+
+    return {
+      title,
+      breadcrumbs,
+      devices,
+      source,
+      target,
+      loading,
+      isEnabled,
+      loadInfo,
+      replace,
+      filterDevices,
+      abortFilterDevices,
+    }
+  },
 }
 </script>

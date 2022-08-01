@@ -1,425 +1,353 @@
 <template>
   <q-page padding>
-    <Breadcrumbs :items="breadcrumbs" />
+    <ItemDetail
+      :breadcrumbs="breadcrumbs"
+      :original-title="title"
+      :model="model"
+      :routes="routes"
+      :element="element"
+      :element-data="elementData"
+      :is-valid="isValid"
+      @load-related="loadRelated"
+      @update-related="updateRelated"
+      @reset-element="resetElement"
+      @reset-related="resetRelated"
+      @set-title="setTitle"
+    >
+      <template #fields>
+        <q-card-section>
+          <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
-    <Header :title="$gettext('Application')">
-      <template v-if="element.id" #append
-        >:
-        <MigasLink
-          :model="model"
-          :pk="element.id"
-          :value="element.name"
-          icon="mdi-apps"
-        />
-      </template>
-    </Header>
-
-    <q-card>
-      <q-card-section>
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col">
-            <q-input
-              v-model="element.name"
-              outlined
-              :label="$gettext('Name')"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-            />
-          </div>
-        </div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-select
-              v-model="element.category"
-              outlined
-              :label="$gettext('Category')"
-              :options="categories"
-              option-value="id"
-              option-label="name"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-            />
-          </div>
-
-          <div class="col-6 col-md col-sm">
-            <q-select
-              v-model="element.level"
-              outlined
-              :label="$gettext('Level')"
-              :options="levels"
-              option-value="id"
-              option-label="name"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-            />
-          </div>
-        </div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-field
-              outlined
-              :label="$gettext('Score')"
-              stack-label
-              :hint="$gettext('Relevance to the organization')"
-            >
-              <template #control>
-                <q-rating
-                  v-model="element.score"
-                  size="sm"
-                  icon="star_border"
-                  icon-selected="star"
-                />
-              </template>
-            </q-field>
-          </div>
-
-          <div class="col-6 col-md col-sm">
-            <div class="col-6">
-              <q-file
-                v-model="iconFile"
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col">
+              <q-input
+                v-model="element.name"
                 outlined
-                clearable
-                counter
-                :label="$gettext('Change Icon')"
-                accept="image/*"
-                @rejected="onRejected"
-                ><template #prepend><q-icon name="mdi-image" /> </template
-              ></q-file>
-            </div>
-
-            <div class="col-6">
-              <q-img
-                v-if="element.icon"
-                :src="iconPath"
-                spinner-color="white"
-                class="app-icon"
+                :label="$gettext('Name')"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
               />
             </div>
           </div>
-        </div>
 
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col">
-            <SelectAttributes
-              v-model="element.available_for_attributes"
-              :label="$gettext('Available for Attributes')"
-            />
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-select
+                v-model="element.category"
+                outlined
+                :label="$gettext('Category')"
+                :options="categories"
+                option-value="id"
+                option-label="name"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+              />
+            </div>
+
+            <div class="col-6 col-md col-sm">
+              <q-select
+                v-model="element.level"
+                outlined
+                :label="$gettext('Level')"
+                :options="levels"
+                option-value="id"
+                option-label="name"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+              />
+            </div>
           </div>
-        </div>
 
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-input
-              v-model="element.description"
-              outlined
-              type="textarea"
-              autogrow
-              :label="$gettext('Description')"
-              :hint="$gettext('Allowed Markdown Syntax')"
-            />
-          </div>
-
-          <div class="col-6 col-md col-sm">
-            <q-field
-              outlined
-              :label="$gettext('Description Preview')"
-              readonly
-              stack-label
-            >
-              <template #control>
-                <q-markdown :src="element.description"></q-markdown>
-              </template>
-            </q-field>
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-section>
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">Projects</div>
-
-        <q-list
-          v-if="packagesByProject.length > 0"
-          class="q-pa-md"
-          bordered
-          separator
-        >
-          <q-item v-for="(project, index) in packagesByProject" :key="index">
-            <q-item-section side top>
-              <q-btn
-                flat
-                dense
-                round
-                color="negative"
-                icon="mdi-delete"
-                @click="removeInline(index)"
-                ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-field
+                outlined
+                :label="$gettext('Score')"
+                stack-label
+                :hint="$gettext('Relevance to the organization')"
               >
-            </q-item-section>
-
-            <q-item-section>
-              <div class="row q-pa-md q-gutter-md">
-                <div class="col-5 col-md col-sm">
-                  <q-select
-                    v-model="project.project"
-                    outlined
-                    :label="$gettext('Project')"
-                    :options="projects"
-                    option-value="id"
-                    option-label="name"
-                    lazy-rules
-                    :rules="[(val) => !!val || $gettext('* Required')]"
+                <template #control>
+                  <q-rating
+                    v-model="element.score"
+                    size="sm"
+                    icon="star_border"
+                    icon-selected="star"
                   />
-                </div>
+                </template>
+              </q-field>
+            </div>
 
-                <div class="col-5 col-md col-sm">
-                  <q-input
-                    v-model="project.packages_to_install"
-                    outlined
-                    type="textarea"
-                    :label="$gettext('Packages to Install')"
-                  />
-                </div>
+            <div class="col-6 col-md col-sm">
+              <div class="col-6">
+                <q-file
+                  v-model="iconFile"
+                  outlined
+                  clearable
+                  counter
+                  :label="$gettext('Change Icon')"
+                  accept="image/*"
+                  @rejected="onRejected"
+                  ><template #prepend><q-icon name="mdi-image" /> </template
+                ></q-file>
               </div>
-            </q-item-section>
-          </q-item>
-        </q-list>
 
-        <div class="q-pa-md">
-          <q-btn
-            icon="mdi-plus"
-            :label="$gettext('Add other Project')"
-            @click="addInline"
-          />
-        </div>
-      </q-card-section>
+              <div class="col-6">
+                <q-img
+                  v-if="element.icon"
+                  :src="iconPath"
+                  spinner-color="white"
+                  class="app-icon"
+                />
+              </div>
+            </div>
+          </div>
 
-      <q-card-actions class="justify-around">
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and add other')"
-          icon="mdi-plus"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('add')"
-        />
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and continue editing')"
-          icon="mdi-content-save-edit"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement"
-        />
-        <q-btn
-          :label="$gettext('Save')"
-          color="primary"
-          icon="mdi-content-save-move"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('return')"
-        />
-      </q-card-actions>
-    </q-card>
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col">
+              <SelectAttributes
+                v-model="element.available_for_attributes"
+                :label="$gettext('Available for Attributes')"
+              />
+            </div>
+          </div>
 
-    <div v-if="$route.params.id && element.id" class="row q-pa-md">
-      <q-btn
-        flat
-        icon="mdi-delete"
-        :color="$q.dark.isActive ? 'white' : 'negative'"
-        :class="{ 'reversed-delete': $q.dark.isActive }"
-        :label="$gettext('Delete')"
-        @click="confirmRemove = true"
-      />
-    </div>
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-input
+                v-model="element.description"
+                outlined
+                type="textarea"
+                autogrow
+                :label="$gettext('Description')"
+                :hint="$gettext('Allowed Markdown Syntax')"
+              />
+            </div>
 
-    <RemoveDialog
-      v-model="confirmRemove"
-      @confirmed="remove"
-      @canceled="confirmRemove = !confirmRemove"
-    />
+            <div class="col-6 col-md col-sm">
+              <q-field
+                outlined
+                :label="$gettext('Description Preview')"
+                readonly
+                stack-label
+              >
+                <template #control>
+                  <q-markdown :src="element.description"></q-markdown>
+                </template>
+              </q-field>
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section>
+          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Projects</div>
+
+          <q-list
+            v-if="packagesByProject.length > 0"
+            class="q-pa-md"
+            bordered
+            separator
+          >
+            <q-item v-for="(project, index) in packagesByProject" :key="index">
+              <q-item-section side top>
+                <q-btn
+                  flat
+                  dense
+                  round
+                  color="negative"
+                  icon="mdi-delete"
+                  @click="removeInline(index)"
+                  ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
+                >
+              </q-item-section>
+
+              <q-item-section>
+                <div class="row q-pa-md q-gutter-md">
+                  <div class="col-5 col-md col-sm">
+                    <q-select
+                      v-model="project.project"
+                      outlined
+                      :label="$gettext('Project')"
+                      :options="projects"
+                      option-value="id"
+                      option-label="name"
+                      lazy-rules
+                      :rules="[(val) => !!val || $gettext('* Required')]"
+                    />
+                  </div>
+
+                  <div class="col-5 col-md col-sm">
+                    <q-input
+                      v-model="project.packages_to_install"
+                      outlined
+                      type="textarea"
+                      :label="$gettext('Packages to Install')"
+                    />
+                  </div>
+                </div>
+              </q-item-section>
+            </q-item>
+          </q-list>
+
+          <div class="q-pa-md">
+            <q-btn
+              icon="mdi-plus"
+              :label="$gettext('Add other Project')"
+              @click="addInline"
+            />
+          </div>
+        </q-card-section>
+      </template>
+    </ItemDetail>
   </q-page>
 </template>
 
 <script>
-import Breadcrumbs from 'components/ui/Breadcrumbs'
-import Header from 'components/ui/Header'
-import MigasLink from 'components/MigasLink'
+import { ref, reactive, computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
+import ItemDetail from 'components/ui/ItemDetail'
 import SelectAttributes from 'components/ui/SelectAttributes'
-import RemoveDialog from 'components/ui/RemoveDialog'
-import { detailMixin } from 'mixins/detail'
-import { elementMixin } from 'mixins/element'
+
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title,
-    }
-  },
   components: {
-    Breadcrumbs,
-    Header,
-    RemoveDialog,
-    MigasLink,
+    ItemDetail,
     SelectAttributes,
   },
-  mixins: [detailMixin, elementMixin],
-  data() {
-    const title = this.$gettext('Application')
-    const element = {
+  setup() {
+    const uiStore = useUiStore()
+    const { $gettext, interpolate } = useGettext()
+
+    const title = ref($gettext('Application'))
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
+
+    const routes = {
+      list: 'apps-list',
+      add: 'app-add',
+      detail: 'app-detail',
+    }
+    const model = 'catalog/apps'
+
+    let element = reactive({
       id: 0,
       score: 0,
       available_for_attributes: [],
       description: '',
-    }
+    })
 
-    return {
-      title,
-      originalTitle: title,
-      model: 'catalog/apps',
-      listRoute: 'apps-list',
-      addRoute: 'app-add',
-      detailRoute: 'app-detail',
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Release'),
-          icon: 'mdi-truck-delivery',
-        },
-        {
-          text: this.$gettext('Applications'),
-          to: 'apps-dashboard',
-          icon: 'mdi-apps',
-        },
-      ],
-      element,
-      emptyElement: Object.assign({}, element),
-      categories: [],
-      levels: [],
-      projects: [],
-      packagesByProject: [],
-      removedProjects: [],
-      iconFile: null,
-      confirmRemove: false,
-      rand: 1,
-    }
-  },
-  computed: {
-    isValid() {
+    const categories = ref([])
+    const levels = ref([])
+    const projects = ref([])
+    const packagesByProject = ref([])
+    const removedProjects = ref([])
+    const iconFile = ref(null)
+    const rand = ref(1)
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Release'),
+        icon: 'mdi-truck-delivery',
+      },
+      {
+        text: $gettext('Applications'),
+        icon: modelIcon(model),
+        to: 'apps-dashboard',
+      },
+    ])
+
+    const isValid = computed(() => {
       return (
-        this.element.name !== undefined &&
-        this.element.name.trim() !== '' &&
-        this.element.category !== undefined &&
-        this.element.level !== undefined &&
-        this.element.score !== undefined
+        element.name !== undefined &&
+        element.name.trim() !== '' &&
+        element.category !== undefined &&
+        element.level !== undefined &&
+        element.score !== undefined
       )
-    },
+    })
 
-    iconPath() {
-      return `${this.element.icon}?rand=${this.rand}`
-    },
-  },
-  methods: {
-    async loadRelated() {
-      await this.$axios
+    const iconPath = computed(() => {
+      return `${element.icon}?rand=${rand.value}`
+    })
+
+    const loadRelated = async () => {
+      await api
         .get('/api/v1/token/catalog/apps/levels/')
         .then((response) => {
           Object.entries(response.data).map(([key, val]) => {
-            this.levels.push({
+            levels.value.push({
               id: key,
               name: val,
             })
           })
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      await this.$axios
+      await api
         .get('/api/v1/token/catalog/categories/')
         .then((response) => {
-          this.categories = response.data.results
+          categories.value = response.data.results
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      await this.$axios
+      await api
         .get('/api/v1/token/projects/')
         .then((response) => {
-          this.projects = response.data.results
+          projects.value = response.data.results
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      if (this.element.id) {
-        this.packagesByProject = this.element.packages_by_project
-        this.packagesByProject.forEach((item) => {
+      if (element.id) {
+        packagesByProject.value = element.packages_by_project
+        packagesByProject.value.forEach((item) => {
           item.packages_to_install = item.packages_to_install.join('\n')
         })
       }
-    },
+    }
 
-    elementData() {
+    const elementData = () => {
       let data = new FormData()
 
-      data.append('name', this.element.name)
-      data.append('level', this.element.level.id)
-      data.append('category', this.element.category.id)
-      data.append('score', this.element.score)
-      data.append('description', this.element.description)
+      data.append('name', element.name)
+      data.append('level', element.level.id)
+      data.append('category', element.category.id)
+      data.append('score', element.score)
+      data.append('description', element.description)
       data.append(
         'available_for_attributes',
-        this.element.available_for_attributes.length > 0
-          ? this.element.available_for_attributes.map((item) => item.id)
+        element.available_for_attributes.length > 0
+          ? element.available_for_attributes.map((item) => item.id)
           : []
       )
-      if (this.iconFile) {
-        data.append('icon', this.iconFile)
+      if (iconFile.value) {
+        data.append('icon', iconFile.value)
       }
 
       return data
-    },
+    }
 
-    addInline() {
-      this.packagesByProject.push({
-        id: 0,
-        project: null,
-        packages_to_install: null,
-      })
-    },
-
-    removeInline(index) {
-      const removedItem = this.packagesByProject.splice(index, 1)[0]
-      if (removedItem.id > 0) {
-        this.removedProjects.push(removedItem.id)
-      }
-    },
-
-    onRejected(rejectedEntries) {
-      this.$store.dispatch(
-        'ui/notifyError',
-        this.$gettextInterpolate(
-          this.$gettext('%{n} file(s) did not pass validation constraints'),
-          {
-            n: rejectedEntries.length,
-          }
-        )
-      )
-    },
-
-    async updateRelated() {
-      this.packagesByProject.forEach((project) => {
+    const updateRelated = async () => {
+      packagesByProject.value.forEach((project) => {
         if (
           project.project === undefined ||
           project.packages_to_install === undefined
@@ -428,10 +356,10 @@ export default {
         }
 
         if (project.id > 0) {
-          this.$axios
+          api
             .patch(`/api/v1/token/catalog/project-packages/${project.id}/`, {
               id: project.id,
-              application: this.element.id,
+              application: element.id,
               project: project.project.id,
               packages_to_install:
                 project.packages_to_install !== null
@@ -439,12 +367,12 @@ export default {
                   : [],
             })
             .catch((error) => {
-              this.$store.dispatch('ui/notifyError', error)
+              uiStore.notifyError(error)
             })
         } else {
-          this.$axios
+          api
             .post('/api/v1/token/catalog/project-packages/', {
-              application: this.element.id,
+              application: element.id,
               project: project.project.id,
               packages_to_install:
                 project.packages_to_install !== null
@@ -452,21 +380,95 @@ export default {
                   : [],
             })
             .catch((error) => {
-              this.$store.dispatch('ui/notifyError', error)
+              uiStore.notifyError(error)
             })
         }
       })
 
-      this.removedProjects.forEach((id) => {
-        this.$axios
+      removedProjects.value.forEach((id) => {
+        api
           .delete(`/api/v1/token/catalog/project-packages/${id}/`)
           .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
+            uiStore.notifyError(error)
           })
       })
 
-      this.rand = Date.now()
-    },
+      rand.value = Date.now()
+    }
+
+    const resetElement = () => {
+      Object.assign(element, {
+        id: 0,
+        name: undefined,
+        description: undefined,
+        level: null,
+        category: null,
+        score: undefined,
+        available_for_attributes: [],
+        icon: undefined,
+      })
+    }
+
+    const resetRelated = () => {
+      packagesByProject.value = []
+      removedProjects.value = []
+    }
+
+    const setTitle = (value) => {
+      windowTitle.value = value
+    }
+
+    const addInline = () => {
+      packagesByProject.value.push({
+        id: 0,
+        project: null,
+        packages_to_install: null,
+      })
+    }
+
+    const removeInline = (index) => {
+      const removedItem = packagesByProject.value.splice(index, 1)[0]
+      if (removedItem.id > 0) {
+        removedProjects.value.push(removedItem.id)
+      }
+    }
+
+    const onRejected = (rejectedEntries) => {
+      uiStore.notifyError(
+        interpolate(
+          $gettext('%{n} file(s) did not pass validation constraints'),
+          {
+            n: rejectedEntries.length,
+          }
+        )
+      )
+    }
+
+    return {
+      breadcrumbs,
+      title,
+      model,
+      routes,
+      element,
+      categories,
+      levels,
+      projects,
+      packagesByProject,
+      removedProjects,
+      iconFile,
+      rand,
+      isValid,
+      iconPath,
+      elementData,
+      loadRelated,
+      updateRelated,
+      resetElement,
+      resetRelated,
+      setTitle,
+      addInline,
+      removeInline,
+      onRejected,
+    }
   },
 }
 </script>

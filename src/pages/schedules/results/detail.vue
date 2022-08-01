@@ -1,298 +1,283 @@
 <template>
   <q-page padding>
-    <Breadcrumbs :items="breadcrumbs" />
+    <ItemDetail
+      :breadcrumbs="breadcrumbs"
+      :original-title="title"
+      :model="model"
+      :routes="routes"
+      :element="element"
+      :element-data="elementData"
+      :is-valid="isValid"
+      @load-related="loadRelated"
+      @update-related="updateRelated"
+      @reset-element="resetElement"
+      @set-title="setTitle"
+    >
+      <template #fields>
+        <q-card-section>
+          <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
-    <Header :title="$gettext('Schedule')">
-      <template v-if="element.id" #append
-        >:
-        <MigasLink
-          model="schedules"
-          :pk="element.id"
-          :value="element.name"
-          icon="mdi-calendar-start"
-        />
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-input
+                v-model="element.name"
+                outlined
+                :label="$gettext('Name')"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+              />
+            </div>
+
+            <div class="col-6 col-md col-sm">
+              <q-input
+                v-model="element.description"
+                outlined
+                type="textarea"
+                :label="$gettext('Description')"
+              />
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section>
+          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Delays</div>
+
+          <q-list v-if="delays.length > 0" class="q-pa-md" bordered separator>
+            <q-item v-for="(delay, index) in delays" :key="index">
+              <q-item-section side top>
+                <q-btn
+                  flat
+                  dense
+                  round
+                  color="negative"
+                  icon="mdi-delete"
+                  @click="removeInline(index)"
+                  ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
+                >
+              </q-item-section>
+
+              <q-item-section>
+                <div class="row q-pa-md q-gutter-md">
+                  <div class="col-5 col-md col-sm">
+                    <q-input
+                      v-model="delay.delay"
+                      outlined
+                      type="number"
+                      :label="$gettext('Delay')"
+                      lazy-rules
+                      :rules="[(val) => !!val || $gettext('* Required')]"
+                    />
+                  </div>
+
+                  <div class="col-5 col-md col-sm">
+                    <q-input
+                      v-model="delay.duration"
+                      outlined
+                      type="number"
+                      :label="$gettext('Duration')"
+                      lazy-rules
+                      :rules="[(val) => !!val || $gettext('* Required')]"
+                    />
+                  </div>
+                </div>
+
+                <div class="row q-pa-md q-gutter-md">
+                  <div class="col-10 col-md col-sm">
+                    <SelectAttributes
+                      v-model="delay.attributes"
+                      :label="$gettext('Attributes')"
+                    />
+                  </div>
+                </div>
+              </q-item-section>
+            </q-item>
+          </q-list>
+
+          <div class="q-pa-md">
+            <q-btn
+              icon="mdi-plus"
+              :label="$gettext('Add other Delay')"
+              @click="addInline"
+            />
+          </div>
+        </q-card-section>
       </template>
-    </Header>
-
-    <q-card>
-      <q-card-section>
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-input
-              v-model="element.name"
-              outlined
-              :label="$gettext('Name')"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-            />
-          </div>
-
-          <div class="col-6 col-md col-sm">
-            <q-input
-              v-model="element.description"
-              outlined
-              type="textarea"
-              :label="$gettext('Description')"
-            />
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-section>
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">Delays</div>
-
-        <q-list v-if="delays.length > 0" class="q-pa-md" bordered separator>
-          <q-item v-for="(delay, index) in delays" :key="index">
-            <q-item-section side top>
-              <q-btn
-                flat
-                dense
-                round
-                color="negative"
-                icon="mdi-delete"
-                @click="removeInline(index)"
-                ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-              >
-            </q-item-section>
-
-            <q-item-section>
-              <div class="row q-pa-md q-gutter-md">
-                <div class="col-5 col-md col-sm">
-                  <q-input
-                    v-model="delay.delay"
-                    outlined
-                    type="number"
-                    :label="$gettext('Delay')"
-                    lazy-rules
-                    :rules="[(val) => !!val || $gettext('* Required')]"
-                  />
-                </div>
-
-                <div class="col-5 col-md col-sm">
-                  <q-input
-                    v-model="delay.duration"
-                    outlined
-                    type="number"
-                    :label="$gettext('Duration')"
-                    lazy-rules
-                    :rules="[(val) => !!val || $gettext('* Required')]"
-                  />
-                </div>
-              </div>
-
-              <div class="row q-pa-md q-gutter-md">
-                <div class="col-10 col-md col-sm">
-                  <SelectAttributes
-                    v-model="delay.attributes"
-                    :label="$gettext('Attributes')"
-                  />
-                </div>
-              </div>
-            </q-item-section>
-          </q-item>
-        </q-list>
-
-        <div class="q-pa-md">
-          <q-btn
-            icon="mdi-plus"
-            :label="$gettext('Add other Delay')"
-            @click="addInline"
-          />
-        </div>
-      </q-card-section>
-
-      <q-card-actions class="justify-around">
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and add other')"
-          icon="mdi-plus"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('add')"
-        />
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and continue editing')"
-          icon="mdi-content-save-edit"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement"
-        />
-        <q-btn
-          :label="$gettext('Save')"
-          color="primary"
-          icon="mdi-content-save-move"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('return')"
-        />
-      </q-card-actions>
-    </q-card>
-
-    <div v-if="$route.params.id && element.id" class="row q-pa-md">
-      <q-btn
-        flat
-        icon="mdi-delete"
-        :color="$q.dark.isActive ? 'white' : 'negative'"
-        :class="{ 'reversed-delete': $q.dark.isActive }"
-        :label="$gettext('Delete')"
-        @click="confirmRemove = true"
-      />
-    </div>
-
-    <RemoveDialog
-      v-model="confirmRemove"
-      @confirmed="remove"
-      @canceled="confirmRemove = !confirmRemove"
-    />
+    </ItemDetail>
   </q-page>
 </template>
 
 <script>
-import Breadcrumbs from 'components/ui/Breadcrumbs'
-import Header from 'components/ui/Header'
-import MigasLink from 'components/MigasLink'
+import { ref, reactive, computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
+import ItemDetail from 'components/ui/ItemDetail'
 import SelectAttributes from 'components/ui/SelectAttributes'
-import RemoveDialog from 'components/ui/RemoveDialog'
-import { detailMixin } from 'mixins/detail'
-import { elementMixin } from 'mixins/element'
+
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title,
-    }
-  },
   components: {
-    Breadcrumbs,
-    Header,
-    RemoveDialog,
-    MigasLink,
+    ItemDetail,
     SelectAttributes,
   },
-  mixins: [detailMixin, elementMixin],
-  data() {
-    const route = 'schedules-list'
-    const title = this.$gettext('Schedule')
-    const element = { id: 0 }
+  setup() {
+    const uiStore = useUiStore()
+    const { $gettext } = useGettext()
 
-    return {
-      title,
-      originalTitle: title,
-      model: 'schedules',
-      listRoute: route,
-      addRoute: 'schedule-add',
-      detailRoute: 'schedule-detail',
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Release'),
-          icon: 'mdi-truck-delivery',
-        },
-        {
-          text: this.$gettext('Schedules'),
-          icon: 'mdi-calendar-start',
-          to: route,
-        },
-      ],
-      element,
-      emptyElement: Object.assign({}, element),
-      delays: [],
-      removedDelays: [],
-      confirmRemove: false,
+    const title = ref($gettext('Schedule'))
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
+
+    const routes = {
+      list: 'schedules-list',
+      add: 'schedule-add',
+      detail: 'schedule-detail',
     }
-  },
-  computed: {
-    isValid() {
-      return this.element.name !== undefined && this.element.name.trim() !== ''
-    },
-  },
-  methods: {
-    async loadRelated() {
-      if (this.element.id) {
-        await this.$axios
-          .get(`/api/v1/token/schedule-delays/?schedule__id=${this.element.id}`)
+    const model = 'schedules'
+
+    let element = reactive({ id: 0 })
+
+    const delays = reactive([])
+    const removedDelays = reactive([])
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Release'),
+        icon: 'mdi-truck-delivery',
+      },
+      {
+        text: $gettext('Schedules'),
+        icon: modelIcon(model),
+        to: routes.list,
+      },
+    ])
+
+    const isValid = computed(() => {
+      return element.name !== undefined && element.name.trim() !== ''
+    })
+
+    const loadRelated = async () => {
+      if (element.id) {
+        await api
+          .get(`/api/v1/token/schedule-delays/?schedule__id=${element.id}`)
           .then((response) => {
-            this.delays = response.data.results
+            Object.assign(delays, response.data.results)
           })
           .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
+            uiStore.notifyError(error)
           })
       }
-    },
+    }
 
-    elementData() {
+    const elementData = () => {
       return {
-        name: this.element.name,
-        description: this.element.description,
+        name: element.name,
+        description: element.description,
       }
-    },
+    }
 
-    addInline() {
-      this.delays.push({
-        id: 0,
-        delay: this.delays.length
-          ? parseInt(this.delays[this.delays.length - 1].delay) + 1
-          : 0,
-        duration: 1,
-        attributes: null,
-      })
-    },
-
-    removeInline(index) {
-      const removedItem = this.delays.splice(index, 1)[0]
-      if (removedItem.id > 0) {
-        this.removedDelays.push(removedItem.id)
-      }
-    },
-
-    async updateRelated() {
-      this.delays.forEach((delay) => {
+    const updateRelated = async () => {
+      delays.forEach((delay) => {
         if (delay.delay === undefined || delay.duration === undefined) {
           return
         }
 
         if (delay.id > 0) {
-          this.$axios
+          api
             .patch(`/api/v1/token/schedule-delays/${delay.id}/`, {
-              schedule: this.element.id,
+              schedule: element.id,
               delay: delay.delay,
               duration: delay.duration,
               attributes: delay.attributes.map((item) => item.id),
             })
             .catch((error) => {
-              this.$store.dispatch('ui/notifyError', error)
+              uiStore.notifyError(error)
             })
         } else {
-          this.$axios
+          api
             .post('/api/v1/token/schedule-delays/', {
-              schedule: this.element.id,
+              schedule: element.id,
               delay: delay.delay,
               duration: delay.duration,
               attributes: delay.attributes.map((item) => item.id),
             })
             .catch((error) => {
-              this.$store.dispatch('ui/notifyError', error)
+              uiStore.notifyError(error)
             })
         }
       })
 
-      this.removedDelays.forEach((id) => {
-        this.$axios
-          .delete(`/api/v1/token/schedule-delays/${id}/`)
-          .catch((error) => {
-            this.$store.dispatch('ui/notifyError', error)
-          })
+      removedDelays.forEach((id) => {
+        api.delete(`/api/v1/token/schedule-delays/${id}/`).catch((error) => {
+          uiStore.notifyError(error)
+        })
       })
-    },
+    }
+
+    const resetElement = () => {
+      Object.assign(element, {
+        id: 0,
+        auto_register_computers: false,
+        name: undefined,
+        platform: undefined,
+        pms: undefined,
+        architecture: undefined,
+      })
+      delays.splice(0)
+    }
+
+    const setTitle = (value) => {
+      windowTitle.value = value
+    }
+
+    const addInline = () => {
+      delays.push({
+        id: 0,
+        delay: delays.length
+          ? parseInt(delays[delays.length - 1].delay) + 1
+          : 0,
+        duration: 1,
+        attributes: null,
+      })
+    }
+
+    const removeInline = (index) => {
+      const removedItem = delays.splice(index, 1)[0]
+      if (removedItem.id > 0) {
+        removedDelays.push(removedItem.id)
+      }
+    }
+
+    return {
+      breadcrumbs,
+      title,
+      model,
+      routes,
+      element,
+      delays,
+      removedDelays,
+      isValid,
+      elementData,
+      loadRelated,
+      updateRelated,
+      resetElement,
+      setTitle,
+      addInline,
+      removeInline,
+    }
   },
 }
 </script>

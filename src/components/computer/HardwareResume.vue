@@ -24,20 +24,54 @@
             <q-tooltip>{{ $gettext('Last hardware capture date') }}</q-tooltip>
           </p>
           <q-btn-group v-else>
-            <q-datetime-picker
+            <q-input
               v-model="hardwareDate"
               :label="$gettext('Last hardware capture date')"
-              mode="datetime"
               outlined
               clearable
-              landscape
-              target="self"
-              format24h
-              :locale="localeDate"
-              :display-value="showDate(hardwareDate)"
-            />
+            >
+              <template #prepend>
+                <q-icon name="mdi-clock-outline" class="cursor-pointer">
+                  <q-popup-proxy
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
+                    <q-time
+                      v-model="hardwareDate"
+                      mode="date"
+                      mask="YYYY-MM-DD HH:mm:ss"
+                      outlined
+                      landscape
+                      format24h
+                      now-btn
+                    />
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
 
-            <q-tooltip>{{ diffForHumans(hardwareDate) }}</q-tooltip>
+              <template #append>
+                <q-icon name="mdi-calendar" class="cursor-pointer">
+                  <q-popup-proxy
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
+                    <q-date
+                      v-model="hardwareDate"
+                      mode="date"
+                      mask="YYYY-MM-DD HH:mm:ss"
+                      outlined
+                      landscape
+                      today-btn
+                      :locale="localeDate"
+                    />
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+
+              <q-tooltip v-if="hardwareDate">{{
+                diffForHumans(hardwareDate)
+              }}</q-tooltip>
+            </q-input>
 
             <q-btn
               color="primary"
@@ -167,17 +201,21 @@
 </template>
 
 <script>
-import DateDiff from 'components/DateDiff'
+import { ref } from 'vue'
+import { useGettext } from 'vue3-gettext'
 import { format } from 'quasar'
-import { elementMixin } from 'mixins/element'
-import { dateMixin } from 'mixins/date'
 
-const { humanStorageSize } = format
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
+import DateDiff from 'components/DateDiff'
+
+import { useElement } from 'composables/element'
+import useDate from 'composables/date'
 
 export default {
   name: 'ComputerHardwareResume',
   components: { DateDiff },
-  mixins: [elementMixin, dateMixin],
   props: {
     cid: {
       type: Number,
@@ -239,35 +277,46 @@ export default {
       default: false,
     },
   },
-  data() {
-    return {
-      loading: false,
-      hardwareDate: this.lastHardwareCapture,
-    }
-  },
-  methods: {
-    humanStorageSize,
-    async updateCapture() {
-      this.loading = true
-      if (this.hardwareDate === '') this.hardwareDate = null
-      await this.$axios
-        .patch(`/api/v1/token/computers/${this.cid}/`, {
-          last_hardware_capture: this.hardwareDate,
+  setup(props) {
+    const { $gettext } = useGettext()
+    const { humanStorageSize } = format
+    const uiStore = useUiStore()
+    const { productIcon, cpuIcon, humanMacAddress } = useElement()
+    const { showDate, diffForHumans, localeDate } = useDate()
+
+    const loading = ref(false)
+    const hardwareDate = ref(props.lastHardwareCapture)
+
+    const updateCapture = async () => {
+      loading.value = true
+      if (hardwareDate.value === '') hardwareDate.value = null
+      await api
+        .patch(`/api/v1/token/computers/${props.cid}/`, {
+          last_hardware_capture: hardwareDate.value,
         })
         .then((response) => {
-          this.$store.dispatch(
-            'ui/notifySuccess',
-            this.$gettext('Last hardware capture date has been changed!')
+          uiStore.notifySuccess(
+            $gettext('Last hardware capture date has been changed!')
           )
         })
         .catch((error) => {
-          this.$store.dispatch(
-            'ui/notifyError',
-            error.response.data.last_hardware_capture[0]
-          )
+          uiStore.notifyError(error.response.data.last_hardware_capture[0])
         })
-        .finally(() => (this.loading = false))
-    },
+        .finally(() => (loading.value = false))
+    }
+
+    return {
+      loading,
+      hardwareDate,
+      humanStorageSize,
+      productIcon,
+      cpuIcon,
+      humanMacAddress,
+      showDate,
+      diffForHumans,
+      localeDate,
+      updateCapture,
+    }
   },
 }
 </script>

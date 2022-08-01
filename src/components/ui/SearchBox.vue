@@ -32,49 +32,57 @@
 </template>
 
 <script>
+import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { useGettext } from 'vue3-gettext'
+
+import { modelIcon } from 'composables/element'
+
 export default {
   name: 'SearchBox',
-  data() {
-    return {
-      searchText: '',
-      options: [
-        {
-          title: this.$gettext('Computers'),
-          to: 'computers-list',
-          icon: 'mdi-desktop-classic',
-          separatorAfter: true
-        },
-        {
-          title: this.$gettext('Deployments'),
-          to: 'deployments-list',
-          icon: 'mdi-rocket-launch'
-        },
-        {
-          title: this.$gettext('Packages'),
-          to: 'packages-list',
-          icon: 'mdi-package-variant'
-        },
-        {
-          title: this.$gettext('Applications'),
-          to: 'apps-list',
-          icon: 'mdi-apps',
-          separatorAfter: true
-        },
-        {
-          title: this.$gettext('Devices'),
-          to: 'devices-list',
-          icon: 'mdi-printer'
-        }
-      ]
-    }
-  },
-  methods: {
-    search(urlName) {
-      this.$router.push({
+  setup() {
+    const router = useRouter()
+    const { $gettext } = useGettext()
+
+    const searchText = ref('')
+    const options = reactive([
+      {
+        title: $gettext('Computers'),
+        to: 'computers-list',
+        icon: modelIcon('computers'),
+        separatorAfter: true,
+      },
+      {
+        title: $gettext('Deployments'),
+        to: 'deployments-list',
+        icon: modelIcon('deployments'),
+      },
+      {
+        title: $gettext('Packages'),
+        to: 'packages-list',
+        icon: modelIcon('packages'),
+      },
+      {
+        title: $gettext('Applications'),
+        to: 'apps-list',
+        icon: modelIcon('catalog/apps'),
+        separatorAfter: true,
+      },
+      {
+        title: $gettext('Devices'),
+        to: 'devices-list',
+        icon: modelIcon('devices/devices'),
+      },
+    ])
+
+    const search = (urlName) => {
+      router.push({
         name: urlName,
-        query: { search: this.searchText }
+        query: { search: searchText.value },
       })
     }
-  }
+
+    return { searchText, options, search }
+  },
 }
 </script>

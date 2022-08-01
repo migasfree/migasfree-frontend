@@ -1,229 +1,211 @@
 <template>
   <q-page padding>
-    <Breadcrumbs :items="breadcrumbs" />
+    <ItemDetail
+      :breadcrumbs="breadcrumbs"
+      :original-title="title"
+      :model="model"
+      :routes="routes"
+      :element="element"
+      :element-data="elementData"
+      :is-valid="isValid"
+      @load-related="loadRelated"
+      @reset-element="resetElement"
+      @set-title="setTitle"
+    >
+      <template #fields>
+        <q-card-section>
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-checkbox
+                v-model="element.enabled"
+                left-label
+                :label="$gettext('Enabled?')"
+              />
+            </div>
 
-    <Header :title="$gettext('Stamp')">
-      <template v-if="element.id" #append
-        >:
-        <MigasLink
-          model="stamps"
-          :pk="element.id"
-          :value="element.name"
-          icon="mdi-stamper"
-        />
+            <div class="col-6 col-md col-sm">
+              <q-select
+                v-model="element.kind"
+                outlined
+                :label="$gettext('Kind')"
+                :options="kind"
+                option-value="id"
+                option-label="name"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+              />
+            </div>
+          </div>
+
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <q-input
+                v-model="element.prefix"
+                outlined
+                :label="$gettext('Prefix')"
+                counter
+                maxlength="3"
+                lazy-rules
+                :rules="[
+                  (val) => !!val || $gettext('* Required'),
+                  (val) =>
+                    val.length <= 3 ||
+                    $gettextInterpolate(
+                      $gettext('Please use maximum %{n} characters'),
+                      {
+                        n: 3,
+                      }
+                    ),
+                ]"
+                @update:model-value="
+                  (v) => {
+                    element.prefix = v.toUpperCase()
+                  }
+                "
+              />
+            </div>
+
+            <div class="col-6 col-md col-sm">
+              <q-input
+                v-model="element.name"
+                outlined
+                :label="$gettext('Name')"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+              />
+            </div>
+          </div>
+        </q-card-section>
       </template>
-    </Header>
-
-    <q-card>
-      <q-card-section>
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-checkbox
-              v-model="element.enabled"
-              left-label
-              :label="$gettext('Enabled?')"
-            />
-          </div>
-
-          <div class="col-6 col-md col-sm">
-            <q-select
-              v-model="element.kind"
-              outlined
-              :label="$gettext('Kind')"
-              :options="kind"
-              option-value="id"
-              option-label="name"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-            />
-          </div>
-        </div>
-
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-6 col-md col-sm">
-            <q-input
-              v-model="element.prefix"
-              outlined
-              :label="$gettext('Prefix')"
-              counter
-              maxlength="3"
-              lazy-rules
-              :rules="[
-                (val) => !!val || $gettext('* Required'),
-                (val) =>
-                  val.length <= 3 ||
-                  $gettextInterpolate(
-                    $gettext('Please use maximum %{n} characters'),
-                    {
-                      n: 3,
-                    }
-                  ),
-              ]"
-              @input="
-                (v) => {
-                  element.prefix = v.toUpperCase()
-                }
-              "
-            />
-          </div>
-
-          <div class="col-6 col-md col-sm">
-            <q-input
-              v-model="element.name"
-              outlined
-              :label="$gettext('Name')"
-              lazy-rules
-              :rules="[(val) => !!val || $gettext('* Required')]"
-            />
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-actions class="justify-around">
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and add other')"
-          icon="mdi-plus"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('add')"
-        />
-        <q-btn
-          flat
-          color="primary"
-          :label="$gettext('Save and continue editing')"
-          icon="mdi-content-save-edit"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement"
-        />
-        <q-btn
-          :label="$gettext('Save')"
-          color="primary"
-          icon="mdi-content-save-move"
-          :loading="loading"
-          :disabled="!isValid || loading"
-          @click="updateElement('return')"
-        />
-      </q-card-actions>
-    </q-card>
-
-    <div v-if="$route.params.id && element.id" class="row q-pa-md">
-      <q-btn
-        flat
-        icon="mdi-delete"
-        :color="$q.dark.isActive ? 'white' : 'negative'"
-        :class="{ 'reversed-delete': $q.dark.isActive }"
-        :label="$gettext('Delete')"
-        @click="confirmRemove = true"
-      />
-    </div>
-
-    <RemoveDialog
-      v-model="confirmRemove"
-      @confirmed="remove"
-      @canceled="confirmRemove = !confirmRemove"
-    />
+    </ItemDetail>
   </q-page>
 </template>
 
 <script>
-import Breadcrumbs from 'components/ui/Breadcrumbs'
-import Header from 'components/ui/Header'
-import MigasLink from 'components/MigasLink'
-import RemoveDialog from 'components/ui/RemoveDialog'
-import { detailMixin } from 'mixins/detail'
+import { ref, reactive, computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useMeta } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
+import ItemDetail from 'components/ui/ItemDetail'
+
+import { modelIcon } from 'composables/element'
 
 export default {
-  meta() {
-    return {
-      title: this.title,
-    }
-  },
   components: {
-    Breadcrumbs,
-    Header,
-    RemoveDialog,
-    MigasLink,
+    ItemDetail,
   },
-  mixins: [detailMixin],
-  data() {
-    const route = 'stamps-list'
-    const title = this.$gettext('Stamp')
-    const element = { id: 0, enabled: false }
+  setup() {
+    const uiStore = useUiStore()
+    const { $gettext } = useGettext()
 
-    return {
-      title,
-      originalTitle: title,
-      model: 'stamps',
-      listRoute: route,
-      addRoute: 'stamp-add',
-      detailRoute: 'stamp-detail',
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Configuration'),
-          icon: 'mdi-cogs',
-        },
-        {
-          text: this.$gettext('Stamps'),
-          icon: 'mdi-stamper',
-          to: route,
-        },
-      ],
-      element,
-      emptyElement: Object.assign({}, element),
-      languages: [],
-      kind: [],
-      confirmRemove: false,
+    const title = ref($gettext('Stamp'))
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
+
+    const routes = {
+      list: 'stamps-list',
+      add: 'stamp-add',
+      detail: 'stamp-detail',
     }
-  },
-  computed: {
-    isValid() {
+    const model = 'stamps'
+
+    let element = reactive({
+      id: 0,
+      enabled: false,
+    })
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Configuration'),
+        icon: 'mdi-cogs',
+      },
+      {
+        text: $gettext('Stamps'),
+        icon: modelIcon(model),
+        to: routes.list,
+      },
+    ])
+
+    const kind = reactive([])
+
+    const isValid = computed(() => {
       return (
-        this.element.name !== undefined &&
-        this.element.name.trim() !== '' &&
-        this.element.kind !== undefined &&
-        this.element.prefix !== undefined &&
-        this.element.prefix.length <= 3
+        element.name !== undefined &&
+        element.name.trim() !== '' &&
+        element.kind !== undefined &&
+        element.prefix !== undefined &&
+        element.prefix.length <= 3
       )
-    },
-  },
-  methods: {
-    async loadRelated() {
-      await this.$axios
+    })
+
+    const loadRelated = async () => {
+      await api
         .get('/api/v1/token/properties/kind/')
         .then((response) => {
           Object.entries(response.data).map(([key, val]) => {
-            this.kind.push({
+            kind.push({
               id: key,
               name: val,
             })
           })
-          if (this.element.id)
-            this.element.kind = this.kind.find((x) => x.id == this.element.kind)
+          if (element.id) element.kind = kind.find((x) => x.id == element.kind)
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
 
-      if (typeof this.element.kind === 'string')
-        this.element.kind = this.kind.find((x) => x.id == this.element.kind)
-    },
+      if (typeof element.kind === 'string')
+        element.kind = kind.find((x) => x.id == element.kind)
+    }
 
-    elementData() {
+    const elementData = () => {
       return {
-        name: this.element.name,
-        prefix: this.element.prefix,
-        enabled: this.element.enabled,
-        kind: this.element.kind.id,
+        name: element.name,
+        prefix: element.prefix,
+        enabled: element.enabled,
+        kind: element.kind.id,
       }
-    },
+    }
+
+    const resetElement = () => {
+      Object.assign(element, {
+        id: 0,
+        name: undefined,
+        prefix: undefined,
+        enabled: false,
+        kind: undefined,
+      })
+    }
+
+    const setTitle = (value) => {
+      windowTitle.value = value
+    }
+
+    return {
+      breadcrumbs,
+      title,
+      model,
+      routes,
+      element,
+      kind,
+      isValid,
+      loadRelated,
+      elementData,
+      resetElement,
+      setTitle,
+    }
   },
 }
 </script>

@@ -6,70 +6,89 @@
 </template>
 
 <script>
+import { ref, watch } from 'vue'
 import { date } from 'quasar'
+import { useGettext } from 'vue3-gettext'
 
 export default {
   name: 'DateDiff',
   props: {
     begin: {
       type: Date,
-      default: function() {
+      default: () => {
         return new Date(Date.now())
-      }
+      },
     },
     end: {
       type: Date,
-      default: function() {
+      default: () => {
         return new Date(Date.now())
-      }
+      },
     },
     tooltip: {
       type: String,
       required: false,
-      default: null
-    }
+      default: null,
+    },
   },
-  data() {
-    return {
-      diff: null,
-      appearance: 'info',
-      textColor: 'black',
-      icon: 'mdi-timer'
-    }
-  },
-  created() {
-    const diffDays = date.getDateDiff(this.end, this.begin, 'days')
+  setup(props) {
+    const { $gettext, $ngettext, interpolate } = useGettext()
 
-    if (this.end < this.begin) {
-      this.icon = 'mdi-sync'
-      this.diff = this.$gettext('Updating...')
-      return
-    }
+    const diff = ref(null)
+    const appearance = ref('info')
+    const textColor = ref('black')
+    const icon = ref('mdi-timer')
 
-    const diffSeconds = new Date(
-      date.getDateDiff(this.end, this.begin, 'seconds') * 1000
-    )
-      .toISOString()
-      .substr(11, 8)
+    const getDiff = (begin, end) => {
+      const diffDays = date.getDateDiff(end, begin, 'days')
 
-    if (diffDays >= 1 && diffDays < 30) {
-      this.appearance = 'warning'
-    } else if (diffDays >= 30) {
-      this.appearance = 'negative'
-      this.textColor = 'white'
-    }
+      if (end < begin) {
+        icon.value = 'mdi-sync'
+        diff.value = $gettext('Updating...')
+        return
+      }
 
-    if (diffDays) {
-      const template = this.$ngettext(
-        '%{n} day, %{s}',
-        '%{n} days, %{s}',
-        diffDays
+      const diffSeconds = new Date(
+        date.getDateDiff(end, begin, 'seconds') * 1000
       )
-      this.diff = this.$gettextInterpolate(template, {
-        n: diffDays,
-        s: diffSeconds
-      })
-    } else this.diff = diffSeconds
-  }
+        .toISOString()
+        .substr(11, 8)
+
+      if (diffDays >= 1 && diffDays < 30) {
+        appearance.value = 'warning'
+      } else if (diffDays >= 30) {
+        appearance.value = 'negative'
+        textColor.value = 'white'
+      }
+
+      if (diffDays) {
+        const template = $ngettext(
+          '%{n} day, %{s}',
+          '%{n} days, %{s}',
+          diffDays
+        )
+        diff.value = interpolate(template, {
+          n: diffDays,
+          s: diffSeconds,
+        })
+      } else diff.value = diffSeconds
+    }
+
+    getDiff(props.begin, props.end)
+
+    watch(
+      () => props.begin,
+      (val) => {
+        getDiff(val, props.end)
+      }
+    )
+
+    return {
+      diff,
+      appearance,
+      textColor,
+      icon,
+    }
+  },
 }
 </script>

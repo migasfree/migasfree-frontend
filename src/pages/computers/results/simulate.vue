@@ -3,7 +3,7 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <template v-if="computer.id">
-      <Header :title="$gettext('Simulate Synchronization')">
+      <Header :title="title" :is-export-btn="false">
         <template v-if="computer.id" #append
           >:
           <MigasLink
@@ -52,7 +52,6 @@
                     model="platforms"
                     :pk="platform.id"
                     :value="platform.name"
-                    icon="mdi-layers"
                   />
                 </p>
 
@@ -61,7 +60,6 @@
                     model="projects"
                     :pk="computer.project.id"
                     :value="computer.project.name"
-                    icon="mdi-sitemap"
                   />
                 </p>
 
@@ -70,36 +68,31 @@
                     model="users"
                     :pk="computer.sync_user.id"
                     :value="computer.sync_user.__str__"
-                    icon="mdi-account"
                   />
                 </p>
 
                 <OverflowList
-                  :label="$gettext('Attributes')"
-                  icon="mdi-pound"
-                  :items="onlyAttributes"
                   model="attributes"
+                  :label="$gettext('Attributes')"
+                  :items="onlyAttributes"
                 />
 
                 <OverflowList
-                  :label="$gettext('Tags')"
-                  icon="mdi-tag"
-                  :items="onlyTags"
                   model="tags"
+                  :label="$gettext('Tags')"
+                  :items="onlyTags"
                 />
 
                 <OverflowList
-                  :label="$gettext('Attribute Sets')"
-                  icon="mdi-set-none"
-                  :items="onlyAttributeSets"
                   model="attribute-sets"
+                  :label="$gettext('Attribute Sets')"
+                  :items="onlyAttributeSets"
                 />
 
                 <OverflowList
-                  :label="$gettext('Domains')"
-                  icon="mdi-web"
-                  :items="onlyDomains"
                   model="domains"
+                  :label="$gettext('Domains')"
+                  :items="onlyDomains"
                 />
               </template>
             </q-card-section>
@@ -118,15 +111,13 @@
               </p>
               <template v-else>
                 <OverflowList
-                  :label="$gettext('Faults Definitions')"
-                  icon="mdi-alert-octagram-outline"
+                  :label="$gettext('Fault Definitions')"
                   :items="simulation.fault_definitions"
                   model="fault-definitions"
                 />
 
                 <OverflowList
                   :label="$gettext('Deployments')"
-                  icon="mdi-rocket-launch"
                   :items="simulation.deployments"
                   model="deployments"
                 />
@@ -165,7 +156,6 @@
                           <MigasLink
                             model="deployments"
                             :pk="item.id"
-                            icon="mdi-rocket-launch"
                             :value="item.name"
                           />
                         </q-item-section>
@@ -208,7 +198,6 @@
                           <MigasLink
                             model="policies"
                             :pk="item.id"
-                            icon="mdi-shield-half-full"
                             :value="item.name"
                           />
                         </q-item-section>
@@ -251,7 +240,6 @@
                           <MigasLink
                             model="deployments"
                             :pk="item.id"
-                            icon="mdi-rocket-launch"
                             :value="item.name"
                           />
                         </q-item-section>
@@ -296,7 +284,6 @@
                           <MigasLink
                             model="policies"
                             :pk="item.id"
-                            icon="mdi-shield-half-full"
                             :value="item.name"
                           />
                         </q-item-section>
@@ -306,10 +293,9 @@
                 </q-list>
 
                 <OverflowList
-                  :label="$gettext('Devices')"
-                  icon="mdi-printer"
-                  :items="simulation.logical_devices"
                   model="devices/logical"
+                  :label="$gettext('Devices')"
+                  :items="simulation.logical_devices"
                 />
 
                 <p>
@@ -336,199 +322,218 @@
 </template>
 
 <script>
+import { ref, reactive, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { useGettext } from 'vue3-gettext'
+import { useMeta, copyToClipboard } from 'quasar'
+
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import OverflowList from 'components/ui/OverflowList'
 import MigasLink from 'components/MigasLink'
-import { elementMixin } from 'mixins/element'
-import { dateMixin } from 'mixins/date'
-import { copyToClipboard } from 'quasar'
+
+import { modelIcon, useElement } from 'composables/element'
+import useDate from 'composables/date'
 
 export default {
-  meta() {
-    return {
-      title: this.title,
-    }
-  },
   components: { Breadcrumbs, Header, OverflowList, MigasLink },
-  mixins: [elementMixin, dateMixin],
-  data() {
-    return {
-      title: this.$gettext('Simulate Synchronization'),
-      breadcrumbs: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: 'home',
-          icon: 'mdi-home',
-        },
-        {
-          text: this.$gettext('Data'),
-          icon: 'mdi-database-search',
-        },
-        {
-          text: this.$gettext('Computers'),
-          to: 'computers-dashboard',
-          icon: 'mdi-desktop-classic',
-        },
-        {
-          text: this.$gettext('Results'),
-          to: 'computers-list',
-        },
-        {
-          text: 'Id',
-          to: { name: 'computer-detail', params: { id: 0 } },
-        },
-        {
-          text: this.$gettext('Simulate Synchronization'),
-        },
-      ],
-      computer: {},
-      platform: {},
-      onlyAttributes: [],
-      onlyAttributeSets: [],
-      onlyDomains: [],
-      onlyTags: [],
-      simulation: {},
-      loading: {
-        input: false,
-        output: false,
-      },
-    }
-  },
-  async mounted() {
-    await this.$axios
-      .get(`/api/v1/token/computers/${this.$route.params.id}/`)
-      .then((response) => {
-        this.computer = response.data
-        this.breadcrumbs.find((x) => x.text === 'Id').to.params.id =
-          this.computer.id
-        this.breadcrumbs.find((x) => x.text === 'Id').text =
-          this.computer.__str__
-        this.title = `${this.title}: ${this.computer.__str__}`
-        this.loadProject()
-        this.loadSyncInfo()
-        this.loadSimulation()
+  setup() {
+    const { $gettext } = useGettext()
+    const route = useRoute()
+    const { elementIcon, productIcon, attributeValue } = useElement()
+    const { showDate } = useDate()
+    const uiStore = useUiStore()
 
-        Object.entries(response.data.tags).map(([key, val]) => {
-          this.onlyTags.push({
-            id: val.id,
-            icon: 'mdi-tag',
-            value: this.attributeValue(val),
-          })
-        })
-      })
-      .catch((error) => {
-        this.$store.dispatch('ui/notifyError', error)
-      })
-  },
-  methods: {
-    async loadProject() {
-      await this.$axios
-        .get(`/api/v1/token/projects/${this.computer.project.id}/`)
+    const title = ref($gettext('Simulate Synchronization'))
+    useMeta({ title: title.value })
+
+    const breadcrumbs = reactive([
+      {
+        text: $gettext('Dashboard'),
+        to: 'home',
+        icon: 'mdi-home',
+      },
+      {
+        text: $gettext('Data'),
+        icon: 'mdi-database-search',
+      },
+      {
+        text: $gettext('Computers'),
+        icon: modelIcon('computers'),
+        to: 'computers-dashboard',
+      },
+      {
+        text: $gettext('Results'),
+        to: 'computers-list',
+      },
+      {
+        text: 'Id',
+        to: { name: 'computer-detail', params: { id: 0 } },
+      },
+      {
+        text: title.value,
+      },
+    ])
+
+    const computer = reactive({})
+    const platform = reactive({})
+    const onlyAttributes = ref([])
+    const onlyAttributeSets = ref([])
+    const onlyDomains = ref([])
+    const onlyTags = ref([])
+    const simulation = reactive({})
+    const loading = reactive({
+      input: false,
+      output: false,
+    })
+
+    const loadProject = async () => {
+      await api
+        .get(`/api/v1/token/projects/${computer.project.id}/`)
         .then((response) => {
-          this.platform = response.data.platform
+          Object.assign(platform, response.data.platform)
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
-    },
+    }
 
-    async loadSyncInfo() {
-      this.loading.input = true
-      await this.$axios
-        .get(`/api/v1/token/computers/${this.computer.id}/sync/`)
+    const loadSyncInfo = async () => {
+      loading.input = true
+      await api
+        .get(`/api/v1/token/computers/${computer.id}/sync/`)
         .then((response) => {
           Object.entries(response.data.sync_attributes).map(([key, val]) => {
             if (val.property_att.prefix === 'SET') {
-              this.$axios
+              api
                 .get(`/api/v1/token/attributes/${val.id}/badge/`)
                 .then((response) => {
-                  this.onlyAttributeSets.push({
+                  onlyAttributeSets.value.push({
                     id: response.data.pk,
-                    icon: 'mdi-set-none',
-                    value: this.attributeValue(val),
+                    icon: modelIcon('attribute-sets'),
+                    value: attributeValue(val),
                     summary: response.data.summary,
                   })
                 })
                 .catch((error) => {
-                  this.$store.dispatch('ui/notifyError', error)
+                  uiStore.notifyError(error)
                 })
             } else if (val.property_att.prefix === 'DMN') {
-              this.$axios
+              api
                 .get(`/api/v1/token/attributes/${val.id}/badge/`)
                 .then((response) => {
-                  this.onlyDomains.push({
+                  onlyDomains.value.push({
                     id: response.data.pk,
-                    icon: 'mdi-web',
-                    value: this.attributeValue(val),
+                    icon: modelIcon('domains'),
+                    value: attributeValue(val),
                     summary: response.data.summary,
                   })
                 })
                 .catch((error) => {
-                  this.$store.dispatch('ui/notifyError', error)
+                  uiStore.notifyError(error)
                 })
             } else {
-              this.onlyAttributes.push({
+              onlyAttributes.value.push({
                 id: val.id,
-                value: this.attributeValue(val),
+                value: attributeValue(val),
                 icon:
-                  val.property_att.sort === 'server' ? 'mdi-tag' : 'mdi-pound',
+                  val.property_att.sort === 'server'
+                    ? modelIcon('tags')
+                    : modelIcon('attributes'),
               })
             }
           })
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
         .finally(() => {
-          this.loading.input = false
+          loading.input = false
         })
-    },
+    }
 
-    async loadSimulation() {
-      this.loading.output = true
-      await this.$axios
-        .get(`/api/v1/token/computers/${this.computer.id}/sync/simulation/`)
+    const loadSimulation = async () => {
+      loading.output = true
+      await api
+        .get(`/api/v1/token/computers/${computer.id}/sync/simulation/`)
         .then((response) => {
-          this.simulation = response.data
-          if ('logical_devices' in this.simulation)
-            Object.entries(this.simulation.logical_devices).map(
-              ([key, item]) => {
-                item.icon = 'mdi-printer-settings'
-              }
-            )
+          Object.assign(simulation, response.data)
+          if ('logical_devices' in simulation)
+            Object.entries(simulation.logical_devices).map(([key, item]) => {
+              item.icon = modelIcon('devices/logical')
+            })
 
-          if ('fault_definitions' in this.simulation)
-            Object.entries(this.simulation.fault_definitions).map(
-              ([key, item]) => {
-                item.icon = 'mdi-alert-octagram-outline'
-              }
-            )
+          if ('fault_definitions' in simulation)
+            Object.entries(simulation.fault_definitions).map(([key, item]) => {
+              item.icon = modelIcon('fault-definitions')
+            })
 
-          if ('deployments' in this.simulation)
-            Object.entries(this.simulation.deployments).map(([key, item]) => {
-              item.icon = 'mdi-rocket-launch'
+          if ('deployments' in simulation)
+            Object.entries(simulation.deployments).map(([key, item]) => {
+              item.icon = modelIcon('deployments')
             })
         })
         .catch((error) => {
-          this.$store.dispatch('ui/notifyError', error)
+          uiStore.notifyError(error)
         })
         .finally(() => {
-          this.loading.output = false
+          loading.output = false
         })
-    },
+    }
 
-    copyContent(items) {
-      console.log(items)
+    const copyContent = (items) => {
       const content = items.map((item) => item.package)
 
       copyToClipboard(content.join('\n')).then(() => {
-        this.$store.dispatch(
-          'ui/notifySuccess',
-          this.$gettext('Content copied to clipboard')
-        )
+        uiStore.notifySuccess($gettext('Content copied to clipboard'))
       })
-    },
+    }
+
+    onMounted(async () => {
+      await api
+        .get(`/api/v1/token/computers/${route.params.id}/`)
+        .then((response) => {
+          Object.assign(computer, response.data)
+          breadcrumbs.find((x) => x.text === 'Id').to.params.id = computer.id
+          breadcrumbs.find((x) => x.text === 'Id').text = computer.__str__
+          useMeta({ title: `${title.value}: ${computer.__str__}` })
+          loadProject()
+          loadSyncInfo()
+          loadSimulation()
+
+          Object.entries(response.data.tags).map(([key, val]) => {
+            onlyTags.value.push({
+              id: val.id,
+              icon: modelIcon('tags'),
+              value: attributeValue(val),
+            })
+          })
+        })
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+    })
+
+    return {
+      title,
+      breadcrumbs,
+      computer,
+      platform,
+      onlyAttributes,
+      onlyAttributeSets,
+      onlyDomains,
+      onlyTags,
+      simulation,
+      loading,
+      copyContent,
+      elementIcon,
+      productIcon,
+      attributeValue,
+      showDate,
+    }
   },
 }
 </script>

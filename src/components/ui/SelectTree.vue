@@ -1,13 +1,13 @@
 <template>
   <q-input
+    v-model="selected"
     outlined
     dense
     readonly
-    :value="selected"
     :label="placeholder"
     :hint="hint"
     :disable="disable"
-    @input="$refs.menu.show()"
+    @update:model-value="menu.show()"
   >
     <template #append>
       <q-icon name="mdi-menu-down" class="cursor-pointer" />
@@ -34,73 +34,79 @@
 </template>
 
 <script>
+import { ref, watch } from 'vue'
+
 export default {
   name: 'SelectTree',
   props: {
     placeholder: {
       type: String,
-      required: true
+      required: true,
     },
-    value: {
+    modelValue: {
       validator: (prop) => typeof prop === 'string' || prop === null,
-      required: true
+      required: true,
     },
     options: {
       type: Array,
-      required: true
+      required: true,
     },
     nodeKey: {
       type: String,
       required: false,
-      default: 'id'
+      default: 'id',
     },
     labelKey: {
       type: String,
       required: false,
-      default: 'label'
+      default: 'label',
     },
     hint: {
       type: String,
       required: false,
-      default: ''
+      default: '',
     },
     disable: {
       type: Boolean,
       required: false,
-      default: false
+      default: false,
     },
     defaultExpandAll: {
       type: Boolean,
       required: false,
-      default: true
+      default: true,
     },
     prependIcon: {
       type: String,
       required: false,
-      default: ''
-    }
-  },
-  data() {
-    return {
-      selected: this.value || null
-    }
-  },
-  watch: {
-    value(val) {
-      this.selected = val
-    }
-  },
-  methods: {
-    nodeSelected(value) {
-      const node = this.$refs.tree.getNodeByKey(value)
-      this.selected = node[this.labelKey]
-      this.$refs.menu.hide()
-      this.$emit('select', node)
+      default: '',
     },
+  },
+  emits: ['select'],
+  setup(props, { emit }) {
+    const selected = ref(props.modelValue || null)
+    const menu = ref(null)
+    const tree = ref(null)
 
-    reset() {
-      this.selected = ''
+    const nodeSelected = (value) => {
+      const node = tree.value.getNodeByKey(value)
+      selected.value = node[props.labelKey]
+      menu.value.hide()
+      emit('select', node)
     }
-  }
+
+    const reset = () => {
+      selected.value = ''
+    }
+
+    watch(
+      () => props.modelValue,
+      (newValue) => {
+        selected.value = newValue
+      }
+    )
+
+    return { selected, menu, tree, nodeSelected, reset }
+  },
 }
 </script>
