@@ -29,8 +29,7 @@
             :dense="true"
             :options-dense="true"
             @update:model-value="changeAppLanguage"
-          >
-          </q-select>
+          />
         </q-item-section>
       </q-item>
 
@@ -51,8 +50,7 @@
             :dense="true"
             :options-dense="true"
             @update:model-value="updateDomainPreference"
-          >
-          </q-select>
+          />
         </q-item-section>
       </q-item>
 
@@ -73,8 +71,7 @@
             :dense="true"
             :options-dense="true"
             @update:model-value="updateScopePreference"
-          >
-          </q-select>
+          />
         </q-item-section>
       </q-item>
 
@@ -86,6 +83,7 @@
         <q-item-section avatar>
           <q-icon name="mdi-account-key" />
         </q-item-section>
+
         <q-item-section>
           <q-item-label v-translate>Change Password</q-item-label>
         </q-item-section>
@@ -95,6 +93,7 @@
         <q-item-section avatar>
           <q-icon name="mdi-power-standby" />
         </q-item-section>
+
         <q-item-section>
           <q-item-label v-translate>Logout</q-item-label>
         </q-item-section>
@@ -104,14 +103,15 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useQuasar } from 'quasar'
-import { useAuthStore } from 'stores/auth'
-import { useUiStore } from 'stores/ui'
+
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
+import { useAuthStore } from 'stores/auth'
+import { useUiStore } from 'stores/ui'
 
 import { modelIcon } from 'composables/element'
 
@@ -125,27 +125,15 @@ export default {
     const uiStore = useUiStore()
 
     const userAccount = ref(null)
-    const languages = reactive([])
+    const languages = ref([])
     const currentLanguage = ref(gettext.available[gettext.current])
-    const domainPreference = reactive({
+    const domainPreference = ref({
       id: 0,
       name: $gettext('All').toUpperCase(),
     })
-    const scopePreference = reactive({
+    const scopePreference = ref({
       id: 0,
       name: $gettext('All').toLowerCase(),
-    })
-
-    Object.entries(gettext.available).map(([label, value]) => {
-      languages.push({ label, value })
-    })
-
-    onMounted(async () => {
-      if (authStore.user.domain_preference)
-        domainPreference = authStore.user.domain_preference
-
-      if (authStore.user.scope_preference && authStore.user.scope_preference.id)
-        scopePreference = authStore.user.scope_preference
     })
 
     const logout = () => {
@@ -162,24 +150,26 @@ export default {
     }
 
     const updateDomainPreference = async () => {
-      console.log('updateDomainPreference', domainPreference, authStore.domains)
       await updatePreferences({
-        domain_preference: domainPreference.id ? domainPreference.id : null,
+        domain_preference: domainPreference.value.id
+          ? domainPreference.value.id
+          : null,
         scope_preference: null,
       })
     }
 
     const updateScopePreference = async () => {
       await updatePreferences({
-        scope_preference: scopePreference.id ? scopePreference.id : null,
+        scope_preference: scopePreference.value.id
+          ? scopePreference.value.id
+          : null,
       })
-      if (scopePreference.id) {
+      if (scopePreference.value.id) {
         authStore.loadScopes()
       }
     }
 
     const updatePreferences = async (data) => {
-      console.log('updatePreferences', data)
       await api
         .patch(`/api/v1/token/user-profiles/${authStore.user.id}/`, data)
         .then((response) => {
@@ -201,6 +191,18 @@ export default {
         })
     }
 
+    Object.entries(gettext.available).map(([label, value]) => {
+      languages.value.push({ label, value })
+    })
+
+    onMounted(async () => {
+      if (authStore.user.domain_preference)
+        domainPreference.value = authStore.user.domain_preference
+
+      if (authStore.user.scope_preference && authStore.user.scope_preference.id)
+        scopePreference.value = authStore.user.scope_preference
+    })
+
     return {
       userAccount,
       languages,
@@ -214,6 +216,7 @@ export default {
       changeAppLanguage,
       updateDomainPreference,
       updateScopePreference,
+      updatePreferences,
       modelIcon,
     }
   },
