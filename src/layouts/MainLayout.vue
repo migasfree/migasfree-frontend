@@ -174,7 +174,7 @@ export default defineComponent({
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
-      loggedIn: authStore.isLoggedIn,
+      loggedIn: authStore.loggedIn,
       hasDomainOrScopePreference,
       domainPreference,
       scopePreference,
