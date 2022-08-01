@@ -183,17 +183,13 @@ export default {
       const hasNewPasswords =
         password.value &&
         password.value.length > 7 &&
-        passwordConfirm &&
+        passwordConfirm.value &&
         passwordConfirm.value.length > 7 &&
         password.value === passwordConfirm.value
 
-      return element.id === currentUser.value.id
+      return element.id === authStore.user.id
         ? hasNewPasswords && oldPassword.value && oldPassword.value.length > 3
         : hasNewPasswords
-    })
-
-    const currentUser = computed(() => {
-      return authStore.user
     })
 
     const confirmPassword = computed(() => {
@@ -241,7 +237,7 @@ export default {
     }
 
     const elementData = () => {
-      if (element.id === currentUser.value.id) {
+      if (element.id === authStore.user.id) {
         return {
           old_password: oldPassword.value,
           new_password1: password.value,
@@ -265,7 +261,7 @@ export default {
     )
 
     const changePassword = async () => {
-      if (element.id && element.id === currentUser.value.id) {
+      if (element.id && element.id === authStore.user.id) {
         loading.value = true
         await api
           .post('/rest-auth/password/change/', elementData())
@@ -312,7 +308,7 @@ export default {
       element,
       isValid,
       elementText,
-      currentUser,
+      currentUser: authStore.user,
       confirmPassword,
       required,
       requiredOldPassword,
