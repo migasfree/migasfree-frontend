@@ -135,10 +135,13 @@ export default defineComponent({
     })
 
     const hasDomainOrScopePreference = computed(() => {
-      return (
-        authStore.user.domain_preference !== null ||
-        authStore.user.scope_preference !== null
-      )
+      if ('domain_preference' in authStore.user)
+        return (
+          authStore.user.domain_preference !== null ||
+          authStore.user.scope_preference !== null
+        )
+
+      return false
     })
 
     const domainPreference = computed(() => {
