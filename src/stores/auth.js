@@ -29,7 +29,7 @@ export const useAuthStore = defineStore('auth', {
     getDomains: (state) => state.domains,
     getScopes: (state) => state.scopes,
     filteredScopes: (state) => {
-      if (state.user.domain_preference) {
+      if ('domain_preference' in state.user && state.user.domain_preference) {
         return state.scopes.filter(
           (el) =>
             (el.domain && el.domain.id === state.user.domain_preference.id) ||
@@ -49,7 +49,7 @@ export const useAuthStore = defineStore('auth', {
         .then((response) => {
           this.setToken(response.data.key)
           this.setLoggedIn(true)
-          this.setUser()
+          this.getUser()
           this.loadDomains()
           this.loadScopes()
         })
@@ -148,8 +148,6 @@ export const useAuthStore = defineStore('auth', {
     },
 
     setUser(value) {
-      console.log('setUser', value)
-      alert(value)
       this.user = value
       LocalStorage.set('auth.user', this.user)
     },
