@@ -39,14 +39,23 @@
 </template>
 
 <script>
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import {
+  defineComponent,
+  ref,
+  computed,
+  watch,
+  onMounted,
+  onUnmounted,
+} from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useAuthStore } from 'stores/auth'
-import { useUiStore } from 'stores/ui'
-import { api } from 'boot/axios'
 
-export default {
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
+import { useAuthStore } from 'stores/auth'
+
+export default defineComponent({
   name: 'Alerts',
+
   setup() {
     const authStore = useAuthStore()
     const uiStore = useUiStore()
@@ -57,7 +66,7 @@ export default {
     const socket = ref(null)
 
     const loggedIn = computed(() => {
-      return authStore.isLoggedIn
+      return authStore.loggedIn
     })
 
     const isAlertsVisible = computed(() => {
@@ -208,5 +217,5 @@ export default {
       resolveAlertText,
     }
   },
-}
+})
 </script>
