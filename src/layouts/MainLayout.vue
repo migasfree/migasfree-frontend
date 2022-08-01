@@ -102,12 +102,14 @@
 <script>
 import { defineComponent, ref, computed } from 'vue'
 import { useMeta } from 'quasar'
+
 import AppMenu from 'components/ui/AppMenu'
 import AppFooter from 'components/ui/AppFooter'
 import Alerts from 'components/ui/Alerts'
 import SearchBox from 'components/ui/SearchBox'
 import UserAccount from 'components/ui/UserAccount'
 import ToggleDarkMode from 'components/ui/ToggleDarkMode'
+
 import { useAuthStore } from 'stores/auth'
 
 export default defineComponent({
