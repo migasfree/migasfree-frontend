@@ -518,7 +518,6 @@ export default {
     ])
 
     const centerMarkers = () => {
-      console.log(map.value.leafletObject)
       if (map.value !== null && markers.value.length) {
         nextTick(() => {
           map.value.leafletObject.panTo([
