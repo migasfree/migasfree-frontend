@@ -218,8 +218,6 @@ import HeatMap from 'components/chart/HeatMap'
 import { modelIcon, useElement } from 'composables/element'
 import useDate from 'composables/date'
 
-const { addToDate } = date
-
 export default {
   components: {
     Breadcrumbs,
@@ -233,6 +231,8 @@ export default {
   setup() {
     const route = useRoute()
     const { $gettext } = useGettext()
+    const { addToDate } = date
+
     const uiStore = useUiStore()
     const { showDate, diffForHumans } = useDate()
     const { elementIcon } = useElement()
