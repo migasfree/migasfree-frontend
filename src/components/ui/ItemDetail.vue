@@ -71,7 +71,12 @@
     <translate>No data available.</translate>
   </q-banner>
 
-  <q-card v-else :bordered="!borderless" :flat="borderless">
+  <q-card
+    v-else
+    :bordered="!borderless"
+    :flat="borderless"
+    :class="borderless ? 'transparent' : ''"
+  >
     <slot name="fields"></slot>
 
     <q-card-actions v-if="visibleActions" class="justify-around">
