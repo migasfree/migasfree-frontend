@@ -466,6 +466,56 @@
           :href="`${server}${props.row.url}`"
           ><q-tooltip>{{ $gettext('Download') }}</q-tooltip></q-btn
         >
+
+        <q-btn
+          v-if="model === 'computers'"
+          class="q-ma-xs"
+          round
+          size="sm"
+          icon="mdi-calendar-multiple"
+          color="info"
+          @click="
+            $router.push({
+              name: 'computer-events',
+              params: { id: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Events') }}</q-tooltip></q-btn
+        >
+
+        <q-btn
+          v-if="model === 'computers'"
+          class="q-ma-xs"
+          round
+          size="sm"
+          icon="mdi-head-sync-outline"
+          color="info"
+          @click="
+            $router.push({
+              name: 'computer-simulate',
+              params: { id: props.row.id },
+            })
+          "
+          ><q-tooltip>{{
+            $gettext('Simulate synchronization')
+          }}</q-tooltip></q-btn
+        >
+
+        <q-btn
+          v-if="model === 'computers'"
+          class="q-ma-xs"
+          round
+          size="sm"
+          icon="mdi-card-account-details-outline"
+          color="info"
+          @click="
+            $router.push({
+              name: 'computer-label',
+              params: { id: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Identification') }}</q-tooltip></q-btn
+        >
       </span>
 
       <slot name="fields" :props="props"></slot>
