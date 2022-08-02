@@ -151,7 +151,7 @@ export default {
     const changeAppLanguage = () => {
       if (gettext.current !== currentLanguage.value.label) {
         gettext.current = currentLanguage.value.label
-        $q.cookies.set('language', gettext.current)
+        $q.cookies.set('language', currentLanguage.value.label)
       }
     }
 
