@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import { ref, computed, reactive } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -122,16 +122,6 @@ export default {
     Header,
     MigasLink,
   },
-  /*events: {
-    setRelated: () => {
-      console.log('setRelated fired!!!')
-      breadcrumbs.find((x) => x.text === 'Id').to = {
-        name: routes.detail,
-        params: { id: element.id },
-      }
-    },
-  },*/
-  emits: ['setRelated', 'setTitle', 'loadRelated'],
   setup() {
     const { $gettext, interpolate } = useGettext()
     const route = useRoute()
@@ -228,14 +218,6 @@ export default {
       ]
     })
 
-    // FIXME fire this function as listener
-    const setRelated = () => {
-      breadcrumbs.find((x) => x.text === 'Id').to = {
-        name: routes.detail,
-        params: { id: element.id },
-      }
-    }
-
     const elementData = () => {
       if (element.id === authStore.user.id) {
         return {
@@ -296,6 +278,15 @@ export default {
       })
     }
 
+    watch(element, (val) => {
+      if (val.id !== 0) {
+        breadcrumbs.find((x) => x.text === val.username).to = {
+          name: routes.detail,
+          params: { id: val.id },
+        }
+      }
+    })
+
     return {
       title,
       breadcrumbs,
@@ -313,7 +304,6 @@ export default {
       required,
       requiredOldPassword,
       changePassword,
-      setRelated,
     }
   },
 }
