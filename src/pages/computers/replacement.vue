@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :is-export-btn="false" />
+    <Header :title="title" :has-export-button="false" />
 
     <p v-translate>
       This procedure changes status, tags and devices between two computers.

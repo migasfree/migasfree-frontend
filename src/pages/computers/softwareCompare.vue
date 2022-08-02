@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :is-export-btn="false" />
+    <Header :title="title" :has-export-button="false" />
 
     <div class="row q-pa-md q-gutter-sm justify-around">
       <div class="col-6 col-md col-sm col-xs">

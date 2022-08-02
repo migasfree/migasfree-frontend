@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="$gettext('Package Information')" :is-export-btn="false">
+    <Header :title="$gettext('Package Information')" :has-export-button="false">
       <template v-if="element.id" #append
         >:
         <MigasLink

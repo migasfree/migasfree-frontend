@@ -1,7 +1,7 @@
 <template>
   <Breadcrumbs :items="breadcrumbs" />
 
-  <Header :title="originalTitle" :is-export-btn="false">
+  <Header :title="originalTitle" :has-export-button="false">
     <template v-if="element.id" #append
       >:
       <MigasLink

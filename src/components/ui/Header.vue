@@ -24,7 +24,7 @@
             results
           }}</q-chip>
           <q-btn
-            v-if="isExportBtn"
+            v-if="hasExportButton"
             class="q-ma-sm float-right"
             color="info"
             text-color="black"
@@ -42,8 +42,11 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   name: 'Header',
+
   props: {
     title: { type: String, required: true },
     results: { type: Number, required: false, default: null },
@@ -54,9 +57,10 @@ export default {
         return []
       },
     },
-    isExportBtn: { type: Boolean, required: false, default: true },
+    hasExportButton: { type: Boolean, required: false, default: true },
     isLoadingExport: { type: Boolean, required: false, default: false },
   },
+
   emits: ['exportAll'],
-}
+})
 </script>

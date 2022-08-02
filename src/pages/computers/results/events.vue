@@ -3,7 +3,7 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <template v-if="computer.id">
-      <Header :title="title" :is-export-btn="false">
+      <Header :title="title" :has-export-button="false">
         <template v-if="computer.id" #append
           >:
           <MigasLink

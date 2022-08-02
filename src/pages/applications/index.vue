@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :is-export-btn="false" :add-routes="addRoutes" />
+    <Header :title="title" :has-export-button="false" :add-routes="addRoutes" />
 
     <SearchFilter v-model="searchText" @search="search" />
 
