@@ -16,7 +16,7 @@
     >
       <template #fields>
         <q-card-section v-if="!('id' in element)">
-          <p class="items-center">
+          <p class="text-center">
             <q-spinner-dots color="primary" size="3em" />
           </p>
         </q-card-section>
