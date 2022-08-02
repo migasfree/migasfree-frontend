@@ -518,16 +518,14 @@ export default {
     ])
 
     const centerMarkers = () => {
+      console.log(map.value.leafletObject)
       if (map.value !== null && markers.value.length) {
         nextTick(() => {
-          // FIXME fitBounds -> new version of @vue-leaflet???
-          /*map.value.fitBounds(
-            markers.value.map((m) => {
-              return [m.lat, m.lng]
-            })
-          )*/
+          map.value.leafletObject.panTo([
+            markers.value[0].lat,
+            markers.value[0].lng,
+          ])
         })
-        // console.log('centerMarkers', map.value)
       }
     }
 
