@@ -14,6 +14,7 @@
 
     <q-card-section class="echart-container">
       <v-chart
+        v-show="isChartVisible"
         ref="chart"
         :init-options="initOptions"
         :option="options"
@@ -22,8 +23,12 @@
         autoresize
         @click="passData"
         @legendselectchanged="changeRange"
-      /> </q-card-section
-  ></q-card>
+      />
+      <q-banner v-if="noData" rounded class="bg-warning text-black">
+        <translate>No data available.</translate>
+      </q-banner>
+    </q-card-section></q-card
+  >
 </template>
 
 <script>
@@ -159,6 +164,14 @@ export default {
       }
     })
 
+    const isChartVisible = computed(() => {
+      return props.total > 0
+    })
+
+    const noData = computed(() => {
+      return props.total === 0
+    })
+
     const windowResize = () => {
       if (chart.value !== null && chart.value !== undefined) {
         chart.value.resize()
@@ -214,9 +227,11 @@ export default {
           })
         })
 
-        const maxYear = Object.keys(years).reduce(function (a, b) {
-          return Math.max(parseInt(a), parseInt(b))
-        }, new Date().getFullYear())
+        const maxYear = Object.keys(years).length
+          ? Object.keys(years).reduce(function (a, b) {
+              return Math.max(parseInt(a), parseInt(b))
+            })
+          : new Date().getFullYear()
 
         years[maxYear] = true
 
@@ -271,6 +286,8 @@ export default {
       options,
       updateOptions,
       cssVars,
+      isChartVisible,
+      noData,
       passData,
       changeRange,
     }
