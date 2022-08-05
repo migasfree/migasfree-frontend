@@ -75,7 +75,7 @@ import { abbreviateNumber } from 'js-abbreviation-number'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
-import { modelIcon } from 'composables/element'
+import { modelIcon, useElement } from 'composables/element'
 
 export default {
   name: 'MigasLink',
@@ -90,6 +90,7 @@ export default {
     const uiStore = useUiStore()
     const router = useRouter()
     const pluralize = require('pluralize')
+    const { computerStatus } = useElement()
 
     const relations = ref([])
     const loading = ref(false)
@@ -103,7 +104,10 @@ export default {
         case 'computers':
           const pieces = props.tooltip.split(',')
           return [
-            { icon: 'mdi-tag-text-outline', text: pieces[0].trim() },
+            {
+              icon: 'mdi-tag-text-outline',
+              text: computerStatus(pieces[0].trim()),
+            },
             { icon: modelIcon('projects'), text: pieces[1].trim() },
             { icon: 'mdi-ip-network', text: pieces[2].trim() },
             { icon: modelIcon('users'), text: pieces[3].trim() },
