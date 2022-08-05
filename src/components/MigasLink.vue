@@ -90,7 +90,7 @@ export default {
     const uiStore = useUiStore()
     const router = useRouter()
     const pluralize = require('pluralize')
-    const { computerStatus } = useElement()
+    const { computerStatus, elementIcon } = useElement()
 
     const relations = ref([])
     const loading = ref(false)
@@ -105,7 +105,7 @@ export default {
           const pieces = props.tooltip.split(',')
           return [
             {
-              icon: 'mdi-tag-text-outline',
+              icon: elementIcon(pieces[0].trim()),
               text: computerStatus(pieces[0].trim()),
             },
             { icon: modelIcon('projects'), text: pieces[1].trim() },
