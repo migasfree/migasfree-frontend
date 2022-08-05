@@ -123,14 +123,24 @@
 
                   <q-item-section side>
                     <div class="row items-center">
-                      <q-chip color="positive" text-color="black"
+                      <q-chip
+                        v-if="
+                          value.filter((item) => item.startsWith('+')).length
+                        "
+                        color="positive"
+                        text-color="black"
                         >{{ value.filter((item) => item.startsWith('+')).length
                         }}<q-tooltip
                           ><translate>Installed Packages</translate></q-tooltip
                         ></q-chip
                       >
 
-                      <q-chip color="negative" text-color="white"
+                      <q-chip
+                        v-if="
+                          value.filter((item) => item.startsWith('-')).length
+                        "
+                        color="negative"
+                        text-color="white"
                         >{{ value.filter((item) => item.startsWith('-')).length
                         }}<q-tooltip
                           ><translate
