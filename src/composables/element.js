@@ -1,3 +1,5 @@
+import { useGettext } from 'vue3-gettext'
+
 const MAC_RAW_LEN = 12
 
 const MODEL_ICON = {
@@ -55,6 +57,8 @@ export function modelIcon(model) {
 }
 
 export function useElement() {
+  const { $gettext } = useGettext()
+
   const elementIcon = (value) => {
     switch (value) {
       case 'intended':
@@ -85,22 +89,24 @@ export function useElement() {
     switch (value) {
       case 'intended':
       case 'Intended':
-        return this.$gettext('Intended')
+        return $gettext('Intended')
       case 'available':
       case 'Available':
-        return this.$gettext('Available')
+        return $gettext('Available')
       case 'in repair':
       case 'In repair':
-        return this.$gettext('In repair')
+        return $gettext('In repair')
       case 'reserved':
       case 'Reserved':
-        return this.$gettext('Reserved')
+        return $gettext('Reserved')
       case 'unknown':
       case 'Unknown':
-        return this.$gettext('Unknown')
+        return $gettext('Unknown')
       case 'unsubscribed':
       case 'Unsubscribed':
-        return this.$gettext('Unsubscribed')
+        return $gettext('Unsubscribed')
+      default:
+        return value
     }
   }
 
