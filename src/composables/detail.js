@@ -126,7 +126,6 @@ export default function useDetail(
               breadcrumbs.push({
                 text: elementText.value,
               })
-              // emit('setTitle', `${originalTitle}: ${element.name}`)
               emit('setTitle', `${originalTitle}: ${elementText.value}`)
             }
             router.push({
@@ -173,7 +172,6 @@ export default function useDetail(
   })
 
   return {
-    // title,
     loading,
     elementText,
     updateElement,
