@@ -57,9 +57,9 @@ msgstr ""
 #: src/pages/stores/results/detail.vue:40
 #: src/pages/tags/results/detail.vue:32
 #: src/pages/tags/results/detail.vue:42
-#: src/pages/user-profiles/results/changePassword.vue:197
-#: src/pages/user-profiles/results/changePassword.vue:211
-#: src/pages/user-profiles/results/changePassword.vue:222
+#: src/pages/user-profiles/results/changePassword.vue:187
+#: src/pages/user-profiles/results/changePassword.vue:201
+#: src/pages/user-profiles/results/changePassword.vue:212
 #: src/pages/user-profiles/results/detail.vue:29
 msgid "* Required"
 msgstr ""
@@ -132,7 +132,7 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: src/components/ui/Alerts.vue:151
+#: src/components/ui/Alerts.vue:160
 msgid "Active schedule Deployments"
 msgstr ""
 
@@ -178,8 +178,8 @@ msgstr ""
 msgid "Alerts"
 msgstr ""
 
-#: src/components/ui/UserAccount.vue:132
-#: src/components/ui/UserAccount.vue:136
+#: src/components/ui/UserAccount.vue:134
+#: src/components/ui/UserAccount.vue:140
 #: src/composables/dataGrid.js:100
 #: src/composables/dataGrid.js:107
 #: src/composables/dataGrid.js:118
@@ -391,7 +391,7 @@ msgstr ""
 msgid "Auto register computers?"
 msgstr ""
 
-#: src/composables/element.js:91
+#: src/composables/element.js:95
 msgid "Available"
 msgstr ""
 
@@ -500,7 +500,7 @@ msgstr ""
 msgid "By Uninstall Date (range)"
 msgstr ""
 
-#: src/components/computer/Software.vue:236
+#: src/components/computer/Software.vue:246
 #: src/components/ui/RemoveDialog.vue:14
 #: src/composables/dataGrid.js:966
 msgid "Cancel"
@@ -561,7 +561,7 @@ msgstr ""
 #: src/components/ui/ItemDetail.vue:20
 #: src/components/ui/TableResults.vue:431
 #: src/components/ui/UserAccount.vue:88
-#: src/pages/user-profiles/results/changePassword.vue:141
+#: src/pages/user-profiles/results/changePassword.vue:131
 #: src/pages/user-profiles/results/changePassword.vue:91
 msgid "Change Password"
 msgstr ""
@@ -575,7 +575,7 @@ msgid "Changed item check value!"
 msgstr ""
 
 #: src/components/ui/TableResults.vue:386
-#: src/components/ui/TableResults.vue:490
+#: src/components/ui/TableResults.vue:540
 msgid "Check"
 msgstr ""
 
@@ -626,10 +626,10 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: src/components/computer/Software.vue:117
-#: src/components/computer/Software.vue:118
-#: src/components/computer/Software.vue:170
-#: src/components/computer/Software.vue:245
+#: src/components/computer/Software.vue:121
+#: src/components/computer/Software.vue:122
+#: src/components/computer/Software.vue:180
+#: src/components/computer/Software.vue:255
 msgid "Compare"
 msgstr ""
 
@@ -638,7 +638,7 @@ msgid "Components"
 msgstr ""
 
 #: src/components/computer/ReplacementInfo.vue:5
-#: src/components/computer/Software.vue:192
+#: src/components/computer/Software.vue:202
 #: src/pages/computers/replacement.vue:23
 #: src/pages/computers/replacement.vue:92
 #: src/pages/computers/results/detail.vue:471
@@ -703,7 +703,7 @@ msgstr ""
 #: src/pages/scopes/results/list.vue:84
 #: src/pages/stamps/results/detail.vue:131
 #: src/pages/stamps/results/list.vue:78
-#: src/pages/user-profiles/results/changePassword.vue:162
+#: src/pages/user-profiles/results/changePassword.vue:152
 #: src/pages/user-profiles/results/detail.vue:364
 #: src/pages/user-profiles/results/list.vue:78
 msgid "Configuration"
@@ -760,7 +760,7 @@ msgstr ""
 msgid "Current Situation"
 msgstr ""
 
-#: src/pages/computers/results/detail.vue:637
+#: src/pages/computers/results/detail.vue:634
 msgid "Current Situation has been changed!"
 msgstr ""
 
@@ -789,7 +789,7 @@ msgstr ""
 #: src/pages/connections/results/list.vue:71
 #: src/pages/Dashboard.vue:122
 #: src/pages/deployments/index.vue:73
-#: src/pages/deployments/results/detail.vue:512
+#: src/pages/deployments/results/detail.vue:504
 #: src/pages/deployments/results/list.vue:110
 #: src/pages/device-types/results/detail.vue:70
 #: src/pages/device-types/results/list.vue:59
@@ -855,7 +855,7 @@ msgstr ""
 #: src/pages/tags/index.vue:54
 #: src/pages/tags/results/detail.vue:221
 #: src/pages/tags/results/list.vue:72
-#: src/pages/user-profiles/results/changePassword.vue:157
+#: src/pages/user-profiles/results/changePassword.vue:147
 #: src/pages/user-profiles/results/detail.vue:359
 #: src/pages/user-profiles/results/list.vue:73
 #: src/pages/users/results/detail.vue:75
@@ -958,15 +958,15 @@ msgstr ""
 msgid "Default Device"
 msgstr ""
 
-#: src/pages/deployments/results/detail.vue:356
+#: src/pages/deployments/results/detail.vue:346
 msgid "Default Excluded Packages"
 msgstr ""
 
-#: src/pages/deployments/results/detail.vue:345
+#: src/pages/deployments/results/detail.vue:337
 msgid "Default Included Packages"
 msgstr ""
 
-#: src/pages/deployments/results/detail.vue:334
+#: src/pages/deployments/results/detail.vue:328
 msgid "Default Preincluded Packages"
 msgstr ""
 
@@ -974,7 +974,7 @@ msgstr ""
 msgid "Delay"
 msgstr ""
 
-#: src/components/ui/Alerts.vue:162
+#: src/components/ui/Alerts.vue:171
 msgid "Delayed Computers"
 msgstr ""
 
@@ -986,10 +986,10 @@ msgstr ""
 msgid "Delays count"
 msgstr ""
 
-#: src/components/ui/ItemDetail.vue:118
+#: src/components/ui/ItemDetail.vue:123
 #: src/components/ui/RemoveDialog.vue:21
 #: src/components/ui/TableResults.vue:416
-#: src/components/ui/TableResults.vue:520
+#: src/components/ui/TableResults.vue:570
 #: src/composables/dataGrid.js:961
 #: src/pages/applications/results/detail.vue:159
 #: src/pages/devices/results/detail.vue:146
@@ -999,7 +999,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: src/pages/deployments/results/detail.vue:481
+#: src/pages/deployments/results/detail.vue:473
 msgid "Deployment"
 msgstr ""
 
@@ -1008,7 +1008,7 @@ msgstr ""
 #: src/pages/computers/results/simulate.vue:120
 #: src/pages/deployments/index.vue:65
 #: src/pages/deployments/index.vue:82
-#: src/pages/deployments/results/detail.vue:521
+#: src/pages/deployments/results/detail.vue:513
 #: src/pages/deployments/results/list.vue:106
 #: src/pages/deployments/results/list.vue:119
 msgid "Deployments"
@@ -1278,6 +1278,7 @@ msgid "Errors List"
 msgstr ""
 
 #: src/components/computer/Info.vue:99
+#: src/components/ui/TableResults.vue:483
 #: src/pages/computers/results/events.vue:240
 msgid "Events"
 msgstr ""
@@ -1312,11 +1313,11 @@ msgid "Expire (minutes)"
 msgstr ""
 
 #: src/components/ui/Header.vue:31
-#: src/components/ui/TableResults.vue:511
+#: src/components/ui/TableResults.vue:561
 msgid "Export"
 msgstr ""
 
-#: src/pages/deployments/results/detail.vue:543
+#: src/pages/deployments/results/detail.vue:535
 #: src/pages/deployments/results/list.vue:185
 #: src/pages/deployments/results/list.vue:282
 msgid "External"
@@ -1446,7 +1447,7 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
-#: src/components/ui/Alerts.vue:154
+#: src/components/ui/Alerts.vue:163
 msgid "Finished schedule Deployments"
 msgstr ""
 
@@ -1523,7 +1524,7 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: src/components/ui/Alerts.vue:148
+#: src/components/ui/Alerts.vue:157
 msgid "Generating Repositories"
 msgstr ""
 
@@ -1564,6 +1565,7 @@ msgid "History of events in the last 72 hours"
 msgstr ""
 
 #: src/components/computer/Info.vue:123
+#: src/components/ui/TableResults.vue:517
 #: src/pages/computers/results/label.vue:58
 msgid "Identification"
 msgstr ""
@@ -1576,7 +1578,7 @@ msgstr ""
 msgid "If you uncheck this field, the policy is disabled for all computers."
 msgstr ""
 
-#: src/composables/element.js:94
+#: src/composables/element.js:98
 msgid "In repair"
 msgstr ""
 
@@ -1621,15 +1623,15 @@ msgstr ""
 msgid "Install Date"
 msgstr ""
 
-#: src/components/computer/Software.vue:129
+#: src/components/computer/Software.vue:134
 msgid "Installed Packages"
 msgstr ""
 
-#: src/composables/element.js:88
+#: src/composables/element.js:92
 msgid "Intended"
 msgstr ""
 
-#: src/pages/deployments/results/detail.vue:539
+#: src/pages/deployments/results/detail.vue:531
 #: src/pages/deployments/results/list.vue:184
 #: src/pages/deployments/results/list.vue:280
 msgid "Internal"
@@ -1806,7 +1808,7 @@ msgstr ""
 msgid "MAC Address"
 msgstr ""
 
-#: src/pages/deployments/results/detail.vue:589
+#: src/pages/deployments/results/detail.vue:581
 msgid "Made"
 msgstr ""
 
@@ -2024,6 +2026,7 @@ msgstr ""
 msgid "No"
 msgstr ""
 
+#: src/components/chart/HeatMap.vue:28
 #: src/components/chart/Pie.vue:35
 #: src/components/chart/StackedBar.vue:20
 #: src/components/ui/ItemDetail.vue:71
@@ -2039,7 +2042,7 @@ msgid "No information"
 msgstr ""
 
 #: src/components/computer/Devices.vue:32
-#: src/components/computer/Software.vue:199
+#: src/components/computer/Software.vue:209
 #: src/components/ui/SelectAttributes.vue:19
 #: src/pages/computers/replacement.vue:100
 #: src/pages/computers/replacement.vue:31
@@ -2063,7 +2066,7 @@ msgid "No results"
 msgstr ""
 
 #: src/components/ui/TableResults.vue:396
-#: src/components/ui/TableResults.vue:499
+#: src/components/ui/TableResults.vue:549
 msgid "Not Check"
 msgstr ""
 
@@ -2113,7 +2116,11 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: src/components/ui/Alerts.vue:139
+#: src/components/ui/OrderTextArea.vue:10
+msgid "Order Alphabetically"
+msgstr ""
+
+#: src/components/ui/Alerts.vue:148
 msgid "Orphan Packages"
 msgstr ""
 
@@ -2197,7 +2204,7 @@ msgstr ""
 
 #: src/pages/applications/results/detail.vue:183
 #: src/pages/computers/results/simulate.vue:133
-#: src/pages/deployments/results/detail.vue:314
+#: src/pages/deployments/results/detail.vue:312
 #: src/pages/drivers/results/detail.vue:114
 #: src/pages/models/results/detail.vue:157
 msgid "Packages to Install"
@@ -2207,7 +2214,7 @@ msgstr ""
 msgid "Packages to Install (by policies)"
 msgstr ""
 
-#: src/pages/deployments/results/detail.vue:323
+#: src/pages/deployments/results/detail.vue:319
 msgid "Packages to Remove"
 msgstr ""
 
@@ -2228,8 +2235,8 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: src/pages/user-profiles/results/changePassword.vue:269
-#: src/pages/user-profiles/results/changePassword.vue:283
+#: src/pages/user-profiles/results/changePassword.vue:251
+#: src/pages/user-profiles/results/changePassword.vue:265
 msgid "Password changed!"
 msgstr ""
 
@@ -2283,9 +2290,9 @@ msgid "Please use maximum %{n} characters"
 msgstr ""
 
 #: src/pages/Login.vue:55
-#: src/pages/user-profiles/results/changePassword.vue:200
-#: src/pages/user-profiles/results/changePassword.vue:214
-#: src/pages/user-profiles/results/changePassword.vue:225
+#: src/pages/user-profiles/results/changePassword.vue:190
+#: src/pages/user-profiles/results/changePassword.vue:204
+#: src/pages/user-profiles/results/changePassword.vue:215
 msgid "Please use minimum %{n} characters"
 msgstr ""
 
@@ -2316,7 +2323,7 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: src/components/ui/UserAccount.vue:177
+#: src/components/ui/UserAccount.vue:182
 msgid "Preferences changed!"
 msgstr ""
 
@@ -2403,7 +2410,7 @@ msgstr ""
 msgid "Projects List"
 msgstr ""
 
-#: src/pages/deployments/results/detail.vue:437
+#: src/pages/deployments/results/detail.vue:427
 msgid "Provided Computers / Delay"
 msgstr ""
 
@@ -2423,7 +2430,7 @@ msgstr ""
 #: src/pages/categories/results/detail.vue:74
 #: src/pages/categories/results/list.vue:54
 #: src/pages/deployments/index.vue:78
-#: src/pages/deployments/results/detail.vue:517
+#: src/pages/deployments/results/detail.vue:509
 #: src/pages/deployments/results/list.vue:115
 #: src/pages/package-sets/results/detail.vue:208
 #: src/pages/package-sets/results/list.vue:85
@@ -2461,7 +2468,7 @@ msgstr ""
 msgid "Replacement done!"
 msgstr ""
 
-#: src/composables/element.js:97
+#: src/composables/element.js:101
 msgid "Reserved"
 msgstr ""
 
@@ -2538,18 +2545,18 @@ msgstr ""
 msgid "Saturday"
 msgstr ""
 
-#: src/components/ui/ItemDetail.vue:102
+#: src/components/ui/ItemDetail.vue:107
 msgid "Save"
 msgstr ""
 
-#: src/components/ui/ItemDetail.vue:82
+#: src/components/ui/ItemDetail.vue:87
 msgid "Save and add other"
 msgstr ""
 
 #: src/components/computer/Devices.vue:80
 #: src/components/computer/HardwareResume.vue:84
 #: src/components/computer/Info.vue:22
-#: src/components/ui/ItemDetail.vue:93
+#: src/components/ui/ItemDetail.vue:98
 #: src/pages/computers/results/detail.vue:233
 msgid "Save and continue editing"
 msgstr ""
@@ -2559,7 +2566,7 @@ msgstr ""
 msgid "Save as Image"
 msgstr ""
 
-#: src/pages/deployments/results/detail.vue:407
+#: src/pages/deployments/results/detail.vue:397
 #: src/pages/deployments/results/list.vue:211
 #: src/pages/schedules/results/detail.vue:131
 msgid "Schedule"
@@ -2622,6 +2629,11 @@ msgid "Server"
 msgstr ""
 
 #: src/components/computer/Info.vue:111
+#: src/components/ui/TableResults.vue:180
+#: src/components/ui/TableResults.vue:181
+#: src/components/ui/TableResults.vue:392
+#: src/components/ui/TableResults.vue:410
+#: src/components/ui/TableResults.vue:500
 msgid "Simulate synchronization"
 msgstr ""
 
@@ -2641,17 +2653,17 @@ msgstr ""
 msgid "Software"
 msgstr ""
 
-#: src/components/computer/Software.vue:179
+#: src/components/computer/Software.vue:189
 #: src/components/ui/AppMenu.vue:218
 #: src/pages/computers/softwareCompare.vue:163
 msgid "Software Compare"
 msgstr ""
 
-#: src/components/computer/Software.vue:362
+#: src/components/computer/Software.vue:372
 msgid "Software History copied to clipboard"
 msgstr ""
 
-#: src/components/computer/Software.vue:342
+#: src/components/computer/Software.vue:352
 msgid "Software Inventory copied to clipboard"
 msgstr ""
 
@@ -2689,7 +2701,7 @@ msgid "Start"
 msgstr ""
 
 #: src/pages/computers/results/events.vue:298
-#: src/pages/deployments/results/detail.vue:384
+#: src/pages/deployments/results/detail.vue:374
 #: src/pages/deployments/results/list.vue:203
 #: src/pages/syncs/results/list.vue:146
 msgid "Start Date"
@@ -2812,7 +2824,7 @@ msgstr ""
 msgid "Synchronized single computers / month"
 msgstr ""
 
-#: src/components/ui/Alerts.vue:159
+#: src/components/ui/Alerts.vue:168
 msgid "Synchronizing Computers Now"
 msgstr ""
 
@@ -2866,11 +2878,11 @@ msgstr ""
 msgid "The format of this value is 'name~description', where 'description' is optional."
 msgstr ""
 
-#: src/pages/user-profiles/results/changePassword.vue:205
+#: src/pages/user-profiles/results/changePassword.vue:195
 msgid "The passwords are different"
 msgstr ""
 
-#: src/components/ui/TableResults.vue:476
+#: src/components/ui/TableResults.vue:526
 msgid "There are no results"
 msgstr ""
 
@@ -2902,7 +2914,7 @@ msgstr ""
 msgid "Time"
 msgstr ""
 
-#: src/pages/deployments/results/detail.vue:420
+#: src/pages/deployments/results/detail.vue:410
 msgid "Timeline"
 msgstr ""
 
@@ -2928,19 +2940,19 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: src/components/ui/Alerts.vue:145
+#: src/components/ui/Alerts.vue:154
 #: src/pages/Dashboard.vue:133
 #: src/pages/errors/index.vue:31
 msgid "Unchecked Errors"
 msgstr ""
 
-#: src/components/ui/Alerts.vue:143
+#: src/components/ui/Alerts.vue:152
 #: src/pages/Dashboard.vue:134
 #: src/pages/faults/index.vue:31
 msgid "Unchecked Faults"
 msgstr ""
 
-#: src/components/ui/Alerts.vue:141
+#: src/components/ui/Alerts.vue:150
 msgid "Unchecked Notifications"
 msgstr ""
 
@@ -2948,11 +2960,11 @@ msgstr ""
 msgid "Uninstall Date"
 msgstr ""
 
-#: src/components/computer/Software.vue:136
+#: src/components/computer/Software.vue:146
 msgid "Uninstalled Packages"
 msgstr ""
 
-#: src/composables/element.js:100
+#: src/composables/element.js:104
 msgid "Unknown"
 msgstr ""
 
@@ -2964,7 +2976,7 @@ msgstr ""
 msgid "unsubscribed"
 msgstr ""
 
-#: src/composables/element.js:103
+#: src/composables/element.js:107
 msgid "Unsubscribed"
 msgstr ""
 
@@ -3008,7 +3020,7 @@ msgstr ""
 #: src/components/ui/AppMenu.vue:102
 #: src/pages/fault-definitions/results/detail.vue:106
 #: src/pages/fault-definitions/results/detail.vue:95
-#: src/pages/user-profiles/results/changePassword.vue:166
+#: src/pages/user-profiles/results/changePassword.vue:156
 #: src/pages/user-profiles/results/detail.vue:368
 #: src/pages/user-profiles/results/list.vue:69
 #: src/pages/user-profiles/results/list.vue:82
@@ -3086,7 +3098,7 @@ msgstr ""
 msgid "What (packages)"
 msgstr ""
 
-#: src/pages/deployments/results/detail.vue:369
+#: src/pages/deployments/results/detail.vue:359
 msgid "When (schedule)"
 msgstr ""
 
