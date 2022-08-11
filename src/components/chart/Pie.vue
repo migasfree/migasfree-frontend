@@ -4,12 +4,13 @@
       <q-card-section>
         <div class="row">
           <div class="col">
-            <div class="text-h5">{{ title }}</div>
+            <div class="text-h5 q-mt-sm">{{ title }}</div>
           </div>
 
           <div class="col-auto">
             <q-chip
-              size="md"
+              size="lg"
+              class="q-ma-xs"
               :clickable="data.total > 0"
               :color="critical ? 'negative' : 'info'"
               :text-color="critical ? 'white' : 'black'"
