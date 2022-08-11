@@ -20,7 +20,7 @@
       <q-item-section>
         <h2 class="text-h4">
           {{ title }}
-          <q-chip v-if="results !== null" outline size="lg" color="info">{{
+          <q-chip v-if="results !== null" size="lg" color="info">{{
             results
           }}</q-chip>
           <q-btn
