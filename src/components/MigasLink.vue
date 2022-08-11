@@ -125,6 +125,7 @@ export default {
         let to = '#'
         if (item.model && item.pk) {
           name = `${normalizeModel(pluralize.singular(item.model))}-detail`
+          if (name === 'logical-devices-detail') name = 'logical-device-detail'
           if (
             !router.resolve({ name, params: { id: item.pk } }).matched.length >
             0
