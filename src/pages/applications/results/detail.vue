@@ -176,10 +176,8 @@
                   </div>
 
                   <div class="col-5 col-md col-sm">
-                    <q-input
+                    <OrderTextArea
                       v-model="project.packages_to_install"
-                      outlined
-                      type="textarea"
                       :label="$gettext('Packages to Install')"
                     />
                   </div>
@@ -210,6 +208,7 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
 import ItemDetail from 'components/ui/ItemDetail'
+import OrderTextArea from 'components/ui/OrderTextArea'
 import SelectAttributes from 'components/ui/SelectAttributes'
 
 import { modelIcon } from 'composables/element'
@@ -217,6 +216,7 @@ import { modelIcon } from 'composables/element'
 export default {
   components: {
     ItemDetail,
+    OrderTextArea,
     SelectAttributes,
   },
   setup() {
