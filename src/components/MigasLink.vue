@@ -145,6 +145,7 @@ export default {
             name: `${item.model.replaceAll(' ', '-')}-list`,
           }
         } else if (item.api) {
+          if (item.api.model === 'catalog/project-packages') return
           name = `${normalizeModel(item.api.model)}-list`
           if (!router.resolve({ name }).matched.length > 0) return
 
