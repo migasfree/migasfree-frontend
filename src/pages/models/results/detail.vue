@@ -150,10 +150,8 @@
                   </div>
 
                   <div class="col-5 col-md col-sm">
-                    <q-input
+                    <OrderTextArea
                       v-model="driver.packages_to_install"
-                      outlined
-                      type="textarea"
                       :label="$gettext('Packages to Install')"
                     />
                   </div>
@@ -184,12 +182,14 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
 import ItemDetail from 'components/ui/ItemDetail'
+import OrderTextArea from 'components/ui/OrderTextArea'
 
 import { modelIcon } from 'composables/element'
 
 export default {
   components: {
     ItemDetail,
+    OrderTextArea,
   },
   setup() {
     const { $gettext } = useGettext()
