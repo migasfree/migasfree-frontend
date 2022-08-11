@@ -199,7 +199,7 @@ export default {
     })
 
     const isBasic = computed(() => {
-      return element.id && element.sort === 'basic'
+      return Boolean(element.id && element.sort === 'basic')
     })
 
     const highlightLang = computed(() => {
