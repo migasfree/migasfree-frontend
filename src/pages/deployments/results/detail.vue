@@ -307,19 +307,15 @@
 
                 <div class="row q-pa-md q-gutter-md">
                   <div class="col-6 col-md col-sm">
-                    <q-input
+                    <OrderTextArea
                       v-model="element.packages_to_install"
-                      outlined
-                      type="textarea"
                       :label="$gettext('Packages to Install')"
                     />
                   </div>
 
                   <div class="col-6 col-md col-sm">
-                    <q-input
+                    <OrderTextArea
                       v-model="element.packages_to_remove"
-                      outlined
-                      type="textarea"
                       :label="$gettext('Packages to Remove')"
                     />
                   </div>
@@ -327,10 +323,8 @@
 
                 <div class="row q-pa-md q-gutter-md">
                   <div class="col">
-                    <q-input
+                    <OrderTextArea
                       v-model="element.default_preincluded_packages"
-                      outlined
-                      type="textarea"
                       :label="$gettext('Default Preincluded Packages')"
                     />
                   </div>
@@ -338,10 +332,8 @@
 
                 <div class="row q-pa-md q-gutter-md">
                   <div class="col">
-                    <q-input
+                    <OrderTextArea
                       v-model="element.default_included_packages"
-                      outlined
-                      type="textarea"
                       :label="$gettext('Default Included Packages')"
                     />
                   </div>
@@ -349,10 +341,8 @@
 
                 <div class="row q-pa-md q-gutter-md">
                   <div class="col">
-                    <q-input
+                    <OrderTextArea
                       v-model="element.default_excluded_packages"
-                      outlined
-                      type="textarea"
                       :label="$gettext('Default Excluded Packages')"
                     />
                   </div>
@@ -461,6 +451,7 @@ import MigasLink from 'components/MigasLink'
 import StackedBarChart from 'components/chart/StackedBar'
 import Timeline from 'components/deployment/Timeline'
 import SelectAttributes from 'components/ui/SelectAttributes'
+import OrderTextArea from 'components/ui/OrderTextArea'
 
 import useDate from 'composables/date'
 import { modelIcon } from 'composables/element'
@@ -472,6 +463,7 @@ export default {
     StackedBarChart,
     Timeline,
     SelectAttributes,
+    OrderTextArea,
   },
   setup() {
     const { $gettext } = useGettext()
