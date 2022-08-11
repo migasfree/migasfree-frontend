@@ -512,7 +512,7 @@ export default {
       {
         text: $gettext('Deployments'),
         to: 'deployments-dashboard',
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
       },
     ])
 
