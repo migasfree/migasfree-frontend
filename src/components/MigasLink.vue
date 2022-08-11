@@ -226,7 +226,14 @@ export default {
     const getRelations = async () => {
       const url = `/api/v1/token/${props.model}/${props.pk}/relations/`
 
-      if (relations.value.length > 0) return
+      if (
+        relations.value.length > 0 &&
+        relations.value.some(
+          (el) => el.pk === props.pk && el.model === props.model
+        )
+      ) {
+        return
+      }
 
       loading.value = true
       await api
