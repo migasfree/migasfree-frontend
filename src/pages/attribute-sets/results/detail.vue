@@ -176,7 +176,7 @@ export default {
       },
       {
         text: $gettext('Attribute Sets'),
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
         to: routes.list,
       },
     ])
