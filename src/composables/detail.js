@@ -5,7 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
-import { useElement } from 'composables/element'
+import { useElement, modelIcon } from 'composables/element'
 
 const defaultElementData = () => {}
 
@@ -22,7 +22,7 @@ export default function useDetail(
   const router = useRouter()
   const { $gettext } = useGettext()
   const { emit } = getCurrentInstance()
-  const { attributeValue } = useElement()
+  const { attributeValue, elementIcon } = useElement()
 
   const loading = ref(false)
 
@@ -60,6 +60,11 @@ export default function useDetail(
     })
   } else {
     breadcrumbs.push({ text: $gettext('Add') })
+  }
+
+  const getElementIcon = () => {
+    if (model === 'computers') return elementIcon(element.status)
+    return modelIcon(model)
   }
 
   const updateElement = async (action = null) => {
@@ -125,6 +130,7 @@ export default function useDetail(
               })
               breadcrumbs.push({
                 text: elementText.value,
+                icon: getElementIcon(),
               })
               emit('setTitle', `${originalTitle}: ${elementText.value}`)
             }
@@ -160,6 +166,7 @@ export default function useDetail(
         .then((response) => {
           Object.assign(element, response.data)
           emit('setRelated')
+          breadcrumbs.find((x) => x.text === 'Id').icon = getElementIcon()
           breadcrumbs.find((x) => x.text === 'Id').text = elementText.value
           emit('setTitle', `${originalTitle}: ${elementText.value}`)
         })
