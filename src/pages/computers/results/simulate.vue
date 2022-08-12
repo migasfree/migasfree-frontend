@@ -483,6 +483,27 @@ export default {
         .get(`/api/v1/token/computers/${computer.id}/sync/simulation/`)
         .then((response) => {
           Object.assign(simulation, response.data)
+
+          if ('packages' in simulation && 'install' in simulation.packages)
+            simulation.packages.install.sort((a, b) =>
+              a.package.localeCompare(b.package)
+            )
+
+          if ('packages' in simulation && 'remove' in simulation.packages)
+            simulation.packages.remove.sort((a, b) =>
+              a.package.localeCompare(b.package)
+            )
+
+          if ('policies' in simulation && 'install' in simulation.policies)
+            simulation.policies.install.sort((a, b) =>
+              a.package.localeCompare(b.package)
+            )
+
+          if ('policies' in simulation && 'remove' in simulation.policies)
+            simulation.policies.remove.sort((a, b) =>
+              a.package.localeCompare(b.package)
+            )
+
           if ('logical_devices' in simulation)
             Object.entries(simulation.logical_devices).map(([key, item]) => {
               item.icon = modelIcon('devices/logical')
