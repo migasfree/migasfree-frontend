@@ -122,6 +122,7 @@ export default {
         .then((response) => {
           Object.assign(element, response.data)
           breadcrumbs.find((x) => x.text === 'Id').to.params.id = element.id
+          breadcrumbs.find((x) => x.text === 'Id').icon = modelIcon(model)
           breadcrumbs.find((x) => x.text === 'Id').text = element.fullname
           title.value = `${title.value}: ${element.fullname}`
           loadInfo()
