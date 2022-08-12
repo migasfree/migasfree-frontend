@@ -144,6 +144,9 @@
         </q-tree>
       </div>
     </template>
+    <p v-else class="text-center">
+      <q-spinner-dots color="primary" size="3em" />
+    </p>
 
     <q-dialog v-model="details">
       <q-card>
@@ -368,6 +371,9 @@ export default {
         .then((response) => {
           Object.assign(element, response.data)
           breadcrumbs.find((x) => x.text === 'Id').to.params.id = element.id
+          breadcrumbs.find((x) => x.text === 'Id').icon = elementIcon(
+            element.status
+          )
           breadcrumbs.find((x) => x.text === 'Id').text = element.__str__
           useMeta({ title: `${title.value}: ${element.__str__}` })
           loadHardwareInfo()
