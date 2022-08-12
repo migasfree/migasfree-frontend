@@ -195,6 +195,9 @@
         </q-table>
       </div>
     </template>
+    <p v-else class="text-center">
+      <q-spinner-dots color="primary" size="3em" />
+    </p>
   </q-page>
 </template>
 
@@ -597,6 +600,9 @@ export default {
         .then((response) => {
           Object.assign(computer, response.data)
           breadcrumbs.find((x) => x.text === 'Id').to.params.id = computer.id
+          breadcrumbs.find((x) => x.text === 'Id').icon = elementIcon(
+            computer.status
+          )
           breadcrumbs.find((x) => x.text === 'Id').text = computer.__str__
           useMeta({ title: `${title.value}: ${computer.__str__}` })
           loadItems()
