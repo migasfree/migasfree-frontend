@@ -31,7 +31,7 @@
                   <q-icon
                     name="mdi-clock-outline"
                     size="sm"
-                    class="vertical-middle"
+                    class="vertical-middle q-mr-xs"
                   />
                   <span class="vertical-middle">
                     {{ showDate(new Date(Date.now())) }}</span
@@ -42,7 +42,7 @@
                   <q-icon
                     name="mdi-card-account-details-outline"
                     size="sm"
-                    class="vertical-middle"
+                    class="vertical-middle q-mr-xs"
                   />
                   <span class="vertical-middle"> {{ computer.uuid }}</span>
                 </p>
@@ -130,7 +130,12 @@
                       </q-item-section>
 
                       <q-item-section>
-                        <translate>Packages to Install</translate>
+                        <q-chip>
+                          <q-avatar color="info" text-color="black">{{
+                            simulation.packages.install.length
+                          }}</q-avatar>
+                          <translate>Packages to Install</translate>
+                        </q-chip>
                       </q-item-section>
 
                       <q-item-section side>
@@ -172,7 +177,14 @@
                       </q-item-section>
 
                       <q-item-section>
-                        <translate>Packages to Install (by policies)</translate>
+                        <q-chip>
+                          <q-avatar color="info" text-color="black">{{
+                            simulation.policies.install.length
+                          }}</q-avatar>
+                          <translate
+                            >Packages to Install (by policies)</translate
+                          >
+                        </q-chip>
                       </q-item-section>
 
                       <q-item-section side>
@@ -214,7 +226,12 @@
                       </q-item-section>
 
                       <q-item-section>
-                        <translate>Packages to Uninstall</translate>
+                        <q-chip>
+                          <q-avatar color="info" text-color="black">{{
+                            simulation.packages.remove.length
+                          }}</q-avatar>
+                          <translate>Packages to Uninstall</translate>
+                        </q-chip>
                       </q-item-section>
 
                       <q-item-section side>
@@ -256,9 +273,14 @@
                       </q-item-section>
 
                       <q-item-section>
-                        <translate
-                          >Packages to Uninstall (by policies)</translate
-                        >
+                        <q-chip>
+                          <q-avatar color="info" text-color="black">{{
+                            simulation.policies.remove.length
+                          }}</q-avatar>
+                          <translate
+                            >Packages to Uninstall (by policies)</translate
+                          >
+                        </q-chip>
                       </q-item-section>
 
                       <q-item-section side>
@@ -498,6 +520,9 @@ export default {
         .then((response) => {
           Object.assign(computer, response.data)
           breadcrumbs.find((x) => x.text === 'Id').to.params.id = computer.id
+          breadcrumbs.find((x) => x.text === 'Id').icon = elementIcon(
+            computer.status
+          )
           breadcrumbs.find((x) => x.text === 'Id').text = computer.__str__
           useMeta({ title: `${title.value}: ${computer.__str__}` })
           loadProject()
