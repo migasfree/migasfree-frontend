@@ -1,152 +1,164 @@
 <template>
   <q-page padding>
-    <Breadcrumbs :items="breadcrumbs" />
+    <ItemDetail
+      :breadcrumbs="breadcrumbs"
+      :original-title="title"
+      :model="model"
+      :routes="routes"
+      :element="element"
+      :is-valid="false"
+      :add-button="false"
+      :continue-button="false"
+      :save-button="false"
+      :remove-button="false"
+      :borderless="true"
+      @set-related="setRelated"
+      @set-title="setTitle"
+    >
+      <template #fields>
+        <q-card-section v-if="!('id' in element)">
+          <p class="text-center">
+            <q-spinner-dots color="primary" size="3em" />
+          </p>
+        </q-card-section>
 
-    <template v-if="element.id">
-      <Header :title="title" :has-export-button="false">
-        <template v-if="element.id" #append
-          >:
-          <MigasLink
-            model="computers"
-            :pk="element.id"
-            :value="element.__str__ || ''"
-            :icon="elementIcon(element.status)"
-            :tooltip="element.summary"
-          />
-        </template>
-      </Header>
-
-      <div class="row q-pa-md q-gutter-md">
-        <div class="col-6">
-          <ComputerHardwareResume
-            v-if="element.product_system"
-            :cid="element.id"
-            :last-hardware-capture="element.last_hardware_capture"
-            :product="element.product"
-            :product-system="element.product_system"
-            :architecture="element.architecture"
-            :uuid="element.uuid"
-            :cpu="element.cpu"
-            :ram="element.ram"
-            :storage="element.storage"
-            :disks="element.disks"
-            :mac-address="element.mac_address"
-            :readonly="true"
-          />
-          <q-banner v-else class="text-white bg-info q-ma-md">
-            <translate>No information</translate>
-          </q-banner>
-        </div>
-      </div>
-
-      <div v-if="hardwareInfo.length > 0" class="row q-pa-md q-gutter-md">
-        <q-tree :nodes="hardwareInfo" node-key="id" no-connectors>
-          <template #default-header="prop">
-            <div class="row items-center">
-              <div class="text-weight-bold text-primary">
-                {{ header(prop.node) }}
-
-                <q-btn
-                  class="q-ma-md"
-                  :label="$gettext('Details')"
-                  icon="mdi-text-box-search"
-                  @click="showDetails(prop.node.id)"
-                />
-              </div>
+        <q-card-section v-else>
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6">
+              <ComputerHardwareResume
+                v-if="element.product_system"
+                :cid="element.id"
+                :last-hardware-capture="element.last_hardware_capture"
+                :product="element.product"
+                :product-system="element.product_system"
+                :architecture="element.architecture"
+                :uuid="element.uuid"
+                :cpu="element.cpu"
+                :ram="element.ram"
+                :storage="element.storage"
+                :disks="element.disks"
+                :mac-address="element.mac_address"
+                :readonly="true"
+              />
+              <q-banner v-else class="text-white bg-info q-ma-md">
+                <translate>No information</translate>
+              </q-banner>
             </div>
-          </template>
+          </div>
 
-          <template #default-body="prop">
-            <q-card>
-              <q-card-section>
-                <p v-if="prop.node.width">
-                  <translate>Width</translate>:
-                  <strong>{{ prop.node.width }}</strong>
-                </p>
+          <div v-if="loading" class="text-center">
+            <q-spinner-dots color="primary" size="3em" />
+          </div>
 
-                <p v-if="prop.node.name">
-                  <translate>Name</translate>:
-                  <strong>{{ prop.node.name }}</strong>
-                </p>
+          <div v-if="hardwareInfo.length > 0" class="row q-pa-md q-gutter-md">
+            <q-tree :nodes="hardwareInfo" node-key="id" no-connectors>
+              <template #default-header="prop">
+                <div class="row items-center">
+                  <div class="text-weight-bold text-primary">
+                    {{ header(prop.node) }}
 
-                <p v-if="prop.node.class_name">
-                  <translate>Class Name</translate>:
-                  <strong>{{ prop.node.class_name }}</strong>
-                </p>
+                    <q-btn
+                      class="q-ma-md"
+                      :label="$gettext('Details')"
+                      icon="mdi-text-box-search"
+                      @click="showDetails(prop.node.id)"
+                    />
+                  </div>
+                </div>
+              </template>
 
-                <p>
-                  <translate>Enabled</translate>:
-                  <BooleanView :value="prop.node.enabled" />
-                </p>
+              <template #default-body="prop">
+                <q-card>
+                  <q-card-section>
+                    <p v-if="prop.node.width">
+                      <translate>Width</translate>:
+                      <strong>{{ prop.node.width }}</strong>
+                    </p>
 
-                <p>
-                  <translate>Claimed</translate>:
-                  <BooleanView :value="prop.node.claimed" />
-                </p>
+                    <p v-if="prop.node.name">
+                      <translate>Name</translate>:
+                      <strong>{{ prop.node.name }}</strong>
+                    </p>
 
-                <p v-if="prop.node.vendor">
-                  <translate>Vendor</translate>:
-                  <strong>{{ prop.node.vendor }}</strong>
-                </p>
+                    <p v-if="prop.node.class_name">
+                      <translate>Class Name</translate>:
+                      <strong>{{ prop.node.class_name }}</strong>
+                    </p>
 
-                <p v-if="prop.node.product">
-                  <translate>Product</translate>:
-                  <strong>{{ prop.node.product }}</strong>
-                </p>
+                    <p>
+                      <translate>Enabled</translate>:
+                      <BooleanView :value="prop.node.enabled" />
+                    </p>
 
-                <p v-if="prop.node.version">
-                  <translate>Version</translate>:
-                  <strong>{{ prop.node.version }}</strong>
-                </p>
+                    <p>
+                      <translate>Claimed</translate>:
+                      <BooleanView :value="prop.node.claimed" />
+                    </p>
 
-                <p v-if="prop.node.serial">
-                  <translate>Serial</translate>:
-                  <strong>{{ prop.node.serial }}</strong>
-                </p>
+                    <p v-if="prop.node.vendor">
+                      <translate>Vendor</translate>:
+                      <strong>{{ prop.node.vendor }}</strong>
+                    </p>
 
-                <p v-if="prop.node.bus_info">
-                  <translate>Bus Info</translate>:
-                  <strong>{{ prop.node.bus_info }}</strong>
-                </p>
+                    <p v-if="prop.node.product">
+                      <translate>Product</translate>:
+                      <strong>{{ prop.node.product }}</strong>
+                    </p>
 
-                <p v-if="prop.node.physid">
-                  <translate>Physical Id</translate>:
-                  <strong>{{ prop.node.physid }}</strong>
-                </p>
+                    <p v-if="prop.node.version">
+                      <translate>Version</translate>:
+                      <strong>{{ prop.node.version }}</strong>
+                    </p>
 
-                <p v-if="prop.node.slot">
-                  <translate>Slot</translate>:
-                  <strong>{{ prop.node.slot }}</strong>
-                </p>
+                    <p v-if="prop.node.serial">
+                      <translate>Serial</translate>:
+                      <strong>{{ prop.node.serial }}</strong>
+                    </p>
 
-                <p v-if="prop.node.size">
-                  <translate>Size</translate>:
-                  <strong>{{ humanStorageSize(prop.node.size) }}</strong>
-                </p>
+                    <p v-if="prop.node.bus_info">
+                      <translate>Bus Info</translate>:
+                      <strong>{{ prop.node.bus_info }}</strong>
+                    </p>
 
-                <p v-if="prop.node.capacity">
-                  <translate>Capacity</translate>:
-                  <strong>{{ humanStorageSize(prop.node.capacity) }}</strong>
-                </p>
+                    <p v-if="prop.node.physid">
+                      <translate>Physical Id</translate>:
+                      <strong>{{ prop.node.physid }}</strong>
+                    </p>
 
-                <p v-if="prop.node.clock">
-                  <translate>Clock</translate>:
-                  <strong>{{ humanStorageSize(prop.node.clock) }}</strong>
-                </p>
+                    <p v-if="prop.node.slot">
+                      <translate>Slot</translate>:
+                      <strong>{{ prop.node.slot }}</strong>
+                    </p>
 
-                <p v-if="prop.node.dev">
-                  <translate>Dev</translate>:
-                  <strong>{{ prop.node.dev }}</strong>
-                </p>
-              </q-card-section>
-            </q-card>
-          </template>
-        </q-tree>
-      </div>
-    </template>
-    <p v-else class="text-center">
-      <q-spinner-dots color="primary" size="3em" />
-    </p>
+                    <p v-if="prop.node.size">
+                      <translate>Size</translate>:
+                      <strong>{{ humanStorageSize(prop.node.size) }}</strong>
+                    </p>
+
+                    <p v-if="prop.node.capacity">
+                      <translate>Capacity</translate>:
+                      <strong>{{
+                        humanStorageSize(prop.node.capacity)
+                      }}</strong>
+                    </p>
+
+                    <p v-if="prop.node.clock">
+                      <translate>Clock</translate>:
+                      <strong>{{ humanStorageSize(prop.node.clock) }}</strong>
+                    </p>
+
+                    <p v-if="prop.node.dev">
+                      <translate>Dev</translate>:
+                      <strong>{{ prop.node.dev }}</strong>
+                    </p>
+                  </q-card-section>
+                </q-card>
+              </template>
+            </q-tree>
+          </div>
+        </q-card-section>
+      </template>
+    </ItemDetail>
 
     <q-dialog v-model="details">
       <q-card>
@@ -222,7 +234,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { arrayToTree } from 'performant-array-to-tree'
@@ -231,9 +243,7 @@ import { format, useMeta } from 'quasar'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
-import Breadcrumbs from 'components/ui/Breadcrumbs'
-import Header from 'components/ui/Header'
-import MigasLink from 'components/MigasLink'
+import ItemDetail from 'components/ui/ItemDetail'
 import BooleanView from 'components/ui/BooleanView'
 import ComputerHardwareResume from 'components/computer/HardwareResume'
 
@@ -241,9 +251,7 @@ import { modelIcon, useElement } from 'composables/element'
 
 export default {
   components: {
-    Breadcrumbs,
-    Header,
-    MigasLink,
+    ItemDetail,
     BooleanView,
     ComputerHardwareResume,
   },
@@ -255,8 +263,16 @@ export default {
     const uiStore = useUiStore()
 
     const title = ref($gettext('Hardware Information'))
-    useMeta({ title: title.value })
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
 
+    const routes = {
+      list: 'computers-list',
+    }
     const model = 'computers'
 
     const breadcrumbs = reactive([
@@ -276,7 +292,7 @@ export default {
       },
       {
         text: $gettext('Results'),
-        to: 'computers-list',
+        to: routes.list,
       },
       {
         text: 'Id',
@@ -288,6 +304,7 @@ export default {
     ])
 
     let element = reactive({})
+    const loading = ref(false)
     const hardwareInfo = ref([])
     const details = ref(false)
     const detailInfo = reactive({
@@ -332,7 +349,8 @@ export default {
       },
     ]
 
-    const loadHardwareInfo = async () => {
+    const setRelated = async () => {
+      loading.value = true
       await api
         .get(`/api/v1/token/${model}/${route.params.id}/hardware/`)
         .then((response) => {
@@ -344,6 +362,7 @@ export default {
         .catch((error) => {
           uiStore.notifyError(error)
         })
+        .finally(() => (loading.value = false))
     }
 
     const header = (row) => {
@@ -365,28 +384,17 @@ export default {
         })
     }
 
-    onMounted(async () => {
-      await api
-        .get(`/api/v1/token/${model}/${route.params.id}/`)
-        .then((response) => {
-          Object.assign(element, response.data)
-          breadcrumbs.find((x) => x.text === 'Id').to.params.id = element.id
-          breadcrumbs.find((x) => x.text === 'Id').icon = elementIcon(
-            element.status
-          )
-          breadcrumbs.find((x) => x.text === 'Id').text = element.__str__
-          useMeta({ title: `${title.value}: ${element.__str__}` })
-          loadHardwareInfo()
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-    })
+    const setTitle = (value) => {
+      windowTitle.value = value
+    }
 
     return {
       title,
       breadcrumbs,
+      routes,
+      model,
       element,
+      loading,
       hardwareInfo,
       details,
       detailInfo,
@@ -399,6 +407,8 @@ export default {
       humanStorageSize,
       header,
       showDetails,
+      setRelated,
+      setTitle,
     }
   },
 }
