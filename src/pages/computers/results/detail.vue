@@ -423,7 +423,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, nextTick } from 'vue'
+import { ref, reactive, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -659,7 +659,30 @@ export default {
       // console.log('delayed filter aborted')
     }
 
+    const getComputerStatus = async () => {
+      await api
+        .get(`/api/v1/token/${model}/status/`)
+        .then((response) => {
+          Object.entries(response.data.choices).map(([key, val]) => {
+            status.value.push({
+              label: val,
+              value: key,
+              icon: elementIcon(key),
+            })
+          })
+        })
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+    }
+
     const setRelated = () => {
+      loadSyncInfo()
+      loadErrors()
+      loadFaults()
+
+      getComputerStatus()
+
       Object.entries(element.tags).map(([key, val]) => {
         if (val.latitude !== null) {
           markers.value.push({
@@ -679,35 +702,6 @@ export default {
     const setTitle = (value) => {
       windowTitle.value = value
     }
-
-    onMounted(async () => {
-      await api
-        .get(`/api/v1/token/${model}/${route.params.id}/`)
-        .then((response) => {
-          Object.assign(element, response.data)
-          loadSyncInfo()
-          loadErrors()
-          loadFaults()
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-
-      await api
-        .get(`/api/v1/token/${model}/status/`)
-        .then((response) => {
-          Object.entries(response.data.choices).map(([key, val]) => {
-            status.value.push({
-              label: val,
-              value: key,
-              icon: elementIcon(key),
-            })
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-    })
 
     return {
       title,
