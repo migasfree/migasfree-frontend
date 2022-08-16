@@ -1,74 +1,67 @@
 <template>
   <q-page padding>
-    <Breadcrumbs :items="breadcrumbs" />
+    <ItemDetail
+      :breadcrumbs="breadcrumbs"
+      :original-title="title"
+      :model="model"
+      :routes="routes"
+      :element="element"
+      :is-valid="false"
+      :add-button="false"
+      :continue-button="false"
+      :save-button="false"
+      :remove-button="false"
+      @set-related="setRelated"
+      @set-title="setTitle"
+    >
+      <template #fields>
+        <q-card-section>
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-md">
+              <div v-if="loading" class="text-center">
+                <q-spinner-dots color="primary" size="3em" />
+              </div>
 
-    <Header :title="$gettext('Package Information')" :has-export-button="false">
-      <template v-if="element.id" #append
-        >:
-        <MigasLink
-          model="packages"
-          :pk="element.id"
-          :value="element.fullname"
-        />
-        <q-btn
-          v-if="element.url"
-          class="q-ma-md"
-          size="md"
-          icon="mdi-download"
-          :label="$gettext('Download')"
-          color="info"
-          text-color="black"
-          type="a"
-          :href="`${server}${element.url}`"
-        />
-      </template>
-    </Header>
-
-    <q-card>
-      <q-card-section>
-        <div class="row q-pa-md q-gutter-md">
-          <div class="col-md">
-            <div v-if="loading" class="text-center">
-              <q-spinner-dots color="primary" size="3em" />
+              <q-markdown :src="information" />
             </div>
-
-            <q-markdown :src="information" />
           </div>
-        </div>
-      </q-card-section>
-    </q-card>
+        </q-card-section>
+      </template>
+    </ItemDetail>
   </q-page>
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, reactive } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
-import Breadcrumbs from 'components/ui/Breadcrumbs'
-import Header from 'components/ui/Header'
-import MigasLink from 'components/MigasLink'
+import ItemDetail from 'components/ui/ItemDetail'
 
 import { modelIcon } from 'composables/element'
 
 export default {
   components: {
-    Breadcrumbs,
-    Header,
-    MigasLink,
+    ItemDetail,
   },
   setup() {
     const uiStore = useUiStore()
-    const route = useRoute()
     const { $gettext } = useGettext()
 
     const title = ref($gettext('Package Information'))
-    useMeta({ title: title.value })
+    const windowTitle = ref(title.value)
+    useMeta(() => {
+      return {
+        title: windowTitle.value,
+      }
+    })
 
+    const routes = {
+      list: 'packages-list',
+    }
     const model = 'packages'
 
     const element = reactive({ id: 0 })
@@ -92,7 +85,7 @@ export default {
       },
       {
         text: $gettext('Results'),
-        to: 'packages-list',
+        to: routes.list,
       },
       {
         text: 'Id',
@@ -103,7 +96,7 @@ export default {
       },
     ])
 
-    const loadInfo = async () => {
+    const setRelated = async () => {
       loading.value = true
       await api
         .get(`/api/v1/token/${model}/${element.id}/info/`)
@@ -116,29 +109,21 @@ export default {
         .finally(() => (loading.value = false))
     }
 
-    onMounted(async () => {
-      await api
-        .get(`/api/v1/token/${model}/${route.params.id}/`)
-        .then((response) => {
-          Object.assign(element, response.data)
-          breadcrumbs.find((x) => x.text === 'Id').to.params.id = element.id
-          breadcrumbs.find((x) => x.text === 'Id').icon = modelIcon(model)
-          breadcrumbs.find((x) => x.text === 'Id').text = element.fullname
-          title.value = `${title.value}: ${element.fullname}`
-          loadInfo()
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-    })
+    const setTitle = (value) => {
+      windowTitle.value = value
+    }
 
     return {
       server: uiStore.server,
       title,
+      routes,
+      model,
       breadcrumbs,
       element,
       information,
       loading,
+      setTitle,
+      setRelated,
     }
   },
 }
