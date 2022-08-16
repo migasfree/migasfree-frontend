@@ -51,7 +51,7 @@ export default function useDetail(
   })
 
   if (route.params.id) {
-    if (route.name !== 'package-information') {
+    if (!['package-information', 'computer-hardware'].includes(route.name)) {
       breadcrumbs.push({
         text: $gettext('Results'),
         to: routes.list,
