@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import { LocalStorage } from 'quasar'
-import { useUiStore } from './ui'
+
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
+import { useUiStore } from './ui'
 
 export const useAuthStore = defineStore('auth', {
   id: 'auth',
@@ -10,6 +11,7 @@ export const useAuthStore = defineStore('auth', {
     token: LocalStorage.getItem('auth.token') || '',
     loggedIn: LocalStorage.getItem('auth.loggedIn') || false,
     user: LocalStorage.getItem('auth.user') || {},
+    server: LocalStorage.getItem('auth.server') || {},
     domains: LocalStorage.getItem('auth.domains') || [
       {
         id: 0,
@@ -50,6 +52,7 @@ export const useAuthStore = defineStore('auth', {
           this.setToken(response.data.key)
           this.setLoggedIn(true)
           this.getUser()
+          this.getServerInfo()
           this.loadDomains()
           this.loadScopes()
         })
@@ -65,6 +68,20 @@ export const useAuthStore = defineStore('auth', {
         .get('/rest-auth/user/')
         .then((response) => {
           this.setUser(response.data)
+        })
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+    },
+
+    async getServerInfo() {
+      const uiStore = useUiStore()
+
+      await api
+        .post('/api/v1/public/server/info/')
+        .then((response) => {
+          this.setServerInfo(response.data)
+          console.log(response.data)
         })
         .catch((error) => {
           uiStore.notifyError(error)
@@ -88,6 +105,7 @@ export const useAuthStore = defineStore('auth', {
       this.setToken('')
       this.setLoggedIn(false)
       this.resetUser()
+      this.resetServerInfo()
       this.resetDomains()
       this.resetScopes()
     },
@@ -152,6 +170,11 @@ export const useAuthStore = defineStore('auth', {
       LocalStorage.set('auth.user', this.user)
     },
 
+    setServerInfo(value) {
+      this.server = value
+      LocalStorage.set('auth.server', this.server)
+    },
+
     setToken(value) {
       this.token = value
       LocalStorage.set('auth.token', this.token)
@@ -160,6 +183,11 @@ export const useAuthStore = defineStore('auth', {
     resetUser() {
       this.user = {}
       LocalStorage.set('auth.user', this.user)
+    },
+
+    resetServerInfo() {
+      this.server = {}
+      LocalStorage.set('auth.server', this.server)
     },
 
     deleteDomain(id) {
