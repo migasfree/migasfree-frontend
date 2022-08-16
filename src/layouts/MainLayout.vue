@@ -23,7 +23,9 @@
           <q-avatar class="q-pl-sm" size="22px">
             <img src="../assets/migasfree-logo-mini.svg" alt="migasfree logo" />
           </q-avatar>
-          <q-tooltip>{{ $gettext('Dashboard') }}</q-tooltip>
+          <q-tooltip
+            >{{ $gettext('Dashboard') }} [{{ organization }}]</q-tooltip
+          >
         </q-btn>
 
         <SearchBox />
@@ -131,7 +133,8 @@ export default defineComponent({
     const userAccount = ref(null)
 
     useMeta({
-      titleTemplate: (title) => `${title} | Migasfree`,
+      titleTemplate: (title) =>
+        `${title} | Migasfree @ ${authStore.server.organization}`,
     })
 
     const hasDomainOrScopePreference = computed(() => {
@@ -175,6 +178,7 @@ export default defineComponent({
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
       loggedIn: authStore.loggedIn,
+      organization: authStore.server.organization,
       hasDomainOrScopePreference,
       domainPreference,
       scopePreference,
