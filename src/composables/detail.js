@@ -51,13 +51,15 @@ export default function useDetail(
   })
 
   if (route.params.id) {
-    breadcrumbs.push({
-      text: $gettext('Results'),
-      to: routes.list,
-    })
-    breadcrumbs.push({
-      text: 'Id',
-    })
+    if (route.name !== 'package-information') {
+      breadcrumbs.push({
+        text: $gettext('Results'),
+        to: routes.list,
+      })
+      breadcrumbs.push({
+        text: 'Id',
+      })
+    }
   } else {
     breadcrumbs.push({ text: $gettext('Add') })
   }
@@ -166,6 +168,8 @@ export default function useDetail(
         .then((response) => {
           Object.assign(element, response.data)
           emit('setRelated')
+          if ('to' in breadcrumbs.find((x) => x.text === 'Id'))
+            breadcrumbs.find((x) => x.text === 'Id').to.params.id = element.id
           breadcrumbs.find((x) => x.text === 'Id').icon = getElementIcon()
           breadcrumbs.find((x) => x.text === 'Id').text = elementText.value
           emit('setTitle', `${originalTitle}: ${elementText.value}`)
