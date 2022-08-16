@@ -38,7 +38,11 @@
       />
 
       <q-btn
-        v-if="model === 'packages' && element.store.id"
+        v-if="
+          model === 'packages' &&
+          element.store.id &&
+          $route.name !== 'package-information'
+        "
         class="q-ma-md"
         size="md"
         icon="mdi-information"
@@ -114,7 +118,10 @@
     </q-card-actions>
   </q-card>
 
-  <div v-if="$route.params.id && element.id && !noData" class="row q-pa-md">
+  <div
+    v-if="removeButton && $route.params.id && element.id && !noData"
+    class="row q-pa-md"
+  >
     <q-btn
       flat
       icon="mdi-delete"
@@ -194,6 +201,11 @@ export default defineComponent({
       default: true,
     },
     saveButton: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    removeButton: {
       type: Boolean,
       required: false,
       default: true,
