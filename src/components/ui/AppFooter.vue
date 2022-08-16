@@ -22,14 +22,39 @@
         size="16px"
         ><q-tooltip><translate>License</translate></q-tooltip></q-btn
       >
-      <q-btn
-        stretch
-        flat
-        icon="mdi-github"
-        type="a"
-        href="https://github.com/migasfree/migasfree"
-        ><q-tooltip><translate>Source code</translate></q-tooltip></q-btn
-      >
+      <q-btn-dropdown flat stretch>
+        <template #label>
+          <q-icon name="mdi-github" />
+
+          <q-tooltip>
+            <translate>Source code</translate>
+          </q-tooltip>
+        </template>
+
+        <q-list>
+          <q-item
+            v-close-popup
+            clickable
+            href="https://github.com/migasfree/migasfree-frontend"
+          >
+            <q-item-section>
+              <q-item-label>Frontend</q-item-label>
+              <q-item-label caption>{{ appVersion }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            v-close-popup
+            clickable
+            href="https://github.com/migasfree/migasfree-backend"
+          >
+            <q-item-section>
+              <q-item-label>Backend</q-item-label>
+              <q-item-label caption>{{ serverVersion }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-btn-dropdown>
 
       <q-space />
 
@@ -54,12 +79,20 @@
 
 <script>
 import { api } from 'boot/axios'
+import { useAuthStore } from 'stores/auth'
+
+const app = require('../../../package.json')
 
 export default {
   setup() {
+    const authStore = useAuthStore()
     const apiLink = `${api.defaults.baseURL}/docs/`
 
-    return { apiLink }
+    return {
+      apiLink,
+      serverVersion: authStore.server.version,
+      appVersion: app.version,
+    }
   },
 }
 </script>
