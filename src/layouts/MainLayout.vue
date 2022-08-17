@@ -24,7 +24,10 @@
             <img src="../assets/migasfree-logo-mini.svg" alt="migasfree logo" />
           </q-avatar>
           <q-tooltip
-            >{{ $gettext('Dashboard') }} [{{ organization }}]</q-tooltip
+            >{{ $gettext('Dashboard') }}
+            <template v-if="organization"
+              >[{{ organization }}]</template
+            ></q-tooltip
           >
         </q-btn>
 
@@ -102,7 +105,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, computed, watch } from 'vue'
 import { useMeta } from 'quasar'
 
 import AppMenu from 'components/ui/AppMenu'
@@ -133,8 +136,7 @@ export default defineComponent({
     const userAccount = ref(null)
 
     useMeta({
-      titleTemplate: (title) =>
-        `${title} | Migasfree @ ${authStore.server.organization}`,
+      titleTemplate: (title) => `${title} | Migasfree`,
     })
 
     const hasDomainOrScopePreference = computed(() => {
@@ -159,6 +161,10 @@ export default defineComponent({
         : null
     })
 
+    const organization = computed(() => {
+      return authStore.server.organization
+    })
+
     const removeDomainPreference = async () => {
       await userAccount.value.updatePreferences({
         domain_preference: null,
@@ -171,6 +177,13 @@ export default defineComponent({
       })
     }
 
+    watch(organization, (newVal) => {
+      if (newVal !== undefined)
+        useMeta({
+          titleTemplate: (title) => `${title} | Migasfree @ ${newVal}`,
+        })
+    })
+
     return {
       leftDrawerOpen,
       userAccount,
@@ -178,7 +191,7 @@ export default defineComponent({
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
       loggedIn: authStore.loggedIn,
-      organization: authStore.server.organization,
+      organization,
       hasDomainOrScopePreference,
       domainPreference,
       scopePreference,
