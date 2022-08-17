@@ -142,7 +142,6 @@ export default {
     )
 
     const logout = () => {
-      console.log('logout UserAccount')
       authStore.logout().then(() => {
         router.push({ name: 'login' })
       })
