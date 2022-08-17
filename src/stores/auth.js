@@ -81,7 +81,6 @@ export const useAuthStore = defineStore('auth', {
         .post('/api/v1/public/server/info/')
         .then((response) => {
           this.setServerInfo(response.data)
-          console.log(response.data)
         })
         .catch((error) => {
           uiStore.notifyError(error)
