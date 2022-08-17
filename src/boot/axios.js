@@ -18,12 +18,14 @@ export default boot(({ app, router }) => {
       if (authToken && !config.url.includes('/api/v1/public/'))
         config.headers.common.Authorization = `Token ${authToken}`
 
+      if (config.url.includes('/api/v1/public/')) config.withCredentials = false
+
       const currentLang = app.config.globalProperties.$language.current
       config.headers['Accept-Language'] = `${currentLang.replace('_', '-')},${
         currentLang.split('_')[0]
       };q=0.9`
 
-      console.log('[ REQUEST ]', config.url, config.params, config.headers)
+      console.log('[ REQUEST ]', config.url, config.params, config)
 
       return config
     },
