@@ -78,6 +78,8 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+
 import { api } from 'boot/axios'
 import { useAuthStore } from 'stores/auth'
 
@@ -88,9 +90,13 @@ export default {
     const authStore = useAuthStore()
     const apiLink = `${api.defaults.baseURL}/docs/`
 
+    const serverVersion = computed(() => {
+      return authStore.server.version
+    })
+
     return {
       apiLink,
-      serverVersion: authStore.server.version,
+      serverVersion,
       appVersion: app.version,
     }
   },
