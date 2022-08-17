@@ -15,14 +15,15 @@ export default boot(({ app, router }) => {
     (config) => {
       const authToken = LocalStorage.getItem('auth.token')
 
-      if (authToken) config.headers.common.Authorization = `Token ${authToken}`
+      if (authToken && !config.url.includes('/api/v1/public/'))
+        config.headers.common.Authorization = `Token ${authToken}`
 
       const currentLang = app.config.globalProperties.$language.current
       config.headers['Accept-Language'] = `${currentLang.replace('_', '-')},${
         currentLang.split('_')[0]
       };q=0.9`
 
-      console.log('[ REQUEST ]', config.url, config.params)
+      console.log('[ REQUEST ]', config.url, config.params, config.headers)
 
       return config
     },
