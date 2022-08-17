@@ -78,7 +78,7 @@ export const useAuthStore = defineStore('auth', {
       const uiStore = useUiStore()
 
       await api
-        .post('/api/v1/public/server/info/')
+        .get('/api/v1/public/server/info/')
         .then((response) => {
           this.setServerInfo(response.data)
         })
