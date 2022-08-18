@@ -51,7 +51,7 @@ export default boot(({ app, router }) => {
         // authentication error, logout the user
         case 401:
           // notify.warn('Please login again', 'Session Expired')
-          LocalStorage.removeItem('auth.token')
+          LocalStorage.remove('auth.token')
           router.push('login')
           break
 
