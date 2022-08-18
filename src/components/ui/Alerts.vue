@@ -47,7 +47,9 @@ import {
   onMounted,
   onUnmounted,
 } from 'vue'
+import { useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
+import { useQuasar } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -57,9 +59,11 @@ export default defineComponent({
   name: 'Alerts',
 
   setup() {
+    const { $gettext } = useGettext()
+    const router = useRouter()
+    const $q = useQuasar()
     const authStore = useAuthStore()
     const uiStore = useUiStore()
-    const { $gettext } = useGettext()
 
     const alerts = ref([])
     const totalAlerts = ref(0)
@@ -80,6 +84,14 @@ export default defineComponent({
           updateData(response.data)
         })
         .catch((error) => {
+          if (
+            typeof error !== undefined &&
+            typeof error.response !== undefined &&
+            error.response.status === 403
+          ) {
+            $q.localStorage.remove('auth.token')
+            router.push('login')
+          }
           uiStore.notifyError(error)
         })
     }
