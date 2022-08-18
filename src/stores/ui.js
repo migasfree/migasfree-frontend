@@ -27,13 +27,13 @@ export const useUiStore = defineStore('ui', {
       let message = ''
 
       // Setup Error Message
-      if (typeof error !== 'undefined') {
+      if (typeof error !== undefined) {
         if (error.hasOwnProperty('message')) {
           message = error.message
         }
       }
 
-      if (typeof error.response !== 'undefined') {
+      if (typeof error.response !== undefined) {
         // Setup Generic Response Messages
         if (error.response.status === 401) {
           message = 'UnAuthorized'
