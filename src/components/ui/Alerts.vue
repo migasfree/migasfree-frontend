@@ -90,7 +90,7 @@ export default defineComponent({
             error.response.status === 403
           ) {
             $q.localStorage.remove('auth.token')
-            router.push('login')
+            router.push({ name: 'login' })
           }
           uiStore.notifyError(error)
         })
