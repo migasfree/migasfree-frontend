@@ -147,6 +147,7 @@ import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import RemoveDialog from 'components/ui/RemoveDialog'
 
+import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
 import useDetail from 'composables/detail'
