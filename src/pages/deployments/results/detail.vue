@@ -520,8 +520,8 @@ export default {
     const domains = reactive([])
     const attributes = reactive([])
     const schedules = reactive([])
-    const packages = reactive([])
-    const packageSets = reactive([])
+    const packages = ref([])
+    const packageSets = ref([])
     const source = ref(null)
     let stats = reactive({})
 
@@ -765,7 +765,7 @@ export default {
           },
         })
         .then((response) => {
-          Object.assign(packages, response.data.results)
+          packages.value = response.data.results
         })
 
       update(() => {})
@@ -790,7 +790,7 @@ export default {
           },
         })
         .then((response) => {
-          Object.assign(packageSets, response.data.results)
+          packageSets.value = response.data.results
         })
 
       update(() => {})
