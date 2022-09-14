@@ -348,7 +348,7 @@
           </div>
 
           <div v-if="markers.length > 0" class="row q-pa-md q-gutter-md">
-            <div class="col-md">
+            <div class="col">
               <q-card>
                 <q-card-section>
                   <div v-translate class="text-h5">Locations</div>
