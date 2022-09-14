@@ -649,6 +649,13 @@ export default {
           element.default_included_packages.join('\n')
         element.default_excluded_packages =
           element.default_excluded_packages.join('\n')
+
+        element.available_packages.sort((a, b) =>
+          a.fullname > b.fullname ? 1 : b.fullname > a.fullname ? -1 : 0
+        )
+        element.available_package_sets.sort((a, b) =>
+          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+        )
       }
       updateSchedule()
     }
