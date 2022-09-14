@@ -223,7 +223,7 @@ export default {
     ])
 
     const tags = ref([])
-    const userProfiles = reactive([])
+    const userProfiles = ref([])
 
     const isValid = computed(() => {
       return element.name !== undefined && element.name.trim() !== ''
@@ -234,7 +234,7 @@ export default {
         .get('/api/v1/token/user-profiles/domain-admins/')
         .then((response) => {
           Object.entries(response.data).map(([index, item]) => {
-            userProfiles.push({
+            userProfiles.value.push({
               id: item.id,
               name: item.username,
             })
