@@ -188,7 +188,7 @@ export default {
     const model = 'fault-definitions'
 
     const languages = ref([])
-    const userProfiles = reactive([])
+    const userProfiles = ref([])
 
     let element = reactive({
       id: 0,
@@ -295,7 +295,7 @@ export default {
           params: { search: val.toLowerCase() },
         })
         .then((response) => {
-          Object.assign(userProfiles, response.data.results)
+          userProfiles.value = response.data.results
         })
 
       update(() => {})
