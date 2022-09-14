@@ -145,8 +145,8 @@ export default {
 
     let element = reactive({ id: 0 })
 
-    const delays = reactive([])
-    const removedDelays = reactive([])
+    const delays = ref([])
+    const removedDelays = ref([])
 
     const breadcrumbs = reactive([
       {
@@ -174,7 +174,7 @@ export default {
         await api
           .get(`/api/v1/token/schedule-delays/?schedule__id=${element.id}`)
           .then((response) => {
-            Object.assign(delays, response.data.results)
+            delays.value = response.data.results
           })
           .catch((error) => {
             uiStore.notifyError(error)
@@ -190,7 +190,7 @@ export default {
     }
 
     const updateRelated = async () => {
-      delays.forEach((delay) => {
+      delays.value.forEach((delay) => {
         if (delay.delay === undefined || delay.duration === undefined) {
           return
         }
@@ -220,7 +220,7 @@ export default {
         }
       })
 
-      removedDelays.forEach((id) => {
+      removedDelays.value.forEach((id) => {
         api.delete(`/api/v1/token/schedule-delays/${id}/`).catch((error) => {
           uiStore.notifyError(error)
         })
@@ -236,7 +236,7 @@ export default {
         pms: undefined,
         architecture: undefined,
       })
-      delays.splice(0)
+      delays.value.splice(0)
     }
 
     const setTitle = (value) => {
@@ -244,10 +244,10 @@ export default {
     }
 
     const addInline = () => {
-      delays.push({
+      delays.value.push({
         id: 0,
-        delay: delays.length
-          ? parseInt(delays[delays.length - 1].delay) + 1
+        delay: delays.value.length
+          ? parseInt(delays[delays.value.length - 1].delay) + 1
           : 0,
         duration: 1,
         attributes: null,
@@ -255,9 +255,9 @@ export default {
     }
 
     const removeInline = (index) => {
-      const removedItem = delays.splice(index, 1)[0]
+      const removedItem = delays.value.splice(index, 1)[0]
       if (removedItem.id > 0) {
-        removedDelays.push(removedItem.id)
+        removedDelays.value.push(removedItem.id)
       }
     }
 
