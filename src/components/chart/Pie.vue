@@ -74,7 +74,17 @@
             hide-header
             hide-pagination
             @row-click="rowClick"
-          />
+          >
+            <template #top-right>
+              <q-btn
+                flat
+                icon="mdi-file-export"
+                color="primary"
+                @click.stop="exportTable(serie)"
+                ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
+              >
+            </template>
+          </q-table>
           <q-banner
             v-if="options.series.length === 0"
             class="text-white bg-info q-ma-md"
@@ -107,7 +117,7 @@ import {
   onBeforeUnmount,
 } from 'vue'
 import { useRouter } from 'vue-router'
-import { useQuasar } from 'quasar'
+import { exportFile, useQuasar } from 'quasar'
 import { useGettext } from 'vue3-gettext'
 
 import { api } from 'boot/axios'
@@ -373,6 +383,50 @@ export default {
       }
     }
 
+    const wrapCsvValue = (val, formatFn, row) => {
+      let formatted = formatFn !== void 0 ? formatFn(val, row) : val
+
+      formatted =
+        formatted === void 0 || formatted === null ? '' : String(formatted)
+
+      formatted = formatted.split('"').join('""')
+      /**
+       * Excel accepts \n and \r in strings, but some other CSV parsers do not
+       * Uncomment the next two lines to escape new lines
+       */
+      // .split('\n').join('\\n')
+      // .split('\r').join('\\r')
+
+      return `"${formatted}"`
+    }
+
+    const exportTable = (serie) => {
+      // naive encoding to csv format
+      const content = [columns.map((col) => wrapCsvValue(col.label))]
+        .concat(
+          serie.itemData.map((row) =>
+            columns
+              .map((col) =>
+                wrapCsvValue(
+                  typeof col.field === 'function'
+                    ? col.field(row)
+                    : row[col.field === void 0 ? col.name : col.field],
+                  col.format,
+                  row
+                )
+              )
+              .join(',')
+          )
+        )
+        .join('\r\n')
+
+      const status = exportFile(`${serie.title}.csv`, content, 'text/csv')
+
+      if (status !== true) {
+        uiStore.notifyError($gettext('Browser denied file download...'))
+      }
+    }
+
     watch(
       () => $q.dark.isActive,
       (val) => {
@@ -386,20 +440,6 @@ export default {
           })
         }
       }
-
-      /*data,
-      (val) => {
-        if ('inner' in val) {
-          // this.$set(this.options.series[0], 'data', val.inner)
-          // this.$set(this.options.series[1], 'data', val.outer)
-          options.series[0].data = val.inner
-          options.series[1].data = val.outer
-        } else {
-          // this.$set(this.options.series[0], 'data', val.data)
-          options.series[0].data = val.data
-        }
-      },
-      { deep: true }*/
     )
 
     return {
@@ -419,6 +459,7 @@ export default {
       goTo,
       saveImage,
       dataView,
+      exportTable,
     }
   },
 }
