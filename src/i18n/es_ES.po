@@ -400,6 +400,10 @@ msgstr "URL base"
 msgid "bits"
 msgstr "bits"
 
+#: src/components/chart/Pie.vue:426
+msgid "Browser denied file download..."
+msgstr "Descarga de archivos denegada por el navegador..."
+
 #: src/pages/computers/results/hardware.vue:119
 msgid "Bus Info"
 msgstr "Información del bus"
@@ -584,7 +588,7 @@ msgstr "Limpiar"
 msgid "Clock"
 msgstr "Reloj"
 
-#: src/components/chart/Pie.vue:90 src/components/chart/StackedBar.vue:85
+#: src/components/chart/Pie.vue:100 src/components/chart/StackedBar.vue:85
 #: src/pages/computers/results/hardware.vue:227
 msgid "Close"
 msgstr "Cerrar"
@@ -1217,7 +1221,8 @@ msgstr "¿Exclusivo?"
 msgid "Expire (minutes)"
 msgstr "Expiración (minutos)"
 
-#: src/components/ui/Header.vue:31 src/components/ui/TableResults.vue:561
+#: src/components/chart/Pie.vue:84 src/components/ui/Header.vue:31
+#: src/components/ui/TableResults.vue:561
 msgid "Export"
 msgstr "Exportar"
 
@@ -1652,7 +1657,7 @@ msgstr "Nivel"
 msgid "License"
 msgstr "Licencia"
 
-#: src/components/chart/Pie.vue:228 src/components/chart/StackedBar.vue:211
+#: src/components/chart/Pie.vue:238 src/components/chart/StackedBar.vue:211
 #: src/components/ui/TableResults.vue:372
 msgid "Loading data..."
 msgstr "Cargando datos..."
@@ -1818,7 +1823,7 @@ msgstr "lunes"
 msgid "More Filters"
 msgstr "Más filtros"
 
-#: src/components/chart/Pie.vue:243 src/components/computer/Info.vue:13
+#: src/components/chart/Pie.vue:253 src/components/computer/Info.vue:13
 #: src/pages/applications/results/detail.vue:26
 #: src/pages/applications/results/list.vue:105
 #: src/pages/attribute-sets/results/detail.vue:33
@@ -1915,7 +1920,7 @@ msgstr "No"
 msgid "No data available."
 msgstr "No hay datos disponibles."
 
-#: src/components/chart/Pie.vue:82 src/pages/computers/results/hardware.vue:191
+#: src/components/chart/Pie.vue:92 src/pages/computers/results/hardware.vue:191
 #: src/pages/computers/results/hardware.vue:205
 #: src/pages/computers/results/hardware.vue:219
 #: src/pages/computers/results/hardware.vue:44
@@ -2894,7 +2899,7 @@ msgstr "Lista de Usuarios"
 msgid "UUID"
 msgstr "UUID"
 
-#: src/components/chart/Pie.vue:249 src/pages/attributes/results/detail.vue:40
+#: src/components/chart/Pie.vue:259 src/pages/attributes/results/detail.vue:40
 #: src/pages/computers/results/hardware.vue:348
 msgid "Value"
 msgstr "Valor"
