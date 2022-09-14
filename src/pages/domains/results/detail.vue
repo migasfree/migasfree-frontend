@@ -222,7 +222,7 @@ export default {
       },
     ])
 
-    const tags = reactive([])
+    const tags = ref([])
     const userProfiles = reactive([])
 
     const isValid = computed(() => {
@@ -285,7 +285,7 @@ export default {
       await api
         .get('/api/v1/token/tags/', { params: { search: val.toLowerCase() } })
         .then((response) => {
-          Object.assign(tags, response.data.results)
+          tags.value = response.data.results
         })
 
       update(() => {})
