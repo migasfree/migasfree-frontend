@@ -67,7 +67,11 @@
                       :options="domains"
                       option-value="id"
                       option-label="name"
-                    />
+                    >
+                      <template #prepend>
+                        <q-icon :name="modelIcon('domains')" />
+                      </template>
+                    </q-select>
                   </div>
                 </div>
 
@@ -516,10 +520,9 @@ export default {
       },
     ])
 
-    const projects = reactive([])
-    const domains = reactive([])
-    const attributes = reactive([])
-    const schedules = reactive([])
+    const projects = ref([])
+    const domains = ref([])
+    const schedules = ref([])
     const packages = ref([])
     const packageSets = ref([])
     const source = ref(null)
@@ -606,7 +609,7 @@ export default {
       await api
         .get('/api/v1/token/projects/')
         .then((response) => {
-          Object.assign(projects, response.data.results)
+          projects.value = response.data.results
         })
         .catch((error) => {
           uiStore.notifyError(error)
@@ -616,7 +619,7 @@ export default {
         .get('/api/v1/token/domains/')
         .then((response) => {
           Object.entries(response.data.results).map(([index, item]) => {
-            domains.push({
+            domains.value.push({
               id: item.id,
               name: item.name,
             })
@@ -630,7 +633,7 @@ export default {
         .get('/api/v1/token/schedules/')
         .then((response) => {
           Object.entries(response.data.results).map(([index, item]) => {
-            schedules.push({
+            schedules.value.push({
               id: item.id,
               name: item.name,
             })
@@ -816,7 +819,6 @@ export default {
       element,
       projects,
       domains,
-      attributes,
       schedules,
       packages,
       packageSets,
