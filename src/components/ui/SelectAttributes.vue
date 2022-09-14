@@ -97,7 +97,7 @@ export default {
     const attributesComponent = ref(null)
 
     const model = ref('attributes')
-    const attributes = reactive([])
+    const attributes = ref([])
     const localValue = ref(props.modelValue)
 
     onMounted(() => {
@@ -116,7 +116,7 @@ export default {
           params: { search: val.toLowerCase() },
         })
         .then((response) => {
-          Object.assign(attributes, response.data.results)
+          attributes.value = response.data.results
         })
         .catch((error) => {
           uiStore.notifyError(error)
