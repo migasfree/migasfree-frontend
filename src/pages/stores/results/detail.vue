@@ -82,7 +82,7 @@ export default {
     }
     const model = 'stores'
 
-    const projects = reactive([])
+    const projects = ref([])
 
     let element = reactive({ id: 0 })
 
@@ -115,7 +115,7 @@ export default {
       await api
         .get(`/api/v1/token/projects/`)
         .then((response) => {
-          Object.assign(projects, response.data.results)
+          projects.value = response.data.results
         })
         .catch((error) => {
           uiStore.notifyError(error)
