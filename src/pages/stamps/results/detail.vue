@@ -138,7 +138,7 @@ export default {
       },
     ])
 
-    const kind = reactive([])
+    const kind = ref([])
 
     const isValid = computed(() => {
       return (
@@ -155,19 +155,20 @@ export default {
         .get('/api/v1/token/properties/kind/')
         .then((response) => {
           Object.entries(response.data).map(([key, val]) => {
-            kind.push({
+            kind.value.push({
               id: key,
               name: val,
             })
           })
-          if (element.id) element.kind = kind.find((x) => x.id == element.kind)
+          if (element.id)
+            element.kind = kind.value.find((x) => x.id == element.kind)
         })
         .catch((error) => {
           uiStore.notifyError(error)
         })
 
       if (typeof element.kind === 'string')
-        element.kind = kind.find((x) => x.id == element.kind)
+        element.kind = kind.value.find((x) => x.id == element.kind)
     }
 
     const elementData = () => {
