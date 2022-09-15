@@ -53,6 +53,16 @@
             :rows="data.series"
             hide-pagination
           >
+            <template #top-left>
+              <q-btn
+                flat
+                icon="mdi-file-export"
+                color="primary"
+                @click.stop="exportTable"
+                ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
+              >
+            </template>
+
             <template #header>
               <q-tr>
                 <q-th></q-th>
@@ -101,7 +111,7 @@ import {
   onBeforeMount,
   onBeforeUnmount,
 } from 'vue'
-import { useQuasar } from 'quasar'
+import { exportFile, useQuasar } from 'quasar'
 import { useGettext } from 'vue3-gettext'
 
 import { api } from 'boot/axios'
@@ -306,6 +316,53 @@ export default {
       viewData.value = true
     }
 
+    const wrapCsvValue = (val, formatFn, row) => {
+      let formatted = formatFn !== void 0 ? formatFn(val, row) : val
+
+      formatted =
+        formatted === void 0 || formatted === null ? '' : String(formatted)
+
+      formatted = formatted.split('"').join('""')
+      /**
+       * Excel accepts \n and \r in strings, but some other CSV parsers do not
+       * Uncomment the next two lines to escape new lines
+       */
+      // .split('\n').join('\\n')
+      // .split('\r').join('\\r')
+
+      return `"${formatted}"`
+    }
+
+    const exportTable = () => {
+      // naive encoding to csv format
+      const head = [
+        wrapCsvValue(''),
+        data.xData.map((col) => wrapCsvValue(col)),
+      ].join(',')
+      const body = data.series
+        .map((row) => {
+          return [
+            wrapCsvValue(row.name),
+            row.data
+              .map((item) => {
+                return wrapCsvValue(item.value)
+              })
+              .join(','),
+          ].join(',')
+        })
+        .join('\r\n')
+
+      const status = exportFile(
+        `${props.title}.csv`,
+        [head, body].join('\r\n'),
+        'text/csv'
+      )
+
+      if (status !== true) {
+        uiStore.notifyError($gettext('Browser denied file download...'))
+      }
+    }
+
     watch(
       () => props.initialData,
       (val) => {
@@ -352,6 +409,7 @@ export default {
       passData,
       saveImage,
       dataView,
+      exportTable,
     }
   },
 }
