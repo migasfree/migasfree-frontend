@@ -359,7 +359,7 @@ msgstr "ago"
 msgid "August"
 msgstr "agosto"
 
-#: src/pages/user-profiles/results/detail.vue:91
+#: src/pages/user-profiles/results/detail.vue:107
 msgid "Authorizations"
 msgstr "Autorizaciones"
 
@@ -400,7 +400,7 @@ msgstr "URL base"
 msgid "bits"
 msgstr "bits"
 
-#: src/components/chart/Pie.vue:426
+#: src/components/chart/Pie.vue:426 src/components/chart/StackedBar.vue:362
 msgid "Browser denied file download..."
 msgstr "Descarga de archivos denegada por el navegador..."
 
@@ -588,7 +588,7 @@ msgstr "Limpiar"
 msgid "Clock"
 msgstr "Reloj"
 
-#: src/components/chart/Pie.vue:100 src/components/chart/StackedBar.vue:85
+#: src/components/chart/Pie.vue:100 src/components/chart/StackedBar.vue:95
 #: src/pages/computers/results/hardware.vue:227
 msgid "Close"
 msgstr "Cerrar"
@@ -675,7 +675,7 @@ msgstr "Reemplazo de ordenadores"
 #: src/pages/scopes/results/detail.vue:175 src/pages/scopes/results/list.vue:84
 #: src/pages/stamps/results/detail.vue:131 src/pages/stamps/results/list.vue:78
 #: src/pages/user-profiles/results/changePassword.vue:152
-#: src/pages/user-profiles/results/detail.vue:364
+#: src/pages/user-profiles/results/detail.vue:380
 #: src/pages/user-profiles/results/list.vue:78
 msgid "Configuration"
 msgstr "Configuración"
@@ -807,7 +807,7 @@ msgstr "¡La situación actual ha cambiado!"
 #: src/pages/syncs/results/list.vue:115 src/pages/tags/index.vue:54
 #: src/pages/tags/results/detail.vue:221 src/pages/tags/results/list.vue:72
 #: src/pages/user-profiles/results/changePassword.vue:147
-#: src/pages/user-profiles/results/detail.vue:359
+#: src/pages/user-profiles/results/detail.vue:375
 #: src/pages/user-profiles/results/list.vue:73
 #: src/pages/users/results/detail.vue:75 src/pages/users/results/list.vue:57
 msgid "Dashboard"
@@ -1069,7 +1069,7 @@ msgstr "Reemplazo de dispositivos"
 #: src/layouts/MainLayout.vue:76 src/pages/deployments/results/list.vue:168
 #: src/pages/domains/results/detail.vue:183
 #: src/pages/scopes/results/detail.vue:42 src/pages/scopes/results/list.vue:123
-#: src/pages/user-profiles/results/detail.vue:247
+#: src/pages/user-profiles/results/detail.vue:263
 msgid "Domain"
 msgstr "Dominio"
 
@@ -1085,7 +1085,7 @@ msgstr "Preferencia de dominio"
 #: src/pages/computers/results/simulate.vue:94
 #: src/pages/domains/results/detail.vue:219
 #: src/pages/domains/results/list.vue:54 src/pages/domains/results/list.vue:71
-#: src/pages/user-profiles/results/detail.vue:168
+#: src/pages/user-profiles/results/detail.vue:184
 msgid "Domains"
 msgstr "Dominios"
 
@@ -1154,7 +1154,7 @@ msgstr "Despliegues habilitados"
 #: src/pages/formulas/results/detail.vue:25
 #: src/pages/policies/results/detail.vue:38
 #: src/pages/stamps/results/detail.vue:22
-#: src/pages/user-profiles/results/detail.vue:98
+#: src/pages/user-profiles/results/detail.vue:114
 msgid "Enabled?"
 msgstr "¿Habilitado?"
 
@@ -1221,8 +1221,8 @@ msgstr "¿Exclusivo?"
 msgid "Expire (minutes)"
 msgstr "Expiración (minutos)"
 
-#: src/components/chart/Pie.vue:84 src/components/ui/Header.vue:31
-#: src/components/ui/TableResults.vue:561
+#: src/components/chart/Pie.vue:84 src/components/chart/StackedBar.vue:62
+#: src/components/ui/Header.vue:31 src/components/ui/TableResults.vue:561
 msgid "Export"
 msgstr "Exportar"
 
@@ -1433,7 +1433,7 @@ msgstr "Grupo"
 
 #: src/components/ui/AppMenu.vue:107 src/pages/groups/results/detail.vue:129
 #: src/pages/groups/results/list.vue:45 src/pages/groups/results/list.vue:58
-#: src/pages/user-profiles/results/detail.vue:139
+#: src/pages/user-profiles/results/detail.vue:155
 msgid "Groups"
 msgstr "Grupos"
 
@@ -1497,7 +1497,7 @@ msgstr "Incluidos"
 msgid "Included Attributes"
 msgstr "Atributos incluidos"
 
-#: src/pages/user-profiles/results/detail.vue:114
+#: src/pages/user-profiles/results/detail.vue:130
 msgid ""
 "Indicates that this user has all permissions without explicitly assigning "
 "them."
@@ -1505,11 +1505,11 @@ msgstr ""
 "Indica que este usuario tiene todos los permisos sin asignárselos "
 "explícitamente."
 
-#: src/pages/user-profiles/results/detail.vue:128
+#: src/pages/user-profiles/results/detail.vue:144
 msgid "Indicates whether the user can enter this administration site."
 msgstr "Indica si el usuario puede entrar en este sitio de administración."
 
-#: src/pages/user-profiles/results/detail.vue:100
+#: src/pages/user-profiles/results/detail.vue:116
 msgid ""
 "Indicates whether the user should be treated as active. Uncheck this option "
 "instead of deleting the account."
@@ -1547,7 +1547,7 @@ msgstr "Asignado"
 msgid "Internal"
 msgstr "Interno"
 
-#: src/pages/user-profiles/results/detail.vue:382
+#: src/pages/user-profiles/results/detail.vue:398
 msgid "Invalid email"
 msgstr "Correo electrónico inválido"
 
@@ -1559,11 +1559,11 @@ msgstr "Inventario"
 msgid "ip address"
 msgstr "dirección IP"
 
-#: src/pages/user-profiles/results/detail.vue:126
+#: src/pages/user-profiles/results/detail.vue:142
 msgid "Is Staff?"
 msgstr "¿Es del personal?"
 
-#: src/pages/user-profiles/results/detail.vue:112
+#: src/pages/user-profiles/results/detail.vue:128
 msgid "Is Super User?"
 msgstr "¿Es superusuario?"
 
@@ -1657,7 +1657,7 @@ msgstr "Nivel"
 msgid "License"
 msgstr "Licencia"
 
-#: src/components/chart/Pie.vue:238 src/components/chart/StackedBar.vue:211
+#: src/components/chart/Pie.vue:238 src/components/chart/StackedBar.vue:221
 #: src/components/ui/TableResults.vue:372
 msgid "Loading data..."
 msgstr "Cargando datos..."
@@ -1946,7 +1946,7 @@ msgstr "Sin información"
 #: src/pages/logical-devices/results/detail.vue:32
 #: src/pages/policies/results/detail.vue:144
 #: src/pages/tags/results/detail.vue:75
-#: src/pages/user-profiles/results/detail.vue:211
+#: src/pages/user-profiles/results/detail.vue:227
 msgid "No results"
 msgstr "No hay resultados"
 
@@ -2199,7 +2199,7 @@ msgstr "Política"
 msgid "Policy Groups"
 msgstr "Grupos de políticas"
 
-#: src/pages/user-profiles/results/detail.vue:240
+#: src/pages/user-profiles/results/detail.vue:256
 msgid "Preferences"
 msgstr "Preferencias"
 
@@ -2441,7 +2441,7 @@ msgid "Schedules List"
 msgstr "Lista de Calendarios"
 
 #: src/layouts/MainLayout.vue:87 src/pages/scopes/results/detail.vue:146
-#: src/pages/user-profiles/results/detail.vue:274
+#: src/pages/user-profiles/results/detail.vue:290
 msgid "Scope"
 msgstr "Ámbito"
 
@@ -2774,6 +2774,10 @@ msgstr "Línea temporal"
 msgid "To who (attributes)"
 msgstr "A quién (atributos)"
 
+#: src/pages/user-profiles/results/detail.vue:92
+msgid "Token"
+msgstr "Token"
+
 #: src/pages/applications/index.vue:148 src/pages/models/index.vue:123
 msgid "Total"
 msgstr "Total"
@@ -2833,7 +2837,7 @@ msgstr "De baja"
 msgid "unsynchronized from"
 msgstr "no sincronizado desde"
 
-#: src/pages/Dashboard.vue:66
+#: src/pages/Dashboard.vue:66 src/pages/user-profiles/results/detail.vue:98
 msgid "Update"
 msgstr "Actualizar"
 
@@ -2854,12 +2858,12 @@ msgstr "Usuario/a"
 msgid "User Account"
 msgstr "Cuenta de usuario"
 
-#: src/pages/user-profiles/results/detail.vue:204
+#: src/pages/user-profiles/results/detail.vue:220
 msgid "User Permissions"
 msgstr "Permisos de usuario/a"
 
 #: src/pages/scopes/results/list.vue:128
-#: src/pages/user-profiles/results/detail.vue:327
+#: src/pages/user-profiles/results/detail.vue:343
 msgid "User Profile"
 msgstr "Perfil de usuario/a"
 
@@ -2867,7 +2871,7 @@ msgstr "Perfil de usuario/a"
 #: src/pages/fault-definitions/results/detail.vue:106
 #: src/pages/fault-definitions/results/detail.vue:95
 #: src/pages/user-profiles/results/changePassword.vue:156
-#: src/pages/user-profiles/results/detail.vue:368
+#: src/pages/user-profiles/results/detail.vue:384
 #: src/pages/user-profiles/results/list.vue:69
 #: src/pages/user-profiles/results/list.vue:82
 msgid "User Profiles"
