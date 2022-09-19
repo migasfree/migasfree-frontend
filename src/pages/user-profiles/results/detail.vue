@@ -85,6 +85,22 @@
               </p>
             </div>
           </div>
+
+          <div v-if="element.id" class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
+              <p>
+                <translate>Token</translate>:
+                <strong>{{ element.token }}</strong>
+                <q-btn
+                  class="q-ma-sm"
+                  icon="mdi-key-link"
+                  color="primary"
+                  :label="$gettext('Update')"
+                  @click="updateToken"
+                />
+              </p>
+            </div>
+          </div>
         </q-card-section>
 
         <q-card-section>
@@ -467,6 +483,18 @@ export default {
       windowTitle.value = value
     }
 
+    const updateToken = async () => {
+      await api
+        .post(`/api/v1/token/user-profiles/${element.id}/update-token/`)
+        .then((response) => {
+          element.token = response.data.info
+          uiStore.notifySuccess(response.data.detail)
+        })
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+    }
+
     const filterUserPermissions = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < 3) {
@@ -505,6 +533,7 @@ export default {
       elementData,
       resetElement,
       setTitle,
+      updateToken,
       filterUserPermissions,
       abortFilterUserPermissions,
       showDate,
