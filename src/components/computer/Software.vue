@@ -124,24 +124,20 @@
                   <q-item-section side>
                     <div class="row items-center">
                       <q-chip
-                        v-if="
-                          value.filter((item) => item.startsWith('+')).length
-                        "
+                        v-if="value.filter((item) => item.mode === '+').length"
                         color="positive"
                         text-color="black"
-                        >{{ value.filter((item) => item.startsWith('+')).length
+                        >{{ value.filter((item) => item.mode === '+').length
                         }}<q-tooltip
                           ><translate>Installed Packages</translate></q-tooltip
                         ></q-chip
                       >
 
                       <q-chip
-                        v-if="
-                          value.filter((item) => item.startsWith('-')).length
-                        "
+                        v-if="value.filter((item) => item.mode === '-').length"
                         color="negative"
                         text-color="white"
-                        >{{ value.filter((item) => item.startsWith('-')).length
+                        >{{ value.filter((item) => item.mode === '-').length
                         }}<q-tooltip
                           ><translate
                             >Uninstalled Packages</translate
@@ -154,14 +150,18 @@
                 <q-card>
                   <q-card-section>
                     <p v-for="(item, index) in sortArray(value)" :key="index">
-                      <span
+                      <q-chip
+                        size="xl"
                         :class="
-                          item.startsWith('+')
-                            ? 'text-positive'
-                            : 'text-negative'
+                          item.mode === '+' ? 'text-positive' : 'text-negative'
                         "
-                        >{{ item }}</span
+                        >{{ item.mode }}</q-chip
                       >
+                      <MigasLink
+                        model="packages"
+                        :pk="item.id"
+                        :value="item.name"
+                      />
                     </p>
                   </q-card-section>
                 </q-card>
@@ -363,7 +363,7 @@ export default {
       Object.entries(softwareHistory).map(([key, val]) => {
         history.push(key)
         sortArray(val).forEach((item) => {
-          history.push(item)
+          history.push(`${item.mode}${item.name}`)
         })
         history.push('')
       })
