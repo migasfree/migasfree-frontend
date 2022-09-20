@@ -106,6 +106,7 @@
 
 <script>
 import { defineComponent, ref, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useMeta } from 'quasar'
 
 import AppMenu from 'components/ui/AppMenu'
@@ -130,6 +131,7 @@ export default defineComponent({
   },
 
   setup() {
+    const router = useRouter()
     const authStore = useAuthStore()
 
     const leftDrawerOpen = ref(false)
@@ -165,6 +167,10 @@ export default defineComponent({
       return authStore.server.organization
     })
 
+    const loggedIn = computed(() => {
+      return authStore.loggedIn
+    })
+
     const removeDomainPreference = async () => {
       await userAccount.value.updatePreferences({
         domain_preference: null,
@@ -184,13 +190,17 @@ export default defineComponent({
         })
     })
 
+    watch(loggedIn, (newValue) => {
+      if (!newValue) router.push({ name: 'login' })
+    })
+
     return {
       leftDrawerOpen,
       userAccount,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
-      loggedIn: authStore.loggedIn,
+      loggedIn,
       organization,
       hasDomainOrScopePreference,
       domainPreference,
