@@ -486,6 +486,7 @@ msgstr "Por fecha de desinstalación (rango)"
 
 #: src/components/computer/Software.vue:246
 #: src/components/ui/RemoveDialog.vue:14 src/composables/dataGrid.js:966
+#: src/pages/user-profiles/results/detail.vue:492
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -675,7 +676,7 @@ msgstr "Reemplazo de ordenadores"
 #: src/pages/scopes/results/detail.vue:175 src/pages/scopes/results/list.vue:84
 #: src/pages/stamps/results/detail.vue:131 src/pages/stamps/results/list.vue:78
 #: src/pages/user-profiles/results/changePassword.vue:152
-#: src/pages/user-profiles/results/detail.vue:380
+#: src/pages/user-profiles/results/detail.vue:381
 #: src/pages/user-profiles/results/list.vue:78
 msgid "Configuration"
 msgstr "Configuración"
@@ -683,6 +684,10 @@ msgstr "Configuración"
 #: src/pages/computers/results/hardware.vue:208
 msgid "Configurations"
 msgstr "Configuraciones"
+
+#: src/pages/user-profiles/results/detail.vue:489
+msgid "Confirm"
+msgstr "Confirmar"
 
 #: src/pages/connections/results/detail.vue:79
 #: src/pages/devices/results/detail.vue:92
@@ -807,7 +812,7 @@ msgstr "¡La situación actual ha cambiado!"
 #: src/pages/syncs/results/list.vue:115 src/pages/tags/index.vue:54
 #: src/pages/tags/results/detail.vue:221 src/pages/tags/results/list.vue:72
 #: src/pages/user-profiles/results/changePassword.vue:147
-#: src/pages/user-profiles/results/detail.vue:375
+#: src/pages/user-profiles/results/detail.vue:376
 #: src/pages/user-profiles/results/list.vue:73
 #: src/pages/users/results/detail.vue:75 src/pages/users/results/list.vue:57
 msgid "Dashboard"
@@ -1551,7 +1556,7 @@ msgstr "Interno"
 msgid "Invalid credentials"
 msgstr "Las credenciales no son válidas"
 
-#: src/pages/user-profiles/results/detail.vue:398
+#: src/pages/user-profiles/results/detail.vue:399
 msgid "Invalid email"
 msgstr "Correo electrónico inválido"
 
@@ -2841,7 +2846,8 @@ msgstr "De baja"
 msgid "unsynchronized from"
 msgstr "no sincronizado desde"
 
-#: src/pages/Dashboard.vue:66 src/pages/user-profiles/results/detail.vue:98
+#: src/pages/Dashboard.vue:66 src/pages/user-profiles/results/detail.vue:491
+#: src/pages/user-profiles/results/detail.vue:98
 msgid "Update"
 msgstr "Actualizar"
 
@@ -2867,7 +2873,7 @@ msgid "User Permissions"
 msgstr "Permisos de usuario/a"
 
 #: src/pages/scopes/results/list.vue:128
-#: src/pages/user-profiles/results/detail.vue:343
+#: src/pages/user-profiles/results/detail.vue:344
 msgid "User Profile"
 msgstr "Perfil de usuario/a"
 
@@ -2875,7 +2881,7 @@ msgstr "Perfil de usuario/a"
 #: src/pages/fault-definitions/results/detail.vue:106
 #: src/pages/fault-definitions/results/detail.vue:95
 #: src/pages/user-profiles/results/changePassword.vue:156
-#: src/pages/user-profiles/results/detail.vue:384
+#: src/pages/user-profiles/results/detail.vue:385
 #: src/pages/user-profiles/results/list.vue:69
 #: src/pages/user-profiles/results/list.vue:82
 msgid "User Profiles"
