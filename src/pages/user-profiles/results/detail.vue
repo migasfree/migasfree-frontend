@@ -487,7 +487,7 @@ export default {
     const updateToken = async () => {
       $q.dialog({
         title: $gettext('Confirm'),
-        message: 'Would you like to update token?',
+        message: $gettext('Would you like to update token?'),
         ok: { label: $gettext('Update') },
         cancel: { label: $gettext('Cancel'), flat: true },
         persistent: true,
