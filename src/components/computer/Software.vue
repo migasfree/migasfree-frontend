@@ -149,20 +149,35 @@
                 </template>
                 <q-card>
                   <q-card-section>
-                    <p v-for="(item, index) in sortArray(value)" :key="index">
-                      <q-chip
-                        size="xl"
-                        :class="
-                          item.mode === '+' ? 'text-positive' : 'text-negative'
-                        "
-                        >{{ item.mode }}</q-chip
+                    <q-list>
+                      <q-virtual-scroll
+                        class="overflow"
+                        :items-size="value.length"
+                        :items="value"
                       >
-                      <MigasLink
-                        model="packages"
-                        :pk="item.id"
-                        :value="item.name"
-                      />
-                    </p>
+                        <template #default="{ item }">
+                          <q-item>
+                            <q-chip
+                              size="md"
+                              outline
+                              :color="
+                                item.mode === '+' ? 'positive' : 'negative'
+                              "
+                              :icon="
+                                item.mode === '+'
+                                  ? 'mdi-plus-thick'
+                                  : 'mdi-minus-thick'
+                              "
+                            />
+                            <MigasLink
+                              model="packages"
+                              :pk="item.id"
+                              :value="item.name"
+                            />
+                          </q-item>
+                        </template>
+                      </q-virtual-scroll>
+                    </q-list>
                   </q-card-section>
                 </q-card>
               </q-expansion-item>
