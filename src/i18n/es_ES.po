@@ -1547,6 +1547,10 @@ msgstr "Asignado"
 msgid "Internal"
 msgstr "Interno"
 
+#: src/stores/auth.js:74
+msgid "Invalid credentials"
+msgstr "Las credenciales no son válidas"
+
 #: src/pages/user-profiles/results/detail.vue:398
 msgid "Invalid email"
 msgstr "Correo electrónico inválido"

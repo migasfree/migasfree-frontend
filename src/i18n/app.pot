@@ -1647,6 +1647,10 @@ msgstr ""
 msgid "Internal"
 msgstr ""
 
+#: src/stores/auth.js:74
+msgid "Invalid credentials"
+msgstr ""
+
 #: src/pages/user-profiles/results/detail.vue:398
 msgid "Invalid email"
 msgstr ""
