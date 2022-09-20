@@ -319,7 +319,7 @@
 <script>
 import { ref, reactive, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useMeta } from 'quasar'
+import { useMeta, useQuasar } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -337,6 +337,7 @@ export default {
   },
   setup() {
     const { $gettext } = useGettext()
+    const $q = useQuasar()
     const uiStore = useUiStore()
     const { showDate, diffForHumans } = useDate()
 
@@ -484,15 +485,23 @@ export default {
     }
 
     const updateToken = async () => {
-      await api
-        .post(`/api/v1/token/user-profiles/${element.id}/update-token/`)
-        .then((response) => {
-          element.token = response.data.info
-          uiStore.notifySuccess(response.data.detail)
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      $q.dialog({
+        title: $gettext('Confirm'),
+        message: 'Would you like to update token?',
+        ok: { label: $gettext('Update') },
+        cancel: { label: $gettext('Cancel'), flat: true },
+        persistent: true,
+      }).onOk(async () => {
+        await api
+          .post(`/api/v1/token/user-profiles/${element.id}/update-token/`)
+          .then((response) => {
+            element.token = response.data.info
+            uiStore.notifySuccess(response.data.detail)
+          })
+          .catch((error) => {
+            uiStore.notifyError(error)
+          })
+      })
     }
 
     const filterUserPermissions = async (val, update, abort) => {
