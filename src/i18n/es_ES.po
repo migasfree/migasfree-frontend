@@ -2984,6 +2984,10 @@ msgstr "sin inventario"
 msgid "without schedule"
 msgstr "sin calendario"
 
+#: src/pages/user-profiles/results/detail.vue:490
+msgid "Would you like to update token?"
+msgstr "¿Desea actualizar el token?"
+
 #: src/components/ui/BooleanView.vue:3
 #: src/pages/attribute-sets/results/list.vue:124
 #: src/pages/computers/results/simulate.vue:221
