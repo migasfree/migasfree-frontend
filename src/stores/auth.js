@@ -50,23 +50,30 @@ export const useAuthStore = defineStore('auth', {
         .post('/rest-auth/login/', data)
         .then((response) => {
           this.setToken(response.data.key)
-          this.setLoggedIn(true)
           this.getUser()
-          this.getServerInfo()
-          this.loadDomains()
-          this.loadScopes()
+          if (this.token) {
+            this.setLoggedIn(true)
+            this.getServerInfo()
+            this.loadDomains()
+            this.loadScopes()
+          }
         })
         .catch((error) => {
           uiStore.notifyError(error)
         })
     },
 
-    async getUser() {
+    getUser() {
       const uiStore = useUiStore()
 
-      await api
+      api
         .get('/rest-auth/user/')
         .then((response) => {
+          if (response.data.is_staff === false) {
+            this.reset()
+            throw new Error(gettext.$gettext('Invalid credentials'))
+          }
+
           this.setUser(response.data)
         })
         .catch((error) => {
