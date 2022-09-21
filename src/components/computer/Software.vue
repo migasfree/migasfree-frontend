@@ -126,7 +126,7 @@
                       <q-chip
                         v-if="value.filter((item) => item.mode === '+').length"
                         color="positive"
-                        text-color="black"
+                        text-color="white"
                         >{{ value.filter((item) => item.mode === '+').length
                         }}<q-tooltip
                           ><translate>Installed Packages</translate></q-tooltip
@@ -157,23 +157,29 @@
                       >
                         <template #default="{ item }">
                           <q-item>
-                            <q-chip
-                              size="md"
-                              outline
-                              :color="
-                                item.mode === '+' ? 'positive' : 'negative'
-                              "
-                              :icon="
-                                item.mode === '+'
-                                  ? 'mdi-plus-thick'
-                                  : 'mdi-minus-thick'
-                              "
-                            />
-                            <MigasLink
-                              model="packages"
-                              :pk="item.id"
-                              :value="item.name"
-                            />
+                            <q-item-section avatar>
+                              <q-avatar
+                                size="md"
+                                outline
+                                :color="
+                                  item.mode === '+' ? 'positive' : 'negative'
+                                "
+                                text-color="white"
+                                :icon="
+                                  item.mode === '+'
+                                    ? 'mdi-plus-thick'
+                                    : 'mdi-minus-thick'
+                                "
+                              />
+                            </q-item-section>
+
+                            <q-item-section side>
+                              <MigasLink
+                                model="packages"
+                                :pk="item.id"
+                                :value="item.name"
+                              />
+                            </q-item-section>
                           </q-item>
                         </template>
                       </q-virtual-scroll>
