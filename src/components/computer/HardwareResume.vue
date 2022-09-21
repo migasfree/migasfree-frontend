@@ -103,7 +103,7 @@
             <q-icon
               :name="productIcon(productSystem)"
               size="sm"
-              class="vertical-middle"
+              class="vertical-middle q-mr-xs"
             />
             <span class="vertical-middle"> {{ product }}</span>
             <q-tooltip>{{ productSystem }}</q-tooltip>
@@ -136,7 +136,7 @@
             <q-icon
               name="mdi-card-account-details-outline"
               size="sm"
-              class="vertical-middle"
+              class="vertical-middle q-mr-xs"
             />
             <span class="vertical-middle"> {{ uuid }}</span>
           </p>
