@@ -208,7 +208,7 @@
 
                         <q-item-section avatar>
                           <MigasLink
-                            model="policies"
+                            model="catalog/policies"
                             :pk="item.id"
                             :value="item.name"
                           />
@@ -304,7 +304,7 @@
 
                         <q-item-section avatar>
                           <MigasLink
-                            model="policies"
+                            model="catalog/policies"
                             :pk="item.id"
                             :value="item.name"
                           />
