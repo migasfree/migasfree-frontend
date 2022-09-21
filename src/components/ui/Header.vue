@@ -32,7 +32,7 @@
             icon="mdi-file-export"
             :loading="isLoadingExport"
             :disable="results === 0"
-            @click="$emit('exportAll')"
+            @click="exportAction"
           />
           <slot name="append"></slot>
         </h2>
@@ -43,6 +43,8 @@
 
 <script>
 import { defineComponent } from 'vue'
+import { useQuasar } from 'quasar'
+import { useGettext } from 'vue3-gettext'
 
 export default defineComponent({
   name: 'Header',
@@ -62,5 +64,28 @@ export default defineComponent({
   },
 
   emits: ['exportAll'],
+
+  setup(props, { emit }) {
+    const $q = useQuasar()
+    const { $gettext } = useGettext()
+
+    const exportAction = () => {
+      if (props.results > 1000) {
+        $q.dialog({
+          title: $gettext('Confirm'),
+          message: $gettext('Do you want to export so many results?'),
+          ok: { label: $gettext('Export'), icon: 'mdi-file-export' },
+          cancel: { label: $gettext('Cancel'), flat: true },
+          persistent: true,
+        }).onOk(async () => {
+          emit('exportAll')
+        })
+      } else {
+        emit('exportAll')
+      }
+    }
+
+    return { exportAction }
+  },
 })
 </script>
