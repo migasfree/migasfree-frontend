@@ -301,7 +301,7 @@ export default {
   overflow: auto;
 }
 .echarts {
-  width: calc(var(--variable-width) + 200px);
+  width: 100%;
   height: 100%;
 }
 </style>
