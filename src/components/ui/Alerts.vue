@@ -189,20 +189,33 @@ export default defineComponent({
       return value.msg
     }
 
-    const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws'
+    const connectWS = () => {
+      const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws'
+      socket.value = new WebSocket(
+        `${wsScheme}://${uiStore.getServer.split('//')[1]}/alerts/`
+      )
 
-    socket.value = new WebSocket(
-      `${wsScheme}://${uiStore.getServer.split('//')[1]}/alerts/`
-    )
+      socket.value.onmessage = (event) => {
+        const response = JSON.parse(event.data)
+        updateData(response)
+      }
 
-    socket.value.onmessage = (event) => {
-      const response = JSON.parse(event.data)
-      updateData(response)
+      socket.value.onclose = (e) => {
+        setTimeout(() => {
+          connectWS()
+        }, 1000)
+      }
+
+      socket.value.onerror = (error) => {
+        console.error(error.message)
+        socket.value.close()
+      }
     }
 
     onMounted(async () => {
       if (loggedIn.value) {
         await loadAlerts()
+        connectWS()
       }
     })
 
