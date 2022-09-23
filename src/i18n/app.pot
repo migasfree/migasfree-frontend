@@ -23,13 +23,20 @@ msgstr ""
 #: src/pages/drivers/results/detail.vue:84
 #: src/pages/fault-definitions/results/detail.vue:34
 #: src/pages/fault-definitions/results/detail.vue:64
+#: src/pages/formulas/results/detail.vue:20
+#: src/pages/formulas/results/detail.vue:21
+#: src/pages/formulas/results/detail.vue:33
 #: src/pages/formulas/results/detail.vue:38
+#: src/pages/formulas/results/detail.vue:46
 #: src/pages/formulas/results/detail.vue:53
 #: src/pages/formulas/results/detail.vue:77
 #: src/pages/formulas/results/detail.vue:96
 #: src/pages/groups/results/detail.vue:24
 #: src/pages/logical-devices/results/detail.vue:80
+#: src/pages/Login.vue:30
+#: src/pages/Login.vue:31
 #: src/pages/Login.vue:33
+#: src/pages/Login.vue:39
 #: src/pages/Login.vue:51
 #: src/pages/manufacturers/results/detail.vue:23
 #: src/pages/models/results/detail.vue:117
@@ -50,7 +57,11 @@ msgstr ""
 #: src/pages/schedules/results/detail.vue:68
 #: src/pages/schedules/results/detail.vue:79
 #: src/pages/scopes/results/detail.vue:29
+#: src/pages/stamps/results/detail.vue:18
+#: src/pages/stamps/results/detail.vue:19
+#: src/pages/stamps/results/detail.vue:30
 #: src/pages/stamps/results/detail.vue:35
+#: src/pages/stamps/results/detail.vue:43
 #: src/pages/stamps/results/detail.vue:50
 #: src/pages/stamps/results/detail.vue:74
 #: src/pages/stores/results/detail.vue:27
@@ -144,9 +155,21 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
+#: src/pages/attribute-sets/results/detail.vue:44
+#: src/pages/attribute-sets/results/detail.vue:45
+#: src/pages/attribute-sets/results/detail.vue:57
+#: src/pages/attribute-sets/results/detail.vue:78
 #: src/pages/attribute-sets/results/detail.vue:80
+#: src/pages/attributes/results/detail.vue:34
+#: src/pages/attributes/results/detail.vue:35
+#: src/pages/attributes/results/detail.vue:48
+#: src/pages/attributes/results/detail.vue:64
 #: src/pages/attributes/results/detail.vue:66
+#: src/pages/tags/results/detail.vue:126
 #: src/pages/tags/results/detail.vue:128
+#: src/pages/tags/results/detail.vue:60
+#: src/pages/tags/results/detail.vue:61
+#: src/pages/tags/results/detail.vue:75
 msgid "Add Coordinates"
 msgstr ""
 
@@ -441,7 +464,12 @@ msgstr ""
 msgid "By default"
 msgstr ""
 
+#: src/components/ui/TableResults.vue:183
 #: src/components/ui/TableResults.vue:190
+#: src/components/ui/TableResults.vue:71
+#: src/components/ui/TableResults.vue:72
+#: src/components/ui/TableResults.vue:78
+#: src/components/ui/TableResults.vue:82
 msgid "By End Date (range)"
 msgstr ""
 
@@ -493,7 +521,12 @@ msgstr ""
 msgid "By Status"
 msgstr ""
 
+#: src/components/ui/TableResults.vue:184
 #: src/components/ui/TableResults.vue:191
+#: src/components/ui/TableResults.vue:72
+#: src/components/ui/TableResults.vue:73
+#: src/components/ui/TableResults.vue:79
+#: src/components/ui/TableResults.vue:83
 msgid "By Subscribed Date (range)"
 msgstr ""
 
@@ -548,6 +581,11 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
+#: src/pages/computers/results/detail.vue:212
+#: src/pages/computers/results/detail.vue:213
+#: src/pages/computers/results/detail.vue:226
+#: src/pages/computers/results/detail.vue:363
+#: src/pages/computers/results/detail.vue:372
 #: src/pages/computers/results/detail.vue:379
 msgid "Center Markers"
 msgstr ""
@@ -566,6 +604,7 @@ msgid "Change Icon"
 msgstr ""
 
 #: src/components/ui/ItemDetail.vue:20
+#: src/components/ui/TableResults.vue:418
 #: src/components/ui/TableResults.vue:431
 #: src/components/ui/UserAccount.vue:88
 #: src/pages/user-profiles/results/changePassword.vue:131
@@ -633,8 +672,6 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: src/components/computer/Software.vue:131
-#: src/components/computer/Software.vue:132
 #: src/components/computer/Software.vue:201
 #: src/components/computer/Software.vue:276
 msgid "Compare"
@@ -689,6 +726,14 @@ msgstr ""
 #: src/components/ui/AppMenu.vue:213
 #: src/pages/computers/replacement.vue:168
 msgid "Computers Replacement"
+msgstr ""
+
+#: src/components/deployment/Timeline.vue:16
+#: src/components/deployment/Timeline.vue:17
+#: src/components/deployment/Timeline.vue:28
+#: src/components/deployment/Timeline.vue:38
+#: src/components/deployment/Timeline.vue:47
+msgid "Computers with any error"
 msgstr ""
 
 #: src/components/ui/AppMenu.vue:67
@@ -760,6 +805,8 @@ msgstr ""
 msgid "Content copied to clipboard"
 msgstr ""
 
+#: src/components/ui/SelectAttributes.vue:24
+#: src/components/ui/SelectAttributes.vue:51
 #: src/components/ui/SelectAttributes.vue:56
 msgid "Copy"
 msgstr ""
@@ -776,6 +823,9 @@ msgstr ""
 msgid "Current Situation has been changed!"
 msgstr ""
 
+#: src/layouts/MainLayout.vue:11
+#: src/layouts/MainLayout.vue:12
+#: src/layouts/MainLayout.vue:19
 #: src/layouts/MainLayout.vue:26
 #: src/pages/applications/index.vue:79
 #: src/pages/applications/results/detail.vue:258
@@ -922,7 +972,11 @@ msgstr ""
 msgid "Data has been changed!"
 msgstr ""
 
+#: src/components/chart/Pie.vue:24
+#: src/components/chart/Pie.vue:25
 #: src/components/chart/Pie.vue:42
+#: src/components/chart/StackedBar.vue:16
+#: src/components/chart/StackedBar.vue:17
 #: src/components/chart/StackedBar.vue:26
 msgid "Data View"
 msgstr ""
@@ -938,8 +992,16 @@ msgstr[1] ""
 #: src/pages/computers/results/events.vue:399
 #: src/pages/computers/results/events.vue:439
 #: src/pages/computers/results/events.vue:463
+#: src/pages/errors/results/detail.vue:15
+#: src/pages/errors/results/detail.vue:16
+#: src/pages/errors/results/detail.vue:27
+#: src/pages/errors/results/detail.vue:31
 #: src/pages/errors/results/detail.vue:35
 #: src/pages/errors/results/list.vue:126
+#: src/pages/faults/results/detail.vue:31
+#: src/pages/faults/results/detail.vue:32
+#: src/pages/faults/results/detail.vue:43
+#: src/pages/faults/results/detail.vue:66
 #: src/pages/faults/results/detail.vue:70
 #: src/pages/faults/results/list.vue:136
 #: src/pages/messages/results/list.vue:120
@@ -1000,13 +1062,46 @@ msgstr ""
 
 #: src/components/ui/ItemDetail.vue:130
 #: src/components/ui/RemoveDialog.vue:21
+#: src/components/ui/TableResults.vue:151
+#: src/components/ui/TableResults.vue:152
+#: src/components/ui/TableResults.vue:211
+#: src/components/ui/TableResults.vue:212
+#: src/components/ui/TableResults.vue:363
+#: src/components/ui/TableResults.vue:381
+#: src/components/ui/TableResults.vue:408
 #: src/components/ui/TableResults.vue:416
+#: src/components/ui/TableResults.vue:423
+#: src/components/ui/TableResults.vue:541
+#: src/components/ui/TableResults.vue:564
 #: src/components/ui/TableResults.vue:570
 #: src/composables/dataGrid.js:961
+#: src/pages/applications/results/detail.vue:147
+#: src/pages/applications/results/detail.vue:152
 #: src/pages/applications/results/detail.vue:159
+#: src/pages/applications/results/detail.vue:70
+#: src/pages/applications/results/detail.vue:71
+#: src/pages/applications/results/detail.vue:84
+#: src/pages/devices/results/detail.vue:134
+#: src/pages/devices/results/detail.vue:139
 #: src/pages/devices/results/detail.vue:146
+#: src/pages/devices/results/detail.vue:69
+#: src/pages/devices/results/detail.vue:70
+#: src/pages/devices/results/detail.vue:84
 #: src/pages/models/results/detail.vue:102
+#: src/pages/models/results/detail.vue:46
+#: src/pages/models/results/detail.vue:47
+#: src/pages/models/results/detail.vue:60
+#: src/pages/models/results/detail.vue:95
+#: src/pages/policies/results/detail.vue:104
 #: src/pages/policies/results/detail.vue:111
+#: src/pages/policies/results/detail.vue:60
+#: src/pages/policies/results/detail.vue:61
+#: src/pages/policies/results/detail.vue:74
+#: src/pages/policies/results/detail.vue:99
+#: src/pages/schedules/results/detail.vue:24
+#: src/pages/schedules/results/detail.vue:25
+#: src/pages/schedules/results/detail.vue:37
+#: src/pages/schedules/results/detail.vue:48
 #: src/pages/schedules/results/detail.vue:55
 msgid "Delete"
 msgstr ""
@@ -1193,6 +1288,11 @@ msgid "Domains List"
 msgstr ""
 
 #: src/components/ui/ItemDetail.vue:65
+#: src/components/ui/TableResults.vue:165
+#: src/components/ui/TableResults.vue:166
+#: src/components/ui/TableResults.vue:377
+#: src/components/ui/TableResults.vue:395
+#: src/components/ui/TableResults.vue:458
 #: src/components/ui/TableResults.vue:467
 msgid "Download"
 msgstr ""
@@ -1215,10 +1315,19 @@ msgstr ""
 
 #: src/pages/computers/results/events.vue:142
 #: src/pages/schedules/results/detail.vue:77
+#: src/pages/syncs/results/list.vue:25
+#: src/pages/syncs/results/list.vue:26
+#: src/pages/syncs/results/list.vue:31
+#: src/pages/syncs/results/list.vue:45
 #: src/pages/syncs/results/list.vue:52
 msgid "Duration"
 msgstr ""
 
+#: src/components/ui/TableResults.vue:150
+#: src/components/ui/TableResults.vue:151
+#: src/components/ui/TableResults.vue:362
+#: src/components/ui/TableResults.vue:380
+#: src/components/ui/TableResults.vue:398
 #: src/components/ui/TableResults.vue:406
 msgid "Edit"
 msgstr ""
@@ -1260,6 +1369,12 @@ msgstr ""
 msgid "Enabled?"
 msgstr ""
 
+#: src/components/deployment/Timeline.vue:14
+#: src/components/deployment/Timeline.vue:4
+#: src/components/deployment/Timeline.vue:5
+msgid "End"
+msgstr ""
+
 #: src/pages/computers/results/events.vue:307
 #: src/pages/syncs/results/list.vue:150
 msgid "End Date"
@@ -1292,7 +1407,11 @@ msgstr ""
 msgid "Errors List"
 msgstr ""
 
+#: src/components/computer/Info.vue:68
+#: src/components/computer/Info.vue:69
+#: src/components/computer/Info.vue:93
 #: src/components/computer/Info.vue:99
+#: src/components/ui/TableResults.vue:470
 #: src/components/ui/TableResults.vue:483
 #: src/pages/computers/results/events.vue:243
 msgid "Events"
@@ -1327,10 +1446,25 @@ msgstr ""
 msgid "Expire (minutes)"
 msgstr ""
 
+#: src/components/chart/Pie.vue:45
+#: src/components/chart/Pie.vue:46
+#: src/components/chart/Pie.vue:63
+#: src/components/chart/Pie.vue:67
+#: src/components/chart/Pie.vue:79
 #: src/components/chart/Pie.vue:84
+#: src/components/chart/StackedBar.vue:37
+#: src/components/chart/StackedBar.vue:38
+#: src/components/chart/StackedBar.vue:47
+#: src/components/chart/StackedBar.vue:51
+#: src/components/chart/StackedBar.vue:57
 #: src/components/chart/StackedBar.vue:62
 #: src/components/ui/Header.vue:31
 #: src/components/ui/Header.vue:77
+#: src/components/ui/TableResults.vue:209
+#: src/components/ui/TableResults.vue:210
+#: src/components/ui/TableResults.vue:421
+#: src/components/ui/TableResults.vue:539
+#: src/components/ui/TableResults.vue:553
 #: src/components/ui/TableResults.vue:561
 msgid "Export"
 msgstr ""
@@ -1469,6 +1603,10 @@ msgstr ""
 msgid "Finished schedule Deployments"
 msgstr ""
 
+#: src/components/ui/TablePagination.vue:23
+#: src/components/ui/TablePagination.vue:24
+#: src/components/ui/TablePagination.vue:36
+#: src/components/ui/TablePagination.vue:45
 #: src/components/ui/TablePagination.vue:50
 msgid "First"
 msgstr ""
@@ -1570,9 +1708,17 @@ msgstr ""
 msgid "Hardware"
 msgstr ""
 
+#: src/components/computer/HardwareResume.vue:113
+#: src/components/computer/HardwareResume.vue:114
 #: src/components/computer/HardwareResume.vue:118
 #: src/components/computer/HardwareResume.vue:126
+#: src/components/computer/HardwareResume.vue:70
+#: src/components/computer/HardwareResume.vue:71
 #: src/pages/computers/results/hardware.vue:265
+#: src/pages/computers/results/list.vue:25
+#: src/pages/computers/results/list.vue:26
+#: src/pages/computers/results/list.vue:32
+#: src/pages/computers/results/list.vue:42
 #: src/pages/computers/results/list.vue:47
 #: src/pages/computers/results/list.vue:55
 msgid "Hardware Information"
@@ -1586,7 +1732,13 @@ msgstr ""
 msgid "History of events in the last 72 hours"
 msgstr ""
 
+#: src/components/computer/Info.vue:100
+#: src/components/computer/Info.vue:103
+#: src/components/computer/Info.vue:107
 #: src/components/computer/Info.vue:123
+#: src/components/computer/Info.vue:78
+#: src/components/computer/Info.vue:79
+#: src/components/ui/TableResults.vue:504
 #: src/components/ui/TableResults.vue:517
 #: src/pages/computers/results/label.vue:58
 msgid "Identification"
@@ -1733,10 +1885,19 @@ msgstr ""
 msgid "laptop"
 msgstr ""
 
+#: src/components/ui/TablePagination.vue:31
+#: src/components/ui/TablePagination.vue:32
+#: src/components/ui/TablePagination.vue:44
+#: src/components/ui/TablePagination.vue:53
+#: src/components/ui/TablePagination.vue:65
+#: src/components/ui/TablePagination.vue:71
 #: src/components/ui/TablePagination.vue:76
 msgid "Last"
 msgstr ""
 
+#: src/components/computer/HardwareResume.vue:16
+#: src/components/computer/HardwareResume.vue:17
+#: src/components/computer/HardwareResume.vue:21
 #: src/components/computer/HardwareResume.vue:24
 #: src/components/computer/HardwareResume.vue:29
 msgid "Last hardware capture date"
@@ -1870,6 +2031,8 @@ msgid "May"
 msgstr ""
 
 #: src/layouts/MainLayout.vue:12
+#: src/layouts/MainLayout.vue:4
+#: src/layouts/MainLayout.vue:5
 msgid "Menu"
 msgstr ""
 
@@ -2130,6 +2293,10 @@ msgstr ""
 msgid "of"
 msgstr ""
 
+#: src/components/deployment/Timeline.vue:15
+#: src/components/deployment/Timeline.vue:16
+#: src/components/deployment/Timeline.vue:27
+#: src/components/deployment/Timeline.vue:37
 #: src/components/deployment/Timeline.vue:46
 msgid "OK Computers"
 msgstr ""
@@ -2147,6 +2314,8 @@ msgid "Options"
 msgstr ""
 
 #: src/components/ui/OrderTextArea.vue:10
+#: src/components/ui/OrderTextArea.vue:4
+#: src/components/ui/OrderTextArea.vue:5
 msgid "Order Alphabetically"
 msgstr ""
 
@@ -2168,7 +2337,13 @@ msgstr ""
 msgid "Package"
 msgstr ""
 
+#: src/components/ui/ItemDetail.vue:21
+#: src/components/ui/ItemDetail.vue:22
+#: src/components/ui/ItemDetail.vue:23
+#: src/components/ui/ItemDetail.vue:25
+#: src/components/ui/ItemDetail.vue:37
 #: src/components/ui/ItemDetail.vue:49
+#: src/components/ui/TableResults.vue:443
 #: src/components/ui/TableResults.vue:456
 #: src/pages/packages/results/information.vue:54
 msgid "Package Information"
@@ -2273,6 +2448,9 @@ msgstr ""
 msgid "Password Confirmation"
 msgstr ""
 
+#: src/components/ui/SelectAttributes.vue:26
+#: src/components/ui/SelectAttributes.vue:53
+#: src/components/ui/SelectAttributes.vue:59
 #: src/components/ui/SelectAttributes.vue:64
 msgid "Paste"
 msgstr ""
@@ -2313,11 +2491,22 @@ msgstr ""
 msgid "Platforms List"
 msgstr ""
 
+#: src/pages/formulas/results/detail.vue:24
+#: src/pages/formulas/results/detail.vue:25
+#: src/pages/formulas/results/detail.vue:37
+#: src/pages/formulas/results/detail.vue:50
 #: src/pages/formulas/results/detail.vue:57
+#: src/pages/stamps/results/detail.vue:22
+#: src/pages/stamps/results/detail.vue:23
+#: src/pages/stamps/results/detail.vue:34
+#: src/pages/stamps/results/detail.vue:47
 #: src/pages/stamps/results/detail.vue:54
 msgid "Please use maximum %{n} characters"
 msgstr ""
 
+#: src/pages/Login.vue:34
+#: src/pages/Login.vue:35
+#: src/pages/Login.vue:43
 #: src/pages/Login.vue:55
 #: src/pages/user-profiles/results/changePassword.vue:190
 #: src/pages/user-profiles/results/changePassword.vue:204
@@ -2448,6 +2637,11 @@ msgid "RAM"
 msgstr ""
 
 #: src/components/ui/ItemDetail.vue:34
+#: src/components/ui/TableResults.vue:158
+#: src/components/ui/TableResults.vue:159
+#: src/components/ui/TableResults.vue:370
+#: src/components/ui/TableResults.vue:388
+#: src/components/ui/TableResults.vue:433
 #: src/components/ui/TableResults.vue:441
 msgid "Regenerate Metadata"
 msgstr ""
@@ -2481,9 +2675,21 @@ msgstr ""
 msgid "Relevance to the organization"
 msgstr ""
 
+#: src/pages/attribute-sets/results/detail.vue:43
+#: src/pages/attribute-sets/results/detail.vue:44
+#: src/pages/attribute-sets/results/detail.vue:56
+#: src/pages/attribute-sets/results/detail.vue:77
 #: src/pages/attribute-sets/results/detail.vue:79
+#: src/pages/attributes/results/detail.vue:33
+#: src/pages/attributes/results/detail.vue:34
+#: src/pages/attributes/results/detail.vue:47
+#: src/pages/attributes/results/detail.vue:63
 #: src/pages/attributes/results/detail.vue:65
+#: src/pages/tags/results/detail.vue:125
 #: src/pages/tags/results/detail.vue:127
+#: src/pages/tags/results/detail.vue:59
+#: src/pages/tags/results/detail.vue:60
+#: src/pages/tags/results/detail.vue:74
 msgid "Remove Coordinates"
 msgstr ""
 
@@ -2590,7 +2796,11 @@ msgstr ""
 msgid "Save and continue editing"
 msgstr ""
 
+#: src/components/chart/Pie.vue:28
+#: src/components/chart/Pie.vue:29
 #: src/components/chart/Pie.vue:46
+#: src/components/chart/StackedBar.vue:20
+#: src/components/chart/StackedBar.vue:21
 #: src/components/chart/StackedBar.vue:30
 msgid "Save as Image"
 msgstr ""
@@ -2653,15 +2863,21 @@ msgstr ""
 msgid "Serial"
 msgstr ""
 
+#: src/pages/computers/results/label.vue:20
 #: src/pages/computers/results/label.vue:21
 msgid "Server"
 msgstr ""
 
 #: src/components/computer/Info.vue:111
+#: src/components/computer/Info.vue:73
+#: src/components/computer/Info.vue:74
+#: src/components/computer/Info.vue:95
+#: src/components/computer/Info.vue:98
 #: src/components/ui/TableResults.vue:180
 #: src/components/ui/TableResults.vue:181
 #: src/components/ui/TableResults.vue:392
 #: src/components/ui/TableResults.vue:410
+#: src/components/ui/TableResults.vue:487
 #: src/components/ui/TableResults.vue:500
 msgid "Simulate synchronization"
 msgstr ""
@@ -2726,6 +2942,8 @@ msgid "Stamps List"
 msgstr ""
 
 #: src/components/deployment/Timeline.vue:13
+#: src/components/deployment/Timeline.vue:3
+#: src/components/deployment/Timeline.vue:4
 msgid "Start"
 msgstr ""
 
@@ -3090,6 +3308,10 @@ msgid "UUID"
 msgstr ""
 
 #: src/components/chart/Pie.vue:259
+#: src/pages/attributes/results/detail.vue:16
+#: src/pages/attributes/results/detail.vue:17
+#: src/pages/attributes/results/detail.vue:30
+#: src/pages/attributes/results/detail.vue:36
 #: src/pages/attributes/results/detail.vue:40
 #: src/pages/computers/results/hardware.vue:348
 msgid "Value"
@@ -3108,6 +3330,9 @@ msgstr ""
 msgid "View All"
 msgstr ""
 
+#: src/components/deployment/Timeline.vue:13
+#: src/components/deployment/Timeline.vue:14
+#: src/components/deployment/Timeline.vue:25
 #: src/components/deployment/Timeline.vue:35
 #: src/components/deployment/Timeline.vue:43
 msgid "View assigned Computers"
@@ -3191,6 +3416,8 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
+#: src/layouts/MainLayout.vue:38
+#: src/layouts/MainLayout.vue:39
 #: src/layouts/MainLayout.vue:64
 msgid "You have established a domain or a scope in the preferences"
 msgstr ""
