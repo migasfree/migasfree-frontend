@@ -247,7 +247,7 @@ export default {
       delays.value.push({
         id: 0,
         delay: delays.value.length
-          ? parseInt(delays[delays.value.length - 1].delay) + 1
+          ? parseInt(delays.value[delays.value.length - 1].delay) + 1
           : 0,
         duration: 1,
         attributes: null,
