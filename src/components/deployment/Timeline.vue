@@ -54,6 +54,7 @@
 
 <script>
 import { ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -71,6 +72,7 @@ export default {
     },
   },
   setup(props) {
+    const router = useRouter()
     const uiStore = useUiStore()
 
     const loading = ref(false)
