@@ -538,7 +538,7 @@ msgstr ""
 msgid "By Uninstall Date (range)"
 msgstr ""
 
-#: src/components/computer/Software.vue:267
+#: src/components/computer/Software.vue:262
 #: src/components/ui/Header.vue:78
 #: src/components/ui/RemoveDialog.vue:14
 #: src/composables/dataGrid.js:966
@@ -672,8 +672,8 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: src/components/computer/Software.vue:201
-#: src/components/computer/Software.vue:276
+#: src/components/computer/Software.vue:198
+#: src/components/computer/Software.vue:271
 msgid "Compare"
 msgstr ""
 
@@ -682,7 +682,7 @@ msgid "Components"
 msgstr ""
 
 #: src/components/computer/ReplacementInfo.vue:5
-#: src/components/computer/Software.vue:223
+#: src/components/computer/Software.vue:218
 #: src/pages/computers/replacement.vue:23
 #: src/pages/computers/replacement.vue:92
 #: src/pages/computers/results/detail.vue:471
@@ -981,7 +981,7 @@ msgstr ""
 msgid "Data View"
 msgstr ""
 
-#: src/components/computer/Software.vue:85
+#: src/components/computer/Software.vue:84
 msgid "date"
 msgid_plural "dates"
 msgstr[0] ""
@@ -1724,7 +1724,7 @@ msgstr ""
 msgid "Hardware Information"
 msgstr ""
 
-#: src/components/computer/Software.vue:77
+#: src/components/computer/Software.vue:76
 msgid "History"
 msgstr ""
 
@@ -1797,7 +1797,7 @@ msgstr ""
 msgid "Install Date"
 msgstr ""
 
-#: src/components/computer/Software.vue:132
+#: src/components/computer/Software.vue:131
 msgid "Installed Packages"
 msgstr ""
 
@@ -1819,7 +1819,7 @@ msgstr ""
 msgid "Invalid email"
 msgstr ""
 
-#: src/components/computer/Software.vue:20
+#: src/components/computer/Software.vue:19
 msgid "Inventory"
 msgstr ""
 
@@ -2231,7 +2231,7 @@ msgid "No information"
 msgstr ""
 
 #: src/components/computer/Devices.vue:32
-#: src/components/computer/Software.vue:230
+#: src/components/computer/Software.vue:225
 #: src/components/ui/SelectAttributes.vue:19
 #: src/pages/computers/replacement.vue:100
 #: src/pages/computers/replacement.vue:31
@@ -2369,7 +2369,7 @@ msgstr ""
 msgid "Package Sets List"
 msgstr ""
 
-#: src/components/computer/Software.vue:28
+#: src/components/computer/Software.vue:27
 msgid "packages"
 msgstr ""
 
@@ -2894,21 +2894,21 @@ msgstr ""
 msgid "Slot"
 msgstr ""
 
-#: src/components/computer/Software.vue:5
+#: src/components/computer/Software.vue:4
 msgid "Software"
 msgstr ""
 
-#: src/components/computer/Software.vue:210
+#: src/components/computer/Software.vue:207
 #: src/components/ui/AppMenu.vue:218
 #: src/pages/computers/softwareCompare.vue:163
 msgid "Software Compare"
 msgstr ""
 
-#: src/components/computer/Software.vue:393
+#: src/components/computer/Software.vue:387
 msgid "Software History copied to clipboard"
 msgstr ""
 
-#: src/components/computer/Software.vue:373
+#: src/components/computer/Software.vue:367
 msgid "Software Inventory copied to clipboard"
 msgstr ""
 
@@ -3211,7 +3211,7 @@ msgstr ""
 msgid "Uninstall Date"
 msgstr ""
 
-#: src/components/computer/Software.vue:142
+#: src/components/computer/Software.vue:141
 msgid "Uninstalled Packages"
 msgstr ""
 
