@@ -3,6 +3,7 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <TableResults
+      ref="tableResults"
       :title="title"
       :columns="columns"
       :model="model"
@@ -47,11 +48,20 @@
         </span>
       </template>
     </TableResults>
+
+    <q-btn
+      icon="mdi-refresh"
+      class="q-ma-md"
+      :loading="loading"
+      :disable="loading"
+      :label="$gettext('Update')"
+      @click="updateItems"
+    />
   </q-page>
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -78,6 +88,8 @@ export default {
     const uiStore = useUiStore()
 
     useMeta({ title: $gettext('Messages List') })
+
+    const tableResults = ref(null)
 
     const model = ref('messages')
     const moreFilters = ['statusIn', 'createdAtRange']
@@ -163,6 +175,12 @@ export default {
       },
     ])
 
+    const loading = computed(() => {
+      return tableResults.value !== null
+        ? tableResults.value.isLoading.value
+        : false
+    })
+
     const loadFilters = async () => {
       await api
         .get('/api/v1/token/projects/')
@@ -183,6 +201,10 @@ export default {
         })
     }
 
+    const updateItems = async () => {
+      await tableResults.value.loadItems()
+    }
+
     onMounted(async () => {
       await loadFilters()
     })
@@ -196,6 +218,9 @@ export default {
       elementIcon,
       showDate,
       diffForHumans,
+      tableResults,
+      loading,
+      updateItems,
     }
   },
 }
