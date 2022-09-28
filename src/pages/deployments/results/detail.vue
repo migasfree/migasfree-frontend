@@ -772,6 +772,7 @@ export default {
           params: {
             search: val.toLowerCase(),
             project__id: element.project.id,
+            store__isnull: false,
           },
         })
         .then((response) => {
