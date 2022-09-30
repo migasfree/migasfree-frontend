@@ -7,6 +7,8 @@
     @export-all="exportAll"
   />
 
+  <slot name="top" />
+
   <q-list v-if="moreFilters.length > 0" class="more-filters" bordered>
     <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">
       <SearchFilter
