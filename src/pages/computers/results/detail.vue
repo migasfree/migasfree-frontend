@@ -179,7 +179,7 @@
                           name: 'errors-list',
                           query: { computer_id: element.id, checked: false },
                         }"
-                        >{{ errors.unchecked }}</q-btn
+                        ><strong>{{ errors.unchecked }}</strong></q-btn
                       >
                       /
                       <q-btn
@@ -191,7 +191,7 @@
                           name: 'errors-list',
                           query: { computer_id: element.id },
                         }"
-                        >{{ errors.total }}</q-btn
+                        ><strong>{{ errors.total }}</strong></q-btn
                       >
                     </div>
 
@@ -207,7 +207,7 @@
                           name: 'faults-list',
                           query: { computer_id: element.id, checked: false },
                         }"
-                        >{{ faults.unchecked }}</q-btn
+                        ><strong>{{ faults.unchecked }}</strong></q-btn
                       >
                       /
                       <q-btn
@@ -219,7 +219,7 @@
                           name: 'faults-list',
                           query: { computer_id: element.id },
                         }"
-                        >{{ faults.total }}</q-btn
+                        ><strong>{{ faults.total }}</strong></q-btn
                       >
                     </div>
                   </div>
