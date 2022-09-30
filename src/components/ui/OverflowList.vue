@@ -4,9 +4,9 @@
       <template #header>
         <q-item-section>
           <q-chip>
-            <q-avatar color="info" text-color="black">{{
-              items.length
-            }}</q-avatar>
+            <q-avatar color="info" text-color="black"
+              ><strong>{{ items.length }}</strong></q-avatar
+            >
             {{ label }}
           </q-chip>
         </q-item-section>
