@@ -21,6 +21,11 @@
             counter
             input-debounce="0"
             :label="$gettext('Assigned')"
+            :hint="
+              $gettext('Type to search (minimum %{num} characters)', {
+                num: 3,
+              })
+            "
             :options="assignedDevices"
             @filter="filterAssignedDevices"
             @filter-abort="abortFilterAssignedDevices"
