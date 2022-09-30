@@ -9,6 +9,17 @@
       :model="model"
       :more-filters="moreFilters"
     >
+      <template #top>
+        <q-btn
+          icon="mdi-refresh"
+          class="q-ma-md"
+          :loading="loading"
+          :disable="loading"
+          :label="$gettext('Update')"
+          @click="updateItems"
+        />
+      </template>
+
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'computer.__str__'">
           <MigasLink
@@ -48,15 +59,6 @@
         </span>
       </template>
     </TableResults>
-
-    <q-btn
-      icon="mdi-refresh"
-      class="q-ma-md"
-      :loading="loading"
-      :disable="loading"
-      :label="$gettext('Update')"
-      @click="updateItems"
-    />
   </q-page>
 </template>
 
