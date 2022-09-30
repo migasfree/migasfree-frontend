@@ -21,9 +21,9 @@
 
             <q-item-section v-if="softwareInventory.length > 0">
               <q-chip>
-                <q-avatar color="info" text-color="white">{{
-                  softwareInventory.length
-                }}</q-avatar>
+                <q-avatar color="info" text-color="black"
+                  ><strong>{{ softwareInventory.length }}</strong></q-avatar
+                >
                 <translate>packages</translate>
               </q-chip>
             </q-item-section>
@@ -78,9 +78,11 @@
 
             <q-item-section v-if="Object.keys(softwareHistory).length > 0">
               <q-chip>
-                <q-avatar color="info" text-color="white">{{
-                  Object.keys(softwareHistory).length
-                }}</q-avatar>
+                <q-avatar color="info" text-color="black"
+                  ><strong>{{
+                    Object.keys(softwareHistory).length
+                  }}</strong></q-avatar
+                >
                 <translate
                   :translate-n="Object.keys(softwareHistory).length"
                   translate-plural="dates"
@@ -126,8 +128,10 @@
                       v-if="value.filter((item) => item.mode === '+').length"
                       color="positive"
                       text-color="white"
-                      >{{ value.filter((item) => item.mode === '+').length
-                      }}<q-tooltip
+                      ><strong>{{
+                        value.filter((item) => item.mode === '+').length
+                      }}</strong
+                      ><q-tooltip
                         ><translate>Installed Packages</translate></q-tooltip
                       ></q-chip
                     >
@@ -136,8 +140,10 @@
                       v-if="value.filter((item) => item.mode === '-').length"
                       color="negative"
                       text-color="white"
-                      >{{ value.filter((item) => item.mode === '-').length
-                      }}<q-tooltip
+                      ><strong>{{
+                        value.filter((item) => item.mode === '-').length
+                      }}</strong
+                      ><q-tooltip
                         ><translate>Uninstalled Packages</translate></q-tooltip
                       ></q-chip
                     >
