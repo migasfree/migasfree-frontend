@@ -218,6 +218,11 @@
                 counter
                 input-debounce="0"
                 :label="$gettext('User Permissions')"
+                :hint="
+                  $gettext('Type to search (minimum %{num} characters)', {
+                    num: 3,
+                  })
+                "
                 :options="userPermissions"
                 @filter="filterUserPermissions"
                 @filter-abort="abortFilterUserPermissions"
