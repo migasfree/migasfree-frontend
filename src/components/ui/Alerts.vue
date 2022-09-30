@@ -27,11 +27,9 @@
         </q-item-section>
 
         <q-item-section side top>
-          <q-chip
-            :label="item.result"
-            :color="level(item.level)"
-            :text-color="textColor(item.level)"
-          />
+          <q-chip :color="level(item.level)" :text-color="textColor(item.level)"
+            ><strong>{{ item.result }}</strong></q-chip
+          >
         </q-item-section>
       </q-item>
     </q-list>
