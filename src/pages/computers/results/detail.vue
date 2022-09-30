@@ -118,6 +118,11 @@
                       counter
                       input-debounce="0"
                       :label="$gettext('Tags')"
+                      :hint="
+                        $gettext('Type to search (minimum %{num} characters)', {
+                          num: 3,
+                        })
+                      "
                       :options="tags"
                       @filter="filterTags"
                       @filter-abort="abortFilterTags"
