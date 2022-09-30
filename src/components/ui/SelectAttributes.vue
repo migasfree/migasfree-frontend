@@ -10,6 +10,11 @@
     input-debounce="0"
     clearable
     :label="label"
+    :hint="
+      $gettext('Type to search (minimum %{num} characters)', {
+        num: 3,
+      })
+    "
     :options="attributes"
     @filter="filterAttributes"
     @filter-abort="abortFilterAttributes"
