@@ -1,3 +1,5 @@
+export const MIN_CHARS_SEARCH = 3
+
 export const MIGASFREE_SECONDS_MESSAGE_ALERT = 1800
 
 export const MIGASFREE_CHART_COLORS = [
@@ -25,4 +27,3 @@ export const MIGASFREE_CHART_DARK_COLORS = [
   '#d4526e',
   '#f9a3a4',
 ]
-
