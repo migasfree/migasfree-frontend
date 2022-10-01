@@ -37,6 +37,11 @@
                 counter
                 input-debounce="0"
                 :label="$gettext('Permissions')"
+                :hint="
+                  $gettext('Type to search (minimum %{num} characters)', {
+                    num: MIN_CHARS_SEARCH,
+                  })
+                "
                 :options="permissions"
                 @filter="filterPermissions"
                 @filter-abort="abortFilterPermissions"
@@ -81,6 +86,7 @@ import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
+import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import ItemDetail from 'components/ui/ItemDetail'
 
@@ -157,7 +163,7 @@ export default {
 
     const filterPermissions = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
-      if (val.length < 3) {
+      if (val.length < MIN_CHARS_SEARCH) {
         abort()
         return
       }
@@ -190,6 +196,7 @@ export default {
       setTitle,
       filterPermissions,
       abortFilterPermissions,
+      MIN_CHARS_SEARCH,
     }
   },
 }

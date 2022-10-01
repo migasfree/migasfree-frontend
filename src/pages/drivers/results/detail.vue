@@ -34,6 +34,11 @@
                 map-options
                 input-debounce="0"
                 :label="$gettext('Model')"
+                :hint="
+                  $gettext('Type to search (minimum %{num} characters)', {
+                    num: MIN_CHARS_SEARCH,
+                  })
+                "
                 :options="models"
                 @filter="filterModels"
                 @filter-abort="abortFilterModels"
@@ -126,6 +131,7 @@ import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
+import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import ItemDetail from 'components/ui/ItemDetail'
 import OrderTextArea from 'components/ui/OrderTextArea'
@@ -251,7 +257,7 @@ export default {
 
     const filterModels = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
-      if (val.length < 3) {
+      if (val.length < MIN_CHARS_SEARCH) {
         abort()
         return
       }
@@ -288,6 +294,7 @@ export default {
       modelIcon,
       filterModels,
       abortFilterModels,
+      MIN_CHARS_SEARCH,
     }
   },
 }

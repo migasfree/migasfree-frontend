@@ -120,7 +120,7 @@
                       :label="$gettext('Tags')"
                       :hint="
                         $gettext('Type to search (minimum %{num} characters)', {
-                          num: 3,
+                          num: MIN_CHARS_SEARCH,
                         })
                       "
                       :options="tags"
@@ -435,6 +435,7 @@ import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
+import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import OverflowList from 'components/ui/OverflowList'
 import ItemDetail from 'components/ui/ItemDetail'
@@ -646,7 +647,7 @@ export default {
 
     const filterTags = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
-      if (val.length < 3) {
+      if (val.length < MIN_CHARS_SEARCH) {
         abort()
         return
       }
@@ -744,6 +745,7 @@ export default {
       setRelated,
       setTitle,
       modelIcon,
+      MIN_CHARS_SEARCH,
     }
   },
 }

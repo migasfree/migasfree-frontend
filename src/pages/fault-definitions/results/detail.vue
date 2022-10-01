@@ -285,7 +285,7 @@ export default {
 
     const filterUserProfiles = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
-      /* if (val.length < 3) {
+      /* if (val.length < MIN_CHARS_SEARCH) {
         abort()
         return
       } */

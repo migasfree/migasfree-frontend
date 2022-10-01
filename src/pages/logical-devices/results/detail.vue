@@ -23,6 +23,11 @@
                 map-options
                 input-debounce="0"
                 :label="$gettext('Device')"
+                :hint="
+                  $gettext('Type to search (minimum %{num} characters)', {
+                    num: MIN_CHARS_SEARCH,
+                  })
+                "
                 :options="devices"
                 @filter="filterDevices"
                 @filter-abort="abortFilterDevices"
@@ -105,6 +110,7 @@ import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
+import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
@@ -199,7 +205,7 @@ export default {
 
     const filterDevices = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
-      if (val.length < 3) {
+      if (val.length < MIN_CHARS_SEARCH) {
         abort()
         return
       }
@@ -235,6 +241,7 @@ export default {
       modelIcon,
       filterDevices,
       abortFilterDevices,
+      MIN_CHARS_SEARCH,
     }
   },
 }

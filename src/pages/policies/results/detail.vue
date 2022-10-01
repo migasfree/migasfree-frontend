@@ -135,6 +135,11 @@
                       counter
                       input-debounce="0"
                       :label="$gettext('Applications')"
+                      :hint="
+                        $gettext('Type to search (minimum %{num} characters)', {
+                          num: MIN_CHARS_SEARCH,
+                        })
+                      "
                       :options="applications"
                       @filter="filterApplications"
                       @filter-abort="abortFilterApplications"
@@ -211,6 +216,7 @@ import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
+import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
@@ -394,7 +400,7 @@ export default {
 
     const filterApplications = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
-      if (val.length < 3) {
+      if (val.length < MIN_CHARS_SEARCH) {
         abort()
         return
       }
@@ -434,6 +440,7 @@ export default {
       removeInline,
       filterApplications,
       abortFilterApplications,
+      MIN_CHARS_SEARCH,
     }
   },
 }

@@ -12,7 +12,7 @@
     :label="label"
     :hint="
       $gettext('Type to search (minimum %{num} characters)', {
-        num: 3,
+        num: MIN_CHARS_SEARCH,
       })
     "
     :options="attributes"
@@ -72,10 +72,11 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 
 import { api } from 'boot/axios'
 import MigasLink from 'components/MigasLink'
+import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import useCopyPaste from 'composables/copyPaste'
 import { useElement } from 'composables/element'
@@ -111,7 +112,7 @@ export default {
 
     const filterAttributes = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
-      if (val.length < 3) {
+      if (val.length < MIN_CHARS_SEARCH) {
         abort()
         return
       }
@@ -201,6 +202,7 @@ export default {
       filterAttributes,
       abortFilterAttributes,
       updateAttributes,
+      MIN_CHARS_SEARCH,
     }
   },
 }

@@ -66,6 +66,11 @@
                 counter
                 input-debounce="0"
                 :label="$gettext('Computers')"
+                :hint="
+                  $gettext('Type to search (minimum %{num} characters)', {
+                    num: MIN_CHARS_SEARCH,
+                  })
+                "
                 :options="computers"
                 @filter="filterComputers"
                 @filter-abort="abortFilterComputers"
@@ -172,6 +177,7 @@ import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
+import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import ItemDetail from 'components/ui/ItemDetail'
 import OverflowList from 'components/ui/OverflowList'
@@ -333,7 +339,7 @@ export default {
 
     const filterComputers = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
-      if (val.length < 3) {
+      if (val.length < MIN_CHARS_SEARCH) {
         abort()
         return
       }
@@ -377,6 +383,7 @@ export default {
       filterComputers,
       abortFilterComputers,
       elementIcon,
+      MIN_CHARS_SEARCH,
     }
   },
 }

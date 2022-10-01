@@ -23,7 +23,7 @@
             :label="$gettext('Assigned')"
             :hint="
               $gettext('Type to search (minimum %{num} characters)', {
-                num: 3,
+                num: MIN_CHARS_SEARCH,
               })
             "
             :options="assignedDevices"
@@ -95,6 +95,7 @@ import { useGettext } from 'vue3-gettext'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
+import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import MigasLink from 'components/MigasLink'
 
@@ -168,7 +169,7 @@ export default {
 
     const filterAssignedDevices = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
-      if (val.length < 3) {
+      if (val.length < MIN_CHARS_SEARCH) {
         abort()
         return
       }
@@ -201,6 +202,7 @@ export default {
       updateDefaultLogicalDeviceSelect,
       filterAssignedDevices,
       abortFilterAssignedDevices,
+      MIN_CHARS_SEARCH,
     }
   },
 }

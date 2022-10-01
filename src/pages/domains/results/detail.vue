@@ -82,6 +82,11 @@
                 counter
                 input-debounce="0"
                 :label="$gettext('Available Tags')"
+                :hint="
+                  $gettext('Type to search (minimum %{num} characters)', {
+                    num: MIN_CHARS_SEARCH,
+                  })
+                "
                 :options="tags"
                 @filter="filterTags"
                 @filter-abort="abortFilterTags"
@@ -161,6 +166,7 @@ import { useMeta } from 'quasar'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { useAuthStore } from 'stores/auth'
+import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
@@ -277,7 +283,7 @@ export default {
 
     const filterTags = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
-      if (val.length < 3) {
+      if (val.length < MIN_CHARS_SEARCH) {
         abort()
         return
       }
@@ -330,6 +336,7 @@ export default {
       elementData,
       resetElement,
       setTitle,
+      MIN_CHARS_SEARCH,
     }
   },
 }
