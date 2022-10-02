@@ -251,6 +251,7 @@ export default {
         id: 0,
         value: undefined,
         description: undefined,
+        files: undefined,
       })
     }
 
