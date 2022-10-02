@@ -29,7 +29,7 @@
     "dayjs": "^1.11.5",
     "echarts": "^5.3.3",
     "js-abbreviation-number": "^1.4.0",
-    "leaflet": "^1.9.0",
+    "leaflet": "1.8.0",
     "performant-array-to-tree": "^1.11.0",
     "pinia": "^2.0.22",
     "pluralize": "^8.0.0",
