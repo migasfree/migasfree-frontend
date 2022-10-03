@@ -153,6 +153,14 @@
                         clearable
                         input-debounce="0"
                         :label="$gettext('Available Packages')"
+                        :hint="
+                          $gettext(
+                            'Type to search (minimum %{num} characters)',
+                            {
+                              num: MIN_CHARS_SEARCH,
+                            }
+                          )
+                        "
                         :options="packages"
                         @filter="filterPackages"
                         @filter-abort="abortFilterPackages"
@@ -202,6 +210,14 @@
                         clearable
                         input-debounce="0"
                         :label="$gettext('Available Package Sets')"
+                        :hint="
+                          $gettext(
+                            'Type to search (minimum %{num} characters)',
+                            {
+                              num: MIN_CHARS_SEARCH,
+                            }
+                          )
+                        "
                         :options="packageSets"
                         @filter="filterPackageSets"
                         @filter-abort="abortFilterPackageSets"
@@ -449,6 +465,7 @@ import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
+import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
@@ -762,7 +779,7 @@ export default {
 
     const filterPackages = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
-      if (val.length < 3 || element.project === undefined) {
+      if (val.length < MIN_CHARS_SEARCH || element.project === undefined) {
         abort()
         return
       }
@@ -788,7 +805,7 @@ export default {
 
     const filterPackageSets = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
-      if (val.length < 3 || element.project === undefined) {
+      if (val.length < MIN_CHARS_SEARCH || element.project === undefined) {
         abort()
         return
       }
@@ -840,6 +857,7 @@ export default {
       abortFilterPackages,
       filterPackageSets,
       abortFilterPackageSets,
+      MIN_CHARS_SEARCH,
     }
   },
 }
