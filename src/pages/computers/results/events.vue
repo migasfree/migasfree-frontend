@@ -11,6 +11,7 @@
             :pk="computer.id"
             :value="computer.__str__ || ''"
             :icon="elementIcon(computer.status)"
+            :tooltip="computer.summary"
           />
           <h3 class="text-h6 float-right">
             <q-tooltip self="bottom middle"
