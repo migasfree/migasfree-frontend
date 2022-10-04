@@ -894,7 +894,7 @@ msgstr "¡Los datos han sido añadidos!"
 
 #: src/composables/detail.js:80
 msgid "Data has been changed!"
-msgstr "¡Los datos han sido cambiado!"
+msgstr "¡Los datos han sido cambiados!"
 
 #: src/components/chart/Pie.vue:24 src/components/chart/Pie.vue:25
 #: src/components/chart/Pie.vue:42 src/components/chart/StackedBar.vue:16
