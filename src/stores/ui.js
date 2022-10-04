@@ -51,9 +51,12 @@ export const useUiStore = defineStore('ui', {
         // Try to Use the Response Message
         if (
           error.hasOwnProperty('response') &&
-          error.response.hasOwnProperty('data')
+          error.response.hasOwnProperty('data') &&
+          typeof error.response.data !== 'undefined'
         ) {
-          if (Object.keys(error.response.data).length > 0) {
+          if (typeof error.response.data === 'string') {
+            message = error.response.data
+          } else if (Object.keys(error.response.data).length > 0) {
             message = error.response.data[Object.keys(error.response.data)[0]]
           }
         }
