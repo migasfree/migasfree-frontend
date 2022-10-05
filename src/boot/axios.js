@@ -55,6 +55,10 @@ export default boot(({ app, router }) => {
           router.push({ name: 'login' })
           break
 
+        case 404:
+          router.push({ name: 'not-found' })
+          break
+
         default:
           console.error(error.response.status, error.message)
         // notify.error('Server Error')
