@@ -84,6 +84,7 @@
 <script>
 import { ref, computed, watch } from 'vue'
 import { useUiStore } from 'stores/ui'
+import { RESULTS_PER_PAGE } from 'config/app.conf'
 
 import VgtPaginationPageInfo from 'vue-good-table-next/src/components/pagination/VgtPaginationPageInfo.vue'
 
@@ -111,7 +112,7 @@ export default {
 
     const currentPage = ref(1)
     const prevPage = ref(0)
-    const currentPerPage = ref(10)
+    const currentPerPage = ref(RESULTS_PER_PAGE)
 
     const rowsPerPageOptions = computed(
       () => props.paginationOptions.perPageDropdown

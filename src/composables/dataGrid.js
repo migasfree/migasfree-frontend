@@ -10,9 +10,11 @@ import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import { useGettext } from 'vue3-gettext'
 import _merge from 'lodash/merge'
+
 import { useAuthStore } from 'stores/auth'
 import { useUiStore } from 'stores/ui'
 import { api } from 'boot/axios'
+import { RESULTS_PER_PAGE } from 'config/app.conf'
 
 const defaultColumns = []
 const defaultModel = ref('')
@@ -41,7 +43,7 @@ export default function useDataGrid(
   const installDateRange = ref(null)
   const uninstallDateRange = ref(null)
 
-  const perPage = 10
+  const perPage = RESULTS_PER_PAGE
   const rows = ref([])
   const totalRecords = ref(0)
   const isLoading = ref(false)
