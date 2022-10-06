@@ -131,10 +131,16 @@
             <q-tr :props="props">
               <q-td v-if="event === 'syncs'" key="start_date">
                 {{ showDate(props.row.start_date) }}
+                <q-tooltip>{{ diffForHumans(props.row.start_date) }}</q-tooltip>
               </q-td>
 
               <q-td key="created_at">
-                {{ showDate(props.row.created_at) }}
+                <span
+                  >{{ showDate(props.row.created_at) }}
+                  <q-tooltip>{{
+                    diffForHumans(props.row.created_at)
+                  }}</q-tooltip></span
+                >
                 <DateDiff
                   v-if="props.row.created_at && props.row.start_date"
                   class="float-right"
