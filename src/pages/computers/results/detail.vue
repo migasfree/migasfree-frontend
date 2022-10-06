@@ -23,7 +23,7 @@
 
         <q-card-section v-else>
           <div class="row q-pa-md q-gutter-md">
-            <div class="col-md">
+            <div class="col-6 col-md col-sm-12">
               <ComputerInfo
                 :cid="element.id"
                 :name="element.name"
@@ -35,7 +35,7 @@
               />
             </div>
 
-            <div class="col-md">
+            <div class="col-6 col-md col-sm-12">
               <ComputerHardwareResume
                 :cid="element.id"
                 :last-hardware-capture="showDate(element.last_hardware_capture)"
@@ -53,7 +53,7 @@
           </div>
 
           <div class="row q-pa-md q-gutter-md">
-            <div class="col-md">
+            <div class="col-6 col-md col-sm-12">
               <q-card>
                 <q-card-section>
                   <div v-translate class="text-h5">Current Situation</div>
@@ -244,7 +244,7 @@
               </q-card>
             </div>
 
-            <div class="col-md">
+            <div class="col-6 col-md col-sm-12">
               <q-card>
                 <q-card-section>
                   <div class="row">
@@ -343,17 +343,20 @@
           </div>
 
           <div class="row q-pa-md q-gutter-md">
-            <div v-if="element.has_software_inventory" class="col-md">
+            <div
+              v-if="element.has_software_inventory"
+              class="col-6 col-md col-sm-12"
+            >
               <ComputerSoftware :cid="element.id" />
             </div>
 
-            <div v-if="element.id" class="col-md">
+            <div v-if="element.id" class="col-6 col-md col-sm-12">
               <ComputerDevices :cid="element.id" />
             </div>
           </div>
 
           <div v-if="markers.length > 0" class="row q-pa-md q-gutter-md">
-            <div class="col">
+            <div class="col col-md col-sm-12">
               <q-card>
                 <q-card-section>
                   <div v-translate class="text-h5">Locations</div>

@@ -16,7 +16,7 @@
     >
       <template #fields>
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-md col-sm">
+          <div class="col-6 col-md col-sm-12">
             <q-card>
               <q-card-section>
                 <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
@@ -89,7 +89,7 @@
             </q-card>
           </div>
 
-          <div class="col-md col-sm">
+          <div class="col-6 col-md col-sm-12">
             <q-card>
               <q-card-section>
                 <div v-translate class="text-h5 q-mt-sm q-mb-xs">
@@ -119,7 +119,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-md col-sm">
+          <div class="col-6 col-md col-sm-12">
             <q-card>
               <q-card-section>
                 <div v-translate class="text-h5 q-mt-sm q-mb-xs">
@@ -320,7 +320,7 @@
             </q-card>
           </div>
 
-          <div class="col-md col-sm">
+          <div class="col-6 col-md col-sm-12">
             <q-card>
               <q-card-section>
                 <div v-translate class="text-h5 q-mt-sm q-mb-xs">Actions</div>
@@ -373,7 +373,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-12 col-md col-sm">
+          <div class="col col-md col-sm-12">
             <q-card>
               <q-card-section>
                 <div v-translate class="text-h5 q-mt-sm q-mb-xs">
