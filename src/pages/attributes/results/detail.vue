@@ -70,33 +70,35 @@
             @update:model-value="updateCoords"
           />
 
-          <template v-if="viewMap">
-            <div class="row q-pa-md q-gutter-md">
-              <div class="col-6 col-md col-sm">
-                <q-input
-                  v-model="element.latitude"
-                  outlined
-                  :label="$gettext('Latitude')"
-                  @update:model-value="updateMapCoords"
-                />
+          <q-slide-transition>
+            <div v-if="viewMap">
+              <div class="row q-pa-md q-gutter-md">
+                <div class="col-6 col-md col-sm">
+                  <q-input
+                    v-model="element.latitude"
+                    outlined
+                    :label="$gettext('Latitude')"
+                    @update:model-value="updateMapCoords"
+                  />
+                </div>
+
+                <div class="col-6 col-md col-sm">
+                  <q-input
+                    v-model="element.longitude"
+                    outlined
+                    :label="$gettext('Longitude')"
+                    @update:model-value="updateMapCoords"
+                  />
+                </div>
               </div>
 
-              <div class="col-6 col-md col-sm">
-                <q-input
-                  v-model="element.longitude"
-                  outlined
-                  :label="$gettext('Longitude')"
-                  @update:model-value="updateMapCoords"
-                />
+              <div class="row q-pa-md q-gutter-md">
+                <div class="col">
+                  <AddLocation v-model="coords" @update-coords="updateCoords" />
+                </div>
               </div>
             </div>
-
-            <div class="row q-pa-md q-gutter-md">
-              <div class="col">
-                <AddLocation v-model="coords" @update-coords="updateCoords" />
-              </div>
-            </div>
-          </template>
+          </q-slide-transition>
         </q-card-section>
       </template>
     </ItemDetail>
