@@ -184,7 +184,10 @@
                           name: 'errors-list',
                           query: { computer_id: element.id, checked: false },
                         }"
-                        ><strong>{{ errors.unchecked }}</strong></q-btn
+                        ><strong>{{ errors.unchecked }}</strong>
+                        <q-tooltip anchor="top middle" self="bottom middle"
+                          ><translate>Unchecked</translate></q-tooltip
+                        ></q-btn
                       >
                       /
                       <q-btn
@@ -196,7 +199,10 @@
                           name: 'errors-list',
                           query: { computer_id: element.id },
                         }"
-                        ><strong>{{ errors.total }}</strong></q-btn
+                        ><strong>{{ errors.total }}</strong>
+                        <q-tooltip anchor="top middle" self="bottom middle"
+                          ><translate>Total</translate></q-tooltip
+                        ></q-btn
                       >
                     </div>
 
@@ -212,7 +218,10 @@
                           name: 'faults-list',
                           query: { computer_id: element.id, checked: false },
                         }"
-                        ><strong>{{ faults.unchecked }}</strong></q-btn
+                        ><strong>{{ faults.unchecked }}</strong>
+                        <q-tooltip anchor="top middle" self="bottom middle"
+                          ><translate>Unchecked</translate></q-tooltip
+                        ></q-btn
                       >
                       /
                       <q-btn
@@ -224,7 +233,10 @@
                           name: 'faults-list',
                           query: { computer_id: element.id },
                         }"
-                        ><strong>{{ faults.total }}</strong></q-btn
+                        ><strong>{{ faults.total }}</strong>
+                        <q-tooltip anchor="top middle" self="bottom middle"
+                          ><translate>Total</translate></q-tooltip
+                        ></q-btn
                       >
                     </div>
                   </div>
