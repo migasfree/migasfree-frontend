@@ -5,11 +5,14 @@
     :theme="editorTheme"
     class="editor"
   />
+  <q-btn flat icon="mdi-content-copy" color="primary" @click="copyCode" />
 </template>
 
 <script>
 import { reactive, computed } from 'vue'
-import { useQuasar } from 'quasar'
+import { useQuasar, copyToClipboard } from 'quasar'
+import { useGettext } from 'vue3-gettext'
+import { useUiStore } from 'stores/ui'
 
 import { VAceEditor } from 'vue3-ace-editor'
 import 'ace-builds/src-noconflict/mode-python'
@@ -39,6 +42,8 @@ export default {
   emits: ['update:model-value'],
   setup(props, { emit }) {
     const $q = useQuasar()
+    const uiStore = useUiStore()
+    const { $gettext } = useGettext()
 
     const editorLanguages = reactive({
       python: 'python',
@@ -65,11 +70,18 @@ export default {
       },
     })
 
+    const copyCode = () => {
+      copyToClipboard(props.modelValue).then(() => {
+        uiStore.notifySuccess($gettext('Text copied to clipboard'))
+      })
+    }
+
     return {
       editorLanguages,
       highlightLang,
       editorTheme,
       code,
+      copyCode,
     }
   },
 }
