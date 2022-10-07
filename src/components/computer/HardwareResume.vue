@@ -15,7 +15,10 @@
               size="sm"
               class="vertical-middle"
             />
-            <span class="vertical-middle"> {{ showDate(hardwareDate) }} </span>
+            <span class="vertical-middle">
+              {{ showDate(hardwareDate) }}
+              <q-tooltip>{{ diffForHumans(hardwareDate) }}</q-tooltip></span
+            >
             <DateDiff
               :begin="new Date(hardwareDate)"
               :tooltip="$gettext('unsynchronized from')"
