@@ -106,8 +106,7 @@
 <script>
 import { ref, reactive } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useMeta } from 'quasar'
-import { copyToClipboard } from 'quasar'
+import { useMeta, copyToClipboard } from 'quasar'
 import { useUiStore } from 'stores/ui'
 
 import ItemDetail from 'components/ui/ItemDetail'
