@@ -5,7 +5,9 @@
     :theme="editorTheme"
     class="editor"
   />
-  <q-btn flat icon="mdi-content-copy" color="primary" @click="copyCode" />
+  <q-btn flat icon="mdi-content-copy" color="primary" @click="copyCode">
+    <q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+  >
 </template>
 
 <script>

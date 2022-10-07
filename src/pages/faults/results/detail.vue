@@ -89,7 +89,8 @@
                     icon="mdi-content-copy"
                     color="primary"
                     @click="copyInfo"
-                  />
+                    ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+                  >
                 </q-toolbar>
                 <q-item :inset-level="0.5">
                   <pre class="overflow">{{ element.result }}</pre>

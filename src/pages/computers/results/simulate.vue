@@ -144,7 +144,8 @@
                           icon="mdi-content-copy"
                           color="primary"
                           @click.stop="copyContent(simulation.packages.install)"
-                        />
+                          ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+                        >
                       </q-item-section>
                     </template>
 
@@ -193,7 +194,8 @@
                           icon="mdi-content-copy"
                           color="primary"
                           @click.stop="copyContent(simulation.policies.install)"
-                        />
+                          ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+                        >
                       </q-item-section>
                     </template>
 
@@ -240,7 +242,8 @@
                           icon="mdi-content-copy"
                           color="primary"
                           @click.stop="copyContent(simulation.packages.remove)"
-                        />
+                          ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+                        >
                       </q-item-section>
                     </template>
 
@@ -289,7 +292,8 @@
                           icon="mdi-content-copy"
                           color="primary"
                           @click.stop="copyContent(simulation.policies.remove)"
-                        />
+                          ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+                        >
                       </q-item-section>
                     </template>
 

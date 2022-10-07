@@ -34,7 +34,8 @@
                 icon="mdi-content-copy"
                 color="primary"
                 @click.stop="copyInventory"
-              />
+                ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+              >
             </q-item-section>
           </template>
 
@@ -97,7 +98,8 @@
                 icon="mdi-content-copy"
                 color="primary"
                 @click.stop="copyHistory"
-              />
+                ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+              >
             </q-item-section>
           </template>
 
