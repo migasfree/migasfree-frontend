@@ -36,7 +36,7 @@
 
       <template v-else>
         <div class="row q-pa-md">
-          <div class="col-md">
+          <div class="col">
             <q-btn-toggle
               v-model="event"
               spread
