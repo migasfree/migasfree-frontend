@@ -13,7 +13,7 @@
             :icon="elementIcon(computer.status)"
             :tooltip="computer.summary"
           />
-          <h3 class="text-h6 float-right">
+          <span class="text-h6 float-right">
             <q-tooltip self="bottom middle"
               ><translate>Date of entry into the migasfree system</translate>
               ({{ diffForHumans(computer.created_at) }})</q-tooltip
@@ -26,7 +26,7 @@
             <span class="vertical-middle">
               {{ showDate(computer.created_at) }}</span
             >
-          </h3>
+          </span>
         </template>
       </Header>
 
