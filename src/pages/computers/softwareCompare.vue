@@ -128,14 +128,42 @@
       </div>
     </div>
 
-    <div v-if="isEnabled" class="row q-pa-md">
-      <div class="col-12">
-        <code-diff
-          :old-string="source.inventory"
-          :new-string="target.inventory"
-          :context="10"
-          output-format="side-by-side"
-        />
+    <div v-if="isEnabled">
+      <div class="row q-pa-md">
+        <div class="col-6">
+          <q-tooltip self="bottom middle"
+            ><translate>sync end date</translate> ({{
+              diffForHumans(source.sync_end_date)
+            }})</q-tooltip
+          >
+          <q-icon name="mdi-calendar-sync" size="sm" class="vertical-middle" />
+          <span class="vertical-middle">{{
+            showDate(source.sync_end_date)
+          }}</span>
+        </div>
+
+        <div class="col-6">
+          <q-tooltip self="bottom middle"
+            ><translate>sync end date</translate> ({{
+              diffForHumans(target.sync_end_date)
+            }})</q-tooltip
+          >
+          <q-icon name="mdi-calendar-sync" size="sm" class="vertical-middle" />
+          <span class="vertical-middle">{{
+            showDate(target.sync_end_date)
+          }}</span>
+        </div>
+      </div>
+
+      <div class="row q-pa-md">
+        <div class="col-12">
+          <code-diff
+            :old-string="source.inventory"
+            :new-string="target.inventory"
+            :context="10"
+            output-format="side-by-side"
+          />
+        </div>
       </div>
     </div>
   </q-page>
@@ -157,6 +185,7 @@ import MigasLink from 'components/MigasLink'
 import { CodeDiff } from 'v-code-diff'
 
 import { useElement } from 'composables/element'
+import useDate from 'composables/date'
 
 export default {
   components: {
@@ -169,6 +198,7 @@ export default {
     const { $gettext } = useGettext()
     const route = useRoute()
     const { elementIcon } = useElement()
+    const { showDate, diffForHumans } = useDate()
     const uiStore = useUiStore()
 
     const title = ref($gettext('Software Compare'))
@@ -279,6 +309,8 @@ export default {
       filterComputers,
       abortFilterComputers,
       elementIcon,
+      showDate,
+      diffForHumans,
       MIN_CHARS_SEARCH,
     }
   },
