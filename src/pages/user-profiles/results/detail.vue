@@ -72,16 +72,14 @@
             <div class="col-6 col-md col-sm">
               <p>
                 <translate>Joined Date</translate>:
-                <strong>{{ showDate(element.date_joined) }}</strong>
-                <q-tooltip>{{ diffForHumans(element.date_joined) }}</q-tooltip>
+                <strong><DateView :value="element.date_joined" /></strong>
               </p>
             </div>
 
             <div class="col-6 col-md col-sm">
               <p>
                 <translate>Last Login</translate>:
-                <strong>{{ showDate(element.last_login) }}</strong>
-                <q-tooltip>{{ diffForHumans(element.last_login) }}</q-tooltip>
+                <strong><DateView :value="element.last_login" /></strong>
               </p>
             </div>
           </div>
@@ -335,21 +333,21 @@ import { useUiStore } from 'stores/ui'
 import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import ItemDetail from 'components/ui/ItemDetail'
+import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 
-import useDate from 'composables/date'
 import { modelIcon } from 'composables/element'
 
 export default {
   components: {
     ItemDetail,
+    DateView,
     MigasLink,
   },
   setup() {
     const { $gettext } = useGettext()
     const $q = useQuasar()
     const uiStore = useUiStore()
-    const { showDate, diffForHumans } = useDate()
 
     const title = ref($gettext('User Profile'))
     const windowTitle = ref(title.value)
@@ -555,8 +553,6 @@ export default {
       updateToken,
       filterUserPermissions,
       abortFilterUserPermissions,
-      showDate,
-      diffForHumans,
       modelIcon,
       MIN_CHARS_SEARCH,
     }
