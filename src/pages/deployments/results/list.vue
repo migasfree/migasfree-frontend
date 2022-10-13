@@ -50,10 +50,7 @@
         </span>
 
         <span v-else-if="slotProps.props.column.field == 'start_date'">
-          {{ showDate(slotProps.props.row.start_date) }}
-          <q-tooltip>{{
-            diffForHumans(slotProps.props.row.start_date)
-          }}</q-tooltip>
+          <DateView :value="slotProps.props.row.start_date" />
         </span>
 
         <span v-else-if="slotProps.props.column.field == 'source'">
@@ -79,9 +76,9 @@ import { useUiStore } from 'stores/ui'
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
 import BooleanView from 'components/ui/BooleanView'
+import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 
-import useDate from 'composables/date'
 import { modelIcon } from 'composables/element'
 
 export default {
@@ -89,12 +86,12 @@ export default {
     Breadcrumbs,
     TableResults,
     BooleanView,
+    DateView,
     MigasLink,
   },
   setup() {
     const { $gettext } = useGettext()
     const uiStore = useUiStore()
-    const { showDate, diffForHumans } = useDate()
 
     useMeta({ title: $gettext('Deployments List') })
 
@@ -297,8 +294,6 @@ export default {
       title,
       breadcrumbs,
       columns,
-      showDate,
-      diffForHumans,
       resolveSource,
     }
   },
