@@ -50,7 +50,7 @@
         </span>
 
         <span v-else-if="slotProps.props.column.field == 'start_date'">
-          {{ showDate(slotProps.props.row.start_date, 'YYYY-MM-DD') }}
+          {{ showDate(slotProps.props.row.start_date) }}
           <q-tooltip>{{
             diffForHumans(slotProps.props.row.start_date)
           }}</q-tooltip>
