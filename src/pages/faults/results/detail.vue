@@ -59,19 +59,11 @@
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col">
-              <q-icon
-                name="mdi-calendar-plus"
-                size="sm"
-                class="vertical-middle"
+              <DateView
+                :value="element.created_at"
+                icon="mdi-calendar-plus"
+                :tooltip-text="$gettext('Date')"
               />
-              <span class="vertical-middle">{{
-                showDate(element.created_at)
-              }}</span>
-              <q-tooltip self="bottom middle"
-                >{{ $gettext('Date') }} ({{
-                  diffForHumans(element.created_at)
-                }})</q-tooltip
-              >
             </div>
           </div>
 
@@ -111,20 +103,20 @@ import { useMeta, copyToClipboard } from 'quasar'
 import { useUiStore } from 'stores/ui'
 
 import ItemDetail from 'components/ui/ItemDetail'
+import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 
 import { useElement, modelIcon } from 'composables/element'
-import useDate from 'composables/date'
 
 export default {
   components: {
     ItemDetail,
+    DateView,
     MigasLink,
   },
   setup() {
     const uiStore = useUiStore()
     const { $gettext } = useGettext()
-    const { showDate, diffForHumans } = useDate()
     const { elementIcon } = useElement()
 
     const title = ref($gettext('Fault'))
@@ -186,8 +178,6 @@ export default {
       element,
       isValid,
       copyInfo,
-      showDate,
-      diffForHumans,
       elementIcon,
       elementData,
       setTitle,
