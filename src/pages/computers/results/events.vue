@@ -14,18 +14,13 @@
             :tooltip="computer.summary"
           />
           <span class="text-h6 float-right">
-            <q-tooltip self="bottom middle"
-              ><translate>Date of entry into the migasfree system</translate>
-              ({{ diffForHumans(computer.created_at) }})</q-tooltip
-            >
-            <q-icon
-              name="mdi-calendar-plus"
-              size="md"
-              class="vertical-middle"
+            <DateView
+              :value="computer.created_at"
+              icon="mdi-calendar-plus"
+              :tooltip-text="
+                $gettext('Date of entry into the migasfree system')
+              "
             />
-            <span class="vertical-middle">
-              {{ showDate(computer.created_at) }}</span
-            >
           </span>
         </template>
       </Header>
@@ -130,17 +125,11 @@
           <template #body="props">
             <q-tr :props="props">
               <q-td v-if="event === 'syncs'" key="start_date">
-                {{ showDate(props.row.start_date) }}
-                <q-tooltip>{{ diffForHumans(props.row.start_date) }}</q-tooltip>
+                <DateView :value="props.row.start_date" />
               </q-td>
 
               <q-td key="created_at">
-                <span
-                  >{{ showDate(props.row.created_at) }}
-                  <q-tooltip>{{
-                    diffForHumans(props.row.created_at)
-                  }}</q-tooltip></span
-                >
+                <DateView :value="props.row.created_at" />
                 <DateDiff
                   v-if="props.row.created_at && props.row.start_date"
                   class="float-right"
@@ -221,6 +210,7 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import Truncate from 'components/ui/Truncate'
 import BooleanView from 'components/ui/BooleanView'
+import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 import DateDiff from 'components/DateDiff'
 import HeatMap from 'components/chart/HeatMap'
@@ -235,6 +225,7 @@ export default {
     MigasLink,
     HeatMap,
     BooleanView,
+    DateView,
     Truncate,
     DateDiff,
   },
@@ -244,7 +235,7 @@ export default {
     const { addToDate } = date
 
     const uiStore = useUiStore()
-    const { showDate, diffForHumans } = useDate()
+    const { showDate } = useDate()
     const { elementIcon } = useElement()
 
     const title = ref($gettext('Events'))
@@ -634,7 +625,6 @@ export default {
       elementIcon,
       modelIcon,
       showDate,
-      diffForHumans,
     }
   },
 }
