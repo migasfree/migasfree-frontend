@@ -300,6 +300,7 @@ import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 
 import { useElement } from 'composables/element'
+import useDate from 'composables/date'
 
 export default {
   name: 'ComputerSoftware',
@@ -315,6 +316,7 @@ export default {
     const router = useRouter()
     const uiStore = useUiStore()
     const { elementIcon } = useElement()
+    const { showDate } = useDate()
 
     const loading = reactive({
       inventory: false,
@@ -386,7 +388,7 @@ export default {
 
       let history = []
       Object.entries(softwareHistory).map(([key, val]) => {
-        history.push(key)
+        history.push(showDate(key))
         sortArray(val).forEach((item) => {
           history.push(`${item.mode}${item.name}`)
         })
