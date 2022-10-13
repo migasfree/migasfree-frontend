@@ -10,10 +10,7 @@
     >
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'created_at'">
-          {{ showDate(slotProps.props.row.created_at) }}
-          <q-tooltip>{{
-            diffForHumans(slotProps.props.row.created_at)
-          }}</q-tooltip>
+          <DateView :value="slotProps.props.row.created_at" />
         </span>
 
         <span v-else-if="slotProps.props.column.field == 'checked'">
@@ -36,20 +33,20 @@ import { useMeta } from 'quasar'
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
 import BooleanView from 'components/ui/BooleanView'
+import DateView from 'components/ui/DateView'
 
 import { modelIcon, useElement } from 'composables/element'
-import useDate from 'composables/date'
 
 export default {
   components: {
     Breadcrumbs,
     TableResults,
     BooleanView,
+    DateView,
   },
   setup() {
     const { $gettext } = useGettext()
     const { elementIcon } = useElement()
-    const { showDate, diffForHumans } = useDate()
 
     useMeta({ title: $gettext('Notifications List') })
 
@@ -125,8 +122,6 @@ export default {
       breadcrumbs,
       columns,
       elementIcon,
-      showDate,
-      diffForHumans,
     }
   },
 }
