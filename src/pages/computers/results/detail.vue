@@ -295,19 +295,11 @@
                   <template v-else>
                     <div class="row q-pa-md items-baseline">
                       <div class="col-md">
-                        <q-tooltip self="bottom middle"
-                          ><translate>sync start date</translate> ({{
-                            diffForHumans(syncInfo.sync_start_date)
-                          }})</q-tooltip
-                        >
-                        <q-icon
-                          name="mdi-play"
-                          size="sm"
-                          class="vertical-middle"
+                        <DateView
+                          :value="syncInfo.sync_start_date"
+                          icon="mdi-play"
+                          :tooltip-text="$gettext('sync start date')"
                         />
-                        <span class="vertical-middle">
-                          {{ showDate(syncInfo.sync_start_date) }}</span
-                        >
                       </div>
 
                       <div
@@ -317,19 +309,11 @@
                             syncInfo.sync_end_date < syncInfo.sync_start_date,
                         }"
                       >
-                        <q-tooltip self="bottom middle"
-                          ><translate>sync end date</translate> ({{
-                            diffForHumans(syncInfo.sync_end_date)
-                          }})</q-tooltip
-                        >
-                        <q-icon
-                          name="mdi-stop"
-                          size="sm"
-                          class="vertical-middle"
+                        <DateView
+                          :value="syncInfo.sync_end_date"
+                          icon="mdi-play"
+                          :tooltip-text="$gettext('sync end date')"
                         />
-                        <span class="vertical-middle">
-                          {{ showDate(syncInfo.sync_end_date) }}</span
-                        >
                       </div>
 
                       <div class="col-auto">
@@ -454,6 +438,7 @@ import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import OverflowList from 'components/ui/OverflowList'
 import ItemDetail from 'components/ui/ItemDetail'
+import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 import DateDiff from 'components/DateDiff'
 
@@ -469,6 +454,7 @@ export default {
   components: {
     OverflowList,
     ItemDetail,
+    DateView,
     MigasLink,
     DateDiff,
     ComputerInfo,
@@ -481,7 +467,7 @@ export default {
     const route = useRoute()
     const uiStore = useUiStore()
     const { elementIcon, attributeValue } = useElement()
-    const { showDate, diffForHumans } = useDate()
+    const { showDate } = useDate()
     const pluralize = require('pluralize')
 
     const routes = {
@@ -751,7 +737,6 @@ export default {
       elementIcon,
       attributeValue,
       showDate,
-      diffForHumans,
       centerMarkers,
       updateCurrentSituation,
       filterTags,
