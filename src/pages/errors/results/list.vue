@@ -29,10 +29,7 @@
         </span>
 
         <span v-else-if="slotProps.props.column.field == 'created_at'">
-          {{ showDate(slotProps.props.row.created_at) }}
-          <q-tooltip>{{
-            diffForHumans(slotProps.props.row.created_at)
-          }}</q-tooltip>
+          <DateView :value="slotProps.props.row.created_at" />
         </span>
 
         <span v-else-if="slotProps.props.column.field == 'description'">
@@ -62,10 +59,10 @@ import { useUiStore } from 'stores/ui'
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
 import BooleanView from 'components/ui/BooleanView'
+import DateView from 'components/ui/DateView'
 import Truncate from 'components/ui/Truncate'
 import MigasLink from 'components/MigasLink'
 
-import useDate from 'composables/date'
 import { useElement, modelIcon } from 'composables/element'
 
 export default {
@@ -73,13 +70,13 @@ export default {
     Breadcrumbs,
     TableResults,
     BooleanView,
+    DateView,
     Truncate,
     MigasLink,
   },
   setup() {
     const { $gettext } = useGettext()
     const uiStore = useUiStore()
-    const { showDate, diffForHumans } = useDate()
     const { elementIcon } = useElement()
 
     useMeta({ title: $gettext('Errors List') })
@@ -215,8 +212,6 @@ export default {
       title,
       breadcrumbs,
       columns,
-      showDate,
-      diffForHumans,
       elementIcon,
     }
   },
