@@ -37,13 +37,11 @@
         </div>
 
         <div class="col-6 col-md col-sm">
-          <q-tooltip self="bottom middle"
-            ><translate>Date of entry into the migasfree system</translate> ({{
-              diffForHumans(createdAt)
-            }})</q-tooltip
-          >
-          <q-icon name="mdi-calendar-plus" size="sm" class="vertical-middle" />
-          <span class="vertical-middle"> {{ showDate(createdAt) }}</span>
+          <DateView
+            :value="createdAt"
+            icon="mdi-calendar-plus"
+            :tooltip-text="$gettext('Date of entry into the migasfree system')"
+          />
         </div>
       </div>
 
@@ -134,13 +132,13 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { useAuthStore } from 'stores/auth'
 
+import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
-
-import useDate from 'composables/date'
 
 export default {
   name: 'ComputerInfo',
   components: {
+    DateView,
     MigasLink,
   },
   props: {
@@ -180,7 +178,6 @@ export default {
     const { $gettext } = useGettext()
     const uiStore = useUiStore()
     const authStore = useAuthStore()
-    const { showDate, diffForHumans } = useDate()
 
     const loading = ref(false)
     const value = ref(props.name)
@@ -205,8 +202,6 @@ export default {
       value,
       isSuperUser: authStore.user.is_superuser,
       updateName,
-      showDate,
-      diffForHumans,
     }
   },
 }
