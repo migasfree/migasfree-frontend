@@ -890,6 +890,8 @@ export default function useDataGrid(
           case 'score':
           case 'source':
           case 'search':
+          case 'page':
+          case 'page_size':
             ret[key] = val
             break
           case 'sync_end_date':
