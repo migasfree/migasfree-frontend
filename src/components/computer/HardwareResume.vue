@@ -10,15 +10,7 @@
       <div class="row q-pa-md">
         <div class="col-md">
           <p v-if="readonly">
-            <q-icon
-              name="mdi-calendar-star"
-              size="sm"
-              class="vertical-middle"
-            />
-            <span class="vertical-middle">
-              {{ showDate(hardwareDate) }}
-              <q-tooltip>{{ diffForHumans(hardwareDate) }}</q-tooltip></span
-            >
+            <DateView :value="hardwareDate" icon="mdi-calendar-star" />
             <DateDiff
               :begin="new Date(hardwareDate)"
               :tooltip="$gettext('unsynchronized from')"
@@ -212,13 +204,14 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
 import DateDiff from 'components/DateDiff'
+import DateView from 'components/ui/DateView'
 
 import { useElement } from 'composables/element'
 import useDate from 'composables/date'
 
 export default {
   name: 'ComputerHardwareResume',
-  components: { DateDiff },
+  components: { DateDiff, DateView },
   props: {
     cid: {
       type: Number,
@@ -285,7 +278,7 @@ export default {
     const { humanStorageSize } = format
     const uiStore = useUiStore()
     const { productIcon, cpuIcon, humanMacAddress } = useElement()
-    const { showDate, diffForHumans, localeDate } = useDate()
+    const { diffForHumans, localeDate } = useDate()
 
     const loading = ref(false)
     const hardwareDate = ref(props.lastHardwareCapture)
@@ -315,7 +308,6 @@ export default {
       productIcon,
       cpuIcon,
       humanMacAddress,
-      showDate,
       diffForHumans,
       localeDate,
       updateCapture,
