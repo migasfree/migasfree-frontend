@@ -117,12 +117,9 @@
                   <q-avatar icon="mdi-calendar-range" />
                 </q-item-section>
 
-                <q-item-section
-                  >{{ key
-                  }}<q-tooltip>{{
-                    diffForHumans(key)
-                  }}</q-tooltip></q-item-section
-                >
+                <q-item-section>
+                  <DateView :value="key" />
+                </q-item-section>
 
                 <q-item-section side>
                   <div class="row items-center">
@@ -299,14 +296,14 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
+import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 
 import { useElement } from 'composables/element'
-import useDate from 'composables/date'
 
 export default {
   name: 'ComputerSoftware',
-  components: { MigasLink },
+  components: { DateView, MigasLink },
   props: {
     cid: {
       type: Number,
@@ -318,7 +315,6 @@ export default {
     const router = useRouter()
     const uiStore = useUiStore()
     const { elementIcon } = useElement()
-    const { diffForHumans } = useDate()
 
     const loading = reactive({
       inventory: false,
@@ -448,7 +444,6 @@ export default {
       filterComputers,
       abortFilterComputers,
       elementIcon,
-      diffForHumans,
       MIN_CHARS_SEARCH,
     }
   },
