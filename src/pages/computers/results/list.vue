@@ -60,10 +60,7 @@
         </span>
 
         <span v-else-if="slotProps.props.column.field == 'sync_end_date'">
-          {{ showDate(slotProps.props.row.sync_end_date) }}
-          <q-tooltip>{{
-            diffForHumans(slotProps.props.row.sync_end_date)
-          }}</q-tooltip>
+          <DateView :value="slotProps.props.row.sync_end_date" />
         </span>
 
         <span v-else>
@@ -84,21 +81,21 @@ import { useUiStore } from 'stores/ui'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
+import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 
 import { modelIcon, useElement } from 'composables/element'
-import useDate from 'composables/date'
 
 export default {
   components: {
     Breadcrumbs,
     TableResults,
+    DateView,
     MigasLink,
   },
   setup() {
     const { $gettext } = useGettext()
     const { elementIcon, productIcon } = useElement()
-    const { showDate, diffForHumans } = useDate()
     const uiStore = useUiStore()
 
     useMeta({ title: $gettext('Computers List') })
@@ -250,8 +247,6 @@ export default {
       moreFilters,
       elementIcon,
       productIcon,
-      showDate,
-      diffForHumans,
     }
   },
 }
