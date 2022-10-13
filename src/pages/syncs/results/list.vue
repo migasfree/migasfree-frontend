@@ -36,12 +36,7 @@
         </span>
 
         <span v-else-if="slotProps.props.column.field == 'created_at'">
-          <span
-            >{{ showDate(slotProps.props.row.created_at) }}
-            <q-tooltip>{{
-              diffForHumans(slotProps.props.row.created_at)
-            }}</q-tooltip></span
-          >
+          <DateView :value="slotProps.props.row.created_at" />
           <DateDiff
             v-if="
               slotProps.props.row.created_at && slotProps.props.row.start_date
@@ -54,10 +49,7 @@
         </span>
 
         <span v-else-if="slotProps.props.column.field == 'start_date'">
-          {{ showDate(slotProps.props.row.start_date) }}
-          <q-tooltip>{{
-            diffForHumans(slotProps.props.row.start_date)
-          }}</q-tooltip>
+          <DateView :value="slotProps.props.row.start_date" />
         </span>
 
         <span v-else-if="slotProps.props.column.field == 'pms_status_ok'">
@@ -83,24 +75,24 @@ import { useUiStore } from 'stores/ui'
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
 import BooleanView from 'components/ui/BooleanView'
+import DateView from 'components/ui/DateView'
 import DateDiff from 'components/DateDiff'
 import MigasLink from 'components/MigasLink'
 
 import { modelIcon, useElement } from 'composables/element'
-import useDate from 'composables/date'
 
 export default {
   components: {
     Breadcrumbs,
     TableResults,
     BooleanView,
+    DateView,
     DateDiff,
     MigasLink,
   },
   setup() {
     const { $gettext } = useGettext()
     const { elementIcon } = useElement()
-    const { showDate, diffForHumans } = useDate()
     const uiStore = useUiStore()
 
     useMeta({ title: $gettext('Syncs List') })
@@ -252,8 +244,6 @@ export default {
       breadcrumbs,
       columns,
       elementIcon,
-      showDate,
-      diffForHumans,
     }
   },
 }
