@@ -66,6 +66,7 @@ export default function useDetail(
 
   const getElementIcon = () => {
     if (model === 'computers') return elementIcon(element.status)
+    if (model === 'features') return elementIcon(element.property_att.prefix)
     return modelIcon(model)
   }
 
