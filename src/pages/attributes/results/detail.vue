@@ -19,7 +19,7 @@
           <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
           <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md col-sm">
+            <div class="col-4 col-md col-sm">
               <MigasLink
                 v-if="'property_att' in element"
                 model="formulas"
@@ -29,12 +29,23 @@
               />
             </div>
 
-            <div class="col-6 col-md col-sm">
-              <q-icon
-                :name="modelIcon('attributes')"
-                size="sm"
-                class="vertical-middle"
-              />
+            <div class="col-4 col-md col-sm">
+              <template v-if="element.id">
+                <q-icon
+                  :name="elementIcon(element.property_att.prefix)"
+                  size="sm"
+                  class="vertical-middle q-mr-sm"
+                />
+                <span class="vertical-middle">{{
+                  element.property_att.prefix
+                }}</span>
+                <q-tooltip self="bottom middle">{{
+                  $gettext('Prefix')
+                }}</q-tooltip>
+              </template>
+            </div>
+
+            <div class="col-4 col-md col-sm">
               <span class="vertical-middle">{{ element.value }}</span>
               <q-tooltip self="bottom middle">{{
                 $gettext('Value')
@@ -114,7 +125,7 @@ import ItemDetail from 'components/ui/ItemDetail'
 import AddLocation from 'components/map/AddLocation'
 import MigasLink from 'components/MigasLink'
 
-import { modelIcon } from 'composables/element'
+import { modelIcon, useElement } from 'composables/element'
 
 export default {
   components: {
@@ -124,6 +135,7 @@ export default {
   },
   setup() {
     const { $gettext } = useGettext()
+    const { elementIcon } = useElement()
 
     const title = ref($gettext('Attribute'))
     const windowTitle = ref(title.value)
@@ -237,6 +249,7 @@ export default {
       updateCoords,
       updateMapCoords,
       modelIcon,
+      elementIcon,
     }
   },
 }
