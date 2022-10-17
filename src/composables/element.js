@@ -40,6 +40,7 @@ const MODEL_ICON = {
   'packages-history': 'mdi-history',
   users: 'mdi-account',
   attributes: 'mdi-pound',
+  features: 'mdi-pound',
   tags: 'mdi-tag',
   syncs: 'mdi-sync',
   errors: 'mdi-bug',
