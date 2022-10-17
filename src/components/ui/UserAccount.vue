@@ -152,6 +152,8 @@ export default {
         gettext.current = currentLanguage.value.label
         $q.cookies.set('language', currentLanguage.value.label)
       }
+
+      window.location.reload(true)
     }
 
     const updateDomainPreference = async () => {
@@ -183,13 +185,7 @@ export default {
           authStore.setUser(response.data)
           userAccount.value.hide()
 
-          // FIXME find more elegant way to refresh route
-          router.go({
-            path: router.path,
-            query: {
-              t: +new Date(),
-            },
-          })
+          window.location.reload(true)
         })
         .catch((error) => {
           uiStore.notifyError(error)
