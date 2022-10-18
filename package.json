@@ -33,7 +33,7 @@
     "performant-array-to-tree": "^1.11.0",
     "pinia": "^2.0.22",
     "pluralize": "^8.0.0",
-    "quasar": "^2.8.4",
+    "quasar": "^2.10.0",
     "text-clipper": "^2.2.0",
     "typeface-dosis": "^1.1.13",
     "v-code-diff": "^0.3.12",
