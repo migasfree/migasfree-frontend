@@ -24,7 +24,14 @@
         </span>
 
         <span v-else-if="slotProps.props.column.field == 'status'">
-          {{ slotProps.props.row.status }}
+          <q-icon
+            :name="elementIcon(slotProps.props.row.status)"
+            class="vertical-middle q-mr-xs"
+            size="sm"
+          />
+          <span class="vertical-middle">{{
+            computerStatus(slotProps.props.row.status)
+          }}</span>
         </span>
 
         <span v-else>
@@ -59,7 +66,7 @@ export default {
   },
   setup() {
     const { $gettext } = useGettext()
-    const { elementIcon } = useElement()
+    const { elementIcon, computerStatus } = useElement()
     const uiStore = useUiStore()
 
     useMeta({ title: $gettext('Status Logs List') })
@@ -169,6 +176,7 @@ export default {
       breadcrumbs,
       columns,
       elementIcon,
+      computerStatus,
     }
   },
 }
