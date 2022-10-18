@@ -1,11 +1,12 @@
 <template>
   <q-btn-dropdown
-    color="primary"
-    outline
+    flat
     split
     no-caps
     push
     dense
+    auto-close
+    class="text-primary"
     :loading="loading"
     :to="link"
     @show="getRelations"
@@ -29,7 +30,6 @@
       <q-item
         v-for="(item, index) in validRelations"
         :key="index"
-        v-close-popup
         v-ripple
         dense
       >
