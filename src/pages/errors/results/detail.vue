@@ -57,26 +57,21 @@
 
           <div class="row q-pa-md">
             <div class="col">
-              <q-list bordered>
-                <q-toolbar>
-                  <q-toolbar-title
-                    ><div v-translate class="text-body1">
-                      Description
-                    </div></q-toolbar-title
-                  >
-                  <q-btn
-                    flat
-                    icon="mdi-content-copy"
-                    color="primary"
-                    @click="copyInfo"
-                    ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-                  >
-                </q-toolbar>
-
-                <q-item :inset-level="0.5">
-                  <pre class="overflow">{{ element.description }}</pre>
-                </q-item>
-              </q-list>
+              <q-input
+                v-model="element.description"
+                :label="$gettext('Description')"
+                type="textarea"
+                class="pre overflow"
+                readonly
+                outlined
+              />
+              <q-btn
+                flat
+                icon="mdi-content-copy"
+                color="primary"
+                @click="copyInfo"
+                ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+              >
             </div>
           </div>
         </q-card-section>
