@@ -19,6 +19,7 @@
               <q-select
                 v-model="element.project"
                 outlined
+                autofocus
                 :label="$gettext('Project')"
                 :options="projects"
                 option-value="id"

@@ -23,6 +23,7 @@
                 outlined
                 counter
                 maxlength="150"
+                autofocus
                 :label="$gettext('Username')"
                 :hint="$gettext('Only letters, digits and @/./+/-/_')"
                 lazy-rules

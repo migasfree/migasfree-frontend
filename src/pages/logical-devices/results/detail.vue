@@ -19,6 +19,7 @@
               <q-select
                 v-model="element.device"
                 outlined
+                autofocus
                 use-input
                 map-options
                 input-debounce="0"

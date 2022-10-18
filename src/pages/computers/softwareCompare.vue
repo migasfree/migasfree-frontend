@@ -13,6 +13,7 @@
             <q-select
               v-model="source"
               outlined
+              autofocus
               use-input
               map-options
               input-debounce="0"

@@ -19,6 +19,7 @@
               <q-checkbox
                 v-model="element.checked"
                 left-label
+                autofocus
                 :label="$gettext('Checked?')"
               />
             </div>

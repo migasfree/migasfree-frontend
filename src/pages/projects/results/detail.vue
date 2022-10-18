@@ -19,6 +19,7 @@
               <q-select
                 v-model="element.platform"
                 outlined
+                autofocus
                 :label="$gettext('Platform')"
                 :options="platforms"
                 option-value="id"

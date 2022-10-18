@@ -24,6 +24,7 @@
               <q-select
                 v-model="element.property_att"
                 outlined
+                autofocus
                 :label="$gettext('Stamp')"
                 :options="stamps"
                 option-value="id"

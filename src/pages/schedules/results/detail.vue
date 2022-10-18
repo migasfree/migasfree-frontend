@@ -22,6 +22,7 @@
               <q-input
                 v-model="element.name"
                 outlined
+                autofocus
                 :label="$gettext('Name')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"

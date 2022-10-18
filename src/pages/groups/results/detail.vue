@@ -20,6 +20,7 @@
                 v-model="element.name"
                 :label="$gettext('Name')"
                 outlined
+                autofocus
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
               />

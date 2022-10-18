@@ -23,6 +23,7 @@
               <q-select
                 v-model="element.device_type"
                 outlined
+                autofocus
                 :label="$gettext('Type')"
                 :options="deviceTypes"
                 option-value="id"
