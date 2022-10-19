@@ -199,7 +199,7 @@ msgstr "Alertas"
 #: src/composables/dataGrid.js:120 src/composables/dataGrid.js:127
 #: src/composables/dataGrid.js:133 src/composables/dataGrid.js:151
 #: src/composables/dataGrid.js:173 src/composables/dataGrid.js:210
-#: src/composables/dataGrid.js:498 src/composables/dataGrid.js:82
+#: src/composables/dataGrid.js:499 src/composables/dataGrid.js:82
 #: src/composables/dataGrid.js:86 src/pages/attribute-sets/results/list.vue:121
 #: src/pages/attributes/results/list.vue:125
 #: src/pages/computers/results/list.vue:175
@@ -311,11 +311,11 @@ msgstr "abril"
 msgid "Architecture"
 msgstr "Arquitectura"
 
-#: src/composables/dataGrid.js:955
+#: src/composables/dataGrid.js:957
 msgid "Are you sure you want to remove all these items?"
 msgstr "¿Está seguro que quiere borrar todos estos elementos?"
 
-#: src/components/ui/RemoveDialog.vue:54 src/composables/dataGrid.js:950
+#: src/components/ui/RemoveDialog.vue:54 src/composables/dataGrid.js:952
 msgid "Are you sure you want to remove this item?"
 msgstr "¿Está seguro que quiere borrar este elemento?"
 
@@ -510,7 +510,7 @@ msgid "By Uninstall Date (range)"
 msgstr "Por fecha de desinstalación (rango)"
 
 #: src/components/computer/Software.vue:272 src/components/ui/Header.vue:78
-#: src/components/ui/RemoveDialog.vue:14 src/composables/dataGrid.js:970
+#: src/components/ui/RemoveDialog.vue:14 src/composables/dataGrid.js:972
 #: src/pages/user-profiles/results/detail.vue:501
 msgid "Cancel"
 msgstr "Cancelar"
@@ -582,7 +582,7 @@ msgstr "Cambiar contraseña"
 msgid "Change Scope"
 msgstr "Cambiar ámbito"
 
-#: src/composables/dataGrid.js:1041
+#: src/composables/dataGrid.js:1043
 msgid "Changed item check value!"
 msgstr "¡Cambiado el valor de comprobado!"
 
@@ -1042,7 +1042,7 @@ msgstr "Número de demoras"
 #: src/components/ui/TableResults.vue:425
 #: src/components/ui/TableResults.vue:543
 #: src/components/ui/TableResults.vue:566
-#: src/components/ui/TableResults.vue:572 src/composables/dataGrid.js:965
+#: src/components/ui/TableResults.vue:572 src/composables/dataGrid.js:967
 #: src/pages/applications/results/detail.vue:148
 #: src/pages/applications/results/detail.vue:153
 #: src/pages/applications/results/detail.vue:160
@@ -1769,7 +1769,7 @@ msgstr "¿Es del personal?"
 msgid "Is Super User?"
 msgstr "¿Es superusuario?"
 
-#: src/composables/dataGrid.js:940
+#: src/composables/dataGrid.js:942
 msgid "Item deleted!"
 msgstr "¡Elemento borrado!"
 
@@ -2471,7 +2471,7 @@ msgstr "Procesador"
 msgid "Product"
 msgstr "Producto"
 
-#: src/composables/dataGrid.js:505
+#: src/composables/dataGrid.js:506
 msgid "productive"
 msgstr "productivo"
 
@@ -2873,7 +2873,7 @@ msgstr "Almacenes / Proyecto"
 msgid "Stores List"
 msgstr "Lista de Almacenes"
 
-#: src/composables/dataGrid.js:501
+#: src/composables/dataGrid.js:502
 msgid "subscribed"
 msgstr "de alta"
 
@@ -3184,11 +3184,11 @@ msgstr "Paquetes desinstalados"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: src/composables/dataGrid.js:512
+#: src/composables/dataGrid.js:513
 msgid "unproductive"
 msgstr "improductivo"
 
-#: src/composables/dataGrid.js:521
+#: src/composables/dataGrid.js:522
 msgid "unsubscribed"
 msgstr "de baja"
 
@@ -3326,6 +3326,10 @@ msgstr "Longitud"
 #: src/composables/dataGrid.js:122
 msgid "with date"
 msgstr "con fecha"
+
+#: src/composables/dataGrid.js:212
+msgid "with inventory"
+msgstr "con inventario"
 
 #: src/composables/dataGrid.js:104
 msgid "with schedule"

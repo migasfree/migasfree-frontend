@@ -211,7 +211,7 @@ msgstr ""
 #: src/composables/dataGrid.js:151
 #: src/composables/dataGrid.js:173
 #: src/composables/dataGrid.js:210
-#: src/composables/dataGrid.js:498
+#: src/composables/dataGrid.js:499
 #: src/composables/dataGrid.js:82
 #: src/composables/dataGrid.js:86
 #: src/pages/attribute-sets/results/list.vue:121
@@ -333,12 +333,12 @@ msgstr ""
 msgid "Architecture"
 msgstr ""
 
-#: src/composables/dataGrid.js:955
+#: src/composables/dataGrid.js:957
 msgid "Are you sure you want to remove all these items?"
 msgstr ""
 
 #: src/components/ui/RemoveDialog.vue:54
-#: src/composables/dataGrid.js:950
+#: src/composables/dataGrid.js:952
 msgid "Are you sure you want to remove this item?"
 msgstr ""
 
@@ -541,7 +541,7 @@ msgstr ""
 #: src/components/computer/Software.vue:272
 #: src/components/ui/Header.vue:78
 #: src/components/ui/RemoveDialog.vue:14
-#: src/composables/dataGrid.js:970
+#: src/composables/dataGrid.js:972
 #: src/pages/user-profiles/results/detail.vue:501
 msgid "Cancel"
 msgstr ""
@@ -616,7 +616,7 @@ msgstr ""
 msgid "Change Scope"
 msgstr ""
 
-#: src/composables/dataGrid.js:1041
+#: src/composables/dataGrid.js:1043
 msgid "Changed item check value!"
 msgstr ""
 
@@ -1128,7 +1128,7 @@ msgstr ""
 #: src/components/ui/TableResults.vue:543
 #: src/components/ui/TableResults.vue:566
 #: src/components/ui/TableResults.vue:572
-#: src/composables/dataGrid.js:965
+#: src/composables/dataGrid.js:967
 #: src/pages/applications/results/detail.vue:148
 #: src/pages/applications/results/detail.vue:153
 #: src/pages/applications/results/detail.vue:160
@@ -1892,7 +1892,7 @@ msgstr ""
 msgid "Is Super User?"
 msgstr ""
 
-#: src/composables/dataGrid.js:940
+#: src/composables/dataGrid.js:942
 msgid "Item deleted!"
 msgstr ""
 
@@ -2634,7 +2634,7 @@ msgstr ""
 msgid "Product"
 msgstr ""
 
-#: src/composables/dataGrid.js:505
+#: src/composables/dataGrid.js:506
 msgid "productive"
 msgstr ""
 
@@ -3074,7 +3074,7 @@ msgstr ""
 msgid "Stores List"
 msgstr ""
 
-#: src/composables/dataGrid.js:501
+#: src/composables/dataGrid.js:502
 msgid "subscribed"
 msgstr ""
 
@@ -3390,11 +3390,11 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: src/composables/dataGrid.js:512
+#: src/composables/dataGrid.js:513
 msgid "unproductive"
 msgstr ""
 
-#: src/composables/dataGrid.js:521
+#: src/composables/dataGrid.js:522
 msgid "unsubscribed"
 msgstr ""
 
@@ -3536,6 +3536,10 @@ msgstr ""
 
 #: src/composables/dataGrid.js:122
 msgid "with date"
+msgstr ""
+
+#: src/composables/dataGrid.js:212
+msgid "with inventory"
 msgstr ""
 
 #: src/composables/dataGrid.js:104
