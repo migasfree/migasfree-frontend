@@ -78,6 +78,7 @@
         <StackedBarChart
           :title="dailySyncsTitle"
           end-point="/api/v1/token/stats/syncs/daily/"
+          @get-link="goTo"
         />
       </div>
     </div>
@@ -91,6 +92,7 @@
           v-show="!loadingMonthlySyncs"
           :title="monthlySyncsTitle"
           :initial-data="monthlySyncs"
+          @get-link="goTo"
         />
       </div>
     </div>
