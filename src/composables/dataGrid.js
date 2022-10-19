@@ -209,6 +209,7 @@ export default function useDataGrid(
       items: [
         { id: '', name: $gettext('All') },
         { id: 0, name: $gettext('without inventory') },
+        { id: 1, name: $gettext('with inventory') },
       ],
       selected: null,
     },
@@ -601,7 +602,8 @@ export default function useDataGrid(
   const onSoftwareInventoryFilter = (params) => {
     updateParams({
       columnFilters: Object.assign(serverParams.columnFilters, {
-        has_software_inventory: params.id === 0 ? false : '',
+        has_software_inventory:
+          params.id === 0 ? false : params.id === 1 ? true : '',
       }),
     })
     loadItems()
