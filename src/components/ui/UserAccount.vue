@@ -7,9 +7,30 @@
       </q-tooltip>
     </template>
     <q-list>
-      <q-item-label v-translate="{ name: user.username || '' }" header
-        >User: %{ name }</q-item-label
-      >
+      <q-item>
+        <q-tooltip><translate>User</translate></q-tooltip>
+
+        <q-item-section avatar>
+          <q-icon name="mdi-account" />
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label>{{ user.username }}</q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-item v-if="organization">
+        <q-tooltip><translate>Organization</translate></q-tooltip>
+
+        <q-item-section avatar>
+          <q-icon name="mdi-bank" />
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label>{{ organization }}</q-item-label>
+        </q-item-section>
+      </q-item>
+
       <q-separator />
 
       <q-item>
@@ -126,6 +147,7 @@ export default {
 
     const userAccount = ref(null)
     const user = ref(authStore.user)
+    const organization = ref(authStore.server.organization)
     const languages = ref([])
     const currentLanguage = ref(gettext.available[gettext.current])
     const domainPreference = ref(
@@ -216,6 +238,7 @@ export default {
       domainPreference,
       scopePreference,
       user,
+      organization,
       filteredScopes: authStore.filteredScopes,
       logout,
       changeAppLanguage,
