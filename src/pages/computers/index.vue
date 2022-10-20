@@ -40,6 +40,7 @@
         <StackedBarChart
           :title="$gettext('New Computers / Month')"
           end-point="/api/v1/token/stats/computers/new/month/"
+          month-selector
           @get-link="goTo"
         />
       </div>
