@@ -5,6 +5,8 @@
         <div class="text-h5">{{ title }}</div>
       </q-card-section>
 
+      <slot name="selector"></slot>
+
       <q-card-section v-if="monthSelector" class="row justify-center q-py-none">
         <MonthInput
           v-model="begin"
