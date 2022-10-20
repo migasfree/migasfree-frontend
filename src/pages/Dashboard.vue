@@ -90,10 +90,36 @@
         </div>
         <StackedBarChart
           v-show="!loadingMonthlySyncs"
+          id="monthly-syncs"
           :title="monthlySyncsTitle"
           :initial-data="monthlySyncs"
           @get-link="goTo"
-        />
+        >
+          <template #selector>
+            <q-card-section class="row justify-center q-py-none">
+              <MonthInput
+                v-model="begin"
+                class="q-ma-sm"
+                :label="$gettext('Initial Month')"
+              />
+
+              <MonthInput
+                v-model="end"
+                class="q-ma-sm"
+                :label="$gettext('Final Month')"
+              />
+
+              <q-btn
+                icon="mdi-refresh"
+                class="q-ma-sm"
+                :disabled="loadingMonthlySyncs"
+                :loading="loadingMonthlySyncs"
+                :label="$gettext('Update')"
+                @click="updateMonthlySyncs"
+              />
+            </q-card-section>
+          </template>
+        </StackedBarChart>
       </div>
     </div>
   </q-page>
@@ -112,10 +138,11 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import PieChart from 'components/chart/Pie'
 import StackedBarChart from 'components/chart/StackedBar'
+import MonthInput from 'components/ui/MonthInput'
 
 export default defineComponent({
   name: 'Dashboard',
-  components: { Breadcrumbs, Header, PieChart, StackedBarChart },
+  components: { Breadcrumbs, Header, PieChart, StackedBarChart, MonthInput },
   setup() {
     const { $gettext } = useGettext()
     const router = useRouter()
@@ -142,6 +169,9 @@ export default defineComponent({
     const loadingMonthlySyncs = ref(false)
     const eventsHistory = reactive({})
 
+    const begin = ref('')
+    const end = ref('')
+
     const productiveUrl = computed(() => {
       return {
         name: 'computers-list',
@@ -167,7 +197,7 @@ export default defineComponent({
       await api
         .get('/api/v1/token/projects')
         .then((response) => {
-          Object.assign(projects, response.data.results)
+          projects.value = response.data.results
           loadMonthlySyncs()
         })
         .catch((error) => {
@@ -180,7 +210,9 @@ export default defineComponent({
 
       loadingMonthlySyncs.value = true
       await api
-        .get('/api/v1/token/stats/syncs/monthly/')
+        .get('/api/v1/token/stats/syncs/monthly/', {
+          params: { begin: begin.value, end: end.value },
+        })
         .then((response) => {
           monthlySyncs.xData = response.data.x_labels
           Object.entries(response.data.data).map(([key, val]) => {
@@ -201,7 +233,9 @@ export default defineComponent({
 
       projects.value.forEach((item) => {
         api
-          .get(`/api/v1/token/stats/syncs/monthly/?project_id=${item.id}`)
+          .get('/api/v1/token/stats/syncs/monthly/', {
+            params: { begin: begin.value, end: end.value, project_id: item.id },
+          })
           .then((response) => {
             Object.entries(response.data.data).map(([key, val]) => {
               monthlySyncs.series.push({
@@ -295,6 +329,11 @@ export default defineComponent({
       loadEventsHistory()
     }
 
+    const updateMonthlySyncs = () => {
+      loadMonthlySyncs()
+      uiStore.scrollToElement(document.getElementById('monthly-syncs'))
+    }
+
     const goTo = (params) => {
       const pluralize = require('pluralize')
       let query = {}
@@ -360,11 +399,14 @@ export default defineComponent({
       projects,
       loading,
       loadingMonthlySyncs,
+      begin,
+      end,
       eventsHistory,
       productiveUrl,
       uncheckedErrorsUrl,
       uncheckedFaultsUrl,
       loadProjects,
+      updateMonthlySyncs,
       updateEventsHistory,
       loadEventsHistory,
       goTo,
