@@ -1,7 +1,7 @@
 <template>
   <q-footer>
     <q-toolbar>
-      &copy; 2010-{{ new Date().getFullYear() }}
+      &copy; {{ MIGASFREE_MIN_YEAR }}-{{ new Date().getFullYear() }}
       <q-btn
         stretch
         flat
@@ -82,6 +82,7 @@ import { computed } from 'vue'
 
 import { api } from 'boot/axios'
 import { useAuthStore } from 'stores/auth'
+import { MIGASFREE_MIN_YEAR } from 'config/app.conf'
 
 const app = require('../../../package.json')
 
@@ -98,6 +99,7 @@ export default {
       apiLink,
       serverVersion,
       appVersion: app.version,
+      MIGASFREE_MIN_YEAR,
     }
   },
 }
