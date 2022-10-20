@@ -1,6 +1,8 @@
 export const MIN_CHARS_SEARCH = 3
 export const RESULTS_PER_PAGE = 10
 
+export const MIGASFREE_MIN_YEAR = 2010
+
 export const MIGASFREE_SECONDS_MESSAGE_ALERT = 1800
 
 export const MIGASFREE_CHART_COLORS = [
