@@ -5,7 +5,30 @@
         <div class="text-h5">{{ title }}</div>
       </q-card-section>
 
-      <q-card-section class="echart-container">
+      <q-card-section v-if="monthSelector" class="row justify-center q-py-none">
+        <MonthInput
+          v-model="begin"
+          class="q-ma-sm"
+          :label="$gettext('Initial Month')"
+        />
+
+        <MonthInput
+          v-model="end"
+          class="q-ma-sm"
+          :label="$gettext('Final Month')"
+        />
+
+        <q-btn
+          icon="mdi-refresh"
+          class="q-ma-sm"
+          :disabled="loading"
+          :loading="loading"
+          :label="$gettext('Update')"
+          @click="loadData"
+        />
+      </q-card-section>
+
+      <q-card-section class="echart-container q-py-none">
         <v-chart
           v-show="isChartVisible"
           ref="chart"
@@ -21,7 +44,7 @@
         </q-banner>
       </q-card-section>
 
-      <q-card-actions v-show="isChartVisible" align="around">
+      <q-card-actions v-show="isChartVisible" align="around" class="q-pt-none">
         <q-btn icon="mdi-database-search" flat @click="dataView">
           <q-tooltip>{{ $gettext('Data View') }}</q-tooltip>
         </q-btn>
@@ -117,6 +140,8 @@ import { useGettext } from 'vue3-gettext'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
+import MonthInput from 'components/ui/MonthInput'
+
 import * as echarts from 'echarts/core'
 import { LineChart } from 'echarts/charts'
 import { BarChart } from 'echarts/charts'
@@ -148,6 +173,7 @@ echarts.use([
 
 export default {
   name: 'StackedBarChart',
+  components: { MonthInput },
   props: {
     title: { type: String, required: true },
     endPoint: {
@@ -162,12 +188,20 @@ export default {
         return {}
       },
     },
+    monthSelector: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   emits: ['get-link'],
   setup(props, { emit }) {
     const { $gettext } = useGettext()
     const $q = useQuasar()
     const uiStore = useUiStore()
+
+    const begin = ref('')
+    const end = ref('')
 
     const chart = ref(null)
     const data = reactive(props.initialData)
@@ -239,12 +273,12 @@ export default {
       return !('series' in data)
     })
 
-    onMounted(async () => {
+    const loadData = async () => {
       if (!props.endPoint) return
 
       loading.value = true
       await api
-        .get(props.endPoint)
+        .get(props.endPoint, { params: { begin: begin.value, end: end.value } })
         .then((response) => {
           const series = []
 
@@ -275,6 +309,10 @@ export default {
         .finally(() => {
           loading.value = false
         })
+    }
+
+    onMounted(async () => {
+      await loadData()
     })
 
     onBeforeMount(() => {
@@ -396,6 +434,8 @@ export default {
     )
 
     return {
+      begin,
+      end,
       chart,
       data,
       options,
@@ -410,6 +450,7 @@ export default {
       saveImage,
       dataView,
       exportTable,
+      loadData,
     }
   },
 }
