@@ -11,6 +11,7 @@
         <StackedBarChart
           :title="$gettext('Migrations / Month')"
           end-point="/api/v1/token/stats/migrations/project/month/"
+          month-selector
           @get-link="goTo"
         />
       </div>
