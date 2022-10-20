@@ -419,7 +419,7 @@ msgstr "URL base"
 msgid "bits"
 msgstr "bits"
 
-#: src/components/chart/Pie.vue:426 src/components/chart/StackedBar.vue:362
+#: src/components/chart/Pie.vue:426 src/components/chart/StackedBar.vue:398
 msgid "Browser denied file download..."
 msgstr "Descarga de archivos denegada por el navegador..."
 
@@ -619,7 +619,7 @@ msgstr "Limpiar"
 msgid "Clock"
 msgstr "Reloj"
 
-#: src/components/chart/Pie.vue:100 src/components/chart/StackedBar.vue:95
+#: src/components/chart/Pie.vue:100 src/components/chart/StackedBar.vue:116
 #: src/pages/computers/results/hardware.vue:227
 msgid "Close"
 msgstr "Cerrar"
@@ -662,7 +662,7 @@ msgid "Computer"
 msgstr "Ordenador"
 
 #: src/components/ui/AppMenu.vue:208 src/components/ui/SearchBox.vue:50
-#: src/pages/computers/index.vue:86 src/pages/computers/results/detail.vue:521
+#: src/pages/computers/index.vue:87 src/pages/computers/results/detail.vue:521
 #: src/pages/computers/results/events.vue:255
 #: src/pages/computers/results/hardware.vue:289
 #: src/pages/computers/results/list.vue:117
@@ -845,7 +845,7 @@ msgstr "¡La situación actual ha cambiado!"
 #: src/pages/capabilities/results/detail.vue:69
 #: src/pages/capabilities/results/list.vue:59
 #: src/pages/categories/results/detail.vue:70
-#: src/pages/categories/results/list.vue:49 src/pages/computers/index.vue:93
+#: src/pages/categories/results/list.vue:49 src/pages/computers/index.vue:94
 #: src/pages/computers/replacement.vue:185
 #: src/pages/computers/results/detail.vue:512
 #: src/pages/computers/results/events.vue:246
@@ -866,11 +866,11 @@ msgstr "¡La situación actual ha cambiado!"
 #: src/pages/domains/results/detail.vue:217
 #: src/pages/domains/results/list.vue:62
 #: src/pages/drivers/results/detail.vue:183
-#: src/pages/drivers/results/list.vue:83 src/pages/errors/index.vue:75
+#: src/pages/drivers/results/list.vue:83 src/pages/errors/index.vue:76
 #: src/pages/errors/results/detail.vue:125 src/pages/errors/results/list.vue:92
 #: src/pages/fault-definitions/results/detail.vue:205
 #: src/pages/fault-definitions/results/list.vue:80
-#: src/pages/faults/index.vue:75 src/pages/faults/results/detail.vue:137
+#: src/pages/faults/index.vue:76 src/pages/faults/results/detail.vue:137
 #: src/pages/faults/results/list.vue:102
 #: src/pages/formulas/results/detail.vue:171
 #: src/pages/formulas/results/list.vue:86
@@ -879,10 +879,10 @@ msgstr "¡La situación actual ha cambiado!"
 #: src/pages/logical-devices/results/list.vue:81
 #: src/pages/manufacturers/results/detail.vue:69
 #: src/pages/manufacturers/results/list.vue:59
-#: src/pages/messages/results/list.vue:100 src/pages/migrations/index.vue:65
+#: src/pages/messages/results/list.vue:100 src/pages/migrations/index.vue:66
 #: src/pages/migrations/results/list.vue:78 src/pages/models/index.vue:70
 #: src/pages/models/results/detail.vue:226 src/pages/models/results/list.vue:81
-#: src/pages/notifications/index.vue:52
+#: src/pages/notifications/index.vue:53
 #: src/pages/notifications/results/list.vue:60
 #: src/pages/package-sets/results/detail.vue:204
 #: src/pages/package-sets/results/list.vue:80
@@ -901,9 +901,9 @@ msgstr "¡La situación actual ha cambiado!"
 #: src/pages/schedules/results/list.vue:59
 #: src/pages/scopes/results/detail.vue:171 src/pages/scopes/results/list.vue:79
 #: src/pages/stamps/results/detail.vue:127 src/pages/stamps/results/list.vue:73
-#: src/pages/status-logs/index.vue:65 src/pages/status-logs/results/list.vue:81
+#: src/pages/status-logs/index.vue:66 src/pages/status-logs/results/list.vue:81
 #: src/pages/stores/index.vue:54 src/pages/stores/results/detail.vue:92
-#: src/pages/stores/results/list.vue:71 src/pages/syncs/index.vue:65
+#: src/pages/stores/results/list.vue:71 src/pages/syncs/index.vue:66
 #: src/pages/syncs/results/list.vue:107 src/pages/tags/index.vue:54
 #: src/pages/tags/results/detail.vue:230 src/pages/tags/results/list.vue:72
 #: src/pages/user-profiles/results/changePassword.vue:147
@@ -913,28 +913,28 @@ msgstr "¡La situación actual ha cambiado!"
 msgid "Dashboard"
 msgstr "Cuadro de mando"
 
-#: src/components/chart/Pie.vue:60 src/components/chart/StackedBar.vue:44
+#: src/components/chart/Pie.vue:60 src/components/chart/StackedBar.vue:65
 #: src/components/ui/AppMenu.vue:205 src/pages/attributes/index.vue:58
 #: src/pages/attributes/results/detail.vue:168
-#: src/pages/attributes/results/list.vue:76 src/pages/computers/index.vue:98
+#: src/pages/attributes/results/list.vue:76 src/pages/computers/index.vue:99
 #: src/pages/computers/replacement.vue:190
 #: src/pages/computers/results/detail.vue:517
 #: src/pages/computers/results/events.vue:251
 #: src/pages/computers/results/hardware.vue:285
 #: src/pages/computers/results/list.vue:126
 #: src/pages/computers/results/simulate.vue:386
-#: src/pages/computers/softwareCompare.vue:209 src/pages/errors/index.vue:80
+#: src/pages/computers/softwareCompare.vue:209 src/pages/errors/index.vue:81
 #: src/pages/errors/results/detail.vue:130 src/pages/errors/results/list.vue:97
-#: src/pages/faults/index.vue:80 src/pages/faults/results/detail.vue:142
+#: src/pages/faults/index.vue:81 src/pages/faults/results/detail.vue:142
 #: src/pages/faults/results/list.vue:107
-#: src/pages/messages/results/list.vue:105 src/pages/migrations/index.vue:70
+#: src/pages/messages/results/list.vue:105 src/pages/migrations/index.vue:71
 #: src/pages/migrations/results/list.vue:83
-#: src/pages/notifications/index.vue:57
+#: src/pages/notifications/index.vue:58
 #: src/pages/notifications/results/list.vue:65
 #: src/pages/packages-history/index.vue:58
 #: src/pages/packages-history/results/list.vue:101
-#: src/pages/status-logs/index.vue:70 src/pages/status-logs/results/list.vue:86
-#: src/pages/syncs/index.vue:70 src/pages/syncs/results/list.vue:112
+#: src/pages/status-logs/index.vue:71 src/pages/status-logs/results/list.vue:86
+#: src/pages/syncs/index.vue:71 src/pages/syncs/results/list.vue:112
 #: src/pages/tags/index.vue:59 src/pages/tags/results/detail.vue:235
 #: src/pages/tags/results/list.vue:77 src/pages/users/results/detail.vue:80
 #: src/pages/users/results/list.vue:62
@@ -950,9 +950,9 @@ msgid "Data has been changed!"
 msgstr "¡Los datos han sido cambiados!"
 
 #: src/components/chart/Pie.vue:24 src/components/chart/Pie.vue:25
-#: src/components/chart/Pie.vue:42 src/components/chart/StackedBar.vue:16
-#: src/components/chart/StackedBar.vue:17
-#: src/components/chart/StackedBar.vue:26
+#: src/components/chart/Pie.vue:42 src/components/chart/StackedBar.vue:22
+#: src/components/chart/StackedBar.vue:23
+#: src/components/chart/StackedBar.vue:47
 msgid "Data View"
 msgstr "Ver datos"
 
@@ -1335,8 +1335,8 @@ msgstr "Error"
 
 #: src/components/ui/AppMenu.vue:250 src/pages/computers/results/detail.vue:176
 #: src/pages/computers/results/events.vue:346
-#: src/pages/computers/results/events.vue:61 src/pages/errors/index.vue:68
-#: src/pages/errors/index.vue:84 src/pages/errors/results/detail.vue:134
+#: src/pages/computers/results/events.vue:61 src/pages/errors/index.vue:69
+#: src/pages/errors/index.vue:85 src/pages/errors/results/detail.vue:134
 #: src/pages/errors/results/list.vue:88
 msgid "Errors"
 msgstr "Errores"
@@ -1345,7 +1345,7 @@ msgstr "Errores"
 msgid "Errors / Month"
 msgstr "Errores / Mes"
 
-#: src/pages/errors/index.vue:22
+#: src/pages/errors/index.vue:23
 msgid "Errors / Project / Status"
 msgstr "Errores / proyecto / estado"
 
@@ -1393,12 +1393,12 @@ msgstr "Expiración (minutos)"
 #: src/components/chart/Pie.vue:45 src/components/chart/Pie.vue:46
 #: src/components/chart/Pie.vue:63 src/components/chart/Pie.vue:67
 #: src/components/chart/Pie.vue:79 src/components/chart/Pie.vue:84
-#: src/components/chart/StackedBar.vue:37
-#: src/components/chart/StackedBar.vue:38
-#: src/components/chart/StackedBar.vue:47
-#: src/components/chart/StackedBar.vue:51
-#: src/components/chart/StackedBar.vue:57
-#: src/components/chart/StackedBar.vue:62 src/components/ui/Header.vue:31
+#: src/components/chart/StackedBar.vue:43
+#: src/components/chart/StackedBar.vue:44
+#: src/components/chart/StackedBar.vue:68
+#: src/components/chart/StackedBar.vue:72
+#: src/components/chart/StackedBar.vue:78
+#: src/components/chart/StackedBar.vue:83 src/components/ui/Header.vue:31
 #: src/components/ui/Header.vue:77 src/components/ui/TableResults.vue:211
 #: src/components/ui/TableResults.vue:212
 #: src/components/ui/TableResults.vue:218
@@ -1439,12 +1439,12 @@ msgstr "Lista de Definiciones de fallas"
 
 #: src/components/ui/AppMenu.vue:255 src/pages/computers/results/detail.vue:210
 #: src/pages/computers/results/events.vue:387
-#: src/pages/computers/results/events.vue:70 src/pages/faults/index.vue:68
+#: src/pages/computers/results/events.vue:70 src/pages/faults/index.vue:69
 #: src/pages/faults/results/detail.vue:146 src/pages/faults/results/list.vue:98
 msgid "Faults"
 msgstr "Fallas"
 
-#: src/pages/faults/index.vue:22
+#: src/pages/faults/index.vue:23
 msgid "Faults / Faults Definitions"
 msgstr "Fallas / Definiciones de fallas"
 
@@ -1526,6 +1526,10 @@ msgstr "Campos"
 #: src/pages/users/results/list.vue:91
 msgid "Filter"
 msgstr "Filtrar"
+
+#: src/components/chart/StackedBar.vue:17
+msgid "Final Month"
+msgstr "Mes final"
 
 #: src/components/ui/Alerts.vue:173
 msgid "Finished schedule Deployments"
@@ -1723,6 +1727,10 @@ msgstr "Ordenadores heredados"
 msgid "Inflicted Devices"
 msgstr "Dispositivos heredados"
 
+#: src/components/chart/StackedBar.vue:12
+msgid "Initial Month"
+msgstr "Mes inicial"
+
 #: src/pages/computers/results/simulate.vue:22
 msgid "Input (from computer)"
 msgstr "Entrada (del ordenador)"
@@ -1867,7 +1875,7 @@ msgstr "Nivel"
 msgid "License"
 msgstr "Licencia"
 
-#: src/components/chart/Pie.vue:238 src/components/chart/StackedBar.vue:221
+#: src/components/chart/Pie.vue:238 src/components/chart/StackedBar.vue:253
 #: src/components/ui/TableResults.vue:374
 msgid "Loading data..."
 msgstr "Cargando datos..."
@@ -1979,7 +1987,7 @@ msgid "migasfree documentation"
 msgstr "documentación de migasfree"
 
 #: src/components/ui/AppMenu.vue:265 src/pages/computers/results/events.vue:432
-#: src/pages/computers/results/events.vue:94 src/pages/migrations/index.vue:58
+#: src/pages/computers/results/events.vue:94 src/pages/migrations/index.vue:59
 #: src/pages/migrations/results/list.vue:74
 msgid "Migrations"
 msgstr "Migraciones"
@@ -1988,7 +1996,7 @@ msgstr "Migraciones"
 msgid "Migrations / Month"
 msgstr "Migraciones / Mes"
 
-#: src/pages/migrations/index.vue:22
+#: src/pages/migrations/index.vue:23
 msgid "Migrations / Project"
 msgstr "Migraciones / Proyecto"
 
@@ -2127,7 +2135,7 @@ msgid "No"
 msgstr "No"
 
 #: src/components/chart/HeatMap.vue:28 src/components/chart/Pie.vue:36
-#: src/components/chart/StackedBar.vue:20 src/components/ui/ItemDetail.vue:75
+#: src/components/chart/StackedBar.vue:41 src/components/ui/ItemDetail.vue:75
 msgid "No data available."
 msgstr "No hay datos disponibles."
 
@@ -2166,7 +2174,7 @@ msgstr "No hay resultados"
 msgid "Not Check"
 msgstr "No comprobar"
 
-#: src/components/ui/AppMenu.vue:276 src/pages/notifications/index.vue:45
+#: src/components/ui/AppMenu.vue:276 src/pages/notifications/index.vue:46
 #: src/pages/notifications/results/list.vue:56
 msgid "Notifications"
 msgstr "Notificaciones"
@@ -2365,7 +2373,7 @@ msgstr "Permisos"
 msgid "Physical"
 msgstr "Física"
 
-#: src/pages/computers/index.vue:51
+#: src/pages/computers/index.vue:52
 msgid "Physical computers entering the system per year"
 msgstr "Ordenadores físicos que entran al sistema por año"
 
@@ -2679,9 +2687,9 @@ msgid "Save and continue editing"
 msgstr "Grabar y continuar editando"
 
 #: src/components/chart/Pie.vue:28 src/components/chart/Pie.vue:29
-#: src/components/chart/Pie.vue:46 src/components/chart/StackedBar.vue:20
-#: src/components/chart/StackedBar.vue:21
-#: src/components/chart/StackedBar.vue:30
+#: src/components/chart/Pie.vue:46 src/components/chart/StackedBar.vue:26
+#: src/components/chart/StackedBar.vue:27
+#: src/components/chart/StackedBar.vue:51
 msgid "Save as Image"
 msgstr "Guardar como imagen"
 
@@ -2832,7 +2840,7 @@ msgid "Status"
 msgstr "Estado"
 
 #: src/components/ui/AppMenu.vue:260 src/pages/computers/results/events.vue:456
-#: src/pages/computers/results/events.vue:82 src/pages/status-logs/index.vue:58
+#: src/pages/computers/results/events.vue:82 src/pages/status-logs/index.vue:59
 #: src/pages/status-logs/results/list.vue:77
 msgid "Status Logs"
 msgstr "Registros de estado"
@@ -2841,7 +2849,7 @@ msgstr "Registros de estado"
 msgid "Status Logs / Month"
 msgstr "Registros de Estado / Mes"
 
-#: src/pages/status-logs/index.vue:22
+#: src/pages/status-logs/index.vue:23
 msgid "Status Logs / Status"
 msgstr "Registros de Estado / Estado"
 
@@ -2924,7 +2932,7 @@ msgid "Synchronization"
 msgstr "Sincronización"
 
 #: src/components/ui/AppMenu.vue:245 src/pages/computers/results/events.vue:287
-#: src/pages/computers/results/events.vue:52 src/pages/syncs/index.vue:58
+#: src/pages/computers/results/events.vue:52 src/pages/syncs/index.vue:59
 #: src/pages/syncs/results/list.vue:103
 msgid "Synchronizations"
 msgstr "Sincronizaciones"
@@ -2945,7 +2953,7 @@ msgstr "Ordenadores sincronizándose"
 msgid "Syncs / Month"
 msgstr "Sincronizaciones / Mes"
 
-#: src/pages/syncs/index.vue:22
+#: src/pages/syncs/index.vue:23
 msgid "Syncs / Project"
 msgstr "Sincronizaciones / Proyecto"
 
@@ -3159,12 +3167,12 @@ msgid "Unchecked"
 msgstr "Sin comprobar"
 
 #: src/components/ui/Alerts.vue:164 src/pages/Dashboard.vue:135
-#: src/pages/errors/index.vue:31
+#: src/pages/errors/index.vue:32
 msgid "Unchecked Errors"
 msgstr "Errores sin comprobar"
 
 #: src/components/ui/Alerts.vue:162 src/pages/Dashboard.vue:136
-#: src/pages/faults/index.vue:31
+#: src/pages/faults/index.vue:32
 msgid "Unchecked Faults"
 msgstr "Fallas sin comprobar"
 
@@ -3201,7 +3209,8 @@ msgstr "De baja"
 msgid "unsynchronized from"
 msgstr "no sincronizado desde"
 
-#: src/pages/Dashboard.vue:66 src/pages/messages/results/list.vue:18
+#: src/components/chart/StackedBar.vue:24 src/pages/Dashboard.vue:66
+#: src/pages/messages/results/list.vue:18
 #: src/pages/user-profiles/results/detail.vue:500
 #: src/pages/user-profiles/results/detail.vue:97
 msgid "Update"
