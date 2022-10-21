@@ -49,28 +49,31 @@
               <template #syncs>
                 <q-icon :name="modelIcon('syncs')" class="vertical-middle" />
                 <span class="vertical-middle">
-                  <translate>Synchronizations</translate> ({{
-                    events.syncs.total
-                  }})</span
+                  <translate>Synchronizations</translate></span
                 >
+                <q-chip color="grey" text-color="white">{{
+                  events.syncs.total
+                }}</q-chip>
               </template>
 
               <template #errors>
                 <q-icon :name="modelIcon('errors')" class="vertical-middle" />
                 <span class="vertical-middle">
-                  <translate>Errors</translate> ({{
-                    events.errors.total
-                  }})</span
+                  <translate>Errors</translate></span
                 >
+                <q-chip color="grey" text-color="white">{{
+                  events.errors.total
+                }}</q-chip>
               </template>
 
               <template #faults>
                 <q-icon :name="modelIcon('faults')" class="vertical-middle" />
                 <span class="vertical-middle">
-                  <translate>Faults</translate> ({{
-                    events.faults.total
-                  }})</span
+                  <translate>Faults</translate></span
                 >
+                <q-chip color="grey" text-color="white">{{
+                  events.faults.total
+                }}</q-chip>
               </template>
 
               <template #statusLogs>
@@ -79,10 +82,11 @@
                   class="vertical-middle"
                 />
                 <span class="vertical-middle">
-                  <translate>Status Logs</translate> ({{
-                    events.statusLogs.total
-                  }})</span
+                  <translate>Status Logs</translate></span
                 >
+                <q-chip color="grey" text-color="white">{{
+                  events.statusLogs.total
+                }}</q-chip>
               </template>
 
               <template #migrations>
@@ -91,10 +95,11 @@
                   class="vertical-middle"
                 />
                 <span class="vertical-middle">
-                  <translate>Migrations</translate> ({{
-                    events.migrations.total
-                  }})</span
+                  <translate>Migrations</translate></span
                 >
+                <q-chip color="grey" text-color="white">{{
+                  events.migrations.total
+                }}</q-chip>
               </template>
             </q-btn-toggle>
           </div>
