@@ -7,17 +7,36 @@
 
       <slot name="selector"></slot>
 
-      <q-card-section v-if="monthSelector" class="row justify-center q-py-none">
+      <q-card-section
+        v-if="monthSelector || daySelector"
+        class="row justify-center q-py-none"
+      >
         <MonthInput
+          v-if="monthSelector"
           v-model="begin"
           class="q-ma-sm"
           :label="$gettext('Initial Month')"
         />
 
         <MonthInput
+          v-if="monthSelector"
           v-model="end"
           class="q-ma-sm"
           :label="$gettext('Final Month')"
+        />
+
+        <DayInput
+          v-if="daySelector"
+          v-model="begin"
+          class="q-ma-sm"
+          :label="$gettext('Initial Day')"
+        />
+
+        <DayInput
+          v-if="daySelector"
+          v-model="end"
+          class="q-ma-sm"
+          :label="$gettext('Final Day')"
         />
 
         <q-btn
@@ -143,6 +162,7 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
 import MonthInput from 'components/ui/MonthInput'
+import DayInput from 'components/ui/DayInput'
 
 import * as echarts from 'echarts/core'
 import { LineChart } from 'echarts/charts'
@@ -175,7 +195,7 @@ echarts.use([
 
 export default {
   name: 'StackedBarChart',
-  components: { MonthInput },
+  components: { MonthInput, DayInput },
   props: {
     title: { type: String, required: true },
     endPoint: {
@@ -191,6 +211,11 @@ export default {
       },
     },
     monthSelector: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    daySelector: {
       type: Boolean,
       required: false,
       default: false,
