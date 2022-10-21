@@ -78,6 +78,7 @@
         <StackedBarChart
           :title="dailySyncsTitle"
           end-point="/api/v1/token/stats/syncs/daily/"
+          day-selector
           @get-link="goTo"
         />
       </div>
