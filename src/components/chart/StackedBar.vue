@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-card class="q-ma-sm">
-      <q-card-section>
+      <q-card-section class="q-pb-none">
         <div class="text-h5">{{ title }}</div>
       </q-card-section>
 
