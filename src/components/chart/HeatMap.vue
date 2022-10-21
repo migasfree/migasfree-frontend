@@ -24,7 +24,7 @@
         @click="passData"
         @legendselectchanged="changeRange"
       />
-      <q-banner v-if="noData" rounded class="bg-warning text-black">
+      <q-banner v-if="noData" rounded class="bg-warning text-black q-ma-md">
         <translate>No data available.</translate>
       </q-banner>
     </q-card-section></q-card
