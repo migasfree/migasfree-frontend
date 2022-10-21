@@ -440,13 +440,10 @@
                   v-if="element.id && element.schedule"
                   class="row q-pa-md q-gutter-md"
                 >
-                  <div
-                    v-if="Object.keys(stats).length > 0"
-                    class="col-12 col-md col-sm"
-                  >
+                  <div v-if="element.stats" class="col-12 col-md col-sm">
                     <StackedBarChart
                       :title="$gettext('Provided Computers / Delay')"
-                      :initial-data="stats"
+                      :initial-data="element.stats"
                     />
                   </div>
                 </div>
@@ -544,7 +541,6 @@ export default {
     const packages = ref([])
     const packageSets = ref([])
     const source = ref(null)
-    let stats = reactive({})
 
     const sources = reactive([
       {
@@ -611,7 +607,7 @@ export default {
                 },
               })
 
-              stats = {
+              element.stats = {
                 xData: response.data.x_labels,
                 series,
               }
@@ -741,7 +737,7 @@ export default {
     }
 
     const updateStats = () => {
-      if (element.schedule === null) stats = {}
+      if (element.schedule === null) element.stats = {}
     }
 
     const resetElement = () => {
@@ -842,7 +838,6 @@ export default {
       packages,
       packageSets,
       source,
-      stats,
       sources,
       showDate,
       diffForHumans,
