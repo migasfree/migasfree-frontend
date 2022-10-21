@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-card class="q-ma-sm">
-      <q-card-section>
+      <q-card-section class="q-pb-none">
         <div class="row">
           <div class="col">
             <div class="text-h5 q-mt-sm">{{ title }}</div>
@@ -21,7 +21,7 @@
         </div>
       </q-card-section>
 
-      <q-card-section class="echart-container">
+      <q-card-section class="echart-container q-pa-none">
         <v-chart
           v-show="isChartVisible"
           ref="chart"
@@ -37,7 +37,7 @@
         </q-banner>
       </q-card-section>
 
-      <q-card-actions v-show="isChartVisible" align="around">
+      <q-card-actions v-show="isChartVisible" align="around" class="q-pt-none">
         <q-btn icon="mdi-database-search" flat @click="dataView">
           <q-tooltip>{{ $gettext('Data View') }}</q-tooltip>
         </q-btn>
