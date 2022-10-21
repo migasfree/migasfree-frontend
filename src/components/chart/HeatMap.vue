@@ -1,6 +1,6 @@
 <template>
   <q-card class="q-ma-sm">
-    <q-card-section>
+    <q-card-section class="q-pb-none">
       <div class="row">
         <div class="col">
           <div class="text-h5">{{ title }}</div>
@@ -12,7 +12,7 @@
       </div>
     </q-card-section>
 
-    <q-card-section class="echart-container">
+    <q-card-section class="echart-container q-pa-none">
       <v-chart
         v-show="isChartVisible"
         ref="chart"
@@ -121,7 +121,7 @@ export default {
         max: 100,
         orient: 'horizontal',
         calculable: true,
-        left: 'left',
+        left: 'center',
         top: 40,
         textStyle: { color: $q.dark.isActive ? '#fff' : '#000' },
       },
