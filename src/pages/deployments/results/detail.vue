@@ -383,31 +383,7 @@
 
                 <div class="row q-pa-md q-gutter-md">
                   <div class="col-md col-sm">
-                    <q-input v-model="element.start_date" outlined clearable>
-                      <template #append>
-                        <q-icon name="mdi-calendar" class="cursor-pointer">
-                          <q-popup-proxy
-                            transition-show="scale"
-                            transition-hide="scale"
-                          >
-                            <q-date
-                              v-model="element.start_date"
-                              :label="$gettext('Start Date')"
-                              mode="date"
-                              mask="YYYY-MM-DD"
-                              outlined
-                              landscape
-                              today-btn
-                              :locale="localeDate"
-                            />
-                          </q-popup-proxy>
-                        </q-icon>
-                      </template>
-
-                      <q-tooltip v-if="element.start_date">{{
-                        diffForHumans(element.start_date)
-                      }}</q-tooltip>
-                    </q-input>
+                    <DayInput v-model="element.start_date" :readonly="false" />
                   </div>
 
                   <div class="col-md col-sm">
@@ -471,6 +447,7 @@ import StackedBarChart from 'components/chart/StackedBar'
 import Timeline from 'components/deployment/Timeline'
 import SelectAttributes from 'components/ui/SelectAttributes'
 import OrderTextArea from 'components/ui/OrderTextArea'
+import DayInput from 'components/ui/DayInput'
 
 import useDate from 'composables/date'
 import { modelIcon } from 'composables/element'
@@ -483,10 +460,11 @@ export default {
     Timeline,
     SelectAttributes,
     OrderTextArea,
+    DayInput,
   },
   setup() {
     const { $gettext } = useGettext()
-    const { showDate, diffForHumans, localeDate } = useDate()
+    const { showDate } = useDate()
     const uiStore = useUiStore()
 
     const title = ref($gettext('Deployment'))
@@ -840,8 +818,6 @@ export default {
       source,
       sources,
       showDate,
-      diffForHumans,
-      localeDate,
       isValid,
       loadRelated,
       elementData,
