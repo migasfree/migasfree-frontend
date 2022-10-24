@@ -311,7 +311,7 @@
                       >
                         <DateView
                           :value="syncInfo.sync_end_date"
-                          icon="mdi-play"
+                          icon="mdi-stop"
                           :tooltip-text="$gettext('sync end date')"
                         />
                       </div>
