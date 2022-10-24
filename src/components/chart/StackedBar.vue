@@ -1,7 +1,7 @@
 <template>
   <div>
-    <q-card class="q-ma-sm">
-      <q-card-section class="q-pb-none">
+    <q-card class="q-ma-sm" :bordered="!borderless" :flat="borderless">
+      <q-card-section v-if="title" class="q-pb-none">
         <div class="text-h5">{{ title }}</div>
       </q-card-section>
 
@@ -216,6 +216,11 @@ export default {
       default: false,
     },
     daySelector: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    borderless: {
       type: Boolean,
       required: false,
       default: false,
