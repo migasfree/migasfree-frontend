@@ -4,7 +4,7 @@
 
     <Header :title="title" :has-export-button="false" />
 
-    <div class="row q-pa-md q-gutter-sm justify-around">
+    <div class="row q-py-md q-gutter-sm justify-around">
       <div class="col-6 col-md col-sm col-xs">
         <q-card>
           <q-card-section>
@@ -143,14 +143,14 @@
       </div>
     </div>
 
-    <div v-if="isLoading && !isEnabled" class="row q-pa-md">
+    <div v-if="isLoading && !isEnabled" class="row q-py-md">
       <div class="col-12 text-center">
         <q-spinner-dots color="primary" size="3em" />
       </div>
     </div>
 
     <div v-if="isEnabled">
-      <div class="row q-pa-md">
+      <div class="row q-py-md">
         <div class="col-12">
           <code-diff
             :old-string="source.inventory"
