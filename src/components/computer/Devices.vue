@@ -2,80 +2,78 @@
   <q-card>
     <q-card-section>
       <div v-translate class="text-h5">Devices</div>
-    </q-card-section>
 
-    <q-card-section>
       <div v-if="Object.keys(devices).length == 0" class="justify-center">
         <q-spinner-dots color="primary" size="3em" />
       </div>
 
       <template v-else>
-        <p>
-          <q-select
-            v-model="devices.assigned_logical_devices_to_cid"
-            outlined
-            use-input
-            use-chips
-            map-options
-            multiple
-            counter
-            input-debounce="0"
-            :label="$gettext('Assigned')"
-            :hint="
-              $gettext('Type to search (minimum %{num} characters)', {
-                num: MIN_CHARS_SEARCH,
-              })
-            "
-            :options="assignedDevices"
-            @filter="filterAssignedDevices"
-            @filter-abort="abortFilterAssignedDevices"
-            @update:model-value="updateDefaultLogicalDeviceSelect"
-          >
-            <template #no-option>
-              <q-item>
-                <q-item-section class="text-grey">
-                  <translate>No results</translate>
-                </q-item-section>
-              </q-item>
-            </template>
+        <q-select
+          v-model="devices.assigned_logical_devices_to_cid"
+          class="q-my-md"
+          outlined
+          use-input
+          use-chips
+          map-options
+          multiple
+          counter
+          input-debounce="0"
+          :label="$gettext('Assigned')"
+          :hint="
+            $gettext('Type to search (minimum %{num} characters)', {
+              num: MIN_CHARS_SEARCH,
+            })
+          "
+          :options="assignedDevices"
+          @filter="filterAssignedDevices"
+          @filter-abort="abortFilterAssignedDevices"
+          @update:model-value="updateDefaultLogicalDeviceSelect"
+        >
+          <template #no-option>
+            <q-item>
+              <q-item-section class="text-grey">
+                <translate>No results</translate>
+              </q-item-section>
+            </q-item>
+          </template>
 
-            <template #option="scope">
-              <q-item v-bind="scope.itemProps">
-                {{ scope.opt.__str__ }}
-              </q-item>
-            </template>
+          <template #option="scope">
+            <q-item v-bind="scope.itemProps">
+              {{ scope.opt.__str__ }}
+            </q-item>
+          </template>
 
-            <template #selected-item="scope">
-              <q-chip
-                removable
-                dense
-                :tabindex="scope.tabindex"
-                class="q-ma-md"
-                @remove="scope.removeAtIndex(scope.index)"
-              >
-                <MigasLink
-                  model="devices/logical"
-                  :pk="scope.opt.id"
-                  :value="scope.opt.__str__"
-                />
-              </q-chip>
-            </template>
-          </q-select>
-        </p>
+          <template #selected-item="scope">
+            <q-chip
+              removable
+              dense
+              :tabindex="scope.tabindex"
+              class="q-ma-md"
+              @remove="scope.removeAtIndex(scope.index)"
+            >
+              <MigasLink
+                model="devices/logical"
+                :pk="scope.opt.id"
+                :value="scope.opt.__str__"
+              />
+            </q-chip>
+          </template>
+        </q-select>
 
-        <p v-if="devices.assigned_logical_devices_to_cid.length">
+        <template v-if="devices.assigned_logical_devices_to_cid.length">
           <q-select
             v-model="devices.default_logical_device"
+            class="q-my-md"
             outlined
             clearable
             :options="defaultLogicalDevices"
             :label="$gettext('By default')"
           />
-        </p>
+        </template>
       </template>
     </q-card-section>
 
-    <q-card-actions>
+    <q-card-actions class="q-px-md">
       <q-btn
         class="full-width"
         color="primary"
