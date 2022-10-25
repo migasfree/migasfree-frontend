@@ -4,9 +4,9 @@
 
     <Header :title="title" :has-export-button="false" />
 
-    <SearchFilter v-model="searchText" @search="search" />
+    <SearchFilter v-model="searchText" class="q-pb-md" @search="search" />
 
-    <div class="row">
+    <div class="row q-col-gutter-md q-pb-md">
       <div class="col-md-4 col-sm-12 col-xs-12">
         <PieChart
           :title="$gettext('Computers / Machine')"
@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row q-pb-md">
       <div class="col">
         <StackedBarChart
           :title="$gettext('New Computers / Month')"
