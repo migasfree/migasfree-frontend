@@ -76,6 +76,7 @@
                     outlined
                     dense
                     :label="$gettext('Last Hours')"
+                    @keydown.enter="updateEventsHistory"
                   />
 
                   <q-btn
