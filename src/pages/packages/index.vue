@@ -4,7 +4,7 @@
 
     <Header :title="title" :add-routes="addRoutes" :has-export-button="false" />
 
-    <SearchFilter v-model="searchText" @search="search" />
+    <SearchFilter v-model="searchText" class="q-pb-md" @search="search" />
 
     <div class="row">
       <div class="col-12">
