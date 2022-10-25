@@ -12,7 +12,7 @@
       <template #top>
         <q-btn
           icon="mdi-refresh"
-          class="q-ma-md"
+          class="q-my-md"
           :loading="loading"
           :disable="loading"
           :label="$gettext('Update')"
