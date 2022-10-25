@@ -7,7 +7,7 @@
         </div>
       </div>
 
-      <div class="row q-pa-md">
+      <div class="row q-py-sm">
         <div class="col col-md col-sm">
           <q-btn-group v-if="isSuperUser">
             <q-input v-model="value" outlined :label="$gettext('Name')" />
@@ -27,13 +27,15 @@
         </div>
       </div>
 
-      <div class="row q-pa-md">
+      <div class="row q-py-sm">
         <div class="col-6 col-md col-sm">
-          <q-tooltip self="bottom middle"
-            ><translate>full qualified domain name</translate></q-tooltip
-          >
           <q-icon name="mdi-information" size="sm" class="vertical-middle" />
-          <span class="vertical-middle"> {{ fqdn }}</span>
+          <span class="vertical-middle">
+            {{ fqdn }}
+            <q-tooltip
+              ><translate>full qualified domain name</translate></q-tooltip
+            >
+          </span>
         </div>
 
         <div class="col-6 col-md col-sm">
@@ -45,46 +47,46 @@
         </div>
       </div>
 
-      <div class="row q-pa-md">
+      <div class="row q-py-sm">
         <div class="col-6 col-md col-sm">
-          <q-tooltip self="bottom middle"
-            ><translate>platform</translate></q-tooltip
-          >
           <MigasLink
             model="platforms"
             :pk="project.platform.id"
             :value="project.platform.name"
+            :tooltip="$gettext('platform')"
           />
         </div>
 
         <div class="col-6 col-md col-sm">
-          <q-tooltip self="bottom middle"
-            ><translate>project</translate></q-tooltip
-          >
-          <MigasLink model="projects" :pk="project.id" :value="project.name" />
+          <MigasLink
+            model="projects"
+            :pk="project.id"
+            :value="project.name"
+            :tooltip="$gettext('project')"
+          />
         </div>
       </div>
 
-      <div class="row q-pa-md">
+      <div class="row q-py-sm">
         <div class="col-6 col-md col-sm">
-          <q-tooltip self="bottom middle"
-            ><translate>ip address</translate></q-tooltip
-          >
           <q-icon name="mdi-ip-network" size="sm" class="vertical-middle" />
-          <span class="vertical-middle"> {{ ipAddress }}</span>
+          <span class="vertical-middle">
+            {{ ipAddress }}
+            <q-tooltip><translate>ip address</translate></q-tooltip>
+          </span>
         </div>
 
         <div class="col-6 col-md col-sm">
-          <q-tooltip self="bottom middle"
-            ><translate>forwarded ip address</translate></q-tooltip
-          >
           <q-icon name="mdi-ip" size="sm" class="vertical-middle" />
-          <span class="vertical-middle"> {{ forwardedIpAddress }}</span>
+          <span class="vertical-middle">
+            {{ forwardedIpAddress }}
+            <q-tooltip><translate>forwarded ip address</translate></q-tooltip>
+          </span>
         </div>
       </div>
     </q-card-section>
 
-    <q-card-actions class="justify-around">
+    <q-card-actions class="justify-between q-px-md">
       <q-btn
         icon="mdi-calendar-multiple"
         color="info"
