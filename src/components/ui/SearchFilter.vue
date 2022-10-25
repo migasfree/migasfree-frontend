@@ -1,5 +1,5 @@
 <template>
-  <div class="row q-pa-md">
+  <div class="row">
     <q-input
       v-model="searchText"
       :label="$gettext('Search...')"
