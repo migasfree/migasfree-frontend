@@ -1,10 +1,8 @@
 <template>
   <q-card>
     <q-card-section>
-      <div v-translate class="text-h5">Software</div>
-    </q-card-section>
+      <div v-translate class="text-h5 q-pb-md">Software</div>
 
-    <q-card-section>
       <q-list bordered>
         <q-expansion-item
           :content-inset-level="0.5"
