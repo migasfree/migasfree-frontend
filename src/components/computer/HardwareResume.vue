@@ -7,7 +7,7 @@
         </div>
       </div>
 
-      <div class="row q-pa-md">
+      <div class="row q-py-sm">
         <div class="col-md">
           <p v-if="readonly">
             <DateView :value="hardwareDate" icon="mdi-calendar-star" />
@@ -83,7 +83,7 @@
         </div>
       </div>
 
-      <div class="row q-pa-md">
+      <div class="row q-py-sm">
         <div class="col-md-4">
           <q-icon :name="productIcon(productSystem)" style="font-size: 6em">
             <q-tooltip>{{ productSystem }}</q-tooltip>
@@ -125,70 +125,55 @@
             >
           </p>
           <p>
-            <q-tooltip self="bottom middle"
-              ><translate>UUID</translate></q-tooltip
-            >
             <q-icon
               name="mdi-card-account-details-outline"
               size="sm"
               class="vertical-middle q-mr-xs"
             />
-            <span class="vertical-middle"> {{ uuid }}</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="row q-pa-md">
-        <div class="col-md">
-          <p>
-            <q-tooltip self="bottom middle"
-              ><translate>Processor</translate></q-tooltip
-            >
-            <q-icon
-              :name="cpuIcon(architecture)"
-              size="sm"
-              class="vertical-middle"
-            />
-            <span class="vertical-middle"> {{ cpu }}</span>
-          </p>
-        </div>
-        <div v-if="ram" class="col-md">
-          <p>
-            <q-tooltip self="bottom middle"
-              ><translate>RAM</translate></q-tooltip
-            >
-            <q-icon name="mdi-memory" size="sm" class="vertical-middle" />
-            <span class="vertical-middle"> {{ humanStorageSize(ram) }}</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="row q-pa-md">
-        <div v-if="storage" class="col-md">
-          <p>
-            <q-tooltip self="bottom middle"
-              ><translate>Storage</translate></q-tooltip
-            >
-            <q-icon name="mdi-harddisk" size="sm" class="vertical-middle" />
             <span class="vertical-middle">
-              {{ humanStorageSize(storage) }} ({{ disks }})</span
-            >
+              {{ uuid }}
+              <q-tooltip><translate>UUID</translate></q-tooltip>
+            </span>
           </p>
+        </div>
+      </div>
+
+      <div class="row q-py-sm">
+        <div class="col-md">
+          <q-icon
+            :name="cpuIcon(architecture)"
+            size="sm"
+            class="vertical-middle"
+          />
+          <span class="vertical-middle">
+            {{ cpu }}
+            <q-tooltip><translate>Processor</translate></q-tooltip>
+          </span>
+        </div>
+
+        <div v-if="ram" class="col-md">
+          <q-icon name="mdi-memory" size="sm" class="vertical-middle" />
+          <span class="vertical-middle">
+            {{ humanStorageSize(ram) }}
+            <q-tooltip><translate>RAM</translate></q-tooltip>
+          </span>
+        </div>
+      </div>
+
+      <div class="row q-py-sm">
+        <div v-if="storage" class="col-md">
+          <q-icon name="mdi-harddisk" size="sm" class="vertical-middle" />
+          <span class="vertical-middle">
+            {{ humanStorageSize(storage) }} ({{ disks }})
+            <q-tooltip><translate>Storage</translate></q-tooltip>
+          </span>
         </div>
         <div v-if="macAddress" class="col-md">
-          <p>
-            <q-tooltip self="bottom middle"
-              ><translate>MAC Address</translate></q-tooltip
-            >
-            <q-icon
-              name="mdi-swap-vertical"
-              size="sm"
-              class="vertical-middle"
-            />
-            <span class="vertical-middle">
-              {{ humanMacAddress(macAddress) }}</span
-            >
-          </p>
+          <q-icon name="mdi-swap-vertical" size="sm" class="vertical-middle" />
+          <span class="vertical-middle">
+            {{ humanMacAddress(macAddress) }}
+            <q-tooltip><translate>MAC Address</translate></q-tooltip>
+          </span>
         </div>
       </div>
     </q-card-section>
