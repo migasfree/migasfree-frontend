@@ -57,107 +57,102 @@
               <q-card>
                 <q-card-section>
                   <div v-translate class="text-h5">Current Situation</div>
-                </q-card-section>
 
-                <q-card-section>
-                  <p>
-                    <q-select
-                      v-model="element.status"
-                      outlined
-                      emit-value
-                      map-options
-                      :label="$gettext('Status')"
-                      :options="status"
-                    >
-                      <template #option="scope">
-                        <q-item v-bind="scope.itemProps">
-                          <q-item-section avatar>
-                            <q-icon :name="scope.opt.icon" />
-                          </q-item-section>
-                          <q-item-section>
-                            <q-item-label>{{ scope.opt.label }}</q-item-label>
-                            <q-item-label caption>{{
-                              scope.opt.description
-                            }}</q-item-label>
-                          </q-item-section>
-                        </q-item>
-                      </template>
+                  <q-select
+                    v-model="element.status"
+                    class="q-my-md"
+                    outlined
+                    emit-value
+                    map-options
+                    :label="$gettext('Status')"
+                    :options="status"
+                  >
+                    <template #option="scope">
+                      <q-item v-bind="scope.itemProps">
+                        <q-item-section avatar>
+                          <q-icon :name="scope.opt.icon" />
+                        </q-item-section>
+                        <q-item-section>
+                          <q-item-label>{{ scope.opt.label }}</q-item-label>
+                          <q-item-label caption>{{
+                            scope.opt.description
+                          }}</q-item-label>
+                        </q-item-section>
+                      </q-item>
+                    </template>
 
-                      <template #selected-item="scope">
-                        <q-item v-bind="scope.itemProps">
-                          <q-item-section avatar>
-                            <q-icon :name="scope.opt.icon" />
-                          </q-item-section>
-                          <q-item-section>
-                            <q-item-label>{{ scope.opt.label }}</q-item-label>
-                            <q-item-label caption>{{
-                              scope.opt.description
-                            }}</q-item-label>
-                          </q-item-section>
-                        </q-item>
-                      </template>
-                    </q-select>
-                  </p>
+                    <template #selected-item="scope">
+                      <q-item v-bind="scope.itemProps">
+                        <q-item-section avatar>
+                          <q-icon :name="scope.opt.icon" />
+                        </q-item-section>
+                        <q-item-section>
+                          <q-item-label>{{ scope.opt.label }}</q-item-label>
+                          <q-item-label caption>{{
+                            scope.opt.description
+                          }}</q-item-label>
+                        </q-item-section>
+                      </q-item>
+                    </template>
+                  </q-select>
 
-                  <p>
-                    <q-input
-                      v-model="element.comment"
-                      outlined
-                      type="textarea"
-                      :label="$gettext('Comment')"
-                    />
-                  </p>
+                  <q-input
+                    v-model="element.comment"
+                    class="q-my-md"
+                    outlined
+                    type="textarea"
+                    :label="$gettext('Comment')"
+                  />
 
-                  <p>
-                    <q-select
-                      v-model="element.tags"
-                      outlined
-                      use-input
-                      map-options
-                      multiple
-                      counter
-                      input-debounce="0"
-                      :label="$gettext('Tags')"
-                      :hint="
-                        $gettext('Type to search (minimum %{num} characters)', {
-                          num: MIN_CHARS_SEARCH,
-                        })
-                      "
-                      :options="tags"
-                      @filter="filterTags"
-                      @filter-abort="abortFilterTags"
-                    >
-                      <template #no-option>
-                        <q-item>
-                          <q-item-section v-translate class="text-grey">
-                            No results
-                          </q-item-section>
-                        </q-item>
-                      </template>
+                  <q-select
+                    v-model="element.tags"
+                    class="q-my-md"
+                    outlined
+                    use-input
+                    map-options
+                    multiple
+                    counter
+                    input-debounce="0"
+                    :label="$gettext('Tags')"
+                    :hint="
+                      $gettext('Type to search (minimum %{num} characters)', {
+                        num: MIN_CHARS_SEARCH,
+                      })
+                    "
+                    :options="tags"
+                    @filter="filterTags"
+                    @filter-abort="abortFilterTags"
+                  >
+                    <template #no-option>
+                      <q-item>
+                        <q-item-section v-translate class="text-grey">
+                          No results
+                        </q-item-section>
+                      </q-item>
+                    </template>
 
-                      <template #option="scope">
-                        <q-item v-bind="scope.itemProps">
-                          {{ attributeValue(scope.opt) }}
-                        </q-item>
-                      </template>
+                    <template #option="scope">
+                      <q-item v-bind="scope.itemProps">
+                        {{ attributeValue(scope.opt) }}
+                      </q-item>
+                    </template>
 
-                      <template #selected-item="scope">
-                        <q-chip
-                          removable
-                          dense
-                          :tabindex="scope.tabindex"
-                          class="q-ma-md"
-                          @remove="scope.removeAtIndex(scope.index)"
-                        >
-                          <MigasLink
-                            model="tags"
-                            :pk="scope.opt.id"
-                            :value="attributeValue(scope.opt)"
-                          />
-                        </q-chip>
-                      </template>
-                    </q-select>
-                  </p>
+                    <template #selected-item="scope">
+                      <q-chip
+                        removable
+                        dense
+                        :tabindex="scope.tabindex"
+                        class="q-ma-md"
+                        @remove="scope.removeAtIndex(scope.index)"
+                      >
+                        <MigasLink
+                          model="tags"
+                          :pk="scope.opt.id"
+                          :value="attributeValue(scope.opt)"
+                        />
+                      </q-chip>
+                    </template>
+                  </q-select>
 
                   <OverflowList
                     model="attribute-sets"
@@ -242,7 +237,7 @@
                   </div>
                 </q-card-section>
 
-                <q-card-actions>
+                <q-card-actions class="q-px-md">
                   <q-btn
                     class="full-width"
                     color="primary"
@@ -271,17 +266,13 @@
                       />
                     </div>
                   </div>
-                </q-card-section>
 
-                <q-card-section>
-                  <div v-if="element.sync_user" class="row q-pa-md">
-                    <q-tooltip self="bottom middle"
-                      ><translate>User</translate></q-tooltip
-                    >
+                  <div v-if="element.sync_user" class="row q-py-sm">
                     <MigasLink
                       model="users"
                       :pk="element.sync_user.id"
                       :value="element.sync_user.__str__ || ''"
+                      :tooltip="$gettext('User')"
                     />
                   </div>
 
@@ -293,7 +284,7 @@
                   </div>
 
                   <template v-else>
-                    <div class="row q-pa-md items-baseline">
+                    <div class="row q-py-sm items-baseline">
                       <div class="col-md">
                         <DateView
                           :value="syncInfo.sync_start_date"
