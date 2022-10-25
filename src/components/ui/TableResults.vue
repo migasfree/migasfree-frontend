@@ -13,6 +13,7 @@
     <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">
       <SearchFilter
         v-model="tableFilters.search"
+        class="q-pa-md"
         @search="onSearch"
         @clear="onSearchClear"
       />
@@ -332,11 +333,12 @@
   <template v-else>
     <SearchFilter
       v-model="tableFilters.search"
+      class="q-pb-md"
       @search="onSearch"
       @clear="onSearchClear"
     />
 
-    <div class="row q-pa-md">
+    <div class="row q-py-md">
       <div class="col-12">
         <q-btn
           icon="mdi-filter-remove"
