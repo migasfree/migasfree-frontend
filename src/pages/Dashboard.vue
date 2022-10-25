@@ -4,7 +4,7 @@
 
     <Header :title="title" :has-export-button="false" />
 
-    <div class="row">
+    <div class="row q-col-gutter-md q-pb-md">
       <div class="col-md-4 col-sm-12 col-xs-12">
         <PieChart
           :title="productiveComputersTitle"
@@ -35,20 +35,17 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row q-pb-md">
       <div class="col-12">
         <q-list
           id="events-history"
-          :class="[
-            'q-ma-sm q-pa-none q-card',
-            $q.dark.isActive ? 'q-card--dark q-dark' : '',
-          ]"
+          :class="['q-card', $q.dark.isActive ? 'q-card--dark q-dark' : '']"
           bordered
         >
           <q-expansion-item @show="loadEventsHistory">
             <template #header>
               <q-item-section>
-                <div class="text-h5">
+                <div class="text-h5 q-py-sm">
                   <translate :translate-params="{ number: lastHours }"
                     >History of events in the last %{ number } hours</translate
                   >
@@ -95,7 +92,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row q-pb-md">
       <div class="col-12">
         <StackedBarChart
           :title="dailySyncsTitle"
