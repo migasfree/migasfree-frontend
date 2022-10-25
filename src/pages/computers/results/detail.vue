@@ -346,10 +346,8 @@
             <div class="col col-md col-sm-12">
               <q-card>
                 <q-card-section>
-                  <div v-translate class="text-h5">Locations</div>
-                </q-card-section>
+                  <div v-translate class="text-h5 q-pb-sm">Locations</div>
 
-                <q-card-section>
                   <l-map
                     id="map"
                     ref="map"
