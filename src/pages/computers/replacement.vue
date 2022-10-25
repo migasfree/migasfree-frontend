@@ -8,7 +8,7 @@
       This procedure changes status, tags and devices between two computers.
     </p>
 
-    <div class="row q-pa-md justify-around items-center">
+    <div class="row q-py-md justify-around items-center">
       <div class="col-4 col-md-4">
         <q-card>
           <q-card-section>
