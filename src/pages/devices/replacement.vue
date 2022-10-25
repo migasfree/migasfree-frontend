@@ -8,7 +8,7 @@
       This procedure switches assigned computers between two devices.
     </p>
 
-    <div class="row q-pa-md justify-around items-center">
+    <div class="row q-pb-md justify-around items-center">
       <div class="col-4 col-md-4">
         <q-card>
           <q-card-section>
