@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <q-item class="col-12 items-baseline">
+    <q-item class="col-12 items-baseline q-px-none">
       <template v-if="addRoutes.length > 0">
         <q-item-section v-for="(item, index) in addRoutes" :key="index" avatar>
           <q-btn
