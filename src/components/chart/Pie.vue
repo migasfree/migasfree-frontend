@@ -8,15 +8,15 @@
           </div>
 
           <div class="col-auto">
-            <q-chip
+            <q-btn
               size="lg"
-              class="q-ma-xs"
-              :clickable="data.total > 0"
+              padding="xs md"
+              :disable="data.total <= 0"
               :color="critical ? 'negative' : 'info'"
               :text-color="critical ? 'white' : 'black'"
+              :label="data.total"
               @click="goTo"
-              >{{ data.total }}</q-chip
-            >
+            />
           </div>
         </div>
       </q-card-section>
