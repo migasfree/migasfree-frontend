@@ -39,7 +39,10 @@
       <div class="col-12">
         <q-list
           id="events-history"
-          class="q-ma-sm q-pa-none rounded-borders shadow-1"
+          :class="[
+            'q-ma-sm q-pa-none q-card',
+            $q.dark.isActive ? 'q-card--dark q-dark' : '',
+          ]"
           bordered
         >
           <q-expansion-item @show="loadEventsHistory">
@@ -53,43 +56,39 @@
               </q-item-section>
             </template>
 
-            <q-card>
-              <q-card-section>
-                <div v-if="loading" class="text-center">
-                  <q-spinner-dots color="primary" size="3em" />
-                </div>
+            <div v-if="loading" class="text-center">
+              <q-spinner-dots color="primary" size="3em" />
+            </div>
 
-                <StackedBarChart
-                  v-show="!loading"
-                  title=""
-                  borderless
-                  :initial-data="eventsHistory"
-                  @get-link="goTo"
-                >
-                  <template #selector>
-                    <q-card-section class="row justify-center q-py-none">
-                      <q-input
-                        v-model="lastHours"
-                        type="number"
-                        class="q-ma-sm"
-                        outlined
-                        dense
-                        :label="$gettext('Last Hours')"
-                      />
+            <StackedBarChart
+              v-show="!loading"
+              title=""
+              borderless
+              :initial-data="eventsHistory"
+              @get-link="goTo"
+            >
+              <template #selector>
+                <q-card-section class="row justify-center q-py-none">
+                  <q-input
+                    v-model="lastHours"
+                    type="number"
+                    class="q-ma-sm"
+                    outlined
+                    dense
+                    :label="$gettext('Last Hours')"
+                  />
 
-                      <q-btn
-                        icon="mdi-refresh"
-                        class="q-ma-sm"
-                        :disabled="loading"
-                        :loading="loading"
-                        :label="$gettext('Update')"
-                        @click="updateEventsHistory"
-                      />
-                    </q-card-section>
-                  </template>
-                </StackedBarChart>
-              </q-card-section>
-            </q-card>
+                  <q-btn
+                    icon="mdi-refresh"
+                    class="q-ma-sm"
+                    :disabled="loading"
+                    :loading="loading"
+                    :label="$gettext('Update')"
+                    @click="updateEventsHistory"
+                  />
+                </q-card-section>
+              </template>
+            </StackedBarChart>
           </q-expansion-item>
         </q-list>
       </div>
@@ -156,6 +155,7 @@ import { useMeta } from 'quasar'
 
 import { useUiStore } from 'stores/ui'
 import { api } from 'boot/axios'
+import { EVENTS_HISTORY_HOURS } from 'config/app.conf'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
@@ -192,7 +192,7 @@ export default defineComponent({
     const loadingMonthlySyncs = ref(false)
     const eventsHistory = reactive({})
 
-    const lastHours = ref(72)
+    const lastHours = ref(EVENTS_HISTORY_HOURS)
     const begin = ref('')
     const end = ref('')
 
