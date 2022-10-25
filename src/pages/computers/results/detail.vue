@@ -22,7 +22,7 @@
         </q-card-section>
 
         <q-card-section v-else>
-          <div class="row q-pa-md q-gutter-md">
+          <div class="row q-pb-md q-col-gutter-md">
             <div class="col-6 col-md col-sm-12">
               <ComputerInfo
                 :cid="element.id"
@@ -52,7 +52,7 @@
             </div>
           </div>
 
-          <div class="row q-pa-md q-gutter-md">
+          <div class="row q-pb-md q-col-gutter-md">
             <div class="col-6 col-md col-sm-12">
               <q-card>
                 <q-card-section>
@@ -329,7 +329,7 @@
             </div>
           </div>
 
-          <div class="row q-pa-md q-gutter-md">
+          <div class="row q-pb-md q-col-gutter-md">
             <div
               v-if="element.has_software_inventory"
               class="col-6 col-md col-sm-12"
@@ -342,7 +342,7 @@
             </div>
           </div>
 
-          <div v-if="markers.length > 0" class="row q-pa-md q-gutter-md">
+          <div v-if="markers.length > 0" class="row q-pb-md q-col-gutter-md">
             <div class="col col-md col-sm-12">
               <q-card>
                 <q-card-section>
