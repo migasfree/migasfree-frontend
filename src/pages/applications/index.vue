@@ -4,9 +4,9 @@
 
     <Header :title="title" :has-export-button="false" :add-routes="addRoutes" />
 
-    <SearchFilter v-model="searchText" @search="search" />
+    <SearchFilter v-model="searchText" class="q-pb-md" @search="search" />
 
-    <div class="row">
+    <div class="row q-col-gutter-md q-pb-md">
       <div class="col-md-6 col-sm-6 col-xs-12">
         <PieChart
           :title="$gettext('Applications / Category')"
