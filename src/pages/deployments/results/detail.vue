@@ -15,7 +15,7 @@
       @set-title="setTitle"
     >
       <template #fields>
-        <div class="row q-pa-md q-gutter-md">
+        <div class="row q-pb-md q-col-gutter-md">
           <div class="col-6 col-md col-sm-12">
             <q-card>
               <q-card-section>
@@ -119,7 +119,7 @@
           </div>
         </div>
 
-        <div class="row q-pa-md q-gutter-md">
+        <div class="row q-pb-md q-col-gutter-md">
           <div class="col-6 col-md col-sm-12">
             <q-card>
               <q-card-section>
@@ -378,7 +378,7 @@
           </div>
         </div>
 
-        <div class="row q-pa-md q-gutter-md">
+        <div class="row q-pb-md q-col-gutter-md">
           <div class="col col-md col-sm-12">
             <q-card>
               <q-card-section>
