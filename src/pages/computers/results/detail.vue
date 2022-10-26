@@ -15,13 +15,11 @@
       @set-title="setTitle"
     >
       <template #fields>
-        <q-card-section v-if="!('id' in element)">
-          <p class="text-center">
-            <q-spinner-dots color="primary" size="3em" />
-          </p>
-        </q-card-section>
+        <p v-if="!('id' in element)" class="text-center">
+          <q-spinner-dots color="primary" size="3em" />
+        </p>
 
-        <q-card-section v-else>
+        <template v-else>
           <div class="row q-pb-md q-col-gutter-md">
             <div class="col-6 col-md col-sm-12">
               <ComputerInfo
@@ -409,7 +407,7 @@
               </q-card>
             </div>
           </div>
-        </q-card-section>
+        </template>
       </template>
     </ItemDetail>
   </q-page>
