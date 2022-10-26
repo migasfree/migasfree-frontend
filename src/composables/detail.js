@@ -55,13 +55,14 @@ export default function useDetail(
       breadcrumbs.push({
         text: $gettext('Results'),
         to: routes.list,
+        icon: 'mdi-table-large',
       })
       breadcrumbs.push({
         text: 'Id',
       })
     }
   } else {
-    breadcrumbs.push({ text: $gettext('Add') })
+    breadcrumbs.push({ text: $gettext('Add'), icon: 'mdi-plus-circle' })
   }
 
   const getElementIcon = () => {
@@ -87,6 +88,7 @@ export default function useDetail(
 
             if (breadcrumbs.length === 5) breadcrumbs.pop()
             breadcrumbs[3].text = $gettext('Add')
+            breadcrumbs[3].icon = 'mdi-plus-circle'
             router.push({ name: routes.add })
             emit('setTitle', originalTitle)
           }
@@ -130,6 +132,7 @@ export default function useDetail(
               breadcrumbs.push({
                 text: $gettext('Results'),
                 to: routes.list,
+                icon: 'mdi-table-large',
               })
               breadcrumbs.push({
                 text: elementText.value,
