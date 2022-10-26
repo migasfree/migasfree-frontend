@@ -8,7 +8,7 @@
 
         <div v-if="total" class="col-auto">
           <q-btn
-            size="md"
+            size="lg"
             padding="xs md"
             :disable="data.total <= 0"
             color="info"
