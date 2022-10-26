@@ -264,6 +264,7 @@ export default {
       {
         text: $gettext('Results'),
         to: 'computers-list',
+        icon: 'mdi-table-large',
       },
       {
         text: 'Id',
@@ -271,6 +272,7 @@ export default {
       },
       {
         text: title.value,
+        icon: 'mdi-calendar-multiple',
       },
     ])
 
