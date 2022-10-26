@@ -401,7 +401,7 @@ export default {
     const compare = () => {
       router.push({
         name: 'computers-software-compare',
-        params: { source: props.cid, target: target.value.id },
+        query: { source: props.cid, target: target.value.id },
       })
     }
 
