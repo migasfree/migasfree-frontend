@@ -44,7 +44,10 @@
                     size="sm"
                     class="vertical-middle q-mr-xs"
                   />
-                  <span class="vertical-middle"> {{ computer.uuid }}</span>
+                  <span class="vertical-middle">
+                    {{ computer.uuid }}
+                    <q-tooltip><translate>UUID</translate></q-tooltip>
+                  </span>
                 </p>
 
                 <p v-if="platform.id">
@@ -52,6 +55,7 @@
                     model="platforms"
                     :pk="platform.id"
                     :value="platform.name"
+                    :tooltip="$gettext('Platform')"
                   />
                 </p>
 
@@ -60,6 +64,7 @@
                     model="projects"
                     :pk="computer.project.id"
                     :value="computer.project.name"
+                    :tooltip="$gettext('Project')"
                   />
                 </p>
 
@@ -68,6 +73,7 @@
                     model="users"
                     :pk="computer.sync_user.id"
                     :value="computer.sync_user.__str__"
+                    :tooltip="$gettext('User')"
                   />
                 </p>
 
@@ -394,6 +400,7 @@ export default {
       {
         text: $gettext('Results'),
         to: 'computers-list',
+        icon: 'mdi-table-large',
       },
       {
         text: 'Id',
@@ -401,6 +408,7 @@ export default {
       },
       {
         text: title.value,
+        icon: 'mdi-head-sync-outline',
       },
     ])
 
