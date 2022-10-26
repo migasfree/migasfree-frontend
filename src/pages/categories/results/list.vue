@@ -60,6 +60,7 @@ export default {
       },
       {
         text: $gettext('Results'),
+        icon: 'mdi-table-large',
       },
     ])
 
