@@ -36,20 +36,18 @@
                   size="sm"
                   class="vertical-middle q-mr-sm"
                 />
-                <span class="vertical-middle">{{
-                  element.property_att.prefix
-                }}</span>
-                <q-tooltip self="bottom middle">{{
-                  $gettext('Prefix')
-                }}</q-tooltip>
+                <span class="vertical-middle"
+                  >{{ element.property_att.prefix
+                  }}<q-tooltip>{{ $gettext('Prefix') }}</q-tooltip></span
+                >
               </template>
             </div>
 
             <div class="col-4 col-md col-sm">
-              <span class="vertical-middle">{{ element.value }}</span>
-              <q-tooltip self="bottom middle">{{
-                $gettext('Value')
-              }}</q-tooltip>
+              <span class="vertical-middle"
+                >{{ element.value
+                }}<q-tooltip>{{ $gettext('Value') }}</q-tooltip></span
+              >
             </div>
           </div>
 
