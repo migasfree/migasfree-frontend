@@ -30,7 +30,7 @@
       </div>
 
       <template v-else>
-        <div class="row q-pa-md">
+        <div class="row q-py-md">
           <div class="col">
             <q-btn-toggle
               v-model="event"
@@ -105,7 +105,7 @@
           </div>
         </div>
 
-        <div class="row q-pa-md">
+        <div class="row">
           <div class="col-12">
             <HeatMap
               :title="current.title"
@@ -113,12 +113,13 @@
               :total="current.total"
               :start="showDate(computer.created_at, 'YYYY-MM-DD')"
               @get-date="showItems"
+              @total="goToModel"
             />
           </div>
         </div>
       </template>
 
-      <div v-if="items.length > 0" id="events" class="q-pa-lg">
+      <div v-if="items.length > 0" id="events" class="q-py-md">
         <q-table
           :title="`${events[event].title} (${itemsDate}: ${items.length})`"
           :rows="items"
@@ -204,7 +205,7 @@
 
 <script>
 import { ref, reactive, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { date, useMeta } from 'quasar'
 
@@ -236,6 +237,7 @@ export default {
   },
   setup() {
     const route = useRoute()
+    const router = useRouter()
     const { $gettext } = useGettext()
     const { addToDate } = date
 
@@ -599,6 +601,13 @@ export default {
         })
     }
 
+    const goToModel = () => {
+      router.push({
+        name: `${camelToKebabCase(event.value)}-list`,
+        query: { computer_id: computer.id },
+      })
+    }
+
     onMounted(async () => {
       await api
         .get(`/api/v1/token/computers/${route.params.id}/`)
@@ -629,6 +638,7 @@ export default {
       events,
       updateEvent,
       showItems,
+      goToModel,
       elementIcon,
       modelIcon,
       showDate,
