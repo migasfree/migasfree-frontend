@@ -1,5 +1,5 @@
 <template>
-  <q-card class="q-ma-sm">
+  <q-card>
     <q-card-section class="q-pb-none">
       <div class="row">
         <div class="col">
@@ -7,7 +7,15 @@
         </div>
 
         <div v-if="total" class="col-auto">
-          <q-chip size="md" color="info" text-color="black">{{ total }}</q-chip>
+          <q-btn
+            size="md"
+            padding="xs md"
+            :disable="data.total <= 0"
+            color="info"
+            text-color="black"
+            :label="total"
+            @click="$emit('total')"
+          />
         </div>
       </div>
     </q-card-section>
@@ -88,7 +96,7 @@ export default {
       default: 0,
     },
   },
-  emits: ['get-date'],
+  emits: ['get-date', 'total'],
   setup(props, { emit }) {
     const $q = useQuasar()
     const { current } = useGettext()
