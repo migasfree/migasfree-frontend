@@ -15,14 +15,14 @@
         </template>
       </Header>
 
-      <div class="row q-pa-md q-gutter-sm">
+      <div class="row q-py-md q-gutter-md">
         <div class="col-md">
           <q-card>
             <q-card-section>
-              <div v-translate class="text-h5">Input (from computer)</div>
-            </q-card-section>
+              <div v-translate class="text-h5 q-pb-md">
+                Input (from computer)
+              </div>
 
-            <q-card-section>
               <p v-if="loading.input" class="items-center">
                 <q-spinner-dots color="primary" size="3em" />
               </p>
@@ -77,29 +77,41 @@
                   />
                 </p>
 
-                <OverflowList
-                  model="attributes"
-                  :label="$gettext('Attributes')"
-                  :items="onlyAttributes"
-                />
+                <div class="row q-pb-sm">
+                  <OverflowList
+                    model="attributes"
+                    class="col"
+                    :label="$gettext('Attributes')"
+                    :items="onlyAttributes"
+                  />
+                </div>
 
-                <OverflowList
-                  model="tags"
-                  :label="$gettext('Tags')"
-                  :items="onlyTags"
-                />
+                <div class="row q-pb-sm">
+                  <OverflowList
+                    model="tags"
+                    class="col"
+                    :label="$gettext('Tags')"
+                    :items="onlyTags"
+                  />
+                </div>
 
-                <OverflowList
-                  model="attribute-sets"
-                  :label="$gettext('Attribute Sets')"
-                  :items="onlyAttributeSets"
-                />
+                <div class="row q-pb-sm">
+                  <OverflowList
+                    model="attribute-sets"
+                    class="col"
+                    :label="$gettext('Attribute Sets')"
+                    :items="onlyAttributeSets"
+                  />
+                </div>
 
-                <OverflowList
-                  model="domains"
-                  :label="$gettext('Domains')"
-                  :items="onlyDomains"
-                />
+                <div class="row q-pb-sm">
+                  <OverflowList
+                    model="domains"
+                    class="col"
+                    :label="$gettext('Domains')"
+                    :items="onlyDomains"
+                  />
+                </div>
               </template>
             </q-card-section>
           </q-card>
@@ -108,227 +120,276 @@
         <div class="col-md">
           <q-card>
             <q-card-section>
-              <div v-translate class="text-h5">Output (from server)</div>
-            </q-card-section>
+              <div v-translate class="text-h5 q-pb-md">
+                Output (from server)
+              </div>
 
-            <q-card-section>
               <p v-if="loading.output" class="justify-center">
                 <q-spinner-dots color="primary" size="3em" />
               </p>
               <template v-else>
-                <OverflowList
-                  :label="$gettext('Fault Definitions')"
-                  :items="simulation.fault_definitions"
-                  model="fault-definitions"
-                />
+                <div class="row q-pb-sm">
+                  <OverflowList
+                    class="col"
+                    :label="$gettext('Fault Definitions')"
+                    :items="simulation.fault_definitions"
+                    model="fault-definitions"
+                  />
+                </div>
 
-                <OverflowList
-                  :label="$gettext('Deployments')"
-                  :items="simulation.deployments"
-                  model="deployments"
-                />
+                <div class="row q-pb-sm">
+                  <OverflowList
+                    class="col"
+                    :label="$gettext('Deployments')"
+                    :items="simulation.deployments"
+                    model="deployments"
+                  />
+                </div>
 
-                <q-list v-if="simulation.packages.install.length > 0" bordered>
-                  <q-expansion-item default-opened :content-inset-level="0.5">
-                    <template #header>
-                      <q-item-section avatar>
-                        <q-icon name="mdi-package-down" size="md" />
-                      </q-item-section>
-
-                      <q-item-section>
-                        <q-chip>
-                          <q-avatar color="info" text-color="black">{{
-                            simulation.packages.install.length
-                          }}</q-avatar>
-                          <translate>Packages to Install</translate>
-                        </q-chip>
-                      </q-item-section>
-
-                      <q-item-section side>
-                        <q-btn
-                          flat
-                          icon="mdi-content-copy"
-                          color="primary"
-                          @click.stop="copyContent(simulation.packages.install)"
-                          ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-                        >
-                      </q-item-section>
-                    </template>
-
-                    <q-list class="overflow">
-                      <q-item
-                        v-for="(item, index) in simulation.packages.install"
-                        :key="index"
-                      >
-                        <q-item-section>
-                          {{ item.package }}
-                        </q-item-section>
-
+                <div class="row q-pb-sm">
+                  <q-list
+                    v-if="simulation.packages.install.length > 0"
+                    bordered
+                    class="col"
+                  >
+                    <q-expansion-item default-opened :content-inset-level="0.5">
+                      <template #header>
                         <q-item-section avatar>
-                          <MigasLink
-                            model="deployments"
-                            :pk="item.id"
-                            :value="item.name"
-                          />
+                          <q-icon name="mdi-package-down" size="md" />
                         </q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-expansion-item>
-                </q-list>
 
-                <q-list v-if="simulation.policies.install.length > 0" bordered>
-                  <q-expansion-item default-opened :content-inset-level="0.5">
-                    <template #header>
-                      <q-item-section avatar>
-                        <q-icon name="mdi-package-down" size="md" />
-                      </q-item-section>
+                        <q-item-section>
+                          <q-chip>
+                            <q-avatar color="info" text-color="black">{{
+                              simulation.packages.install.length
+                            }}</q-avatar>
+                            <translate>Packages to Install</translate>
+                          </q-chip>
+                        </q-item-section>
 
-                      <q-item-section>
-                        <q-chip>
-                          <q-avatar color="info" text-color="black">{{
-                            simulation.policies.install.length
-                          }}</q-avatar>
-                          <translate
-                            >Packages to Install (by policies)</translate
+                        <q-item-section side>
+                          <q-btn
+                            flat
+                            icon="mdi-content-copy"
+                            color="primary"
+                            @click.stop="
+                              copyContent(simulation.packages.install)
+                            "
+                            ><q-tooltip>{{
+                              $gettext('Copy')
+                            }}</q-tooltip></q-btn
                           >
-                        </q-chip>
-                      </q-item-section>
+                        </q-item-section>
+                      </template>
 
-                      <q-item-section side>
-                        <q-btn
-                          flat
-                          icon="mdi-content-copy"
-                          color="primary"
-                          @click.stop="copyContent(simulation.policies.install)"
-                          ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+                      <q-list class="overflow">
+                        <q-item
+                          v-for="(item, index) in simulation.packages.install"
+                          :key="index"
                         >
-                      </q-item-section>
-                    </template>
+                          <q-item-section>
+                            {{ item.package }}
+                          </q-item-section>
 
-                    <q-list class="overflow">
-                      <q-item
-                        v-for="(item, index) in simulation.policies.install"
-                        :key="index"
-                      >
-                        <q-item-section>
-                          {{ item.package }}
-                        </q-item-section>
+                          <q-item-section avatar>
+                            <MigasLink
+                              model="deployments"
+                              :pk="item.id"
+                              :value="item.name"
+                            />
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
+                    </q-expansion-item>
+                  </q-list>
+                </div>
 
+                <div class="row q-pb-sm">
+                  <q-list
+                    v-if="simulation.policies.install.length > 0"
+                    bordered
+                    class="col"
+                  >
+                    <q-expansion-item default-opened :content-inset-level="0.5">
+                      <template #header>
                         <q-item-section avatar>
-                          <MigasLink
-                            model="catalog/policies"
-                            :pk="item.id"
-                            :value="item.name"
-                          />
+                          <q-icon name="mdi-package-down" size="md" />
                         </q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-expansion-item>
-                </q-list>
 
-                <q-list v-if="simulation.packages.remove.length > 0" bordered>
-                  <q-expansion-item default-opened :content-inset-level="0.5">
-                    <template #header>
-                      <q-item-section avatar>
-                        <q-icon name="mdi-package-up" size="md" />
-                      </q-item-section>
-
-                      <q-item-section>
-                        <q-chip>
-                          <q-avatar color="info" text-color="black">{{
-                            simulation.packages.remove.length
-                          }}</q-avatar>
-                          <translate>Packages to Uninstall</translate>
-                        </q-chip>
-                      </q-item-section>
-
-                      <q-item-section side>
-                        <q-btn
-                          flat
-                          icon="mdi-content-copy"
-                          color="primary"
-                          @click.stop="copyContent(simulation.packages.remove)"
-                          ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-                        >
-                      </q-item-section>
-                    </template>
-
-                    <q-list class="overflow">
-                      <q-item
-                        v-for="(item, index) in simulation.packages.remove"
-                        :key="index"
-                      >
                         <q-item-section>
-                          {{ item.package }}
+                          <q-chip>
+                            <q-avatar color="info" text-color="black">{{
+                              simulation.policies.install.length
+                            }}</q-avatar>
+                            <translate
+                              >Packages to Install (by policies)</translate
+                            >
+                          </q-chip>
                         </q-item-section>
 
-                        <q-item-section avatar>
-                          <MigasLink
-                            model="deployments"
-                            :pk="item.id"
-                            :value="item.name"
-                          />
-                        </q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-expansion-item>
-                </q-list>
-
-                <q-list v-if="simulation.policies.remove.length > 0" bordered>
-                  <q-expansion-item default-opened :content-inset-level="0.5">
-                    <template #header>
-                      <q-item-section avatar>
-                        <q-icon name="mdi-package-up" size="md" />
-                      </q-item-section>
-
-                      <q-item-section>
-                        <q-chip>
-                          <q-avatar color="info" text-color="black">{{
-                            simulation.policies.remove.length
-                          }}</q-avatar>
-                          <translate
-                            >Packages to Uninstall (by policies)</translate
+                        <q-item-section side>
+                          <q-btn
+                            flat
+                            icon="mdi-content-copy"
+                            color="primary"
+                            @click.stop="
+                              copyContent(simulation.policies.install)
+                            "
+                            ><q-tooltip>{{
+                              $gettext('Copy')
+                            }}</q-tooltip></q-btn
                           >
-                        </q-chip>
-                      </q-item-section>
+                        </q-item-section>
+                      </template>
 
-                      <q-item-section side>
-                        <q-btn
-                          flat
-                          icon="mdi-content-copy"
-                          color="primary"
-                          @click.stop="copyContent(simulation.policies.remove)"
-                          ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+                      <q-list class="overflow">
+                        <q-item
+                          v-for="(item, index) in simulation.policies.install"
+                          :key="index"
                         >
-                      </q-item-section>
-                    </template>
+                          <q-item-section>
+                            {{ item.package }}
+                          </q-item-section>
 
-                    <q-list class="overflow">
-                      <q-item
-                        v-for="(item, index) in simulation.policies.remove"
-                        :key="index"
-                      >
-                        <q-item-section>
-                          {{ item.package }}
-                        </q-item-section>
+                          <q-item-section avatar>
+                            <MigasLink
+                              model="catalog/policies"
+                              :pk="item.id"
+                              :value="item.name"
+                            />
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
+                    </q-expansion-item>
+                  </q-list>
+                </div>
 
+                <div class="row q-pb-sm">
+                  <q-list
+                    v-if="simulation.packages.remove.length > 0"
+                    bordered
+                    class="col"
+                  >
+                    <q-expansion-item default-opened :content-inset-level="0.5">
+                      <template #header>
                         <q-item-section avatar>
-                          <MigasLink
-                            model="catalog/policies"
-                            :pk="item.id"
-                            :value="item.name"
-                          />
+                          <q-icon name="mdi-package-up" size="md" />
                         </q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-expansion-item>
-                </q-list>
 
-                <OverflowList
-                  model="devices/logical"
-                  :label="$gettext('Devices')"
-                  :items="simulation.logical_devices"
-                />
+                        <q-item-section>
+                          <q-chip>
+                            <q-avatar color="info" text-color="black">{{
+                              simulation.packages.remove.length
+                            }}</q-avatar>
+                            <translate>Packages to Uninstall</translate>
+                          </q-chip>
+                        </q-item-section>
+
+                        <q-item-section side>
+                          <q-btn
+                            flat
+                            icon="mdi-content-copy"
+                            color="primary"
+                            @click.stop="
+                              copyContent(simulation.packages.remove)
+                            "
+                            ><q-tooltip>{{
+                              $gettext('Copy')
+                            }}</q-tooltip></q-btn
+                          >
+                        </q-item-section>
+                      </template>
+
+                      <q-list class="overflow">
+                        <q-item
+                          v-for="(item, index) in simulation.packages.remove"
+                          :key="index"
+                        >
+                          <q-item-section>
+                            {{ item.package }}
+                          </q-item-section>
+
+                          <q-item-section avatar>
+                            <MigasLink
+                              model="deployments"
+                              :pk="item.id"
+                              :value="item.name"
+                            />
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
+                    </q-expansion-item>
+                  </q-list>
+                </div>
+
+                <div class="row q-pb-sm">
+                  <q-list
+                    v-if="simulation.policies.remove.length > 0"
+                    bordered
+                    class="col"
+                  >
+                    <q-expansion-item default-opened :content-inset-level="0.5">
+                      <template #header>
+                        <q-item-section avatar>
+                          <q-icon name="mdi-package-up" size="md" />
+                        </q-item-section>
+
+                        <q-item-section>
+                          <q-chip>
+                            <q-avatar color="info" text-color="black">{{
+                              simulation.policies.remove.length
+                            }}</q-avatar>
+                            <translate
+                              >Packages to Uninstall (by policies)</translate
+                            >
+                          </q-chip>
+                        </q-item-section>
+
+                        <q-item-section side>
+                          <q-btn
+                            flat
+                            icon="mdi-content-copy"
+                            color="primary"
+                            @click.stop="
+                              copyContent(simulation.policies.remove)
+                            "
+                            ><q-tooltip>{{
+                              $gettext('Copy')
+                            }}</q-tooltip></q-btn
+                          >
+                        </q-item-section>
+                      </template>
+
+                      <q-list class="overflow">
+                        <q-item
+                          v-for="(item, index) in simulation.policies.remove"
+                          :key="index"
+                        >
+                          <q-item-section>
+                            {{ item.package }}
+                          </q-item-section>
+
+                          <q-item-section avatar>
+                            <MigasLink
+                              model="catalog/policies"
+                              :pk="item.id"
+                              :value="item.name"
+                            />
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
+                    </q-expansion-item>
+                  </q-list>
+                </div>
+
+                <div class="row q-pb-sm">
+                  <OverflowList
+                    class="col"
+                    model="devices/logical"
+                    :label="$gettext('Devices')"
+                    :items="simulation.logical_devices"
+                  />
+                </div>
 
                 <p>
                   <translate>Capture Hardware</translate>:
