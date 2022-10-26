@@ -275,6 +275,7 @@ export default {
     if (route.params.id) {
       breadcrumbs.push({
         text: windowTitle.value,
+        icon: 'mdi-account-key',
       })
     }
 
