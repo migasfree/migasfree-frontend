@@ -277,15 +277,15 @@ export default {
     }
 
     // created
-    if (route.params.source) {
-      api.get(`${url}${route.params.source}/`).then((response) => {
+    if (route.query.source) {
+      api.get(`${url}${route.query.source}/`).then((response) => {
         source.value = response.data
         loadSoftware(source.value)
       })
     }
 
-    if (route.params.target) {
-      api.get(`${url}${route.params.target}/`).then((response) => {
+    if (route.query.target) {
+      api.get(`${url}${route.query.target}/`).then((response) => {
         target.value = response.data
         loadSoftware(target.value)
       })
