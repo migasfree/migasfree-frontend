@@ -293,6 +293,7 @@ export default {
       {
         text: $gettext('Results'),
         to: routes.list,
+        icon: 'mdi-table-large',
       },
       {
         text: 'Id',
