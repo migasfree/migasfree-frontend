@@ -1,6 +1,6 @@
 <template>
-  <q-card id="label" flat bordered>
-    <q-list>
+  <q-card id="label" flat bordered square>
+    <q-list dense>
       <q-item>
         <q-item-section avatar>
           <q-avatar>
@@ -10,16 +10,21 @@
 
         <q-item-section>
           <q-item-label>{{ label.search }}</q-item-label>
-          <q-item-label caption>
+          <q-item-label
+            caption
+            :class="$q.dark.isActive ? 'text-white' : 'text-black'"
+          >
             {{ label.uuid }}
           </q-item-label>
         </q-item-section>
       </q-item>
 
-      <q-item class="text-center">
-        <q-item-section>
-          {{ $gettext('Server') }}: {{ server }}
+      <q-item>
+        <q-item-section avatar>
+          <q-icon name="mdi-server-network" size="md" />
         </q-item-section>
+
+        <q-item-section>{{ server }}</q-item-section>
       </q-item>
 
       <q-separator inset />
@@ -69,7 +74,7 @@ export default {
 
 <style scoped>
 #label {
-  width: 35em;
+  width: 20em;
   border: 1px solid #000 !important;
 }
 </style>
