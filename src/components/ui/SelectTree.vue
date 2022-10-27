@@ -5,7 +5,6 @@
     dense
     readonly
     :label="placeholder"
-    :hint="hint"
     :disable="disable"
     @update:model-value="menu.show()"
   >
@@ -60,11 +59,6 @@ export default {
       type: String,
       required: false,
       default: 'label',
-    },
-    hint: {
-      type: String,
-      required: false,
-      default: '',
     },
     disable: {
       type: Boolean,
