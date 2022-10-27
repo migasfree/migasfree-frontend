@@ -16,14 +16,12 @@
       @set-title="setTitle"
     >
       <template #fields>
-        <q-card-section v-if="!('id' in element)">
-          <p class="text-center">
-            <q-spinner-dots color="primary" size="3em" />
-          </p>
-        </q-card-section>
+        <p v-if="!('id' in element)" class="text-center">
+          <q-spinner-dots color="primary" size="3em" />
+        </p>
 
-        <q-card-section v-else>
-          <div class="row q-pa-md q-gutter-md">
+        <template v-else>
+          <div class="row q-py-md q-col-gutter-md">
             <div class="col-6">
               <ComputerHardwareResume
                 v-if="element.product_system"
@@ -50,7 +48,10 @@
             <q-spinner-dots color="primary" size="3em" />
           </div>
 
-          <div v-if="hardwareInfo.length > 0" class="row q-pa-md q-gutter-md">
+          <div
+            v-if="hardwareInfo.length > 0"
+            class="row q-py-md q-col-gutter-md"
+          >
             <q-tree :nodes="hardwareInfo" node-key="id" no-connectors>
               <template #default-header="prop">
                 <div class="row items-center">
@@ -156,7 +157,7 @@
               </template>
             </q-tree>
           </div>
-        </q-card-section>
+        </template>
       </template>
     </ItemDetail>
 
@@ -301,6 +302,7 @@ export default {
       },
       {
         text: title.value,
+        icon: 'mdi-chip',
       },
     ])
 
