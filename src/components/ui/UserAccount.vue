@@ -124,7 +124,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useQuasar } from 'quasar'
@@ -147,7 +147,6 @@ export default {
 
     const userAccount = ref(null)
     const user = ref(authStore.user)
-    const organization = ref(authStore.server.organization)
     const languages = ref([])
     const currentLanguage = ref(gettext.available[gettext.current])
     const domainPreference = ref(
@@ -162,6 +161,10 @@ export default {
         name: $gettext('All').toLowerCase(),
       }
     )
+
+    const organization = computed(() => {
+      return authStore.server.organization
+    })
 
     const logout = () => {
       authStore.logout().then(() => {
