@@ -879,3 +879,9 @@ export default defineComponent({
   },
 })
 </script>
+
+<style scoped>
+.q-list--dark {
+  border-color: white;
+}
+</style>
