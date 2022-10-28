@@ -6,7 +6,7 @@
     push
     dense
     auto-close
-    class="text-primary"
+    :class="$q.dark.isActive ? 'text-info' : 'text-primary'"
     :loading="loading"
     :to="link"
     @show="getRelations"
@@ -36,12 +36,14 @@
         <q-item-section>
           <q-chip
             outline
-            color="primary"
+            :color="$q.dark.isActive ? 'info' : 'primary'"
             size="md"
             clickable
             @click="$router.push(item.to)"
           >
-            <q-avatar color="primary" text-color="white"
+            <q-avatar
+              :color="$q.dark.isActive ? 'info' : 'primary'"
+              :text-color="$q.dark.isActive ? 'black' : 'white'"
               >{{ humanNumber(item.count)
               }}<q-tooltip>{{ item.count }}</q-tooltip></q-avatar
             >
