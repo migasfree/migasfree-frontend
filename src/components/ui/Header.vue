@@ -20,9 +20,13 @@
       <q-item-section>
         <h2 class="text-h4">
           {{ title }}
-          <q-chip v-if="results !== null" size="lg" color="info">{{
-            results
-          }}</q-chip>
+          <q-chip
+            v-if="results !== null"
+            size="lg"
+            color="info"
+            text-color="black"
+            >{{ results }}</q-chip
+          >
           <q-btn
             v-if="hasExportButton"
             class="q-ma-sm float-right"
