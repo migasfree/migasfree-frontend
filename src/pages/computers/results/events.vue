@@ -189,8 +189,19 @@
                 />
               </q-td>
 
+              <q-td v-if="event === 'faults'" key="result">
+                <Truncate v-model="props.row.result" />
+              </q-td>
+
               <q-td v-if="event === 'statusLogs'" key="status">
-                {{ props.row.status }}
+                <q-icon
+                  :name="elementIcon(props.row.status)"
+                  class="vertical-middle q-mr-xs"
+                  size="sm"
+                />
+                <span class="vertical-middle">{{
+                  computerStatus(props.row.status)
+                }}</span>
               </q-td>
             </q-tr>
           </template>
@@ -243,7 +254,7 @@ export default {
 
     const uiStore = useUiStore()
     const { showDate } = useDate()
-    const { elementIcon } = useElement()
+    const { elementIcon, computerStatus } = useElement()
 
     const title = ref($gettext('Events'))
     useMeta({ title: title.value })
@@ -399,6 +410,7 @@ export default {
           'project.name',
           'checked',
           'fault_definition.name',
+          'result',
         ],
         columns: [
           {
@@ -431,6 +443,12 @@ export default {
             name: 'fault_definition.name',
             label: $gettext('Fault Definition'),
             field: 'fault_definition.name',
+            align: 'left',
+          },
+          {
+            name: 'result',
+            label: $gettext('Result'),
+            field: 'result',
             align: 'left',
           },
         ],
@@ -640,6 +658,7 @@ export default {
       showItems,
       goToModel,
       elementIcon,
+      computerStatus,
       modelIcon,
       showDate,
     }
