@@ -1,9 +1,7 @@
 <template>
   <q-btn-dropdown
-    flat
     split
     no-caps
-    push
     dense
     auto-close
     :class="$q.dark.isActive ? 'text-info' : 'text-primary'"
