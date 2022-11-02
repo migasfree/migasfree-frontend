@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-card :bordered="!borderless" :flat="borderless">
-      <q-card-section v-if="title" class="q-pb-none">
+      <q-card-section v-if="title && showTitle" class="q-pb-none">
         <div class="text-h5">{{ title }}</div>
       </q-card-section>
 
@@ -197,7 +197,15 @@ export default {
   name: 'StackedBarChart',
   components: { MonthInput, DayInput },
   props: {
-    title: { type: String, required: true },
+    title: {
+      type: String,
+      required: true,
+    },
+    showTitle: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
     endPoint: {
       type: String,
       required: false,
