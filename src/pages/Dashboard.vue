@@ -59,7 +59,8 @@
 
             <StackedBarChart
               v-show="!loading"
-              title=""
+              :title="$gettext('Events History')"
+              :show-title="false"
               borderless
               :initial-data="eventsHistory"
               @get-link="goTo"
