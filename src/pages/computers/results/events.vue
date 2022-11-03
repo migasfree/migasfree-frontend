@@ -128,6 +128,21 @@
           :rows-per-page-options="[0]"
           :visible-columns="events[event].visibleColumns"
         >
+          <template #top>
+            <span class="q-table__title">{{ events[event].title }}</span
+            ><q-space />
+            <DateView :value="itemsDate" icon="mdi-calendar-star" />
+            <q-space />
+            <q-btn
+              :label="items.length"
+              size="lg"
+              padding="xs md"
+              color="info"
+              text-color="black"
+              @click="goToItems(itemsDate)"
+            ></q-btn>
+          </template>
+
           <template #body="props">
             <q-tr :props="props">
               <q-td v-if="event === 'syncs'" key="start_date">
@@ -626,6 +641,20 @@ export default {
       })
     }
 
+    const goToItems = (day) => {
+      const oneDayPlus = new Date(day)
+      oneDayPlus.setDate(oneDayPlus.getDate() + 1)
+
+      router.push({
+        name: `${camelToKebabCase(event.value)}-list`,
+        query: {
+          computer_id: computer.id,
+          created_at__gte: day,
+          created_at__lt: date.formatDate(oneDayPlus, 'YYYY-MM-DD'),
+        },
+      })
+    }
+
     onMounted(async () => {
       await api
         .get(`/api/v1/token/computers/${route.params.id}/`)
@@ -657,6 +686,7 @@ export default {
       updateEvent,
       showItems,
       goToModel,
+      goToItems,
       elementIcon,
       computerStatus,
       modelIcon,
