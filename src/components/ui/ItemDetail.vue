@@ -2,6 +2,14 @@
   <Breadcrumbs :items="breadcrumbs" />
 
   <Header :title="originalTitle" :has-export-button="false">
+    <template v-if="'add' in routes" #prepend>
+      <q-item-section avatar>
+        <q-btn round dark color="primary" icon="mdi-plus" @click="addElement">
+          <q-tooltip>{{ $gettext('Add') }}</q-tooltip>
+        </q-btn>
+      </q-item-section>
+    </template>
+
     <template v-if="element.id" #append
       >:
       <MigasLink
@@ -141,6 +149,7 @@
 
 <script>
 import { defineComponent, ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
@@ -241,19 +250,21 @@ export default defineComponent({
     'resetElement',
     'setTitle',
   ],
-  setup(props) {
+  setup(props, { emit }) {
+    const router = useRouter()
     const uiStore = useUiStore()
 
     const confirmRemove = ref(false)
 
-    const { loading, elementText, updateElement, remove } = useDetail(
-      props.originalTitle,
-      props.model,
-      props.routes,
-      props.breadcrumbs,
-      props.element,
-      props.elementData
-    )
+    const { loading, elementText, addElement, updateElement, remove } =
+      useDetail(
+        props.originalTitle,
+        props.model,
+        props.routes,
+        props.breadcrumbs,
+        props.element,
+        props.elementData
+      )
 
     const { elementIcon, attributeValue } = useElement()
 
@@ -296,6 +307,7 @@ export default defineComponent({
       headerIcon,
       confirmRemove,
       remove,
+      addElement,
       updateElement,
       regenerateMetadata,
     }
