@@ -406,7 +406,10 @@
                     </q-select>
                   </div>
 
-                  <div v-if="element.timeline" class="col-md col-sm">
+                  <div
+                    v-if="element.id && element.timeline"
+                    class="col-md col-sm"
+                  >
                     <q-field outlined :label="$gettext('Timeline')" stack-label>
                       <template #control>
                         <Timeline :id="element.id" v-model="element.timeline" />
