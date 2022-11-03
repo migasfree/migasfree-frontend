@@ -71,6 +71,17 @@ export default function useDetail(
     return modelIcon(model)
   }
 
+  const addElement = () => {
+    emit('resetElement')
+    emit('resetRelated')
+
+    if (breadcrumbs.length === 5) breadcrumbs.pop()
+    breadcrumbs[3].text = $gettext('Add')
+    breadcrumbs[3].icon = 'mdi-plus-circle'
+    router.push({ name: routes.add })
+    emit('setTitle', originalTitle)
+  }
+
   const updateElement = async (action = null) => {
     if (element.id) {
       loading.value = true
@@ -83,14 +94,7 @@ export default function useDetail(
           if (action === 'return') {
             router.push({ name: routes.list })
           } else if (action === 'add') {
-            emit('resetElement')
-            emit('resetRelated')
-
-            if (breadcrumbs.length === 5) breadcrumbs.pop()
-            breadcrumbs[3].text = $gettext('Add')
-            breadcrumbs[3].icon = 'mdi-plus-circle'
-            router.push({ name: routes.add })
-            emit('setTitle', originalTitle)
+            addElement()
           }
         })
         .catch((error) => {
@@ -189,6 +193,7 @@ export default function useDetail(
   return {
     loading,
     elementText,
+    addElement,
     updateElement,
     remove,
   }
