@@ -17,6 +17,8 @@
         </q-item-section>
       </template>
 
+      <slot name="prepend"></slot>
+
       <q-item-section>
         <h2 class="text-h4">
           {{ title }}
