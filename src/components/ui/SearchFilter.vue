@@ -12,7 +12,7 @@
         <q-btn
           flat
           color="primary"
-          icon="mdi-text-search"
+          icon="mdi-magnify"
           @click="$emit('search', searchText)"
         />
       </template>
