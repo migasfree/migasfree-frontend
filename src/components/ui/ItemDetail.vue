@@ -149,7 +149,6 @@
 
 <script>
 import { defineComponent, ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
@@ -250,8 +249,7 @@ export default defineComponent({
     'resetElement',
     'setTitle',
   ],
-  setup(props, { emit }) {
-    const router = useRouter()
+  setup(props) {
     const uiStore = useUiStore()
 
     const confirmRemove = ref(false)
