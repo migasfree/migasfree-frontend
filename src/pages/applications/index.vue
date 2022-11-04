@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :has-export-button="false" :add-routes="addRoutes" />
+    <Header :title="title" :has-export-button="false" :add-route="addRoute" />
 
     <SearchFilter v-model="searchText" class="q-pb-md" @search="search" />
 
@@ -90,7 +90,7 @@ export default {
       },
     ])
 
-    const addRoutes = reactive([{ route: 'app-add' }])
+    const addRoute = 'app-add'
     const url = reactive({ name: 'apps-list' })
     const byProject = reactive({})
 
@@ -163,7 +163,7 @@ export default {
       searchText,
       byProject,
       breadcrumbs,
-      addRoutes,
+      addRoute,
       url,
       goTo,
       search,
