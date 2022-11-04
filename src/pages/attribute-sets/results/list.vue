@@ -7,7 +7,7 @@
       :columns="columns"
       :model="model"
       :detail-route="detailRoute"
-      :add-routes="addRoutes"
+      :add-route="addRoute"
     >
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'name'">
@@ -66,9 +66,9 @@ export default {
 
     const kind = ref({})
 
-    const model = ref('attribute-sets')
-    const detailRoute = ref('attribute-set-detail')
-    const addRoutes = reactive([{ route: 'attribute-set-add' }])
+    const model = 'attribute-sets'
+    const detailRoute = 'attribute-set-detail'
+    const addRoute = 'attribute-set-add'
 
     const title = ref($gettext('Attribute Sets'))
 
@@ -84,7 +84,7 @@ export default {
       },
       {
         text: $gettext('Attribute Sets'),
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
       },
       {
         text: $gettext('Results'),
@@ -139,7 +139,7 @@ export default {
       columns,
       model,
       detailRoute,
-      addRoutes,
+      addRoute,
       kind,
     }
   },

@@ -100,8 +100,8 @@ export default {
 
     useMeta({ title: $gettext('Computers List') })
 
-    const model = ref('computers')
-    const detailRoute = ref('computer-detail')
+    const model = 'computers'
+    const detailRoute = 'computer-detail'
     const moreFilters = [
       'platform',
       'architecture',
@@ -128,7 +128,7 @@ export default {
       },
       {
         text: title.value,
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
         to: 'computers-dashboard',
       },
       {

@@ -7,7 +7,7 @@
       :columns="columns"
       :model="model"
       :detail-route="detailRoute"
-      :add-routes="addRoutes"
+      :add-route="addRoute"
     >
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'name'">
@@ -69,9 +69,9 @@ export default {
     const kind = ref({})
     const languages = ref([])
 
-    const model = ref('fault-definitions')
-    const detailRoute = ref('fault-definition-detail')
-    const addRoutes = reactive([{ route: 'fault-definition-add' }])
+    const model = 'fault-definitions'
+    const detailRoute = 'fault-definition-detail'
+    const addRoute = 'fault-definition-add'
 
     const title = ref($gettext('Fault Definitions'))
 
@@ -87,7 +87,7 @@ export default {
       },
       {
         text: $gettext('Fault Definitions'),
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
       },
       {
         text: $gettext('Results'),
@@ -178,7 +178,7 @@ export default {
       columns,
       model,
       detailRoute,
-      addRoutes,
+      addRoute,
       kind,
       languages,
     }

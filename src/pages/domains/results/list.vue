@@ -7,7 +7,7 @@
       :columns="columns"
       :model="model"
       :detail-route="detailRoute"
-      :add-routes="addRoutes"
+      :add-route="addRoute"
       @post-remove="postRemove"
     >
       <template #fields="slotProps">
@@ -53,9 +53,9 @@ export default {
 
     const title = ref($gettext('Domains'))
 
-    const model = ref('domains')
-    const detailRoute = ref('domain-detail')
-    const addRoutes = reactive([{ route: 'domain-add' }])
+    const model = 'domains'
+    const detailRoute = 'domain-detail'
+    const addRoute = 'domain-add'
 
     const breadcrumbs = reactive([
       {
@@ -69,7 +69,7 @@ export default {
       },
       {
         text: $gettext('Domains'),
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
       },
       {
         text: $gettext('Results'),
@@ -111,7 +111,7 @@ export default {
       columns,
       model,
       detailRoute,
-      addRoutes,
+      addRoute,
       postRemove,
     }
   },

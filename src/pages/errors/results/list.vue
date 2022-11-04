@@ -81,8 +81,8 @@ export default {
 
     useMeta({ title: $gettext('Errors List') })
 
-    const model = ref('errors')
-    const detailRoute = ref('error-detail')
+    const model = 'errors'
+    const detailRoute = 'error-detail'
     const moreFilters = ['platform', 'statusIn', 'createdAtRange']
 
     const title = ref($gettext('Errors'))
@@ -99,7 +99,7 @@ export default {
       },
       {
         text: title.value,
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
         to: 'errors-dashboard',
       },
       {

@@ -68,7 +68,7 @@ export default {
 
     useMeta({ title: $gettext('Migrations List') })
 
-    const model = ref('migrations')
+    const model = 'migrations'
     const moreFilters = ['platform', 'createdAtRange']
 
     const title = ref($gettext('Migrations'))
@@ -85,7 +85,7 @@ export default {
       },
       {
         text: title.value,
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
         to: 'migrations-dashboard',
       },
       {

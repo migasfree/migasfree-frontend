@@ -7,7 +7,7 @@
       :columns="columns"
       :model="model"
       :detail-route="detailRoute"
-      :add-routes="addRoutes"
+      :add-route="addRoute"
     >
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'name'">
@@ -69,9 +69,9 @@ export default {
 
     useMeta({ title: $gettext('Package Sets List') })
 
-    const model = ref('package-sets')
-    const detailRoute = ref('package-set-detail')
-    const addRoutes = reactive([{ route: 'package-set-add' }])
+    const model = 'package-sets'
+    const detailRoute = 'package-set-detail'
+    const addRoute = 'package-set-add'
 
     const title = ref($gettext('Package Sets'))
 
@@ -87,7 +87,7 @@ export default {
       },
       {
         text: $gettext('Package Sets'),
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
         to: 'packages-list',
       },
       {
@@ -199,7 +199,7 @@ export default {
       columns,
       model,
       detailRoute,
-      addRoutes,
+      addRoute,
     }
   },
 }

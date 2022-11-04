@@ -7,7 +7,7 @@
       :columns="columns"
       :model="model"
       :detail-route="detailRoute"
-      :add-routes="addRoutes"
+      :add-route="addRoute"
       :more-filters="moreFilters"
     >
       <template #fields="slotProps">
@@ -95,9 +95,9 @@ export default {
 
     useMeta({ title: $gettext('Deployments List') })
 
-    const model = ref('deployments')
-    const detailRoute = ref('deployment-detail')
-    const addRoutes = reactive([{ route: 'deployment-add' }])
+    const model = 'deployments'
+    const detailRoute = 'deployment-detail'
+    const addRoute = 'deployment-add'
     const moreFilters = ['schedule']
 
     const title = ref($gettext('Deployments'))
@@ -114,7 +114,7 @@ export default {
       },
       {
         text: $gettext('Deployments'),
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
         to: 'deployments-dashboard',
       },
       {
@@ -290,7 +290,7 @@ export default {
     return {
       model,
       detailRoute,
-      addRoutes,
+      addRoute,
       moreFilters,
       title,
       breadcrumbs,

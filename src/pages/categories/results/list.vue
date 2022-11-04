@@ -7,7 +7,7 @@
       :columns="columns"
       :model="model"
       :detail-route="detailRoute"
-      :add-routes="addRoutes"
+      :add-route="addRoute"
     >
       <template #fields="slotProps">
         <span>
@@ -38,9 +38,9 @@ export default {
 
     useMeta({ title: $gettext('Application Categories List') })
 
-    const model = ref('catalog/categories')
-    const detailRoute = ref('category-detail')
-    const addRoutes = reactive([{ route: 'category-add' }])
+    const model = 'catalog/categories'
+    const detailRoute = 'category-detail'
+    const addRoute = 'category-add'
 
     const title = ref($gettext('Application Categories'))
 
@@ -56,7 +56,7 @@ export default {
       },
       {
         text: title.value,
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
       },
       {
         text: $gettext('Results'),
@@ -94,7 +94,7 @@ export default {
       columns,
       model,
       detailRoute,
-      addRoutes,
+      addRoute,
     }
   },
 }

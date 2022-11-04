@@ -61,8 +61,8 @@ export default {
 
     useMeta({ title: $gettext('Attributes List') })
 
-    const model = ref('features')
-    const detailRoute = ref('attribute-detail')
+    const model = 'features'
+    const detailRoute = 'attribute-detail'
 
     const title = ref($gettext('Attributes'))
 
@@ -78,7 +78,7 @@ export default {
       },
       {
         text: $gettext('Attributes'),
-        icon: modelIcon('attributes'),
+        icon: modelIcon(model),
         to: 'attributes-dashboard',
       },
       {

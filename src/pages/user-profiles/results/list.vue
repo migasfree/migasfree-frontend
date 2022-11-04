@@ -7,7 +7,7 @@
       :columns="columns"
       :model="model"
       :detail-route="detailRoute"
-      :add-routes="addRoutes"
+      :add-route="addRoute"
     >
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'username'">
@@ -62,9 +62,9 @@ export default {
 
     useMeta({ title: $gettext('User Profiles List') })
 
-    const model = ref('user-profiles')
-    const detailRoute = ref('user-profile-detail')
-    const addRoutes = reactive([{ route: 'user-profile-add' }])
+    const model = 'user-profiles'
+    const detailRoute = 'user-profile-detail'
+    const addRoute = 'user-profile-add'
 
     const title = ref($gettext('User Profiles'))
 
@@ -80,7 +80,7 @@ export default {
       },
       {
         text: $gettext('User Profiles'),
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
       },
       {
         text: $gettext('Results'),
@@ -157,7 +157,7 @@ export default {
       columns,
       model,
       detailRoute,
-      addRoutes,
+      addRoute,
     }
   },
 }

@@ -97,7 +97,7 @@ export default {
 
     useMeta({ title: $gettext('Syncs List') })
 
-    const model = ref('syncs')
+    const model = 'syncs'
     const moreFilters = ['platform', 'createdAtRange', 'startDateRange']
 
     const title = ref($gettext('Synchronizations'))
@@ -114,7 +114,7 @@ export default {
       },
       {
         text: title.value,
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
         to: 'syncs-dashboard',
       },
       {

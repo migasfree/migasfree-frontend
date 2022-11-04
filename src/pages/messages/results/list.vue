@@ -90,7 +90,7 @@ export default {
 
     const tableResults = ref(null)
 
-    const model = ref('messages')
+    const model = 'messages'
     const moreFilters = ['statusIn', 'createdAtRange']
 
     const title = ref($gettext('Messages'))
@@ -107,7 +107,7 @@ export default {
       },
       {
         text: title.value,
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
         to: 'syncs-dashboard',
       },
       {

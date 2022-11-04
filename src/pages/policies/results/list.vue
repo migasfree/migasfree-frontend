@@ -7,7 +7,7 @@
       :columns="columns"
       :model="model"
       :detail-route="detailRoute"
-      :add-routes="addRoutes"
+      :add-route="addRoute"
     >
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'name'">
@@ -58,9 +58,9 @@ export default {
 
     useMeta({ title: $gettext('Policies List') })
 
-    const model = ref('catalog/policies')
-    const detailRoute = ref('policy-detail')
-    const addRoutes = reactive([{ route: 'policy-add' }])
+    const model = 'catalog/policies'
+    const detailRoute = 'policy-detail'
+    const addRoute = 'policy-add'
 
     const title = ref($gettext('Policies'))
 
@@ -76,7 +76,7 @@ export default {
       },
       {
         text: title.value,
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
       },
       {
         text: $gettext('Results'),
@@ -140,7 +140,7 @@ export default {
       columns,
       model,
       detailRoute,
-      addRoutes,
+      addRoute,
     }
   },
 }

@@ -91,8 +91,8 @@ export default {
 
     useMeta({ title: $gettext('Faults List') })
 
-    const model = ref('faults')
-    const detailRoute = ref('fault-detail')
+    const model = 'faults'
+    const detailRoute = 'fault-detail'
     const moreFilters = ['platform', 'user', 'createdAtRange']
 
     const title = ref($gettext('Faults'))
@@ -109,7 +109,7 @@ export default {
       },
       {
         text: title.value,
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
         to: 'faults-dashboard',
       },
       {

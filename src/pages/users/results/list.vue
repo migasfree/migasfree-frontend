@@ -47,8 +47,8 @@ export default {
 
     useMeta({ title: $gettext('Users List') })
 
-    const model = ref('users')
-    const detailRoute = ref('user-detail')
+    const model = 'users'
+    const detailRoute = 'user-detail'
 
     const title = ref($gettext('Users'))
 
@@ -64,7 +64,7 @@ export default {
       },
       {
         text: title.value,
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
       },
       {
         text: $gettext('Results'),

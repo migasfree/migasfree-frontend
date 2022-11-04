@@ -71,7 +71,7 @@ export default {
 
     useMeta({ title: $gettext('Status Logs List') })
 
-    const model = ref('status-logs')
+    const model = 'status-logs'
     const moreFilters = ['statusIn', 'createdAtRange']
 
     const title = ref($gettext('Status Logs'))
@@ -88,7 +88,7 @@ export default {
       },
       {
         text: title.value,
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
         to: 'status-logs-dashboard',
       },
       {

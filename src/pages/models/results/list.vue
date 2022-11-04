@@ -7,7 +7,7 @@
       :columns="columns"
       :model="model"
       :detail-route="detailRoute"
-      :add-routes="addRoutes"
+      :add-route="addRoute"
       :more-filters="moreFilters"
     >
       <template #fields="slotProps">
@@ -69,9 +69,9 @@ export default {
 
     useMeta({ title: $gettext('Models List') })
 
-    const model = ref('devices/models')
-    const detailRoute = ref('model-detail')
-    const addRoutes = reactive([{ route: 'model-add' }])
+    const model = 'devices/models'
+    const detailRoute = 'model-detail'
+    const addRoute = 'model-add'
     const moreFilters = ['project']
 
     const title = ref($gettext('Models'))
@@ -88,7 +88,7 @@ export default {
       },
       {
         text: title.value,
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
         to: 'models-dashboard',
       },
       {
@@ -193,7 +193,7 @@ export default {
     return {
       model,
       detailRoute,
-      addRoutes,
+      addRoute,
       moreFilters,
       title,
       breadcrumbs,

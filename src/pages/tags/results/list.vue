@@ -7,7 +7,7 @@
       :columns="columns"
       :model="model"
       :detail-route="detailRoute"
-      :add-routes="addRoutes"
+      :add-route="addRoute"
     >
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'value'">
@@ -61,9 +61,9 @@ export default {
 
     useMeta({ title: $gettext('Tags List') })
 
-    const model = ref('tags')
-    const detailRoute = ref('tag-detail')
-    const addRoutes = reactive([{ route: 'tag-add' }])
+    const model = 'tags'
+    const detailRoute = 'tag-detail'
+    const addRoute = 'tag-add'
 
     const title = ref($gettext('Tags'))
 
@@ -79,7 +79,7 @@ export default {
       },
       {
         text: title.value,
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
         to: 'tags-dashboard',
       },
       {
@@ -157,7 +157,7 @@ export default {
     return {
       model,
       detailRoute,
-      addRoutes,
+      addRoute,
       title,
       breadcrumbs,
       columns,

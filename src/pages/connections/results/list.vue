@@ -7,7 +7,7 @@
       :columns="columns"
       :model="model"
       :detail-route="detailRoute"
-      :add-routes="addRoutes"
+      :add-route="addRoute"
     >
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'name'">
@@ -60,9 +60,9 @@ export default {
 
     useMeta({ title: $gettext('Connections List') })
 
-    const model = ref('devices/connections')
-    const detailRoute = ref('connection-detail')
-    const addRoutes = reactive([{ route: 'connection-add' }])
+    const model = 'devices/connections'
+    const detailRoute = 'connection-detail'
+    const addRoute = 'connection-add'
 
     const title = ref($gettext('Connections'))
 
@@ -78,7 +78,7 @@ export default {
       },
       {
         text: title.value,
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
       },
       {
         text: $gettext('Results'),
@@ -158,7 +158,7 @@ export default {
       columns,
       model,
       detailRoute,
-      addRoutes,
+      addRoute,
     }
   },
 }

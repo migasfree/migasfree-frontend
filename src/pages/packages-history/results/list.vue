@@ -82,7 +82,7 @@ export default {
 
     useMeta({ title: $gettext('Packages History List') })
 
-    const model = ref('packages-history')
+    const model = 'packages-history'
     const moreFilters = [
       'installDateRange',
       'uninstallDateRange',
@@ -103,7 +103,7 @@ export default {
       },
       {
         text: title.value,
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
         to: 'packages-history-dashboard',
       },
       {

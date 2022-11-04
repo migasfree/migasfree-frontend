@@ -7,7 +7,7 @@
       :columns="columns"
       :model="model"
       :detail-route="detailRoute"
-      :add-routes="addRoutes"
+      :add-route="addRoute"
     >
       <template #fields="slotProps">
         <span>
@@ -38,9 +38,9 @@ export default {
 
     useMeta({ title: $gettext('Groups List') })
 
-    const model = ref('accounts/groups')
-    const detailRoute = ref('group-detail')
-    const addRoutes = reactive([{ route: 'group-add' }])
+    const model = 'accounts/groups'
+    const detailRoute = 'group-detail'
+    const addRoute = 'group-add'
 
     const title = ref($gettext('Groups'))
 
@@ -56,7 +56,7 @@ export default {
       },
       {
         text: $gettext('Groups'),
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
       },
       {
         text: $gettext('Results'),
@@ -94,7 +94,7 @@ export default {
       columns,
       model,
       detailRoute,
-      addRoutes,
+      addRoute,
     }
   },
 }

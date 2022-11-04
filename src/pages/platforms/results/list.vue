@@ -7,7 +7,7 @@
       :columns="columns"
       :model="model"
       :detail-route="detailRoute"
-      :add-routes="addRoutes"
+      :add-route="addRoute"
     >
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'name'">
@@ -48,9 +48,9 @@ export default {
 
     useMeta({ title: $gettext('Platforms List') })
 
-    const model = ref('platforms')
-    const detailRoute = ref('platform-detail')
-    const addRoutes = reactive([{ route: 'platform-add' }])
+    const model = 'platforms'
+    const detailRoute = 'platform-detail'
+    const addRoute = 'platform-add'
 
     const title = ref($gettext('Platforms'))
 
@@ -66,7 +66,7 @@ export default {
       },
       {
         text: title.value,
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
       },
       {
         text: $gettext('Results'),
@@ -98,7 +98,7 @@ export default {
       },
     ])
 
-    return { model, detailRoute, addRoutes, title, breadcrumbs, columns }
+    return { model, detailRoute, addRoute, title, breadcrumbs, columns }
   },
 }
 </script>

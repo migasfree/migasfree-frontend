@@ -7,7 +7,7 @@
       :columns="columns"
       :model="model"
       :detail-route="detailRoute"
-      :add-routes="addRoutes"
+      :add-route="addRoute"
     >
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'name'">
@@ -62,9 +62,9 @@ export default {
 
     useMeta({ title: $gettext('Stamps List') })
 
-    const model = ref('stamps')
-    const detailRoute = ref('stamp-detail')
-    const addRoutes = reactive([{ route: 'stamp-add' }])
+    const model = 'stamps'
+    const detailRoute = 'stamp-detail'
+    const addRoute = 'stamp-add'
 
     const title = ref($gettext('Stamps'))
 
@@ -80,7 +80,7 @@ export default {
       },
       {
         text: $gettext('Stamps'),
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
       },
       {
         text: $gettext('Results'),
@@ -165,7 +165,7 @@ export default {
       await loadFilters()
     })
 
-    return { breadcrumbs, title, model, detailRoute, addRoutes, columns, kind }
+    return { breadcrumbs, title, model, detailRoute, addRoute, columns, kind }
   },
 }
 </script>

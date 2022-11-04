@@ -50,7 +50,7 @@ export default {
 
     useMeta({ title: $gettext('Notifications List') })
 
-    const model = ref('notifications')
+    const model = 'notifications'
     const moreFilters = ['createdAtRange']
 
     const title = ref($gettext('Notifications'))
@@ -67,7 +67,7 @@ export default {
       },
       {
         text: title.value,
-        icon: modelIcon(model.value),
+        icon: modelIcon(model),
         to: 'notifications-dashboard',
       },
       {
