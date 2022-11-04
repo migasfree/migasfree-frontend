@@ -19,8 +19,9 @@ export default {
 
   props: {
     value: {
-      type: [String, null],
-      required: true,
+      type: [String],
+      required: false,
+      default: null,
     },
     icon: {
       type: String,
