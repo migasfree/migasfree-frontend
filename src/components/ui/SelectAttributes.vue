@@ -102,7 +102,7 @@ export default {
 
     const attributesComponent = ref(null)
 
-    const model = ref('attributes')
+    const model = 'attributes'
     const attributes = ref([])
     const localValue = ref(props.modelValue)
 
@@ -118,7 +118,7 @@ export default {
       }
 
       await api
-        .get(`/api/v1/token/${model.value}/`, {
+        .get(`/api/v1/token/${model}/`, {
           params: { search: val.toLowerCase() },
         })
         .then((response) => {
@@ -150,7 +150,7 @@ export default {
             val.property_att.prefix === 'DMN')
         ) {
           api
-            .get(`/api/v1/token/${model.value}/${val.id}/badge/`)
+            .get(`/api/v1/token/${model}/${val.id}/badge/`)
             .then((response) => {
               localValue.value[key] = Object.assign(
                 {},
