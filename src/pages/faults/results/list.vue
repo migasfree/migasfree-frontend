@@ -6,7 +6,7 @@
       :title="title"
       :columns="columns"
       :model="model"
-      :detail-route="detailRoute"
+      :routes="routes"
       :more-filters="moreFilters"
     >
       <template #fields="slotProps">
@@ -91,8 +91,10 @@ export default {
 
     useMeta({ title: $gettext('Faults List') })
 
+    const routes = {
+      detail: 'fault-detail',
+    }
     const model = 'faults'
-    const detailRoute = 'fault-detail'
     const moreFilters = ['platform', 'user', 'createdAtRange']
 
     const title = ref($gettext('Faults'))
@@ -249,7 +251,7 @@ export default {
 
     return {
       model,
-      detailRoute,
+      routes,
       moreFilters,
       title,
       breadcrumbs,

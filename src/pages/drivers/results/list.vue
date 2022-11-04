@@ -6,8 +6,7 @@
       :title="title"
       :columns="columns"
       :model="model"
-      :detail-route="detailRoute"
-      :add-route="addRoute"
+      :routes="routes"
     >
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'name'">
@@ -72,9 +71,11 @@ export default {
 
     useMeta({ title: $gettext('Drivers List') })
 
+    const routes = {
+      add: 'driver-add',
+      detail: 'driver-detail',
+    }
     const model = 'devices/drivers'
-    const detailRoute = 'driver-detail'
-    const addRoute = 'driver-add'
 
     const title = ref($gettext('Drivers'))
 
@@ -224,14 +225,7 @@ export default {
       await loadFilters()
     })
 
-    return {
-      model,
-      detailRoute,
-      addRoute,
-      title,
-      breadcrumbs,
-      columns,
-    }
+    return { routes, model, title, breadcrumbs, columns }
   },
 }
 </script>

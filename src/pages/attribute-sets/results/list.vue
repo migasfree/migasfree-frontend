@@ -6,8 +6,7 @@
       :title="title"
       :columns="columns"
       :model="model"
-      :detail-route="detailRoute"
-      :add-route="addRoute"
+      :routes="routes"
     >
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'name'">
@@ -66,9 +65,11 @@ export default {
 
     const kind = ref({})
 
+    const routes = {
+      add: 'attribute-set-add',
+      detail: 'attribute-set-detail',
+    }
     const model = 'attribute-sets'
-    const detailRoute = 'attribute-set-detail'
-    const addRoute = 'attribute-set-add'
 
     const title = ref($gettext('Attribute Sets'))
 
@@ -137,9 +138,8 @@ export default {
       title,
       breadcrumbs,
       columns,
+      routes,
       model,
-      detailRoute,
-      addRoute,
       kind,
     }
   },

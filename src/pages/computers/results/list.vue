@@ -6,7 +6,7 @@
       :title="title"
       :columns="columns"
       :model="model"
-      :detail-route="detailRoute"
+      :routes="routes"
       :more-filters="moreFilters"
     >
       <template #fields="slotProps">
@@ -100,8 +100,10 @@ export default {
 
     useMeta({ title: $gettext('Computers List') })
 
+    const routes = {
+      detail: 'computer-detail',
+    }
     const model = 'computers'
-    const detailRoute = 'computer-detail'
     const moreFilters = [
       'platform',
       'architecture',
@@ -244,7 +246,7 @@ export default {
       breadcrumbs,
       columns,
       model,
-      detailRoute,
+      routes,
       moreFilters,
       elementIcon,
       productIcon,

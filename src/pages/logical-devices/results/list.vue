@@ -6,8 +6,7 @@
       :title="title"
       :columns="columns"
       :model="model"
-      :detail-route="detailRoute"
-      :add-route="addRoute"
+      :routes="routes"
       :more-filters="moreFilters"
     >
       <template #fields="slotProps">
@@ -69,9 +68,11 @@ export default {
 
     useMeta({ title: $gettext('Logical Devices List') })
 
+    const routes = {
+      add: 'logical-device-add',
+      detail: 'logical-device-detail',
+    }
     const model = 'devices/logical'
-    const detailRoute = 'logical-device-detail'
-    const addRoute = 'logical-device-add'
     const moreFilters = ['model']
 
     const title = ref($gettext('Logical Devices'))
@@ -171,15 +172,7 @@ export default {
       await loadFilters()
     })
 
-    return {
-      model,
-      detailRoute,
-      addRoute,
-      moreFilters,
-      title,
-      breadcrumbs,
-      columns,
-    }
+    return { routes, model, moreFilters, title, breadcrumbs, columns }
   },
 }
 </script>

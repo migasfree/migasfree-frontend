@@ -6,8 +6,7 @@
       :title="title"
       :columns="columns"
       :model="model"
-      :detail-route="detailRoute"
-      :add-route="addRoute"
+      :routes="routes"
     >
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'project.name'">
@@ -60,9 +59,11 @@ export default {
 
     useMeta({ title: $gettext('Stores List') })
 
+    const routes = {
+      add: 'store-add',
+      detail: 'store-detail',
+    }
     const model = 'stores'
-    const detailRoute = 'store-detail'
-    const addRoute = 'store-add'
 
     const title = ref($gettext('Stores'))
 
@@ -144,14 +145,7 @@ export default {
       await loadFilters()
     })
 
-    return {
-      model,
-      detailRoute,
-      addRoute,
-      title,
-      breadcrumbs,
-      columns,
-    }
+    return { routes, model, title, breadcrumbs, columns }
   },
 }
 </script>

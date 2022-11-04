@@ -6,8 +6,7 @@
       :title="title"
       :columns="columns"
       :model="model"
-      :detail-route="detailRoute"
-      :add-route="addRoute"
+      :routes="routes"
       @post-remove="postRemove"
     >
       <template #fields="slotProps">
@@ -53,9 +52,11 @@ export default {
 
     const title = ref($gettext('Domains'))
 
+    const routes = {
+      add: 'domain-add',
+      detail: 'domain-detail',
+    }
     const model = 'domains'
-    const detailRoute = 'domain-detail'
-    const addRoute = 'domain-add'
 
     const breadcrumbs = reactive([
       {
@@ -105,15 +106,7 @@ export default {
       authStore.deleteDomain(id)
     }
 
-    return {
-      title,
-      breadcrumbs,
-      columns,
-      model,
-      detailRoute,
-      addRoute,
-      postRemove,
-    }
+    return { title, breadcrumbs, columns, routes, model, postRemove }
   },
 }
 </script>

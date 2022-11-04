@@ -6,8 +6,7 @@
       :title="title"
       :columns="columns"
       :model="model"
-      :detail-route="detailRoute"
-      :add-route="addRoute"
+      :routes="routes"
       @post-remove="postRemove"
     >
       <template #fields="slotProps">
@@ -70,9 +69,11 @@ export default {
 
     const title = ref($gettext('Scopes'))
 
+    const routes = {
+      add: 'scope-add',
+      detail: 'scope-detail',
+    }
     const model = 'scopes'
-    const detailRoute = 'scope-detail'
-    const addRoute = 'scope-add'
 
     const breadcrumbs = reactive([
       {
@@ -146,15 +147,7 @@ export default {
       columns.find((x) => x.field === 'user.username').hidden = false
     }
 
-    return {
-      title,
-      breadcrumbs,
-      columns,
-      model,
-      detailRoute,
-      addRoute,
-      postRemove,
-    }
+    return { title, breadcrumbs, columns, routes, model, postRemove }
   },
 }
 </script>

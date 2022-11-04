@@ -6,8 +6,7 @@
       :title="title"
       :columns="columns"
       :model="model"
-      :detail-route="detailRoute"
-      :add-route="addRoute"
+      :routes="routes"
     >
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'name'">
@@ -58,9 +57,11 @@ export default {
 
     useMeta({ title: $gettext('Policies List') })
 
+    const routes = {
+      add: 'policy-add',
+      detail: 'policy-detail',
+    }
     const model = 'catalog/policies'
-    const detailRoute = 'policy-detail'
-    const addRoute = 'policy-add'
 
     const title = ref($gettext('Policies'))
 
@@ -134,14 +135,7 @@ export default {
       },
     ])
 
-    return {
-      title,
-      breadcrumbs,
-      columns,
-      model,
-      detailRoute,
-      addRoute,
-    }
+    return { title, breadcrumbs, columns, routes, model }
   },
 }
 </script>

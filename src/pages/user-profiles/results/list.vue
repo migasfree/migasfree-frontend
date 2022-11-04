@@ -6,8 +6,7 @@
       :title="title"
       :columns="columns"
       :model="model"
-      :detail-route="detailRoute"
-      :add-route="addRoute"
+      :routes="routes"
     >
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'username'">
@@ -62,9 +61,11 @@ export default {
 
     useMeta({ title: $gettext('User Profiles List') })
 
+    const routes = {
+      add: 'user-profile-add',
+      detail: 'user-profile-detail',
+    }
     const model = 'user-profiles'
-    const detailRoute = 'user-profile-detail'
-    const addRoute = 'user-profile-add'
 
     const title = ref($gettext('User Profiles'))
 
@@ -151,14 +152,7 @@ export default {
       },
     ])
 
-    return {
-      title,
-      breadcrumbs,
-      columns,
-      model,
-      detailRoute,
-      addRoute,
-    }
+    return { title, breadcrumbs, columns, routes, model }
   },
 }
 </script>

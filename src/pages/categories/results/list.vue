@@ -6,8 +6,7 @@
       :title="title"
       :columns="columns"
       :model="model"
-      :detail-route="detailRoute"
-      :add-route="addRoute"
+      :routes="routes"
     >
       <template #fields="slotProps">
         <span>
@@ -38,9 +37,11 @@ export default {
 
     useMeta({ title: $gettext('Application Categories List') })
 
+    const routes = {
+      add: 'category-add',
+      detail: 'category-detail',
+    }
     const model = 'catalog/categories'
-    const detailRoute = 'category-detail'
-    const addRoute = 'category-add'
 
     const title = ref($gettext('Application Categories'))
 
@@ -88,14 +89,7 @@ export default {
       },
     ])
 
-    return {
-      title,
-      breadcrumbs,
-      columns,
-      model,
-      detailRoute,
-      addRoute,
-    }
+    return { title, breadcrumbs, columns, routes, model }
   },
 }
 </script>

@@ -6,8 +6,7 @@
       :title="title"
       :columns="columns"
       :model="model"
-      :detail-route="detailRoute"
-      :add-route="addRoute"
+      :routes="routes"
       :column-params="columnParams"
     >
       <template #fields="slotProps">
@@ -74,9 +73,11 @@ export default {
     const kind = ref({})
     const languages = ref([])
 
+    const routes = {
+      add: 'formula-add',
+      detail: 'formula-detail',
+    }
     const model = 'formulas'
-    const detailRoute = 'formula-detail'
-    const addRoute = 'formula-add'
     const columnParams = reactive({ columnFilters: { sort: 'client' } })
 
     const title = ref($gettext('Formulas'))
@@ -214,9 +215,8 @@ export default {
       title,
       breadcrumbs,
       columns,
+      routes,
       model,
-      detailRoute,
-      addRoute,
       columnParams,
       kind,
       languages,

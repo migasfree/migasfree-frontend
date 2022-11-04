@@ -6,8 +6,7 @@
       :title="title"
       :columns="columns"
       :model="model"
-      :detail-route="detailRoute"
-      :add-route="addRoute"
+      :routes="routes"
     >
       <template #fields="slotProps">
         <span>
@@ -38,9 +37,11 @@ export default {
 
     useMeta({ title: $gettext('Groups List') })
 
+    const routes = {
+      add: 'group-add',
+      detail: 'group-detail',
+    }
     const model = 'accounts/groups'
-    const detailRoute = 'group-detail'
-    const addRoute = 'group-add'
 
     const title = ref($gettext('Groups'))
 
@@ -88,14 +89,7 @@ export default {
       },
     ])
 
-    return {
-      title,
-      breadcrumbs,
-      columns,
-      model,
-      detailRoute,
-      addRoute,
-    }
+    return { title, breadcrumbs, columns, routes, model }
   },
 }
 </script>
