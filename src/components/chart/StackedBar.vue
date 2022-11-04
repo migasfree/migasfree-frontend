@@ -66,11 +66,16 @@
       </q-card-section>
 
       <q-card-actions v-show="isChartVisible" align="around" class="q-pt-none">
-        <q-btn icon="mdi-database-search" flat @click="dataView">
+        <q-btn
+          icon="mdi-database-search"
+          flat
+          color="primary"
+          @click="dataView"
+        >
           <q-tooltip>{{ $gettext('Data View') }}</q-tooltip>
         </q-btn>
 
-        <q-btn icon="mdi-download" flat @click="saveImage">
+        <q-btn icon="mdi-download" flat color="primary" @click="saveImage">
           <q-tooltip>{{ $gettext('Save as Image') }}</q-tooltip>
         </q-btn>
       </q-card-actions>
