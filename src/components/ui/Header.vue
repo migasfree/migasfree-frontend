@@ -1,18 +1,16 @@
 <template>
   <div class="row">
     <q-item class="col-12 items-baseline q-px-none">
-      <template v-if="addRoutes.length > 0">
-        <q-item-section v-for="(item, index) in addRoutes" :key="index" avatar>
+      <template v-if="addRoute">
+        <q-item-section avatar>
           <q-btn
             round
             dark
             color="primary"
             icon="mdi-plus"
-            @click="$router.push({ name: item.route })"
+            @click="$router.push({ name: addRoute })"
           >
-            <q-tooltip>{{
-              item.title ? item.title : $gettext('Add')
-            }}</q-tooltip>
+            <q-tooltip>{{ $gettext('Add') }}</q-tooltip>
           </q-btn>
         </q-item-section>
       </template>
@@ -58,13 +56,7 @@ export default defineComponent({
   props: {
     title: { type: String, required: true },
     results: { type: Number, required: false, default: null },
-    addRoutes: {
-      type: Array,
-      required: false,
-      default() {
-        return []
-      },
-    },
+    addRoute: { type: String, required: false, default: null },
     hasExportButton: { type: Boolean, required: false, default: true },
     isLoadingExport: { type: Boolean, required: false, default: false },
   },
