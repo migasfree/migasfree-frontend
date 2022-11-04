@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :add-routes="addRoutes" :has-export-button="false" />
+    <Header :title="title" :add-route="addRoute" :has-export-button="false" />
 
     <SearchFilter v-model="searchText" class="q-pb-md" @search="search" />
 
@@ -47,7 +47,7 @@ export default {
     useMeta({ title: title.value })
 
     const searchText = ref('')
-    const addRoutes = reactive([{ route: 'store-add' }])
+    const addRoute = 'store-add'
 
     const breadcrumbs = reactive([
       {
@@ -84,7 +84,7 @@ export default {
     return {
       title,
       searchText,
-      addRoutes,
+      addRoute,
       breadcrumbs,
       url,
       goTo,
