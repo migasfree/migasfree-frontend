@@ -2,6 +2,21 @@ import { useGettext } from 'vue3-gettext'
 
 const MAC_RAW_LEN = 12
 
+const APP_ICON = {
+  home: 'mdi-home',
+  configuration: 'mdi-cogs',
+  devices: 'mdi-printer-eye',
+  release: 'mdi-truck-delivery',
+  data: 'mdi-database-search',
+  results: 'mdi-table-large',
+  events: 'mdi-calendar-multiple',
+  hardware: 'mdi-chip',
+  simulate: 'mdi-head-sync-outline',
+  replacement: 'mdi-compare-horizontal',
+  compare: 'mdi-file-compare',
+  information: 'mdi-information',
+}
+
 const MODEL_ICON = {
   // configuration
   platforms: 'mdi-layers',
@@ -49,6 +64,12 @@ const MODEL_ICON = {
   migrations: 'mdi-map-marker-right',
   messages: 'mdi-message-text',
   notifications: 'mdi-android-messages',
+}
+
+export function appIcon(item) {
+  if (item in APP_ICON) return APP_ICON[item]
+
+  return ''
 }
 
 export function modelIcon(model) {
