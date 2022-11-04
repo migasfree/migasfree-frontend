@@ -624,15 +624,12 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    detailRoute: {
-      type: String,
+    routes: {
+      type: Object,
       required: false,
-      default: '',
-    },
-    addRoute: {
-      type: String,
-      required: false,
-      default: '',
+      default() {
+        return {}
+      },
     },
     columnParams: {
       type: Object,
@@ -654,7 +651,17 @@ export default defineComponent({
     const uiStore = useUiStore()
     const route = useRoute()
 
-    const { model, detailRoute, columnParams } = toRefs(props)
+    const { model, routes, columnParams } = toRefs(props)
+
+    const detailRoute = computed(() => {
+      if ('detail' in routes.value) return routes.value.detail
+      return null
+    })
+
+    const addRoute = computed(() => {
+      if ('add' in routes.value) return routes.value.add
+      return null
+    })
 
     const {
       tableFilters,
@@ -710,7 +717,7 @@ export default defineComponent({
 
     const hasDeleteAction = computed(() => {
       return (
-        props.detailRoute ||
+        detailRoute.value ||
         [
           'syncs',
           'status-logs',
@@ -875,6 +882,8 @@ export default defineComponent({
       updateItemsChecked,
       regenerateMetadata,
       appIcon,
+      detailRoute,
+      addRoute,
     }
   },
 })
