@@ -159,6 +159,8 @@ import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import ReplacementInfo from 'components/device/ReplacementInfo'
 
+import { appIcon } from 'composables/element'
+
 export default {
   components: {
     Breadcrumbs,
@@ -176,16 +178,16 @@ export default {
     const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
+        icon: appIcon('home'),
         to: 'home',
-        icon: 'mdi-home',
       },
       {
         text: $gettext('Devices'),
-        icon: 'mdi-printer-eye',
+        icon: appIcon('devices'),
       },
       {
         text: $gettext('Devices Replacement'),
-        icon: 'mdi-compare-horizontal',
+        icon: appIcon('replacement'),
       },
     ])
 

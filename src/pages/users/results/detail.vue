@@ -41,13 +41,13 @@
 </template>
 
 <script>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
 import ItemDetail from 'components/ui/ItemDetail'
 
-import { modelIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: { ItemDetail },
@@ -73,12 +73,12 @@ export default {
     const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
+        icon: appIcon('home'),
         to: 'home',
-        icon: 'mdi-home',
       },
       {
         text: $gettext('Data'),
-        icon: 'mdi-database-search',
+        icon: appIcon('data'),
       },
       {
         text: $gettext('Users'),

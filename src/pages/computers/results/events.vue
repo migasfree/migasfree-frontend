@@ -247,7 +247,7 @@ import MigasLink from 'components/MigasLink'
 import DateDiff from 'components/DateDiff'
 import HeatMap from 'components/chart/HeatMap'
 
-import { modelIcon, useElement } from 'composables/element'
+import { appIcon, modelIcon, useElement } from 'composables/element'
 import useDate from 'composables/date'
 
 export default {
@@ -277,12 +277,12 @@ export default {
     const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
+        icon: appIcon('home'),
         to: 'home',
-        icon: 'mdi-home',
       },
       {
         text: $gettext('Data'),
-        icon: 'mdi-database-search',
+        icon: appIcon('data'),
       },
       {
         text: $gettext('Computers'),
@@ -291,8 +291,8 @@ export default {
       },
       {
         text: $gettext('Results'),
+        icon: appIcon('results'),
         to: 'computers-list',
-        icon: 'mdi-table-large',
       },
       {
         text: 'Id',
@@ -300,7 +300,7 @@ export default {
       },
       {
         text: title.value,
-        icon: 'mdi-calendar-multiple',
+        icon: appIcon('events'),
       },
     ])
 

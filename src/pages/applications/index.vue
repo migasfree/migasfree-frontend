@@ -53,7 +53,7 @@ import SearchFilter from 'components/ui/SearchFilter'
 import PieChart from 'components/chart/Pie'
 import StackedBarChart from 'components/chart/StackedBar'
 
-import { modelIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
@@ -77,12 +77,12 @@ export default {
     const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
+        icon: appIcon('home'),
         to: 'home',
-        icon: 'mdi-home',
       },
       {
         text: $gettext('Release'),
-        icon: 'mdi-truck-delivery',
+        icon: appIcon('release'),
       },
       {
         text: $gettext('Applications'),
@@ -91,7 +91,7 @@ export default {
     ])
 
     const addRoute = 'app-add'
-    const url = reactive({ name: 'apps-list' })
+    const url = { name: 'apps-list' }
     const byProject = reactive({})
 
     const goTo = (params) => {

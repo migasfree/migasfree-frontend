@@ -63,7 +63,7 @@ import DateView from 'components/ui/DateView'
 import Truncate from 'components/ui/Truncate'
 import MigasLink from 'components/MigasLink'
 
-import { useElement, modelIcon } from 'composables/element'
+import { appIcon, modelIcon, useElement } from 'composables/element'
 
 export default {
   components: {
@@ -90,12 +90,12 @@ export default {
     const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
+        icon: appIcon('home'),
         to: 'home',
-        icon: 'mdi-home',
       },
       {
         text: $gettext('Data'),
-        icon: 'mdi-database-search',
+        icon: appIcon('data'),
       },
       {
         text: title.value,
@@ -104,7 +104,7 @@ export default {
       },
       {
         text: $gettext('Results'),
-        icon: 'mdi-table-large',
+        icon: appIcon('results'),
       },
     ])
 

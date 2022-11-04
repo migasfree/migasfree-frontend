@@ -434,7 +434,7 @@ import ComputerHardwareResume from 'components/computer/HardwareResume'
 import ComputerSoftware from 'components/computer/Software'
 import ComputerDevices from 'components/computer/Devices'
 
-import { modelIcon, useElement } from 'composables/element'
+import { appIcon, modelIcon, useElement } from 'composables/element'
 import useDate from 'composables/date'
 
 export default {
@@ -497,12 +497,12 @@ export default {
     const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
-        icon: 'mdi-home',
+        icon: appIcon('home'),
         to: 'home',
       },
       {
         text: $gettext('Data'),
-        icon: 'mdi-database-search',
+        icon: appIcon('data'),
       },
       {
         text: $gettext('Computers'),

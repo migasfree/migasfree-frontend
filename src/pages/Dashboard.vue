@@ -162,9 +162,13 @@ import PieChart from 'components/chart/Pie'
 import StackedBarChart from 'components/chart/StackedBar'
 import MonthInput from 'components/ui/MonthInput'
 
+import { appIcon } from 'composables/element'
+
 export default defineComponent({
   name: 'Dashboard',
+
   components: { Breadcrumbs, Header, PieChart, StackedBarChart, MonthInput },
+
   setup() {
     const { $gettext } = useGettext()
     const router = useRouter()
@@ -176,7 +180,7 @@ export default defineComponent({
     const breadcrumbs = [
       {
         text: title,
-        icon: 'mdi-home',
+        icon: appIcon('home'),
       },
     ]
 

@@ -29,7 +29,11 @@
 
       <div class="row q-py-sm">
         <div class="col-6 col-md col-sm">
-          <q-icon name="mdi-information" size="sm" class="vertical-middle" />
+          <q-icon
+            :name="appIcon('information')"
+            size="sm"
+            class="vertical-middle"
+          />
           <span class="vertical-middle">
             {{ fqdn }}
             <q-tooltip
@@ -88,7 +92,7 @@
 
     <q-card-actions class="justify-between q-px-md">
       <q-btn
-        icon="mdi-calendar-multiple"
+        :icon="appIcon('events')"
         color="info"
         text-color="black"
         no-caps
@@ -100,7 +104,7 @@
       />
 
       <q-btn
-        icon="mdi-head-sync-outline"
+        :icon="appIcon('simulate')"
         color="info"
         text-color="black"
         no-caps
@@ -136,6 +140,8 @@ import { useAuthStore } from 'stores/auth'
 
 import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
+
+import { appIcon } from 'composables/element'
 
 export default {
   name: 'ComputerInfo',
@@ -204,6 +210,7 @@ export default {
       value,
       isSuperUser: authStore.user.is_superuser,
       updateName,
+      appIcon,
     }
   },
 }

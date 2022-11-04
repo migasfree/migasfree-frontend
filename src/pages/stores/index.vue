@@ -30,7 +30,7 @@ import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
 import PieChart from 'components/chart/Pie'
 
-import { modelIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
@@ -52,12 +52,12 @@ export default {
     const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
+        icon: appIcon('home'),
         to: 'home',
-        icon: 'mdi-home',
       },
       {
         text: $gettext('Release'),
-        icon: 'mdi-truck-delivery',
+        icon: appIcon('release'),
       },
       {
         text: title.value,
@@ -65,7 +65,7 @@ export default {
       },
     ])
 
-    const url = reactive({ name: 'stores-list' })
+    const url = { name: 'stores-list' }
 
     const goTo = (params) => {
       if (params.data.project_id) {

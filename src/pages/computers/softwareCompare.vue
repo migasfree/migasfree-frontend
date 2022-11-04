@@ -180,7 +180,7 @@ import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 import { CodeDiff } from 'v-code-diff'
 
-import { useElement } from 'composables/element'
+import { appIcon, useElement } from 'composables/element'
 
 export default {
   components: {
@@ -202,16 +202,16 @@ export default {
     const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
+        icon: appIcon('home'),
         to: 'home',
-        icon: 'mdi-home',
       },
       {
         text: $gettext('Data'),
-        icon: 'mdi-database-search',
+        icon: appIcon('data'),
       },
       {
         text: title.value,
-        icon: 'mdi-file-compare',
+        icon: appIcon('compare'),
       },
     ])
 

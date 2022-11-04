@@ -449,7 +449,7 @@
           class="q-ma-xs"
           round
           size="sm"
-          icon="mdi-information"
+          :icon="appIcon('information')"
           color="info"
           @click="
             $router.push({
@@ -476,7 +476,7 @@
           class="q-ma-xs"
           round
           size="sm"
-          icon="mdi-calendar-multiple"
+          :icon="appIcon('events')"
           color="info"
           @click="
             $router.push({
@@ -492,7 +492,7 @@
           class="q-ma-xs"
           round
           size="sm"
-          icon="mdi-head-sync-outline"
+          :icon="appIcon('simulate')"
           color="info"
           @click="
             $router.push({
@@ -600,6 +600,7 @@ import SelectTree from 'components/ui/SelectTree'
 import DateRangeInput from 'components/ui/DateRangeInput'
 
 import useDataGrid from 'composables/dataGrid'
+import { appIcon } from 'composables/element'
 
 export default defineComponent({
   name: 'TableResults',
@@ -873,6 +874,7 @@ export default defineComponent({
       updateChecked,
       updateItemsChecked,
       regenerateMetadata,
+      appIcon,
     }
   },
 })

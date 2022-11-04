@@ -454,7 +454,7 @@ import OrderTextArea from 'components/ui/OrderTextArea'
 import DayInput from 'components/ui/DayInput'
 
 import useDate from 'composables/date'
-import { modelIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
@@ -503,17 +503,17 @@ export default {
     const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
+        icon: appIcon('home'),
         to: 'home',
-        icon: 'mdi-home',
       },
       {
         text: $gettext('Release'),
-        icon: 'mdi-truck-delivery',
+        icon: appIcon('release'),
       },
       {
         text: $gettext('Deployments'),
-        to: 'deployments-dashboard',
         icon: modelIcon(model),
+        to: 'deployments-dashboard',
       },
     ])
 

@@ -248,7 +248,7 @@ import ItemDetail from 'components/ui/ItemDetail'
 import BooleanView from 'components/ui/BooleanView'
 import ComputerHardwareResume from 'components/computer/HardwareResume'
 
-import { modelIcon, useElement } from 'composables/element'
+import { appIcon, modelIcon, useElement } from 'composables/element'
 
 export default {
   components: {
@@ -279,12 +279,12 @@ export default {
     const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
-        icon: 'mdi-home',
+        icon: appIcon('home'),
         to: 'home',
       },
       {
         text: $gettext('Data'),
-        icon: 'mdi-database-search',
+        icon: appIcon('data'),
       },
       {
         text: $gettext('Computers'),
@@ -293,8 +293,8 @@ export default {
       },
       {
         text: $gettext('Results'),
+        icon: appIcon('results'),
         to: routes.list,
-        icon: 'mdi-table-large',
       },
       {
         text: 'Id',
@@ -302,7 +302,7 @@ export default {
       },
       {
         text: title.value,
-        icon: 'mdi-chip',
+        icon: appIcon('hardware'),
       },
     ])
 

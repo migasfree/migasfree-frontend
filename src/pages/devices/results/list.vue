@@ -68,7 +68,7 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
 import MigasLink from 'components/MigasLink'
 
-import { modelIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
@@ -91,12 +91,12 @@ export default {
     const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
+        icon: appIcon('home'),
         to: 'home',
-        icon: 'mdi-home',
       },
       {
         text: $gettext('Devices'),
-        icon: 'mdi-printer-eye',
+        icon: appIcon('devices'),
       },
       {
         text: title.value,
@@ -105,7 +105,7 @@ export default {
       },
       {
         text: $gettext('Results'),
-        icon: 'mdi-table-large',
+        icon: appIcon('results'),
       },
     ])
 

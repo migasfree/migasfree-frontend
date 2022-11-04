@@ -79,7 +79,7 @@ import BooleanView from 'components/ui/BooleanView'
 import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 
-import { modelIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
@@ -105,12 +105,12 @@ export default {
     const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
+        icon: appIcon('home'),
         to: 'home',
-        icon: 'mdi-home',
       },
       {
         text: $gettext('Release'),
-        icon: 'mdi-truck-delivery',
+        icon: appIcon('release'),
       },
       {
         text: $gettext('Deployments'),
@@ -119,7 +119,7 @@ export default {
       },
       {
         text: $gettext('Results'),
-        icon: 'mdi-table-large',
+        icon: appIcon('results'),
       },
     ])
 

@@ -42,7 +42,7 @@ import SearchFilter from 'components/ui/SearchFilter'
 import PieChart from 'components/chart/Pie'
 import StackedBarChart from 'components/chart/StackedBar'
 
-import { modelIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
@@ -64,12 +64,12 @@ export default {
     const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
+        icon: appIcon('home'),
         to: 'home',
-        icon: 'mdi-home',
       },
       {
         text: $gettext('Data'),
-        icon: 'mdi-database-search',
+        icon: appIcon('data'),
       },
       {
         text: title.value,
@@ -77,7 +77,7 @@ export default {
       },
     ])
 
-    const url = reactive({ name: 'syncs-list' })
+    const url = { name: 'syncs-list' }
 
     const goTo = (params) => {
       if ('url' in params) {

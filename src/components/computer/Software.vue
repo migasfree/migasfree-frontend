@@ -194,7 +194,7 @@
 
     <q-card-actions class="justify-around">
       <q-btn
-        icon="mdi-file-compare"
+        :icon="appIcon('compare')"
         color="info"
         text-color="black"
         no-caps
@@ -273,7 +273,7 @@
 
         <q-btn
           v-close-popup
-          icon="mdi-file-compare"
+          :icon="appIcon('compare')"
           color="primary"
           :disabled="!isCompareEnabled"
           :label="$gettext('Compare')"
@@ -297,7 +297,7 @@ import { MIN_CHARS_SEARCH } from 'config/app.conf'
 import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 
-import { useElement } from 'composables/element'
+import { appIcon, useElement } from 'composables/element'
 import useDate from 'composables/date'
 
 export default {
@@ -443,6 +443,7 @@ export default {
       compare,
       filterComputers,
       abortFilterComputers,
+      appIcon,
       elementIcon,
       MIN_CHARS_SEARCH,
     }

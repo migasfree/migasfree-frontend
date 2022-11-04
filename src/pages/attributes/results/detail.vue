@@ -123,7 +123,7 @@ import ItemDetail from 'components/ui/ItemDetail'
 import AddLocation from 'components/map/AddLocation'
 import MigasLink from 'components/MigasLink'
 
-import { modelIcon, useElement } from 'composables/element'
+import { appIcon, modelIcon, useElement } from 'composables/element'
 
 export default {
   components: {
@@ -159,17 +159,17 @@ export default {
     const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
+        icon: appIcon('home'),
         to: 'home',
-        icon: 'mdi-home',
       },
       {
         text: $gettext('Data'),
-        icon: 'mdi-database-search',
+        icon: appIcon('data'),
       },
       {
         text: $gettext('Attributes'),
-        to: 'attributes-dashboard',
         icon: modelIcon('attributes'),
+        to: 'attributes-dashboard',
       },
     ])
 

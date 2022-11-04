@@ -25,7 +25,7 @@ import { useGettext } from 'vue3-gettext'
 
 import { useAuthStore } from 'stores/auth'
 
-import { modelIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   name: 'AppMenu',
@@ -63,7 +63,7 @@ export default {
     return {
       items: [
         {
-          icon: 'mdi-cogs',
+          icon: appIcon('configuration'),
           title: $gettext('Configuration'),
           options: [
             {
@@ -121,7 +121,7 @@ export default {
           ],
         },
         {
-          icon: 'mdi-printer-eye',
+          icon: appIcon('devices'),
           title: $gettext('Devices'),
           options: [
             {
@@ -148,12 +148,12 @@ export default {
             {
               title: $gettext('Devices Replacement'),
               to: 'devices-replacement',
-              icon: 'mdi-compare-horizontal',
+              icon: appIcon('replacement'),
             },
           ].concat(extraDevices),
         },
         {
-          icon: 'mdi-truck-delivery',
+          icon: appIcon('release'),
           title: $gettext('Release'),
           options: [
             {
@@ -201,7 +201,7 @@ export default {
           ],
         },
         {
-          icon: 'mdi-database-search',
+          icon: appIcon('data'),
           title: $gettext('Data'),
           options: [
             {
@@ -212,12 +212,12 @@ export default {
             {
               title: $gettext('Computers Replacement'),
               to: 'computers-replacement',
-              icon: 'mdi-compare-horizontal',
+              icon: appIcon('replacement'),
             },
             {
               title: $gettext('Software Compare'),
               to: 'computers-software-compare',
-              icon: 'mdi-file-compare',
+              icon: appIcon('compare'),
             },
             {
               title: $gettext('Packages History'),

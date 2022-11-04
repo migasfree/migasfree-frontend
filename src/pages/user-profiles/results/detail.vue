@@ -337,7 +337,7 @@ import ItemDetail from 'components/ui/ItemDetail'
 import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 
-import { modelIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
@@ -383,12 +383,12 @@ export default {
     const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
+        icon: appIcon('home'),
         to: 'home',
-        icon: 'mdi-home',
       },
       {
         text: $gettext('Configuration'),
-        icon: 'mdi-cogs',
+        icon: appIcon('configuration'),
       },
       {
         text: $gettext('User Profiles'),

@@ -53,7 +53,7 @@
         "
         class="q-ma-md"
         size="md"
-        icon="mdi-information"
+        :icon="appIcon('information')"
         :label="$gettext('Package Information')"
         color="info"
         text-color="black"
@@ -159,7 +159,7 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
 import useDetail from 'composables/detail'
-import { useElement, modelIcon } from 'composables/element'
+import { appIcon, modelIcon, useElement } from 'composables/element'
 
 export default defineComponent({
   name: 'ItemDetail',
@@ -308,6 +308,7 @@ export default defineComponent({
       addElement,
       updateElement,
       regenerateMetadata,
+      appIcon,
     }
   },
 })

@@ -91,7 +91,7 @@ import ItemDetail from 'components/ui/ItemDetail'
 import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 
-import { useElement, modelIcon } from 'composables/element'
+import { appIcon, modelIcon, useElement } from 'composables/element'
 
 export default {
   components: {
@@ -124,16 +124,16 @@ export default {
       {
         text: $gettext('Dashboard'),
         to: 'home',
-        icon: 'mdi-home',
+        icon: appIcon('home'),
       },
       {
         text: $gettext('Data'),
-        icon: 'mdi-database-search',
+        icon: appIcon('data'),
       },
       {
         text: $gettext('Errors'),
-        to: 'errors-dashboard',
         icon: modelIcon(model),
+        to: 'errors-dashboard',
       },
     ])
 

@@ -41,7 +41,7 @@ import { useUiStore } from 'stores/ui'
 
 import ItemDetail from 'components/ui/ItemDetail'
 
-import { modelIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
@@ -71,12 +71,12 @@ export default {
     const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
+        icon: appIcon('home'),
         to: 'home',
-        icon: 'mdi-home',
       },
       {
         text: $gettext('Release'),
-        icon: 'mdi-truck-delivery',
+        icon: appIcon('release'),
       },
       {
         text: $gettext('Packages'),
@@ -85,8 +85,8 @@ export default {
       },
       {
         text: $gettext('Results'),
+        icon: appIcon('results'),
         to: routes.list,
-        icon: 'mdi-table-large',
       },
       {
         text: 'Id',
@@ -94,7 +94,7 @@ export default {
       },
       {
         text: title.value,
-        icon: 'mdi-information',
+        icon: appIcon('information'),
       },
     ])
 

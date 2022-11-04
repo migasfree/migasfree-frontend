@@ -36,18 +36,14 @@ import { ref, reactive, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
-import { api } from 'boot/axios'
-import { useUiStore } from 'stores/ui'
-
 import ItemDetail from 'components/ui/ItemDetail'
 
-import { modelIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: { ItemDetail },
   setup() {
     const { $gettext } = useGettext()
-    const uiStore = useUiStore()
 
     const title = ref($gettext('Device Type'))
     const windowTitle = ref(title.value)
@@ -69,12 +65,12 @@ export default {
     const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
+        icon: appIcon('home'),
         to: 'home',
-        icon: 'mdi-home',
       },
       {
         text: $gettext('Devices'),
-        icon: 'mdi-printer-eye',
+        icon: appIcon('devices'),
       },
       {
         text: $gettext('Device Types'),

@@ -5,7 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
-import { useElement, modelIcon } from 'composables/element'
+import { appIcon, modelIcon, useElement } from 'composables/element'
 
 const defaultElementData = () => {}
 
@@ -54,8 +54,8 @@ export default function useDetail(
     if (!['package-information', 'computer-hardware'].includes(route.name)) {
       breadcrumbs.push({
         text: $gettext('Results'),
+        icon: appIcon('results'),
         to: routes.list,
-        icon: 'mdi-table-large',
       })
       breadcrumbs.push({
         text: 'Id',
@@ -133,8 +133,8 @@ export default function useDetail(
               breadcrumbs.pop()
               breadcrumbs.push({
                 text: $gettext('Results'),
+                icon: appIcon('results'),
                 to: routes.list,
-                icon: 'mdi-table-large',
               })
               breadcrumbs.push({
                 text: elementText.value,
