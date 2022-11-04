@@ -2,7 +2,7 @@
   <Header
     :title="title"
     :results="totalRecords"
-    :add-routes="addRoutes"
+    :add-route="addRoute"
     :is-loading-export="isLoadingExport"
     @export-all="exportAll"
   />
@@ -628,12 +628,10 @@ export default defineComponent({
       required: false,
       default: '',
     },
-    addRoutes: {
-      type: Array,
+    addRoute: {
+      type: String,
       required: false,
-      default: () => {
-        return []
-      },
+      default: '',
     },
     columnParams: {
       type: Object,
