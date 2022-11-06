@@ -83,6 +83,10 @@
     <translate>No data available.</translate>
   </q-banner>
 
+  <p v-if="element.id === 0 && $route.params.id" class="text-center">
+    <q-spinner-dots color="primary" size="3em" />
+  </p>
+
   <q-card
     v-else
     :bordered="!borderless"
