@@ -23,6 +23,8 @@ h2
 
 .vgt-selection-info-row
   padding: 10px 16px !important
+  background: inherit !important
+  color: inherit !important
 
 .vgt-selection-info-row a,
 .vgt-wrap__footer .footer__navigation__page-btn
@@ -35,6 +37,19 @@ h2
   border-radius: 3px
   margin-top: 4px
   padding: 3px 8px
+  position: relative
+
+.vgt-selection-info-row a:before
+  transition: box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.5, 1)
+  content: ""
+  display: block
+  position: absolute
+  left: 0
+  right: 0
+  top: 0
+  bottom: 0
+  border-radius: inherit
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12)
 
 .vgt-wrap__footer .footer__navigation__page-btn span
   font-size: 14px !important
