@@ -11,10 +11,15 @@
       track-color="grey-3"
     >
       <q-tooltip
-        >{{ $gettext('Start') }}: {{ showing.schedule.begin_date }}<br />{{
-          $gettext('End')
-        }}: {{ showing.schedule.end_date }}</q-tooltip
-      >
+        ><q-list dense>
+          <q-item
+            >{{ $gettext('Start') }}: {{ showing.schedule.begin_date }}</q-item
+          >
+          <q-item
+            >{{ $gettext('End') }}: {{ showing.schedule.end_date }}</q-item
+          >
+        </q-list>
+      </q-tooltip>
       <q-icon name="mdi-calendar-start" class="q-mr-xs" />
       {{ showing.schedule.percent }} %
     </q-circular-progress>
@@ -44,10 +49,16 @@
         }}</q-tooltip></q-btn
       >
       <q-tooltip
-        >{{ $gettext('OK Computers') }}: {{ showing.computers.ok }}<br />{{
-          $gettext('Computers with any error')
-        }}: {{ showing.computers.error }}</q-tooltip
-      >
+        ><q-list dense>
+          <q-item
+            >{{ $gettext('OK Computers') }}: {{ showing.computers.ok }}</q-item
+          >
+          <q-item
+            >{{ $gettext('Computers with any error') }}:
+            {{ showing.computers.error }}</q-item
+          >
+        </q-list>
+      </q-tooltip>
     </q-circular-progress>
   </div>
 </template>
