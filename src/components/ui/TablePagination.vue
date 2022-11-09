@@ -40,43 +40,20 @@
         />
       </q-toolbar-title>
 
-      <q-btn-group>
-        <template v-if="prevIsPossible">
-          <q-btn
-            icon="mdi-page-first"
-            color="primary"
-            padding="sm"
-            @click.prevent.stop="firstPage"
-            ><q-tooltip>{{ $gettext('First') }}</q-tooltip></q-btn
-          >
+      <q-space />
 
-          <q-btn
-            icon="mdi-chevron-left"
-            color="primary"
-            padding="sm"
-            @click.prevent.stop="previousPage"
-            ><q-tooltip>{{ paginationOptions.prevLabel }}</q-tooltip></q-btn
-          >
-        </template>
-
-        <template v-if="nextIsPossible">
-          <q-btn
-            icon="mdi-chevron-right"
-            color="primary"
-            padding="sm"
-            @click.prevent.stop="nextPage"
-            ><q-tooltip>{{ paginationOptions.nextLabel }}</q-tooltip></q-btn
-          >
-
-          <q-btn
-            icon="mdi-page-last"
-            color="primary"
-            padding="sm"
-            @click.prevent.stop="lastPage"
-            ><q-tooltip>{{ $gettext('Last') }}</q-tooltip></q-btn
-          >
-        </template>
-      </q-btn-group>
+      <q-pagination
+        v-model="currentPage"
+        input
+        input-class="text-primary q-toolbar__title"
+        size="lg"
+        direction-links
+        boundary-links
+        :max="pagesCount"
+        icon-first="mdi-page-first"
+        icon-last="mdi-page-last"
+        @update:model-value="customPageChange(currentPage)"
+      />
     </q-toolbar>
   </div>
 </template>
