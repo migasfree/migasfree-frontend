@@ -51,7 +51,7 @@
           >
 
           <q-btn
-            icon="mdi-page-previous"
+            icon="mdi-chevron-left"
             color="primary"
             padding="sm"
             @click.prevent.stop="previousPage"
@@ -61,7 +61,7 @@
 
         <template v-if="nextIsPossible">
           <q-btn
-            icon="mdi-page-next"
+            icon="mdi-chevron-right"
             color="primary"
             padding="sm"
             @click.prevent.stop="nextPage"
