@@ -47,7 +47,10 @@
               @update:model-value="updateEvent"
             >
               <template #syncs>
-                <q-icon :name="modelIcon('syncs')" class="vertical-middle" />
+                <q-icon
+                  :name="modelIcon('syncs')"
+                  class="vertical-middle q-mr-sm"
+                />
                 <span class="vertical-middle">
                   <translate>Synchronizations</translate></span
                 >
@@ -57,7 +60,10 @@
               </template>
 
               <template #errors>
-                <q-icon :name="modelIcon('errors')" class="vertical-middle" />
+                <q-icon
+                  :name="modelIcon('errors')"
+                  class="vertical-middle q-mr-sm"
+                />
                 <span class="vertical-middle">
                   <translate>Errors</translate></span
                 >
@@ -67,7 +73,10 @@
               </template>
 
               <template #faults>
-                <q-icon :name="modelIcon('faults')" class="vertical-middle" />
+                <q-icon
+                  :name="modelIcon('faults')"
+                  class="vertical-middle q-mr-sm"
+                />
                 <span class="vertical-middle">
                   <translate>Faults</translate></span
                 >
@@ -79,7 +88,7 @@
               <template #statusLogs>
                 <q-icon
                   :name="modelIcon('status-logs')"
-                  class="vertical-middle"
+                  class="vertical-middle q-mr-sm"
                 />
                 <span class="vertical-middle">
                   <translate>Status Logs</translate></span
@@ -92,7 +101,7 @@
               <template #migrations>
                 <q-icon
                   :name="modelIcon('migrations')"
-                  class="vertical-middle"
+                  class="vertical-middle q-mr-sm"
                 />
                 <span class="vertical-middle">
                   <translate>Migrations</translate></span
