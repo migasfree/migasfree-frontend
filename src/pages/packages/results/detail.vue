@@ -10,6 +10,7 @@
       :is-valid="isValid"
       :visible-actions="element.id === 0"
       @load-related="loadRelated"
+      @set-related="setRelated"
       @reset-element="resetElement"
       @reset-related="resetRelated"
       @set-title="setTitle"
@@ -19,11 +20,11 @@
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
               <template v-if="element.id">
-                <translate>Project</translate>:
                 <MigasLink
                   model="projects"
                   :pk="element.project.id"
                   :value="element.project.name"
+                  :tooltip="$gettext('Project')"
                 />
               </template>
               <q-input
@@ -56,12 +57,12 @@
 
             <div class="col-6 col-md col-sm">
               <template v-if="element.id">
-                <translate>Store</translate>:
                 <MigasLink
                   v-if="element.store.id > 0"
                   model="stores"
                   :pk="element.store.id"
                   :value="element.store.name"
+                  :tooltip="$gettext('Store')"
                 />
               </template>
             </div>
@@ -82,18 +83,26 @@
           </div>
 
           <div v-if="element.id" class="row q-pa-md q-gutter-md">
-            <div class="col-4 col-md col-sm">
-              <translate>Name</translate>: <strong>{{ element.name }}</strong>
-            </div>
-
-            <div class="col-4 col-md col-sm">
-              <translate>Version</translate>:
-              <strong>{{ element.version }}</strong>
-            </div>
-
-            <div class="col-4 col-md col-sm">
-              <translate>Architecture</translate>:
-              <strong>{{ element.architecture }}</strong>
+            <div class="col col-md col-sm">
+              <q-tree
+                v-model:expanded="expandedNodes"
+                :nodes="infoNodes"
+                node-key="label"
+              >
+                <template #default-header="prop">
+                  <div class="row items-center text-no-wrap no-wrap">
+                    <q-icon
+                      v-if="prop.node.avatar"
+                      :name="prop.node.avatar"
+                      class="vertical-middle q-mr-xs"
+                    />
+                    <span class="vertical-middle">{{ prop.node.label }}</span>
+                    <q-tooltip v-if="prop.node.tooltip">{{
+                      prop.node.tooltip
+                    }}</q-tooltip>
+                  </div>
+                </template>
+              </q-tree>
             </div>
           </div>
         </q-card-section>
@@ -145,6 +154,9 @@ export default {
 
     const menu = ref(null)
     const tree = ref(null)
+
+    let infoNodes = ref([])
+    let expandedNodes = ref([])
 
     const breadcrumbs = reactive([
       {
@@ -205,9 +217,34 @@ export default {
         })
     }
 
+    const setRelated = () => {
+      infoNodes.value = [
+        {
+          label: element.fullname,
+          avatar: modelIcon('packages'),
+          children: [
+            {
+              label: element.name,
+              tooltip: $gettext('Name'),
+            },
+            {
+              label: element.version,
+              tooltip: $gettext('Version'),
+            },
+            {
+              label: element.architecture,
+              tooltip: $gettext('Architecture'),
+            },
+          ],
+        },
+      ]
+
+      expandedNodes.value = [element.fullname]
+    }
+
     const loadRelated = async () => {
       await api
-        .get(`/api/v1/token/projects/`)
+        .get('/api/v1/token/projects/')
         .then((response) => {
           const projects = response.data.results
 
@@ -268,10 +305,13 @@ export default {
       projectStore,
       menu,
       tree,
+      infoNodes,
+      expandedNodes,
       isValid,
       nodeSelected,
       onLazyLoad,
       elementData,
+      setRelated,
       loadRelated,
       resetElement,
       resetRelated,
