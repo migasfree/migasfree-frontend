@@ -31,7 +31,38 @@
                 option-label="name"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
-              />
+              >
+                <template #no-option>
+                  <q-item>
+                    <q-item-section v-translate class="text-grey">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
+
+                <template #option="scope">
+                  <q-item v-bind="scope.itemProps">
+                    {{ scope.opt.name }}
+                  </q-item>
+                </template>
+
+                <template #selected-item="scope">
+                  <q-chip
+                    removable
+                    dense
+                    :tabindex="scope.tabindex"
+                    class="q-ma-md"
+                    @remove="scope.removeAtIndex(scope.index)"
+                  >
+                    <MigasLink
+                      model="stamps"
+                      :pk="scope.opt.id"
+                      :value="scope.opt.name"
+                      :icon="modelIcon('stamps')"
+                    />
+                  </q-chip>
+                </template>
+              </q-select>
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -386,6 +417,7 @@ export default {
       filterComputers,
       abortFilterComputers,
       elementIcon,
+      modelIcon,
       MIN_CHARS_SEARCH,
     }
   },
