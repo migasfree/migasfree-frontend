@@ -41,13 +41,15 @@
                       model="projects"
                       :pk="element.project.id"
                       :value="element.project.name"
+                      :tooltip="$gettext('Project')"
                     />
-                    /
+                    <span class="q-mx-sm">/</span>
                     <MigasLink
                       v-if="element.store.id > 0"
                       model="stores"
                       :pk="element.store.id"
                       :value="element.store.name"
+                      :tooltip="$gettext('Store')"
                     />
                   </template>
                 </q-field>
