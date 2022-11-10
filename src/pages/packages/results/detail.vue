@@ -87,7 +87,7 @@
               <q-tree
                 v-model:expanded="expandedNodes"
                 :nodes="infoNodes"
-                node-key="label"
+                node-key="value"
               >
                 <template #default-header="prop">
                   <div class="row items-center text-no-wrap no-wrap">
@@ -96,10 +96,12 @@
                       :name="prop.node.avatar"
                       class="vertical-middle q-mr-xs"
                     />
-                    <span class="vertical-middle">{{ prop.node.label }}</span>
-                    <q-tooltip v-if="prop.node.tooltip">{{
-                      prop.node.tooltip
-                    }}</q-tooltip>
+                    <span v-if="prop.node.label" class="q-mr-xs"
+                      >{{ prop.node.label }}:
+                    </span>
+                    <strong class="vertical-middle">{{
+                      prop.node.value
+                    }}</strong>
                   </div>
                 </template>
               </q-tree>
@@ -220,20 +222,20 @@ export default {
     const setRelated = () => {
       infoNodes.value = [
         {
-          label: element.fullname,
+          value: element.fullname,
           avatar: modelIcon('packages'),
           children: [
             {
-              label: element.name,
-              tooltip: $gettext('Name'),
+              value: element.name,
+              label: $gettext('Name'),
             },
             {
-              label: element.version,
-              tooltip: $gettext('Version'),
+              value: element.version,
+              label: $gettext('Version'),
             },
             {
-              label: element.architecture,
-              tooltip: $gettext('Architecture'),
+              value: element.architecture,
+              label: $gettext('Architecture'),
             },
           ],
         },
