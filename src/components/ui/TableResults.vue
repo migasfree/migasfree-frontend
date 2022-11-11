@@ -90,8 +90,28 @@
             clearable
             :label="$gettext('By Serial Number')"
             @blur="onSerialFilter"
-            @keydown.enter="onSerialFilter"
+            @keydown.enter="$event.target.blur()"
             @clear="onSerialFilter"
+          >
+            <template #before>
+              <q-icon name="mdi-filter" />
+            </template>
+          </q-input>
+        </div>
+
+        <div
+          v-if="moreFilters.includes('uuid')"
+          class="col-12 col-sm-6 col-md-4"
+        >
+          <q-input
+            v-model="tableFilters.uuid"
+            outlined
+            dense
+            clearable
+            :label="$gettext('By UUID')"
+            @blur="onUuidFilter"
+            @keydown.enter="$event.target.blur()"
+            @clear="onUuidFilter"
           >
             <template #before>
               <q-icon name="mdi-filter" />
@@ -688,6 +708,7 @@ export default defineComponent({
       onSyncEndDateFilter,
       onSyncEndDateRangeFilter,
       onSerialFilter,
+      onUuidFilter,
       statusTree,
       installDateRange,
       uninstallDateRange,
@@ -862,6 +883,7 @@ export default defineComponent({
       onSyncEndDateFilter,
       onSyncEndDateRangeFilter,
       onSerialFilter,
+      onUuidFilter,
       loadItems,
       totalRecords,
       isLoading,
