@@ -128,6 +128,7 @@ export default function useDataGrid(
       selected: null,
     },
     serial: '',
+    uuid: '',
     architecture: {
       items: [
         { id: '', name: $gettext('All') },
@@ -642,6 +643,15 @@ export default function useDataGrid(
     loadItems()
   }
 
+  const onUuidFilter = () => {
+    updateParams({
+      columnFilters: Object.assign(serverParams.columnFilters, {
+        uuid: tableFilters.uuid,
+      }),
+    })
+    loadItems()
+  }
+
   const queryParams = () => {
     let ret = {
       page_size: serverParams.perPage,
@@ -937,7 +947,6 @@ export default function useDataGrid(
     api
       .delete(`/api/v1/token/${model.value}/${id}/`)
       .then((response) => {
-        // postRemove(id)
         emit('postRemove', id)
         uiStore.notifySuccess($gettext('Item deleted!'))
         if (reload) loadItems()
@@ -1090,6 +1099,7 @@ export default function useDataGrid(
             startDateRange.value.reset(loadItemsAfter)
           break
         case 'serial':
+        case 'uuid':
         case 'search':
           tableFilters[key] = ''
           break
@@ -1176,6 +1186,7 @@ export default function useDataGrid(
     onSyncEndDateFilter,
     onSyncEndDateRangeFilter,
     onSerialFilter,
+    onUuidFilter,
     queryParams,
     loadItems,
     edit,
