@@ -57,7 +57,7 @@
             model="platforms"
             :pk="project.platform.id"
             :value="project.platform.name"
-            :tooltip="$gettext('platform')"
+            :tooltip="$gettext('Platform')"
           />
         </div>
 
@@ -66,7 +66,7 @@
             model="projects"
             :pk="project.id"
             :value="project.name"
-            :tooltip="$gettext('project')"
+            :tooltip="$gettext('Project')"
           />
         </div>
       </div>
