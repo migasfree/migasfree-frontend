@@ -45,11 +45,21 @@ export default {
     const { $gettext } = useGettext()
 
     const searchText = ref('')
-    const options = reactive([
+    const options = [
       {
         title: $gettext('Computers'),
         to: 'computers-list',
         icon: modelIcon('computers'),
+      },
+      {
+        title: $gettext('Attributes'),
+        to: 'features-list',
+        icon: modelIcon('attributes'),
+      },
+      {
+        title: $gettext('Tags'),
+        to: 'tags-list',
+        icon: modelIcon('tags'),
         separatorAfter: true,
       },
       {
@@ -73,7 +83,7 @@ export default {
         to: 'devices-list',
         icon: modelIcon('devices/devices'),
       },
-    ])
+    ]
 
     const search = (urlName) => {
       router.push({
