@@ -108,6 +108,7 @@ export default {
       'platform',
       'architecture',
       'serial',
+      'uuid',
       'softwareInventory',
       'statusIn',
       'machine',
