@@ -14,6 +14,10 @@ Migasfree is free software, released under [GNU GPL v3](https://github.com/migas
 yarn
 ```
 
+### Configure server
+
+Create and .env file. You can take the content of file .env.example as a sample.
+
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
 
 ```bash
