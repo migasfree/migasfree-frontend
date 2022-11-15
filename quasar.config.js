@@ -14,8 +14,6 @@ const { configure } = require('quasar/wrappers')
 
 const path = require('path')
 
-const envparser = require('./src/config/envparser.js')
-
 module.exports = configure(function (ctx) {
   return {
     // https://v2.quasar.dev/quasar-cli-webpack/supporting-ts
