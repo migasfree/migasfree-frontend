@@ -121,7 +121,11 @@ export const useAuthStore = defineStore('auth', {
         this.deleteDomain(payload.id)
         this.domains.push(payload)
         this.domains.sort((a, b) =>
-          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+          a.id && b.id && a.name > b.name
+            ? 1
+            : a.id && b.id && b.name > a.name
+            ? -1
+            : 0
         )
         LocalStorage.set('auth.domains', this.domains)
       }
@@ -147,7 +151,11 @@ export const useAuthStore = defineStore('auth', {
         this.deleteScope(payload.id)
         this.scopes.push(payload)
         this.scopes.sort((a, b) =>
-          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+          a.id && b.id && a.name > b.name
+            ? 1
+            : a.id && b.id && b.name > a.name
+            ? -1
+            : 0
         )
         LocalStorage.set('auth.scopes', this.scopes)
       }
