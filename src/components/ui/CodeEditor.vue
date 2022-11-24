@@ -3,7 +3,8 @@
     v-model:value="code"
     :lang="highlightLang"
     :theme="editorTheme"
-    class="editor"
+    min-lines="10"
+    max-lines="50"
   />
   <q-btn flat icon="mdi-content-copy" color="primary" @click="copyCode">
     <q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
@@ -88,9 +89,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.editor {
-  height: 300px;
-}
-</style>
