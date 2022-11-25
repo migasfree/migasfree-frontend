@@ -129,6 +129,17 @@ export default {
           trigger: 'enter',
         },
       },
+      {
+        label: $gettext('Computers'),
+        field: 'total_computers',
+        type: 'number',
+        sortable: false,
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('All'),
+          trigger: 'enter',
+        },
+      },
     ])
 
     const loadFilters = async () => {
