@@ -899,6 +899,7 @@ export default function useDataGrid(
           case 'sync_end_date__lt':
           case 'percent__gte':
           case 'percent__lt':
+          case 'total_computers':
           case 'score':
           case 'source':
           case 'search':
