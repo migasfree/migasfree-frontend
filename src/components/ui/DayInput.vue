@@ -3,7 +3,7 @@
     v-model="dayPicked"
     :readonly="readonly"
     outlined
-    :dense="label !== undefined"
+    :dense="dense"
     clearable
     input-class="cursor-pointer"
     :label="label"
@@ -53,6 +53,11 @@ export default {
       default: undefined,
     },
     readonly: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    dense: {
       type: Boolean,
       required: false,
       default: true,

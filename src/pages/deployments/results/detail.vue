@@ -386,7 +386,12 @@
 
                 <div class="row q-col-gutter-sm">
                   <div class="col-md col-sm">
-                    <DayInput v-model="element.start_date" :readonly="false" />
+                    <DayInput
+                      v-model="element.start_date"
+                      :readonly="false"
+                      :label="$gettext('Start Date')"
+                      :dense="false"
+                    />
                   </div>
 
                   <div class="col-md col-sm">
