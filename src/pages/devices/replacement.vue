@@ -10,7 +10,7 @@
 
     <div class="row q-pb-md justify-around items-center">
       <div class="col-4 col-md-4">
-        <q-card>
+        <q-card flat>
           <q-card-section>
             <div v-translate class="text-h5 q-mt-sm q-mb-xs">Source</div>
 
@@ -83,7 +83,7 @@
       </div>
 
       <div class="col-4 col-md-4">
-        <q-card>
+        <q-card flat>
           <q-card-section>
             <div v-translate class="text-h5 q-mt-sm q-mb-xs">Target</div>
 
