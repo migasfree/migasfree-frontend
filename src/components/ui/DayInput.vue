@@ -23,6 +23,7 @@
             landscape
             outlined
             today-btn
+            flat
             :locale="localeDate"
             @update:model-value="updateValue"
           />
