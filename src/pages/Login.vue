@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex bg-image flex-center">
-    <q-card :style="$q.screen.lt.sm ? { width: '80%' } : { width: '30%' }">
+    <q-card flat :style="$q.screen.lt.sm ? { width: '80%' } : { width: '30%' }">
       <q-card-section>
         <q-avatar
           size="110px"
