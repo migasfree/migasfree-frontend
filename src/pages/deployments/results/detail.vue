@@ -17,7 +17,7 @@
       <template #fields>
         <div class="row q-pb-md q-col-gutter-md">
           <div class="col-6 col-md col-sm-12">
-            <q-card>
+            <q-card flat>
               <q-card-section>
                 <div v-translate class="text-h5 q-pb-sm">General</div>
 
@@ -91,7 +91,7 @@
           </div>
 
           <div class="col-6 col-md col-sm-12">
-            <q-card>
+            <q-card flat>
               <q-card-section>
                 <div v-translate class="text-h5 q-pb-sm">
                   To who (attributes)
@@ -121,7 +121,7 @@
 
         <div class="row q-pb-md q-col-gutter-md">
           <div class="col-6 col-md col-sm-12">
-            <q-card>
+            <q-card flat>
               <q-card-section>
                 <div v-translate class="text-h5 q-pb-sm">What (packages)</div>
 
@@ -327,7 +327,7 @@
           </div>
 
           <div class="col-6 col-md col-sm-12">
-            <q-card>
+            <q-card flat>
               <q-card-section>
                 <div v-translate class="text-h5 q-pb-sm">Actions</div>
 
@@ -380,7 +380,7 @@
 
         <div class="row q-pb-md q-col-gutter-md">
           <div class="col col-md col-sm-12">
-            <q-card>
+            <q-card flat>
               <q-card-section>
                 <div v-translate class="text-h5 q-pb-sm">When (schedule)</div>
 
