@@ -1,5 +1,12 @@
 <template>
-  <l-map id="map" :zoom="zoom" :center="coords" @click="updateMarker">
+  <l-map
+    id="map"
+    :zoom="zoom"
+    min-zoom="3"
+    max-zoom="19"
+    :center="coords"
+    @click="updateMarker"
+  >
     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
     <l-marker :lat-lng="coords">
       <l-icon
