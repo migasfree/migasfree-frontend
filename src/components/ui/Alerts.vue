@@ -139,6 +139,8 @@ export default defineComponent({
             return { name: 'faults-list', query }
           case 'notifications':
             return { name: 'notifications-list', query }
+          case 'package_sets':
+            return { name: 'package-sets-list', query }
           case 'packages':
             return { name: 'packages-list', query }
           case 'deployments':
