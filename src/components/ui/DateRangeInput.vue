@@ -22,6 +22,7 @@
             v-model="date"
             range
             today-btn
+            flat
             mask="YYYY-MM-DD"
             :locale="localeDate"
             @update:model-value="dateSelected"
