@@ -19,6 +19,7 @@
             v-model="monthPicked"
             mask="YYYY-MM"
             minimal
+            flat
             emit-immediately
             default-view="Years"
             :navigation-min-year-month="minYearMonth"
