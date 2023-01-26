@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-card :bordered="!borderless" :flat="borderless">
+    <q-card :bordered="!borderless" flat>
       <q-card-section v-if="title && showTitle" class="q-pb-none">
         <div class="text-h5">{{ title }}</div>
       </q-card-section>
@@ -82,7 +82,7 @@
     </q-card>
 
     <q-dialog v-model="viewData">
-      <q-card>
+      <q-card flat>
         <q-card-section>
           <div class="text-h5">
             <q-icon
@@ -101,6 +101,8 @@
             :pagination="{ rowsPerPage: 0 }"
             :rows="data.series"
             hide-pagination
+            flat
+            bordered
           >
             <template #top-left>
               <q-btn
