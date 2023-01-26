@@ -90,7 +90,7 @@
   <q-card
     v-else
     :bordered="!borderless"
-    :flat="borderless"
+    flat
     :class="borderless ? 'transparent' : ''"
   >
     <slot name="fields"></slot>
