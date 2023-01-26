@@ -39,7 +39,10 @@
       <div class="col-12">
         <q-list
           id="events-history"
-          :class="['q-card', $q.dark.isActive ? 'q-card--dark q-dark' : '']"
+          :class="[
+            'q-card q-card--flat no-shadow',
+            $q.dark.isActive ? 'q-card--dark q-dark' : '',
+          ]"
           bordered
         >
           <q-expansion-item @show="loadEventsHistory">
