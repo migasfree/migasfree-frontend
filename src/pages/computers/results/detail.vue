@@ -47,7 +47,7 @@
 
         <div class="row q-pb-md q-col-gutter-md">
           <div class="col-6 col-md col-sm-12">
-            <q-card>
+            <q-card flat>
               <q-card-section>
                 <div v-translate class="text-h5">Current Situation</div>
 
@@ -245,7 +245,7 @@
           </div>
 
           <div class="col-6 col-md col-sm-12">
-            <q-card>
+            <q-card flat>
               <q-card-section>
                 <div class="row">
                   <div class="col">
@@ -337,7 +337,7 @@
 
         <div v-if="markers.length > 0" class="row q-pb-md q-col-gutter-md">
           <div class="col col-md col-sm-12">
-            <q-card>
+            <q-card flat>
               <q-card-section>
                 <div v-translate class="text-h5 q-pb-sm">Locations</div>
 
@@ -345,6 +345,8 @@
                   id="map"
                   ref="map"
                   :zoom="zoom"
+                  min-zoom="3"
+                  max-zoom="19"
                   :center="[markers[0].lat, markers[0].lng]"
                   @ready="centerMarkers"
                 >
