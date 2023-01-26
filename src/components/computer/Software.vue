@@ -1,5 +1,5 @@
 <template>
-  <q-card>
+  <q-card flat>
     <q-card-section>
       <div v-translate class="text-h5 q-pb-md">Software</div>
 
