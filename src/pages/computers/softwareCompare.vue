@@ -6,7 +6,7 @@
 
     <div class="row q-py-md q-gutter-sm justify-around">
       <div class="col-6 col-md col-sm col-xs">
-        <q-card>
+        <q-card flat>
           <q-card-section>
             <div v-translate class="text-h5 q-mt-sm q-mb-xs">Source</div>
 
@@ -75,7 +75,7 @@
       </div>
 
       <div class="col-6 col-md col-sm col-xs">
-        <q-card>
+        <q-card flat>
           <q-card-section>
             <div v-translate class="text-h5 q-mt-sm q-mb-xs">Target</div>
 
