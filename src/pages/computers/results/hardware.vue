@@ -69,7 +69,7 @@
               </template>
 
               <template #default-body="prop">
-                <q-card>
+                <q-card flat>
                   <q-card-section>
                     <p v-if="prop.node.width">
                       <translate>Width</translate>:
@@ -162,7 +162,7 @@
     </ItemDetail>
 
     <q-dialog v-model="details">
-      <q-card>
+      <q-card flat>
         <q-card-section>
           <div class="text-h5">
             <q-icon
@@ -187,6 +187,8 @@
             row-key="name"
             :pagination="{ rowsPerPage: 0 }"
             hide-pagination
+            flat
+            bordered
           />
           <q-banner v-else class="text-white bg-info q-ma-md">
             <translate>No information</translate>
@@ -201,6 +203,8 @@
             row-key="name"
             :pagination="{ rowsPerPage: 0 }"
             hide-pagination
+            flat
+            bordered
           />
           <q-banner v-else class="text-white bg-info q-ma-md">
             <translate>No information</translate>
@@ -215,6 +219,8 @@
             row-key="name"
             :pagination="{ rowsPerPage: 0 }"
             hide-pagination
+            flat
+            bordered
           />
           <q-banner v-else class="text-white bg-info q-ma-md">
             <translate>No information</translate>
