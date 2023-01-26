@@ -796,6 +796,9 @@ export default function useDataGrid(
           case 'packages_id':
             ret.packages__id = val
             break
+          case 'packageset':
+            ret.packageset__isnull = val
+            break
           case 'packageset_id':
             ret.packageset__id = val
             break
