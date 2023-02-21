@@ -110,6 +110,7 @@ export default {
 
     const options = reactive({
       legend: {
+        type: 'scroll',
         bottom: 20,
         selectedMode: 'single',
         selected: {},

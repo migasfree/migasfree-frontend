@@ -262,6 +262,7 @@ export default {
         trigger: 'axis',
       },
       legend: {
+        type: 'scroll',
         show: true,
         bottom: 'bottom',
         textStyle: {
