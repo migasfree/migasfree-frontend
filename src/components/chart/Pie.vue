@@ -221,6 +221,9 @@ export default {
         labelLine: {
           show: false,
         },
+        labelLayout: {
+          hideOverlap: true,
+        },
         data: [],
       },
       {
@@ -234,6 +237,9 @@ export default {
               fontWeight: 'bold',
             },
           },
+        },
+        labelLayout: {
+          hideOverlap: true,
         },
         data: [],
       },
