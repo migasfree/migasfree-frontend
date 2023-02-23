@@ -1,5 +1,5 @@
 <template>
-  <q-card flat>
+  <q-card flat bordered>
     <q-card-section>
       <div v-translate class="text-h5">Devices</div>
 
