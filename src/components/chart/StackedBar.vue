@@ -268,6 +268,10 @@ export default {
         textStyle: {
           color: $q.dark.isActive ? '#fff' : '#333',
         },
+        pageTextStyle: {
+          color: $q.dark.isActive ? '#fff' : '#333',
+        },
+        pageIconColor: $q.dark.isActive ? '#fff' : '#2f4554',
       },
       xAxis: {
         type: 'category',
@@ -470,6 +474,8 @@ export default {
           ? MIGASFREE_CHART_DARK_COLORS
           : MIGASFREE_CHART_COLORS
         options.legend.textStyle.color = val ? '#fff' : '#333'
+        options.legend.pageTextStyle.color = val ? '#fff' : '#333'
+        options.legend.pageIconColor = val ? '#fff' : '#2f4554'
         options.xAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
         options.yAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
         if (
