@@ -47,6 +47,10 @@
                 @filter="filterPermissions"
                 @filter-abort="abortFilterPermissions"
               >
+                <template #prepend>
+                  <q-icon name="mdi-account-key" />
+                </template>
+
                 <template #no-option>
                   <q-item>
                     <q-item-section v-translate class="text-grey">
