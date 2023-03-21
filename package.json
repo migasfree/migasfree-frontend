@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@quasar/extras": "1.15.11",
-    "@vue-leaflet/vue-leaflet": "0.9.0",
+    "@vue-leaflet/vue-leaflet": "0.8.4",
     "axios": "1.3.4",
     "core-js": "3.29.1",
     "dayjs": "1.11.7",
