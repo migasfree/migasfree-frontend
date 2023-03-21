@@ -2,8 +2,8 @@
   <l-map
     id="map"
     :zoom="zoom"
-    min-zoom="3"
-    max-zoom="19"
+    :min-zoom="3"
+    :max-zoom="19"
     :center="coords"
     @click="updateMarker"
   >

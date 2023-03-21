@@ -345,8 +345,8 @@
                   id="map"
                   ref="map"
                   :zoom="zoom"
-                  min-zoom="3"
-                  max-zoom="19"
+                  :min-zoom="3"
+                  :max-zoom="19"
                   :center="[markers[0].lat, markers[0].lng]"
                   @ready="centerMarkers"
                 >
