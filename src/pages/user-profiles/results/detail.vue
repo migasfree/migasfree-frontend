@@ -170,7 +170,16 @@
                     class="q-ma-md"
                     @remove="scope.removeAtIndex(scope.index)"
                   >
-                    {{ scope.opt.name }}
+                    <q-btn
+                      no-caps
+                      flat
+                      color="primary"
+                      :to="{
+                        name: 'group-detail',
+                        params: { id: scope.opt.id },
+                      }"
+                      :label="scope.opt.name"
+                    />
                   </q-chip>
                 </template>
               </q-select>
