@@ -1,11 +1,12 @@
 import { LocalStorage } from 'quasar'
 import { boot } from 'quasar/wrappers'
 import axios from 'axios'
-import qs from 'qs'
+import { parse, stringify } from 'qs'
 
 const api = axios.create({
-  paramsSerializer: (params) => {
-    return qs.stringify(params, { arrayFormat: 'repeat' })
+  paramsSerializer: {
+    encode: parse,
+    serialize: stringify,
   },
   baseURL: process.env.MIGASFREE_SERVER || 'http://localhost',
 })
@@ -16,7 +17,7 @@ export default boot(({ app, router }) => {
       const authToken = LocalStorage.getItem('auth.token')
 
       if (authToken && !config.url.includes('/api/v1/public/'))
-        config.headers.common.Authorization = `Token ${authToken}`
+        config.headers.Authorization = `Token ${authToken}`
 
       if (config.url.includes('/api/v1/public/')) config.withCredentials = false
 
@@ -42,26 +43,28 @@ export default boot(({ app, router }) => {
     },
 
     (error) => {
-      switch (error.response.status) {
-        case 400:
-          console.error(error.response.status, error.message)
-          // notify.warn('Nothing to display', 'Data Not Found')
-          break
+      if ('response' in error && 'status' in error.response) {
+        switch (error.response.status) {
+          case 400:
+            console.error(error.response.status, error.message)
+            // notify.warn('Nothing to display', 'Data Not Found')
+            break
 
-        // authentication error, logout the user
-        case 401:
-          // notify.warn('Please login again', 'Session Expired')
-          LocalStorage.remove('auth.token')
-          router.push({ name: 'login' })
-          break
+          // authentication error, logout the user
+          case 401:
+            // notify.warn('Please login again', 'Session Expired')
+            LocalStorage.remove('auth.token')
+            router.push({ name: 'login' })
+            break
 
-        case 404:
-          router.push({ name: 'not-found' })
-          break
+          case 404:
+            router.push({ name: 'not-found' })
+            break
 
-        default:
-          console.error(error.response.status, error.message)
-        // notify.error('Server Error')
+          default:
+            console.error(error.response.status, error.message)
+          // notify.error('Server Error')
+        }
       }
 
       return Promise.reject(error)
