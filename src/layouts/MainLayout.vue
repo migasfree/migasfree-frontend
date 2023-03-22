@@ -106,6 +106,7 @@
 
 <script>
 import { defineComponent, ref, computed, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useMeta } from 'quasar'
 
@@ -137,38 +138,36 @@ export default defineComponent({
     const leftDrawerOpen = ref(false)
     const userAccount = ref(null)
 
+    const { loggedIn, user, server } = storeToRefs(authStore)
+
     useMeta({
       titleTemplate: (title) => `${title} | Migasfree`,
     })
 
     const hasDomainOrScopePreference = computed(() => {
-      if ('domain_preference' in authStore.user)
+      if ('domain_preference' in user.value)
         return (
-          authStore.user.domain_preference !== null ||
-          authStore.user.scope_preference !== null
+          user.value.domain_preference !== null ||
+          user.value.scope_preference !== null
         )
 
       return false
     })
 
     const domainPreference = computed(() => {
-      return authStore.user.domain_preference
-        ? authStore.user.domain_preference.name
+      return user.value.domain_preference
+        ? user.value.domain_preference.name
         : null
     })
 
     const scopePreference = computed(() => {
-      return authStore.user.scope_preference
-        ? authStore.user.scope_preference.name
+      return user.value.scope_preference
+        ? user.value.scope_preference.name
         : null
     })
 
     const organization = computed(() => {
-      return authStore.server.organization
-    })
-
-    const loggedIn = computed(() => {
-      return authStore.loggedIn
+      return server.value.organization
     })
 
     const removeDomainPreference = async () => {
