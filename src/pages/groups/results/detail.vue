@@ -36,6 +36,7 @@
                 map-options
                 multiple
                 counter
+                clearable
                 input-debounce="0"
                 :label="$gettext('Permissions')"
                 :hint="
