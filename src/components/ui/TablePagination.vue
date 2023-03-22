@@ -60,6 +60,7 @@
 
 <script>
 import { ref, computed, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useUiStore } from 'stores/ui'
 import { RESULTS_PER_PAGE } from 'config/app.conf'
 
@@ -87,6 +88,8 @@ export default {
   setup(props) {
     const uiStore = useUiStore()
 
+    const { currentPageTable } = storeToRefs(uiStore)
+
     const currentPage = ref(1)
     const prevPage = ref(0)
     const currentPerPage = ref(RESULTS_PER_PAGE)
@@ -108,7 +111,6 @@ export default {
     const prevIsPossible = computed(
       () => currentPage.value > 1 && currentPage.value <= pagesCount.value
     )
-    const currentPageTable = computed(() => uiStore.getCurrentPageTable)
     const perPageLabel = computed(
       () =>
         `${props.paginationOptions.rowsPerPageLabel} (${currentPerPage.value})`
