@@ -45,6 +45,7 @@ import {
   onMounted,
   onUnmounted,
 } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useQuasar } from 'quasar'
@@ -67,9 +68,7 @@ export default defineComponent({
     const totalAlerts = ref(0)
     const socket = ref(null)
 
-    const loggedIn = computed(() => {
-      return authStore.loggedIn
-    })
+    const { loggedIn } = storeToRefs(authStore)
 
     const isAlertsVisible = computed(() => {
       return loggedIn.value && alerts.value.length > 0
@@ -192,7 +191,7 @@ export default defineComponent({
     const connectWS = () => {
       const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws'
       socket.value = new WebSocket(
-        `${wsScheme}://${uiStore.getServer.split('//')[1]}/alerts/`
+        `${wsScheme}://${uiStore.server.split('//')[1]}/alerts/`
       )
 
       socket.value.onmessage = (event) => {
