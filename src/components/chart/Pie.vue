@@ -177,6 +177,10 @@ export default {
 
     const options = reactive({
       animation: false,
+      textStyle: {
+        fontFamily: 'Dosis',
+        fontSize: 14,
+      },
       tooltip: {
         trigger: 'item',
         formatter: '{b} ({c}): <strong>{d}%</strong>',

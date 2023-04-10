@@ -257,6 +257,10 @@ export default {
       color: $q.dark.isActive
         ? MIGASFREE_CHART_DARK_COLORS
         : MIGASFREE_CHART_COLORS,
+      textStyle: {
+        fontFamily: 'Dosis',
+        fontSize: 14,
+      },
       tooltip: {
         show: true,
         trigger: 'axis',

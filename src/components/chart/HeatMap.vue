@@ -118,6 +118,10 @@ export default {
           color: $q.dark.isActive ? '#fff' : '#000',
         },
       },
+      textStyle: {
+        fontFamily: 'Dosis',
+        fontSize: 14,
+      },
       tooltip: {
         position: 'top',
         formatter: function (p) {
