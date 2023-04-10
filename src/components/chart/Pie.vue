@@ -217,6 +217,9 @@ export default {
         radius: [0, '30%'],
         label: {
           position: 'inner',
+          color: $q.dark.isActive ? 'black' : 'white',
+          textBorderColor: $q.dark.isActive ? 'white' : 'black',
+          textBorderWidth: 1,
         },
         labelLine: {
           show: false,
@@ -449,7 +452,12 @@ export default {
 
         if ('series' in options) {
           options.series.map((item) => {
-            item.label.color = val ? 'white' : 'black'
+            if (item.label.position === 'inner') {
+              item.label.color = val ? 'black' : 'white'
+              item.label.textBorderColor = val ? 'white' : 'black'
+            } else {
+              item.label.color = val ? 'white' : 'black'
+            }
           })
         }
       }
