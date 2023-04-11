@@ -314,6 +314,8 @@ export default {
         ? 'rgba(255, 255, 255, 0.5)'
         : 'rgba(0, 0, 0, 0.5)',
       maskColor: $q.dark.isActive ? '#3A4149' : 'white',
+      fontFamily: 'Dosis',
+      fontSize: 14,
     })
 
     const viewData = ref(false)
