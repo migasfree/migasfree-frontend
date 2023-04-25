@@ -52,7 +52,12 @@
             v-if="hardwareInfo.length > 0"
             class="row q-py-md q-col-gutter-md"
           >
-            <q-tree :nodes="hardwareInfo" node-key="id" no-connectors>
+            <q-tree
+              :nodes="hardwareInfo"
+              node-key="id"
+              no-connectors
+              text-color="black"
+            >
               <template #default-header="prop">
                 <div class="row items-center">
                   <div class="text-weight-bold text-primary">
@@ -69,7 +74,7 @@
               </template>
 
               <template #default-body="prop">
-                <q-card flat>
+                <q-card flat bordered>
                   <q-card-section>
                     <p v-if="prop.node.width">
                       <translate>Width</translate>:
