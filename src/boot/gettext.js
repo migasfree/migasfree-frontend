@@ -5,7 +5,10 @@ import translations from '../i18n/translations.json'
 const gettext = createGettext({
   availableLanguages: {
     en_US: 'American English',
+    ca_ES: 'Català',
     es_ES: 'Español',
+    eu_ES: 'Euskara',
+    gl_ES: 'Galego',
   },
   translations,
   defaultLanguage: 'es_ES',
