@@ -58,6 +58,22 @@ const routes = [
       },
 
       {
+        path: '/singularities/results',
+        name: 'singularities-list',
+        component: () => import('pages/singularities/results/list'),
+      },
+      {
+        path: '/singularities/add',
+        name: 'singularity-add',
+        component: () => import('pages/singularities/results/detail'),
+      },
+      {
+        path: '/singularities/results/:id',
+        name: 'singularity-detail',
+        component: () => import('pages/singularities/results/detail'),
+      },
+
+      {
         path: '/stamps/results',
         name: 'stamps-list',
         component: () => import('pages/stamps/results/list'),
