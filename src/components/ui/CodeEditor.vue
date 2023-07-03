@@ -3,8 +3,8 @@
     v-model:value="code"
     :lang="highlightLang"
     :theme="editorTheme"
-    min-lines="10"
-    max-lines="50"
+    :min-lines="10"
+    :max-lines="50"
   />
   <q-btn flat icon="mdi-content-copy" color="primary" @click="copyCode">
     <q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
