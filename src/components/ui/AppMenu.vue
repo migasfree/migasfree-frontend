@@ -83,6 +83,11 @@ export default {
               icon: modelIcon('formulas'),
             },
             {
+              title: $gettext('Singularities'),
+              to: 'singularities-list',
+              icon: modelIcon('singularities'),
+            },
+            {
               title: $gettext('Stamps'),
               to: 'stamps-list',
               icon: modelIcon('stamps'),
