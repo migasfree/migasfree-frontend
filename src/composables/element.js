@@ -21,7 +21,8 @@ const MODEL_ICON = {
   // configuration
   platforms: 'mdi-layers',
   projects: 'mdi-sitemap',
-  formulas: 'mdi-function-variant',
+  formulas: 'mdi-function',
+  singularities: 'mdi-function-variant',
   stamps: 'mdi-stamper',
   'attribute-sets': 'mdi-set-none',
   'fault-definitions': 'mdi-alert-octagram-outline',
