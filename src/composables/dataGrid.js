@@ -668,6 +668,9 @@ export default function useDataGrid(
           case 'application_id':
             ret.application__id = val
             break
+          case 'attribute_id':
+            ret.attribute__id = val
+            break
           case 'attributes_id':
             ret.attributes__id = val
             break
@@ -691,6 +694,7 @@ export default function useDataGrid(
             ret.capability__id = val
             break
           case 'category':
+          case 'category_id':
           case 'category.name':
             ret.category__id = val
             break
@@ -835,6 +839,9 @@ export default function useDataGrid(
           case 'schedule_id':
           case 'schedule.name':
             ret.schedule__id = val
+            break
+          case 'singularity_id':
+            ret.singularity__id = val
             break
           case 'singularity_included_id':
             ret.singularity_included__id = val
