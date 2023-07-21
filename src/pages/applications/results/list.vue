@@ -27,6 +27,14 @@
           />
         </span>
 
+        <span v-else-if="slotProps.props.column.field == 'category.name'">
+          <MigasLink
+            model="catalog/categories"
+            :pk="slotProps.props.row.category.id"
+            :value="slotProps.props.row.category.name"
+          />
+        </span>
+
         <span v-else>
           {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
         </span>
@@ -155,9 +163,9 @@ export default {
         .get('/api/v1/token/catalog/apps/levels')
         .then((response) => {
           columns.find(
-            (x) => x.field === 'level.name'
+            (x) => x.field === 'level.name',
           ).filterOptions.filterDropdownItems = Object.entries(
-            response.data
+            response.data,
           ).map(([key, val]) => {
             return {
               value: key,
@@ -173,14 +181,14 @@ export default {
         .get('/api/v1/token/catalog/categories')
         .then((response) => {
           columns.find(
-            (x) => x.field === 'category.name'
+            (x) => x.field === 'category.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
               return {
                 value: item.id,
                 text: item.name,
               }
-            }
+            },
           )
         })
         .catch((error) => {
@@ -188,7 +196,7 @@ export default {
         })
 
       columns.find(
-        (x) => x.field === 'score'
+        (x) => x.field === 'score',
       ).filterOptions.filterDropdownItems = ['1', '2', '3', '4', '5']
     }
 
