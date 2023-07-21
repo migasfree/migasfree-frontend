@@ -25,7 +25,7 @@ export default function useDataGrid(
   columns = defaultColumns,
   model = defaultModel,
   detailRoute = defaultDetailRoute,
-  columnParams = defaultColumnParams
+  columnParams = defaultColumnParams,
 ) {
   const authStore = useAuthStore()
   const uiStore = useUiStore()
@@ -292,7 +292,7 @@ export default function useDataGrid(
         filter = columns.find(
           (x) =>
             x.field === 'manufacturer.name' ||
-            x.field === 'model.manufacturer.name'
+            x.field === 'model.manufacturer.name',
         )
       else
         filter = columns.find((x) => x.field === (filterKey ? filterKey : key))
@@ -309,7 +309,7 @@ export default function useDataGrid(
           case 'schedule':
             filter = findById(
               tableFilters[key].items,
-              value === 'true' ? 1 : value === 'false' ? 0 : ''
+              value === 'true' ? 1 : value === 'false' ? 0 : '',
             )
             if (filter) tableFilters[key].selected = filter.name
             break
@@ -337,7 +337,7 @@ export default function useDataGrid(
         if (key === 'uninstall_date') {
           filter = findById(
             tableFilters.uninstallDate.items,
-            value === 'true' ? 1 : value === 'false' ? 0 : ''
+            value === 'true' ? 1 : value === 'false' ? 0 : '',
           )
           if (filter) tableFilters.uninstallDate.selected = filter.name
         }
@@ -527,7 +527,7 @@ export default function useDataGrid(
     if (route.query.status_in) {
       const selected = findById(
         tableFilters.statusIn.items,
-        route.query.status_in
+        route.query.status_in,
       )
       if (selected) tableFilters.statusIn.selected = selected.label
     }
@@ -836,6 +836,12 @@ export default function useDataGrid(
           case 'schedule.name':
             ret.schedule__id = val
             break
+          case 'singularity_included_id':
+            ret.singularity_included__id = val
+            break
+          case 'singularity_excluded_id':
+            ret.singularity_excluded__id = val
+            break
           case 'scope_included_id':
             ret.scope_included__id = val
             break
@@ -1034,7 +1040,7 @@ export default function useDataGrid(
       const lastUnderscore = key.lastIndexOf('_')
       if (lastUnderscore > 0) {
         const newKey = `${key.substring(0, lastUnderscore)}__${key.substring(
-          lastUnderscore + 1
+          lastUnderscore + 1,
         )}`
         ret[newKey] = val
       } else ret[key] = val
