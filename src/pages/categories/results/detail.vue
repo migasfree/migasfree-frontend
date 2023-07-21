@@ -8,7 +8,6 @@
       :element="element"
       :element-data="elementData"
       :is-valid="isValid"
-      :header-link="false"
       @reset-element="resetElement"
       @set-title="setTitle"
     >
