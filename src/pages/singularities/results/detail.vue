@@ -17,7 +17,7 @@
           <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
 
           <div class="row q-pa-md q-gutter-md">
-            <div class="col-4 col-md col-sm">
+            <div class="col-6 col-md col-sm">
               <q-checkbox
                 v-model="element.enabled"
                 left-label
@@ -26,7 +26,19 @@
               />
             </div>
 
-            <div class="col-4 col-md col-sm">
+            <div class="col-6 col-md col-sm">
+              <q-input
+                v-model="element.name"
+                outlined
+                :label="$gettext('Name')"
+                lazy-rules
+                :rules="[(val) => !!val || $gettext('* Required')]"
+              />
+            </div>
+          </div>
+
+          <div class="row q-pa-md q-gutter-md">
+            <div class="col-6 col-md col-sm">
               <q-select
                 v-model="element.property_att"
                 outlined
@@ -43,7 +55,7 @@
               </q-select>
             </div>
 
-            <div class="col-4 col-md col-sm">
+            <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.priority"
                 outlined
@@ -191,6 +203,8 @@ export default {
 
     const isValid = computed(() => {
       return (
+        element.name !== undefined &&
+        element.name.trim() !== '' &&
         element.property_att !== undefined &&
         element.language !== undefined &&
         element.code !== undefined &&
@@ -236,6 +250,7 @@ export default {
     const elementData = () => {
       return {
         enabled: element.enabled,
+        name: element.name,
         priority: element.priority,
         property_att: element.property_att.id,
         included_attributes: element.included_attributes.map((item) => item.id),
@@ -248,6 +263,7 @@ export default {
     const resetElement = () => {
       Object.assign(element, {
         id: 0,
+        name: undefined,
         property_att: undefined,
         priority: 0,
         included_attributes: [],
