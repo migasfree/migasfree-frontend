@@ -9,11 +9,11 @@
       :routes="routes"
     >
       <template #fields="slotProps">
-        <span v-if="slotProps.props.column.field == '__str__'">
+        <span v-if="slotProps.props.column.field == 'name'">
           <MigasLink
             model="singularities"
             :pk="slotProps.props.row.id"
-            :value="slotProps.props.row.__str__"
+            :value="slotProps.props.row.name"
           />
         </span>
 
@@ -107,8 +107,13 @@ export default {
       },
       {
         label: $gettext('Name'),
-        field: '__str__',
+        field: 'name',
         html: true,
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
+        },
       },
       {
         label: $gettext('Enabled'),
