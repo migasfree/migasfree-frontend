@@ -33,7 +33,7 @@ export default boot(({ app, router }) => {
 
     (error) => {
       return Promise.reject(error)
-    }
+    },
   )
 
   api.interceptors.response.use(
@@ -63,12 +63,13 @@ export default boot(({ app, router }) => {
 
           default:
             console.error(error.response.status, error.message)
+            if ('data' in error.response) console.error(error.response.data)
           // notify.error('Server Error')
         }
       }
 
       return Promise.reject(error)
-    }
+    },
   )
 
   // for use inside Vue files (Options API) through this.$axios and this.$api
