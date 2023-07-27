@@ -33,7 +33,7 @@
             :key="device.id"
           >
             <MigasLink
-              model="devices/devices"
+              model="devices/logical"
               :pk="device.id"
               :value="device.__str__"
             />
@@ -49,7 +49,7 @@
             :key="device.id"
           >
             <MigasLink
-              model="devices/devices"
+              model="devices/logical"
               :pk="device.id"
               :value="device.__str__"
             />
