@@ -9,7 +9,7 @@
         >
           <img
             id="logo"
-            src="../assets/migasfree-logo-mini.svg"
+            src="../assets/migasfree-logo.svg"
             alt="migasfree logo"
           />
         </q-avatar>

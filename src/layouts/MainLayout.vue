@@ -21,7 +21,7 @@
           size="22px"
         >
           <q-avatar class="q-pl-sm" size="22px">
-            <img src="../assets/migasfree-logo-mini.svg" alt="migasfree logo" />
+            <img src="../assets/migasfree-logo.svg" alt="migasfree logo" />
           </q-avatar>
           <q-tooltip
             >{{ $gettext('Dashboard') }}

@@ -4,7 +4,7 @@
       <q-item>
         <q-item-section avatar>
           <q-avatar>
-            <img alt="Migasfree logo" src="~assets/migasfree-logo-mini.svg" />
+            <img alt="Migasfree logo" src="~assets/migasfree-logo.svg" />
           </q-avatar>
         </q-item-section>
 
