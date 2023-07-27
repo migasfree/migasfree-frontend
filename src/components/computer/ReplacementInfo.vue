@@ -7,8 +7,8 @@
 
       <p>
         <translate>Status</translate>:
-        <q-icon :name="elementIcon(element.status)" />
-        <strong>{{ element.status }}</strong>
+        <q-icon :name="elementIcon(element.status)" size="sm" />
+        <strong>{{ computerStatus(element.status) }}</strong>
       </p>
 
       <q-list v-if="'tags' in element && element.tags.length > 0">
@@ -18,38 +18,40 @@
         </q-item>
       </q-list>
 
-      <template v-if="element.devices">
-        <p v-if="element.default_logical_device">
+      <template v-if="'devices' in element">
+        <p v-if="element.devices.default_logical_device">
           <translate>Default Device</translate>:
-          <strong>{{ element.default_logical_device }}</strong>
+          <strong>{{ defaultDevice(element.devices) }}</strong>
         </p>
 
-        <q-list v-if="element.assigned_logical_devices_to_cid">
+        <q-list
+          v-if="element.devices.assigned_logical_devices_to_cid.length > 0"
+        >
           <q-item-label header><translate>Devices</translate></q-item-label>
           <q-item
-            v-for="device in element.assigned_logical_devices_to_cid"
+            v-for="device in element.devices.assigned_logical_devices_to_cid"
             :key="device.id"
           >
             <MigasLink
               model="devices/devices"
               :pk="device.id"
-              :value="device.name"
+              :value="device.__str__"
             />
           </q-item>
         </q-list>
 
-        <q-list v-if="element.inflicted_logical_devices">
+        <q-list v-if="element.devices.inflicted_logical_devices.length > 0">
           <q-item-label header
             ><translate>Inflicted Devices</translate></q-item-label
           >
           <q-item
-            v-for="device in element.inflicted_logical_devices"
+            v-for="device in element.devices.inflicted_logical_devices"
             :key="device.id"
           >
             <MigasLink
               model="devices/devices"
               :pk="device.id"
-              :value="device.name"
+              :value="device.__str__"
             />
           </q-item>
         </q-list>
@@ -83,9 +85,24 @@ export default {
     },
   },
   setup() {
-    const { elementIcon } = useElement()
+    const { attributeValue, computerStatus, elementIcon } = useElement()
 
-    return { elementIcon }
+    const defaultDevice = (devices) => {
+      const defaultLogicalDeviceId = devices.default_logical_device
+      const assignedDevice = devices.assigned_logical_devices_to_cid.find(
+        (device) => device.id === defaultLogicalDeviceId,
+      )
+      if (assignedDevice) return assignedDevice.__str__
+
+      const inflictedDevice = devices.inflicted_logical_devices.find(
+        (device) => device.id === defaultLogicalDeviceId,
+      )
+      if (inflictedDevice) return inflictedDevice.__str__
+
+      return null
+    }
+
+    return { attributeValue, computerStatus, elementIcon, defaultDevice }
   },
 }
 </script>
