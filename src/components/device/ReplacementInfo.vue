@@ -16,24 +16,33 @@
             >Computers in Logical Devices (by Capability)</translate
           ></q-item-label
         >
-        <q-item v-for="item in mutableElement.logical_devices" :key="item.id">
+        <q-item-section
+          v-for="item in mutableElement.logical_devices"
+          :key="item.id"
+          :no-wrap="false"
+        >
           <MigasLink
             model="devices/capabilities"
             :pk="item.capability.id"
             :value="item.capability.name"
           />
-          <q-list v-for="computer in item.computers" :key="computer.id">
-            <q-item>
+          <q-tree
+            v-if="'computers' in item && item.computers.length > 0"
+            :nodes="item.computers"
+            node-key="id"
+            children-key="computers"
+          >
+            <template #default-header="prop">
               <MigasLink
                 model="computers"
-                :pk="computer.id"
-                :value="computer.__str__ || ''"
-                :icon="elementIcon(computer.status)"
-                :tooltip="computer.summary"
+                :pk="prop.node.id"
+                :value="prop.node.__str__ || ''"
+                :icon="elementIcon(prop.node.status)"
+                :tooltip="prop.node.summary"
               />
-            </q-item>
-          </q-list>
-        </q-item>
+            </template>
+          </q-tree>
+        </q-item-section>
       </q-list>
     </div>
 
