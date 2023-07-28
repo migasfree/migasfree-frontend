@@ -29,6 +29,7 @@
                 :pk="computer.id"
                 :value="computer.__str__ || ''"
                 :icon="elementIcon(computer.status)"
+                :tooltip="computer.summary"
               />
             </q-item>
           </q-list>
@@ -43,7 +44,7 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue'
+import { ref, reactive, watch } from 'vue'
 
 import { api } from 'boot/axios'
 
@@ -70,15 +71,15 @@ export default {
   setup(props) {
     const { elementIcon } = useElement()
 
-    const mutableElement = ref(props.element)
+    const mutableElement = reactive(props.element)
     const sentinel = ref(false)
     const loading = ref(true)
 
     const loadComputers = async () => {
       Object.entries(props.element.logical_devices).map(([key, item]) => {
         if ('attributes' in item) {
+          let computers = []
           Object.entries(item.attributes).map(async ([keyAtt, att]) => {
-            let computers = []
             if (att.property_att.prefix === 'CID') {
               await api
                 .get(`/api/v1/token/computers/${parseInt(att.value)}`)
@@ -86,7 +87,12 @@ export default {
                   computers.push(response.data)
                 })
             }
-            mutableElement.value.logical_devices[key].computers = computers
+
+            mutableElement.logical_devices[key].computers = []
+            Object.assign(
+              mutableElement.logical_devices[key].computers,
+              computers,
+            )
 
             if (!item.attributes[key + 1]) {
               loading.value = false
@@ -106,16 +112,15 @@ export default {
           'logical_devices' in val &&
           val.logical_devices.length > 0
         ) {
-          Object.assign(mutableElement, val)
           sentinel.value = true
           loading.value = true
           loadComputers()
         }
       },
-      { deep: true }
+      { deep: true },
     )
 
-    return { mutableElement, sentinel, loading, elementIcon }
+    return { mutableElement, loading, elementIcon }
   },
 }
 </script>
