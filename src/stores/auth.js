@@ -33,7 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
       return scopes.value.filter(
         (el) =>
           (el.domain && el.domain.id === user.value.domain_preference.id) ||
-          el.id === 0
+          el.id === 0,
       )
     }
 
@@ -122,7 +122,7 @@ export const useAuthStore = defineStore('auth', () => {
           ? 1
           : a.id && b.id && b.name > a.name
           ? -1
-          : 0
+          : 0,
       )
       LocalStorage.set('auth.domains', domains.value)
     }
@@ -152,7 +152,7 @@ export const useAuthStore = defineStore('auth', () => {
           ? 1
           : a.id && b.id && b.name > a.name
           ? -1
-          : 0
+          : 0,
       )
       LocalStorage.set('auth.scopes', scopes.value)
     }
@@ -162,7 +162,7 @@ export const useAuthStore = defineStore('auth', () => {
     const uiStore = useUiStore()
 
     await api
-      .get('/api/v1/token/scopes/', { user__id: this.user.id })
+      .get('/api/v1/token/scopes/', { user__id: user.id })
       .then((response) => {
         Object.entries(response.data.results).map(([index, item]) => {
           addScope({
