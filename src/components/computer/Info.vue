@@ -23,7 +23,17 @@
               >
             </q-btn>
           </q-btn-group>
-          <div v-else class="text-h5">{{ name }}</div>
+          <div v-else class="text-h5">
+            {{ name }}
+            <q-btn
+              flat
+              icon="mdi-content-copy"
+              size="sm"
+              color="primary"
+              @click.stop="copyContentToClipboard(name)"
+              ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+            >
+          </div>
         </div>
       </div>
 
@@ -40,6 +50,14 @@
               ><translate>full qualified domain name</translate></q-tooltip
             >
           </span>
+          <q-btn
+            flat
+            icon="mdi-content-copy"
+            size="sm"
+            color="primary"
+            @click.stop="copyContentToClipboard(fqdn)"
+            ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+          >
         </div>
 
         <div class="col-6 col-md col-sm">
@@ -78,6 +96,14 @@
             {{ ipAddress }}
             <q-tooltip><translate>ip address</translate></q-tooltip>
           </span>
+          <q-btn
+            flat
+            icon="mdi-content-copy"
+            size="sm"
+            color="primary"
+            @click.stop="copyContentToClipboard(ipAddress)"
+            ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+          >
         </div>
 
         <div class="col-6 col-md col-sm">
@@ -86,6 +112,14 @@
             {{ forwardedIpAddress }}
             <q-tooltip><translate>forwarded ip address</translate></q-tooltip>
           </span>
+          <q-btn
+            flat
+            icon="mdi-content-copy"
+            size="sm"
+            color="primary"
+            @click.stop="copyContentToClipboard(forwardedIpAddress)"
+            ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+          >
         </div>
       </div>
     </q-card-section>
@@ -133,6 +167,7 @@
 <script>
 import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
+import { copyToClipboard } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -205,11 +240,18 @@ export default {
         .finally(() => (loading.value = false))
     }
 
+    const copyContentToClipboard = async (value) => {
+      copyToClipboard(value).then(() => {
+        uiStore.notifySuccess($gettext('Text copied to clipboard'))
+      })
+    }
+
     return {
       loading,
       value,
       isSuperUser: authStore.user.is_superuser,
       updateName,
+      copyContentToClipboard,
       appIcon,
     }
   },
