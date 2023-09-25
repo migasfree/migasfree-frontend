@@ -7,7 +7,7 @@
     :class="$q.dark.isActive ? 'text-info' : 'text-primary'"
     :loading="loading"
     :to="link"
-    @show="getRelations"
+    @before-show="getRelations"
   >
     <template #label>
       <q-icon v-if="hasIcon" left :name="getIcon" />
@@ -93,6 +93,7 @@ export default {
     const { computerStatus, elementIcon } = useElement()
 
     const relations = ref([])
+    const validRelations = ref([])
     const loading = ref(false)
 
     const link = computed(() => {
@@ -115,60 +116,6 @@ export default {
         default:
           return [{ icon: '', text: props.tooltip.trim() }]
       }
-    })
-
-    const validRelations = computed(() => {
-      const valid = []
-      let name = ''
-
-      Object.entries(relations.value).map(([key, item]) => {
-        let to = '#'
-        if (item.model && item.pk) {
-          name = `${normalizeModel(pluralize.singular(item.model))}-detail`
-          if (name === 'logical-devices-detail') name = 'logical-device-detail'
-          if (
-            !router.resolve({ name, params: { id: item.pk } }).matched.length >
-            0
-          )
-            return
-
-          to = {
-            name: `${normalizeModel(pluralize.singular(item.model))}-detail`,
-            params: {
-              id: item.pk,
-            },
-          }
-        } else if (item.model) {
-          name = `${item.model.replaceAll(' ', '-')}-list`
-          if (!router.resolve({ name }).matched.length > 0) return
-
-          to = {
-            name: `${item.model.replaceAll(' ', '-')}-list`,
-          }
-        } else if (item.api) {
-          if (
-            item.api.model === 'catalog/project-packages' ||
-            item.api.model === 'catalog/policy-groups'
-          )
-            return
-          name = `${normalizeModel(item.api.model)}-list`
-          if (!router.resolve({ name }).matched.length > 0) return
-
-          to = {
-            name: `${normalizeModel(item.api.model)}-list`,
-            query: normalizeQuery(item.api.query),
-          }
-        }
-
-        valid.push({
-          count: item.count,
-          text: item.text,
-          actions: item.actions,
-          to,
-        })
-      })
-
-      return valid
     })
 
     const getIcon = computed(() => {
@@ -223,13 +170,64 @@ export default {
       return abbreviateNumber(value, 0)
     }
 
+    const filterRelations = () => {
+      let name = ''
+
+      Object.entries(relations.value).map(([key, item]) => {
+        let to = '#'
+        if (item.model && item.pk) {
+          name = `${normalizeModel(pluralize.singular(item.model))}-detail`
+          if (name === 'logical-devices-detail') name = 'logical-device-detail'
+          if (
+            !router.resolve({ name, params: { id: item.pk } }).matched.length >
+            0
+          )
+            return
+
+          to = {
+            name: `${normalizeModel(pluralize.singular(item.model))}-detail`,
+            params: {
+              id: item.pk,
+            },
+          }
+        } else if (item.model) {
+          name = `${item.model.replaceAll(' ', '-')}-list`
+          if (!router.resolve({ name }).matched.length > 0) return
+
+          to = {
+            name: `${item.model.replaceAll(' ', '-')}-list`,
+          }
+        } else if (item.api) {
+          if (
+            item.api.model === 'catalog/project-packages' ||
+            item.api.model === 'catalog/policy-groups'
+          )
+            return
+          name = `${normalizeModel(item.api.model)}-list`
+          if (!router.resolve({ name }).matched.length > 0) return
+
+          to = {
+            name: `${normalizeModel(item.api.model)}-list`,
+            query: normalizeQuery(item.api.query),
+          }
+        }
+
+        validRelations.value.push({
+          count: item.count,
+          text: item.text,
+          actions: item.actions,
+          to,
+        })
+      })
+    }
+
     const getRelations = async () => {
       const url = `/api/v1/token/${props.model}/${props.pk}/relations/`
 
       if (
         relations.value.length > 0 &&
         relations.value.some(
-          (el) => el.pk === props.pk && el.model === props.model
+          (el) => el.pk === props.pk && el.model === props.model,
         )
       ) {
         return
@@ -240,6 +238,7 @@ export default {
         .get(url)
         .then((response) => {
           relations.value = response.data
+          filterRelations()
         })
         .catch((error) => {
           uiStore.notifyError(error)
@@ -251,10 +250,10 @@ export default {
 
     return {
       relations,
+      validRelations,
       loading,
       link,
       tooltipToView,
-      validRelations,
       getIcon,
       hasIcon,
       humanNumber,
