@@ -45,19 +45,16 @@
     "vue3-gettext": "2.4.0"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "7.22.9",
+    "@babel/eslint-parser": "7.22.15",
     "@quasar/app-webpack": "3.11.2",
     "@quasar/quasar-app-extension-qmarkdown": "2.0.0-beta.10",
     "dotenv": "16.3.1",
-    "eslint": "8.44.0",
-    "eslint-config-prettier": "8.8.0",
+    "eslint": "8.50.0",
+    "eslint-config-prettier": "9.0.0",
     "eslint-plugin-prettier": "5.0.0",
-    "eslint-plugin-vue": "9.15.1",
+    "eslint-plugin-vue": "9.17.0",
     "eslint-webpack-plugin": "4.0.1",
-    "prettier": "3.0.0"
-  },
-  "resolutions": {
-    "autoprefixer": "10.4.5"
+    "prettier": "3.0.3"
   },
   "browserslist": [
     "last 10 Chrome versions",
