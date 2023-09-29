@@ -51,7 +51,15 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
+    <q-drawer
+      v-model="leftDrawerOpen"
+      show-if-above
+      :mini="miniState"
+      mini-to-overlay
+      bordered
+      @mouseover="miniState = false"
+      @mouseout="miniState = true"
+    >
       <AppMenu />
     </q-drawer>
 
@@ -62,7 +70,7 @@
         </template>
         {{
           $gettext(
-            'You have established a domain or a scope in the preferences'
+            'You have established a domain or a scope in the preferences',
           )
         }}
         <q-chip
@@ -136,6 +144,7 @@ export default defineComponent({
     const authStore = useAuthStore()
 
     const leftDrawerOpen = ref(false)
+    const miniState = ref(false)
     const userAccount = ref(null)
 
     const { loggedIn, user, server } = storeToRefs(authStore)
@@ -195,6 +204,7 @@ export default defineComponent({
 
     return {
       leftDrawerOpen,
+      miniState,
       userAccount,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value
