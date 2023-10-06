@@ -350,10 +350,13 @@
                   :center="[markers[0].lat, markers[0].lng]"
                   @ready="centerMarkers"
                 >
-                  <l-tile-layer
-                    :url="url"
-                    :attribution="attribution"
-                  ></l-tile-layer>
+                  <l-tile-layer :url="url" :attribution="attribution" />
+
+                  <l-control-scale
+                    position="bottomleft"
+                    :imperial="false"
+                    :metric="true"
+                  />
 
                   <l-control position="topright">
                     <q-btn
