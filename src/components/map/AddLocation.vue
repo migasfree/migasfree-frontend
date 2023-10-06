@@ -7,7 +7,8 @@
     :center="coords"
     @click="updateMarker"
   >
-    <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+    <l-tile-layer :url="url" :attribution="attribution" />
+    <l-control-scale position="bottomleft" :imperial="false" :metric="true" />
     <l-marker :lat-lng="coords">
       <l-icon
         :icon-url="iconUrl"
@@ -52,7 +53,7 @@ export default {
       () => props.modelValue,
       (val) => {
         coords.value = val
-      }
+      },
     )
 
     return {
