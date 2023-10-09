@@ -144,7 +144,7 @@ export default defineComponent({
     const authStore = useAuthStore()
 
     const leftDrawerOpen = ref(false)
-    const miniState = ref(false)
+    const miniState = ref(true)
     const userAccount = ref(null)
 
     const { loggedIn, user, server } = storeToRefs(authStore)
