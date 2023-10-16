@@ -1,5 +1,13 @@
 <template>
-  <q-input v-model="content" outlined type="textarea" :label="label" />
+  <q-input
+    v-model="content"
+    outlined
+    type="textarea"
+    :label="label"
+    bottom-slots
+  >
+    <template #counter> {{ lineCounter }} </template>
+  </q-input>
 
   <div class="row">
     <q-btn
@@ -36,6 +44,12 @@ export default defineComponent({
       },
     })
 
+    const lineCounter = computed(() => {
+      if (typeof content.value === 'string')
+        return content.value.trim().split('\n').length
+      else return ''
+    })
+
     const orderAlpha = () => {
       const tmp = content.value.trim().split('\n')
 
@@ -44,6 +58,7 @@ export default defineComponent({
 
     return {
       content,
+      lineCounter,
       orderAlpha,
     }
   },
