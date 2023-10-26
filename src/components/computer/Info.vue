@@ -51,6 +51,7 @@
             >
           </span>
           <q-btn
+            v-if="fqdn"
             flat
             icon="mdi-content-copy"
             size="sm"
@@ -97,6 +98,7 @@
             <q-tooltip><translate>ip address</translate></q-tooltip>
           </span>
           <q-btn
+            v-if="ipAddress"
             flat
             icon="mdi-content-copy"
             size="sm"
@@ -113,6 +115,7 @@
             <q-tooltip><translate>forwarded ip address</translate></q-tooltip>
           </span>
           <q-btn
+            v-if="forwardedIpAddress"
             flat
             icon="mdi-content-copy"
             size="sm"
