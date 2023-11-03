@@ -20,7 +20,12 @@
             <q-item-section v-if="softwareInventory.length > 0">
               <q-chip>
                 <q-avatar color="info" text-color="black"
-                  ><strong>{{ softwareInventory.length }}</strong></q-avatar
+                  ><strong>{{
+                    abbreviateNumber(softwareInventory.length, 0)
+                  }}</strong>
+                  <q-tooltip>{{
+                    softwareInventory.length
+                  }}</q-tooltip></q-avatar
                 >
                 <translate>packages</translate>
               </q-chip>
@@ -79,8 +84,11 @@
               <q-chip>
                 <q-avatar color="info" text-color="black"
                   ><strong>{{
+                    abbreviateNumber(Object.keys(softwareHistory).length, 0)
+                  }}</strong
+                  ><q-tooltip>{{
                     Object.keys(softwareHistory).length
-                  }}</strong></q-avatar
+                  }}</q-tooltip></q-avatar
                 >
                 <translate
                   :translate-n="Object.keys(softwareHistory).length"
@@ -289,6 +297,7 @@ import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { copyToClipboard } from 'quasar'
+import { abbreviateNumber } from 'js-abbreviation-number'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -374,7 +383,7 @@ export default {
 
       copyToClipboard(sortArray(inventory).join('\n')).then(() => {
         uiStore.notifySuccess(
-          $gettext('Software Inventory copied to clipboard')
+          $gettext('Software Inventory copied to clipboard'),
         )
       })
     }
@@ -446,6 +455,7 @@ export default {
       appIcon,
       elementIcon,
       MIN_CHARS_SEARCH,
+      abbreviateNumber,
     }
   },
 }
