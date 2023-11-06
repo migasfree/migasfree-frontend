@@ -529,7 +529,7 @@ export default {
         start_date: showDate(computer.created_at, 'YYYY-MM-DD'),
         end_date: showDate(
           addToDate(new Date(), { days: 1 }).toISOString(),
-          'YYYY-MM-DD'
+          'YYYY-MM-DD',
         ),
       }
 
@@ -540,7 +540,7 @@ export default {
           events.syncs.data = response.data
           events.syncs.total = response.data.reduce(
             (accumulator, current) => accumulator + parseInt(current[1]),
-            0
+            0,
           )
 
           // default event
@@ -560,7 +560,7 @@ export default {
           events.errors.data = response.data
           events.errors.total = response.data.reduce(
             (accumulator, current) => accumulator + parseInt(current[1]),
-            0
+            0,
           )
         })
         .catch((error) => {
@@ -573,7 +573,7 @@ export default {
           events.faults.data = response.data
           events.faults.total = response.data.reduce(
             (accumulator, current) => accumulator + parseInt(current[1]),
-            0
+            0,
           )
         })
         .catch((error) => {
@@ -586,7 +586,7 @@ export default {
           events.migrations.data = response.data
           events.migrations.total = response.data.reduce(
             (accumulator, current) => accumulator + parseInt(current[1]),
-            0
+            0,
           )
         })
         .catch((error) => {
@@ -599,7 +599,7 @@ export default {
           events.statusLogs.data = response.data
           events.statusLogs.total = response.data.reduce(
             (accumulator, current) => accumulator + parseInt(current[1]),
-            0
+            0,
           )
         })
         .catch((error) => {
@@ -622,7 +622,7 @@ export default {
         created_at__gte: params.data[0],
         created_at__lt: showDate(
           date.addToDate(Date.parse(params.data[0]), { days: 1 }),
-          'YYYY-MM-DD'
+          'YYYY-MM-DD',
         ),
       }
       const url = `/api/v1/token/${camelToKebabCase(event.value)}/`
@@ -671,7 +671,7 @@ export default {
           Object.assign(computer, response.data)
           breadcrumbs.find((x) => x.text === 'Id').to.params.id = computer.id
           breadcrumbs.find((x) => x.text === 'Id').icon = elementIcon(
-            computer.status
+            computer.status,
           )
           breadcrumbs.find((x) => x.text === 'Id').text = computer.__str__
           useMeta({ title: `${title.value}: ${computer.__str__}` })
