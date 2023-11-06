@@ -90,7 +90,7 @@ export default {
         router.push(
           Object.assign(url, {
             query: { connection_id: params.data.connection_id },
-          })
+          }),
         )
       }
 
@@ -98,7 +98,7 @@ export default {
         router.push(
           Object.assign(url, {
             query: { model_id: params.data.model_id },
-          })
+          }),
         )
       }
 
@@ -106,7 +106,7 @@ export default {
         router.push(
           Object.assign(url, {
             query: { manufacturer_id: params.data.manufacturer_id },
-          })
+          }),
         )
       }
     }
