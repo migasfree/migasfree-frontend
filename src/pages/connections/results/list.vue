@@ -134,14 +134,14 @@ export default {
         .get('/api/v1/token/devices/types/')
         .then((response) => {
           columns.find(
-            (x) => x.field === 'device_type.name'
+            (x) => x.field === 'device_type.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
               return {
                 value: item.id,
                 text: item.name,
               }
-            }
+            },
           )
         })
         .catch((error) => {
