@@ -559,22 +559,22 @@ export default {
 
           if ('packages' in simulation && 'install' in simulation.packages)
             simulation.packages.install.sort((a, b) =>
-              a.package.localeCompare(b.package)
+              a.package.localeCompare(b.package),
             )
 
           if ('packages' in simulation && 'remove' in simulation.packages)
             simulation.packages.remove.sort((a, b) =>
-              a.package.localeCompare(b.package)
+              a.package.localeCompare(b.package),
             )
 
           if ('policies' in simulation && 'install' in simulation.policies)
             simulation.policies.install.sort((a, b) =>
-              a.package.localeCompare(b.package)
+              a.package.localeCompare(b.package),
             )
 
           if ('policies' in simulation && 'remove' in simulation.policies)
             simulation.policies.remove.sort((a, b) =>
-              a.package.localeCompare(b.package)
+              a.package.localeCompare(b.package),
             )
 
           if ('logical_devices' in simulation)
@@ -615,7 +615,7 @@ export default {
           Object.assign(computer, response.data)
           breadcrumbs.find((x) => x.text === 'Id').to.params.id = computer.id
           breadcrumbs.find((x) => x.text === 'Id').icon = elementIcon(
-            computer.status
+            computer.status,
           )
           breadcrumbs.find((x) => x.text === 'Id').text = computer.__str__
           useMeta({ title: `${title.value}: ${computer.__str__}` })
