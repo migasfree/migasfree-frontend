@@ -71,7 +71,7 @@ export default {
         router.push(
           Object.assign(url, {
             query: { property_id: params.data.property_att_id },
-          })
+          }),
         )
       }
     }
