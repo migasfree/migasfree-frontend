@@ -62,7 +62,7 @@
 import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUiStore } from 'stores/ui'
-import { RESULTS_PER_PAGE } from 'config/app.conf'
+import { RESULTS_PER_PAGE, MAX_RESULTS_PER_PAGE } from 'config/app.conf'
 
 import VgtPaginationPageInfo from 'vue-good-table-next/src/components/pagination/VgtPaginationPageInfo.vue'
 
@@ -95,11 +95,11 @@ export default {
     const currentPerPage = ref(RESULTS_PER_PAGE)
 
     const rowsPerPageOptions = computed(
-      () => props.paginationOptions.perPageDropdown
+      () => props.paginationOptions.perPageDropdown,
     )
     const showPagination = computed(() => props.total > currentPerPage.value)
     const showAllOption = computed(() =>
-      props.total ? props.total <= 200 : false
+      props.total ? props.total <= MAX_RESULTS_PER_PAGE : false,
     )
     const pagesCount = computed(() => {
       const quotient = Math.floor(props.total / currentPerPage.value)
@@ -109,11 +109,11 @@ export default {
     })
     const nextIsPossible = computed(() => currentPage.value < pagesCount.value)
     const prevIsPossible = computed(
-      () => currentPage.value > 1 && currentPage.value <= pagesCount.value
+      () => currentPage.value > 1 && currentPage.value <= pagesCount.value,
     )
     const perPageLabel = computed(
       () =>
-        `${props.paginationOptions.rowsPerPageLabel} (${currentPerPage.value})`
+        `${props.paginationOptions.rowsPerPageLabel} (${currentPerPage.value})`,
     )
 
     watch(
@@ -121,7 +121,7 @@ export default {
       (newValue, oldValue) => {
         if (oldValue) props.perPageChanged(oldValue)
       },
-      { immediate: true }
+      { immediate: true },
     )
 
     /*watch(() => props.total, (newValue, oldValue) => {
