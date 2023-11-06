@@ -1,5 +1,6 @@
 export const MIN_CHARS_SEARCH = 3
 export const RESULTS_PER_PAGE = 10
+export const MAX_RESULTS_PER_PAGE = 200
 
 export const EVENTS_HISTORY_HOURS = 72
 
