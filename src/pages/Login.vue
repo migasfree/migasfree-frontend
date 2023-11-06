@@ -50,11 +50,11 @@
             :rules="[
               (val) => !!val || $gettext('* Required'),
               (val) =>
-                val.length > 3 ||
+                val.length >= MIN_PASSWORD_LEN ||
                 $gettextInterpolate(
                   $gettext('Please use minimum %{n} characters'),
                   {
-                    n: 4,
+                    n: MIN_PASSWORD_LEN,
                   },
                 ),
             ]"
@@ -127,6 +127,7 @@ import { useMeta, useQuasar } from 'quasar'
 import { useAuthStore } from 'stores/auth'
 import { useUiStore } from 'stores/ui'
 import { gettext } from 'boot/gettext'
+import { MIN_PASSWORD_LEN } from 'config/app.conf'
 
 import ToggleDarkMode from 'components/ui/ToggleDarkMode'
 
@@ -181,6 +182,7 @@ export default {
     }
 
     return {
+      MIN_PASSWORD_LEN,
       loading,
       showPassword,
       model,
