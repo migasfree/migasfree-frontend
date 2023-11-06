@@ -190,14 +190,14 @@ export default {
         .get('/api/v1/token/devices/models/')
         .then((response) => {
           columns.find(
-            (x) => x.field === 'model.name'
+            (x) => x.field === 'model.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
               return {
                 value: item.id,
                 text: item.name,
               }
-            }
+            },
           )
         })
         .catch((error) => {
@@ -208,14 +208,14 @@ export default {
         .get('/api/v1/token/devices/manufacturers/')
         .then((response) => {
           columns.find(
-            (x) => x.field === 'model.manufacturer.name'
+            (x) => x.field === 'model.manufacturer.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
               return {
                 value: item.id,
                 text: item.name,
               }
-            }
+            },
           )
         })
         .catch((error) => {
@@ -226,14 +226,14 @@ export default {
         .get('/api/v1/token/devices/connections/')
         .then((response) => {
           columns.find(
-            (x) => x.field === 'connection.name'
+            (x) => x.field === 'connection.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
               return {
                 value: item.id,
                 text: item.name,
               }
-            }
+            },
           )
         })
         .catch((error) => {
