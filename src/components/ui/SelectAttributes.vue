@@ -155,7 +155,7 @@ export default {
               localValue.value[key] = Object.assign(
                 {},
                 localValue.value[key],
-                response.data
+                response.data,
               )
               localValue.value[key].description = response.data.text
             })
@@ -179,7 +179,7 @@ export default {
       (newValue) => {
         localValue.value = newValue
         updateAttributes()
-      }
+      },
     )
 
     watch(localValue, (newValue) => {
