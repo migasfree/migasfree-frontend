@@ -245,7 +245,7 @@ export default {
           })
           if (element.id && typeof element.language === 'number')
             element.language = languages.value.find(
-              (x) => x.id === element.language
+              (x) => x.id === element.language,
             )
         })
         .catch((error) => {
