@@ -153,14 +153,14 @@ export default {
         .get('/api/v1/token/formulas/')
         .then((response) => {
           columns.find(
-            (x) => x.field === 'property_att'
+            (x) => x.field === 'property_att',
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
               return {
                 value: item.id,
                 text: item.name,
               }
-            }
+            },
           )
         })
         .catch((error) => {
