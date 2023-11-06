@@ -15,7 +15,7 @@ export default function useDetail(
   routes,
   breadcrumbs,
   element,
-  elementData = defaultElementData
+  elementData = defaultElementData,
 ) {
   const uiStore = useUiStore()
   const route = useRoute()
@@ -115,7 +115,7 @@ export default function useDetail(
                   'Content-Type': 'multipart/form-data',
                 },
               }
-            : {}
+            : {},
         )
         .then((response) => {
           Object.assign(element, response.data)
