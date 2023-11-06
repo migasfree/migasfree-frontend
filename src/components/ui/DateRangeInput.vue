@@ -96,7 +96,7 @@ export default {
       () => props.modelValue,
       (newValue) => {
         Object.assign(date, newValue)
-      }
+      },
     )
 
     return {
