@@ -151,9 +151,9 @@ export default {
         .get('/api/v1/token/computers/status/')
         .then((response) => {
           columns.find(
-            (x) => x.field === 'status'
+            (x) => x.field === 'status',
           ).filterOptions.filterDropdownItems = Object.entries(
-            response.data.choices
+            response.data.choices,
           ).map(([key, val]) => {
             return {
               value: key,
