@@ -319,10 +319,10 @@ export default {
               policy: element.id,
               priority: line.priority,
               included_attributes: line.included_attributes.map(
-                (item) => item.id
+                (item) => item.id,
               ),
               excluded_attributes: line.excluded_attributes.map(
-                (item) => item.id
+                (item) => item.id,
               ),
               applications: line.applications.map((item) => item.id),
             })
@@ -335,10 +335,10 @@ export default {
               policy: element.id,
               priority: line.priority,
               included_attributes: line.included_attributes.map(
-                (item) => item.id
+                (item) => item.id,
               ),
               excluded_attributes: line.excluded_attributes.map(
-                (item) => item.id
+                (item) => item.id,
               ),
               applications: line.applications.map((item) => item.id),
             })
@@ -383,7 +383,7 @@ export default {
         id: 0,
         priority: policyGroups.value.length
           ? parseInt(
-              policyGroups.value[policyGroups.value.length - 1].priority
+              policyGroups.value[policyGroups.value.length - 1].priority,
             ) + 1
           : 1,
         included_attributes: [],
