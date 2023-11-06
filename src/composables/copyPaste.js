@@ -28,7 +28,7 @@ export default function useCopyPaste() {
 
       if (!('readText' in navigator.clipboard)) {
         uiStore.notifyError(
-          $gettext('This browser does not implement clipboard reading')
+          $gettext('This browser does not implement clipboard reading'),
         )
         return
       }
