@@ -147,9 +147,9 @@ export default {
         .then((response) => {
           Object.assign(kind, response.data)
           columns.find(
-            (x) => x.field === 'kind'
+            (x) => x.field === 'kind',
           ).filterOptions.filterDropdownItems = Object.entries(
-            response.data
+            response.data,
           ).map(([key, val]) => {
             return {
               value: key,
