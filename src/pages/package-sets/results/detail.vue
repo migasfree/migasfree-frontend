@@ -254,7 +254,7 @@ export default {
                 icon: modelIcon('stores'),
                 store_id: item.id,
               }
-            })
+            }),
           )
         })
         .catch((error) => {
