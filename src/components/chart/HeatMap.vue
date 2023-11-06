@@ -170,7 +170,7 @@ export default {
       const diff = date.getDateDiff(
         options.calendar.range[1],
         options.calendar.range[0],
-        'days'
+        'days',
       )
       return {
         '--variable-width': `${(diff / 7) * 25}px`,
@@ -254,7 +254,7 @@ export default {
             Math,
             val.map(function (o) {
               return o[1]
-            })
+            }),
           )
         }
 
@@ -268,7 +268,7 @@ export default {
             },
             {
               replaceMerge: ['series'],
-            }
+            },
           )
         } else {
           options.series = series
@@ -279,7 +279,7 @@ export default {
           options.visualMap.max = visualMapMax
         }
       },
-      { deep: true, immediate: true }
+      { deep: true, immediate: true },
     )
 
     watch(
@@ -290,7 +290,7 @@ export default {
         options.calendar.dayLabel.color = val ? '#fff' : '#000'
         options.calendar.itemStyle.color = val ? '#757575' : '#fff'
         options.legend.textStyle.color = val ? '#fff' : '#000'
-      }
+      },
     )
 
     return {
