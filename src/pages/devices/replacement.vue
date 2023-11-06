@@ -221,7 +221,7 @@ export default {
             `/api/v1/token/devices/devices/${source.value.id}/replacement/`,
             {
               target: target.value.id,
-            }
+            },
           )
           .then((response) => {
             let tmp = null
