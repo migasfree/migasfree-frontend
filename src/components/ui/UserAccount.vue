@@ -153,13 +153,13 @@ export default {
       authStore.user.domain_preference || {
         id: 0,
         name: $gettext('All').toUpperCase(),
-      }
+      },
     )
     const scopePreference = ref(
       authStore.user.scope_preference || {
         id: 0,
         name: $gettext('All').toLowerCase(),
-      }
+      },
     )
 
     const organization = computed(() => {
