@@ -239,7 +239,7 @@ export default {
       routes,
       breadcrumbs,
       element,
-      elementData
+      elementData,
     )
 
     const changePassword = async () => {
@@ -259,7 +259,7 @@ export default {
         await api
           .put(
             `/api/v1/token/user-profiles/${element.id}/change-password/`,
-            elementData()
+            elementData(),
           )
           .then((response) => {
             uiStore.notifySuccess($gettext('Password changed!'))
