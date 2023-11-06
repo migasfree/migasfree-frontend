@@ -60,7 +60,7 @@ export default {
       () => props.modelValue,
       (newValue) => {
         showing.value = newValue
-      }
+      },
     )
 
     return { showing, text }
