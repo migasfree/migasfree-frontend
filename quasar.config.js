@@ -82,11 +82,11 @@ module.exports = configure(function (ctx) {
           .use(ESLintPlugin, [{ extensions: ['js', 'vue'] }])
         chain.resolve.alias.set(
           'composables',
-          path.resolve(__dirname, './src/composables')
+          path.resolve(__dirname, './src/composables'),
         )
         chain.resolve.alias.set(
           'config',
-          path.resolve(__dirname, './src/config')
+          path.resolve(__dirname, './src/config'),
         )
       },
     },
