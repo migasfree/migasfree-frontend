@@ -17,6 +17,7 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "format": "prettier --write \"**/*.{js,vue,css,html,md,json}\" --ignore-path .gitignore",
+    "format:check": "prettier --check .",
     "test": "echo \"No test specified\" && exit 0",
     "gettext-extract": "vue-gettext-extract",
     "gettext-compile": "vue-gettext-compile"
