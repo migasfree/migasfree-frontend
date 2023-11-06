@@ -451,7 +451,7 @@ export default {
       const status = exportFile(
         `${props.title}.csv`,
         [head, body].join('\r\n'),
-        'text/csv'
+        'text/csv',
       )
 
       if (status !== true) {
@@ -470,7 +470,7 @@ export default {
           options.xAxis.data = data.xData
         }
       },
-      { deep: true, immediate: true }
+      { deep: true, immediate: true },
     )
 
     watch(
@@ -490,7 +490,7 @@ export default {
           'markLine' in options.series[0]
         )
           options.series[0].markLine.label.color = val ? '#fff' : '#333'
-      }
+      },
     )
 
     return {
