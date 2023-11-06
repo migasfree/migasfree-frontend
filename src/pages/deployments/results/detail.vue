@@ -158,7 +158,7 @@
                             'Type to search (minimum %{num} characters)',
                             {
                               num: MIN_CHARS_SEARCH,
-                            }
+                            },
                           )
                         "
                         :options="packages"
@@ -215,7 +215,7 @@
                             'Type to search (minimum %{num} characters)',
                             {
                               num: MIN_CHARS_SEARCH,
-                            }
+                            },
                           )
                         "
                         :options="packageSets"
@@ -563,7 +563,7 @@ export default {
         if (element.schedule) {
           await api
             .get(
-              `/api/v1/token/stats/deployments/${element.id}/computers/delay/`
+              `/api/v1/token/stats/deployments/${element.id}/computers/delay/`,
             )
             .then((response) => {
               const series = []
@@ -655,10 +655,10 @@ export default {
           element.default_excluded_packages.join('\n')
 
         element.available_packages.sort((a, b) =>
-          a.fullname > b.fullname ? 1 : b.fullname > a.fullname ? -1 : 0
+          a.fullname > b.fullname ? 1 : b.fullname > a.fullname ? -1 : 0,
         )
         element.available_package_sets.sort((a, b) =>
-          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+          a.name > b.name ? 1 : b.name > a.name ? -1 : 0,
         )
       }
       updateSchedule()
