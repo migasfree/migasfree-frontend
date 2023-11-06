@@ -55,7 +55,7 @@
                   $gettext('Please use minimum %{n} characters'),
                   {
                     n: 4,
-                  }
+                  },
                 ),
             ]"
             :type="showPassword ? 'text' : 'password'"
