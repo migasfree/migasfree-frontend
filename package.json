@@ -15,7 +15,7 @@
   },
   "private": true,
   "scripts": {
-    "lint": "eslint --ext .js,.vue ./",
+    "lint": "eslint . --ext .js,.vue,.ts --fix --ignore-path .gitignore",
     "format": "prettier --write \"**/*.{js,vue,css,html,md,json}\" --ignore-path .gitignore",
     "format:check": "prettier --check .",
     "test": "echo \"No test specified\" && exit 0",
