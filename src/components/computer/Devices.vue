@@ -133,7 +133,7 @@ export default {
           updateDefaultLogicalDeviceSelect()
 
           devices.default_logical_device = defaultLogicalDevices.value.find(
-            (x) => x.id === devices.default_logical_device
+            (x) => x.id === devices.default_logical_device,
           )
         })
         .catch((error) => {
