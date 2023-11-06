@@ -434,11 +434,11 @@ export default {
                     ? col.field(row)
                     : row[col.field === void 0 ? col.name : col.field],
                   col.format,
-                  row
-                )
+                  row,
+                ),
               )
-              .join(',')
-          )
+              .join(','),
+          ),
         )
         .join('\r\n')
 
@@ -466,7 +466,7 @@ export default {
             }
           })
         }
-      }
+      },
     )
 
     return {
