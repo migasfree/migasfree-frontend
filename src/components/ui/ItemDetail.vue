@@ -265,7 +265,7 @@ export default defineComponent({
         props.routes,
         props.breadcrumbs,
         props.element,
-        props.elementData
+        props.elementData,
       )
 
     const { elementIcon, attributeValue } = useElement()
