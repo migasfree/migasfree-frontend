@@ -153,14 +153,14 @@ export default {
         .get('/api/v1/token/devices/capabilities/')
         .then((response) => {
           columns.find(
-            (x) => x.field === 'capability.name'
+            (x) => x.field === 'capability.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
               return {
                 value: item.id,
                 text: item.name,
               }
-            }
+            },
           )
         })
         .catch((error) => {
