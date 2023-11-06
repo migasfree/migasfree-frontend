@@ -94,7 +94,7 @@ export default {
         loading.value = true
         api
           .get(
-            `/api/v1/token/stats/deployments/${props.id}/computers/assigned/`
+            `/api/v1/token/stats/deployments/${props.id}/computers/assigned/`,
           )
           .then((response) => {
             router.push({
@@ -114,7 +114,7 @@ export default {
       (newValue) => {
         showing.value = newValue
       },
-      { deep: true }
+      { deep: true },
     )
 
     return { loading, showing, goToComputers }
