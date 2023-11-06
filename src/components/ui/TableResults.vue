@@ -761,12 +761,12 @@ export default defineComponent({
           .get('/api/v1/token/platforms/')
           .then((response) => {
             tableFilters.platform.items = tableFilters.platform.items.concat(
-              response.data.results
+              response.data.results,
             )
 
             if (route.query.platform_id) {
               tableFilters.platform.selected = tableFilters.platform.items.find(
-                (x) => x.id == route.query.platform_id
+                (x) => x.id == route.query.platform_id,
               )
             }
           })
@@ -780,18 +780,18 @@ export default defineComponent({
           .get('/api/v1/token/projects/')
           .then((response) => {
             tableFilters.project.items = tableFilters.project.items.concat(
-              response.data.results
+              response.data.results,
             )
 
             if (route.query.packages_by_project_project_id) {
               tableFilters.project.selected = tableFilters.project.items.find(
-                (x) => x.id == route.query.packages_by_project_project_id
+                (x) => x.id == route.query.packages_by_project_project_id,
               )
             }
 
             if (route.query.drivers_project_id) {
               tableFilters.project.selected = tableFilters.project.items.find(
-                (x) => x.id == route.query.drivers_project_id
+                (x) => x.id == route.query.drivers_project_id,
               )
             }
           })
@@ -816,12 +816,12 @@ export default defineComponent({
           .get('/api/v1/token/devices/models/')
           .then((response) => {
             tableFilters.model.items = tableFilters.model.items.concat(
-              response.data.results
+              response.data.results,
             )
 
             if (route.query.model_id) {
               tableFilters.model.selected = tableFilters.model.items.find(
-                (x) => x.id == route.query.model_id
+                (x) => x.id == route.query.model_id,
               )
             }
           })
@@ -840,7 +840,7 @@ export default defineComponent({
 
             if (route.query.user) {
               tableFilters.user.selected = tableFilters.user.items.find(
-                (x) => x.id == route.query.user
+                (x) => x.id == route.query.user,
               )
             }
           })
