@@ -1,11 +1,11 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "command": "quasar dev",
-            "name": "Run quasar dev",
-            "request": "launch",
-            "type": "node-terminal"
-        },
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "command": "quasar dev",
+      "name": "Run quasar dev",
+      "request": "launch",
+      "type": "node-terminal"
+    }
+  ]
 }
