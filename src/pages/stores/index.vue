@@ -72,7 +72,7 @@ export default {
         router.push(
           Object.assign(url, {
             query: { project_id: params.data.project_id },
-          })
+          }),
         )
       }
     }
