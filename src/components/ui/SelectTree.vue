@@ -97,7 +97,7 @@ export default {
       () => props.modelValue,
       (newValue) => {
         selected.value = newValue
-      }
+      },
     )
 
     return { selected, menu, tree, nodeSelected, reset }
