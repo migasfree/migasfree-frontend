@@ -98,7 +98,7 @@ export default defineComponent({
 
       totalAlerts.value = alerts.value.reduce(
         (accumulator, current) => accumulator + parseInt(current.result),
-        0
+        0,
       )
     }
 
@@ -191,7 +191,7 @@ export default defineComponent({
     const connectWS = () => {
       const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws'
       socket.value = new WebSocket(
-        `${wsScheme}://${uiStore.server.split('//')[1]}/alerts/`
+        `${wsScheme}://${uiStore.server.split('//')[1]}/alerts/`,
       )
 
       socket.value.onmessage = (event) => {
