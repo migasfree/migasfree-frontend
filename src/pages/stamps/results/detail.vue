@@ -55,7 +55,7 @@
                       $gettext('Please use maximum %{n} characters'),
                       {
                         n: 3,
-                      }
+                      },
                     ),
                 ]"
                 @update:model-value="
