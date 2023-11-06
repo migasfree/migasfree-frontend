@@ -212,14 +212,14 @@ export default {
         .get('/api/v1/token/projects/')
         .then((response) => {
           columns.find(
-            (x) => x.field === 'project.name'
+            (x) => x.field === 'project.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
               return {
                 value: item.id,
                 text: item.name,
               }
-            }
+            },
           )
         })
         .catch((error) => {
@@ -230,14 +230,14 @@ export default {
         .get('/api/v1/token/fault-definitions/')
         .then((response) => {
           columns.find(
-            (x) => x.field === 'fault_definition.name'
+            (x) => x.field === 'fault_definition.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
               return {
                 value: item.id,
                 text: item.name,
               }
-            }
+            },
           )
         })
         .catch((error) => {
