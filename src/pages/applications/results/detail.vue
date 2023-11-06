@@ -338,7 +338,7 @@ export default {
         'available_for_attributes',
         element.available_for_attributes.length > 0
           ? element.available_for_attributes.map((item) => item.id)
-          : []
+          : [],
       )
       if (iconFile.value) {
         data.append('icon', iconFile.value)
@@ -440,8 +440,8 @@ export default {
           $gettext('%{n} file(s) did not pass validation constraints'),
           {
             n: rejectedEntries.length,
-          }
-        )
+          },
+        ),
       )
     }
 
