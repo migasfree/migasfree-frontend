@@ -49,7 +49,7 @@ export default {
       }
 
       const diffSeconds = new Date(
-        date.getDateDiff(end, begin, 'seconds') * 1000
+        date.getDateDiff(end, begin, 'seconds') * 1000,
       )
         .toISOString()
         .substr(11, 8)
@@ -65,7 +65,7 @@ export default {
         const template = $ngettext(
           '%{n} day, %{s}',
           '%{n} days, %{s}',
-          diffDays
+          diffDays,
         )
         diff.value = interpolate(template, {
           n: diffDays,
@@ -80,7 +80,7 @@ export default {
       () => props.begin,
       (val) => {
         getDiff(val, props.end)
-      }
+      },
     )
 
     return {
