@@ -154,9 +154,9 @@ export default {
           })
 
           columns.find(
-            (x) => x.field === 'language'
+            (x) => x.field === 'language',
           ).filterOptions.filterDropdownItems = Object.entries(
-            response.data
+            response.data,
           ).map(([key, val]) => {
             return {
               value: parseInt(key),
