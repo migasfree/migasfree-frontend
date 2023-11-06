@@ -99,7 +99,7 @@ export default {
         router.push(
           Object.assign(url, {
             query: { category: params.data.category },
-          })
+          }),
         )
       }
 
@@ -107,7 +107,7 @@ export default {
         router.push(
           Object.assign(url, {
             query: { level: params.data.level },
-          })
+          }),
         )
       }
 
@@ -118,7 +118,7 @@ export default {
               packages_by_project_project_id:
                 params.data.packages_by_project__project__id,
             },
-          })
+          }),
         )
       }
     }
