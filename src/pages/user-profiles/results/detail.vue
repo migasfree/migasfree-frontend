@@ -92,11 +92,18 @@
                 <strong>{{ element.token }}</strong>
                 <q-btn
                   class="q-ma-sm"
-                  icon="mdi-key-link"
-                  color="primary"
-                  :label="$gettext('Update')"
+                  icon="mdi-refresh"
+                  color="warning"
                   @click="updateToken"
-                />
+                  ><q-tooltip>{{ $gettext('Update') }}</q-tooltip></q-btn
+                >
+                <q-btn
+                  class="q-ma-sm"
+                  icon="mdi-content-copy"
+                  color="primary"
+                  @click.stop="copyContentToClipboard(element.token)"
+                  ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+                >
               </p>
             </div>
           </div>
@@ -336,7 +343,7 @@
 <script>
 import { ref, reactive, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useMeta, useQuasar } from 'quasar'
+import { useMeta, useQuasar, copyToClipboard } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -522,6 +529,12 @@ export default {
       })
     }
 
+    const copyContentToClipboard = async (value) => {
+      copyToClipboard(value).then(() => {
+        uiStore.notifySuccess($gettext('Text copied to clipboard'))
+      })
+    }
+
     const filterUserPermissions = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < MIN_CHARS_SEARCH) {
@@ -561,6 +574,7 @@ export default {
       resetElement,
       setTitle,
       updateToken,
+      copyContentToClipboard,
       filterUserPermissions,
       abortFilterUserPermissions,
       modelIcon,
