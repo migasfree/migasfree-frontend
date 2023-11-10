@@ -418,7 +418,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
-import { useMeta, copyToClipboard } from 'quasar'
+import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -429,6 +429,7 @@ import OverflowList from 'components/ui/OverflowList'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon, useElement } from 'composables/element'
+import useCopyPaste from 'composables/copyPaste'
 import useDate from 'composables/date'
 
 export default {
@@ -437,6 +438,7 @@ export default {
     const { $gettext } = useGettext()
     const route = useRoute()
     const { elementIcon, productIcon, attributeValue } = useElement()
+    const { contentToClipboard } = useCopyPaste()
     const { showDate } = useDate()
     const uiStore = useUiStore()
 
@@ -603,9 +605,7 @@ export default {
     const copyContent = (items) => {
       const content = items.map((item) => item.package)
 
-      copyToClipboard(content.join('\n')).then(() => {
-        uiStore.notifySuccess($gettext('Content copied to clipboard'))
-      })
+      contentToClipboard(content.join('\n'))
     }
 
     onMounted(async () => {
