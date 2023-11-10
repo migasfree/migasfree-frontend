@@ -101,7 +101,7 @@
                   class="q-ma-sm"
                   icon="mdi-content-copy"
                   color="primary"
-                  @click.stop="copyContentToClipboard(element.token)"
+                  @click.stop="contentToClipboard(element.token)"
                   ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
                 >
               </p>
@@ -343,7 +343,7 @@
 <script>
 import { ref, reactive, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useMeta, useQuasar, copyToClipboard } from 'quasar'
+import { useMeta, useQuasar } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -354,6 +354,7 @@ import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon } from 'composables/element'
+import useCopyPaste from 'composables/copyPaste'
 
 export default {
   components: {
@@ -365,6 +366,7 @@ export default {
     const { $gettext } = useGettext()
     const $q = useQuasar()
     const uiStore = useUiStore()
+    const { contentToClipboard } = useCopyPaste()
 
     const title = ref($gettext('User Profile'))
     const windowTitle = ref(title.value)
@@ -529,12 +531,6 @@ export default {
       })
     }
 
-    const copyContentToClipboard = async (value) => {
-      copyToClipboard(value).then(() => {
-        uiStore.notifySuccess($gettext('Text copied to clipboard'))
-      })
-    }
-
     const filterUserPermissions = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
       if (val.length < MIN_CHARS_SEARCH) {
@@ -574,7 +570,7 @@ export default {
       resetElement,
       setTitle,
       updateToken,
-      copyContentToClipboard,
+      contentToClipboard,
       filterUserPermissions,
       abortFilterUserPermissions,
       modelIcon,
