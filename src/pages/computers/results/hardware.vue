@@ -138,19 +138,29 @@
 
                     <p v-if="prop.node.size">
                       <translate>Size</translate>:
-                      <strong>{{ humanStorageSize(prop.node.size) }}</strong>
+                      <strong
+                        >{{ correctUnit(prop.node.class_name, prop.node.size)
+                        }}<q-tooltip>{{ prop.node.size }}</q-tooltip></strong
+                      >
                     </p>
 
                     <p v-if="prop.node.capacity">
                       <translate>Capacity</translate>:
-                      <strong>{{
-                        humanStorageSize(prop.node.capacity)
-                      }}</strong>
+                      <strong
+                        >{{
+                          correctUnit(prop.node.class_name, prop.node.capacity)
+                        }}<q-tooltip>{{
+                          prop.node.capacity
+                        }}</q-tooltip></strong
+                      >
                     </p>
 
                     <p v-if="prop.node.clock">
                       <translate>Clock</translate>:
-                      <strong>{{ humanStorageSize(prop.node.clock) }}</strong>
+                      <strong
+                        >{{ correctUnit(prop.node.class_name, prop.node.clock)
+                        }}<q-tooltip>{{ prop.node.clock }}</q-tooltip>
+                      </strong>
                     </p>
 
                     <p v-if="prop.node.dev">
@@ -251,6 +261,7 @@ import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { arrayToTree } from 'performant-array-to-tree'
 import { format, useMeta } from 'quasar'
+import { abbreviateNumber } from 'js-abbreviation-number'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -402,6 +413,17 @@ export default {
       windowTitle.value = value
     }
 
+    const correctUnit = (className, number) => {
+      switch (className) {
+        case 'processor':
+          return abbreviateNumber(number, 1, {
+            symbols: ['Hz', 'KHz', 'MHz', 'GHz', 'THz'],
+          })
+        default:
+          return humanStorageSize(number)
+      }
+    }
+
     return {
       title,
       breadcrumbs,
@@ -418,7 +440,7 @@ export default {
       elementIcon,
       productIcon,
       cpuIcon,
-      humanStorageSize,
+      correctUnit,
       header,
       showDetails,
       setRelated,
