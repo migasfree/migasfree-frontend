@@ -30,7 +30,7 @@
               icon="mdi-content-copy"
               size="sm"
               color="primary"
-              @click.stop="copyContentToClipboard(name)"
+              @click.stop="contentToClipboard(name)"
               ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
             >
           </div>
@@ -56,7 +56,7 @@
             icon="mdi-content-copy"
             size="sm"
             color="primary"
-            @click.stop="copyContentToClipboard(fqdn)"
+            @click.stop="contentToClipboard(fqdn)"
             ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
           >
         </div>
@@ -103,7 +103,7 @@
             icon="mdi-content-copy"
             size="sm"
             color="primary"
-            @click.stop="copyContentToClipboard(ipAddress)"
+            @click.stop="contentToClipboard(ipAddress)"
             ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
           >
         </div>
@@ -120,7 +120,7 @@
             icon="mdi-content-copy"
             size="sm"
             color="primary"
-            @click.stop="copyContentToClipboard(forwardedIpAddress)"
+            @click.stop="contentToClipboard(forwardedIpAddress)"
             ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
           >
         </div>
@@ -170,7 +170,6 @@
 <script>
 import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { copyToClipboard } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -180,6 +179,7 @@ import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon } from 'composables/element'
+import useCopyPaste from 'composables/copyPaste'
 
 export default {
   name: 'ComputerInfo',
@@ -224,6 +224,7 @@ export default {
     const { $gettext } = useGettext()
     const uiStore = useUiStore()
     const authStore = useAuthStore()
+    const { contentToClipboard } = useCopyPaste()
 
     const loading = ref(false)
     const value = ref(props.name)
@@ -243,18 +244,12 @@ export default {
         .finally(() => (loading.value = false))
     }
 
-    const copyContentToClipboard = async (value) => {
-      copyToClipboard(value).then(() => {
-        uiStore.notifySuccess($gettext('Text copied to clipboard'))
-      })
-    }
-
     return {
       loading,
       value,
       isSuperUser: authStore.user.is_superuser,
       updateName,
-      copyContentToClipboard,
+      contentToClipboard,
       appIcon,
     }
   },
