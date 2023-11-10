@@ -296,7 +296,6 @@
 import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
-import { copyToClipboard } from 'quasar'
 import { abbreviateNumber } from 'js-abbreviation-number'
 
 import { api } from 'boot/axios'
@@ -308,6 +307,7 @@ import MigasLink from 'components/MigasLink'
 
 import { appIcon, useElement } from 'composables/element'
 import useDate from 'composables/date'
+import useCopyPaste from 'composables/copyPaste'
 
 export default {
   name: 'ComputerSoftware',
@@ -324,6 +324,7 @@ export default {
     const uiStore = useUiStore()
     const { elementIcon } = useElement()
     const { showDate } = useDate()
+    const { contentToClipboard } = useCopyPaste()
 
     const loading = reactive({
       inventory: false,
@@ -381,11 +382,7 @@ export default {
 
       const inventory = softwareInventory.value.map((item) => item.name)
 
-      copyToClipboard(sortArray(inventory).join('\n')).then(() => {
-        uiStore.notifySuccess(
-          $gettext('Software Inventory copied to clipboard'),
-        )
-      })
+      contentToClipboard(sortArray(inventory).join('\n'))
     }
 
     const copyHistory = async () => {
@@ -402,9 +399,7 @@ export default {
         history.push('')
       })
 
-      copyToClipboard(history.join('\n')).then(() => {
-        uiStore.notifySuccess($gettext('Software History copied to clipboard'))
-      })
+      contentToClipboard(history.join('\n'))
     }
 
     const compare = () => {
