@@ -42,7 +42,7 @@
             <q-avatar
               :color="$q.dark.isActive ? 'info' : 'primary'"
               :text-color="$q.dark.isActive ? 'black' : 'white'"
-              >{{ humanNumber(item.count)
+              >{{ abbreviateNumber(item.count, 0)
               }}<q-tooltip>{{ item.count }}</q-tooltip></q-avatar
             >
             {{ item.text }}
@@ -166,10 +166,6 @@ export default {
       }
     }
 
-    const humanNumber = (value) => {
-      return abbreviateNumber(value, 0)
-    }
-
     const filterRelations = () => {
       let name = ''
 
@@ -256,7 +252,7 @@ export default {
       tooltipToView,
       getIcon,
       hasIcon,
-      humanNumber,
+      abbreviateNumber,
       getRelations,
     }
   },
