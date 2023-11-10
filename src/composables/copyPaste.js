@@ -12,13 +12,17 @@ export default function useCopyPaste() {
     return 'clipboard' in navigator && 'readText' in navigator.clipboard
   })
 
+  const contentToClipboard = async (value) => {
+    copyToClipboard(value).then(() => {
+      uiStore.notifySuccess($gettext('Content copied to clipboard'))
+    })
+  }
+
   const copyList = (model, value) => {
     if (value.length > 0) {
       const content = value.map((item) => item.id)
 
-      copyToClipboard(JSON.stringify({ [model]: content })).then(() => {
-        uiStore.notifySuccess($gettext('Content copied to clipboard'))
-      })
+      contentToClipboard(JSON.stringify({ [model]: content }))
     }
   }
 
@@ -60,5 +64,5 @@ export default function useCopyPaste() {
     }
   }
 
-  return { hasPaste, copyList, pasteList }
+  return { hasPaste, contentToClipboard, copyList, pasteList }
 }
