@@ -135,6 +135,15 @@
               {{ uuid }}
               <q-tooltip><translate>UUID</translate></q-tooltip>
             </span>
+            <q-btn
+              v-if="uuid"
+              flat
+              icon="mdi-content-copy"
+              size="sm"
+              color="primary"
+              @click.stop="contentToClipboard(uuid)"
+              ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+            >
           </p>
         </div>
       </div>
@@ -175,6 +184,14 @@
             {{ humanMacAddress(macAddress) }}
             <q-tooltip><translate>MAC Address</translate></q-tooltip>
           </span>
+          <q-btn
+            flat
+            icon="mdi-content-copy"
+            size="sm"
+            color="primary"
+            @click.stop="contentToClipboard(humanMacAddress(macAddress))"
+            ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+          >
         </div>
       </div>
     </q-card-section>
@@ -193,6 +210,7 @@ import DateDiff from 'components/DateDiff'
 import DateView from 'components/ui/DateView'
 
 import { useElement } from 'composables/element'
+import useCopyPaste from 'composables/copyPaste'
 import useDate from 'composables/date'
 
 export default {
@@ -265,6 +283,7 @@ export default {
     const uiStore = useUiStore()
     const { productIcon, cpuIcon, humanMacAddress } = useElement()
     const { diffForHumans, localeDate } = useDate()
+    const { contentToClipboard } = useCopyPaste()
 
     const loading = ref(false)
     const hardwareDate = ref(props.lastHardwareCapture)
@@ -297,6 +316,7 @@ export default {
       diffForHumans,
       localeDate,
       updateCapture,
+      contentToClipboard,
     }
   },
 }
