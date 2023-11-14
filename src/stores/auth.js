@@ -121,8 +121,8 @@ export const useAuthStore = defineStore('auth', () => {
         a.id && b.id && a.name > b.name
           ? 1
           : a.id && b.id && b.name > a.name
-          ? -1
-          : 0,
+            ? -1
+            : 0,
       )
       LocalStorage.set('auth.domains', domains.value)
     }
@@ -151,8 +151,8 @@ export const useAuthStore = defineStore('auth', () => {
         a.id && b.id && a.name > b.name
           ? 1
           : a.id && b.id && b.name > a.name
-          ? -1
-          : 0,
+            ? -1
+            : 0,
       )
       LocalStorage.set('auth.scopes', scopes.value)
     }
