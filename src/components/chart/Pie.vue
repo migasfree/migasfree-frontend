@@ -287,7 +287,7 @@ export default {
     })
 
     const noData = computed(() => {
-      return !'total' in data || data.total === 0
+      return (!'total') in data || data.total === 0
     })
 
     onMounted(async () => {
