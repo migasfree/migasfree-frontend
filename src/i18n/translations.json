@@ -3,10 +3,7 @@
     "* Required": "* Obligatorio",
     "# Create an attribute with the name of computer from bash": "# Crear un atributo con el nombre del equipo desde bash",
     "%{n} bits": "%{n} bits",
-    "%{n} day, %{s}": [
-      "%{n} día, %{s}",
-      "%{n} días, %{s}"
-    ],
+    "%{n} day, %{s}": ["%{n} día, %{s}", "%{n} días, %{s}"],
     "%{n} days ago": "hace %{n} días",
     "%{n} file(s) did not pass validation constraints": "%{n} archivo(s) no pasan la validación de requisitos",
     "Actions": "Acciones",
@@ -133,10 +130,7 @@
     "Data has been added!": "¡Los datos han sido añadidos!",
     "Data has been changed!": "¡Los datos han sido cambiados!",
     "Data View": "Ver datos",
-    "date": [
-      "fecha",
-      "fechas"
-    ],
+    "date": ["fecha", "fechas"],
     "Date": "Fecha",
     "Date of entry into the migasfree system": "Fecha de entrada en el sistema migasfree",
     "days": "días",
@@ -551,10 +545,7 @@
     "* Required": "* Obligatori",
     "# Create an attribute with the name of computer from bash": "# Creeu un atribut amb el nom de l'ordinador des de bash",
     "%{n} bits": "%{n} bits",
-    "%{n} day, %{s}": [
-      "%{n} dia, %{s}",
-      "%{n} dies, %{s}"
-    ],
+    "%{n} day, %{s}": ["%{n} dia, %{s}", "%{n} dies, %{s}"],
     "%{n} days ago": "fa %{n} dies",
     "%{n} file(s) did not pass validation constraints": "%{n} fitxers no han superat les restriccions de validació",
     "Actions": "Accions",
@@ -681,10 +672,7 @@
     "Data has been added!": "¡S'han afegit dades!",
     "Data has been changed!": "¡S'han canviat les dades!",
     "Data View": "Vista de dades",
-    "date": [
-      "data",
-      "datas"
-    ],
+    "date": ["data", "datas"],
     "Date": "Data",
     "Date of entry into the migasfree system": "Data d'entrada de l'ordinador en migasfree",
     "days": "dies",
@@ -1099,10 +1087,7 @@
     "* Required": "* Beharrezkoa",
     "# Create an attribute with the name of computer from bash": "# Sortu atributu bat bash-etik ordenagailuaren izenarekin",
     "%{n} bits": "%{n} bits",
-    "%{n} day, %{s}": [
-      "%{n} egun, %{s}",
-      "%{n} egun, %{s}"
-    ],
+    "%{n} day, %{s}": ["%{n} egun, %{s}", "%{n} egun, %{s}"],
     "%{n} days ago": "Duela %{n} egun",
     "%{n} file(s) did not pass validation constraints": "%{n} fitxategiek ez dute baliozkotze-murriztapenik gainditu",
     "Actions": "Ekintzak",
@@ -1229,10 +1214,7 @@
     "Data has been added!": "Datuak gehitu dira!",
     "Data has been changed!": "Datuak aldatu dira!",
     "Data View": "Datuen ikuspegia",
-    "date": [
-      "data",
-      "datak"
-    ],
+    "date": ["data", "datak"],
     "Date": "Data",
     "Date of entry into the migasfree system": "Migasfree sisteman sartzeko data",
     "days": "egunak",
@@ -1647,10 +1629,7 @@
     "* Required": "* Obligatorio",
     "# Create an attribute with the name of computer from bash": "# Crea un atributo co nome do ordenador desde bash",
     "%{n} bits": "%{n} bits",
-    "%{n} day, %{s}": [
-      "%{n} día, %{s}",
-      "%{n} días, %{s}"
-    ],
+    "%{n} day, %{s}": ["%{n} día, %{s}", "%{n} días, %{s}"],
     "%{n} days ago": "%{n} días atrás",
     "%{n} file(s) did not pass validation constraints": "%{n} ficheiros non pasaron as restricións de validación",
     "Actions": "Accións",
@@ -1777,10 +1756,7 @@
     "Data has been added!": "¡Engadíronse os datos!",
     "Data has been changed!": "¡Os datos foron modificados!",
     "Data View": "Vista de datos",
-    "date": [
-      "data",
-      "datas"
-    ],
+    "date": ["data", "datas"],
     "Date": "Data",
     "Date of entry into the migasfree system": "Data de entrada no sistema migasfree",
     "days": "días",
