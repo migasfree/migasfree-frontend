@@ -11,7 +11,21 @@
   >
     <template #label>
       <q-icon v-if="hasIcon" left :name="getIcon" />
-      {{ value }}
+
+      <q-chip
+        v-if="valueHasPrefix"
+        square
+        :text-color="$q.dark.isActive ? 'info' : 'primary'"
+      >
+        <q-avatar
+          :color="$q.dark.isActive ? 'info' : 'primary'"
+          :text-color="$q.dark.isActive ? 'black' : 'white'"
+          >{{ getPrefix }}</q-avatar
+        >
+        {{ getValueIfHasPrefix }}
+      </q-chip>
+      <template v-else>{{ value }}</template>
+
       <q-tooltip v-if="tooltip">
         <q-list v-for="(item, index) in tooltipToView" :key="index" dense>
           <q-item>
@@ -76,6 +90,7 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
 import { modelIcon, useElement } from 'composables/element'
+import { MAX_PREFIX_LEN } from 'config/app.conf'
 
 export default {
   name: 'MigasLink',
@@ -125,6 +140,23 @@ export default {
 
     const hasIcon = computed(() => {
       return getIcon.value !== ''
+    })
+
+    const valueHasPrefix = computed(() => {
+      return (
+        ['attributes', 'features', 'tags'].includes(props.model) &&
+        props.value.includes('-') &&
+        props.value.split('-')[0].length <= MAX_PREFIX_LEN &&
+        props.value !== props.tooltip
+      )
+    })
+
+    const getPrefix = computed(() => {
+      return props.value.split('-')[0]
+    })
+
+    const getValueIfHasPrefix = computed(() => {
+      return props.value.split('-').slice(1).join('-')
     })
 
     const normalizeQuery = (obj) => {
@@ -252,6 +284,9 @@ export default {
       tooltipToView,
       getIcon,
       hasIcon,
+      valueHasPrefix,
+      getPrefix,
+      getValueIfHasPrefix,
       abbreviateNumber,
       getRelations,
     }
