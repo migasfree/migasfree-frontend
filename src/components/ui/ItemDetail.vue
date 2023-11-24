@@ -18,7 +18,7 @@
         :pk="element.id"
         :value="headerValue"
         :icon="headerIcon"
-        :tooltip="element.summary"
+        :tooltip="element.summary || element.description"
       />
       <template v-else>{{ elementText }}</template>
 
