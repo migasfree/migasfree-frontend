@@ -567,6 +567,7 @@ export default {
                   val.property_att.sort === 'server'
                     ? modelIcon('tags')
                     : modelIcon('attributes'),
+                summary: val.description,
               })
             }
 
