@@ -142,6 +142,7 @@
                         model="tags"
                         :pk="scope.opt.id"
                         :value="attributeValue(scope.opt)"
+                        :tooltip="scope.opt.description"
                       />
                     </q-chip>
                   </template>
