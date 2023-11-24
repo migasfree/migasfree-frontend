@@ -14,6 +14,7 @@
             model="tags"
             :pk="slotProps.props.row.id"
             :value="attributeValue(slotProps.props.row)"
+            :tooltip="slotProps.props.row.description"
           />
         </span>
 
