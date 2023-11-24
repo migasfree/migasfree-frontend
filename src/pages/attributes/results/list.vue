@@ -15,6 +15,7 @@
             :pk="slotProps.props.row.id"
             :icon="elementIcon(slotProps.props.row.property_att.prefix)"
             :value="attributeValue(slotProps.props.row)"
+            :tooltip="slotProps.props.row.description"
           />
         </span>
 
