@@ -45,16 +45,16 @@
                 outlined
                 :label="$gettext('Prefix')"
                 counter
-                maxlength="3"
+                :maxlength="MAX_PREFIX_LEN"
                 lazy-rules
                 :rules="[
                   (val) => !!val || $gettext('* Required'),
                   (val) =>
-                    val.length <= 3 ||
+                    val.length <= MAX_PREFIX_LEN ||
                     $gettextInterpolate(
                       $gettext('Please use maximum %{n} characters'),
                       {
-                        n: 3,
+                        n: MAX_PREFIX_LEN,
                       },
                     ),
                 ]"
@@ -93,6 +93,7 @@ import { useUiStore } from 'stores/ui'
 import ItemDetail from 'components/ui/ItemDetail'
 
 import { appIcon, modelIcon } from 'composables/element'
+import { MAX_PREFIX_LEN } from 'config/app.conf'
 
 export default {
   components: {
@@ -147,7 +148,7 @@ export default {
         element.name.trim() !== '' &&
         element.kind !== undefined &&
         element.prefix !== undefined &&
-        element.prefix.length <= 3
+        element.prefix.length <= MAX_PREFIX_LEN
       )
     })
 
@@ -207,6 +208,7 @@ export default {
       elementData,
       resetElement,
       setTitle,
+      MAX_PREFIX_LEN,
     }
   },
 }
