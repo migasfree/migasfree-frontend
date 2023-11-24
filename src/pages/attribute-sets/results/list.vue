@@ -14,6 +14,7 @@
             :model="model"
             :pk="slotProps.props.row.id"
             :value="slotProps.props.row.name"
+            :tooltip="slotProps.props.row.description"
           />
         </span>
 
