@@ -17,7 +17,7 @@
   "scripts": {
     "lint": "eslint . --ext .js,.vue,.ts --fix --ignore-path .gitignore",
     "format": "prettier --write \"**/*.{js,vue,css,html,md,json}\" --ignore-path .gitignore",
-    "format:check": "prettier --check .",
+    "format:check": "prettier --check . --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
     "gettext-extract": "vue-gettext-extract",
     "gettext-compile": "vue-gettext-compile"
@@ -34,7 +34,7 @@
     "performant-array-to-tree": "1.11.0",
     "pinia": "2.1.7",
     "pluralize": "8.0.0",
-    "quasar": "2.14.0",
+    "quasar": "2.12.0",
     "text-clipper": "2.2.0",
     "typeface-dosis": "1.1.13",
     "v-code-diff": "1.7.2",
