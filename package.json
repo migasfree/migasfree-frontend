@@ -34,7 +34,7 @@
     "performant-array-to-tree": "1.11.0",
     "pinia": "2.1.7",
     "pluralize": "8.0.0",
-    "quasar": "2.12.0",
+    "quasar": "2.14.0",
     "text-clipper": "2.2.0",
     "typeface-dosis": "1.1.13",
     "v-code-diff": "1.7.2",
@@ -45,9 +45,12 @@
     "vue3-ace-editor": "2.2.2",
     "vue3-gettext": "2.4.0"
   },
+  "resolutions": {
+    "vue": "3.3.4"
+  },
   "devDependencies": {
     "@babel/eslint-parser": "7.23.3",
-    "@quasar/app-webpack": "3.11.3",
+    "@quasar/app-webpack": "3.12.0",
     "@quasar/quasar-app-extension-qmarkdown": "2.0.0-beta.10",
     "dotenv": "16.3.1",
     "eslint": "8.53.0",
