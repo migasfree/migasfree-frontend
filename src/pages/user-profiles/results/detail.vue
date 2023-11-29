@@ -98,6 +98,7 @@
                   ><q-tooltip>{{ $gettext('Update') }}</q-tooltip></q-btn
                 >
                 <q-btn
+                  v-if="element.token"
                   class="q-ma-sm"
                   icon="mdi-content-copy"
                   color="primary"
