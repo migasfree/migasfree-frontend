@@ -72,14 +72,18 @@
           <div v-if="element.id" class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
               <p>
-                <translate>Joined Date</translate>:
+                <span class="vertical-middle">
+                  <translate>Joined Date</translate>:
+                </span>
                 <strong><DateView :value="element.date_joined" /></strong>
               </p>
             </div>
 
             <div class="col-6 col-md col-sm">
               <p>
-                <translate>Last Login</translate>:
+                <span class="vertical-middle">
+                  <translate>Last Login</translate>:
+                </span>
                 <strong><DateView :value="element.last_login" /></strong>
               </p>
             </div>
