@@ -1,7 +1,7 @@
 <template>
   <Breadcrumbs :items="breadcrumbs" />
 
-  <Header :title="originalTitle" :has-export-button="false">
+  <Header :title="originalTitle" :icon="titleIcon" :has-export-button="false">
     <template v-if="'add' in routes" #prepend>
       <q-item-section avatar>
         <q-btn round dark color="primary" icon="mdi-plus" @click="addElement">
@@ -11,7 +11,7 @@
     </template>
 
     <template v-if="element.id" #append
-      >:
+      ><span class="vertical-middle">: </span>
       <MigasLink
         v-if="headerLink"
         :model="model"
@@ -20,14 +20,16 @@
         :icon="headerIcon"
         :tooltip="element.summary || element.description"
       />
-      <template v-else>{{ elementText }}</template>
+      <template v-else
+        ><span class="vertical-middle">{{ elementText }}</span></template
+      >
 
       <q-btn
         v-if="model === 'user-profiles'"
         class="q-ma-sm float-right"
         :label="$gettext('Change Password')"
         color="primary"
-        icon="mdi-account-key"
+        :icon="appIcon('password')"
         @click="
           $router.push({
             name: 'user-profile-change-password',
@@ -178,6 +180,11 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    icon: {
+      type: String,
+      required: false,
+      default: null,
+    },
     breadcrumbs: {
       type: Array,
       required: true,
@@ -257,6 +264,7 @@ export default defineComponent({
     const uiStore = useUiStore()
 
     const confirmRemove = ref(false)
+    const titleIcon = props.icon || modelIcon(props.model)
 
     const { loading, elementText, addElement, updateElement, remove } =
       useDetail(
@@ -303,6 +311,7 @@ export default defineComponent({
 
     return {
       server: uiStore.server,
+      titleIcon,
       loading,
       elementText,
       headerValue,
