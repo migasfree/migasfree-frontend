@@ -2,9 +2,9 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :has-export-button="false">
+    <Header :title="title" :icon="titleIcon" :has-export-button="false">
       <template v-if="element.id" #append
-        >:
+        ><span class="vertical-middle">: </span>
         <MigasLink
           model="user-profiles"
           :pk="element.id"
@@ -89,7 +89,7 @@
         <q-btn
           color="primary"
           :label="$gettext('Change Password')"
-          icon="mdi-account-key"
+          :icon="titleIcon"
           :loading="loading"
           :disabled="!isValid || loading"
           @click="changePassword"
@@ -128,8 +128,9 @@ export default {
     const uiStore = useUiStore()
     const authStore = useAuthStore()
 
-    const title = ref($gettext('Change Password'))
-    const windowTitle = ref(title.value)
+    const titleIcon = appIcon('password')
+    const title = $gettext('Change Password')
+    const windowTitle = ref(title)
     useMeta(() => {
       return {
         title: windowTitle.value,
@@ -234,7 +235,7 @@ export default {
     }
 
     const { loading, elementText } = useDetail(
-      title.value,
+      title,
       model,
       routes,
       breadcrumbs,
@@ -275,7 +276,7 @@ export default {
     if (route.params.id) {
       breadcrumbs.push({
         text: windowTitle.value,
-        icon: 'mdi-account-key',
+        icon: titleIcon,
       })
     }
 
@@ -290,6 +291,7 @@ export default {
 
     return {
       title,
+      titleIcon,
       breadcrumbs,
       loading,
       showPassword,
