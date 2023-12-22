@@ -49,7 +49,7 @@
                 @filter-abort="abortFilterPermissions"
               >
                 <template #prepend>
-                  <q-icon name="mdi-account-key" />
+                  <q-icon :name="appIcon('permission')" />
                 </template>
 
                 <template #no-option>
@@ -202,6 +202,7 @@ export default {
       setTitle,
       filterPermissions,
       abortFilterPermissions,
+      appIcon,
       MIN_CHARS_SEARCH,
     }
   },
