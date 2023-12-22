@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :has-export-button="false" />
+    <Header :title="title" :icon="titleIcon" :has-export-button="false" />
 
     <p v-translate>
       This procedure changes status, tags and devices between two computers.
@@ -177,8 +177,9 @@ export default {
     const { elementIcon } = useElement()
     const uiStore = useUiStore()
 
-    const title = ref($gettext('Computers Replacement'))
-    useMeta({ title: title.value })
+    const titleIcon = appIcon('replacement')
+    const title = $gettext('Computers Replacement')
+    useMeta({ title })
 
     const breadcrumbs = reactive([
       {
@@ -191,8 +192,8 @@ export default {
         icon: appIcon('data'),
       },
       {
-        text: title.value,
-        icon: appIcon('replacement'),
+        text: title,
+        icon: titleIcon,
       },
     ])
 
@@ -287,6 +288,7 @@ export default {
 
     return {
       title,
+      titleIcon,
       breadcrumbs,
       computers,
       source,
