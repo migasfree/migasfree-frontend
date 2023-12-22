@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :has-export-button="false" />
+    <Header :title="title" :icon="titleIcon" :has-export-button="false" />
 
     <p v-translate>
       This procedure switches assigned computers between two devices.
@@ -172,8 +172,9 @@ export default {
     const { $gettext } = useGettext()
     const uiStore = useUiStore()
 
-    const title = ref($gettext('Devices Replacement'))
-    useMeta({ title: title.value })
+    const titleIcon = appIcon('replacement')
+    const title = $gettext('Devices Replacement')
+    useMeta({ title })
 
     const breadcrumbs = reactive([
       {
@@ -186,8 +187,8 @@ export default {
         icon: appIcon('devices'),
       },
       {
-        text: $gettext('Devices Replacement'),
-        icon: appIcon('replacement'),
+        text: title,
+        icon: titleIcon,
       },
     ])
 
@@ -263,6 +264,7 @@ export default {
 
     return {
       title,
+      titleIcon,
       breadcrumbs,
       devices,
       source,
