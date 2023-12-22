@@ -85,7 +85,7 @@
             <template #top-right>
               <q-btn
                 flat
-                icon="mdi-file-export"
+                :icon="appIcon('export')"
                 color="primary"
                 @click.stop="exportTable(serie)"
                 ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
@@ -129,6 +129,8 @@ import { useGettext } from 'vue3-gettext'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
+
+import { appIcon } from 'composables/element'
 
 import * as echarts from 'echarts/core'
 import { PieChart } from 'echarts/charts'
@@ -487,6 +489,7 @@ export default {
       saveImage,
       dataView,
       exportTable,
+      appIcon,
     }
   },
 }
