@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :has-export-button="false" />
+    <Header :title="title" :icon="titleIcon" :has-export-button="false" />
 
     <div class="row q-col-gutter-md q-pb-md">
       <div class="col-md-4 col-sm-12 col-xs-12">
@@ -177,13 +177,14 @@ export default defineComponent({
     const router = useRouter()
     const uiStore = useUiStore()
 
+    const titleIcon = appIcon('home')
     const title = $gettext('Dashboard')
     useMeta({ title })
 
     const breadcrumbs = [
       {
         text: title,
-        icon: appIcon('home'),
+        icon: titleIcon,
       },
     ]
 
@@ -432,6 +433,7 @@ export default defineComponent({
 
     return {
       title,
+      titleIcon,
       breadcrumbs,
       productiveComputersTitle,
       uncheckedErrorsTitle,
