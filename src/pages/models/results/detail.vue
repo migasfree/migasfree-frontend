@@ -234,7 +234,7 @@ export default {
       {
         text: $gettext('Models'),
         icon: modelIcon(model),
-        to: routes.list,
+        to: 'models-dashboard',
       },
     ])
 
