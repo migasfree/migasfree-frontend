@@ -3,6 +3,7 @@
     <ItemDetail
       :breadcrumbs="breadcrumbs"
       :original-title="title"
+      :icon="titleIcon"
       :model="model"
       :routes="routes"
       :element="element"
@@ -51,8 +52,9 @@ export default {
     const uiStore = useUiStore()
     const { $gettext } = useGettext()
 
-    const title = ref($gettext('Package Information'))
-    const windowTitle = ref(title.value)
+    const titleIcon = appIcon('information')
+    const title = $gettext('Package Information')
+    const windowTitle = ref(title)
     useMeta(() => {
       return {
         title: windowTitle.value,
@@ -93,8 +95,8 @@ export default {
         to: { name: 'package-detail', params: { id: 0 } },
       },
       {
-        text: title.value,
-        icon: appIcon('information'),
+        text: title,
+        icon: titleIcon,
       },
     ])
 
@@ -118,6 +120,7 @@ export default {
     return {
       server: uiStore.server,
       title,
+      titleIcon,
       routes,
       model,
       breadcrumbs,
