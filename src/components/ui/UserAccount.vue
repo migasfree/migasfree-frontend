@@ -102,7 +102,7 @@
         :to="{ name: 'user-profile-change-password', params: { id: user.id } }"
       >
         <q-item-section avatar>
-          <q-icon name="mdi-account-key" />
+          <q-icon :name="appIcon('password')" />
         </q-item-section>
 
         <q-item-section>
@@ -134,7 +134,7 @@ import { gettext } from 'boot/gettext'
 import { useAuthStore } from 'stores/auth'
 import { useUiStore } from 'stores/ui'
 
-import { modelIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   name: 'UserAccount',
@@ -248,6 +248,7 @@ export default {
       updateDomainPreference,
       updateScopePreference,
       updatePreferences,
+      appIcon,
       modelIcon,
     }
   },
