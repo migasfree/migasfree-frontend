@@ -2,7 +2,12 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :has-export-button="false" :add-route="addRoute" />
+    <Header
+      :title="title"
+      :icon="titleIcon"
+      :has-export-button="false"
+      :add-route="addRoute"
+    />
 
     <SearchFilter v-model="searchText" class="q-pb-md" @search="search" />
 
@@ -69,8 +74,9 @@ export default {
     const $q = useQuasar()
     const uiStore = useUiStore()
 
-    const title = ref($gettext('Applications'))
-    useMeta({ title: title.value })
+    const titleIcon = modelIcon('catalog/apps')
+    const title = $gettext('Applications')
+    useMeta({ title })
 
     const searchText = ref('')
 
@@ -85,8 +91,8 @@ export default {
         icon: appIcon('release'),
       },
       {
-        text: $gettext('Applications'),
-        icon: modelIcon('catalog/apps'),
+        text: title,
+        icon: titleIcon,
       },
     ])
 
@@ -160,6 +166,7 @@ export default {
 
     return {
       title,
+      titleIcon,
       searchText,
       byProject,
       breadcrumbs,
