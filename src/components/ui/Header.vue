@@ -34,7 +34,7 @@
             color="info"
             text-color="black"
             :label="$gettext('Export')"
-            icon="mdi-file-export"
+            :icon="appIcon('export')"
             :loading="isLoadingExport"
             :disable="results === 0"
             @click="exportAction"
@@ -50,6 +50,8 @@
 import { defineComponent } from 'vue'
 import { useQuasar } from 'quasar'
 import { useGettext } from 'vue3-gettext'
+
+import { appIcon } from 'composables/element'
 
 export default defineComponent({
   name: 'Header',
@@ -74,7 +76,7 @@ export default defineComponent({
         $q.dialog({
           title: $gettext('Confirm'),
           message: $gettext('Do you want to export so many results?'),
-          ok: { label: $gettext('Export'), icon: 'mdi-file-export' },
+          ok: { label: $gettext('Export'), icon: appIcon('export') },
           cancel: { label: $gettext('Cancel'), flat: true },
           persistent: true,
         }).onOk(async () => {
@@ -85,7 +87,7 @@ export default defineComponent({
       }
     }
 
-    return { exportAction }
+    return { exportAction, appIcon }
   },
 })
 </script>
