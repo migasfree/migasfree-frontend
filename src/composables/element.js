@@ -15,6 +15,8 @@ const APP_ICON = {
   replacement: 'mdi-compare-horizontal',
   compare: 'mdi-file-compare',
   information: 'mdi-information',
+  password: 'mdi-account-key',
+  permission: 'mdi-account-check',
 }
 
 const MODEL_ICON = {
