@@ -3,9 +3,9 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <template v-if="computer.id">
-      <Header :title="title" :has-export-button="false">
+      <Header :title="title" :icon="titleIcon" :has-export-button="false">
         <template v-if="computer.id" #append
-          >:
+          ><span class="vertical-middle">: </span>
           <MigasLink
             model="computers"
             :pk="computer.id"
@@ -280,8 +280,9 @@ export default {
     const { showDate } = useDate()
     const { elementIcon, computerStatus } = useElement()
 
-    const title = ref($gettext('Events'))
-    useMeta({ title: title.value })
+    const titleIcon = appIcon('events')
+    const title = $gettext('Events')
+    useMeta({ title })
 
     const breadcrumbs = reactive([
       {
@@ -308,8 +309,8 @@ export default {
         to: { name: 'computer-detail', params: { id: 0 } },
       },
       {
-        text: title.value,
-        icon: appIcon('events'),
+        text: title,
+        icon: titleIcon,
       },
     ])
 
@@ -674,7 +675,7 @@ export default {
             computer.status,
           )
           breadcrumbs.find((x) => x.text === 'Id').text = computer.__str__
-          useMeta({ title: `${title.value}: ${computer.__str__}` })
+          useMeta({ title: `${title}: ${computer.__str__}` })
           loadItems()
         })
         .catch((error) => {
@@ -684,6 +685,7 @@ export default {
 
     return {
       title,
+      titleIcon,
       breadcrumbs,
       computer,
       event,
