@@ -1,6 +1,7 @@
 <template>
   <Header
     :title="title"
+    :icon="titleIcon"
     :results="totalRecords"
     :add-route="addRoute"
     :is-loading-export="isLoadingExport"
@@ -444,7 +445,7 @@
           class="q-ma-xs"
           round
           size="sm"
-          icon="mdi-account-key"
+          :icon="appIcon('password')"
           color="info"
           @click="
             $router.push({
@@ -620,7 +621,7 @@ import SelectTree from 'components/ui/SelectTree'
 import DateRangeInput from 'components/ui/DateRangeInput'
 
 import useDataGrid from 'composables/dataGrid'
-import { appIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 
 export default defineComponent({
   name: 'TableResults',
@@ -672,6 +673,7 @@ export default defineComponent({
     const route = useRoute()
 
     const { model, routes, columnParams } = toRefs(props)
+    const titleIcon = modelIcon(model.value)
 
     const detailRoute = computed(() => {
       if ('detail' in routes.value) return routes.value.detail
@@ -852,6 +854,7 @@ export default defineComponent({
 
     return {
       server: uiStore.server,
+      titleIcon,
       statusTree,
       installDateRange,
       uninstallDateRange,
