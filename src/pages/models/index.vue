@@ -2,7 +2,12 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :add-route="addRoute" :has-export-button="false" />
+    <Header
+      :title="title"
+      :icon="titleIcon"
+      :add-route="addRoute"
+      :has-export-button="false"
+    />
 
     <SearchFilter v-model="searchText" class="q-pb-md" @search="search" />
 
@@ -59,8 +64,9 @@ export default {
     const { $gettext } = useGettext()
     const uiStore = useUiStore()
 
-    const title = ref($gettext('Models'))
-    useMeta({ title: title.value })
+    const titleIcon = modelIcon('devices/models')
+    const title = $gettext('Models')
+    useMeta({ title })
 
     const searchText = ref('')
     const addRoute = 'model-add'
@@ -76,8 +82,8 @@ export default {
         icon: appIcon('devices'),
       },
       {
-        text: $gettext('Models'),
-        icon: modelIcon('devices/models'),
+        text: title,
+        icon: titleIcon,
       },
     ])
 
@@ -135,6 +141,7 @@ export default {
 
     return {
       title,
+      titleIcon,
       searchText,
       addRoute,
       breadcrumbs,
