@@ -2,7 +2,7 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="title" :has-export-button="false" />
+    <Header :title="title" :icon="titleIcon" :has-export-button="false" />
 
     <div class="row q-py-md q-gutter-sm justify-around">
       <div class="col-6 col-md col-sm col-xs">
@@ -196,8 +196,9 @@ export default {
     const { elementIcon } = useElement()
     const uiStore = useUiStore()
 
-    const title = ref($gettext('Software Compare'))
-    useMeta({ title: title.value })
+    const titleIcon = appIcon('compare')
+    const title = $gettext('Software Compare')
+    useMeta({ title })
 
     const breadcrumbs = reactive([
       {
@@ -210,8 +211,8 @@ export default {
         icon: appIcon('data'),
       },
       {
-        text: title.value,
-        icon: appIcon('compare'),
+        text: title,
+        icon: titleIcon,
       },
     ])
 
@@ -294,6 +295,7 @@ export default {
 
     return {
       title,
+      titleIcon,
       breadcrumbs,
       computers,
       source,
