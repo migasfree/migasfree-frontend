@@ -107,7 +107,7 @@
             <template #top-left>
               <q-btn
                 flat
-                icon="mdi-file-export"
+                :icon="appIcon('export')"
                 color="primary"
                 @click.stop="exportTable"
                 ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
@@ -167,6 +167,8 @@ import { useGettext } from 'vue3-gettext'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
+
+import { appIcon } from 'composables/element'
 
 import MonthInput from 'components/ui/MonthInput'
 import DayInput from 'components/ui/DayInput'
@@ -511,6 +513,7 @@ export default {
       dataView,
       exportTable,
       loadData,
+      appIcon,
     }
   },
 }
