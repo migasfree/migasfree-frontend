@@ -248,7 +248,7 @@
                 @filter-abort="abortFilterUserPermissions"
               >
                 <template #prepend>
-                  <q-icon name="mdi-account-key" />
+                  <q-icon :name="appIcon('permission')" />
                 </template>
 
                 <template #no-option>
@@ -578,6 +578,7 @@ export default {
       contentToClipboard,
       filterUserPermissions,
       abortFilterUserPermissions,
+      appIcon,
       modelIcon,
       MIN_CHARS_SEARCH,
     }
