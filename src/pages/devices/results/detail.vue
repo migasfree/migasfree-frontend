@@ -266,7 +266,7 @@ export default {
       {
         text: $gettext('Devices'),
         icon: modelIcon(model),
-        to: routes.list,
+        to: 'devices-dashboard',
       },
     ])
 
