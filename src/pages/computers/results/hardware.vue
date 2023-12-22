@@ -3,6 +3,7 @@
     <ItemDetail
       :breadcrumbs="breadcrumbs"
       :original-title="title"
+      :icon="titleIcon"
       :model="model"
       :routes="routes"
       :element="element"
@@ -285,8 +286,9 @@ export default {
     const { elementIcon, productIcon, cpuIcon } = useElement()
     const uiStore = useUiStore()
 
-    const title = ref($gettext('Hardware Information'))
-    const windowTitle = ref(title.value)
+    const titleIcon = appIcon('hardware')
+    const title = $gettext('Hardware Information')
+    const windowTitle = ref(title)
     useMeta(() => {
       return {
         title: windowTitle.value,
@@ -323,8 +325,8 @@ export default {
         to: { name: 'computer-detail', params: { id: 0 } },
       },
       {
-        text: title.value,
-        icon: appIcon('hardware'),
+        text: title,
+        icon: titleIcon,
       },
     ])
 
@@ -426,6 +428,7 @@ export default {
 
     return {
       title,
+      titleIcon,
       breadcrumbs,
       routes,
       model,
