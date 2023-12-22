@@ -580,7 +580,7 @@
         size="sm"
         color="info"
         text-color="black"
-        icon="mdi-file-export"
+        :icon="appIcon('export')"
         :loading="isLoadingExport"
         @click="exportData"
         ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
