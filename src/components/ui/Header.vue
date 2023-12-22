@@ -19,7 +19,8 @@
 
       <q-item-section>
         <h2 class="text-h4">
-          {{ title }}
+          <q-icon v-if="icon" :name="icon" class="vertical-middle q-mr-sm" />
+          <span class="vertical-middle">{{ title }}</span>
           <q-chip
             v-if="results !== null"
             size="lg"
@@ -55,6 +56,7 @@ export default defineComponent({
 
   props: {
     title: { type: String, required: true },
+    icon: { type: String, required: false, default: null },
     results: { type: Number, required: false, default: null },
     addRoute: { type: String, required: false, default: null },
     hasExportButton: { type: Boolean, required: false, default: true },
