@@ -17,6 +17,7 @@ const APP_ICON = {
   information: 'mdi-information',
   password: 'mdi-account-key',
   permission: 'mdi-account-check',
+  export: 'mdi-file-export',
 }
 
 const MODEL_ICON = {
