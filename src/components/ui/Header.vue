@@ -19,7 +19,12 @@
 
       <q-item-section>
         <h2 class="text-h4">
-          <q-icon v-if="icon" :name="icon" class="vertical-middle q-mr-sm" />
+          <q-icon
+            v-if="icon"
+            :name="icon"
+            class="vertical-bottom q-mr-sm"
+            size="44px"
+          />
           <span class="vertical-middle">{{ title }}</span>
           <q-chip
             v-if="results !== null"
