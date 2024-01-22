@@ -115,7 +115,14 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Notify', 'Meta', 'Dialog', 'Cookies', 'LocalStorage'],
+      plugins: [
+        'Notify',
+        'Meta',
+        'Dialog',
+        'Cookies',
+        'LocalStorage',
+        'AppFullscreen',
+      ],
     },
 
     // animations: 'all', // --- includes all animations
@@ -151,6 +158,9 @@ module.exports = configure(function (ctx) {
     pwa: {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
+
+      // injectPwaMetaTags: false,
+      // swFilename: 'register-service-worker.js',
 
       // for the custom service worker ONLY (/src-pwa/custom-service-worker.[js|ts])
       // if using workbox in InjectManifest mode
