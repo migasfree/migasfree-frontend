@@ -22,7 +22,7 @@
           <q-icon
             v-if="icon"
             :name="icon"
-            class="vertical-bottom q-mr-sm"
+            class="vertical-middle q-mr-sm"
             size="44px"
           />
           <span class="vertical-middle">{{ title }}</span>
