@@ -35,6 +35,8 @@
 
         <q-space />
 
+        <ToggleFullScreen />
+
         <ToggleDarkMode />
 
         <Alerts />
@@ -124,6 +126,7 @@ import Alerts from 'components/ui/Alerts'
 import SearchBox from 'components/ui/SearchBox'
 import UserAccount from 'components/ui/UserAccount'
 import ToggleDarkMode from 'components/ui/ToggleDarkMode'
+import ToggleFullScreen from 'components/ui/ToggleFullScreen'
 
 import { useAuthStore } from 'stores/auth'
 
@@ -137,6 +140,7 @@ export default defineComponent({
     SearchBox,
     UserAccount,
     ToggleDarkMode,
+    ToggleFullScreen,
   },
 
   setup() {
