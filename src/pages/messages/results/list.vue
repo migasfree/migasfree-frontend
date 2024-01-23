@@ -108,7 +108,7 @@ export default {
       {
         text: title.value,
         icon: modelIcon(model),
-        to: 'syncs-dashboard',
+        to: 'messages-list',
       },
       {
         text: $gettext('Results'),
