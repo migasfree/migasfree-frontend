@@ -159,7 +159,7 @@
                     <p v-if="prop.node.clock">
                       <translate>Clock</translate>:
                       <strong
-                        >{{ correctUnit(prop.node.class_name, prop.node.clock)
+                        >{{ correctUnit('clock', prop.node.clock)
                         }}<q-tooltip>{{ prop.node.clock }}</q-tooltip>
                       </strong>
                     </p>
@@ -418,6 +418,7 @@ export default {
     const correctUnit = (className, number) => {
       switch (className) {
         case 'processor':
+        case 'clock':
           return abbreviateNumber(number, 1, {
             symbols: ['Hz', 'KHz', 'MHz', 'GHz', 'THz'],
           })
