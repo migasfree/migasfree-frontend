@@ -555,6 +555,11 @@ const routes = [
         component: () => import('pages/attributes/index'),
       },
       {
+        path: '/features',
+        name: 'features-dashboard',
+        component: () => import('pages/attributes/index'),
+      },
+      {
         path: '/features/results',
         name: 'attributes-list',
         component: () => import('pages/attributes/results/list'),
@@ -567,6 +572,11 @@ const routes = [
       {
         path: '/features/results/:id',
         name: 'attribute-detail',
+        component: () => import('pages/attributes/results/detail'),
+      },
+      {
+        path: '/features/results/:id',
+        name: 'feature-detail',
         component: () => import('pages/attributes/results/detail'),
       },
 
