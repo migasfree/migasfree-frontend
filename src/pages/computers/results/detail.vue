@@ -562,8 +562,7 @@ export default {
               onlyAttributes.value.push({
                 id: val.id,
                 value: attributeValue(val),
-                model:
-                  val.property_att.sort === 'server' ? 'tags' : 'attributes',
+                model: val.property_att.sort === 'server' ? 'tags' : 'features',
                 icon:
                   val.property_att.sort === 'server'
                     ? modelIcon('tags')
@@ -575,8 +574,7 @@ export default {
             if (val.latitude !== null) {
               markers.value.push({
                 id: val.id,
-                model:
-                  val.property_att.sort === 'server' ? 'tags' : 'attributes',
+                model: val.property_att.sort === 'server' ? 'tags' : 'features',
                 lat: val.latitude,
                 lng: val.longitude,
                 tooltip: attributeValue(val),
