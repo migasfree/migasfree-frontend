@@ -19,7 +19,7 @@
 
         <span v-else-if="slotProps.props.column.field == 'name'">
           <MigasLink
-            model="projects"
+            :model="model"
             :pk="slotProps.props.row.id"
             :value="slotProps.props.row.name"
           />
