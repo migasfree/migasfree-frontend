@@ -537,6 +537,8 @@ export default {
                   onlyAttributeSets.value.push({
                     id: response.data.pk,
                     icon: modelIcon('attribute-sets'),
+                    model:
+                      response.data.pk === 1 ? 'features' : 'attribute-sets',
                     value: attributeValue(val),
                     summary: response.data.summary,
                   })
