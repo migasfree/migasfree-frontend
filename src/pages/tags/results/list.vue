@@ -11,7 +11,7 @@
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'value'">
           <MigasLink
-            model="tags"
+            :model="model"
             :pk="slotProps.props.row.id"
             :value="attributeValue(slotProps.props.row)"
             :tooltip="slotProps.props.row.description"
