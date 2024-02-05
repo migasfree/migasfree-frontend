@@ -12,7 +12,7 @@
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'name'">
           <MigasLink
-            model="computers"
+            :model="model"
             :pk="slotProps.props.row.id"
             :icon="elementIcon(slotProps.props.row.status)"
             :value="slotProps.props.row.__str__ || ''"
