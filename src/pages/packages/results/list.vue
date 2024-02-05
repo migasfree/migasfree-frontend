@@ -11,7 +11,7 @@
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'fullname'">
           <MigasLink
-            model="packages"
+            :model="model"
             :pk="slotProps.props.row.id"
             :value="slotProps.props.row.fullname"
           />
