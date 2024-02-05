@@ -11,7 +11,7 @@
       <template #fields="slotProps">
         <span v-if="slotProps.props.column.field == 'name'">
           <MigasLink
-            model="schedules"
+            :model="model"
             :pk="slotProps.props.row.id"
             :value="slotProps.props.row.name"
           />
