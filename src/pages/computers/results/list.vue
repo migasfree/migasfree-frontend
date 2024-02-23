@@ -108,6 +108,7 @@ export default {
       'platform',
       'architecture',
       'serial',
+      'mac',
       'uuid',
       'softwareInventory',
       'statusIn',
