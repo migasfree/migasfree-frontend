@@ -128,6 +128,7 @@ export default function useDataGrid(
       selected: null,
     },
     serial: '',
+    mac: '',
     uuid: '',
     architecture: {
       items: [
@@ -643,6 +644,15 @@ export default function useDataGrid(
     loadItems()
   }
 
+  const onMacFilter = () => {
+    updateParams({
+      columnFilters: Object.assign(serverParams.columnFilters, {
+        mac: tableFilters.mac,
+      }),
+    })
+    loadItems()
+  }
+
   const onUuidFilter = () => {
     updateParams({
       columnFilters: Object.assign(serverParams.columnFilters, {
@@ -889,6 +899,9 @@ export default function useDataGrid(
           case 'users_id':
             ret.users__id = val
             break
+          case 'mac':
+            ret.mac_address = val.replaceAll(':', '')
+            break
           case 'checked':
           case 'user':
           case 'platform_id':
@@ -1119,6 +1132,7 @@ export default function useDataGrid(
             startDateRange.value.reset(loadItemsAfter)
           break
         case 'serial':
+        case 'mac':
         case 'uuid':
         case 'search':
           tableFilters[key] = ''
@@ -1206,6 +1220,7 @@ export default function useDataGrid(
     onSyncEndDateFilter,
     onSyncEndDateRangeFilter,
     onSerialFilter,
+    onMacFilter,
     onUuidFilter,
     queryParams,
     loadItems,
