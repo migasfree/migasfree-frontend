@@ -101,6 +101,26 @@
         </div>
 
         <div
+          v-if="moreFilters.includes('mac')"
+          class="col-12 col-sm-6 col-md-4"
+        >
+          <q-input
+            v-model="tableFilters.mac"
+            outlined
+            dense
+            clearable
+            :label="$gettext('By MAC Address')"
+            @blur="onMacFilter"
+            @keydown.enter="$event.target.blur()"
+            @clear="onMacFilter"
+          >
+            <template #before>
+              <q-icon name="mdi-filter" />
+            </template>
+          </q-input>
+        </div>
+
+        <div
           v-if="moreFilters.includes('uuid')"
           class="col-12 col-sm-6 col-md-4"
         >
@@ -710,6 +730,7 @@ export default defineComponent({
       onSyncEndDateFilter,
       onSyncEndDateRangeFilter,
       onSerialFilter,
+      onMacFilter,
       onUuidFilter,
       statusTree,
       installDateRange,
@@ -886,6 +907,7 @@ export default defineComponent({
       onSyncEndDateFilter,
       onSyncEndDateRangeFilter,
       onSerialFilter,
+      onMacFilter,
       onUuidFilter,
       loadItems,
       totalRecords,
