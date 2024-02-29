@@ -85,7 +85,7 @@
       </div>
 
       <div class="row q-py-sm">
-        <div class="col-md-4">
+        <div class="col-4 col-md-4 col-sm">
           <q-icon :name="productIcon(productSystem)" style="font-size: 6em">
             <q-tooltip>{{ productSystem }}</q-tooltip>
             <q-badge floating transparent>
@@ -94,7 +94,7 @@
           >
         </div>
 
-        <div class="col-md-8">
+        <div class="col-8 col-md-8 col-sm">
           <p v-if="readonly">
             <q-icon
               :name="productIcon(productSystem)"
@@ -149,7 +149,7 @@
       </div>
 
       <div class="row q-py-sm">
-        <div class="col-md">
+        <div class="col-6 col-md col-sm">
           <q-icon
             :name="cpuIcon(architecture)"
             size="sm"
@@ -161,7 +161,7 @@
           </span>
         </div>
 
-        <div v-if="ram" class="col-md">
+        <div v-if="ram" class="col-6 col-md col-sm">
           <q-icon name="mdi-memory" size="sm" class="vertical-middle" />
           <span class="vertical-middle">
             {{ humanStorageSize(ram) }}
@@ -171,14 +171,14 @@
       </div>
 
       <div class="row q-py-sm">
-        <div v-if="storage" class="col-md">
+        <div v-if="storage" class="col-6 col-md col-sm">
           <q-icon name="mdi-harddisk" size="sm" class="vertical-middle" />
           <span class="vertical-middle">
             {{ humanStorageSize(storage) }} ({{ disks }})
             <q-tooltip><translate>Storage</translate></q-tooltip>
           </span>
         </div>
-        <div v-if="macAddress" class="col-md">
+        <div v-if="macAddress" class="col-6 col-md col-sm">
           <q-icon name="mdi-swap-vertical" size="sm" class="vertical-middle" />
           <span class="vertical-middle">
             {{ humanMacAddress(macAddress) }}
