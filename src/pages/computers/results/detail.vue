@@ -16,7 +16,7 @@
     >
       <template #fields>
         <div class="row q-pb-md q-col-gutter-md">
-          <div class="col-6 col-md col-sm-12">
+          <div class="col-6 col-md col-sm-12 col-xs-12">
             <ComputerInfo
               :cid="element.id"
               :name="element.name"
@@ -28,7 +28,7 @@
             />
           </div>
 
-          <div class="col-6 col-md col-sm-12">
+          <div class="col-6 col-md col-sm-12 col-xs-12">
             <ComputerHardwareResume
               :cid="element.id"
               :last-hardware-capture="showDate(element.last_hardware_capture)"
@@ -46,7 +46,7 @@
         </div>
 
         <div class="row q-pb-md q-col-gutter-md">
-          <div class="col-6 col-md col-sm-12">
+          <div class="col-6 col-md col-sm-12 col-xs-12">
             <q-card flat bordered>
               <q-card-section>
                 <div v-translate class="text-h5">Current Situation</div>
@@ -245,7 +245,7 @@
             </q-card>
           </div>
 
-          <div class="col-6 col-md col-sm-12">
+          <div class="col-6 col-md col-sm-12 col-xs-12">
             <q-card flat bordered>
               <q-card-section>
                 <div class="row">
@@ -326,12 +326,12 @@
         <div class="row q-pb-md q-col-gutter-md">
           <div
             v-if="element.has_software_inventory"
-            class="col-6 col-md col-sm-12"
+            class="col-6 col-md col-sm-12 col-xs-12"
           >
             <ComputerSoftware :cid="element.id" />
           </div>
 
-          <div v-if="element.id" class="col-6 col-md col-sm-12">
+          <div v-if="element.id" class="col-6 col-md col-sm-12 col-xs-12">
             <ComputerDevices :cid="element.id" />
           </div>
         </div>
