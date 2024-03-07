@@ -900,7 +900,7 @@ export default function useDataGrid(
             ret.users__id = val
             break
           case 'mac':
-            ret.mac_address = val.replaceAll(':', '')
+            ret.mac_address = val ? val.replaceAll(':', '') : val
             break
           case 'checked':
           case 'user':
