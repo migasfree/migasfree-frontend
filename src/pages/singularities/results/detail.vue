@@ -220,7 +220,7 @@ export default {
 
     const loadRelated = async () => {
       await api
-        .get('/api/v1/token/formulas/')
+        .get('/api/v1/token/formulas/?sort=client')
         .then((response) => {
           formulas.value = response.data.results
         })
