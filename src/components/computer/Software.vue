@@ -32,13 +32,25 @@
             </q-item-section>
 
             <q-item-section side>
-              <q-btn
-                flat
-                icon="mdi-content-copy"
-                color="primary"
-                @click.stop="copyInventory"
-                ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-              >
+              <div class="row items-center">
+                <q-btn
+                  flat
+                  icon="mdi-content-copy"
+                  color="primary"
+                  @click.stop="copyInventory"
+                  ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+                >
+
+                <q-btn
+                  v-if="isSuperUser"
+                  flat
+                  icon="mdi-delete"
+                  :color="$q.dark.isActive ? 'white' : 'negative'"
+                  :class="{ 'reversed-delete': $q.dark.isActive }"
+                  @click.stop="confirmRemoveInventory = true"
+                  ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
+                >
+              </div>
             </q-item-section>
           </template>
 
@@ -99,13 +111,25 @@
             </q-item-section>
 
             <q-item-section side>
-              <q-btn
-                flat
-                icon="mdi-content-copy"
-                color="primary"
-                @click.stop="copyHistory"
-                ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-              >
+              <div class="row items-center">
+                <q-btn
+                  flat
+                  icon="mdi-content-copy"
+                  color="primary"
+                  @click.stop="copyHistory"
+                  ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+                >
+
+                <q-btn
+                  v-if="isSuperUser"
+                  flat
+                  icon="mdi-delete"
+                  :color="$q.dark.isActive ? 'white' : 'negative'"
+                  :class="{ 'reversed-delete': $q.dark.isActive }"
+                  @click.stop="confirmRemoveHistory = true"
+                  ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
+                >
+              </div>
             </q-item-section>
           </template>
 
@@ -151,6 +175,16 @@
                       ><q-tooltip
                         ><translate>Uninstalled Packages</translate></q-tooltip
                       ></q-chip
+                    >
+
+                    <q-btn
+                      v-if="isSuperUser"
+                      flat
+                      icon="mdi-delete"
+                      :color="$q.dark.isActive ? 'white' : 'negative'"
+                      :class="{ 'reversed-delete': $q.dark.isActive }"
+                      @click.stop="deleteHistory(key)"
+                      ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
                     >
                   </div>
                 </q-item-section>
@@ -290,20 +324,33 @@
       </q-card-actions>
     </q-card>
   </q-dialog>
+
+  <RemoveDialog
+    v-model="confirmRemoveInventory"
+    @confirmed="deleteInventory"
+    @canceled="confirmRemoveInventory = !confirmRemoveInventory"
+  />
+
+  <RemoveDialog
+    v-model="confirmRemoveHistory"
+    @confirmed="deleteHistory"
+    @canceled="confirmRemoveHistory = !confirmRemoveHistory"
+  />
 </template>
 
 <script>
 import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useGettext } from 'vue3-gettext'
 import { abbreviateNumber } from 'js-abbreviation-number'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
+import { useAuthStore } from 'stores/auth'
 import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
+import RemoveDialog from 'components/ui/RemoveDialog'
 
 import { appIcon, useElement } from 'composables/element'
 import useDate from 'composables/date'
@@ -311,7 +358,7 @@ import useCopyPaste from 'composables/copyPaste'
 
 export default {
   name: 'ComputerSoftware',
-  components: { DateView, MigasLink },
+  components: { DateView, MigasLink, RemoveDialog },
   props: {
     cid: {
       type: Number,
@@ -319,9 +366,9 @@ export default {
     },
   },
   setup(props) {
-    const { $gettext } = useGettext()
     const router = useRouter()
     const uiStore = useUiStore()
+    const authStore = useAuthStore()
     const { elementIcon } = useElement()
     const { showDate } = useDate()
     const { contentToClipboard } = useCopyPaste()
@@ -335,6 +382,9 @@ export default {
     const showingCompare = ref(false)
     const computers = ref([])
     const target = ref(null)
+
+    const confirmRemoveInventory = ref(false)
+    const confirmRemoveHistory = ref(false)
 
     const isCompareEnabled = computed(() => {
       return target.value !== null
@@ -431,8 +481,40 @@ export default {
       // console.log('delayed filter aborted')
     }
 
+    const deleteInventory = async () => {
+      loading.inventory = true
+      await api
+        .delete(`/api/v1/token/computers/${props.cid}/software/inventory/`)
+        .then((response) => {
+          softwareInventory.value = response.data
+        })
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+        .finally(() => (loading.inventory = false))
+    }
+
+    const deleteHistory = async (key = null) => {
+      loading.history = true
+      await api
+        .delete(
+          `/api/v1/token/computers/${props.cid}/software/history/?key=${key}`,
+        )
+        .then((response) => {
+          for (var key in softwareHistory) {
+            delete softwareHistory[key]
+          }
+          Object.assign(softwareHistory, response.data)
+        })
+        .catch((error) => {
+          uiStore.notifyError(error)
+        })
+        .finally(() => (loading.history = false))
+    }
+
     return {
       loading,
+      isSuperUser: authStore.user.is_superuser,
       softwareInventory,
       softwareHistory,
       showingCompare,
@@ -451,6 +533,10 @@ export default {
       elementIcon,
       MIN_CHARS_SEARCH,
       abbreviateNumber,
+      confirmRemoveInventory,
+      confirmRemoveHistory,
+      deleteInventory,
+      deleteHistory,
     }
   },
 }
