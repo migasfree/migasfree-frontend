@@ -161,7 +161,7 @@
                 />
 
                 <div class="row q-pa-md text-center">
-                  <div class="col-md">
+                  <div class="col">
                     <q-tooltip><translate>Errors</translate></q-tooltip>
                     <q-icon :name="modelIcon('errors')" size="xl" />
                     <q-btn
@@ -195,7 +195,7 @@
                     >
                   </div>
 
-                  <div class="col-md">
+                  <div class="col">
                     <q-tooltip><translate>Faults</translate></q-tooltip>
                     <q-icon :name="modelIcon('faults')" size="xl" />
                     <q-btn
