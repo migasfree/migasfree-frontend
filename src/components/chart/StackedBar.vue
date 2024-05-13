@@ -65,7 +65,7 @@
         </q-banner>
       </q-card-section>
 
-      <q-card-actions v-show="isChartVisible" align="around" class="q-pt-none">
+      <q-card-actions v-show="isChartVisible" align="around" class="q-pt-sm">
         <q-btn
           icon="mdi-database-search"
           flat
@@ -74,6 +74,27 @@
         >
           <q-tooltip>{{ $gettext('Data View') }}</q-tooltip>
         </q-btn>
+
+        <q-btn-toggle
+          v-if="isSelectedModeVisible"
+          v-model="selectedMode"
+          flat
+          :options="[
+            { slot: 'multiple', value: 'multiple' },
+            { slot: 'single', value: 'single' },
+          ]"
+          @update:model-value="updateSelectedMode"
+        >
+          <template #multiple>
+            <q-icon name="mdi-image-multiple" />
+            <q-tooltip>{{ $gettext('Multiple Selection') }}</q-tooltip>
+          </template>
+
+          <template #single>
+            <q-icon name="mdi-image" />
+            <q-tooltip>{{ $gettext('Single Selection') }}</q-tooltip>
+          </template>
+        </q-btn-toggle>
 
         <q-btn icon="mdi-download" flat color="primary" @click="saveImage">
           <q-tooltip>{{ $gettext('Save as Image') }}</q-tooltip>
@@ -252,6 +273,8 @@ export default {
     const begin = ref('')
     const end = ref('')
 
+    const selectedMode = ref('multiple')
+
     const chart = ref(null)
     const data = reactive(props.initialData)
     const options = reactive({
@@ -329,6 +352,10 @@ export default {
       )
     })
 
+    const isSelectedModeVisible = computed(() => {
+      return options.series.length > 1
+    })
+
     const noData = computed(() => {
       return !('series' in data)
     })
@@ -397,6 +424,10 @@ export default {
       if (chart.value !== null && chart.value !== undefined) {
         chart.value.resize()
       }
+    }
+
+    const updateSelectedMode = () => {
+      options.legend.selectedMode = selectedMode
     }
 
     const saveImage = () => {
@@ -498,6 +529,7 @@ export default {
     return {
       begin,
       end,
+      selectedMode,
       chart,
       data,
       options,
@@ -506,9 +538,11 @@ export default {
       loadingOptions,
       viewData,
       isChartVisible,
+      isSelectedModeVisible,
       noData,
       selectCell,
       passData,
+      updateSelectedMode,
       saveImage,
       dataView,
       exportTable,
