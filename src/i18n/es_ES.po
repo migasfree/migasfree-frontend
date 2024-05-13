@@ -409,7 +409,7 @@ msgstr "URL base"
 msgid "bits"
 msgstr "bits"
 
-#: src/components/chart/Pie.vue:450 src/components/chart/StackedBar.vue:460
+#: src/components/chart/Pie.vue:450 src/components/chart/StackedBar.vue:491
 msgid "Browser denied file download..."
 msgstr "Descarga de archivos denegada por el navegador..."
 
@@ -501,7 +501,7 @@ msgstr "Por fecha de desinstalación (rango)"
 msgid "By UUID"
 msgstr "Por UUID"
 
-#: src/components/computer/Software.vue:278 src/components/ui/Header.vue:85
+#: src/components/computer/Software.vue:312 src/components/ui/Header.vue:85
 #: src/components/ui/RemoveDialog.vue:14 src/composables/dataGrid.js:1014
 #: src/pages/user-profiles/results/detail.vue:524
 msgid "Cancel"
@@ -606,7 +606,7 @@ msgstr "Limpiar"
 msgid "Clock"
 msgstr "Reloj"
 
-#: src/components/chart/Pie.vue:107 src/components/chart/StackedBar.vue:146
+#: src/components/chart/Pie.vue:107 src/components/chart/StackedBar.vue:167
 #: src/pages/computers/results/hardware.vue:250
 msgid "Close"
 msgstr "Cerrar"
@@ -624,10 +624,10 @@ msgstr "Código"
 msgid "Comment"
 msgstr "Comentario"
 
-#: src/components/computer/Software.vue:134
-#: src/components/computer/Software.vue:135
-#: src/components/computer/Software.vue:209
-#: src/components/computer/Software.vue:287
+#: src/components/computer/Software.vue:144
+#: src/components/computer/Software.vue:145
+#: src/components/computer/Software.vue:243
+#: src/components/computer/Software.vue:321
 msgid "Compare"
 msgstr "Comparar"
 
@@ -636,7 +636,7 @@ msgid "Components"
 msgstr "Componentes"
 
 #: src/components/computer/ReplacementInfo.vue:5
-#: src/components/computer/Software.vue:229
+#: src/components/computer/Software.vue:263
 #: src/pages/computers/replacement.vue:24
 #: src/pages/computers/replacement.vue:98
 #: src/pages/computers/results/detail.vue:468
@@ -754,8 +754,8 @@ msgstr "Contenido copiado al portapapeles"
 #: src/components/computer/HardwareResume.vue:193
 #: src/components/computer/Info.vue:107 src/components/computer/Info.vue:124
 #: src/components/computer/Info.vue:34 src/components/computer/Info.vue:60
-#: src/components/computer/Software.vue:107
-#: src/components/computer/Software.vue:40 src/components/ui/CodeEditor.vue:15
+#: src/components/computer/Software.vue:120
+#: src/components/computer/Software.vue:41 src/components/ui/CodeEditor.vue:15
 #: src/components/ui/SelectAttributes.vue:61
 #: src/pages/computers/results/simulate.vue:174
 #: src/pages/computers/results/simulate.vue:179
@@ -864,7 +864,7 @@ msgstr "¡La situación actual ha cambiado!"
 msgid "Dashboard"
 msgstr "Cuadro de mando"
 
-#: src/components/chart/Pie.vue:65 src/components/chart/StackedBar.vue:93
+#: src/components/chart/Pie.vue:65 src/components/chart/StackedBar.vue:114
 #: src/components/ui/AppMenu.vue:210 src/pages/attributes/index.vue:59
 #: src/pages/attributes/results/detail.vue:166
 #: src/pages/attributes/results/list.vue:79 src/pages/computers/index.vue:100
@@ -904,7 +904,7 @@ msgstr "¡Los datos han sido cambiados!"
 msgid "Data View"
 msgstr "Ver datos"
 
-#: src/components/computer/Software.vue:93
+#: src/components/computer/Software.vue:105
 msgid "date"
 msgid_plural "dates"
 msgstr[0] "fecha"
@@ -973,8 +973,10 @@ msgstr "Demoras"
 msgid "Delays count"
 msgstr "Número de demoras"
 
-#: src/components/ui/ItemDetail.vue:144 src/components/ui/RemoveDialog.vue:21
-#: src/components/ui/TableResults.vue:461
+#: src/components/computer/Software.vue:130
+#: src/components/computer/Software.vue:187
+#: src/components/computer/Software.vue:51 src/components/ui/ItemDetail.vue:144
+#: src/components/ui/RemoveDialog.vue:21 src/components/ui/TableResults.vue:461
 #: src/components/ui/TableResults.vue:615 src/composables/dataGrid.js:1009
 #: src/pages/applications/results/detail.vue:160
 #: src/pages/devices/results/detail.vue:152
@@ -1287,7 +1289,7 @@ msgstr "¿Exclusivo?"
 msgid "Expire (minutes)"
 msgstr "Expiración (minutos)"
 
-#: src/components/chart/Pie.vue:91 src/components/chart/StackedBar.vue:113
+#: src/components/chart/Pie.vue:91 src/components/chart/StackedBar.vue:134
 #: src/components/ui/Header.vue:41 src/components/ui/Header.vue:84
 #: src/components/ui/TableResults.vue:606
 msgid "Export"
@@ -1529,7 +1531,7 @@ msgstr "Hardware"
 msgid "Hardware Information"
 msgstr "Información del hardware"
 
-#: src/components/computer/Software.vue:80
+#: src/components/computer/Software.vue:92
 msgid "History"
 msgstr "Histórico"
 
@@ -1619,7 +1621,7 @@ msgstr "Entrada (del ordenador)"
 msgid "Install Date"
 msgstr "Fecha de instalación"
 
-#: src/components/computer/Software.vue:140
+#: src/components/computer/Software.vue:164
 msgid "Installed Packages"
 msgstr "Paquetes instalados"
 
@@ -1744,7 +1746,7 @@ msgstr "Nivel"
 msgid "License"
 msgstr "Licencia"
 
-#: src/components/chart/Pie.vue:260 src/components/chart/StackedBar.vue:313
+#: src/components/chart/Pie.vue:260 src/components/chart/StackedBar.vue:336
 #: src/components/ui/TableResults.vue:417
 msgid "Loading data..."
 msgstr "Cargando datos..."
@@ -1910,6 +1912,10 @@ msgstr "lunes"
 msgid "More Filters"
 msgstr "Más filtros"
 
+#: src/components/chart/StackedBar.vue:90
+msgid "Multiple Selection"
+msgstr "Selección múltiple"
+
 #: src/components/chart/Pie.vue:277 src/components/computer/Info.vue:13
 #: src/pages/applications/results/detail.vue:27
 #: src/pages/applications/results/list.vue:115
@@ -2016,7 +2022,7 @@ msgid "No information"
 msgstr "Sin información"
 
 #: src/components/computer/Devices.vue:35
-#: src/components/computer/Software.vue:241
+#: src/components/computer/Software.vue:275
 #: src/components/ui/SelectAttributes.vue:24
 #: src/pages/computers/replacement.vue:111
 #: src/pages/computers/replacement.vue:37
@@ -2515,7 +2521,7 @@ msgstr "Grabar y añadir otro"
 msgid "Save and continue editing"
 msgstr "Grabar y continuar editando"
 
-#: src/components/chart/Pie.vue:51 src/components/chart/StackedBar.vue:79
+#: src/components/chart/Pie.vue:51 src/components/chart/StackedBar.vue:100
 msgid "Save as Image"
 msgstr "Guardar como imagen"
 
@@ -2587,6 +2593,10 @@ msgstr "Simular sincronización"
 msgid "Simulate Synchronization"
 msgstr "Simular sincronización"
 
+#: src/components/chart/StackedBar.vue:95
+msgid "Single Selection"
+msgstr "Selección única"
+
 #: src/components/ui/AppMenu.vue:86
 #: src/pages/singularities/results/detail.vue:195
 #: src/pages/singularities/results/list.vue:74
@@ -2614,7 +2624,7 @@ msgstr "Bahía"
 msgid "Software"
 msgstr "Software"
 
-#: src/components/computer/Software.vue:218 src/components/ui/AppMenu.vue:223
+#: src/components/computer/Software.vue:252 src/components/ui/AppMenu.vue:223
 #: src/pages/computers/softwareCompare.vue:200
 msgid "Software Compare"
 msgstr "Comparar software"
@@ -2909,7 +2919,7 @@ msgid "Type"
 msgstr "Tipo"
 
 #: src/components/computer/Devices.vue:23
-#: src/components/computer/Software.vue:231
+#: src/components/computer/Software.vue:265
 #: src/components/ui/SelectAttributes.vue:14
 #: src/pages/computers/replacement.vue:100
 #: src/pages/computers/replacement.vue:26
@@ -2953,7 +2963,7 @@ msgstr "Notificaciones sin comprobar"
 msgid "Uninstall Date"
 msgstr "Fecha de desinstalación"
 
-#: src/components/computer/Software.vue:152
+#: src/components/computer/Software.vue:176
 msgid "Uninstalled Packages"
 msgstr "Paquetes desinstalados"
 

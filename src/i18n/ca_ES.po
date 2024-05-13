@@ -409,7 +409,7 @@ msgstr "URL base"
 msgid "bits"
 msgstr "bits"
 
-#: src/components/chart/Pie.vue:450 src/components/chart/StackedBar.vue:460
+#: src/components/chart/Pie.vue:450 src/components/chart/StackedBar.vue:491
 msgid "Browser denied file download..."
 msgstr "Descàrrega de fitxers denegada del navegador..."
 
@@ -501,7 +501,7 @@ msgstr "Per data de desinstal·lació (interval)"
 msgid "By UUID"
 msgstr "Per UUID"
 
-#: src/components/computer/Software.vue:278 src/components/ui/Header.vue:85
+#: src/components/computer/Software.vue:312 src/components/ui/Header.vue:85
 #: src/components/ui/RemoveDialog.vue:14 src/composables/dataGrid.js:1014
 #: src/pages/user-profiles/results/detail.vue:524
 msgid "Cancel"
@@ -606,7 +606,7 @@ msgstr "Netejar"
 msgid "Clock"
 msgstr "Rellotge"
 
-#: src/components/chart/Pie.vue:107 src/components/chart/StackedBar.vue:146
+#: src/components/chart/Pie.vue:107 src/components/chart/StackedBar.vue:167
 #: src/pages/computers/results/hardware.vue:250
 msgid "Close"
 msgstr "Tanca"
@@ -624,10 +624,10 @@ msgstr "Codi"
 msgid "Comment"
 msgstr "Comentari"
 
-#: src/components/computer/Software.vue:134
-#: src/components/computer/Software.vue:135
-#: src/components/computer/Software.vue:209
-#: src/components/computer/Software.vue:287
+#: src/components/computer/Software.vue:144
+#: src/components/computer/Software.vue:145
+#: src/components/computer/Software.vue:243
+#: src/components/computer/Software.vue:321
 msgid "Compare"
 msgstr "Compara"
 
@@ -636,7 +636,7 @@ msgid "Components"
 msgstr "Components"
 
 #: src/components/computer/ReplacementInfo.vue:5
-#: src/components/computer/Software.vue:229
+#: src/components/computer/Software.vue:263
 #: src/pages/computers/replacement.vue:24
 #: src/pages/computers/replacement.vue:98
 #: src/pages/computers/results/detail.vue:468
@@ -754,8 +754,8 @@ msgstr "S'ha copiat el text al porta-retalls"
 #: src/components/computer/HardwareResume.vue:193
 #: src/components/computer/Info.vue:107 src/components/computer/Info.vue:124
 #: src/components/computer/Info.vue:34 src/components/computer/Info.vue:60
-#: src/components/computer/Software.vue:107
-#: src/components/computer/Software.vue:40 src/components/ui/CodeEditor.vue:15
+#: src/components/computer/Software.vue:120
+#: src/components/computer/Software.vue:41 src/components/ui/CodeEditor.vue:15
 #: src/components/ui/SelectAttributes.vue:61
 #: src/pages/computers/results/simulate.vue:174
 #: src/pages/computers/results/simulate.vue:179
@@ -864,7 +864,7 @@ msgstr "¡La situació actual ha canviat!"
 msgid "Dashboard"
 msgstr "Consola"
 
-#: src/components/chart/Pie.vue:65 src/components/chart/StackedBar.vue:93
+#: src/components/chart/Pie.vue:65 src/components/chart/StackedBar.vue:114
 #: src/components/ui/AppMenu.vue:210 src/pages/attributes/index.vue:59
 #: src/pages/attributes/results/detail.vue:166
 #: src/pages/attributes/results/list.vue:79 src/pages/computers/index.vue:100
@@ -904,7 +904,7 @@ msgstr "¡S'han canviat les dades!"
 msgid "Data View"
 msgstr "Vista de dades"
 
-#: src/components/computer/Software.vue:93
+#: src/components/computer/Software.vue:105
 msgid "date"
 msgid_plural "dates"
 msgstr[0] "data"
@@ -973,8 +973,10 @@ msgstr "Retards"
 msgid "Delays count"
 msgstr "Els retards compten"
 
-#: src/components/ui/ItemDetail.vue:144 src/components/ui/RemoveDialog.vue:21
-#: src/components/ui/TableResults.vue:461
+#: src/components/computer/Software.vue:130
+#: src/components/computer/Software.vue:187
+#: src/components/computer/Software.vue:51 src/components/ui/ItemDetail.vue:144
+#: src/components/ui/RemoveDialog.vue:21 src/components/ui/TableResults.vue:461
 #: src/components/ui/TableResults.vue:615 src/composables/dataGrid.js:1009
 #: src/pages/applications/results/detail.vue:160
 #: src/pages/devices/results/detail.vue:152
@@ -1287,7 +1289,7 @@ msgstr "¿Exclusiu?"
 msgid "Expire (minutes)"
 msgstr "Caduca (minuts)"
 
-#: src/components/chart/Pie.vue:91 src/components/chart/StackedBar.vue:113
+#: src/components/chart/Pie.vue:91 src/components/chart/StackedBar.vue:134
 #: src/components/ui/Header.vue:41 src/components/ui/Header.vue:84
 #: src/components/ui/TableResults.vue:606
 msgid "Export"
@@ -1529,7 +1531,7 @@ msgstr "Maquinari"
 msgid "Hardware Information"
 msgstr "Informació del maquinari"
 
-#: src/components/computer/Software.vue:80
+#: src/components/computer/Software.vue:92
 msgid "History"
 msgstr "Història"
 
@@ -1619,7 +1621,7 @@ msgstr "Entrada (de l'ordinador)"
 msgid "Install Date"
 msgstr "Data d'instal·lació"
 
-#: src/components/computer/Software.vue:140
+#: src/components/computer/Software.vue:164
 msgid "Installed Packages"
 msgstr "Paquets instal·lats"
 
@@ -1744,7 +1746,7 @@ msgstr "Nivell"
 msgid "License"
 msgstr "Llicència"
 
-#: src/components/chart/Pie.vue:260 src/components/chart/StackedBar.vue:313
+#: src/components/chart/Pie.vue:260 src/components/chart/StackedBar.vue:336
 #: src/components/ui/TableResults.vue:417
 msgid "Loading data..."
 msgstr "Carregant dades..."
@@ -1910,6 +1912,10 @@ msgstr "dilluns"
 msgid "More Filters"
 msgstr "Més filtres"
 
+#: src/components/chart/StackedBar.vue:90
+msgid "Multiple Selection"
+msgstr "Selecció múltiple"
+
 #: src/components/chart/Pie.vue:277 src/components/computer/Info.vue:13
 #: src/pages/applications/results/detail.vue:27
 #: src/pages/applications/results/list.vue:115
@@ -2016,7 +2022,7 @@ msgid "No information"
 msgstr "Sense informació"
 
 #: src/components/computer/Devices.vue:35
-#: src/components/computer/Software.vue:241
+#: src/components/computer/Software.vue:275
 #: src/components/ui/SelectAttributes.vue:24
 #: src/pages/computers/replacement.vue:111
 #: src/pages/computers/replacement.vue:37
@@ -2515,7 +2521,7 @@ msgstr "Desa i afegeix un altre"
 msgid "Save and continue editing"
 msgstr "Desa i segueix editant"
 
-#: src/components/chart/Pie.vue:51 src/components/chart/StackedBar.vue:79
+#: src/components/chart/Pie.vue:51 src/components/chart/StackedBar.vue:100
 msgid "Save as Image"
 msgstr "Desa com a imatge"
 
@@ -2587,6 +2593,10 @@ msgstr "Simular sincronització"
 msgid "Simulate Synchronization"
 msgstr "Simular sincronització"
 
+#: src/components/chart/StackedBar.vue:95
+msgid "Single Selection"
+msgstr "Selecció única"
+
 #: src/components/ui/AppMenu.vue:86
 #: src/pages/singularities/results/detail.vue:195
 #: src/pages/singularities/results/list.vue:74
@@ -2614,7 +2624,7 @@ msgstr "Ranura"
 msgid "Software"
 msgstr "Software"
 
-#: src/components/computer/Software.vue:218 src/components/ui/AppMenu.vue:223
+#: src/components/computer/Software.vue:252 src/components/ui/AppMenu.vue:223
 #: src/pages/computers/softwareCompare.vue:200
 msgid "Software Compare"
 msgstr "Comparació de programari"
@@ -2908,7 +2918,7 @@ msgid "Type"
 msgstr "Tipus"
 
 #: src/components/computer/Devices.vue:23
-#: src/components/computer/Software.vue:231
+#: src/components/computer/Software.vue:265
 #: src/components/ui/SelectAttributes.vue:14
 #: src/pages/computers/replacement.vue:100
 #: src/pages/computers/replacement.vue:26
@@ -2952,7 +2962,7 @@ msgstr "Notificacions sense comprovar"
 msgid "Uninstall Date"
 msgstr "Data de desinstal·lació"
 
-#: src/components/computer/Software.vue:152
+#: src/components/computer/Software.vue:176
 msgid "Uninstalled Packages"
 msgstr "Paquets desinstal·lats"
 
