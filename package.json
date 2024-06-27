@@ -34,7 +34,7 @@
     "performant-array-to-tree": "1.11.0",
     "pinia": "2.1.7",
     "pluralize": "8.0.0",
-    "quasar": "2.16.2",
+    "quasar": "2.16.4",
     "text-clipper": "2.2.0",
     "typeface-dosis": "1.1.13",
     "v-code-diff": "1.7.2",
@@ -72,7 +72,7 @@
     "last 5 Opera versions"
   ],
   "engines": {
-    "node": ">= 16",
+    "node": ">= 18",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
   }
