@@ -164,7 +164,7 @@
         <div v-if="ram" class="col-6 col-md col-sm">
           <q-icon name="mdi-memory" size="sm" class="vertical-middle" />
           <span class="vertical-middle">
-            {{ storageSize(ram) }}
+            {{ humanStorageSize(ram) }}
             <q-tooltip><translate>RAM</translate></q-tooltip>
           </span>
         </div>
@@ -174,7 +174,7 @@
         <div v-if="storage" class="col-6 col-md col-sm">
           <q-icon name="mdi-harddisk" size="sm" class="vertical-middle" />
           <span class="vertical-middle">
-            {{ storageSize(storage) }} ({{ disks }})
+            {{ humanStorageSize(storage) }} ({{ disks }})
             <q-tooltip><translate>Storage</translate></q-tooltip>
           </span>
         </div>
@@ -306,14 +306,10 @@ export default {
         .finally(() => (loading.value = false))
     }
 
-    const storageSize = (number) => {
-      return humanStorageSize(number)
-    }
-
     return {
       loading,
       hardwareDate,
-      storageSize,
+      humanStorageSize,
       productIcon,
       cpuIcon,
       humanMacAddress,
