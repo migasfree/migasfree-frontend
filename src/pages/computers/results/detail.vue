@@ -488,9 +488,9 @@ export default {
 
     const markers = ref([])
     const zoom = 12
-    const url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+    const url = 'https://{s}.tile.osm.org/{z}/{x}/{y}.png'
     const attribution =
-      '© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      '© <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
     const iconUrl = require('leaflet/dist/images/marker-icon.png')
     const iconSize = [32, 40]
     const iconAnchor = [16, 37]
