@@ -2,19 +2,17 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { scroll, Notify } from 'quasar'
 
-const { getScrollTarget, setVerticalScrollPosition } = scroll
-
 export const useUiStore = defineStore('ui', () => {
   const isLoading = ref(false)
   const currentPageTable = ref(1)
   const server = ref(process.env.MIGASFREE_SERVER || 'http://localhost')
 
   function scrollToElement(element) {
-    const target = getScrollTarget(element)
+    const target = scroll.getScrollTarget(element)
     const offset = element.offsetTop
     const duration = 1000
 
-    setVerticalScrollPosition(target, offset, duration)
+    scroll.setVerticalScrollPosition(target, offset, duration)
   }
 
   function notifyError(error) {
