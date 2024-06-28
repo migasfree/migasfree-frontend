@@ -282,7 +282,6 @@ export default {
   setup() {
     const { $gettext } = useGettext()
     const route = useRoute()
-    const { humanStorageSize } = format
     const { elementIcon, productIcon, cpuIcon } = useElement()
     const uiStore = useUiStore()
 
@@ -423,7 +422,7 @@ export default {
             symbols: ['Hz', 'KHz', 'MHz', 'GHz', 'THz'],
           })
         default:
-          return humanStorageSize(number)
+          return format.humanStorageSize(number)
       }
     }
 
