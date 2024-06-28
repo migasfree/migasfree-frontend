@@ -279,7 +279,6 @@ export default {
   },
   setup(props) {
     const { $gettext } = useGettext()
-    const { humanStorageSize } = format
     const uiStore = useUiStore()
     const { productIcon, cpuIcon, humanMacAddress } = useElement()
     const { diffForHumans, localeDate } = useDate()
@@ -297,7 +296,7 @@ export default {
         })
         .then((response) => {
           uiStore.notifySuccess(
-            $gettext('Last hardware capture date has been changed!'),
+            $gettext('Last hardware capture date has been changed!')
           )
         })
         .catch((error) => {
@@ -309,7 +308,7 @@ export default {
     return {
       loading,
       hardwareDate,
-      humanStorageSize,
+      humanStorageSize: format.humanStorageSize,
       productIcon,
       cpuIcon,
       humanMacAddress,
