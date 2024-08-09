@@ -23,7 +23,7 @@
     "gettext-compile": "vue-gettext-compile"
   },
   "dependencies": {
-    "@quasar/extras": "1.16.11",
+    "@quasar/extras": "1.16.12",
     "@vue-leaflet/vue-leaflet": "0.7.0",
     "axios": "1.7.2",
     "dayjs": "1.11.11",
@@ -33,7 +33,7 @@
     "performant-array-to-tree": "1.11.0",
     "pinia": "2.1.7",
     "pluralize": "8.0.0",
-    "quasar": "2.16.4",
+    "quasar": "2.16.8",
     "text-clipper": "2.2.0",
     "typeface-dosis": "1.1.13",
     "v-code-diff": "1.12.0",
@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.24.7",
-    "@quasar/app-webpack": "3.13.2",
+    "@quasar/app-webpack": "3.13.3",
     "@quasar/quasar-app-extension-qmarkdown": "2.0.0-beta.10",
     "dotenv": "16.4.5",
     "eslint": "9.5.0",
