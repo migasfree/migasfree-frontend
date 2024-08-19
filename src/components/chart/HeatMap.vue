@@ -124,7 +124,7 @@ export default {
       },
       tooltip: {
         position: 'top',
-        formatter: function (p) {
+        formatter: (p) => {
           const formated = format(p.data[0], '{yyyy}-{MM}-{dd}', false)
           return `${formated}: ${p.data[1]}`
         },
@@ -183,6 +183,29 @@ export default {
 
     const noData = computed(() => {
       return props.total === 0
+    })
+
+    const yearsSummary = computed(() => {
+      const result = {}
+
+      props.data.forEach((item) => {
+        const year = item[0].split('-')[0]
+        result[year] = (result[year] || 0) + item[1]
+      })
+
+      return result
+    })
+
+    const monthsSummary = computed(() => {
+      const result = {}
+
+      props.data.forEach((item) => {
+        const parts = item[0].split('-')
+        const index = `${parts[0]}-${parts[1]}`
+        result[index] = (result[index] || 0) + item[1]
+      })
+
+      return result
     })
 
     const windowResize = () => {
@@ -262,8 +285,22 @@ export default {
           chart.value.setOption(
             {
               series,
-              legend: { selected: years },
-              calendar: { range: maxYear },
+              legend: {
+                selected: years,
+                formatter: (name) => {
+                  return `${name} (${yearsSummary.value[name]})`
+                },
+              },
+              calendar: {
+                range: maxYear,
+                monthLabel: {
+                  formatter: (param) => {
+                    const index = `${param.yyyy}-${param.MM}`
+                    const value = monthsSummary.value[index]
+                    return value ? `${param.nameMap} (${value})` : param.nameMap
+                  },
+                },
+              },
               visualMap: { max: visualMapMax },
             },
             {
@@ -274,8 +311,17 @@ export default {
           options.series = series
 
           options.legend.selected = years
+          options.legend.formatter = (name) => {
+            return `${name} (${yearsSummary.value[name]})`
+          }
 
           options.calendar.range = maxYear
+          options.calendar.monthLabel.formatter = (param) => {
+            const index = `${param.yyyy}-${param.MM}`
+            const value = monthsSummary.value[index]
+            return value ? `${param.nameMap} (${value})` : param.nameMap
+          }
+
           options.visualMap.max = visualMapMax
         }
       },
