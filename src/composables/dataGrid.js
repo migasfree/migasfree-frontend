@@ -1099,6 +1099,30 @@ export default function useDataGrid(
     })
   }
 
+  const updateEnabled = (id, value, reload = true) => {
+    let data = { enabled: value }
+    if (model.value === 'user-profiles') data = { is_active: value }
+
+    api
+      .patch(`/api/v1/token/${model.value}/${id}/`, data)
+      .then((response) => {
+        uiStore.notifySuccess($gettext('Changed item enable value!'))
+        if (reload) loadItems()
+      })
+      .catch((error) => {
+        uiStore.notifyError(error)
+      })
+  }
+
+  const updateItemsEnabled = (value) => {
+    const items = selectedRows.value.map((item) => item.id)
+    if (items.length === 0) return
+
+    items.forEach((id) => {
+      updateEnabled(id, value, items[items.length - 1] === id)
+    })
+  }
+
   const regenerateMetadata = async (id) => {
     await api
       .get(`/api/v1/token/${model.value}/internal-sources/${id}/metadata/`)
@@ -1231,6 +1255,8 @@ export default function useDataGrid(
     exportAll,
     updateChecked,
     updateItemsChecked,
+    updateEnabled,
+    updateItemsEnabled,
     regenerateMetadata,
     resetFilters,
   }
