@@ -441,6 +441,33 @@
           ><q-tooltip><translate>Not Check</translate></q-tooltip></q-btn
         >
         <q-btn
+          v-if="
+            hasEnableActions &&
+            !('enabled' in props.row && props.row.enabled) &&
+            !('is_active' in props.row && props.row.is_active)
+          "
+          class="q-ma-xs"
+          round
+          size="sm"
+          icon="mdi-check-bold"
+          color="positive"
+          @click="updateEnabled(props.row.id, true)"
+          ><q-tooltip><translate>Enable</translate></q-tooltip></q-btn
+        >
+        <q-btn
+          v-if="
+            (hasEnableActions && 'enabled' in props.row && props.row.enabled) ||
+            ('is_active' in props.row && props.row.is_active)
+          "
+          class="q-ma-xs"
+          round
+          size="sm"
+          icon="mdi-close-thick"
+          color="negative"
+          @click="updateEnabled(props.row.id, false)"
+          ><q-tooltip><translate>Disable</translate></q-tooltip></q-btn
+        >
+        <q-btn
           v-if="detailRoute"
           class="q-ma-xs"
           round
@@ -592,6 +619,26 @@
           color="negative"
           @click="updateItemsChecked(false)"
           ><q-tooltip><translate>Not Check</translate></q-tooltip></q-btn
+        >
+      </template>
+
+      <template v-if="hasEnableActions">
+        <q-btn
+          class="q-ma-xs"
+          size="sm"
+          icon="mdi-check-bold"
+          color="positive"
+          @click="updateItemsEnabled(true)"
+          ><q-tooltip><translate>Enable</translate></q-tooltip></q-btn
+        >
+
+        <q-btn
+          class="q-ma-xs"
+          size="sm"
+          icon="mdi-close-thick"
+          color="negative"
+          @click="updateItemsEnabled(false)"
+          ><q-tooltip><translate>Disable</translate></q-tooltip></q-btn
         >
       </template>
 
@@ -754,9 +801,11 @@ export default defineComponent({
       myTable,
       confirmRemove,
       updateChecked,
+      updateEnabled,
       regenerateMetadata,
       updateStatusInFilter,
       updateItemsChecked,
+      updateItemsEnabled,
     } = useDataGrid(props.columns, model, detailRoute, columnParams)
 
     const hasDeleteAction = computed(() => {
@@ -774,6 +823,19 @@ export default defineComponent({
 
     const hasCheckActions = computed(() => {
       return ['errors', 'faults', 'notifications'].includes(props.model)
+    })
+
+    const hasEnableActions = computed(() => {
+      return [
+        'formulas',
+        'singularities',
+        'stamps',
+        'attribute-sets',
+        'fault-definitions',
+        'user-profiles',
+        'deployments',
+        'catalog/policies',
+      ].includes(props.model)
     })
 
     onMounted(async () => {
@@ -888,6 +950,7 @@ export default defineComponent({
       exportData,
       hasDeleteAction,
       hasCheckActions,
+      hasEnableActions,
       onSearch,
       onSearchClear,
       onCreatedAtRangeFilter,
@@ -927,6 +990,8 @@ export default defineComponent({
       confirmRemove,
       updateChecked,
       updateItemsChecked,
+      updateEnabled,
+      updateItemsEnabled,
       regenerateMetadata,
       appIcon,
       detailRoute,
