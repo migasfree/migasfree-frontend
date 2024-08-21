@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #: src/pages/applications/results/detail.vue:175
 #: src/pages/applications/results/detail.vue:29
@@ -558,7 +558,7 @@ msgstr "Domeinua aldatu"
 msgid "Change Icon"
 msgstr "Aldatu ikonoa"
 
-#: src/components/ui/ItemDetail.vue:30 src/components/ui/TableResults.vue:476
+#: src/components/ui/ItemDetail.vue:30 src/components/ui/TableResults.vue:503
 #: src/components/ui/UserAccount.vue:109
 #: src/pages/user-profiles/results/changePassword.vue:132
 #: src/pages/user-profiles/results/changePassword.vue:91
@@ -573,8 +573,12 @@ msgstr "Esparrua aldatu"
 msgid "Changed item check value!"
 msgstr "Elementuaren egiaztapen-balioa aldatu da!"
 
+#: src/composables/dataGrid.js:1109
+msgid "Changed item enable value!"
+msgstr "Elementuaren gaitzeko balioa aldatu da!"
+
 #: src/components/ui/TableResults.vue:431
-#: src/components/ui/TableResults.vue:585
+#: src/components/ui/TableResults.vue:612
 msgid "Check"
 msgstr "Egiaztatu"
 
@@ -655,7 +659,7 @@ msgstr "Ordenagailua"
 #: src/pages/attributes/results/list.vue:134 src/pages/computers/index.vue:88
 #: src/pages/computers/results/detail.vue:509
 #: src/pages/computers/results/events.vue:298
-#: src/pages/computers/results/hardware.vue:314
+#: src/pages/computers/results/hardware.vue:313
 #: src/pages/computers/results/list.vue:121
 #: src/pages/computers/results/simulate.vue:460
 #: src/pages/devices/results/list.vue:182 src/pages/tags/results/detail.vue:100
@@ -798,7 +802,7 @@ msgstr "Egungo egoera aldatu da!"
 #: src/pages/computers/replacement.vue:186
 #: src/pages/computers/results/detail.vue:500
 #: src/pages/computers/results/events.vue:289
-#: src/pages/computers/results/hardware.vue:305
+#: src/pages/computers/results/hardware.vue:304
 #: src/pages/computers/results/list.vue:125
 #: src/pages/computers/results/simulate.vue:451
 #: src/pages/computers/softwareCompare.vue:205
@@ -871,7 +875,7 @@ msgstr "Arbela"
 #: src/pages/computers/replacement.vue:191
 #: src/pages/computers/results/detail.vue:505
 #: src/pages/computers/results/events.vue:294
-#: src/pages/computers/results/hardware.vue:310
+#: src/pages/computers/results/hardware.vue:309
 #: src/pages/computers/results/list.vue:130
 #: src/pages/computers/results/simulate.vue:456
 #: src/pages/computers/softwareCompare.vue:210 src/pages/errors/index.vue:82
@@ -976,8 +980,8 @@ msgstr "Atzerapenak zenbatzen dira"
 #: src/components/computer/Software.vue:130
 #: src/components/computer/Software.vue:187
 #: src/components/computer/Software.vue:51 src/components/ui/ItemDetail.vue:144
-#: src/components/ui/RemoveDialog.vue:21 src/components/ui/TableResults.vue:461
-#: src/components/ui/TableResults.vue:615 src/composables/dataGrid.js:1009
+#: src/components/ui/RemoveDialog.vue:21 src/components/ui/TableResults.vue:488
+#: src/components/ui/TableResults.vue:662 src/composables/dataGrid.js:1009
 #: src/pages/applications/results/detail.vue:160
 #: src/pages/devices/results/detail.vue:152
 #: src/pages/models/results/detail.vue:103
@@ -1017,7 +1021,7 @@ msgstr "Inplementazioen zerrenda"
 #: src/pages/attributes/results/detail.vue:61
 #: src/pages/attributes/results/list.vue:116
 #: src/pages/computers/results/events.vue:423
-#: src/pages/computers/results/hardware.vue:353
+#: src/pages/computers/results/hardware.vue:352
 #: src/pages/errors/results/detail.vue:63 src/pages/errors/results/list.vue:177
 #: src/pages/fault-definitions/results/detail.vue:46
 #: src/pages/package-sets/results/detail.vue:144
@@ -1118,6 +1122,11 @@ msgstr "Gailuen zerrenda"
 msgid "Devices Replacement"
 msgstr "Gailuen ordezkapena"
 
+#: src/components/ui/TableResults.vue:468
+#: src/components/ui/TableResults.vue:641
+msgid "Disable"
+msgstr "Desgaitu"
+
 #: src/components/ui/Header.vue:83
 msgid "Do you want to export so many results?"
 msgstr "Hainbeste emaitza esportatu nahi dituzu?"
@@ -1149,7 +1158,7 @@ msgstr "Domeinuak"
 msgid "Domains List"
 msgstr "Domeinuen zerrenda"
 
-#: src/components/ui/ItemDetail.vue:75 src/components/ui/TableResults.vue:512
+#: src/components/ui/ItemDetail.vue:75 src/components/ui/TableResults.vue:539
 msgid "Download"
 msgstr "Deskargatu"
 
@@ -1173,7 +1182,7 @@ msgstr "Gidarien zerrenda"
 msgid "Duration"
 msgstr "Iraupena"
 
-#: src/components/ui/TableResults.vue:451
+#: src/components/ui/TableResults.vue:478
 msgid "Edit"
 msgstr "Editatu"
 
@@ -1188,6 +1197,11 @@ msgstr "Posta elektronikoa"
 #: src/composables/dataGrid.js:166
 msgid "emulator"
 msgstr "emuladorea"
+
+#: src/components/ui/TableResults.vue:455
+#: src/components/ui/TableResults.vue:632
+msgid "Enable"
+msgstr "Gaitu"
 
 #: src/pages/attribute-sets/results/list.vue:120
 #: src/pages/computers/results/hardware.vue:96
@@ -1249,7 +1263,7 @@ msgid "Errors List"
 msgstr "Akatsen zerrenda"
 
 #: src/components/computer/Info.vue:134 src/components/computer/Info.vue:140
-#: src/components/ui/TableResults.vue:528
+#: src/components/ui/TableResults.vue:555
 #: src/pages/computers/results/events.vue:284
 msgid "Events"
 msgstr "Gertaerak"
@@ -1291,7 +1305,7 @@ msgstr "Iraungi (minutuak)"
 
 #: src/components/chart/Pie.vue:91 src/components/chart/StackedBar.vue:134
 #: src/components/ui/Header.vue:41 src/components/ui/Header.vue:84
-#: src/components/ui/TableResults.vue:606
+#: src/components/ui/TableResults.vue:653
 msgid "Export"
 msgstr "Esportatu"
 
@@ -1525,7 +1539,7 @@ msgstr "Hardwarea"
 
 #: src/components/computer/HardwareResume.vue:114
 #: src/components/computer/HardwareResume.vue:122
-#: src/pages/computers/results/hardware.vue:290
+#: src/pages/computers/results/hardware.vue:289
 #: src/pages/computers/results/list.vue:47
 #: src/pages/computers/results/list.vue:55
 msgid "Hardware Information"
@@ -1540,7 +1554,7 @@ msgid "History of events in the last %{ number } hours"
 msgstr "Azken %{ number } orduetako gertaeren historia"
 
 #: src/components/computer/Info.vue:141 src/components/computer/Info.vue:144
-#: src/components/computer/Info.vue:164 src/components/ui/TableResults.vue:562
+#: src/components/computer/Info.vue:164 src/components/ui/TableResults.vue:589
 #: src/pages/computers/results/label.vue:63
 msgid "Identification"
 msgstr "Identifikazioa"
@@ -1711,7 +1725,7 @@ msgstr "ordenagailu eramangarria"
 msgid "Last hardware capture date"
 msgstr "Hardwarea harrapatzeko azken data"
 
-#: src/components/computer/HardwareResume.vue:300
+#: src/components/computer/HardwareResume.vue:299
 msgid "Last hardware capture date has been changed!"
 msgstr "Azken hardware harrapatzeko data aldatu da!"
 
@@ -1926,9 +1940,9 @@ msgstr "Hautaketa anitza"
 #: src/pages/capabilities/results/list.vue:91
 #: src/pages/categories/results/detail.vue:22
 #: src/pages/categories/results/list.vue:91
-#: src/pages/computers/results/hardware.vue:347
-#: src/pages/computers/results/hardware.vue:361
-#: src/pages/computers/results/hardware.vue:369
+#: src/pages/computers/results/hardware.vue:346
+#: src/pages/computers/results/hardware.vue:360
+#: src/pages/computers/results/hardware.vue:368
 #: src/pages/computers/results/hardware.vue:86
 #: src/pages/computers/results/list.vue:157
 #: src/pages/connections/results/detail.vue:23
@@ -2046,7 +2060,7 @@ msgid "No results"
 msgstr "Emaitzarik ez"
 
 #: src/components/ui/TableResults.vue:441
-#: src/components/ui/TableResults.vue:594
+#: src/components/ui/TableResults.vue:621
 msgid "Not Check"
 msgstr "Ez egiaztatu"
 
@@ -2125,7 +2139,7 @@ msgstr "Irteera (zerbitzaritik)"
 msgid "Package"
 msgstr "Paketea"
 
-#: src/components/ui/ItemDetail.vue:59 src/components/ui/TableResults.vue:501
+#: src/components/ui/ItemDetail.vue:59 src/components/ui/TableResults.vue:528
 #: src/pages/packages/results/information.vue:56
 msgid "Package Information"
 msgstr "Paketearen informazioa"
@@ -2392,7 +2406,7 @@ msgstr "Emandako ordenagailuak / Atzerapena"
 msgid "RAM"
 msgstr "RAM"
 
-#: src/components/ui/ItemDetail.vue:44 src/components/ui/TableResults.vue:486
+#: src/components/ui/ItemDetail.vue:44 src/components/ui/TableResults.vue:513
 msgid "Regenerate Metadata"
 msgstr "Metadatuak birsortu"
 
@@ -2456,7 +2470,7 @@ msgstr "Emaitza"
 #: src/pages/capabilities/results/list.vue:73
 #: src/pages/categories/results/list.vue:73
 #: src/pages/computers/results/events.vue:303
-#: src/pages/computers/results/hardware.vue:319
+#: src/pages/computers/results/hardware.vue:318
 #: src/pages/computers/results/list.vue:139
 #: src/pages/computers/results/simulate.vue:465
 #: src/pages/connections/results/list.vue:85
@@ -2581,12 +2595,12 @@ msgid "Serial"
 msgstr "Seriea"
 
 #: src/components/computer/Info.vue:136 src/components/computer/Info.vue:139
-#: src/components/computer/Info.vue:152 src/components/ui/TableResults.vue:198
-#: src/components/ui/TableResults.vue:199
-#: src/components/ui/TableResults.vue:206
-#: src/components/ui/TableResults.vue:437
-#: src/components/ui/TableResults.vue:455
-#: src/components/ui/TableResults.vue:545
+#: src/components/computer/Info.vue:152 src/components/ui/TableResults.vue:207
+#: src/components/ui/TableResults.vue:208
+#: src/components/ui/TableResults.vue:215
+#: src/components/ui/TableResults.vue:446
+#: src/components/ui/TableResults.vue:464
+#: src/components/ui/TableResults.vue:572
 msgid "Simulate synchronization"
 msgstr "Simulatu sinkronizazioa"
 
@@ -2848,7 +2862,7 @@ msgstr ""
 msgid "The passwords are different"
 msgstr "Pasahitzak desberdinak dira"
 
-#: src/components/ui/TableResults.vue:571
+#: src/components/ui/TableResults.vue:598
 msgid "There are no results"
 msgstr "Ez dago emaitzarik"
 
@@ -3057,7 +3071,7 @@ msgid "UUID"
 msgstr "UUID"
 
 #: src/components/chart/Pie.vue:283 src/pages/attributes/results/detail.vue:49
-#: src/pages/computers/results/hardware.vue:375
+#: src/pages/computers/results/hardware.vue:374
 msgid "Value"
 msgstr "Balioa"
 
