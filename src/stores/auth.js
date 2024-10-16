@@ -113,17 +113,19 @@ export const useAuthStore = defineStore('auth', () => {
     resetScopes()
   }
 
+  function sortByName(a, b) {
+    return a.id && b.id && a.name > b.name
+      ? 1
+      : a.id && b.id && b.name > a.name
+        ? -1
+        : 0
+  }
+
   function addDomain(payload) {
     if (!domains.value.find((el) => el.name === payload.name)) {
       deleteDomain(payload.id)
       domains.value.push(payload)
-      domains.value.sort((a, b) =>
-        a.id && b.id && a.name > b.name
-          ? 1
-          : a.id && b.id && b.name > a.name
-            ? -1
-            : 0,
-      )
+      domains.value.sort(sortByName)
       LocalStorage.set('auth.domains', domains.value)
     }
   }
@@ -147,13 +149,7 @@ export const useAuthStore = defineStore('auth', () => {
     if (!scopes.value.find((el) => el.name === payload.name)) {
       deleteScope(payload.id)
       scopes.value.push(payload)
-      scopes.value.sort((a, b) =>
-        a.id && b.id && a.name > b.name
-          ? 1
-          : a.id && b.id && b.name > a.name
-            ? -1
-            : 0,
-      )
+      scopes.value.sort(sortByName)
       LocalStorage.set('auth.scopes', scopes.value)
     }
   }
