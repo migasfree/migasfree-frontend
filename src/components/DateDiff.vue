@@ -40,7 +40,8 @@ export default {
     const icon = ref('mdi-timer')
 
     const getDiff = (begin, end) => {
-      const diffDays = date.getDateDiff(end, begin, 'days')
+      const diffTime = Math.abs(end - begin)
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
 
       if (end < begin) {
         icon.value = 'mdi-sync'
@@ -52,7 +53,7 @@ export default {
         date.getDateDiff(end, begin, 'seconds') * 1000,
       )
         .toISOString()
-        .substr(11, 8)
+        .slice(11, 19)
 
       if (diffDays >= 1 && diffDays < 30) {
         appearance.value = 'warning'
