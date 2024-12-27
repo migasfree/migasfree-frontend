@@ -108,7 +108,7 @@ export default {
       return (
         element.name !== undefined &&
         element.name.trim() !== '' &&
-        element.hasOwnProperty('project')
+        Object.hasOwn(element, 'project')
       )
     })
 
