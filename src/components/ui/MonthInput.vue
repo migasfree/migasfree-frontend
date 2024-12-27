@@ -75,7 +75,7 @@ export default {
       return date.toISOString().slice(0, 7).replace('-', '/')
     })
 
-    const checkValue = (val, reason, details) => {
+    const checkValue = (val, reason) => {
       if (reason === 'month') {
         monthPicker.value.hide()
         emit('update:model-value', val)
