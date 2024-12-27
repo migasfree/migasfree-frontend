@@ -199,12 +199,12 @@ export default {
       menu.value.hide()
     }
 
-    const onLazyLoad = ({ node, key, done, fail }) => {
+    const onLazyLoad = ({ key, done }) => {
       api
         .get('/api/v1/token/stores/', { params: { project__id: key } })
         .then((response) => {
           done(
-            Object.entries(response.data.results).map(([index, item]) => {
+            Object.entries(response.data.results).map(([, item]) => {
               return {
                 id: `${key}|${item.id}`,
                 label: item.name,
@@ -250,7 +250,7 @@ export default {
         .then((response) => {
           const projects = response.data.results
 
-          projectStore.items = Object.entries(projects).map(([key, item]) => {
+          projectStore.items = Object.entries(projects).map(([, item]) => {
             return {
               id: item.id,
               label: item.name,
