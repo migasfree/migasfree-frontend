@@ -284,7 +284,7 @@ export default {
       windowTitle.value = value
     }
 
-    const filterUserProfiles = async (val, update, abort) => {
+    const filterUserProfiles = async (val, update /*, abort */) => {
       // call abort() at any time if you can't retrieve data somehow
       /* if (val.length < MIN_CHARS_SEARCH) {
         abort()
