@@ -20,7 +20,7 @@ export const useUiStore = defineStore('ui', () => {
 
     // Setup Error Message
     if (typeof error !== 'undefined') {
-      if (error.hasOwnProperty('message')) {
+      if (Object.hasOwn(error, 'message')) {
         message = error.message
       }
     }
@@ -42,8 +42,8 @@ export const useUiStore = defineStore('ui', () => {
 
       // Try to Use the Response Message
       if (
-        error.hasOwnProperty('response') &&
-        error.response.hasOwnProperty('data') &&
+        Object.hasOwn(error, 'response') &&
+        Object.hasOwn(error.response, 'data') &&
         typeof error.response.data !== 'undefined'
       ) {
         if (typeof error.response.data === 'string') {
