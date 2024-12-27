@@ -242,12 +242,12 @@ export default {
       menu.value.hide()
     }
 
-    const onLazyLoad = ({ node, key, done, fail }) => {
+    const onLazyLoad = ({ key, done }) => {
       api
         .get('/api/v1/token/stores/', { params: { project__id: key } })
         .then((response) => {
           done(
-            Object.entries(response.data.results).map(([index, item]) => {
+            Object.entries(response.data.results).map(([, item]) => {
               return {
                 id: `${key}|${item.id}`,
                 label: item.name,
@@ -269,7 +269,7 @@ export default {
         })
         .then((response) => {
           packages.value = []
-          Object.entries(response.data.results).map(([key, item]) => {
+          Object.entries(response.data.results).map(([, item]) => {
             packages.value.push({
               id: item.id,
               fullname: item.fullname,
@@ -287,7 +287,7 @@ export default {
         .then((response) => {
           const projects = response.data.results
 
-          projectStore.items = Object.entries(projects).map(([key, item]) => {
+          projectStore.items = Object.entries(projects).map(([, item]) => {
             return {
               id: item.id,
               label: item.name,
@@ -312,7 +312,7 @@ export default {
       data.append('description', element.description)
 
       if (element.packages) {
-        for (var i = 0; i < element.packages.length; i++) {
+        for (let i = 0; i < element.packages.length; i++) {
           data.append('packages', element.packages[i].id)
         }
       } else {
@@ -320,7 +320,7 @@ export default {
       }
 
       if (element.files) {
-        for (var i = 0; i < element.files.length; i++) {
+        for (let i = 0; i < element.files.length; i++) {
           data.append('files', element.files[i])
         }
       }
