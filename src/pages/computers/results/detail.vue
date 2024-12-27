@@ -529,7 +529,7 @@ export default {
         .get(`/api/v1/token/${model}/${route.params.id}/sync/`)
         .then((response) => {
           Object.assign(syncInfo, response.data)
-          Object.entries(response.data.sync_attributes).map(([key, val]) => {
+          Object.entries(response.data.sync_attributes).map(([, val]) => {
             if (val.property_att.prefix === 'SET') {
               api
                 .get(`/api/v1/token/attributes/${val.id}/badge/`)
@@ -626,7 +626,7 @@ export default {
           comment: element.comment,
           tags: element.tags.map((item) => item.id),
         })
-        .then((response) => {
+        .then(() => {
           uiStore.notifySuccess($gettext('Current Situation has been changed!'))
         })
         .catch((error) => {
@@ -679,7 +679,7 @@ export default {
 
       getComputerStatus()
 
-      Object.entries(element.tags).map(([key, val]) => {
+      Object.entries(element.tags).map(([, val]) => {
         if (val.latitude !== null) {
           markers.value.push({
             id: val.id,
