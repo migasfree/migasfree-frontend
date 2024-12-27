@@ -117,7 +117,7 @@ export default {
 
     const tooltipToView = computed(() => {
       switch (props.model) {
-        case 'computers':
+        case 'computers': {
           const pieces = props.tooltip.split(',')
           return [
             {
@@ -128,6 +128,7 @@ export default {
             { icon: 'mdi-ip-network', text: pieces[2].trim() },
             { icon: modelIcon('users'), text: pieces[3].trim() },
           ]
+        }
         default:
           return [{ icon: '', text: props.tooltip.trim() }]
       }
@@ -201,7 +202,7 @@ export default {
     const filterRelations = () => {
       let name = ''
 
-      Object.entries(relations.value).map(([key, item]) => {
+      Object.entries(relations.value).map(([, item]) => {
         let to = '#'
         if (item.model && item.pk) {
           name = `${normalizeModel(pluralize.singular(item.model))}-detail`
