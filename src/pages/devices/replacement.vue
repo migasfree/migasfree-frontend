@@ -224,7 +224,7 @@ export default {
               target: target.value.id,
             },
           )
-          .then((response) => {
+          .then(() => {
             let tmp = null
 
             tmp = source.value.logical_devices
