@@ -96,7 +96,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     await api
       .post('/rest-auth/logout/')
-      .then((response) => {
+      .then(() => {
         reset()
       })
       .catch((error) => {
@@ -136,7 +136,7 @@ export const useAuthStore = defineStore('auth', () => {
     await api
       .get('/api/v1/token/domains/')
       .then((response) => {
-        Object.entries(response.data.results).map(([index, item]) => {
+        Object.entries(response.data.results).map(([, item]) => {
           addDomain({ id: item.id, name: item.name })
         })
       })
@@ -160,7 +160,7 @@ export const useAuthStore = defineStore('auth', () => {
     await api
       .get('/api/v1/token/scopes/', { user__id: user.id })
       .then((response) => {
-        Object.entries(response.data.results).map(([index, item]) => {
+        Object.entries(response.data.results).map(([, item]) => {
           addScope({
             id: item.id,
             name: item.name,
