@@ -88,7 +88,7 @@ export default function useDetail(
       loading.value = true
       await api
         .patch(`/api/v1/token/${model}/${element.id}/`, elementData())
-        .then((response) => {
+        .then(() => {
           emit('updateRelated')
 
           uiStore.notifySuccess($gettext('Data has been changed!'))
@@ -158,7 +158,7 @@ export default function useDetail(
   const remove = async () => {
     await api
       .delete(`/api/v1/token/${model}/${element.id}/`)
-      .then((response) => {
+      .then(() => {
         emit('postRemove')
         router.push({ name: routes.list })
       })
