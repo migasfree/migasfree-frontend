@@ -277,7 +277,7 @@ export default {
       return (
         element.value !== undefined &&
         element.value.trim() !== '' &&
-        element.hasOwnProperty('property_att')
+        Object.hasOwn(element, 'property_att')
       )
     })
 
