@@ -5,7 +5,7 @@ import {
   createWebHistory,
   createWebHashHistory,
 } from 'vue-router'
-import routes from './routes'
+import routes from './routes.js'
 
 import { useAuthStore } from 'stores/auth'
 // import { cancelSource } from 'boot/axios'
