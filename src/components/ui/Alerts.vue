@@ -82,8 +82,8 @@ export default defineComponent({
         })
         .catch((error) => {
           if (
-            typeof error !== undefined &&
-            typeof error.response !== undefined &&
+            typeof error !== 'undefined' &&
+            typeof error.response !== 'undefined' &&
             error.response.status === 403
           ) {
             $q.localStorage.remove('auth.token')
@@ -199,7 +199,7 @@ export default defineComponent({
         updateData(response)
       }
 
-      socket.value.onclose = (e) => {
+      socket.value.onclose = () => {
         setTimeout(() => {
           connectWS()
         }, 1000)
