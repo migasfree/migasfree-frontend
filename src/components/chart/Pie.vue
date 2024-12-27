@@ -328,7 +328,7 @@ export default {
       window.removeEventListener('resize', windowResize)
     })
 
-    const rowClick = (evt, row, index) => {
+    const rowClick = (evt, row) => {
       const params = new Object()
       params.data = row
       passData(params)
