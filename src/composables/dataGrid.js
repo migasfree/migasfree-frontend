@@ -9,7 +9,7 @@ import {
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import { useGettext } from 'vue3-gettext'
-import _merge from 'lodash/merge'
+import _merge from 'lodash/merge.js'
 
 import { useAuthStore } from 'stores/auth'
 import { useUiStore } from 'stores/ui'
@@ -506,14 +506,14 @@ export default function useDataGrid(
           {
             id: options.productive.join(','),
             label: $gettext('productive'),
-            children: Object.entries(options.productive).map(([key, val]) => {
+            children: Object.entries(options.productive).map(([, val]) => {
               return { id: val, label: options.choices[val] }
             }),
           },
           {
             id: options.unproductive.join(','),
             label: $gettext('unproductive'),
-            children: Object.entries(options.unproductive).map(([key, val]) => {
+            children: Object.entries(options.unproductive).map(([, val]) => {
               return { id: val, label: options.choices[val] }
             }),
           },
@@ -979,7 +979,7 @@ export default function useDataGrid(
   const remove = (id, reload = true) => {
     api
       .delete(`/api/v1/token/${model.value}/${id}/`)
-      .then((response) => {
+      .then(() => {
         emit('postRemove', id)
         uiStore.notifySuccess($gettext('Item deleted!'))
         if (reload) loadItems()
@@ -1081,7 +1081,7 @@ export default function useDataGrid(
   const updateChecked = (id, value, reload = true) => {
     api
       .patch(`/api/v1/token/${model.value}/${id}/`, { checked: value })
-      .then((response) => {
+      .then(() => {
         uiStore.notifySuccess($gettext('Changed item check value!'))
         if (reload) loadItems()
       })
@@ -1105,7 +1105,7 @@ export default function useDataGrid(
 
     api
       .patch(`/api/v1/token/${model.value}/${id}/`, data)
-      .then((response) => {
+      .then(() => {
         uiStore.notifySuccess($gettext('Changed item enable value!'))
         if (reload) loadItems()
       })
@@ -1138,7 +1138,7 @@ export default function useDataGrid(
     myTable.value.reset()
     resetColumnFilters()
 
-    Object.entries(tableFilters).map(([key, value]) => {
+    Object.entries(tableFilters).map(([key]) => {
       switch (key) {
         case 'createdAtRange':
         case 'installDateRange':
