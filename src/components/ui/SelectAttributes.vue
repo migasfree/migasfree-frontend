@@ -76,6 +76,7 @@ import { ref, onMounted, watch } from 'vue'
 
 import { api } from 'boot/axios'
 import MigasLink from 'components/MigasLink'
+import { useUiStore } from 'stores/ui'
 import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import useCopyPaste from 'composables/copyPaste'
@@ -96,6 +97,8 @@ export default {
   },
   emits: ['update:model-value'],
   setup(props, { emit }) {
+    const uiStore = useUiStore()
+
     const { copyList, pasteList, hasPaste } = useCopyPaste()
     const { elementIcon, equivalentModel, equivalentKey, attributeValue } =
       useElement()
