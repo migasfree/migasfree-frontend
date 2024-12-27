@@ -240,7 +240,7 @@ export default {
       await api
         .get('/api/v1/token/user-profiles/domain-admins/')
         .then((response) => {
-          Object.entries(response.data).map(([index, item]) => {
+          Object.entries(response.data).map(([, item]) => {
             userProfiles.value.push({
               id: item.id,
               name: item.username,
