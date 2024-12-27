@@ -77,7 +77,7 @@ export default {
       },
     })
 
-    const updateValue = (val, reason, details) => {
+    const updateValue = (val, reason) => {
       if (reason === 'add-day') {
         dayPicker.value.hide()
         emit('update:model-value', val)
