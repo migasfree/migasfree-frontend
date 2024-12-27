@@ -248,7 +248,7 @@ export default {
         loading.value = true
         await api
           .post('/rest-auth/password/change/', elementData())
-          .then((response) => {
+          .then(() => {
             uiStore.notifySuccess($gettext('Password changed!'))
           })
           .catch((error) => {
@@ -262,7 +262,7 @@ export default {
             `/api/v1/token/user-profiles/${element.id}/change-password/`,
             elementData(),
           )
-          .then((response) => {
+          .then(() => {
             uiStore.notifySuccess($gettext('Password changed!'))
           })
           .catch((error) => {
