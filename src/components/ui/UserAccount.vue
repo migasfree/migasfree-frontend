@@ -217,7 +217,7 @@ export default {
         })
     }
 
-    authStore.$subscribe((mutation, state) => {
+    authStore.$subscribe(() => {
       user.value = authStore.user
 
       if (authStore.user.domain_preference)
