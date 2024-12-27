@@ -87,7 +87,7 @@ export default {
       Object.entries(props.element.logical_devices).map(([key, item]) => {
         if ('attributes' in item) {
           let computers = []
-          Object.entries(item.attributes).map(async ([keyAtt, att]) => {
+          Object.entries(item.attributes).map(async ([, att]) => {
             if (att.property_att.prefix === 'CID') {
               await api
                 .get(`/api/v1/token/computers/${parseInt(att.value)}`)
