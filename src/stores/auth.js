@@ -4,7 +4,7 @@ import { LocalStorage } from 'quasar'
 
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
-import { useUiStore } from './ui'
+import { useUiStore } from './ui.js'
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref(LocalStorage.getItem('auth.token')) || ref('')
