@@ -504,7 +504,7 @@ export default {
       await api
         .get(`/api/v1/token/computers/${computer.id}/sync/`)
         .then((response) => {
-          Object.entries(response.data.sync_attributes).map(([key, val]) => {
+          Object.entries(response.data.sync_attributes).map(([, val]) => {
             if (val.property_att.prefix === 'SET') {
               api
                 .get(`/api/v1/token/attributes/${val.id}/badge/`)
@@ -581,17 +581,17 @@ export default {
             )
 
           if ('logical_devices' in simulation)
-            Object.entries(simulation.logical_devices).map(([key, item]) => {
+            Object.entries(simulation.logical_devices).map(([, item]) => {
               item.icon = modelIcon('devices/logical')
             })
 
           if ('fault_definitions' in simulation)
-            Object.entries(simulation.fault_definitions).map(([key, item]) => {
+            Object.entries(simulation.fault_definitions).map(([, item]) => {
               item.icon = modelIcon('fault-definitions')
             })
 
           if ('deployments' in simulation)
-            Object.entries(simulation.deployments).map(([key, item]) => {
+            Object.entries(simulation.deployments).map(([, item]) => {
               item.icon = modelIcon('deployments')
             })
         })
@@ -624,7 +624,7 @@ export default {
           loadSyncInfo()
           loadSimulation()
 
-          Object.entries(response.data.tags).map(([key, val]) => {
+          Object.entries(response.data.tags).map(([, val]) => {
             onlyTags.value.push({
               id: val.id,
               icon: modelIcon('tags'),
