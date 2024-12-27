@@ -156,7 +156,7 @@ export default {
           assigned_logical_devices_to_cid:
             devices.assigned_logical_devices_to_cid.map((item) => item.id),
         })
-        .then((response) => {
+        .then(() => {
           uiStore.notifySuccess($gettext('Devices have been changed!'))
         })
         .catch((error) => {
