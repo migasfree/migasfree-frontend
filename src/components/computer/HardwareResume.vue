@@ -294,7 +294,7 @@ export default {
         .patch(`/api/v1/token/computers/${props.cid}/`, {
           last_hardware_capture: hardwareDate.value,
         })
-        .then((response) => {
+        .then(() => {
           uiStore.notifySuccess(
             $gettext('Last hardware capture date has been changed!'),
           )
