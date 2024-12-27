@@ -194,7 +194,7 @@ export default {
       await api
         .get('/api/v1/token/domains/')
         .then((response) => {
-          Object.entries(response.data.results).map(([index, item]) => {
+          Object.entries(response.data.results).map(([, item]) => {
             domains.value.push({
               id: item.id,
               name: item.name,
@@ -209,7 +209,7 @@ export default {
         await api
           .get('/api/v1/token/user-profiles/')
           .then((response) => {
-            Object.entries(response.data.results).map(([index, item]) => {
+            Object.entries(response.data.results).map(([, item]) => {
               userProfiles.value.push({
                 id: item.id,
                 name: item.username,
