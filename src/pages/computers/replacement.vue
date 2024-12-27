@@ -240,7 +240,7 @@ export default {
           .post(`/api/v1/token/computers/${source.value.id}/replacement/`, {
             target: target.value.id,
           })
-          .then((response) => {
+          .then(() => {
             let tmp = null
 
             tmp = source.value.status
