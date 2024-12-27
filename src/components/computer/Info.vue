@@ -235,7 +235,7 @@ export default {
         .patch(`/api/v1/token/computers/${props.cid}/`, {
           name: value.value,
         })
-        .then((response) => {
+        .then(() => {
           uiStore.notifySuccess($gettext('Name has been changed!'))
         })
         .catch((error) => {
