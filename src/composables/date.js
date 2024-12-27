@@ -1,7 +1,7 @@
 import { useGettext } from 'vue3-gettext'
 import { date } from 'quasar'
 import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
+import relativeTime from 'dayjs/plugin/relativeTime.js'
 
 dayjs.extend(relativeTime)
 
