@@ -246,7 +246,7 @@ export default defineComponent({
         })
         .then((response) => {
           monthlySyncs.xData = response.data.x_labels
-          Object.entries(response.data.data).map(([key, val]) => {
+          Object.entries(response.data.data).map(([, val]) => {
             monthlySyncs.series.push({
               type: 'line',
               smooth: true,
@@ -268,7 +268,7 @@ export default defineComponent({
             params: { begin: begin.value, end: end.value, project_id: item.id },
           })
           .then((response) => {
-            Object.entries(response.data.data).map(([key, val]) => {
+            Object.entries(response.data.data).map(([, val]) => {
               monthlySyncs.series.push({
                 type: 'line',
                 smooth: true,
@@ -329,37 +329,37 @@ export default defineComponent({
           uiStore.notifyError(error)
         })
 
-      eventsHistory.xData = syncs.data.x_labels
+      eventsHistory.xData = syncs ? syncs.data.x_labels : []
       eventsHistory.series = [
         {
           type: 'line',
           smooth: true,
-          name: Object.keys(syncs.data.data)[0],
-          data: Object.values(syncs.data.data)[0],
+          name: syncs ? Object.keys(syncs.data.data)[0] : '',
+          data: syncs ? Object.values(syncs.data.data)[0] : [],
         },
         {
           type: 'line',
           smooth: true,
-          name: Object.keys(errors.data.data)[0],
-          data: Object.values(errors.data.data)[0],
+          name: errors ? Object.keys(errors.data.data)[0] : '',
+          data: errors ? Object.values(errors.data.data)[0] : [],
         },
         {
           type: 'line',
           smooth: true,
-          name: Object.keys(faults.data.data)[0],
-          data: Object.values(faults.data.data)[0],
+          name: faults ? Object.keys(faults.data.data)[0] : '',
+          data: faults ? Object.values(faults.data.data)[0] : [],
         },
         {
           type: 'line',
           smooth: true,
-          name: Object.keys(migrations.data.data)[0],
-          data: Object.values(migrations.data.data)[0],
+          name: migrations ? Object.keys(migrations.data.data)[0] : '',
+          data: migrations ? Object.values(migrations.data.data)[0] : [],
         },
         {
           type: 'line',
           smooth: true,
-          name: Object.keys(statusLogs.data.data)[0],
-          data: Object.values(statusLogs.data.data)[0],
+          name: statusLogs ? Object.keys(statusLogs.data.data)[0] : '',
+          data: statusLogs ? Object.values(statusLogs.data.data)[0] : [],
         },
       ]
 
