@@ -39,7 +39,13 @@
                 outlined
                 :label="$gettext('Name')"
                 lazy-rules
-                :rules="[(val) => !!val || $gettext('* Required')]"
+                :rules="[
+                  (val) => !!val || $gettext('* Required'),
+                  (val) =>
+                    val === '' ||
+                    !val.includes(' ') ||
+                    $gettext('* No blank spaces allowed'),
+                ]"
               />
             </div>
           </div>
@@ -143,6 +149,7 @@ export default {
       return (
         element.name !== undefined &&
         element.name.trim() !== '' &&
+        !element.name.includes(' ') &&
         element.platform !== undefined &&
         element.pms !== undefined &&
         element.architecture !== undefined
