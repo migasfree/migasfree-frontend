@@ -1,5 +1,6 @@
 {
   "es_ES": {
+    "* No blank spaces allowed": "* No se permiten espacios en blanco",
     "* Required": "* Obligatorio",
     "# Create an attribute with the name of computer from bash": "# Crear un atributo con el nombre del equipo desde bash",
     "%{n} bits": "%{n} bits",
@@ -546,6 +547,7 @@
     "You have established a domain or a scope in the preferences": "Tienes establecido un dominio o un ámbito en las preferencias"
   },
   "ca_ES": {
+    "* No blank spaces allowed": "* No es permeten espais en blanc",
     "* Required": "* Obligatori",
     "# Create an attribute with the name of computer from bash": "# Creeu un atribut amb el nom de l'ordinador des de bash",
     "%{n} bits": "%{n} bits",
@@ -1092,6 +1094,7 @@
     "You have established a domain or a scope in the preferences": "Heu establert un domini o un àmbit a les preferències"
   },
   "eu_ES": {
+    "* No blank spaces allowed": "* Ez dago zuriunerik onartzen",
     "* Required": "* Beharrezkoa",
     "# Create an attribute with the name of computer from bash": "# Sortu atributu bat bash-etik ordenagailuaren izenarekin",
     "%{n} bits": "%{n} bits",
@@ -1638,6 +1641,7 @@
     "You have established a domain or a scope in the preferences": "Hobespenetan domeinu edo esparru bat ezarri duzu"
   },
   "gl_ES": {
+    "* No blank spaces allowed": "* Non se permiten espazos en branco",
     "* Required": "* Obligatorio",
     "# Create an attribute with the name of computer from bash": "# Crea un atributo co nome do ordenador desde bash",
     "%{n} bits": "%{n} bits",
