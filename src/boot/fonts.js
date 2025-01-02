@@ -1,1 +1,1 @@
-require('typeface-dosis')
+import 'typeface-dosis'
