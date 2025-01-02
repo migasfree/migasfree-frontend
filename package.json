@@ -20,6 +20,9 @@
     "format": "prettier --write \"**/*.{js,vue,css,html,md,json}\" --ignore-path .gitignore",
     "format:check": "prettier --check . --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "postinstall": "quasar prepare",
     "gettext-extract": "vue-gettext-extract",
     "gettext-compile": "vue-gettext-compile"
   },
@@ -28,6 +31,7 @@
     "@vue-leaflet/vue-leaflet": "0.7.0",
     "ace-builds": "1.37.1",
     "axios": "1.7.9",
+    "core-js": "3.39.0",
     "dayjs": "1.11.13",
     "echarts": "5.5.1",
     "js-abbreviation-number": "1.4.0",
@@ -47,7 +51,7 @@
     "vue3-gettext": "2.4.0"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "7.25.9",
+    "@eslint/js": "9.17.0",
     "@quasar/app-webpack": "4.0.4",
     "@quasar/quasar-app-extension-qmarkdown": "2.0.2",
     "@vue/eslint-config-prettier": "10.1.0",

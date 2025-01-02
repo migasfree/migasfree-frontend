@@ -6,12 +6,10 @@
  */
 
 // Configuration for your app
-// https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js
+// https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file
 
 import ESLintPlugin from 'eslint-webpack-plugin'
-
 import { defineConfig } from '#q-app/wrappers'
-
 import { fileURLToPath } from 'node:url'
 
 export default defineConfig((ctx) => {
@@ -27,14 +25,14 @@ export default defineConfig((ctx) => {
     // https://v2.quasar.dev/quasar-cli-webpack/boot-files
     boot: [
       'axios',
-      'vue-good-table-next',
-      'gettext',
       'fonts',
-      'vue-echarts',
+      'gettext',
       'leaflet',
+      'vue-echarts',
+      'vue-good-table-next',
     ],
 
-    // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-css
+    // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#css
     css: ['app.sass'],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
@@ -51,35 +49,38 @@ export default defineConfig((ctx) => {
       'material-icons', // optional, you are not bound to it
     ],
 
-    // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-build
+    // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#build
     build: {
+      // publicPath: '/',
       vueRouterMode: 'history', // available values: 'hash', 'history'
 
-      // transpile: false,
-      // publicPath: '/',
+      // webpackTranspile: false,
 
       // Add dependencies for transpiling with Babel (Array of string/regex)
       // (from node_modules, which are by default not transpiled).
-      // Applies only if "transpile" is set to true.
-      // transpileDependencies: [],
+      // Applies only if "webpackTranspile" is set to true.
+      // webpackTranspileDependencies: [],
 
       // rtl: true, // https://quasar.dev/options/rtl-support
       // preloadChunks: true,
-      // showProgress: false,
+      // webpackShowProgress: false,
       // gzip: true,
       // analyze: true,
+      // webpackDevtool: ?,
 
       // Options below are automatically set depending on the env, set them if you want to override
       // extractCSS: false,
 
       // https://v2.quasar.dev/quasar-cli-webpack/handling-webpack
-      // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
+      // "chain" is a webpack-chain object https://github.com/sorrycc/webpack-chain
+      // chainWebpack (/* chain, { isClient, isServer } */) {}
 
       chainWebpack(chain) {
         chain.resolve.alias.set(
           'composables',
           fileURLToPath(new URL('./src/composables', import.meta.url)),
         )
+
         chain.resolve.alias.set(
           'config',
           fileURLToPath(new URL('./src/config', import.meta.url)),
@@ -87,7 +88,7 @@ export default defineConfig((ctx) => {
       },
     },
 
-    // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
+    // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#devserver
     devServer: {
       server: {
         type: 'http',
@@ -107,7 +108,7 @@ export default defineConfig((ctx) => {
       errors: true,
     },
 
-    // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-framework
+    // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#framework
     framework: {
       config: {},
 
@@ -136,84 +137,74 @@ export default defineConfig((ctx) => {
     // https://quasar.dev/options/animations
     animations: [],
 
+    // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#sourcefiles
+    // sourceFiles: {
+    //   rootComponent: 'src/App.vue',
+    //   router: 'src/router/index',
+    //   store: 'src/store/index',
+    //   indexHtmlTemplate: 'index.html',
+    //   pwaRegisterServiceWorker: 'src-pwa/register-service-worker',
+    //   pwaServiceWorker: 'src-pwa/custom-service-worker',
+    //   pwaManifestFile: 'src-pwa/manifest.json',
+    //   electronMain: 'src-electron/electron-main',
+    //   electronPreload: 'src-electron/electron-preload'
+    //   bexManifestFile: 'src-bex/manifest.json
+    // },
+
     // https://v2.quasar.dev/quasar-cli-webpack/developing-ssr/configuring-ssr
     ssr: {
-      pwa: false,
-
-      // manualStoreHydration: true,
-      // manualPostHydrationTrigger: true,
-
       prodPort: 3000, // The default port that the production server should use
       // (gets superseded if process.env.PORT is specified at runtime)
-
-      maxAge: 1000 * 60 * 60 * 24 * 30,
-      // Tell browser when a file from the server should expire from cache (in ms)
-
-      chainWebpackWebserver(chain) {
-        chain
-          .plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js'] }])
-      },
 
       middlewares: [
         ctx.prod ? 'compression' : '',
         'render', // keep this as last one
       ],
+
+      // extendPackageJson (json) {},
+      // extendSSRWebserverConf (esbuildConf) {},
+
+      // manualStoreSerialization: true,
+      // manualStoreSsrContextInjection: true,
+      // manualStoreHydration: true,
+      // manualPostHydrationTrigger: true,
+
+      pwa: false,
+      // pwaOfflineHtmlFilename: 'offline.html', // do NOT use index.html as name!
+
+      // pwaExtendGenerateSWOptions (cfg) {},
+      // pwaExtendInjectManifestOptions (cfg) {}
+
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+      // Tell browser when a file from the server should expire from cache (in ms)
+
+      /* chainWebpackWebserver(chain) {
+        chain
+          .plugin('eslint-webpack-plugin')
+          .use(ESLintPlugin, [{ extensions: ['js'] }])
+      },*/
     },
 
     // https://v2.quasar.dev/quasar-cli-webpack/developing-pwa/configuring-pwa
     pwa: {
-      workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
-      workboxOptions: {}, // only for GenerateSW
-
+      workboxMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
+      // swFilename: 'sw.js',
+      // manifestFilename: 'manifest.json',
+      // extendManifestJson (json) {},
+      // useCredentialsForManifestTag: true,
       // injectPwaMetaTags: false,
-      // swFilename: 'register-service-worker.js',
+      // extendPWACustomSWConf (esbuildConf) {},
+      // extendGenerateSWOptions (cfg) {},
+      // extendInjectManifestOptions (cfg) {}
 
       // for the custom service worker ONLY (/src-pwa/custom-service-worker.[js|ts])
       // if using workbox in InjectManifest mode
 
-      chainWebpackCustomSW(chain) {
+      /* chainWebpackCustomSW(chain) {
         chain
           .plugin('eslint-webpack-plugin')
           .use(ESLintPlugin, [{ extensions: ['js'] }])
-      },
-
-      manifest: {
-        name: `Migasfree Frontend`,
-        short_name: `Migasfree Frontend`,
-        description: `Systems Management System (frontend) (with Quasar framework)`,
-        display: 'standalone',
-        orientation: 'portrait',
-        background_color: '#ffffff',
-        theme_color: '#027be3',
-        icons: [
-          {
-            src: 'icons/icon-128x128.png',
-            sizes: '128x128',
-            type: 'image/png',
-          },
-          {
-            src: 'icons/icon-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: 'icons/icon-256x256.png',
-            sizes: '256x256',
-            type: 'image/png',
-          },
-          {
-            src: 'icons/icon-384x384.png',
-            sizes: '384x384',
-            type: 'image/png',
-          },
-          {
-            src: 'icons/icon-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
-        ],
-      },
+      },*/
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/developing-cordova-apps/configuring-cordova
@@ -228,6 +219,17 @@ export default defineConfig((ctx) => {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/developing-electron-apps/configuring-electron
     electron: {
+      // extendElectronMainConf (esbuildConf) {},
+      // extendElectronPreloadConf (esbuildConf) {},
+
+      // extendPackageJson (json) {},
+
+      // Electron preload scripts (if any) from /src-electron, WITHOUT file extension
+      preloadScripts: ['electron-preload'],
+
+      // specify the debugging port to use for the Electron app when running in development mode
+      inspectPort: 5858,
+
       bundler: 'packager', // 'packager' or 'builder'
 
       packager: {
@@ -260,6 +262,22 @@ export default defineConfig((ctx) => {
           .plugin('eslint-webpack-plugin')
           .use(ESLintPlugin, [{ extensions: ['js'] }])
       },
+    },
+
+    // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/developing-browser-extensions/configuring-bex
+    bex: {
+      // extendBexScriptsConf (esbuildConf) {},
+      // extendBexManifestJson (json) {},
+
+      /**
+       * The list of extra scripts (js/ts) not in your bex manifest that you want to
+       * compile and use in your browser extension. Maybe dynamic use them?
+       *
+       * Each entry in the list should be a relative filename to /src-bex/
+       *
+       * @example [ 'my-script.ts', 'sub-folder/my-other-script.js' ]
+       */
+      extraScripts: [],
     },
   }
 })
