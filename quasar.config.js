@@ -8,13 +8,13 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js
 
-const ESLintPlugin = require('eslint-webpack-plugin')
+import ESLintPlugin from 'eslint-webpack-plugin'
 
-const { configure } = require('quasar/wrappers')
+import { defineConfig } from '#q-app/wrappers'
 
-const path = require('path')
+import { fileURLToPath } from 'node:url'
 
-module.exports = configure(function (ctx) {
+export default defineConfig((ctx) => {
   return {
     // https://v2.quasar.dev/quasar-cli-webpack/supporting-ts
     supportTS: false,
@@ -40,7 +40,7 @@ module.exports = configure(function (ctx) {
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
       // 'ionicons-v4',
-      'mdi-v5',
+      'mdi-v7',
       // 'fontawesome-v6',
       // 'eva-icons',
       // 'themify',
@@ -53,7 +53,6 @@ module.exports = configure(function (ctx) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-build
     build: {
-      env: require('dotenv').config().parsed,
       vueRouterMode: 'history', // available values: 'hash', 'history'
 
       // transpile: false,
@@ -77,16 +76,13 @@ module.exports = configure(function (ctx) {
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
 
       chainWebpack(chain) {
-        chain
-          .plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js', 'vue'] }])
         chain.resolve.alias.set(
           'composables',
-          path.resolve(__dirname, './src/composables'),
+          fileURLToPath(new URL('./src/composables', import.meta.url)),
         )
         chain.resolve.alias.set(
           'config',
-          path.resolve(__dirname, './src/config'),
+          fileURLToPath(new URL('./src/config', import.meta.url)),
         )
       },
     },
@@ -98,6 +94,17 @@ module.exports = configure(function (ctx) {
       },
       port: 3002,
       open: false, // opens browser window automatically
+    },
+
+    eslint: {
+      // fix: true,
+      // include: [],
+      // exclude: [],
+      // cache: false,
+      // rawEsbuildEslintOptions: {},
+      // rawWebpackEslintPluginOptions: {},
+      warnings: true,
+      errors: true,
     },
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-framework
