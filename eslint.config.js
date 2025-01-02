@@ -44,7 +44,9 @@ export default [
       // allow debugger during development only
       'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     },
+  },
 
+  {
     files: ['src-pwa/custom-service-worker.js'],
     languageOptions: {
       globals: {
