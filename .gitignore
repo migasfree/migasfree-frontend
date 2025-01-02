@@ -39,4 +39,3 @@ yarn-error.log*
 # other files
 yarn.lock
 *.mo
-*.config.js.temporary.compiled.*.mjs
