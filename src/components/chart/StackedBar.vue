@@ -60,8 +60,8 @@
           autoresize
           @click="passData"
         />
-        <q-banner v-if="noData" rounded class="bg-warning text-black q-ma-md">
-          <translate>No data available.</translate>
+        <q-banner v-if="noData" rounded class="bg-info text-white q-ma-md">
+          {{ $gettext('No data available.') }}
         </q-banner>
       </q-card-section>
 
@@ -111,7 +111,7 @@
               size="lg"
               class="vertical-middle"
             />
-            <translate class="vertical-middle">Data</translate>
+            <span class="vertical-middle">{{ $gettext('Data') }}</span>
           </div>
         </q-card-section>
 
