@@ -49,9 +49,12 @@
             <template #header>
               <q-item-section>
                 <div class="text-h5 q-py-sm">
-                  <translate :translate-params="{ number: lastHours }"
-                    >History of events in the last %{ number } hours</translate
-                  >
+                  {{
+                    $gettext(
+                      'History of events in the last %{ number } hours',
+                      { number: lastHours },
+                    )
+                  }}
                 </div>
               </q-item-section>
             </template>
