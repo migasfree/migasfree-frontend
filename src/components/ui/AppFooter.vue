@@ -10,7 +10,7 @@
         href="http://www.migasfree.org/"
         no-caps
         size="16px"
-        ><q-tooltip><translate>Website</translate></q-tooltip></q-btn
+        ><q-tooltip>{{ $gettext('Website') }}</q-tooltip></q-btn
       >
       <q-btn
         stretch
@@ -20,14 +20,14 @@
         href="http://www.gnu.org/licenses/gpl.html"
         no-caps
         size="16px"
-        ><q-tooltip><translate>License</translate></q-tooltip></q-btn
+        ><q-tooltip>{{ $gettext('License') }}</q-tooltip></q-btn
       >
       <q-btn-dropdown flat stretch>
         <template #label>
           <q-icon name="mdi-github" />
 
           <q-tooltip>
-            <translate>Source code</translate>
+            {{ $gettext('Source code') }}
           </q-tooltip>
         </template>
 
@@ -59,7 +59,7 @@
       <q-space />
 
       <q-btn stretch flat icon="mdi-api" type="a" :href="apiLink">
-        <q-tooltip><translate>API Rest Info</translate></q-tooltip></q-btn
+        <q-tooltip>{{ $gettext('API Rest Info') }}</q-tooltip></q-btn
       >
 
       <q-btn
@@ -69,9 +69,9 @@
         type="a"
         href="http://fun-with-migasfree.readthedocs.io/"
       >
-        <q-tooltip anchor="top middle" self="bottom right"
-          ><translate>migasfree documentation</translate></q-tooltip
-        ></q-btn
+        <q-tooltip anchor="top middle" self="bottom right">{{
+          $gettext('migasfree documentation')
+        }}</q-tooltip></q-btn
       >
     </q-toolbar>
   </q-footer>
