@@ -3,12 +3,12 @@
     <template #label>
       <q-icon :name="modelIcon('user-profiles')" />
       <q-tooltip>
-        <translate>User Account</translate>
+        {{ $gettext('User Account') }}
       </q-tooltip>
     </template>
     <q-list>
       <q-item>
-        <q-tooltip><translate>User</translate></q-tooltip>
+        <q-tooltip>{{ $gettext('User') }}</q-tooltip>
 
         <q-item-section avatar>
           <q-icon name="mdi-account" />
@@ -20,7 +20,7 @@
       </q-item>
 
       <q-item v-if="organization">
-        <q-tooltip><translate>Organization</translate></q-tooltip>
+        <q-tooltip>{{ $gettext('Organization') }}</q-tooltip>
 
         <q-item-section avatar>
           <q-icon name="mdi-bank" />
@@ -34,7 +34,7 @@
       <q-separator />
 
       <q-item>
-        <q-tooltip><translate>Change App Language</translate></q-tooltip>
+        <q-tooltip>{{ $gettext('Change App Language') }}</q-tooltip>
 
         <q-item-section avatar>
           <q-icon name="mdi-earth" />
@@ -55,7 +55,7 @@
       </q-item>
 
       <q-item>
-        <q-tooltip><translate>Change Domain</translate></q-tooltip>
+        <q-tooltip>{{ $gettext('Change Domain') }}</q-tooltip>
 
         <q-item-section avatar>
           <q-icon :name="modelIcon('domains')" />
@@ -76,7 +76,7 @@
       </q-item>
 
       <q-item>
-        <q-tooltip><translate>Change Scope</translate></q-tooltip>
+        <q-tooltip>{{ $gettext('Change Scope') }}</q-tooltip>
 
         <q-item-section avatar>
           <q-icon :name="modelIcon('scopes')" />
