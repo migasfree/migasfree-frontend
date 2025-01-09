@@ -14,7 +14,7 @@
             </q-item-section>
 
             <q-item-section>
-              <translate>Inventory</translate>
+              {{ $gettext('Inventory') }}
             </q-item-section>
 
             <q-item-section v-if="softwareInventory.length > 0">
@@ -27,7 +27,7 @@
                     softwareInventory.length
                   }}</q-tooltip></q-avatar
                 >
-                <translate>packages</translate>
+                {{ $gettext('packages') }}
               </q-chip>
             </q-item-section>
 
@@ -89,7 +89,7 @@
             </q-item-section>
 
             <q-item-section>
-              <translate>History</translate>
+              {{ $gettext('History') }}
             </q-item-section>
 
             <q-item-section v-if="Object.keys(softwareHistory).length > 0">
@@ -102,11 +102,13 @@
                     Object.keys(softwareHistory).length
                   }}</q-tooltip></q-avatar
                 >
-                <translate
-                  :translate-n="Object.keys(softwareHistory).length"
-                  translate-plural="dates"
-                  >date</translate
-                >
+                {{
+                  $ngettext(
+                    'date',
+                    'dates',
+                    Object.keys(softwareHistory).length,
+                  )
+                }}
               </q-chip>
             </q-item-section>
 
@@ -160,9 +162,9 @@
                       ><strong>{{
                         value.filter((item) => item.mode === '+').length
                       }}</strong
-                      ><q-tooltip
-                        ><translate>Installed Packages</translate></q-tooltip
-                      ></q-chip
+                      ><q-tooltip>{{
+                        $gettext('Installed Packages')
+                      }}</q-tooltip></q-chip
                     >
 
                     <q-chip
@@ -172,9 +174,9 @@
                       ><strong>{{
                         value.filter((item) => item.mode === '-').length
                       }}</strong
-                      ><q-tooltip
-                        ><translate>Uninstalled Packages</translate></q-tooltip
-                      ></q-chip
+                      ><q-tooltip>{{
+                        $gettext('Uninstalled Packages')
+                      }}</q-tooltip></q-chip
                     >
 
                     <q-btn
