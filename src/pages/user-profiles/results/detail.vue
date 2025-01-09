@@ -73,7 +73,7 @@
             <div class="col-6 col-md col-sm">
               <p>
                 <span class="vertical-middle">
-                  <translate>Joined Date</translate>:
+                  {{ $gettext('Joined Date') }}:
                 </span>
                 <strong><DateView :value="element.date_joined" /></strong>
               </p>
@@ -82,7 +82,7 @@
             <div class="col-6 col-md col-sm">
               <p>
                 <span class="vertical-middle">
-                  <translate>Last Login</translate>:
+                  {{ $gettext('Last Login') }}:
                 </span>
                 <strong><DateView :value="element.last_login" /></strong>
               </p>
@@ -92,7 +92,7 @@
           <div v-if="element.id" class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
               <p>
-                <translate>Token</translate>:
+                {{ $gettext('Token') }}:
                 <strong>{{ element.token }}</strong>
                 <q-btn
                   class="q-ma-sm"
