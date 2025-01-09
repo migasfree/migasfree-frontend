@@ -6,7 +6,7 @@
       <q-chip :label="totalAlerts" color="white" text-color="black" />
 
       <q-tooltip>
-        <translate>Alerts</translate>
+        {{ $gettext('Alerts') }}
       </q-tooltip>
     </template>
 
