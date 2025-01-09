@@ -81,8 +81,8 @@
     </template>
   </Header>
 
-  <q-banner v-if="noData" rounded class="bg-warning text-black">
-    <translate>No data available.</translate>
+  <q-banner v-if="noData" rounded class="bg-info text-white">
+    {{ $gettext('No data available.') }}
   </q-banner>
 
   <p v-if="element.id === 0 && $route.params.id" class="text-center">
