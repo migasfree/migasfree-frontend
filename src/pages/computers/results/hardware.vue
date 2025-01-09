@@ -40,7 +40,7 @@
                 :readonly="true"
               />
               <q-banner v-else class="text-white bg-info q-ma-md">
-                <translate>No information</translate>
+                {{ $gettext('No information') }}
               </q-banner>
             </div>
           </div>
@@ -78,67 +78,67 @@
                 <q-card flat bordered>
                   <q-card-section>
                     <p v-if="prop.node.width">
-                      <translate>Width</translate>:
+                      {{ $gettext('Width') }}:
                       <strong>{{ prop.node.width }}</strong>
                     </p>
 
                     <p v-if="prop.node.name">
-                      <translate>Name</translate>:
+                      {{ $gettext('Name') }}:
                       <strong>{{ prop.node.name }}</strong>
                     </p>
 
                     <p v-if="prop.node.class_name">
-                      <translate>Class Name</translate>:
+                      {{ $gettext('Class Name') }}:
                       <strong>{{ prop.node.class_name }}</strong>
                     </p>
 
                     <p>
-                      <translate>Enabled</translate>:
+                      {{ $gettext('Enabled') }}:
                       <BooleanView :value="prop.node.enabled" />
                     </p>
 
                     <p>
-                      <translate>Claimed</translate>:
+                      {{ $gettext('Claimed') }}:
                       <BooleanView :value="prop.node.claimed" />
                     </p>
 
                     <p v-if="prop.node.vendor">
-                      <translate>Vendor</translate>:
+                      {{ $gettext('Vendor') }}:
                       <strong>{{ prop.node.vendor }}</strong>
                     </p>
 
                     <p v-if="prop.node.product">
-                      <translate>Product</translate>:
+                      {{ $gettext('Product') }}:
                       <strong>{{ prop.node.product }}</strong>
                     </p>
 
                     <p v-if="prop.node.version">
-                      <translate>Version</translate>:
+                      {{ $gettext('Version') }}:
                       <strong>{{ prop.node.version }}</strong>
                     </p>
 
                     <p v-if="prop.node.serial">
-                      <translate>Serial</translate>:
+                      {{ $gettext('Serial') }}:
                       <strong>{{ prop.node.serial }}</strong>
                     </p>
 
                     <p v-if="prop.node.bus_info">
-                      <translate>Bus Info</translate>:
+                      {{ $gettext('Bus Info') }}:
                       <strong>{{ prop.node.bus_info }}</strong>
                     </p>
 
                     <p v-if="prop.node.physid">
-                      <translate>Physical Id</translate>:
+                      {{ $gettext('Physical Id') }}:
                       <strong>{{ prop.node.physid }}</strong>
                     </p>
 
                     <p v-if="prop.node.slot">
-                      <translate>Slot</translate>:
+                      {{ $gettext('Slot') }}:
                       <strong>{{ prop.node.slot }}</strong>
                     </p>
 
                     <p v-if="prop.node.size">
-                      <translate>Size</translate>:
+                      {{ $gettext('Size') }}:
                       <strong
                         >{{ correctUnit(prop.node.class_name, prop.node.size)
                         }}<q-tooltip>{{ prop.node.size }}</q-tooltip></strong
@@ -146,7 +146,7 @@
                     </p>
 
                     <p v-if="prop.node.capacity">
-                      <translate>Capacity</translate>:
+                      {{ $gettext('Capacity') }}:
                       <strong
                         >{{
                           correctUnit(prop.node.class_name, prop.node.capacity)
@@ -157,7 +157,7 @@
                     </p>
 
                     <p v-if="prop.node.clock">
-                      <translate>Clock</translate>:
+                      {{ $gettext('Clock') }}:
                       <strong
                         >{{ correctUnit('clock', prop.node.clock)
                         }}<q-tooltip>{{ prop.node.clock }}</q-tooltip>
@@ -165,7 +165,7 @@
                     </p>
 
                     <p v-if="prop.node.dev">
-                      <translate>Dev</translate>:
+                      {{ $gettext('Dev') }}:
                       <strong>{{ prop.node.dev }}</strong>
                     </p>
                   </q-card-section>
@@ -187,7 +187,7 @@
               class="vertical-middle"
             />
             <span class="vertical-middle">
-              <translate>Details</translate>:
+              {{ $gettext('Details') }}:
               {{ detailInfo.name }}
             </span>
           </div>
@@ -207,7 +207,7 @@
             bordered
           />
           <q-banner v-else class="text-white bg-info q-ma-md">
-            <translate>No information</translate>
+            {{ $gettext('No information') }}
           </q-banner>
 
           <div v-translate class="text-h6">Logical Names</div>
@@ -223,7 +223,7 @@
             bordered
           />
           <q-banner v-else class="text-white bg-info q-ma-md">
-            <translate>No information</translate>
+            {{ $gettext('No information') }}
           </q-banner>
 
           <div v-translate class="text-h6">Configurations</div>
@@ -239,7 +239,7 @@
             bordered
           />
           <q-banner v-else class="text-white bg-info q-ma-md">
-            <translate>No information</translate>
+            {{ $gettext('No information') }}
           </q-banner>
         </q-card-section>
 
