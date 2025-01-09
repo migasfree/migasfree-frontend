@@ -2,17 +2,17 @@
   <transition name="info">
     <div v-if="element && !isLoading">
       <p>
-        <translate>Computer</translate>: <strong>{{ element.__str__ }}</strong>
+        {{ $gettext('Computer') }}: <strong>{{ element.__str__ }}</strong>
       </p>
 
       <p>
-        <translate>Status</translate>:
+        {{ $gettext('Status') }}:
         <q-icon :name="elementIcon(element.status)" size="sm" />
         <strong>{{ computerStatus(element.status) }}</strong>
       </p>
 
       <q-list v-if="'tags' in element && element.tags.length > 0">
-        <q-item-label header><translate>Tags</translate></q-item-label>
+        <q-item-label header>{{ $gettext('Tags') }}</q-item-label>
         <q-item v-for="tag in element.tags" :key="tag.id">
           <MigasLink model="tags" :pk="tag.id" :value="attributeValue(tag)" />
         </q-item>
@@ -20,14 +20,14 @@
 
       <template v-if="'devices' in element">
         <p v-if="element.devices.default_logical_device">
-          <translate>Default Device</translate>:
+          {{ $gettext('Default Device') }}:
           <strong>{{ defaultDevice(element.devices) }}</strong>
         </p>
 
         <q-list
           v-if="element.devices.assigned_logical_devices_to_cid.length > 0"
         >
-          <q-item-label header><translate>Devices</translate></q-item-label>
+          <q-item-label header>{{ $gettext('Devices') }}</q-item-label>
           <q-item
             v-for="device in element.devices.assigned_logical_devices_to_cid"
             :key="device.id"
@@ -41,9 +41,9 @@
         </q-list>
 
         <q-list v-if="element.devices.inflicted_logical_devices.length > 0">
-          <q-item-label header
-            ><translate>Inflicted Devices</translate></q-item-label
-          >
+          <q-item-label header>{{
+            $gettext('Inflicted Devices')
+          }}</q-item-label>
           <q-item
             v-for="device in element.devices.inflicted_logical_devices"
             :key="device.id"
