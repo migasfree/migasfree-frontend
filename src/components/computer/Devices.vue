@@ -32,7 +32,7 @@
           <template #no-option>
             <q-item>
               <q-item-section class="text-grey">
-                <translate>No results</translate>
+                {{ $gettext('No results') }}
               </q-item-section>
             </q-item>
           </template>
