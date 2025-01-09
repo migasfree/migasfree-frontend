@@ -2,7 +2,7 @@
   <transition name="info">
     <div v-if="element && !isLoading && !loading">
       <p>
-        <translate>Device</translate>: <strong>{{ element.name }}</strong>
+        {{ $gettext('Device') }}: <strong>{{ element.name }}</strong>
         <span v-if="element.location"> ({{ element.location }})</span>
       </p>
 
@@ -11,11 +11,9 @@
           'logical_devices' in element && element.logical_devices.length > 0
         "
       >
-        <q-item-label header
-          ><translate
-            >Computers in Logical Devices (by Capability)</translate
-          ></q-item-label
-        >
+        <q-item-label header>{{
+          $gettext('Computers in Logical Devices (by Capability)')
+        }}</q-item-label>
         <q-expansion-item
           v-for="item in mutableElement.logical_devices"
           :key="item.id"
