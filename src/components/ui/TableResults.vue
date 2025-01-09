@@ -414,7 +414,7 @@
     <template #loadingContent>
       <span class="vgt-loading__content">
         <q-spinner size="sm" class="q-mr-sm q-mt-sm q-mb-sm" />
-        <translate>Loading data...</translate>
+        {{ $gettext('Loading data...') }}
       </span>
     </template>
 
@@ -428,7 +428,7 @@
           icon="mdi-eye-check"
           color="positive"
           @click="updateChecked(props.row.id, true)"
-          ><q-tooltip><translate>Check</translate></q-tooltip></q-btn
+          ><q-tooltip>{{ $gettext('Check') }}</q-tooltip></q-btn
         >
         <q-btn
           v-if="hasCheckActions && props.row.checked"
@@ -438,7 +438,7 @@
           icon="mdi-eye-remove"
           color="negative"
           @click="updateChecked(props.row.id, false)"
-          ><q-tooltip><translate>Not Check</translate></q-tooltip></q-btn
+          ><q-tooltip>{{ $gettext('Not Check') }}</q-tooltip></q-btn
         >
         <q-btn
           v-if="
@@ -452,7 +452,7 @@
           icon="mdi-check-bold"
           color="positive"
           @click="updateEnabled(props.row.id, true)"
-          ><q-tooltip><translate>Enable</translate></q-tooltip></q-btn
+          ><q-tooltip>{{ $gettext('Enable') }}</q-tooltip></q-btn
         >
         <q-btn
           v-if="
@@ -465,7 +465,7 @@
           icon="mdi-close-thick"
           color="negative"
           @click="updateEnabled(props.row.id, false)"
-          ><q-tooltip><translate>Disable</translate></q-tooltip></q-btn
+          ><q-tooltip>{{ $gettext('Disable') }}</q-tooltip></q-btn
         >
         <q-btn
           v-if="detailRoute"
@@ -594,8 +594,8 @@
     </template>
 
     <template #emptystate>
-      <q-banner rounded class="bg-warning text-black">
-        <translate>There are no results</translate>
+      <q-banner rounded class="bg-info text-white">
+        {{ $gettext('There are no results') }}
       </q-banner>
     </template>
 
@@ -609,7 +609,7 @@
           icon="mdi-eye-check"
           color="positive"
           @click="updateItemsChecked(true)"
-          ><q-tooltip><translate>Check</translate></q-tooltip></q-btn
+          ><q-tooltip>{{ $gettext('Check') }}</q-tooltip></q-btn
         >
 
         <q-btn
@@ -618,7 +618,7 @@
           icon="mdi-eye-remove"
           color="negative"
           @click="updateItemsChecked(false)"
-          ><q-tooltip><translate>Not Check</translate></q-tooltip></q-btn
+          ><q-tooltip>{{ $gettext('Not Check') }}</q-tooltip></q-btn
         >
       </template>
 
@@ -629,7 +629,7 @@
           icon="mdi-check-bold"
           color="positive"
           @click="updateItemsEnabled(true)"
-          ><q-tooltip><translate>Enable</translate></q-tooltip></q-btn
+          ><q-tooltip>{{ $gettext('Enable') }}</q-tooltip></q-btn
         >
 
         <q-btn
@@ -638,7 +638,7 @@
           icon="mdi-close-thick"
           color="negative"
           @click="updateItemsEnabled(false)"
-          ><q-tooltip><translate>Disable</translate></q-tooltip></q-btn
+          ><q-tooltip>{{ $gettext('Disable') }}</q-tooltip></q-btn
         >
       </template>
 
