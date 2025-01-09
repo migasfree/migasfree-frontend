@@ -46,7 +46,7 @@
                   />
                   <span class="vertical-middle">
                     {{ computer.uuid }}
-                    <q-tooltip><translate>UUID</translate></q-tooltip>
+                    <q-tooltip>{{ $gettext('UUID') }}</q-tooltip>
                   </span>
                 </p>
 
@@ -163,7 +163,7 @@
                             <q-avatar color="info" text-color="black">{{
                               simulation.packages.install.length
                             }}</q-avatar>
-                            <translate>Packages to Install</translate>
+                            {{ $gettext('Packages to Install') }}
                           </q-chip>
                         </q-item-section>
 
@@ -221,9 +221,7 @@
                             <q-avatar color="info" text-color="black">{{
                               simulation.policies.install.length
                             }}</q-avatar>
-                            <translate
-                              >Packages to Install (by policies)</translate
-                            >
+                            {{ $gettext('Packages to Install (by policies)') }}
                           </q-chip>
                         </q-item-section>
 
@@ -281,7 +279,7 @@
                             <q-avatar color="info" text-color="black">{{
                               simulation.packages.remove.length
                             }}</q-avatar>
-                            <translate>Packages to Uninstall</translate>
+                            {{ $gettext('Packages to Uninstall') }}
                           </q-chip>
                         </q-item-section>
 
@@ -339,9 +337,9 @@
                             <q-avatar color="info" text-color="black">{{
                               simulation.policies.remove.length
                             }}</q-avatar>
-                            <translate
-                              >Packages to Uninstall (by policies)</translate
-                            >
+                            {{
+                              $gettext('Packages to Uninstall (by policies)')
+                            }}
                           </q-chip>
                         </q-item-section>
 
@@ -392,7 +390,7 @@
                 </div>
 
                 <p>
-                  <translate>Capture Hardware</translate>:
+                  {{ $gettext('Capture Hardware') }}:
                   <q-chip
                     :color="
                       simulation.capture_hardware ? 'positive' : 'negative'
