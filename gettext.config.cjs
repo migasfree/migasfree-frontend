@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   input: {
     path: './src', // only files in this directory are considered for extraction
     include: ['**/*.js', '**/*.ts', '**/*.vue'], // glob patterns to select files for extraction
