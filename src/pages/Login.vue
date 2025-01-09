@@ -18,7 +18,7 @@
       <q-card-section>
         <div class="text-center q-pt-lg">
           <div class="col text-h6 ellipsis">
-            <translate>Log in</translate> @ migasfree
+            {{ $gettext('Log in') }} @ migasfree
           </div>
         </div>
       </q-card-section>
@@ -33,7 +33,7 @@
             :rules="[(val) => !!val || $gettext('* Required')]"
           >
             <template #label>
-              <translate>User</translate>
+              {{ $gettext('User') }}
             </template>
 
             <template #prepend>
@@ -61,7 +61,7 @@
             :type="showPassword ? 'text' : 'password'"
           >
             <template #label>
-              <translate>Password</translate>
+              {{ $gettext('Password') }}
             </template>
 
             <template #prepend>
@@ -83,7 +83,7 @@
               color="primary"
               :loading="loading"
               :disabled="!isValid"
-              ><translate>Log In</translate></q-btn
+              >{{ $gettext('Log In') }}</q-btn
             >
           </div>
         </q-form>
@@ -93,7 +93,7 @@
             <template #label>
               <q-icon name="mdi-earth" />
               <q-tooltip>
-                <translate>Change App Language</translate>
+                {{ $gettext('Change App Language') }}
               </q-tooltip>
             </template>
             <q-list>
