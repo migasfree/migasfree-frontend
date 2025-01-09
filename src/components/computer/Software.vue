@@ -34,6 +34,27 @@
             <q-item-section side>
               <div class="row items-center">
                 <q-btn
+                  v-if="softwareInventory.length > 0 && !showSearch"
+                  flat
+                  icon="mdi-magnify"
+                  color="primary"
+                  @click.stop="toggleSearch"
+                  ><q-tooltip>{{ $gettext('Search') }}</q-tooltip></q-btn
+                >
+
+                <q-input
+                  v-if="showSearch"
+                  ref="searchInput"
+                  v-model="search"
+                  :label="$gettext('Search')"
+                  clearable
+                  dense
+                  @clear="showSearch = false"
+                  @click.stop
+                  ><template #prepend><q-icon name="mdi-magnify" /></template
+                ></q-input>
+
+                <q-btn
                   flat
                   icon="mdi-content-copy"
                   color="primary"
@@ -61,8 +82,8 @@
 
             <q-virtual-scroll
               class="overflow"
-              :items-size="softwareInventory.length"
-              :items="softwareInventory"
+              :items-size="filteredSoftwareInventory.length"
+              :items="filteredSoftwareInventory"
             >
               <template #default="{ item }">
                 <q-item>
@@ -341,7 +362,7 @@
 </template>
 
 <script>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, nextTick, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { abbreviateNumber } from 'js-abbreviation-number'
 
@@ -385,12 +406,37 @@ export default {
     const computers = ref([])
     const target = ref(null)
 
+    const search = ref('')
+    const showSearch = ref(false)
+    const searchInput = useTemplateRef('searchInput')
+
     const confirmRemoveInventory = ref(false)
     const confirmRemoveHistory = ref(false)
+
+    const filteredSoftwareInventory = computed(() => {
+      console.log(softwareInventory.value)
+      if (search.value === '' || search.value === null) {
+        return softwareInventory.value
+      } else {
+        return softwareInventory.value.filter((item) => {
+          return item.name.toLowerCase().includes(search.value.toLowerCase())
+        })
+      }
+    })
 
     const isCompareEnabled = computed(() => {
       return target.value !== null
     })
+
+    const toggleSearch = async () => {
+      showSearch.value = !showSearch.value
+      if (showSearch.value) {
+        await nextTick()
+        if (searchInput.value) {
+          searchInput.value.focus()
+        }
+      }
+    }
 
     const sortArray = (array) => {
       const originalCopy = array.slice()
@@ -432,7 +478,7 @@ export default {
         await loadSoftwareInventory()
       }
 
-      const inventory = softwareInventory.value.map((item) => item.name)
+      const inventory = filteredSoftwareInventory.value.map((item) => item.name)
 
       contentToClipboard(sortArray(inventory).join('\n'))
     }
@@ -519,10 +565,15 @@ export default {
       isSuperUser: authStore.user.is_superuser,
       softwareInventory,
       softwareHistory,
+      search,
+      searchInput,
+      showSearch,
       showingCompare,
+      filteredSoftwareInventory,
       computers,
       target,
       isCompareEnabled,
+      toggleSearch,
       sortArray,
       loadSoftwareInventory,
       loadSoftwareHistory,
