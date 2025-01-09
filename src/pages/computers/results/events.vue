@@ -52,7 +52,7 @@
                   class="vertical-middle q-mr-sm"
                 />
                 <span class="vertical-middle">
-                  <translate>Synchronizations</translate></span
+                  {{ $gettext('Synchronizations') }}</span
                 >
                 <q-chip color="grey" text-color="white">{{
                   events.syncs.total
@@ -64,9 +64,7 @@
                   :name="modelIcon('errors')"
                   class="vertical-middle q-mr-sm"
                 />
-                <span class="vertical-middle">
-                  <translate>Errors</translate></span
-                >
+                <span class="vertical-middle"> {{ $gettext('Errors') }}</span>
                 <q-chip color="grey" text-color="white">{{
                   events.errors.total
                 }}</q-chip>
@@ -77,9 +75,7 @@
                   :name="modelIcon('faults')"
                   class="vertical-middle q-mr-sm"
                 />
-                <span class="vertical-middle">
-                  <translate>Faults</translate></span
-                >
+                <span class="vertical-middle"> {{ $gettext('Faults') }}</span>
                 <q-chip color="grey" text-color="white">{{
                   events.faults.total
                 }}</q-chip>
@@ -91,7 +87,7 @@
                   class="vertical-middle q-mr-sm"
                 />
                 <span class="vertical-middle">
-                  <translate>Status Logs</translate></span
+                  {{ $gettext('Status Logs') }}</span
                 >
                 <q-chip color="grey" text-color="white">{{
                   events.statusLogs.total
@@ -104,7 +100,7 @@
                   class="vertical-middle q-mr-sm"
                 />
                 <span class="vertical-middle">
-                  <translate>Migrations</translate></span
+                  {{ $gettext('Migrations') }}</span
                 >
                 <q-chip color="grey" text-color="white">{{
                   events.migrations.total
