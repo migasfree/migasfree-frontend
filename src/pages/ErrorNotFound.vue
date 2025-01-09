@@ -5,7 +5,7 @@
     <div>
       <div style="font-size: 30vh">404</div>
 
-      <div class="text-h2"><translate>Oops. Nothing here...</translate></div>
+      <div class="text-h2">{{ $gettext('Oops. Nothing here...') }}</div>
 
       <q-btn
         class="q-mt-xl"
