@@ -18,9 +18,7 @@
               :disabled="loading"
               @click="updateName"
             >
-              <q-tooltip
-                ><translate>Save and continue editing</translate></q-tooltip
-              >
+              <q-tooltip>{{ $gettext('Save and continue editing') }}</q-tooltip>
             </q-btn>
           </q-btn-group>
           <div v-else class="text-h5">
@@ -46,9 +44,7 @@
           />
           <span class="vertical-middle">
             {{ fqdn }}
-            <q-tooltip
-              ><translate>full qualified domain name</translate></q-tooltip
-            >
+            <q-tooltip>{{ $gettext('full qualified domain name') }}</q-tooltip>
           </span>
           <q-btn
             v-if="fqdn"
@@ -95,7 +91,7 @@
           <q-icon name="mdi-ip-network" size="sm" class="vertical-middle" />
           <span class="vertical-middle">
             {{ ipAddress }}
-            <q-tooltip><translate>ip address</translate></q-tooltip>
+            <q-tooltip>{{ $gettext('ip address') }}</q-tooltip>
           </span>
           <q-btn
             v-if="ipAddress"
@@ -112,7 +108,7 @@
           <q-icon name="mdi-ip" size="sm" class="vertical-middle" />
           <span class="vertical-middle">
             {{ forwardedIpAddress }}
-            <q-tooltip><translate>forwarded ip address</translate></q-tooltip>
+            <q-tooltip>{{ $gettext('forwarded ip address') }}</q-tooltip>
           </span>
           <q-btn
             v-if="forwardedIpAddress"
