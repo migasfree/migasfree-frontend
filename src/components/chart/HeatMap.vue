@@ -32,8 +32,8 @@
         @click="passData"
         @legendselectchanged="changeRange"
       />
-      <q-banner v-if="noData" rounded class="bg-warning text-black q-ma-md">
-        <translate>No data available.</translate>
+      <q-banner v-if="noData" rounded class="bg-info text-white q-ma-md">
+        {{ $gettext('No data available.') }}
       </q-banner>
     </q-card-section></q-card
   >
