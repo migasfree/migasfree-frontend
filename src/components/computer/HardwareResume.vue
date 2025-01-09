@@ -76,9 +76,7 @@
               :disabled="loading"
               @click="updateCapture"
             >
-              <q-tooltip
-                ><translate>Save and continue editing</translate></q-tooltip
-              >
+              <q-tooltip>{{ $gettext('Save and continue editing') }}</q-tooltip>
             </q-btn>
           </q-btn-group>
         </div>
@@ -89,7 +87,7 @@
           <q-icon :name="productIcon(productSystem)" style="font-size: 6em">
             <q-tooltip>{{ productSystem }}</q-tooltip>
             <q-badge floating transparent>
-              {{ architecture }} <translate>bits</translate>
+              {{ architecture }} {{ $gettext('bits') }}
             </q-badge></q-icon
           >
         </div>
@@ -133,7 +131,7 @@
             />
             <span class="vertical-middle">
               {{ uuid }}
-              <q-tooltip><translate>UUID</translate></q-tooltip>
+              <q-tooltip>{{ $gettext('UUID') }}</q-tooltip>
             </span>
             <q-btn
               v-if="uuid"
@@ -157,7 +155,7 @@
           />
           <span class="vertical-middle">
             {{ cpu }}
-            <q-tooltip><translate>Processor</translate></q-tooltip>
+            <q-tooltip>{{ $gettext('Processor') }}</q-tooltip>
           </span>
         </div>
 
@@ -165,7 +163,7 @@
           <q-icon name="mdi-memory" size="sm" class="vertical-middle" />
           <span class="vertical-middle">
             {{ humanStorageSize(ram) }}
-            <q-tooltip><translate>RAM</translate></q-tooltip>
+            <q-tooltip>{{ $gettext('RAM') }}</q-tooltip>
           </span>
         </div>
       </div>
@@ -175,14 +173,14 @@
           <q-icon name="mdi-harddisk" size="sm" class="vertical-middle" />
           <span class="vertical-middle">
             {{ humanStorageSize(storage) }} ({{ disks }})
-            <q-tooltip><translate>Storage</translate></q-tooltip>
+            <q-tooltip>{{ $gettext('Storage') }}</q-tooltip>
           </span>
         </div>
         <div v-if="macAddress" class="col-6 col-md col-sm">
           <q-icon name="mdi-swap-vertical" size="sm" class="vertical-middle" />
           <span class="vertical-middle">
             {{ humanMacAddress(macAddress) }}
-            <q-tooltip><translate>MAC Address</translate></q-tooltip>
+            <q-tooltip>{{ $gettext('MAC Address') }}</q-tooltip>
           </span>
           <q-btn
             flat
