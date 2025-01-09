@@ -162,7 +162,7 @@
 
                 <div class="row q-pa-md text-center">
                   <div class="col">
-                    <q-tooltip><translate>Errors</translate></q-tooltip>
+                    <q-tooltip>{{ $gettext('Errors') }}</q-tooltip>
                     <q-icon :name="modelIcon('errors')" size="xl" />
                     <q-btn
                       round
@@ -174,9 +174,9 @@
                         query: { computer_id: element.id, checked: false },
                       }"
                       ><strong>{{ errors.unchecked }}</strong>
-                      <q-tooltip anchor="top middle" self="bottom middle"
-                        ><translate>Unchecked</translate></q-tooltip
-                      ></q-btn
+                      <q-tooltip anchor="top middle" self="bottom middle">{{
+                        $gettext('Unchecked')
+                      }}</q-tooltip></q-btn
                     >
                     /
                     <q-btn
@@ -189,14 +189,14 @@
                         query: { computer_id: element.id },
                       }"
                       ><strong>{{ errors.total }}</strong>
-                      <q-tooltip anchor="top middle" self="bottom middle"
-                        ><translate>Total</translate></q-tooltip
-                      ></q-btn
+                      <q-tooltip anchor="top middle" self="bottom middle">{{
+                        $gettext('Total')
+                      }}</q-tooltip></q-btn
                     >
                   </div>
 
                   <div class="col">
-                    <q-tooltip><translate>Faults</translate></q-tooltip>
+                    <q-tooltip>{{ $gettext('Faults') }}</q-tooltip>
                     <q-icon :name="modelIcon('faults')" size="xl" />
                     <q-btn
                       round
@@ -208,9 +208,9 @@
                         query: { computer_id: element.id, checked: false },
                       }"
                       ><strong>{{ faults.unchecked }}</strong>
-                      <q-tooltip anchor="top middle" self="bottom middle"
-                        ><translate>Unchecked</translate></q-tooltip
-                      ></q-btn
+                      <q-tooltip anchor="top middle" self="bottom middle">{{
+                        $gettext('Unchecked')
+                      }}</q-tooltip></q-btn
                     >
                     /
                     <q-btn
@@ -223,9 +223,9 @@
                         query: { computer_id: element.id },
                       }"
                       ><strong>{{ faults.total }}</strong>
-                      <q-tooltip anchor="top middle" self="bottom middle"
-                        ><translate>Total</translate></q-tooltip
-                      ></q-btn
+                      <q-tooltip anchor="top middle" self="bottom middle">{{
+                        $gettext('Total')
+                      }}</q-tooltip></q-btn
                     >
                   </div>
                 </div>
