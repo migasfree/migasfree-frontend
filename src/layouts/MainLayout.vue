@@ -83,7 +83,7 @@
           removable
           @remove="removeDomainPreference"
         >
-          <q-tooltip><translate>Domain</translate></q-tooltip
+          <q-tooltip>{{ $gettext('Domain') }}</q-tooltip
           >{{ domainPreference }}</q-chip
         >
         <q-chip
@@ -94,7 +94,7 @@
           removable
           @remove="removeScopePreference"
         >
-          <q-tooltip><translate>Scope</translate></q-tooltip
+          <q-tooltip>{{ $gettext('Scope') }}</q-tooltip
           >{{ scopePreference }}</q-chip
         >
       </q-banner>
