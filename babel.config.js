@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 export default (api) => {
   return {
     presets: [
