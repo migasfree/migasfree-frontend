@@ -414,7 +414,6 @@ export default {
     const confirmRemoveHistory = ref(false)
 
     const filteredSoftwareInventory = computed(() => {
-      console.log(softwareInventory.value)
       if (search.value === '' || search.value === null) {
         return softwareInventory.value
       } else {
@@ -525,9 +524,9 @@ export default {
       update(() => {})
     }
 
-    const abortFilterComputers = () => {
-      // console.log('delayed filter aborted')
-    }
+    /* const abortFilterComputers = () => {
+      console.log('delayed filter aborted')
+    } */
 
     const deleteInventory = async () => {
       loading.inventory = true
@@ -581,7 +580,7 @@ export default {
       copyHistory,
       compare,
       filterComputers,
-      abortFilterComputers,
+      // abortFilterComputers,
       appIcon,
       elementIcon,
       MIN_CHARS_SEARCH,
