@@ -34,22 +34,22 @@
             <q-item-section side>
               <div class="row items-center">
                 <q-btn
-                  v-if="softwareInventory.length > 0 && !showSearch"
+                  v-if="softwareInventory.length > 0 && !showSearchInventory"
                   flat
                   icon="mdi-magnify"
                   color="primary"
-                  @click.stop="toggleSearch"
+                  @click.stop="toggleSearchInventory"
                   ><q-tooltip>{{ $gettext('Search') }}</q-tooltip></q-btn
                 >
 
                 <q-input
-                  v-if="showSearch"
-                  ref="searchInput"
-                  v-model="search"
+                  v-if="showSearchInventory"
+                  ref="searchInputInventory"
+                  v-model="searchInventory"
                   :label="$gettext('Search')"
                   clearable
                   dense
-                  @clear="showSearch = false"
+                  @clear="showSearchInventory = false"
                   @click.stop
                   ><template #prepend><q-icon name="mdi-magnify" /></template
                 ></q-input>
@@ -113,28 +113,44 @@
               {{ $gettext('History') }}
             </q-item-section>
 
-            <q-item-section v-if="Object.keys(softwareHistory).length > 0">
+            <q-item-section v-if="softwareHistoryLength > 0">
               <q-chip>
                 <q-avatar color="info" text-color="black"
                   ><strong>{{
-                    abbreviateNumber(Object.keys(softwareHistory).length, 0)
+                    abbreviateNumber(softwareHistoryLength, 0)
                   }}</strong
-                  ><q-tooltip>{{
-                    Object.keys(softwareHistory).length
-                  }}</q-tooltip></q-avatar
+                  ><q-tooltip>{{ softwareHistoryLength }}</q-tooltip></q-avatar
                 >
-                {{
-                  $ngettext(
-                    'date',
-                    'dates',
-                    Object.keys(softwareHistory).length,
-                  )
-                }}
+                {{ $ngettext('date', 'dates', softwareHistoryLength) }}
               </q-chip>
             </q-item-section>
 
             <q-item-section side>
               <div class="row items-center">
+                <q-btn
+                  v-if="
+                    Object.keys(softwareHistory).length > 0 &&
+                    !showSearchHistory
+                  "
+                  flat
+                  icon="mdi-magnify"
+                  color="primary"
+                  @click.stop="toggleSearchHistory"
+                  ><q-tooltip>{{ $gettext('Search') }}</q-tooltip></q-btn
+                >
+
+                <q-input
+                  v-if="showSearchHistory"
+                  ref="searchInputHistory"
+                  v-model="searchHistory"
+                  :label="$gettext('Search')"
+                  clearable
+                  dense
+                  @clear="showSearchHistory = false"
+                  @click.stop
+                  ><template #prepend><q-icon name="mdi-magnify" /></template
+                ></q-input>
+
                 <q-btn
                   flat
                   icon="mdi-content-copy"
@@ -161,7 +177,7 @@
               <q-spinner-dots color="primary" size="3em" />
             </q-item>
             <q-expansion-item
-              v-for="(value, key) in softwareHistory"
+              v-for="(value, key) in filteredSoftwareHistory"
               :key="key"
               expand-separator
             >
@@ -201,7 +217,7 @@
                     >
 
                     <q-btn
-                      v-if="isSuperUser"
+                      v-if="isSuperUser && !showSearchHistory"
                       flat
                       icon="mdi-delete"
                       :color="$q.dark.isActive ? 'white' : 'negative'"
@@ -406,20 +422,44 @@ export default {
     const computers = ref([])
     const target = ref(null)
 
-    const search = ref('')
-    const showSearch = ref(false)
-    const searchInput = useTemplateRef('searchInput')
+    const searchInventory = ref('')
+    const showSearchInventory = ref(false)
+    const searchInputInventory = useTemplateRef('searchInputInventory')
+
+    const searchHistory = ref('')
+    const showSearchHistory = ref(false)
+    const searchInputHistory = useTemplateRef('searchInputHistory')
 
     const confirmRemoveInventory = ref(false)
     const confirmRemoveHistory = ref(false)
 
     const filteredSoftwareInventory = computed(() => {
-      if (search.value === '' || search.value === null) {
+      if (searchInventory.value === '' || searchInventory.value === null) {
         return softwareInventory.value
       } else {
         return softwareInventory.value.filter((item) => {
-          return item.name.toLowerCase().includes(search.value.toLowerCase())
+          return item.name
+            .toLowerCase()
+            .includes(searchInventory.value.toLowerCase())
         })
+      }
+    })
+
+    const filteredSoftwareHistory = computed(() => {
+      if (searchHistory.value === '' || searchHistory.value === null) {
+        return softwareHistory.value
+      } else {
+        const result = Object.keys(softwareHistory.value).reduce((acc, key) => {
+          const filter = softwareHistory.value[key].filter((item) =>
+            item.name.toLowerCase().includes(searchHistory.value.toLowerCase()),
+          )
+          if (filter.length > 0) {
+            acc[key] = filter
+          }
+          return acc
+        }, {})
+
+        return result
       }
     })
 
@@ -427,12 +467,28 @@ export default {
       return target.value !== null
     })
 
-    const toggleSearch = async () => {
-      showSearch.value = !showSearch.value
-      if (showSearch.value) {
+    const softwareHistoryLength = computed(() => {
+      return softwareHistory.value
+        ? Object.keys(softwareHistory.value).length
+        : 0
+    })
+
+    const toggleSearchInventory = async () => {
+      showSearchInventory.value = !showSearchInventory.value
+      if (showSearchInventory.value) {
         await nextTick()
-        if (searchInput.value) {
-          searchInput.value.focus()
+        if (searchInputInventory.value) {
+          searchInputInventory.value.focus()
+        }
+      }
+    }
+
+    const toggleSearchHistory = async () => {
+      showSearchHistory.value = !showSearchHistory.value
+      if (showSearchHistory.value) {
+        await nextTick()
+        if (searchInputHistory.value) {
+          searchInputHistory.value.focus()
         }
       }
     }
@@ -463,7 +519,7 @@ export default {
         await api
           .get(`/api/v1/token/computers/${props.cid}/software/history/`)
           .then((response) => {
-            Object.assign(softwareHistory, response.data)
+            softwareHistory.value = response.data
           })
           .catch((error) => {
             uiStore.notifyError(error)
@@ -488,7 +544,7 @@ export default {
       }
 
       let history = []
-      Object.entries(softwareHistory).map(([key, val]) => {
+      Object.entries(filteredSoftwareHistory.value).map(([key, val]) => {
         history.push(showDate(key))
         sortArray(val).forEach((item) => {
           history.push(`${item.mode}${item.name}`)
@@ -524,9 +580,9 @@ export default {
       update(() => {})
     }
 
-    /* const abortFilterComputers = () => {
-      console.log('delayed filter aborted')
-    } */
+    const abortFilterComputers = () => {
+      // console.log('delayed filter aborted')
+    }
 
     const deleteInventory = async () => {
       loading.inventory = true
@@ -564,15 +620,21 @@ export default {
       isSuperUser: authStore.user.is_superuser,
       softwareInventory,
       softwareHistory,
-      search,
-      searchInput,
-      showSearch,
+      searchInventory,
+      searchInputInventory,
+      showSearchInventory,
+      searchHistory,
+      searchInputHistory,
+      showSearchHistory,
       showingCompare,
       filteredSoftwareInventory,
+      filteredSoftwareHistory,
       computers,
       target,
       isCompareEnabled,
-      toggleSearch,
+      softwareHistoryLength,
+      toggleSearchInventory,
+      toggleSearchHistory,
       sortArray,
       loadSoftwareInventory,
       loadSoftwareHistory,
@@ -580,7 +642,7 @@ export default {
       copyHistory,
       compare,
       filterComputers,
-      // abortFilterComputers,
+      abortFilterComputers,
       appIcon,
       elementIcon,
       MIN_CHARS_SEARCH,
