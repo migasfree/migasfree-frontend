@@ -96,6 +96,9 @@
             v-if="options.series.length === 0"
             class="text-white bg-info q-ma-md"
           >
+            <template #avatar>
+              <q-icon name="mdi-information-outline" color="white" />
+            </template>
             {{ $gettext('No information') }}
           </q-banner>
         </q-card-section>
