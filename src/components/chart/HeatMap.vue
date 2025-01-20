@@ -33,6 +33,9 @@
         @legendselectchanged="changeRange"
       />
       <q-banner v-if="noData" rounded class="bg-info text-white q-ma-md">
+        <template #avatar>
+          <q-icon name="mdi-information-outline" color="white" />
+        </template>
         {{ $gettext('No data available.') }}
       </q-banner>
     </q-card-section></q-card
