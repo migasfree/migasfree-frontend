@@ -114,6 +114,11 @@ export default {
       {
         label: $gettext('Prefix'),
         field: 'prefix',
+        filterOptions: {
+          enabled: true,
+          placeholder: $gettext('Filter'),
+          trigger: 'enter',
+        },
       },
       {
         label: $gettext('Enabled'),
