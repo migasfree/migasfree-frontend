@@ -593,8 +593,11 @@
       <slot name="fields" :props="props"></slot>
     </template>
 
-    <template #emptystate>
+    <template v-if="!isLoading" #emptystate>
       <q-banner rounded class="bg-info text-white">
+        <template #avatar>
+          <q-icon name="mdi-information-outline" color="white" />
+        </template>
         {{ $gettext('There are no results') }}
       </q-banner>
     </template>
