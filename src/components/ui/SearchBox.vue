@@ -7,19 +7,18 @@
       borderless
       clearable
       :bg-color="$q.dark.isActive ? 'dark' : 'white'"
-      @keydown.enter="search('computers-list')"
+      @keydown.enter="search({ to: selectedRoute, icon: selectedIcon })"
     />
 
-    <q-btn-dropdown
-      auto-close
-      color="brown-1"
-      text-color="blue-grey-8"
-      rounded
-      icon="mdi-magnify"
-    >
+    <q-btn-dropdown auto-close color="brown-1" text-color="blue-grey-8" rounded>
+      <template #label>
+        <q-icon name="mdi-magnify" />
+        <q-icon :name="selectedIcon" />
+      </template>
+
       <q-list v-for="option in options" :key="option.to">
         <q-separator v-if="option.separatorBefore" />
-        <q-item clickable @click="search(option.to)">
+        <q-item clickable @click="search(option)">
           <q-item-section v-if="option.icon" avatar>
             <q-icon :name="option.icon" size="sm" />
           </q-item-section>
@@ -45,6 +44,8 @@ export default {
     const { $gettext } = useGettext()
 
     const searchText = ref('')
+    const selectedIcon = ref(modelIcon('computers'))
+    const selectedRoute = ref('computers-list')
     const options = [
       {
         title: $gettext('Computers'),
@@ -85,14 +86,17 @@ export default {
       },
     ]
 
-    const search = (urlName) => {
+    const search = (item) => {
+      selectedIcon.value = item.icon
+      selectedRoute.value = item.to
+
       router.push({
-        name: urlName,
+        name: item.to,
         query: { search: searchText.value },
       })
     }
 
-    return { searchText, options, search }
+    return { searchText, options, search, selectedIcon, selectedRoute }
   },
 }
 </script>
