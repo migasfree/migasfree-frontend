@@ -594,12 +594,7 @@
     </template>
 
     <template v-if="!isLoading" #emptystate>
-      <q-banner rounded class="bg-info text-white">
-        <template #avatar>
-          <q-icon name="mdi-information-outline" color="white" />
-        </template>
-        {{ $gettext('There are no results') }}
-      </q-banner>
+      <BannerInfo :message="$gettext('There are no results')" />
     </template>
 
     <template #selected-row-actions="props">
@@ -684,6 +679,7 @@ import { useRoute } from 'vue-router'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
+import BannerInfo from 'components/ui/BannerInfo'
 import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
 import TablePagination from 'components/ui/TablePagination'
@@ -696,6 +692,7 @@ import { appIcon, modelIcon } from 'composables/element'
 export default defineComponent({
   name: 'TableResults',
   components: {
+    BannerInfo,
     Header,
     SearchFilter,
     TablePagination,
