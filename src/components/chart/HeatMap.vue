@@ -32,14 +32,11 @@
         @click="passData"
         @legendselectchanged="changeRange"
       />
-      <q-banner v-if="noData" rounded class="bg-info text-white q-ma-md">
-        <template #avatar>
-          <q-icon name="mdi-information-outline" color="white" />
-        </template>
-        {{ $gettext('No data available.') }}
-      </q-banner>
-    </q-card-section></q-card
-  >
+      <BannerInfo
+        v-if="noData"
+        :message="$gettext('No data available.')"
+      /> </q-card-section
+  ></q-card>
 </template>
 
 <script>
@@ -68,6 +65,8 @@ import { format } from 'echarts/lib/util/time'
 
 import useDate from 'composables/date'
 
+import BannerInfo from 'components/ui/BannerInfo'
+
 echarts.use([
   HeatmapChart,
   TitleComponent,
@@ -80,6 +79,7 @@ echarts.use([
 
 export default {
   name: 'HeatMap',
+  components: { BannerInfo },
   props: {
     data: {
       type: Array,
