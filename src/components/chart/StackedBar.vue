@@ -60,12 +60,7 @@
           autoresize
           @click="passData"
         />
-        <q-banner v-if="noData" rounded class="bg-info text-white q-ma-md">
-          <template #avatar>
-            <q-icon name="mdi-information-outline" color="white" />
-          </template>
-          {{ $gettext('No data available.') }}
-        </q-banner>
+        <BannerInfo v-if="noData" :message="$gettext('No data available.')" />
       </q-card-section>
 
       <q-card-actions v-show="isChartVisible" align="around" class="q-pt-sm">
@@ -194,8 +189,9 @@ import { useUiStore } from 'stores/ui'
 
 import { appIcon } from 'composables/element'
 
-import MonthInput from 'components/ui/MonthInput'
+import BannerInfo from 'components/ui/BannerInfo'
 import DayInput from 'components/ui/DayInput'
+import MonthInput from 'components/ui/MonthInput'
 
 import * as echarts from 'echarts/core'
 import { LineChart } from 'echarts/charts'
@@ -228,7 +224,7 @@ echarts.use([
 
 export default {
   name: 'StackedBarChart',
-  components: { MonthInput, DayInput },
+  components: { BannerInfo, DayInput, MonthInput },
   props: {
     title: {
       type: String,
