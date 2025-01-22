@@ -32,12 +32,7 @@
           autoresize
           @click="passData"
         />
-        <q-banner v-if="noData" rounded class="bg-info text-white q-ma-md">
-          <template #avatar>
-            <q-icon name="mdi-information-outline" color="white" />
-          </template>
-          {{ $gettext('No data available.') }}
-        </q-banner>
+        <BannerInfo v-if="noData" :message="$gettext('No data available.')" />
       </q-card-section>
 
       <q-card-actions v-show="isChartVisible" align="around" class="q-pt-none">
@@ -95,15 +90,10 @@
               >
             </template>
           </q-table>
-          <q-banner
+          <BannerInfo
             v-if="options.series.length === 0"
-            class="text-white bg-info q-ma-md"
-          >
-            <template #avatar>
-              <q-icon name="mdi-information-outline" color="white" />
-            </template>
-            {{ $gettext('No information') }}
-          </q-banner>
+            :message="$gettext('No information')"
+          />
         </q-card-section>
 
         <q-card-actions align="right">
@@ -138,6 +128,8 @@ import { useUiStore } from 'stores/ui'
 
 import { appIcon } from 'composables/element'
 
+import BannerInfo from 'components/ui/BannerInfo'
+
 import * as echarts from 'echarts/core'
 import { PieChart } from 'echarts/charts'
 import { TooltipComponent, TitleComponent } from 'echarts/components'
@@ -151,6 +143,7 @@ echarts.use([PieChart, TooltipComponent, TitleComponent, SVGRenderer])
 
 export default {
   name: 'PieChart',
+  components: { BannerInfo },
   props: {
     title: { type: String, required: true },
     endPoint: {
