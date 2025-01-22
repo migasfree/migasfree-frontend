@@ -39,9 +39,7 @@
                 :mac-address="element.mac_address"
                 :readonly="true"
               />
-              <q-banner v-else class="text-white bg-info q-ma-md">
-                {{ $gettext('No information') }}
-              </q-banner>
+              <BannerInfo v-else :message="$gettext('No information')" />
             </div>
           </div>
 
@@ -206,9 +204,7 @@
             flat
             bordered
           />
-          <q-banner v-else class="text-white bg-info q-ma-md">
-            {{ $gettext('No information') }}
-          </q-banner>
+          <BannerInfo v-else :message="$gettext('No information')" />
 
           <div v-translate class="text-h6">Logical Names</div>
           <q-table
@@ -222,9 +218,7 @@
             flat
             bordered
           />
-          <q-banner v-else class="text-white bg-info q-ma-md">
-            {{ $gettext('No information') }}
-          </q-banner>
+          <BannerInfo v-else :message="$gettext('No information')" />
 
           <div v-translate class="text-h6">Configurations</div>
           <q-table
@@ -238,9 +232,7 @@
             flat
             bordered
           />
-          <q-banner v-else class="text-white bg-info q-ma-md">
-            {{ $gettext('No information') }}
-          </q-banner>
+          <BannerInfo v-else :message="$gettext('No information')" />
         </q-card-section>
 
         <q-card-actions align="right">
@@ -267,17 +259,19 @@ import { abbreviateNumber } from 'js-abbreviation-number'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
-import ItemDetail from 'components/ui/ItemDetail'
+import BannerInfo from 'components/ui/BannerInfo'
 import BooleanView from 'components/ui/BooleanView'
 import ComputerHardwareResume from 'components/computer/HardwareResume'
+import ItemDetail from 'components/ui/ItemDetail'
 
 import { appIcon, modelIcon, useElement } from 'composables/element'
 
 export default {
   components: {
-    ItemDetail,
+    BannerInfo,
     BooleanView,
     ComputerHardwareResume,
+    ItemDetail,
   },
   setup() {
     const { $gettext } = useGettext()
