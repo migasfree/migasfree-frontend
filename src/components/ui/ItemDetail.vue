@@ -81,9 +81,7 @@
     </template>
   </Header>
 
-  <q-banner v-if="noData" rounded class="bg-info text-white">
-    {{ $gettext('No data available.') }}
-  </q-banner>
+  <BannerInfo v-if="noData" :message="$gettext('No data available.')" />
 
   <p v-if="element.id === 0 && $route.params.id" class="text-center">
     <q-spinner-dots color="primary" size="3em" />
@@ -156,6 +154,7 @@
 <script>
 import { defineComponent, ref, computed } from 'vue'
 
+import BannerInfo from 'components/ui/BannerInfo'
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
@@ -170,6 +169,7 @@ import { appIcon, modelIcon, useElement } from 'composables/element'
 export default defineComponent({
   name: 'ItemDetail',
   components: {
+    BannerInfo,
     Breadcrumbs,
     Header,
     MigasLink,
