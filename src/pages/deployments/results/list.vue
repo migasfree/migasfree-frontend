@@ -50,6 +50,13 @@
 
         <span v-else-if="slotProps.props.column.field == 'start_date'">
           <DateView :value="slotProps.props.row.start_date" />
+          <q-icon
+            v-if="slotProps.props.row.auto_restart"
+            name="mdi-repeat"
+            size="md"
+          >
+            <q-tooltip>{{ $gettext('Auto Restart') }}</q-tooltip>
+          </q-icon>
         </span>
 
         <span v-else-if="slotProps.props.column.field == 'source'">
