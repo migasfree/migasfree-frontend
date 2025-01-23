@@ -93,6 +93,9 @@ export default defineConfig((ctx) => {
       server: {
         type: 'http',
       },
+      client: {
+        overlay: false,
+      },
       port: 3002,
       open: false, // opens browser window automatically
     },
