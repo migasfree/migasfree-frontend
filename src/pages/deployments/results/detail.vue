@@ -379,13 +379,13 @@
         </div>
 
         <div class="row q-pb-md q-col-gutter-md">
-          <div class="col col-md col-sm-12">
+          <div class="col-12 col-md-12 col-sm-12">
             <q-card flat bordered>
               <q-card-section>
                 <div v-translate class="text-h5 q-pb-sm">When (schedule)</div>
 
                 <div class="row q-col-gutter-sm">
-                  <div class="col-md col-sm">
+                  <div class="col-md-3 col-sm-3">
                     <DayInput
                       v-model="element.start_date"
                       :readonly="false"
@@ -394,7 +394,7 @@
                     />
                   </div>
 
-                  <div class="col-md col-sm">
+                  <div class="col-md-3 col-sm-3">
                     <q-select
                       v-model="element.schedule"
                       outlined
@@ -411,9 +411,17 @@
                     </q-select>
                   </div>
 
+                  <div class="col-md-3 col-sm-3">
+                    <q-checkbox
+                      v-model="element.auto_restart"
+                      left-label
+                      :label="$gettext('Auto Restart?')"
+                    />
+                  </div>
+
                   <div
                     v-if="element.id && element.timeline"
-                    class="col-md col-sm"
+                    class="col-md-3 col-sm-3"
                   >
                     <q-field outlined :label="$gettext('Timeline')" stack-label>
                       <template #control>
@@ -501,6 +509,7 @@ export default {
       default_preincluded_packages: null,
       default_included_packages: null,
       default_excluded_packages: null,
+      auto_restart: false,
       expire: 1440,
       frozen: false,
     })
@@ -696,6 +705,7 @@ export default {
             : [],
         start_date: showDate(element.start_date, 'YYYY-MM-DD'),
         schedule: element.schedule ? element.schedule.id : null,
+        auto_restart: element.auto_restart,
       }
 
       if (element.source === 'I') {
@@ -745,6 +755,7 @@ export default {
         default_excluded_packages: null,
         start_date: undefined,
         schedule: null,
+        auto_restart: false,
         available_packages: [],
         available_package_sets: [],
         base_url: undefined,
