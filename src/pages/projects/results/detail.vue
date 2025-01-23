@@ -15,7 +15,7 @@
       <template #fields>
         <q-card-section>
           <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md col-sm">
+            <div class="col-4 col-md col-sm">
               <q-select
                 v-model="element.platform"
                 outlined
@@ -33,7 +33,7 @@
               </q-select>
             </div>
 
-            <div class="col-6 col-md col-sm">
+            <div class="col-4 col-md col-sm">
               <q-input
                 v-model="element.name"
                 outlined
@@ -44,6 +44,20 @@
                   (val) =>
                     val === '' ||
                     !val.includes(' ') ||
+                    $gettext('* No blank spaces allowed'),
+                ]"
+              />
+            </div>
+
+            <div class="col-4 col-md col-sm">
+              <q-input
+                v-model="element.base_os"
+                outlined
+                :label="$gettext('Base Operating System')"
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val && val !== '' && !val.includes(' ')) ||
                     $gettext('* No blank spaces allowed'),
                 ]"
               />
@@ -150,6 +164,7 @@ export default {
         element.name !== undefined &&
         element.name.trim() !== '' &&
         !element.name.includes(' ') &&
+        !element.base_os.includes(' ') &&
         element.platform !== undefined &&
         element.pms !== undefined &&
         element.architecture !== undefined
@@ -159,6 +174,7 @@ export default {
     const elementData = () => {
       return {
         name: element.name,
+        base_os: element.base_os,
         architecture: element.architecture,
         platform: element.platform.id,
         auto_register_computers: element.auto_register_computers,
@@ -199,6 +215,7 @@ export default {
         id: 0,
         auto_register_computers: false,
         name: undefined,
+        base_os: undefined,
         platform: undefined,
         pms: undefined,
         architecture: undefined,
