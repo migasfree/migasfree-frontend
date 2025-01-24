@@ -86,6 +86,13 @@ export default defineConfig((ctx) => {
           fileURLToPath(new URL('./src/config', import.meta.url)),
         )
       },
+
+      extendWebpack(cfg) {
+        cfg.externals = {
+          ...cfg.externals,
+          fs: 'commonjs fs',
+        }
+      },
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#devserver
