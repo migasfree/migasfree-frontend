@@ -21,26 +21,26 @@ Create and .env file. You can take the content of file .env.example as a sample.
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
 
 ```bash
-quasar dev
+yarn dev
 ```
 
 ### Lint the files
 
 ```bash
-yarn run lint
+yarn lint
 ```
 
 ### i18n
 
 ```bash
-yarn gettext-extract
-yarn gettext-compile
+yarn gettext:extract
+yarn gettext:compile
 ```
 
 ### Build the app for production
 
 ```bash
-quasar build
+yarn build
 ```
 
 ## Screenshots
