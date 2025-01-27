@@ -4,15 +4,19 @@
 
     <Header :title="title" :icon="titleIcon" :has-export-button="false" />
 
-    <p v-translate>
-      This procedure changes status, tags and devices between two computers.
+    <p>
+      {{
+        $gettext(
+          'This procedure changes status, tags and devices between two computers.',
+        )
+      }}
     </p>
 
     <div class="row q-py-md justify-around items-center">
       <div class="col-4 col-md-4">
         <q-card flat>
           <q-card-section>
-            <div v-translate class="text-h5 q-mt-sm q-mb-xs">Source</div>
+            <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('Source') }}</div>
 
             <q-select
               v-model="source"
@@ -34,8 +38,8 @@
             >
               <template #no-option>
                 <q-item>
-                  <q-item-section v-translate class="text-grey">
-                    No results
+                  <q-item-section class="text-grey">
+                    {{ $gettext('No results') }}
                   </q-item-section>
                 </q-item>
               </template>
@@ -87,7 +91,7 @@
       <div class="col-4 col-md-4">
         <q-card flat>
           <q-card-section>
-            <div v-translate class="text-h5 q-mt-sm q-mb-xs">Target</div>
+            <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('Target') }}</div>
 
             <q-select
               v-model="target"
@@ -108,8 +112,8 @@
             >
               <template #no-option>
                 <q-item>
-                  <q-item-section v-translate class="text-grey">
-                    No results
+                  <q-item-section class="text-grey">
+                    {{ $gettext('No results') }}
                   </q-item-section>
                 </q-item>
               </template>
