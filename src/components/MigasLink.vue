@@ -202,6 +202,8 @@ export default {
     const filterRelations = () => {
       let name = ''
 
+      validRelations.value = []
+
       Object.entries(relations.value).map(([, item]) => {
         let to = '#'
         if (item.model && item.pk) {
