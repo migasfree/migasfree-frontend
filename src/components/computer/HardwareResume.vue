@@ -3,7 +3,7 @@
     <q-card-section>
       <div class="row">
         <div class="col-md">
-          <div v-translate class="text-h5">Hardware</div>
+          <div class="text-h5">{{ $gettext('Hardware') }}</div>
         </div>
       </div>
 
