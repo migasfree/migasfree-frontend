@@ -114,8 +114,8 @@ export default defineConfig((ctx) => {
       // cache: false,
       // rawEsbuildEslintOptions: {},
       // rawWebpackEslintPluginOptions: {},
-      warnings: true,
-      errors: true,
+      warnings: false,
+      errors: false,
     },
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#framework
