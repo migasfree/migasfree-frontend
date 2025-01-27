@@ -7,7 +7,11 @@
       </q-tooltip>
     </template>
     <q-list>
-      <q-item>
+      <q-item
+        v-close-popup
+        clickable
+        :to="{ name: 'user-profile-detail', params: { id: user.id } }"
+      >
         <q-tooltip>{{ $gettext('User') }}</q-tooltip>
 
         <q-item-section avatar>
@@ -106,7 +110,7 @@
         </q-item-section>
 
         <q-item-section>
-          <q-item-label v-translate>Change Password</q-item-label>
+          <q-item-label>{{ $gettext('Change Password') }}</q-item-label>
         </q-item-section>
       </q-item>
 
@@ -116,7 +120,7 @@
         </q-item-section>
 
         <q-item-section>
-          <q-item-label v-translate>Logout</q-item-label>
+          <q-item-label>{{ $gettext('Logout') }}</q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
