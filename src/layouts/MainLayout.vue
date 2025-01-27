@@ -103,6 +103,15 @@
 
       <q-page-scroller
         position="bottom-right"
+        reverse
+        :offset="[10, 10]"
+        :scroll-offset="0"
+      >
+        <q-btn fab icon="mdi-chevron-down" color="primary" />
+      </q-page-scroller>
+
+      <q-page-scroller
+        position="bottom-right"
         :offset="[10, 10]"
         :scroll-offset="300"
       >
