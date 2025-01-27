@@ -417,6 +417,7 @@ import { ref, reactive, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
+import pluralize from 'pluralize-esm'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -454,7 +455,6 @@ export default {
     const uiStore = useUiStore()
     const { elementIcon, attributeValue } = useElement()
     const { showDate } = useDate()
-    const pluralize = require('pluralize')
 
     const routes = {
       list: 'computers-list',
