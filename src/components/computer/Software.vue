@@ -1,7 +1,7 @@
 <template>
   <q-card flat bordered>
     <q-card-section>
-      <div v-translate class="text-h5 q-pb-md">Software</div>
+      <div class="text-h5 q-pb-md">{{ $gettext('Software') }}</div>
 
       <q-list bordered>
         <q-expansion-item
@@ -288,7 +288,9 @@
   <q-dialog v-model="showingCompare" persistent>
     <q-card>
       <q-card-section class="row">
-        <div v-translate class="text-h5 q-mt-sm q-mb-xs">Software Compare</div>
+        <div class="text-h5 q-mt-sm q-mb-xs">
+          {{ $gettext('Software Compare') }}
+        </div>
       </q-card-section>
 
       <q-card-section class="row items-center">
@@ -311,8 +313,8 @@
         >
           <template #no-option>
             <q-item>
-              <q-item-section v-translate class="text-grey">
-                No results
+              <q-item-section class="text-grey">
+                {{ $gettext('No results') }}
               </q-item-section>
             </q-item>
           </template>
