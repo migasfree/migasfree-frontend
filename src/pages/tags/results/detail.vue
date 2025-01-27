@@ -17,7 +17,7 @@
     >
       <template #fields>
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
@@ -34,8 +34,8 @@
               >
                 <template #no-option>
                   <q-item>
-                    <q-item-section v-translate class="text-grey">
-                      No results
+                    <q-item-section class="text-grey">
+                      {{ $gettext('No results') }}
                     </q-item-section>
                   </q-item>
                 </template>
@@ -109,8 +109,8 @@
               >
                 <template #no-option>
                   <q-item>
-                    <q-item-section v-translate class="text-grey">
-                      No results
+                    <q-item-section class="text-grey">
+                      {{ $gettext('No results') }}
                     </q-item-section>
                   </q-item>
                 </template>
@@ -155,7 +155,7 @@
         </q-card-section>
 
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Location</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('Location') }}</div>
 
           <q-toggle
             v-model="viewMap"

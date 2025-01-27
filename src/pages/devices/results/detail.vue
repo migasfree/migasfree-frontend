@@ -17,7 +17,7 @@
     >
       <template #fields>
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
@@ -60,8 +60,8 @@
               >
                 <template #no-option>
                   <q-item>
-                    <q-item-section v-translate class="text-grey">
-                      No results
+                    <q-item-section class="text-grey">
+                      {{ $gettext('No results') }}
                     </q-item-section>
                   </q-item>
                 </template>
@@ -111,8 +111,8 @@
         </q-card-section>
 
         <q-card-section v-if="element.connection">
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">
-            Connection Fields
+          <div class="text-h5 q-mt-sm q-mb-xs">
+            {{ $gettext('Connection Fields') }}
           </div>
 
           <div
@@ -132,7 +132,9 @@
         </q-card-section>
 
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Logical Devices</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">
+            {{ $gettext('Logical Devices') }}
+          </div>
 
           <q-list
             v-if="logicalDevices.length > 0"

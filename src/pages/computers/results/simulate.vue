@@ -19,8 +19,8 @@
         <div class="col-md">
           <q-card>
             <q-card-section>
-              <div v-translate class="text-h5 q-pb-md">
-                Input (from computer)
+              <div class="text-h5 q-pb-md">
+                {{ $gettext('Input (from computer)') }}
               </div>
 
               <p v-if="loading.input" class="items-center">
@@ -120,8 +120,8 @@
         <div class="col-md">
           <q-card>
             <q-card-section>
-              <div v-translate class="text-h5 q-pb-md">
-                Output (from server)
+              <div class="text-h5 q-pb-md">
+                {{ $gettext('Output (from server)') }}
               </div>
 
               <p v-if="loading.output" class="justify-center">

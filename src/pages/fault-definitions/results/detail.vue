@@ -14,7 +14,7 @@
     >
       <template #fields>
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
@@ -50,7 +50,7 @@
         </q-card-section>
 
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Code</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('Code') }}</div>
 
           <div class="row q-pa-md q-gutter-md justify-between">
             <div class="col-md-3 col-sm-3">
@@ -73,7 +73,9 @@
         </q-card-section>
 
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Attributes</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">
+            {{ $gettext('Attributes') }}
+          </div>
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
@@ -93,7 +95,9 @@
         </q-card-section>
 
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">User Profiles</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">
+            {{ $gettext('User Profiles') }}
+          </div>
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-12 col-md col-sm">
@@ -111,8 +115,8 @@
               >
                 <template #no-option>
                   <q-item>
-                    <q-item-section v-translate class="text-grey">
-                      No results
+                    <q-item-section class="text-grey">
+                      {{ $gettext('No results') }}
                     </q-item-section>
                   </q-item>
                 </template>

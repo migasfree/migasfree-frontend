@@ -14,7 +14,7 @@
     >
       <template #fields>
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-md col-sm">
@@ -115,7 +115,9 @@
         </q-card-section>
 
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Authorizations</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">
+            {{ $gettext('Authorizations') }}
+          </div>
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-md">
@@ -124,9 +126,12 @@
                 left-label
                 :label="$gettext('Enabled?')"
               />
-              <p v-translate class="text-caption">
-                Indicates whether the user should be treated as active. Uncheck
-                this option instead of deleting the account.
+              <p class="text-caption">
+                {{
+                  $gettext(
+                    'Indicates whether the user should be treated as active. Uncheck this option instead of deleting the account.',
+                  )
+                }}
               </p>
             </div>
           </div>
@@ -138,9 +143,12 @@
                 left-label
                 :label="$gettext('Is Super User?')"
               />
-              <p v-translate class="text-caption">
-                Indicates that this user has all permissions without explicitly
-                assigning them.
+              <p class="text-caption">
+                {{
+                  $gettext(
+                    'Indicates that this user has all permissions without explicitly assigning them.',
+                  )
+                }}
               </p>
             </div>
           </div>
@@ -152,8 +160,12 @@
                 left-label
                 :label="$gettext('Is Staff?')"
               />
-              <p v-translate class="text-caption">
-                Indicates whether the user can enter this administration site.
+              <p class="text-caption">
+                {{
+                  $gettext(
+                    'Indicates whether the user can enter this administration site.',
+                  )
+                }}
               </p>
             </div>
           </div>
@@ -253,8 +265,8 @@
 
                 <template #no-option>
                   <q-item>
-                    <q-item-section v-translate class="text-grey">
-                      No results
+                    <q-item-section class="text-grey">
+                      {{ $gettext('No results') }}
                     </q-item-section>
                   </q-item>
                 </template>
@@ -282,7 +294,9 @@
         </q-card-section>
 
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Preferences</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">
+            {{ $gettext('Preferences') }}
+          </div>
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">

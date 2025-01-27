@@ -49,7 +49,7 @@
           <div class="col-6 col-md col-sm-12 col-xs-12">
             <q-card flat bordered>
               <q-card-section>
-                <div v-translate class="text-h5">Current Situation</div>
+                <div class="text-h5">{{ $gettext('Current Situation') }}</div>
 
                 <q-select
                   v-model="element.status"
@@ -118,8 +118,8 @@
                 >
                   <template #no-option>
                     <q-item>
-                      <q-item-section v-translate class="text-grey">
-                        No results
+                      <q-item-section class="text-grey">
+                        {{ $gettext('No results') }}
                       </q-item-section>
                     </q-item>
                   </template>
@@ -250,7 +250,7 @@
               <q-card-section>
                 <div class="row">
                   <div class="col">
-                    <div v-translate class="text-h5">Synchronization</div>
+                    <div class="text-h5">{{ $gettext('Synchronization') }}</div>
                   </div>
 
                   <div v-if="element.id" class="col-auto">
@@ -340,7 +340,7 @@
           <div class="col col-md col-sm-12">
             <q-card flat bordered>
               <q-card-section>
-                <div v-translate class="text-h5 q-pb-sm">Locations</div>
+                <div class="text-h5 q-pb-sm">{{ $gettext('Locations') }}</div>
 
                 <l-map
                   id="map"

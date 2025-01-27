@@ -54,8 +54,8 @@
 
                 <template #no-option>
                   <q-item>
-                    <q-item-section v-translate class="text-grey">
-                      No results
+                    <q-item-section class="text-grey">
+                      {{ $gettext('No results') }}
                     </q-item-section>
                   </q-item>
                 </template>

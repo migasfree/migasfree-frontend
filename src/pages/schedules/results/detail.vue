@@ -15,7 +15,7 @@
     >
       <template #fields>
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
@@ -41,7 +41,7 @@
         </q-card-section>
 
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Delays</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('Delays') }}</div>
 
           <q-list v-if="delays.length > 0" class="q-pa-md" bordered separator>
             <q-item v-for="(delay, index) in delays" :key="index">

@@ -192,7 +192,7 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <div v-translate class="text-h6">Capabilities</div>
+          <div class="text-h6">{{ $gettext('Capabilities') }}</div>
           <q-table
             v-if="detailInfo.capability.length > 0"
             class="q-ma-md"
@@ -206,7 +206,7 @@
           />
           <BannerInfo v-else :message="$gettext('No information')" />
 
-          <div v-translate class="text-h6">Logical Names</div>
+          <div class="text-h6">{{ $gettext('Logical Names') }}</div>
           <q-table
             v-if="detailInfo.logical_name.length > 0"
             class="q-ma-md"
@@ -220,7 +220,7 @@
           />
           <BannerInfo v-else :message="$gettext('No information')" />
 
-          <div v-translate class="text-h6">Configurations</div>
+          <div class="text-h6">{{ $gettext('Configurations') }}</div>
           <q-table
             v-if="detailInfo.configuration.length > 0"
             class="q-ma-md"

@@ -19,7 +19,7 @@
           <div class="col-6 col-md col-sm-12">
             <q-card flat bordered>
               <q-card-section>
-                <div v-translate class="text-h5 q-pb-sm">General</div>
+                <div class="text-h5 q-pb-sm">{{ $gettext('General') }}</div>
 
                 <div class="row q-gutter-md">
                   <div class="col-6 col-md col-sm">
@@ -93,8 +93,8 @@
           <div class="col-6 col-md col-sm-12">
             <q-card flat bordered>
               <q-card-section>
-                <div v-translate class="text-h5 q-pb-sm">
-                  To who (attributes)
+                <div class="text-h5 q-pb-sm">
+                  {{ $gettext('To who (attributes)') }}
                 </div>
 
                 <div class="row q-pb-md">
@@ -123,7 +123,9 @@
           <div class="col-6 col-md col-sm-12">
             <q-card flat bordered>
               <q-card-section>
-                <div v-translate class="text-h5 q-pb-sm">What (packages)</div>
+                <div class="text-h5 q-pb-sm">
+                  {{ $gettext('What (packages)') }}
+                </div>
 
                 <div v-if="element.id === 0" class="row">
                   <div class="col-12 col-md col-sm">
@@ -167,8 +169,8 @@
                       >
                         <template #no-option>
                           <q-item>
-                            <q-item-section v-translate class="text-grey">
-                              No results
+                            <q-item-section class="text-grey">
+                              {{ $gettext('No results') }}
                             </q-item-section>
                           </q-item>
                         </template>
@@ -224,8 +226,8 @@
                       >
                         <template #no-option>
                           <q-item>
-                            <q-item-section v-translate class="text-grey">
-                              No results
+                            <q-item-section class="text-grey">
+                              {{ $gettext('No results') }}
                             </q-item-section>
                           </q-item>
                         </template>
@@ -329,7 +331,7 @@
           <div class="col-6 col-md col-sm-12">
             <q-card flat bordered>
               <q-card-section>
-                <div v-translate class="text-h5 q-pb-sm">Actions</div>
+                <div class="text-h5 q-pb-sm">{{ $gettext('Actions') }}</div>
 
                 <div class="row q-pb-md q-col-gutter-sm">
                   <div class="col-6 col-md col-sm">
@@ -382,7 +384,9 @@
           <div class="col-12 col-md-12 col-sm-12">
             <q-card flat bordered>
               <q-card-section>
-                <div v-translate class="text-h5 q-pb-sm">When (schedule)</div>
+                <div class="text-h5 q-pb-sm">
+                  {{ $gettext('When (schedule)') }}
+                </div>
 
                 <div class="row q-col-gutter-sm">
                   <div class="col-md-3 col-sm-3">

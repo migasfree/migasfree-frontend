@@ -16,7 +16,7 @@
     >
       <template #fields>
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col">
@@ -38,9 +38,12 @@
                 left-label
                 :label="$gettext('Enabled?')"
               />
-              <p v-translate class="text-caption">
-                If you uncheck this field, the policy is disabled for all
-                computers.
+              <p class="text-caption">
+                {{
+                  $gettext(
+                    'If you uncheck this field, the policy is disabled for all computers.',
+                  )
+                }}
               </p>
             </div>
 
@@ -50,9 +53,12 @@
                 left-label
                 :label="$gettext('Exclusive?')"
               />
-              <p v-translate class="text-caption">
-                If you check this field, it orders to uninstall the Applications
-                assigned in the priorities that have not been met.
+              <p class="text-caption">
+                {{
+                  $gettext(
+                    'If you check this field, it orders to uninstall the Applications assigned in the priorities that have not been met.',
+                  )
+                }}
               </p>
             </div>
           </div>
@@ -70,8 +76,8 @@
         </q-card-section>
 
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">
-            Application Area
+          <div class="text-h5 q-mt-sm q-mb-xs">
+            {{ $gettext('Application Area') }}
           </div>
 
           <div class="row q-pa-md q-gutter-md">
@@ -92,7 +98,9 @@
         </q-card-section>
 
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Policy Groups</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">
+            {{ $gettext('Policy Groups') }}
+          </div>
 
           <q-list
             v-if="policyGroups.length > 0"
@@ -147,8 +155,8 @@
                     >
                       <template #no-option>
                         <q-item>
-                          <q-item-section v-translate class="text-grey">
-                            No results
+                          <q-item-section class="text-grey">
+                            {{ $gettext('No results') }}
                           </q-item-section>
                         </q-item>
                       </template>
