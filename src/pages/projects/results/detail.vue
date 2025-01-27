@@ -57,7 +57,7 @@
                 lazy-rules
                 :rules="[
                   (val) =>
-                    (val && val !== '' && !val.includes(' ')) ||
+                    !(val && val.trim() !== '' && val.includes(' ')) ||
                     $gettext('* No blank spaces allowed'),
                 ]"
               />
@@ -164,7 +164,10 @@ export default {
         element.name !== undefined &&
         element.name.trim() !== '' &&
         !element.name.includes(' ') &&
-        !element.base_os.includes(' ') &&
+        (element.base_os === undefined ||
+          element.base_os === null ||
+          element.base_os.trim() === '' ||
+          !element.base_os.includes(' ')) &&
         element.platform !== undefined &&
         element.pms !== undefined &&
         element.architecture !== undefined
