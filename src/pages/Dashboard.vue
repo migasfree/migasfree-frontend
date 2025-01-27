@@ -157,6 +157,7 @@ import { defineComponent, ref, reactive, computed, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useRouter } from 'vue-router'
 import { useMeta } from 'quasar'
+import pluralize from 'pluralize-esm'
 
 import { useUiStore } from 'stores/ui'
 import { api } from 'boot/axios'
@@ -382,7 +383,6 @@ export default defineComponent({
     }
 
     const goTo = (params) => {
-      const pluralize = require('pluralize')
       let query = {}
 
       if (params.data.project_id) {
