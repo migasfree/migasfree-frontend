@@ -67,7 +67,7 @@ const MODEL_ICON = {
   'status-logs': 'mdi-flag-variant',
   migrations: 'mdi-map-marker-right',
   messages: 'mdi-message-text',
-  notifications: 'mdi-android-messages',
+  notifications: 'mdi-comment-text-outline',
 }
 
 export function appIcon(item) {
