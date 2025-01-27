@@ -16,7 +16,7 @@
     >
       <template #fields>
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">General</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col">
@@ -140,7 +140,7 @@
         </q-card-section>
 
         <q-card-section>
-          <div v-translate class="text-h5 q-mt-sm q-mb-xs">Projects</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('Projects') }}</div>
 
           <q-list
             v-if="packagesByProject.length > 0"
