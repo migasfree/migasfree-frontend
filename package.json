@@ -39,7 +39,7 @@
     "leaflet": "1.9.4",
     "performant-array-to-tree": "1.11.0",
     "pinia": "2.3.1",
-    "pluralize": "8.0.0",
+    "pluralize-esm": "9.0.5",
     "quasar": "2.17.7",
     "text-clipper": "2.2.0",
     "typeface-dosis": "1.1.13",
