@@ -85,6 +85,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { abbreviateNumber } from 'js-abbreviation-number'
+import pluralize from 'pluralize-esm'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -104,7 +105,6 @@ export default {
   setup(props) {
     const uiStore = useUiStore()
     const router = useRouter()
-    const pluralize = require('pluralize')
     const { computerStatus, elementIcon } = useElement()
 
     const relations = ref([])
