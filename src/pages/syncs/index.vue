@@ -17,6 +17,17 @@
       </div>
     </div>
 
+    <div class="row q-pb-md">
+      <div class="col-12">
+        <StackedBarChart
+          :title="$gettext('Syncs / Day')"
+          end-point="/api/v1/token/stats/syncs/project/day/"
+          day-selector
+          @get-link="goTo"
+        />
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-12">
         <PieChart
