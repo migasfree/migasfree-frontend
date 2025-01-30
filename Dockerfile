@@ -1,17 +1,13 @@
-# develop stage
-FROM node:iron-alpine as develop-stage
+# builder stage
+FROM node:iron-alpine AS builder
 WORKDIR /app
-COPY package*.json ./
-RUN yarn global add @quasar/cli
 COPY . .
-
-# build stage
-FROM develop-stage as build-stage
 RUN yarn
-RUN quasar build
+RUN yarn build
 
-# production stage
-FROM nginx:alpine-slim as production-stage
-COPY --from=build-stage /app/dist/spa /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# runtime stage
+FROM node:iron-alpine
+COPY --from=builder /app/dist/spa ./dist
+RUN yarn global add http-server
+EXPOSE 3000
+CMD ["http-server", "dist", "--port", "3000"]
