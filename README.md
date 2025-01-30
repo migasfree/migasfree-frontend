@@ -43,6 +43,13 @@ yarn gettext:compile
 yarn build
 ```
 
+## Build docker container (develop purpose)
+
+```bash
+docker build -t migasfree-frontend .
+docker run -p 3000:3000 migasfree-frontend
+```
+
 ## Screenshots
 
 ### Dashboard (light mode)
