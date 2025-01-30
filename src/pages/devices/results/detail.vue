@@ -136,72 +136,78 @@
             {{ $gettext('Logical Devices') }}
           </div>
 
-          <q-list
-            v-if="logicalDevices.length > 0"
-            class="q-pa-md"
-            bordered
-            separator
-          >
-            <q-item v-for="(logical, index) in logicalDevices" :key="index">
-              <q-item-section side top>
-                <q-btn
-                  flat
-                  dense
-                  round
-                  color="negative"
-                  icon="mdi-delete"
-                  @click="removeInline(index)"
-                  ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-                >
-              </q-item-section>
+          <template v-if="!isLoadingLogical">
+            <q-list
+              v-if="logicalDevices.length > 0"
+              class="q-pa-md"
+              bordered
+              separator
+            >
+              <q-item v-for="(logical, index) in logicalDevices" :key="index">
+                <q-item-section side top>
+                  <q-btn
+                    flat
+                    dense
+                    round
+                    color="negative"
+                    icon="mdi-delete"
+                    @click="removeInline(index)"
+                    ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
+                  >
+                </q-item-section>
 
-              <q-item-section>
-                <div class="row q-pa-md q-gutter-md">
-                  <div class="col-5 col-md col-sm">
-                    <q-select
-                      v-model="logical.capability"
-                      outlined
-                      :label="$gettext('Capability')"
-                      :options="capabilities"
-                      option-value="id"
-                      option-label="name"
-                      lazy-rules
-                      :rules="[(val) => !!val || $gettext('* Required')]"
-                    >
-                      <template #prepend>
-                        <q-icon :name="modelIcon('devices/capabilities')" />
-                      </template>
-                    </q-select>
+                <q-item-section>
+                  <div class="row q-pa-md q-gutter-md">
+                    <div class="col-5 col-md col-sm">
+                      <q-select
+                        v-model="logical.capability"
+                        outlined
+                        :label="$gettext('Capability')"
+                        :options="capabilities"
+                        option-value="id"
+                        option-label="name"
+                        lazy-rules
+                        :rules="[(val) => !!val || $gettext('* Required')]"
+                      >
+                        <template #prepend>
+                          <q-icon :name="modelIcon('devices/capabilities')" />
+                        </template>
+                      </q-select>
+                    </div>
+
+                    <div class="col-5 col-md col-sm">
+                      <q-input
+                        v-model="logical.alternative_capability_name"
+                        outlined
+                        :label="$gettext('Alternative Capability Name')"
+                      />
+                    </div>
                   </div>
 
-                  <div class="col-5 col-md col-sm">
-                    <q-input
-                      v-model="logical.alternative_capability_name"
-                      outlined
-                      :label="$gettext('Alternative Capability Name')"
-                    />
+                  <div class="row q-pa-md q-gutter-md">
+                    <div class="col-10 col-md col-sm">
+                      <SelectAttributes
+                        v-model="logical.attributes"
+                        :label="$gettext('Attributes')"
+                      />
+                    </div>
                   </div>
-                </div>
+                </q-item-section>
+              </q-item>
+            </q-list>
 
-                <div class="row q-pa-md q-gutter-md">
-                  <div class="col-10 col-md col-sm">
-                    <SelectAttributes
-                      v-model="logical.attributes"
-                      :label="$gettext('Attributes')"
-                    />
-                  </div>
-                </div>
-              </q-item-section>
-            </q-item>
-          </q-list>
+            <div class="q-pa-md">
+              <q-btn
+                icon="mdi-plus"
+                :label="$gettext('Add other Logical Device')"
+                @click="addInline"
+              />
+            </div>
+          </template>
 
-          <div class="q-pa-md">
-            <q-btn
-              icon="mdi-plus"
-              :label="$gettext('Add other Logical Device')"
-              @click="addInline"
-            />
-          </div>
+          <template v-else>
+            <q-spinner-dots color="primary" size="3em" />
+          </template>
         </q-card-section>
       </template>
     </ItemDetail>
@@ -254,6 +260,7 @@ export default {
     const logicalDevices = ref([])
     const removedLogicalDevices = ref([])
     const capabilities = ref([])
+    const isLoadingLogical = ref(false)
 
     const breadcrumbs = reactive([
       {
@@ -317,6 +324,7 @@ export default {
         })
 
       if (element.id) {
+        isLoadingLogical.value = true
         await api
           .get(`/api/v1/token/devices/logical/?device__id=${element.id}`)
           .then((response) => {
@@ -325,6 +333,7 @@ export default {
           .catch((error) => {
             uiStore.notifyError(error)
           })
+          .finally(() => (isLoadingLogical.value = false))
 
         localConnectionFields()
       }
@@ -466,6 +475,7 @@ export default {
       logicalDevices,
       removedLogicalDevices,
       capabilities,
+      isLoadingLogical,
       isValid,
       elementData,
       loadRelated,
