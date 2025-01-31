@@ -32,7 +32,10 @@
           autoresize
           @click="passData"
         />
-        <BannerInfo v-if="noData" :message="$gettext('No data available.')" />
+        <BannerInfo
+          v-if="noData && !loading"
+          :message="$gettext('No data available.')"
+        />
       </q-card-section>
 
       <q-card-actions v-show="isChartVisible" align="around" class="q-pt-none">
