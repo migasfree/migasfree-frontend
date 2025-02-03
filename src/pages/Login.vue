@@ -3,7 +3,7 @@
     <q-card flat :style="$q.screen.lt.sm ? { width: '80%' } : { width: '30%' }">
       <q-card-section>
         <q-avatar
-          size="110px"
+          size="120px"
           class="absolute-center shadow-10"
           :color="$q.dark.isActive ? 'blue-grey-9' : 'white'"
         >
@@ -198,7 +198,7 @@ export default {
 
 <style scoped>
 #logo {
-  width: 75px;
-  height: 75px;
+  width: 60px;
+  height: 90px;
 }
 </style>
