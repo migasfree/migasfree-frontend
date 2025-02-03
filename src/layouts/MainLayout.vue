@@ -20,8 +20,12 @@
           no-caps
           size="22px"
         >
-          <q-avatar class="q-pl-sm" size="22px">
-            <img src="../assets/migasfree-logo.svg" alt="migasfree logo" />
+          <q-avatar>
+            <img
+              id="logo"
+              src="../assets/migasfree-logo.svg"
+              alt="migasfree logo"
+            />
           </q-avatar>
           <q-tooltip
             >{{ $gettext('Dashboard') }}
@@ -233,3 +237,9 @@ export default defineComponent({
   },
 })
 </script>
+
+<style scoped>
+#logo {
+  width: 24px;
+}
+</style>
