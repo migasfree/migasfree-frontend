@@ -309,7 +309,7 @@ export default {
       let data = new FormData()
 
       data.append('name', element.name)
-      data.append('description', element.description)
+      data.append('description', element.description ?? '')
 
       if (element.packages) {
         for (let i = 0; i < element.packages.length; i++) {
