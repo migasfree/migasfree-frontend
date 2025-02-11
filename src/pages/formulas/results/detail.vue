@@ -9,11 +9,13 @@
       :element-data="elementData"
       :is-valid="isValid"
       :no-data="isBasic"
+      :visible-actions="!isBasic"
+      :borderless="isBasic"
       @load-related="loadRelated"
       @reset-element="resetElement"
       @set-title="setTitle"
     >
-      <template #fields>
+      <template v-if="!isBasic" #fields>
         <q-card-section>
           <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
 
