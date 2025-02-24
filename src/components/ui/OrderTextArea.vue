@@ -2,6 +2,7 @@
   <q-input
     v-model="content"
     outlined
+    autogrow
     type="textarea"
     :label="label"
     bottom-slots
