@@ -174,7 +174,7 @@ export default {
           localValue.value[key].status = 'tag'
         }
       })
-      emit('update:model-value', localValue)
+      emit('update:model-value', localValue.value)
     }
 
     watch(
