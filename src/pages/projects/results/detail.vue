@@ -83,16 +83,19 @@
                 option-label="name"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
+                @update:model-value="updateArchitectures"
               />
             </div>
 
             <div class="col-4 col-md col-sm">
-              <q-input
+              <q-select
                 v-model="element.architecture"
                 outlined
-                :label="$gettext('Architecture')"
-                lazy-rules
+                multiple
                 :rules="[(val) => !!val || $gettext('* Required')]"
+                :label="$gettext('Architecture')"
+                :options="architectures"
+                :disable="!element.pms"
               />
             </div>
           </div>
@@ -159,6 +162,18 @@ export default {
     const platforms = ref([])
     const pms = ref([])
 
+    const architectures = computed(() => {
+      if (!element.pms) return []
+
+      return pms.value
+        .filter((pms) => pms.id === element.pms.id)
+        .flatMap((pms) => pms.architectures)
+    })
+
+    const updateArchitectures = () => {
+      element.architecture = []
+    }
+
     const isValid = computed(() => {
       return (
         element.name !== undefined &&
@@ -178,7 +193,7 @@ export default {
       return {
         name: element.name,
         base_os: element.base_os,
-        architecture: element.architecture,
+        architecture: element.architecture.join(' '),
         platform: element.platform.id,
         auto_register_computers: element.auto_register_computers,
         pms: element.pms.id,
@@ -202,6 +217,7 @@ export default {
             pms.value.push({
               id: key,
               name: val.module,
+              architectures: val.architectures,
             })
           })
         })
@@ -211,6 +227,11 @@ export default {
 
       if (typeof element.pms === 'string')
         element.pms = pms.value.find((x) => x.id === element.pms)
+
+      if (typeof element.architecture === 'string')
+        element.architecture = element.architecture
+          ? element.architecture.split(' ')
+          : []
     }
 
     const resetElement = () => {
@@ -237,6 +258,8 @@ export default {
       element,
       platforms,
       pms,
+      architectures,
+      updateArchitectures,
       isValid,
       elementData,
       loadRelated,
