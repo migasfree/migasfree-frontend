@@ -1,12 +1,22 @@
 import { useGettext } from 'vue3-gettext'
-import { date } from 'quasar'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime.js'
+import localeData from 'dayjs/plugin/localeData.js'
 
 dayjs.extend(relativeTime)
+dayjs.extend(localeData)
 
 export default function useDate() {
   const { $gettext, current } = useGettext()
+
+  const locale = current.split('_')[0]
+  try {
+    import(`dayjs/locale/${locale}.js`).then((module) => {
+      dayjs.locale(module.default.name)
+    })
+  } catch {
+    console.warn(`Locale ${locale} not found for Day.js`)
+  }
 
   const localeDate = {
     days: [
@@ -63,23 +73,17 @@ export default function useDate() {
   }
 
   const showDate = (isoString, format = '') => {
+    const isDateOnly = typeof isoString === 'string' && !isoString.includes('T')
+    const parsedDate = dayjs(isoString)
+
     if (!format) {
-      format =
-        typeof isoString === 'string' && !isoString.includes('T')
-          ? 'YYYY-MM-DD'
-          : 'YYYY-MM-DD HH:mm:ss'
+      format = isDateOnly ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss'
     }
 
-    return date.formatDate(Date.parse(isoString), format)
+    return parsedDate.format(format)
   }
 
   const diffForHumans = (isoString) => {
-    const locale = current.split('_')[0]
-    if (locale)
-      import(`dayjs/locale/${locale}.js`).then((module) => {
-        dayjs.locale(module.default.name)
-      })
-
     return dayjs(isoString).fromNow()
   }
 
