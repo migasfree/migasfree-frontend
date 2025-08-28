@@ -1,4 +1,4 @@
-export const MIN_CHARS_SEARCH = 3
+export const MIN_CHARS_SEARCH = 1
 export const MIN_PASSWORD_LEN = 4
 export const MAX_PREFIX_LEN = 3
 
