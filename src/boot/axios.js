@@ -1,4 +1,4 @@
-import { LocalStorage } from 'quasar'
+import { LocalStorage, Notify } from 'quasar'
 import { boot } from 'quasar/wrappers'
 import axios from 'axios'
 import { parse, stringify } from 'qs'
@@ -11,22 +11,30 @@ const api = axios.create({
   baseURL: process.env.MIGASFREE_SERVER || 'http://localhost',
 })
 
+function getAcceptLanguage(lang) {
+  const [language, country] = lang.split('_')
+  return `${language}-${country}, ${language};q=0.9`
+}
+
 export default boot(({ app, router }) => {
   api.interceptors.request.use(
     (config) => {
       const authToken = LocalStorage.getItem('auth.token')
 
-      if (authToken && !config.url.includes('/api/v1/public/'))
+      if (
+        authToken &&
+        typeof authToken === 'string' &&
+        !config.url.includes('/api/v1/public/')
+      )
         config.headers.Authorization = `Token ${authToken}`
 
       if (config.url.includes('/api/v1/public/')) config.withCredentials = false
 
       const currentLang = app.config.globalProperties.$language.current
-      config.headers['Accept-Language'] = `${currentLang.replace('_', '-')},${
-        currentLang.split('_')[0]
-      };q=0.9`
+      config.headers['Accept-Language'] = getAcceptLanguage(currentLang)
 
-      console.log('[ REQUEST ]', config.url, config.params, config)
+      if (process.env.NODE_ENV === 'development')
+        console.log('[ REQUEST ]', config.url, config.params, config)
 
       return config
     },
@@ -47,12 +55,18 @@ export default boot(({ app, router }) => {
         switch (error.response.status) {
           case 400:
             console.error(error.response.status, error.message)
-            // notify.warn('Nothing to display', 'Data Not Found')
+            Notify.warning({
+              message: 'Data Not Found',
+              caption: 'Nothing to display',
+            })
             break
 
           // authentication error, logout the user
           case 401:
-            // notify.warn('Please login again', 'Session Expired')
+            Notify.warning({
+              message: 'Session Expired',
+              caption: 'Please login again',
+            })
             LocalStorage.remove('auth.token')
             router.push({ name: 'login' })
             break
@@ -62,9 +76,16 @@ export default boot(({ app, router }) => {
             break
 
           default:
-            console.error(error.response.status, error.message)
-            if ('data' in error.response) console.error(error.response.data)
-          // notify.error('Server Error')
+            console.error(
+              `Unexpected error: ${error.response.status}`,
+              error.message,
+            )
+            if ('data' in error.response)
+              console.error('Server response:', error.response.data)
+            Notify.error({
+              message: 'An unexpected error occurred',
+              caption: 'Server Error',
+            })
         }
       }
 
