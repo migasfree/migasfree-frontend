@@ -193,7 +193,9 @@ export default {
       return {
         name: element.name,
         base_os: element.base_os,
-        architecture: element.architecture.join(' '),
+        architecture: Array.isArray(element.architecture)
+          ? element.architecture.join(' ')
+          : '',
         platform: element.platform.id,
         auto_register_computers: element.auto_register_computers,
         pms: element.pms.id,
