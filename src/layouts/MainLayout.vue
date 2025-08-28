@@ -7,7 +7,7 @@
           dense
           round
           icon="mdi-menu"
-          aria-label="Menu"
+          :aria-label="$gettext('Menu')"
           @click="toggleLeftDrawer"
           ><q-tooltip>{{ $gettext('Menu') }}</q-tooltip>
         </q-btn>
@@ -63,8 +63,8 @@
       :mini="miniState"
       mini-to-overlay
       bordered
-      @mouseover="miniState = false"
-      @mouseout="miniState = true"
+      @mouseover="debounceMini(false)"
+      @mouseout="debounceMini(true)"
     >
       <AppMenu />
     </q-drawer>
@@ -128,10 +128,10 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch } from 'vue'
+import { defineComponent, ref, computed, watch, onBeforeUnmount } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
-import { useMeta } from 'quasar'
+import { useMeta, debounce } from 'quasar'
 
 import AppMenu from 'components/ui/AppMenu'
 import AppFooter from 'components/ui/AppFooter'
@@ -171,29 +171,22 @@ export default defineComponent({
     })
 
     const hasDomainOrScopePreference = computed(() => {
-      if ('domain_preference' in user.value)
-        return (
-          user.value.domain_preference !== null ||
-          user.value.scope_preference !== null
-        )
-
-      return false
+      return (
+        user.value?.domain_preference !== null ||
+        user.value?.scope_preference !== null
+      )
     })
 
     const domainPreference = computed(() => {
-      return user.value.domain_preference
-        ? user.value.domain_preference.name
-        : null
+      return user.value?.domain_preference?.name || null
     })
 
     const scopePreference = computed(() => {
-      return user.value.scope_preference
-        ? user.value.scope_preference.name
-        : null
+      return user.value?.scope_preference?.name || null
     })
 
     const organization = computed(() => {
-      return server.value.organization
+      return server.value?.organization || ''
     })
 
     const removeDomainPreference = async () => {
@@ -208,8 +201,16 @@ export default defineComponent({
       })
     }
 
+    const debounceMini = debounce((value) => {
+      miniState.value = value
+    }, 200)
+
+    onBeforeUnmount(() => {
+      debounceMini.clear()
+    })
+
     watch(organization, (newVal) => {
-      if (newVal !== undefined)
+      if (newVal)
         useMeta({
           titleTemplate: (title) => `${title} | Migasfree @ ${newVal}`,
         })
@@ -233,6 +234,7 @@ export default defineComponent({
       scopePreference,
       removeDomainPreference,
       removeScopePreference,
+      debounceMini,
     }
   },
 })
