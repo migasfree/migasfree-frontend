@@ -212,9 +212,7 @@ export default {
     })
 
     const windowResize = () => {
-      if (chart.value !== null && chart.value !== undefined) {
-        chart.value.resize()
-      }
+      if (chart.value) chart.value.resize()
     }
 
     const passData = (params) => {
@@ -234,11 +232,22 @@ export default {
     }
 
     const changeRange = ($evt) => {
-      chart.value.setOption({
-        calendar: {
-          range: $evt.name,
-        },
-      })
+      if (chart.value)
+        chart.value.setOption({
+          calendar: {
+            range: $evt.name,
+          },
+        })
+    }
+
+    const legendFormatter = (name) => {
+      return `${name} (${yearsSummary.value[name]})`
+    }
+
+    const monthLabelFormatter = (param) => {
+      const index = `${param.yyyy}-${param.MM}`
+      const value = monthsSummary.value[index]
+      return value ? `${param.nameMap} (${value})` : param.nameMap
     }
 
     onBeforeMount(() => {
@@ -267,41 +276,27 @@ export default {
         })
 
         const maxYear = Object.keys(years).length
-          ? Object.keys(years).reduce(function (a, b) {
-              return Math.max(parseInt(a), parseInt(b))
-            })
+          ? Math.max(...Object.keys(years).map(Number))
           : new Date().getFullYear()
 
         years[maxYear] = true
 
         let visualMapMax = 1
-        if (val.length > 0) {
-          visualMapMax = Math.max.apply(
-            Math,
-            val.map(function (o) {
-              return o[1]
-            }),
-          )
-        }
+        if (val.length > 0)
+          visualMapMax = Math.max(...val.map((item) => item[1]))
 
-        if (chart.value !== null && chart.value !== undefined) {
+        if (chart.value) {
           chart.value.setOption(
             {
               series,
               legend: {
                 selected: years,
-                formatter: (name) => {
-                  return `${name} (${yearsSummary.value[name]})`
-                },
+                formatter: legendFormatter,
               },
               calendar: {
                 range: maxYear,
                 monthLabel: {
-                  formatter: (param) => {
-                    const index = `${param.yyyy}-${param.MM}`
-                    const value = monthsSummary.value[index]
-                    return value ? `${param.nameMap} (${value})` : param.nameMap
-                  },
+                  formatter: monthLabelFormatter,
                 },
               },
               visualMap: { max: visualMapMax },
@@ -314,16 +309,10 @@ export default {
           options.series = series
 
           options.legend.selected = years
-          options.legend.formatter = (name) => {
-            return `${name} (${yearsSummary.value[name]})`
-          }
+          options.legend.formatter = legendFormatter
 
           options.calendar.range = maxYear
-          options.calendar.monthLabel.formatter = (param) => {
-            const index = `${param.yyyy}-${param.MM}`
-            const value = monthsSummary.value[index]
-            return value ? `${param.nameMap} (${value})` : param.nameMap
-          }
+          options.calendar.monthLabel.formatter = monthLabelFormatter
 
           options.visualMap.max = visualMapMax
         }
