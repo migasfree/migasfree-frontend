@@ -26,50 +26,48 @@ export default function useDetail(
 
   const loading = ref(false)
 
-  const elementText = computed(() => {
-    if (model === 'features' || model === 'tags') {
-      return element.id ? attributeValue(element) : ''
-    }
-
-    if (model === 'user-profiles') {
-      return element.id ? element.username : ''
-    }
-
-    if (model === 'packages') {
-      return element.id ? element.fullname : ''
-    }
-
-    if (model === 'devices/drivers') {
-      return element.id ? element.name.split('/').reverse()[0] : ''
-    }
-
-    if (model === 'computers') {
-      return element.id ? element.__str__ : ''
-    }
-
-    return element.id ? (element.name ? element.name : element.__str__) : ''
-  })
-
-  if (route.params.id) {
-    if (!['package-information', 'computer-hardware'].includes(route.name)) {
-      breadcrumbs.push({
-        text: $gettext('Results'),
-        icon: appIcon('results'),
-        to: routes.list,
-      })
-      breadcrumbs.push({
-        text: 'Id',
-      })
-    }
-  } else {
-    breadcrumbs.push({ text: $gettext('Add'), icon: 'mdi-plus-circle' })
+  const elementTextFormatters = {
+    features: (el) => (el.id ? attributeValue(el) : ''),
+    tags: (el) => (el.id ? attributeValue(el) : ''),
+    'user-profiles': (el) => (el.id ? el.username : ''),
+    packages: (el) => (el.id ? el.fullname : ''),
+    'devices/drivers': (el) => (el.id ? el.name.split('/').reverse()[0] : ''),
+    computers: (el) => (el.id ? el.__str__ : ''),
   }
 
-  const getElementIcon = () => {
+  const elementText = computed(() => {
+    const formatter = elementTextFormatters[model]
+    return formatter
+      ? formatter(element)
+      : element.id
+        ? element.name || element.__str__
+        : ''
+  })
+
+  const setupBreadcrumbs = () => {
+    if (route.params.id) {
+      if (!['package-information', 'computer-hardware'].includes(route.name)) {
+        breadcrumbs.push({
+          text: $gettext('Results'),
+          icon: appIcon('results'),
+          to: routes.list,
+        })
+        breadcrumbs.push({
+          text: 'Id',
+        })
+      }
+    } else {
+      breadcrumbs.push({ text: $gettext('Add'), icon: 'mdi-plus-circle' })
+    }
+  }
+
+  setupBreadcrumbs()
+
+  const getElementIcon = computed(() => {
     if (model === 'computers') return elementIcon(element.status)
     if (model === 'features') return elementIcon(element.property_att.prefix)
     return modelIcon(model)
-  }
+  })
 
   const addElement = () => {
     emit('resetElement')
@@ -83,75 +81,66 @@ export default function useDetail(
     emit('setTitle', originalTitle)
   }
 
+  const updateBreadcrumbs = () => {
+    breadcrumbs.pop()
+    breadcrumbs.push({
+      text: $gettext('Results'),
+      icon: appIcon('results'),
+      to: routes.list,
+    })
+    breadcrumbs.push({
+      text: elementText.value,
+      icon: getElementIcon.value,
+    })
+  }
+
   const updateElement = async (action = null) => {
-    if (element.id) {
-      loading.value = true
-      await api
-        .patch(`/api/v1/token/${model}/${element.id}/`, elementData())
-        .then(() => {
-          emit('updateRelated')
-
-          uiStore.notifySuccess($gettext('Data has been changed!'))
-          if (action === 'return') {
-            router.push({ name: routes.list })
-          } else if (action === 'add') {
-            addElement()
-          }
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-        .finally(() => (loading.value = false))
-    } else {
-      loading.value = true
+    try {
+      const isUpdate = element.id
       const data = elementData()
-      await api
-        .post(
-          `/api/v1/token/${model}/`,
-          data,
-          data instanceof FormData
-            ? {
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                },
-              }
-            : {},
-        )
-        .then((response) => {
-          Object.assign(element, response.data)
-          emit('updateRelated')
-          emit('setRelated')
+      const config =
+        data instanceof FormData
+          ? { headers: { 'Content-Type': 'multipart/form-data' } }
+          : {}
 
-          uiStore.notifySuccess($gettext('Data has been added!'))
+      loading.value = true
 
-          if (action === 'return') {
-            router.push({ name: routes.list })
-          } else if (action === 'add') {
-            addElement()
-          } else {
-            if (breadcrumbs.length === 4) {
-              breadcrumbs.pop()
-              breadcrumbs.push({
-                text: $gettext('Results'),
-                icon: appIcon('results'),
-                to: routes.list,
-              })
-              breadcrumbs.push({
-                text: elementText.value,
-                icon: getElementIcon(),
-              })
-              emit('setTitle', `${originalTitle}: ${elementText.value}`)
-            }
-            router.push({
-              name: routes.detail,
-              params: { id: element.id },
-            })
-          }
+      const response = isUpdate
+        ? await api.patch(`/api/v1/token/${model}/${element.id}/`, data)
+        : await api.post(`/api/v1/token/${model}/`, data, config)
+
+      // Update element if it's a create operation
+      if (!isUpdate) {
+        Object.assign(element, response.data)
+        emit('setRelated')
+      }
+
+      // Common success handling
+      emit('updateRelated')
+      uiStore.notifySuccess(
+        isUpdate
+          ? $gettext('Data has been changed!')
+          : $gettext('Data has been added!'),
+      )
+
+      if (action === 'return') {
+        router.push({ name: routes.list })
+      } else if (action === 'add') {
+        addElement()
+      } else {
+        if (breadcrumbs.length === 4) {
+          updateBreadcrumbs()
+          emit('setTitle', `${originalTitle}: ${elementText.value}`)
+        }
+        router.push({
+          name: routes.detail,
+          params: { id: element.id },
         })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-        .finally(() => (loading.value = false))
+      }
+    } catch (error) {
+      uiStore.notifyError(error)
+    } finally {
+      loading.value = false
     }
   }
 
@@ -176,7 +165,7 @@ export default function useDetail(
           emit('setRelated')
           if ('to' in breadcrumbs.find((x) => x.text === 'Id'))
             breadcrumbs.find((x) => x.text === 'Id').to.params.id = element.id
-          breadcrumbs.find((x) => x.text === 'Id').icon = getElementIcon()
+          breadcrumbs.find((x) => x.text === 'Id').icon = getElementIcon.value
           breadcrumbs.find((x) => x.text === 'Id').text = elementText.value
           emit('setTitle', `${originalTitle}: ${elementText.value}`)
         })
