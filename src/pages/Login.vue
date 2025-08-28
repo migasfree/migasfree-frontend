@@ -11,6 +11,7 @@
             id="logo"
             src="../assets/migasfree-logo.svg"
             alt="migasfree logo"
+            title="migasfree logo"
           />
         </q-avatar>
       </q-card-section>
@@ -83,6 +84,12 @@
               color="primary"
               :loading="loading"
               :disabled="!isValid"
+              :aria-disabled="!isValid"
+              :aria-label="
+                isValid
+                  ? $gettext('Log In')
+                  : $gettext('Please enter your credentials')
+              "
               >{{ $gettext('Log In') }}</q-btn
             >
           </div>
@@ -152,7 +159,9 @@ export default {
     const changeLanguage = ref(null)
 
     const isValid = computed(() => {
-      return model.username.trim() !== '' && model.password.length > 3
+      return (
+        model.username.trim() !== '' && model.password.length > MIN_PASSWORD_LEN
+      )
     })
 
     const login = async () => {
@@ -200,5 +209,6 @@ export default {
 #logo {
   width: 60px;
   height: 90px;
+  object-fit: contain;
 }
 </style>
