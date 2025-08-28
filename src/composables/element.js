@@ -112,24 +112,19 @@ export function useElement() {
   }
 
   const computerStatus = (value) => {
-    switch (value) {
+    const lowerValue = value.toLowerCase()
+    switch (lowerValue) {
       case 'intended':
-      case 'Intended':
         return $gettext('Intended')
       case 'available':
-      case 'Available':
         return $gettext('Available')
       case 'in repair':
-      case 'In repair':
         return $gettext('In repair')
       case 'reserved':
-      case 'Reserved':
         return $gettext('Reserved')
       case 'unknown':
-      case 'Unknown':
         return $gettext('Unknown')
       case 'unsubscribed':
-      case 'Unsubscribed':
         return $gettext('Unsubscribed')
       default:
         return value
