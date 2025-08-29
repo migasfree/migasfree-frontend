@@ -118,7 +118,7 @@ export default {
 
     watch(
       currentPerPage,
-      (newValue, oldValue) => {
+      (_newValue, oldValue) => {
         if (oldValue) props.perPageChanged(oldValue)
       },
       { immediate: true },
