@@ -134,10 +134,9 @@ export default {
       }
     })
 
-    const getIcon = computed(() => {
-      if (props.icon) return props.icon
-      return modelIcon(props.model)
-    })
+    const getIcon = computed(() =>
+      props.icon ? props.icon : modelIcon(props.model),
+    )
 
     const hasIcon = computed(() => {
       return getIcon.value !== ''
@@ -160,15 +159,12 @@ export default {
       return props.value.split('-').slice(1).join('-')
     })
 
-    const normalizeQuery = (obj) => {
-      const normalizedObj = {}
-      Object.entries(obj).map(([key, val]) => {
-        if (key.includes('__')) normalizedObj[key.replaceAll('__', '_')] = val
-        else normalizedObj[key] = val
-      })
-
-      return normalizedObj
-    }
+    const normalizeQuery = (obj) =>
+      Object.entries(obj).reduce((acc, [key, val]) => {
+        const newKey = key.includes('__') ? key.replaceAll('__', '_') : key
+        acc[newKey] = val
+        return acc
+      }, {})
 
     const normalizeModel = (model) => {
       model = model
