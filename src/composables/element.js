@@ -85,50 +85,37 @@ export function modelIcon(model) {
 export function useElement() {
   const { $gettext } = useGettext()
 
+  const ELEMENT_ICON = {
+    intended: 'mdi-heart-pulse',
+    available: 'mdi-cart',
+    'in repair': 'mdi-wrench',
+    reserved: 'mdi-lock-alert',
+    unknown: 'mdi-crosshairs-question',
+    unsubscribed: 'mdi-recycle-variant',
+    SET: 'mdi-set-none',
+    set: 'mdi-set-none',
+    domain: 'mdi-web',
+    tag: 'mdi-tag',
+  }
+
+  const STATUS_I18N = {
+    intended: $gettext('Intended'),
+    available: $gettext('Available'),
+    'in repair': $gettext('In repair'),
+    reserved: $gettext('Reserved'),
+    unknown: $gettext('Unknown'),
+    unsubscribed: $gettext('Unsubscribed'),
+  }
+
   const elementIcon = (value) => {
-    switch (value) {
-      case 'intended':
-        return 'mdi-heart-pulse'
-      case 'available':
-        return 'mdi-cart'
-      case 'in repair':
-        return 'mdi-wrench'
-      case 'reserved':
-        return 'mdi-lock-alert'
-      case 'unknown':
-        return 'mdi-crosshairs-question'
-      case 'unsubscribed':
-        return 'mdi-recycle-variant'
-      case 'SET':
-      case 'set':
-        return 'mdi-set-none'
-      case 'domain':
-        return 'mdi-web'
-      case 'tag':
-        return 'mdi-tag'
-      default:
-        return 'mdi-pound'
-    }
+    return ELEMENT_ICON[value] ?? 'mdi-pound'
   }
 
   const computerStatus = (value) => {
     const lowerValue = value.toLowerCase()
-    switch (lowerValue) {
-      case 'intended':
-        return $gettext('Intended')
-      case 'available':
-        return $gettext('Available')
-      case 'in repair':
-        return $gettext('In repair')
-      case 'reserved':
-        return $gettext('Reserved')
-      case 'unknown':
-        return $gettext('Unknown')
-      case 'unsubscribed':
-        return $gettext('Unsubscribed')
-      default:
-        return value
-    }
+    return lowerValue && lowerValue in STATUS_I18N
+      ? STATUS_I18N[lowerValue]
+      : value
   }
 
   const productIcon = (value) => {
@@ -150,24 +137,13 @@ export function useElement() {
     return `mdi-cpu-${value}-bit`
   }
 
-  const chunk = (str, n) => {
-    const ret = []
-
-    for (let i = 0, len = str.length; i < len; i += n) {
-      ret.push(str.substr(i, n))
-    }
-
-    return ret
-  }
+  const chunk = (str, n) => str.match(new RegExp(`.{1,${n}}`, 'g')) || []
 
   const humanMacAddress = (value) => {
     if (!value) return ''
 
-    const addresses = chunk(value, MAC_RAW_LEN)
-    for (let i = 0; i < addresses.length; i++) {
-      addresses[i] = chunk(addresses[i], 2).join(':')
-    }
-    return addresses.join(', ')
+    const format = (s) => s.match(/.{2}/g).join(':')
+    return chunk(value, MAC_RAW_LEN).map(format).join(', ')
   }
 
   const attributeValue = (att) => {
