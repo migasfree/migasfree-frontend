@@ -76,81 +76,69 @@ export default function useDataGrid(
     selectionText: $gettext('rows selected'),
     clearSelectionText: $gettext('Clear'),
   })
+
+  const ALL_OPTION = { id: '', name: $gettext('All') }
+
+  const simpleFilter = (extra = []) => ({
+    items: [ALL_OPTION, ...extra],
+    selected: null,
+  })
+
+  const rangeFilter = () => ({
+    selected: { from: null, to: null },
+  })
+
+  const bitsOption = (n) => ({
+    id: n,
+    name: interpolate($gettext('%{n} bits'), { n }),
+  })
+
+  const daysAgoOption = (n) => ({
+    id: n,
+    name: interpolate($gettext('%{n} days ago'), { n }),
+  })
+
   const tableFilters = reactive({
     search: '',
-    platform: {
-      items: [{ id: '', name: $gettext('All') }],
-      selected: null,
-    },
-    project: {
-      items: [{ id: '', name: $gettext('All') }],
-      selected: null,
-    },
+    platform: simpleFilter(),
+    project: simpleFilter(),
     statusIn: {
       items: [],
       selected: null,
       choices: {},
     },
-    createdAtRange: {
-      selected: { from: null, to: null },
-    },
-    startDateRange: {
-      selected: { from: null, to: null },
-    },
+    createdAtRange: rangeFilter(),
+    startDateRange: rangeFilter(),
     schedule: {
       items: [
-        { id: '', name: $gettext('All') },
+        ALL_OPTION,
         { id: 1, name: $gettext('without schedule') },
         { id: 0, name: $gettext('with schedule') },
       ],
       selected: null,
     },
-    model: {
-      items: [{ id: '', name: $gettext('All') }],
-      selected: null,
-    },
-    installDateRange: {
-      selected: { from: null, to: null },
-    },
-    uninstallDateRange: {
-      selected: { from: null, to: null },
-    },
+    model: simpleFilter(),
+    installDateRange: rangeFilter(),
+    uninstallDateRange: rangeFilter(),
     uninstallDate: {
       items: [
-        { id: '', name: $gettext('All') },
+        ALL_OPTION,
         { id: 1, name: $gettext('without date') },
         { id: 0, name: $gettext('with date') },
       ],
       selected: null,
     },
-    user: {
-      items: [{ id: '', name: $gettext('All') }],
-      selected: null,
-    },
+    user: simpleFilter(),
     serial: '',
     mac: '',
     uuid: '',
     architecture: {
-      items: [
-        { id: '', name: $gettext('All') },
-        {
-          id: 32,
-          name: interpolate($gettext('%{n} bits'), {
-            n: 32,
-          }),
-        },
-        {
-          id: 64,
-          name: interpolate($gettext('%{n} bits'), {
-            n: 64,
-          }),
-        },
-      ],
+      items: [ALL_OPTION, bitsOption(32), bitsOption(64)],
       selected: null,
     },
     machine: {
       items: [
-        { id: '', label: $gettext('All') },
+        ALL_OPTION,
         {
           id: 'P',
           label: $gettext('Physical'),
@@ -172,53 +160,27 @@ export default function useDataGrid(
     },
     syncEndDate: {
       items: [
-        { id: '', name: $gettext('All') },
+        ALL_OPTION,
         { id: 0, name: $gettext('without date') },
-        {
-          id: 7,
-          name: interpolate($gettext('%{n} days ago'), {
-            n: 7,
-          }),
-        },
-        {
-          id: 30,
-          name: interpolate($gettext('%{n} days ago'), {
-            n: 30,
-          }),
-        },
-        {
-          id: 60,
-          name: interpolate($gettext('%{n} days ago'), {
-            n: 60,
-          }),
-        },
-        {
-          id: 180,
-          name: interpolate($gettext('%{n} days ago'), {
-            n: 180,
-          }),
-        },
-        {
-          id: 365,
-          name: interpolate($gettext('%{n} days ago'), {
-            n: 365,
-          }),
-        },
+        daysAgoOption(7),
+        daysAgoOption(30),
+        daysAgoOption(60),
+        daysAgoOption(180),
+        daysAgoOption(365),
       ],
       selected: null,
     },
     softwareInventory: {
       items: [
-        { id: '', name: $gettext('All') },
+        ALL_OPTION,
         { id: 0, name: $gettext('without inventory') },
         { id: 1, name: $gettext('with inventory') },
       ],
       selected: null,
     },
-    syncEndDateRange: {
-      selected: { from: null, to: null },
-    },
+    syncEndDateRange: rangeFilter(),
   })
+
   const selectedRows = ref([])
 
   const searchOptions = computed(() => {
