@@ -428,7 +428,7 @@ export default function useDataGrid(
     tableFilters.statusIn.choices = options.choices
 
     tableFilters.statusIn.items = [
-      { id: '', label: $gettext('All') },
+      ALL_OPTION,
       {
         id: options.subscribed.join(','),
         label: $gettext('subscribed'),
@@ -593,7 +593,7 @@ export default function useDataGrid(
   }
 
   const queryParams = () => {
-    let ret = {
+    const ret = {
       page_size: serverParams.perPage,
       page: serverParams.page,
     }
@@ -602,283 +602,178 @@ export default function useDataGrid(
       ret.ordering = `${serverParams.sort.type}${serverParams.sort.field}`
     }
 
+    const fieldMap = {
+      // ---- direct maps ----
+      application_id: 'application__id',
+      attribute_id: 'attribute__id',
+      attributes_id: 'attributes__id',
+      attributeset_included_id: 'attributeset_included__id',
+      attributeset_excluded_id: 'attributeset_excluded__id',
+      available_for_attributes_id: 'available_for_attributes__id',
+      available_packages_id: 'available_packages__id',
+      available_package_sets_id: 'available_package_sets__id',
+      capability_id: 'capability__id',
+      'capability.name': 'capability__id',
+      category: 'category__id',
+      category_id: 'category__id',
+      'category.name': 'category__id',
+      'computer.__str__': 'computer__name__icontains',
+      computer_id: 'computer__id',
+      connections_id: 'connections__id',
+      'connection.name': 'connection__id',
+      default_logical_device_id: 'default_logical_device__id',
+      deployment: 'deployment__isnull',
+      deployment_id: 'deployment__id',
+      deployment_included_id: 'deployment_included__id',
+      deployment_excluded_id: 'deployment_excluded__id',
+      device_id: 'device__id',
+      device_type_id: 'device_type__id',
+      'device_type.name': 'device_type__id',
+      domain_included_id: 'domain_included__id',
+      domain_excluded_id: 'domain_excluded__id',
+      domain_tags_id: 'domain_tags__id',
+      domains_id: 'domains__id',
+      drivers_project_id: 'drivers__project__id',
+      excluded_attributes_id: 'excluded_attributes__id',
+      faultdefinition_id: 'faultdefinition__id',
+      faultdefinition_included_id: 'faultdefinition_included__id',
+      faultdefinition_excluded_id: 'faultdefinition_excluded__id',
+      faultdefinition_users_id: 'faultdefinition_users__id',
+      'fault_definition.name': 'fault_definition_id',
+      id_in: 'id__in',
+      included_attributes_id: 'included_attributes__id',
+      level: 'level',
+      'level.name': 'level',
+      logical_id: 'logical__id',
+      'manufacturer.name': 'manufacturer__id',
+      model: 'device__model__id',
+      'model.manufacturer.name': 'model__manufacturer__id',
+      model_id: 'model__id',
+      'model.name': 'model__id',
+      'package.project.name': 'package__project__id',
+      package_id: 'package__id',
+      packages: 'packages__isnull',
+      packages_id: 'packages__id',
+      packageset: 'packageset__isnull',
+      packageset_id: 'packageset__id',
+      packages_by_project_project_id: 'packages_by_project__project__id',
+      'platform.name': 'platform__id',
+      policy_included_id: 'policy_included__id',
+      policy_excluded_id: 'policy_excluded__id',
+      project_id: 'project__id',
+      'project.name': 'project__id',
+      property_att: 'property_att__id',
+      schedule: 'schedule__isnull',
+      schedule_id: 'schedule__id',
+      'schedule.name': 'schedule__id',
+      singularity_id: 'singularity__id',
+      singularity_included_id: 'singularity_included__id',
+      singularity_excluded_id: 'singularity_excluded__id',
+      scope_included_id: 'scope_included__id',
+      scope_excluded_id: 'scope_excluded__id',
+      store: 'store__isnull',
+      'store.name': 'store__id',
+      sync_attributes_id: 'sync_attributes__id',
+      sync_attributes_id_in: 'sync_attributes__id__in',
+      sync_user_id: 'sync_user__id',
+      tags_id: 'tags__id',
+      uninstall_date: 'uninstall_date__isnull',
+      user_id: 'user__id',
+      users_id: 'users__id',
+      // ---- cases with own logic ----
+      platform: (_key, val) => {
+        if (model.value === 'computers') return { ['platform']: val }
+        if (model.value === 'projects') return { platform__id: val }
+        return { project__platform__id: val }
+      },
+      status: (_key, val) => ({
+        ...(model.value === 'computers' || model.value === 'status-logs'
+          ? { status__in: val }
+          : { computer__status__in: val }),
+      }),
+      status_in: (_key, val) => ({
+        ...(model.value === 'computers' || model.value === 'status-logs'
+          ? { status__in: val }
+          : { computer__status__in: val }),
+      }),
+      status__in: (_key, val) => ({
+        ...(model.value === 'computers' || model.value === 'status-logs'
+          ? { status__in: val }
+          : { computer__status__in: val }),
+      }),
+      mac: (_key, val) => ({
+        mac_address: typeof val === 'string' ? val.replaceAll(':', '') : val,
+      }),
+      sync_end_date: (_key, val) => {
+        if (val === 0) return { sync_end_date__isnull: true }
+        const d = new Date()
+        d.setDate(d.getDate() - val)
+        return { sync_end_date__lt: d.toISOString() }
+      },
+      // ---- generic filters ----
+      __default: (key, val) => {
+        // console.log('default', key, val)
+        if (typeof key !== 'string' || key === '') return {}
+
+        const specialCases = [
+          'architecture',
+          'auto_register_computers',
+          'checked',
+          'enabled',
+          'exclusive',
+          'has_software_inventory',
+          'installed_package',
+          'is_active',
+          'kind',
+          'language',
+          'machine',
+          'page',
+          'page_size',
+          'pms_status_ok',
+          'product_system',
+          'search',
+          'serial',
+          'score',
+          'source',
+          'sort',
+          'total_computers',
+          'user',
+          'platform_id',
+        ]
+
+        // operators who should **not** receive __icontains
+        const rangeOperators = [
+          '__gte',
+          '__gt',
+          '__lte',
+          '__lt',
+          '__in',
+          '__isnull',
+        ]
+        const hasRangeOperator = rangeOperators.some((op) => key.endsWith(op))
+
+        // if it has any of those operators or in specialCases, we return the key as is
+        if (hasRangeOperator || specialCases.includes(key)) {
+          // console.log('no icontains', { [key]: val })
+          return { [key]: val }
+        }
+
+        // generic case
+        const paramName = `${key.replace(/\./g, '__')}__icontains`
+        return { [paramName]: val }
+      },
+    }
+
+    //  Apply filters
     if (Object.keys(serverParams.columnFilters).length) {
-      Object.entries(serverParams.columnFilters).map(([key, val]) => {
-        switch (key) {
-          case 'application_id':
-            ret.application__id = val
-            break
-          case 'attribute_id':
-            ret.attribute__id = val
-            break
-          case 'attributes_id':
-            ret.attributes__id = val
-            break
-          case 'attributeset_included_id':
-            ret.attributeset_included__id = val
-            break
-          case 'attributeset_excluded_id':
-            ret.attributeset_excluded__id = val
-            break
-          case 'available_for_attributes_id':
-            ret.available_for_attributes__id = val
-            break
-          case 'available_packages_id':
-            ret.available_packages__id = val
-            break
-          case 'available_package_sets_id':
-            ret.available_package_sets__id = val
-            break
-          case 'capability_id':
-          case 'capability.name':
-            ret.capability__id = val
-            break
-          case 'category':
-          case 'category_id':
-          case 'category.name':
-            ret.category__id = val
-            break
-          case 'computer.__str__':
-            ret.computer__name__icontains = val
-            break
-          case 'computer_id':
-            ret.computer__id = val
-            break
-          case 'connections_id':
-            ret.connections__id = val
-            break
-          case 'connection.name':
-            ret.connection__id = val
-            break
-          case 'default_logical_device_id':
-            ret.default_logical_device__id = val
-            break
-          case 'deployment':
-            ret.deployment__isnull = val
-            break
-          case 'deployment_id':
-            ret.deployment__id = val
-            break
-          case 'deployment_included_id':
-            ret.deployment_included__id = val
-            break
-          case 'deployment_excluded_id':
-            ret.deployment_excluded__id = val
-            break
-          case 'device_id':
-            ret.device__id = val
-            break
-          case 'device_type_id':
-          case 'device_type.name':
-            ret.device_type__id = val
-            break
-          case 'domain_included_id':
-            ret.domain_included__id = val
-            break
-          case 'domain_excluded_id':
-            ret.domain_excluded__id = val
-            break
-          case 'domain_tags_id':
-            ret.domain_tags__id = val
-            break
-          case 'domains_id':
-            ret.domains__id = val
-            break
-          case 'drivers_project_id':
-            ret.drivers__project__id = val
-            break
-          case 'excluded_attributes_id':
-            ret.excluded_attributes__id = val
-            break
-          case 'faultdefinition_id':
-            ret.faultdefinition__id = val
-            break
-          case 'faultdefinition_included_id':
-            ret.faultdefinition_included__id = val
-            break
-          case 'faultdefinition_excluded_id':
-            ret.faultdefinition_excluded__id = val
-            break
-          case 'faultdefinition_users_id':
-            ret.faultdefinition_users__id = val
-            break
-          case 'fault_definition.name':
-            ret.fault_definition_id = val
-            break
-          case 'id_in':
-            ret.id__in = val
-            break
-          case 'included_attributes_id':
-            ret.included_attributes__id = val
-            break
-          case 'level':
-          case 'level.name':
-            ret.level = val
-            break
-          case 'logical_id':
-            ret.logical__id = val
-            break
-          case 'manufacturer.name':
-            ret.manufacturer__id = val
-            break
-          case 'model':
-            ret.device__model__id = val
-            break
-          case 'model.manufacturer.name':
-            ret.model__manufacturer__id = val
-            break
-          case 'model_id':
-          case 'model.name':
-            ret.model__id = val
-            break
-          case 'package.project.name':
-            ret.package__project__id = val
-            break
-          case 'package_id':
-            ret.package__id = val
-            break
-          case 'packages':
-            ret.packages__isnull = val
-            break
-          case 'packages_id':
-            ret.packages__id = val
-            break
-          case 'packageset':
-            ret.packageset__isnull = val
-            break
-          case 'packageset_id':
-            ret.packageset__id = val
-            break
-          case 'packages_by_project_project_id':
-            ret.packages_by_project__project__id = val
-            break
-          case 'platform':
-            if (model.value === 'computers') ret[key] = val
-            else if (model.value === 'projects') ret.platform__id = val
-            else ret.project__platform__id = val
-            break
-          case 'platform.name':
-            ret.platform__id = val
-            break
-          case 'policy_included_id':
-            ret.policy_included__id = val
-            break
-          case 'policy_excluded_id':
-            ret.policy_excluded__id = val
-            break
-          case 'project_id':
-          case 'project.name':
-            ret.project__id = val
-            break
-          case 'property_att':
-            ret.property_att__id = val
-            break
-          case 'schedule':
-            ret.schedule__isnull = val
-            break
-          case 'schedule_id':
-          case 'schedule.name':
-            ret.schedule__id = val
-            break
-          case 'singularity_id':
-            ret.singularity__id = val
-            break
-          case 'singularity_included_id':
-            ret.singularity_included__id = val
-            break
-          case 'singularity_excluded_id':
-            ret.singularity_excluded__id = val
-            break
-          case 'scope_included_id':
-            ret.scope_included__id = val
-            break
-          case 'scope_excluded_id':
-            ret.scope_excluded__id = val
-            break
-          case 'status':
-          case 'status_in':
-          case 'status__in':
-            if (model.value === 'computers' || model.value === 'status-logs')
-              ret.status__in = val
-            else ret.computer__status__in = val
-            break
-          case 'store':
-            ret.store__isnull = val
-            break
-          case 'store.name':
-            ret.store__id = val
-            break
-          case 'sync_attributes_id':
-            ret.sync_attributes__id = val
-            break
-          case 'sync_attributes_id_in':
-            ret.sync_attributes__id__in = val
-            break
-          case 'sync_user_id':
-            ret.sync_user__id = val
-            break
-          case 'tags_id':
-            ret.tags__id = val
-            break
-          case 'uninstall_date':
-            ret.uninstall_date__isnull = val
-            break
-          case 'user_id':
-            ret.user__id = val
-            break
-          case 'users_id':
-            ret.users__id = val
-            break
-          case 'mac':
-            ret.mac_address = val ? val.replaceAll(':', '') : val
-            break
-          case 'checked':
-          case 'user':
-          case 'platform_id':
-          case 'pms_status_ok':
-          case 'created_at__gte':
-          case 'created_at__lt':
-          case 'start_date__gte':
-          case 'start_date__lt':
-          case 'install_date__gte':
-          case 'install_date__lt':
-          case 'uninstall_date__gte':
-          case 'uninstall_date__lt':
-          case 'auto_register_computers':
-          case 'enabled':
-          case 'exclusive':
-          case 'is_active':
-          case 'sort':
-          case 'kind':
-          case 'language':
-          case 'architecture':
-          case 'machine':
-          case 'product_system':
-          case 'has_software_inventory':
-          case 'installed_package':
-          case 'serial':
-          case 'sync_end_date__gte':
-          case 'sync_end_date__lt':
-          case 'percent__gte':
-          case 'percent__lt':
-          case 'total_computers':
-          case 'score':
-          case 'source':
-          case 'search':
-          case 'page':
-          case 'page_size':
-            ret[key] = val
-            break
-          case 'sync_end_date':
-            if (val === 0) ret[`${key}__isnull`] = true
-            else {
-              let d = new Date()
-              d = d.toISOString(d.setDate(d.getDate() - val))
-              ret[`${key}__lt`] = d
-            }
-            break
-          default:
-            ret[`${key.replace('.', '__')}__icontains`] = val
+      Object.entries(serverParams.columnFilters).forEach(([key, val]) => {
+        // console.log('apply filter', key, val)
+        const mapper = fieldMap[key] ?? fieldMap.__default
+        // console.log(mapper)
+        if (typeof mapper === 'function') {
+          Object.assign(ret, mapper(key, val))
+        } else {
+          ret[mapper] = val
         }
       })
     }
