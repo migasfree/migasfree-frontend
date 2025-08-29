@@ -963,37 +963,34 @@ export default function useDataGrid(
     myTable.value.reset()
     resetColumnFilters()
 
-    Object.entries(tableFilters).map(([key]) => {
-      switch (key) {
-        case 'createdAtRange':
-        case 'installDateRange':
-        case 'startDateRange':
-        case 'syncEndDateRange':
-        case 'uninstallDateRange':
-          tableFilters[key].selected = { from: null, to: null }
-          if (key === 'installDateRange' && installDateRange.value)
-            installDateRange.value.reset(loadItemsAfter)
-          if (key === 'uninstallDateRange' && uninstallDateRange.value)
-            uninstallDateRange.value.reset(loadItemsAfter)
-          if (key === 'createdAtRange' && createdAtRange.value)
-            createdAtRange.value.reset(loadItemsAfter)
-          if (key === 'startDateRange' && startDateRange.value)
-            startDateRange.value.reset(loadItemsAfter)
-          break
-        case 'serial':
-        case 'mac':
-        case 'uuid':
-        case 'search':
-          tableFilters[key] = ''
-          break
-        case 'machine':
-          if (machineTree.value) machineTree.value.reset()
-          break
-        case 'statusIn':
-          if (statusTree.value) statusTree.value.reset()
-          break
-        default:
-          tableFilters[key].selected = null
+    const rangeFilters = [
+      'createdAtRange',
+      'installDateRange',
+      'startDateRange',
+      'syncEndDateRange',
+      'uninstallDateRange',
+    ]
+
+    const textFilters = ['serial', 'mac', 'uuid', 'search']
+
+    Object.entries(tableFilters).forEach(([key]) => {
+      if (rangeFilters.includes(key)) {
+        tableFilters[key] = rangeFilter()
+        const rangeRef = {
+          installDateRange,
+          uninstallDateRange,
+          createdAtRange,
+          startDateRange,
+        }[key]
+        if (rangeRef?.value) rangeRef.value.reset(loadItemsAfter)
+      } else if (textFilters.includes(key)) {
+        tableFilters[key] = ''
+      } else if (key === 'machine' && machineTree.value) {
+        machineTree.value.reset()
+      } else if (key === 'statusIn' && statusTree.value) {
+        statusTree.value.reset()
+      } else {
+        tableFilters[key].selected = null
       }
     })
 
