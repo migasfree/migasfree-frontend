@@ -192,98 +192,68 @@ export default function useDataGrid(
   })
 
   const loadQueryParams = () => {
-    Object.entries(route.query).map(([key, value]) => {
-      let columnKey = null
-      let filterKey = null
+    const keyMap = {
+      capability_id: { filterKey: 'capability.name' },
+      category: { filterKey: 'category.name' },
+      category_id: { filterKey: 'category.name' },
+      connection_id: { filterKey: 'connection.name' },
+      device_type_id: { filterKey: 'device_type.name' },
+      fault_definition_id: { filterKey: 'fault_definition.name' },
+      level: { filterKey: 'level.name' },
+      model_id: { filterKey: 'model.name' },
+      package_project_id: {
+        columnKey: 'package.project.name',
+        filterKey: 'package.project.name',
+      },
+      platform_id: { columnKey: 'platform', filterKey: 'platform.name' },
+      project_id: { columnKey: 'project.name', filterKey: 'project.name' },
+      property_id: { columnKey: 'property_att', filterKey: 'property_att' },
+      schedule_id: { filterKey: 'schedule.name' },
+      store_id: { columnKey: 'store.name', filterKey: 'store.name' },
+    }
 
-      if (typeof value === 'boolean') value = value.toString()
+    Object.entries(route.query).map(([key, rawValue]) => {
+      const value =
+        typeof rawValue === 'boolean' ? rawValue.toString() : rawValue
 
-      switch (key) {
-        case 'capability_id':
-          filterKey = 'capability.name'
-          break
-        case 'category':
-        case 'category_id':
-          filterKey = 'category.name'
-          break
-        case 'connection_id':
-          filterKey = 'connection.name'
-          break
-        case 'device_type_id':
-          filterKey = 'device_type.name'
-          break
-        case 'fault_definition_id':
-          filterKey = 'fault_definition.name'
-          break
-        case 'level':
-          filterKey = 'level.name'
-          break
-        case 'model_id':
-          filterKey = 'model.name'
-          break
-        case 'package_project_id':
-          columnKey = 'package.project.name'
-          filterKey = 'package.project.name'
-          break
-        case 'platform_id':
-          columnKey = 'platform'
-          filterKey = 'platform.name'
-          break
-        case 'project_id':
-          columnKey = 'project.name'
-          filterKey = 'project.name'
-          break
-        case 'property_id':
-          columnKey = 'property_att'
-          filterKey = 'property_att'
-          break
-        case 'schedule_id':
-          filterKey = 'schedule.name'
-          break
-        case 'store_id':
-          columnKey = 'store.name'
-          filterKey = 'store.name'
-          break
-      }
+      const { columnKey, filterKey } = keyMap[key] || {}
 
       updateParams({
-        columnFilters: { [columnKey ? columnKey : key]: value },
+        columnFilters: { [columnKey ?? key]: value },
       })
 
-      let filter = null
-      if (key === 'manufacturer_id')
-        filter = columns.find(
-          (x) =>
-            x.field === 'manufacturer.name' ||
-            x.field === 'model.manufacturer.name',
-        )
-      else
-        filter = columns.find((x) => x.field === (filterKey ? filterKey : key))
-      if (filter && 'filterOptions' in filter)
-        filter.filterOptions.filterValue = value
+      const columnField =
+        key === 'manufacturer_id'
+          ? (x) =>
+              x.field === 'manufacturer.name' ||
+              x.field === 'model.manufacturer.name'
+          : (x) => x.field === (filterKey ?? key)
 
-      filter = null
+      const filter = columns.find(columnField)
+      if (filter && 'filterOptions' in filter) {
+        filter.filterOptions.filterValue = value
+      }
+
+      // Table filter handling
       if (key in tableFilters) {
-        switch (key) {
-          case 'machine':
-            filter = findById(tableFilters.machine.items, value)
-            if (filter) tableFilters.machine.selected = filter.label
-            break
-          case 'schedule':
-            filter = findById(
-              tableFilters[key].items,
-              value === 'true' ? 1 : value === 'false' ? 0 : '',
-            )
-            if (filter) tableFilters[key].selected = filter.name
-            break
-          case 'user':
-            filter = findById(tableFilters.user.items, value)
-            if (filter) tableFilters.user.selected = filter.name
-            break
-          default:
-            if (typeof tableFilters[key] === 'object')
-              tableFilters[key].selected = value
-            else tableFilters[key] = value
+        // Special cases that require ID search
+        if (key === 'machine') {
+          const item = findById(tableFilters.machine.items, value)
+          if (item) tableFilters.machine.selected = item.label
+        } else if (key === 'schedule') {
+          const item = findById(
+            tableFilters.schedule.items,
+            value === 'true' ? 1 : value === 'false' ? 0 : '',
+          )
+          if (item) tableFilters.schedule.selected = item.name
+        } else if (key === 'user') {
+          const item = findById(tableFilters.user.items, value)
+          if (item) tableFilters.user.selected = item.name
+        } else {
+          // Generic filters
+          if (typeof tableFilters[key] === 'object')
+            tableFilters[key].selected = value
+          else tableFilters[key] = value
         }
       }
 
@@ -296,14 +266,12 @@ export default function useDataGrid(
           tableFilters.createdAtRange.selected.to = value
       }
 
-      if ('uninstallDate' in tableFilters) {
-        if (key === 'uninstall_date') {
-          filter = findById(
-            tableFilters.uninstallDate.items,
-            value === 'true' ? 1 : value === 'false' ? 0 : '',
-          )
-          if (filter) tableFilters.uninstallDate.selected = filter.name
-        }
+      if (key === 'uninstall_date' && 'uninstallDate' in tableFilters) {
+        const item = findById(
+          tableFilters.uninstallDate.items,
+          value === 'true' ? 1 : value === 'false' ? 0 : '',
+        )
+        if (item) tableFilters.uninstallDate.selected = filter.name
       }
     })
   }
