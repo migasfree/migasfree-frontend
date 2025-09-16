@@ -27,6 +27,7 @@
     "gettext:compile": "vue-gettext-compile"
   },
   "dependencies": {
+    "@fontsource/dosis": "5.2.7",
     "@quasar/extras": "1.17.0",
     "@vue-leaflet/vue-leaflet": "0.7.0",
     "@vue/compiler-sfc": "3.5.20",
@@ -42,7 +43,6 @@
     "pluralize-esm": "9.0.5",
     "quasar": "2.18.2",
     "text-clipper": "2.2.0",
-    "typeface-dosis": "1.1.13",
     "v-code-diff": "1.13.1",
     "vue": "3.5.20",
     "vue-echarts": "7.0.3",

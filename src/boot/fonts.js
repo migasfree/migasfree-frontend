@@ -1,1 +1,1 @@
-import 'typeface-dosis'
+import '@fontsource/dosis'
