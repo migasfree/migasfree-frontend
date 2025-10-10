@@ -55,15 +55,17 @@ export default boot(({ app, router }) => {
         switch (error.response.status) {
           case 400:
             console.error(error.response.status, error.message)
-            Notify.warning({
+            /* Notify.create({
+              type: 'warning',
               message: 'Data Not Found',
               caption: 'Nothing to display',
-            })
+            }) */
             break
 
           // authentication error, logout the user
           case 401:
-            Notify.warning({
+            Notify.create({
+              type: 'warning',
               message: 'Session Expired',
               caption: 'Please login again',
             })
@@ -82,7 +84,8 @@ export default boot(({ app, router }) => {
             )
             if ('data' in error.response)
               console.error('Server response:', error.response.data)
-            Notify.error({
+            Notify.create({
+              type: 'negative',
               message: 'An unexpected error occurred',
               caption: 'Server Error',
             })
