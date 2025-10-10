@@ -170,8 +170,8 @@ export default {
       await authStore
         .login(model)
         .then(() => {
-          if (route.params.nextUrl != null) {
-            router.push(route.params.nextUrl)
+          if (route.query.nextUrl != null) {
+            router.push(route.query.nextUrl)
           } else {
             router.push({ name: 'home' })
           }
