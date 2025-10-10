@@ -84,11 +84,11 @@ export default boot(({ app, router }) => {
             )
             if ('data' in error.response)
               console.error('Server response:', error.response.data)
-            Notify.create({
+          /* Notify.create({
               type: 'negative',
               message: 'An unexpected error occurred',
               caption: 'Server Error',
-            })
+            }) */
         }
       }
 
