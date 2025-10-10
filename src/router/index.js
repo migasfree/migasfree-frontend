@@ -47,7 +47,7 @@ export default route(function (/* { store, ssrContext } */) {
       if (authStore.loggedIn) {
         next()
       } else {
-        next({ name: 'login', params: { nextUrl: to.fullPath } })
+        next({ name: 'login', query: { nextUrl: to.fullPath } })
       }
       // } else if (to.name === 'login' && authStore.loggedIn) {
       //  next({name: 'home'})
