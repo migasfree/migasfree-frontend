@@ -206,7 +206,7 @@ export default defineComponent({
     }, 200)
 
     onBeforeUnmount(() => {
-      debounceMini.clear()
+      debounceMini.cancel()
     })
 
     watch(organization, (newVal) => {
