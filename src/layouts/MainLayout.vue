@@ -33,6 +33,7 @@
               >[{{ organization }}]</template
             ></q-tooltip
           >
+          <span v-if="organization">{{ organization }}</span>
         </q-btn>
 
         <SearchBox />
