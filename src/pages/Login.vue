@@ -1,6 +1,10 @@
 <template>
   <q-page class="flex bg-image flex-center">
-    <q-card flat :style="$q.screen.lt.sm ? { width: '80%' } : { width: '30%' }">
+    <q-card
+      flat
+      bordered
+      :style="$q.screen.lt.sm ? { width: '70%' } : { width: '30%' }"
+    >
       <q-card-section>
         <q-avatar
           size="120px"
@@ -20,6 +24,7 @@
         <div class="text-center q-pt-lg">
           <div class="col text-h6 ellipsis">
             {{ $gettext('Log in') }} @ migasfree
+            <span v-if="organization">[{{ organization }}]</span>
           </div>
         </div>
       </q-card-section>
@@ -126,7 +131,8 @@
 </template>
 
 <script>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta, useQuasar } from 'quasar'
@@ -158,10 +164,16 @@ export default {
     const model = reactive({ username: '', password: '' })
     const changeLanguage = ref(null)
 
+    const { server } = storeToRefs(authStore)
+
     const isValid = computed(() => {
       return (
         model.username.trim() !== '' && model.password.length > MIN_PASSWORD_LEN
       )
+    })
+
+    const organization = computed(() => {
+      return server.value?.organization || ''
     })
 
     const login = async () => {
@@ -190,9 +202,14 @@ export default {
       changeLanguage.value.hide()
     }
 
+    onMounted(async () => {
+      await authStore.getServerInfo()
+    })
+
     return {
       MIN_PASSWORD_LEN,
       loading,
+      organization,
       showPassword,
       model,
       changeLanguage,
