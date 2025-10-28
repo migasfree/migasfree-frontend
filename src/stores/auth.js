@@ -241,6 +241,7 @@ export const useAuthStore = defineStore('auth', () => {
     domains,
     scopes,
     filteredScopes,
+    getServerInfo,
     login,
     logout,
     reset,
