@@ -4,6 +4,7 @@
     icon="mdi-content-copy"
     size="sm"
     color="primary"
+    :aria-label="$gettext('Copy')"
     @click.stop="contentToClipboard(content)"
     ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
   >
