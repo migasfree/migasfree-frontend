@@ -136,16 +136,7 @@
               {{ uuid }}
               <q-tooltip>{{ $gettext('UUID') }}</q-tooltip>
             </span>
-            <q-btn
-              v-if="uuid"
-              flat
-              icon="mdi-content-copy"
-              size="sm"
-              color="primary"
-              :aria-label="$gettext('Copy')"
-              @click.stop="contentToClipboard(uuid)"
-              ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-            >
+            <CopyButton v-if="uuid" :content="uuid" />
           </p>
         </div>
       </div>
@@ -186,15 +177,7 @@
             {{ humanMacAddress(macAddress) }}
             <q-tooltip>{{ $gettext('MAC Address') }}</q-tooltip>
           </span>
-          <q-btn
-            flat
-            icon="mdi-content-copy"
-            size="sm"
-            color="primary"
-            :aria-label="$gettext('Copy')"
-            @click.stop="contentToClipboard(humanMacAddress(macAddress))"
-            ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-          >
+          <CopyButton :content="humanMacAddress(macAddress)" />
         </div>
       </div>
     </q-card-section>
@@ -209,16 +192,16 @@ import { format } from 'quasar'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
+import CopyButton from 'components/ui/CopyButton'
 import DateDiff from 'components/DateDiff'
 import DateView from 'components/ui/DateView'
 
 import { useElement } from 'composables/element'
-import useCopyPaste from 'composables/copyPaste'
 import useDate from 'composables/date'
 
 export default {
   name: 'ComputerHardwareResume',
-  components: { DateDiff, DateView },
+  components: { CopyButton, DateDiff, DateView },
   props: {
     cid: {
       type: Number,
@@ -285,7 +268,6 @@ export default {
     const uiStore = useUiStore()
     const { productIcon, cpuIcon, humanMacAddress } = useElement()
     const { diffForHumans, localeDate } = useDate()
-    const { contentToClipboard } = useCopyPaste()
 
     const loading = ref(false)
     const hardwareDate = ref(props.lastHardwareCapture)
@@ -318,7 +300,6 @@ export default {
       diffForHumans,
       localeDate,
       updateCapture,
-      contentToClipboard,
     }
   },
 }
