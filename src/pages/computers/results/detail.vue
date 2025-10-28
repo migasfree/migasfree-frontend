@@ -167,8 +167,8 @@
                     <q-btn
                       round
                       size="md"
-                      color="negative"
-                      text-color="white"
+                      :color="errors.unchecked > 0 ? 'negative' : 'grey-3'"
+                      :text-color="errors.unchecked > 0 ? 'white' : 'black'"
                       :to="{
                         name: 'errors-list',
                         query: { computer_id: element.id, checked: false },
@@ -201,8 +201,8 @@
                     <q-btn
                       round
                       size="md"
-                      color="negative"
-                      text-color="white"
+                      :color="faults.unchecked > 0 ? 'negative' : 'grey-3'"
+                      :text-color="faults.unchecked > 0 ? 'white' : 'black'"
                       :to="{
                         name: 'faults-list',
                         query: { computer_id: element.id, checked: false },
