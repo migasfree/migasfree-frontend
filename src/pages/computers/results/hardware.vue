@@ -23,7 +23,7 @@
 
         <template v-else>
           <div class="row q-py-md q-col-gutter-md">
-            <div class="col-6">
+            <div class="col-6 col-md-8 col-sm-12 col-xs-12">
               <ComputerHardwareResume
                 v-if="element.product_system"
                 :cid="element.id"
@@ -56,6 +56,7 @@
               node-key="id"
               no-connectors
               text-color="black"
+              default-expand-all
             >
               <template #default-header="prop">
                 <div class="row items-center">
