@@ -22,6 +22,7 @@
             <q-input
               v-model="hardwareDate"
               :label="$gettext('Last hardware capture date')"
+              :aria-label="$gettext('Last hardware capture date')"
               outlined
               clearable
             >
@@ -74,6 +75,7 @@
               icon="mdi-content-save-edit"
               :loading="loading"
               :disabled="loading"
+              :aria-label="$gettext('Save and continue editing')"
               @click="updateCapture"
             >
               <q-tooltip>{{ $gettext('Save and continue editing') }}</q-tooltip>
@@ -110,6 +112,7 @@
               text-color="black"
               :icon="productIcon(productSystem)"
               :label="product"
+              :aria-label="productSystem"
               @click="
                 $router.push({
                   name: 'computer-hardware',
@@ -139,6 +142,7 @@
               icon="mdi-content-copy"
               size="sm"
               color="primary"
+              :aria-label="$gettext('Copy')"
               @click.stop="contentToClipboard(uuid)"
               ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
             >
@@ -153,7 +157,7 @@
             size="sm"
             class="vertical-middle"
           />
-          <span class="vertical-middle">
+          <span class="vertical-middle" :aria-label="$gettext('Processor')">
             {{ cpu }}
             <q-tooltip>{{ $gettext('Processor') }}</q-tooltip>
           </span>
@@ -161,7 +165,7 @@
 
         <div v-if="ram" class="col-6 col-md col-sm">
           <q-icon name="mdi-memory" size="sm" class="vertical-middle" />
-          <span class="vertical-middle">
+          <span class="vertical-middle" :aria-label="$gettext('RAM')">
             {{ humanStorageSize(ram) }}
             <q-tooltip>{{ $gettext('RAM') }}</q-tooltip>
           </span>
@@ -171,14 +175,14 @@
       <div class="row q-py-sm">
         <div v-if="storage" class="col-6 col-md col-sm">
           <q-icon name="mdi-harddisk" size="sm" class="vertical-middle" />
-          <span class="vertical-middle">
+          <span class="vertical-middle" :aria-label="$gettext('Storage')">
             {{ humanStorageSize(storage) }} ({{ disks }})
             <q-tooltip>{{ $gettext('Storage') }}</q-tooltip>
           </span>
         </div>
         <div v-if="macAddress" class="col-6 col-md col-sm">
           <q-icon name="mdi-swap-vertical" size="sm" class="vertical-middle" />
-          <span class="vertical-middle">
+          <span class="vertical-middle" :aria-label="$gettext('MAC Address')">
             {{ humanMacAddress(macAddress) }}
             <q-tooltip>{{ $gettext('MAC Address') }}</q-tooltip>
           </span>
@@ -187,6 +191,7 @@
             icon="mdi-content-copy"
             size="sm"
             color="primary"
+            :aria-label="$gettext('Copy')"
             @click.stop="contentToClipboard(humanMacAddress(macAddress))"
             ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
           >
