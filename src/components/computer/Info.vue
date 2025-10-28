@@ -23,14 +23,7 @@
           </q-btn-group>
           <div v-else class="text-h5">
             {{ name }}
-            <q-btn
-              flat
-              icon="mdi-content-copy"
-              size="sm"
-              color="primary"
-              @click.stop="contentToClipboard(name)"
-              ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-            >
+            <CopyButton :content="name" />
           </div>
         </div>
       </div>
@@ -46,15 +39,7 @@
             {{ fqdn }}
             <q-tooltip>{{ $gettext('full qualified domain name') }}</q-tooltip>
           </span>
-          <q-btn
-            v-if="fqdn"
-            flat
-            icon="mdi-content-copy"
-            size="sm"
-            color="primary"
-            @click.stop="contentToClipboard(fqdn)"
-            ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-          >
+          <CopyButton v-if="fqdn" :content="fqdn" />
         </div>
 
         <div class="col-6 col-md col-sm">
@@ -93,15 +78,7 @@
             {{ ipAddress }}
             <q-tooltip>{{ $gettext('ip address') }}</q-tooltip>
           </span>
-          <q-btn
-            v-if="ipAddress"
-            flat
-            icon="mdi-content-copy"
-            size="sm"
-            color="primary"
-            @click.stop="contentToClipboard(ipAddress)"
-            ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-          >
+          <CopyButton v-if="ipAddress" :content="ipAddress" />
         </div>
 
         <div class="col-6 col-md col-sm">
@@ -110,15 +87,7 @@
             {{ forwardedIpAddress }}
             <q-tooltip>{{ $gettext('forwarded ip address') }}</q-tooltip>
           </span>
-          <q-btn
-            v-if="forwardedIpAddress"
-            flat
-            icon="mdi-content-copy"
-            size="sm"
-            color="primary"
-            @click.stop="contentToClipboard(forwardedIpAddress)"
-            ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-          >
+          <CopyButton v-if="forwardedIpAddress" :content="forwardedIpAddress" />
         </div>
       </div>
     </q-card-section>
@@ -171,15 +140,16 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { useAuthStore } from 'stores/auth'
 
+import CopyButton from 'components/ui/CopyButton'
 import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon } from 'composables/element'
-import useCopyPaste from 'composables/copyPaste'
 
 export default {
   name: 'ComputerInfo',
   components: {
+    CopyButton,
     DateView,
     MigasLink,
   },
@@ -220,7 +190,6 @@ export default {
     const { $gettext } = useGettext()
     const uiStore = useUiStore()
     const authStore = useAuthStore()
-    const { contentToClipboard } = useCopyPaste()
 
     const loading = ref(false)
     const value = ref(props.name)
@@ -245,7 +214,6 @@ export default {
       value,
       isSuperUser: authStore.user.is_superuser,
       updateName,
-      contentToClipboard,
       appIcon,
     }
   },
