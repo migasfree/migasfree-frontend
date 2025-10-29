@@ -66,7 +66,7 @@
         v-if="model === 'packages' && element.url"
         class="q-ma-md"
         size="md"
-        icon="mdi-download"
+        :icon="appIcon('download')"
         :aria-label="$gettext('Download')"
         color="primary"
         text-color="white"
