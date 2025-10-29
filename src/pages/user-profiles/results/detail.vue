@@ -101,14 +101,13 @@
                   @click="updateToken"
                   ><q-tooltip>{{ $gettext('Update') }}</q-tooltip></q-btn
                 >
-                <q-btn
+                <CopyToClipboard
                   v-if="element.token"
                   class="q-ma-sm"
-                  icon="mdi-content-copy"
-                  color="primary"
-                  @click.stop="contentToClipboard(element.token)"
-                  ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-                >
+                  size="md"
+                  :flat="false"
+                  :content="element.token"
+                />
               </p>
             </div>
           </div>
@@ -368,24 +367,24 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
-import ItemDetail from 'components/ui/ItemDetail'
+import CopyToClipboard from 'components/ui/CopyToClipboard'
 import DateView from 'components/ui/DateView'
+import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon } from 'composables/element'
-import useCopyPaste from 'composables/copyPaste'
 
 export default {
   components: {
-    ItemDetail,
+    CopyToClipboard,
     DateView,
+    ItemDetail,
     MigasLink,
   },
   setup() {
     const { $gettext } = useGettext()
     const $q = useQuasar()
     const uiStore = useUiStore()
-    const { contentToClipboard } = useCopyPaste()
 
     const title = ref($gettext('User Profile'))
     const windowTitle = ref(title.value)
@@ -589,7 +588,6 @@ export default {
       resetElement,
       setTitle,
       updateToken,
-      contentToClipboard,
       filterUserPermissions,
       abortFilterUserPermissions,
       appIcon,
