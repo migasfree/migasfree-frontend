@@ -6,14 +6,7 @@
     :min-lines="10"
     :max-lines="50"
   />
-  <q-btn
-    flat
-    icon="mdi-content-copy"
-    color="primary"
-    @click="contentToClipboard(code)"
-  >
-    <q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-  >
+  <CopyToClipboard size="md" :content="code" />
 </template>
 
 <script>
@@ -31,11 +24,11 @@ import 'ace-builds/src-noconflict/mode-batchfile'
 import 'ace-builds/src-noconflict/theme-chrome'
 import 'ace-builds/src-noconflict/theme-cobalt'
 
-import useCopyPaste from 'composables/copyPaste'
+import CopyToClipboard from './CopyToClipboard'
 
 export default {
   name: 'CodeEditor',
-  components: { VAceEditor },
+  components: { VAceEditor, CopyToClipboard },
   props: {
     modelValue: {
       type: String,
@@ -50,7 +43,6 @@ export default {
   emits: ['update:model-value'],
   setup(props, { emit }) {
     const $q = useQuasar()
-    const { contentToClipboard } = useCopyPaste()
 
     const editorLanguages = reactive({
       python: 'python',
@@ -82,7 +74,6 @@ export default {
       highlightLang,
       editorTheme,
       code,
-      contentToClipboard,
     }
   },
 }
