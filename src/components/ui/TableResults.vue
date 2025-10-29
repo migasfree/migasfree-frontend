@@ -1003,6 +1003,6 @@ export default defineComponent({
 
 <style scoped>
 .q-list--dark {
-  border-color: white;
+  border-color: #888;
 }
 </style>
