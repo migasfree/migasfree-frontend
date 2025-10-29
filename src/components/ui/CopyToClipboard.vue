@@ -1,8 +1,8 @@
 <template>
   <q-btn
-    flat
+    :flat="flat"
     icon="mdi-content-copy"
-    size="sm"
+    :size="size"
     color="primary"
     :aria-label="$gettext('Copy')"
     @click.stop="contentToClipboard(content)"
@@ -14,11 +14,21 @@
 import useCopyPaste from 'composables/copyPaste'
 
 export default {
-  name: 'CopyButton',
+  name: 'CopyToClipboard',
   props: {
     content: {
       type: String,
       required: true,
+    },
+    flat: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    size: {
+      type: String,
+      required: false,
+      default: 'sm',
     },
   },
   setup() {
