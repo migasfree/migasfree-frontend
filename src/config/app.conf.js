@@ -11,17 +11,18 @@ export const MIGASFREE_MIN_YEAR = 2010
 
 export const MIGASFREE_SECONDS_MESSAGE_ALERT = 1800
 
+// Tableau 10
 export const MIGASFREE_CHART_COLORS = [
-  '#5f98cf',
-  '#434348',
-  '#49a65e',
-  '#f45b5b',
-  '#708090',
-  '#b68c51',
-  '#397550',
-  '#c0493d',
-  '#4f4a7a',
-  '#b381b3',
+  '#4E79A7', // blue
+  '#F28E2B', // orange
+  '#E15759', // red
+  '#76B7B2', // teal
+  '#59A14F', // green
+  '#EDC949', // yellow
+  '#AF7AA1', // purple
+  '#FF9DA7', // pink
+  '#9C755F', // brown
+  '#BAB0AC', // light grey
 ]
 
 export const MIGASFREE_CHART_DARK_COLORS = [
