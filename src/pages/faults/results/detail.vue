@@ -78,13 +78,7 @@
                 readonly
                 outlined
               />
-              <q-btn
-                flat
-                icon="mdi-content-copy"
-                color="primary"
-                @click="contentToClipboard(element.result)"
-                ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-              >
+              <CopyToClipboard size="md" :content="element.result" />
             </div>
           </div>
         </q-card-section>
@@ -98,23 +92,23 @@ import { ref, reactive } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
-import ItemDetail from 'components/ui/ItemDetail'
+import CopyToClipboard from 'components/ui/CopyToClipboard'
 import DateView from 'components/ui/DateView'
+import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon, useElement } from 'composables/element'
-import useCopyPaste from 'composables/copyPaste'
 
 export default {
   components: {
-    ItemDetail,
+    CopyToClipboard,
     DateView,
+    ItemDetail,
     MigasLink,
   },
   setup() {
     const { $gettext } = useGettext()
     const { elementIcon } = useElement()
-    const { contentToClipboard } = useCopyPaste()
 
     const title = ref($gettext('Fault'))
     const windowTitle = ref(title.value)
@@ -168,7 +162,6 @@ export default {
       routes,
       element,
       isValid,
-      contentToClipboard,
       elementIcon,
       elementData,
       setTitle,
