@@ -23,7 +23,7 @@
           </q-btn-group>
           <div v-else class="text-h5">
             {{ name }}
-            <CopyButton :content="name" />
+            <CopyToClipboard :content="name" />
           </div>
         </div>
       </div>
@@ -39,7 +39,7 @@
             {{ fqdn }}
             <q-tooltip>{{ $gettext('full qualified domain name') }}</q-tooltip>
           </span>
-          <CopyButton v-if="fqdn" :content="fqdn" />
+          <CopyToClipboard v-if="fqdn" :content="fqdn" />
         </div>
 
         <div class="col-6 col-md col-sm">
@@ -78,7 +78,7 @@
             {{ ipAddress }}
             <q-tooltip>{{ $gettext('ip address') }}</q-tooltip>
           </span>
-          <CopyButton v-if="ipAddress" :content="ipAddress" />
+          <CopyToClipboard v-if="ipAddress" :content="ipAddress" />
         </div>
 
         <div class="col-6 col-md col-sm">
@@ -87,7 +87,10 @@
             {{ forwardedIpAddress }}
             <q-tooltip>{{ $gettext('forwarded ip address') }}</q-tooltip>
           </span>
-          <CopyButton v-if="forwardedIpAddress" :content="forwardedIpAddress" />
+          <CopyToClipboard
+            v-if="forwardedIpAddress"
+            :content="forwardedIpAddress"
+          />
         </div>
       </div>
     </q-card-section>
@@ -140,7 +143,7 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { useAuthStore } from 'stores/auth'
 
-import CopyButton from 'components/ui/CopyButton'
+import CopyToClipboard from 'components/ui/CopyToClipboard'
 import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 
@@ -149,7 +152,7 @@ import { appIcon } from 'composables/element'
 export default {
   name: 'ComputerInfo',
   components: {
-    CopyButton,
+    CopyToClipboard,
     DateView,
     MigasLink,
   },
