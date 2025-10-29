@@ -112,8 +112,24 @@ div.ace_editor
     background: transparent
     color: white
 
+  table.vgt-table,
+  .vgt-input,
+  .vgt-select
+    border: 1px solid #888
+
+  table.vgt-table .vgt-input::placeholder
+    color: white
+
   table.vgt-table td
     color: white
+    border-bottom: 1px solid #888
+
+  table.vgt-table thead th
+    border-bottom: 1px solid #888
+
+  table.vgt-table th.line-numbers,
+  table.vgt-table th.vgt-checkbox-col
+    border-right: 1px solid #888
 
   .vgt-table.striped tbody tr:nth-of-type(odd)
     background: rgb(58, 65, 73, 0.7)
