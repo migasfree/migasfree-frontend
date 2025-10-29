@@ -532,7 +532,7 @@
           class="q-ma-xs"
           round
           size="sm"
-          icon="mdi-download"
+          :icon="appIcon('download')"
           color="info"
           type="a"
           :href="`${server}${props.row.url}`"
