@@ -136,7 +136,7 @@
               {{ uuid }}
               <q-tooltip>{{ $gettext('UUID') }}</q-tooltip>
             </span>
-            <CopyButton v-if="uuid" :content="uuid" />
+            <CopyToClipboard v-if="uuid" :content="uuid" />
           </p>
         </div>
       </div>
@@ -177,7 +177,7 @@
             {{ humanMacAddress(macAddress) }}
             <q-tooltip>{{ $gettext('MAC Address') }}</q-tooltip>
           </span>
-          <CopyButton :content="humanMacAddress(macAddress)" />
+          <CopyToClipboard :content="humanMacAddress(macAddress)" />
         </div>
       </div>
     </q-card-section>
@@ -192,7 +192,7 @@ import { format } from 'quasar'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
-import CopyButton from 'components/ui/CopyButton'
+import CopyToClipboard from 'components/ui/CopyToClipboard'
 import DateDiff from 'components/DateDiff'
 import DateView from 'components/ui/DateView'
 
@@ -201,7 +201,7 @@ import useDate from 'composables/date'
 
 export default {
   name: 'ComputerHardwareResume',
-  components: { CopyButton, DateDiff, DateView },
+  components: { CopyToClipboard, DateDiff, DateView },
   props: {
     cid: {
       type: Number,
