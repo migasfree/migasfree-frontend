@@ -2,14 +2,6 @@
   <Breadcrumbs :items="breadcrumbs" />
 
   <Header :title="originalTitle" :icon="titleIcon" :has-export-button="false">
-    <template v-if="'add' in routes" #prepend>
-      <q-item-section avatar>
-        <q-btn round dark color="primary" icon="mdi-plus" @click="addElement">
-          <q-tooltip>{{ $gettext('Add') }}</q-tooltip>
-        </q-btn>
-      </q-item-section>
-    </template>
-
     <template v-if="element.id" #append
       ><span class="vertical-middle">: </span>
       <MigasLink
@@ -27,7 +19,7 @@
       <q-btn
         v-if="model === 'user-profiles'"
         class="q-ma-sm float-right"
-        :label="$gettext('Change Password')"
+        :aria-label="$gettext('Change Password')"
         color="primary"
         :icon="appIcon('password')"
         @click="
@@ -36,16 +28,18 @@
             params: { id: element.id },
           })
         "
-      />
+        ><q-tooltip>{{ $gettext('Change Password') }}</q-tooltip></q-btn
+      >
 
       <q-btn
         v-if="model === 'deployments' && element.source === 'I'"
         class="q-ma-sm float-right"
-        :label="$gettext('Regenerate Metadata')"
+        :aria-label="$gettext('Regenerate Metadata')"
         color="primary"
         icon="mdi-autorenew"
         @click="regenerateMetadata(element.id)"
-      />
+        ><q-tooltip>{{ $gettext('Regenerate Metadata') }}</q-tooltip></q-btn
+      >
 
       <q-btn
         v-if="
@@ -56,28 +50,41 @@
         class="q-ma-md"
         size="md"
         :icon="appIcon('information')"
-        :label="$gettext('Package Information')"
-        color="info"
-        text-color="black"
+        :aria-label="$gettext('Package Information')"
+        color="primary"
+        text-color="white"
         @click="
           $router.push({
             name: 'package-information',
             params: { id: element.id },
           })
         "
-      />
+        ><q-tooltip>{{ $gettext('Package Information') }}</q-tooltip></q-btn
+      >
 
       <q-btn
         v-if="model === 'packages' && element.url"
         class="q-ma-md"
         size="md"
         icon="mdi-download"
-        :label="$gettext('Download')"
-        color="info"
-        text-color="black"
+        :aria-label="$gettext('Download')"
+        color="primary"
+        text-color="white"
         type="a"
         :href="`${server}${element.url}`"
-      />
+        ><q-tooltip>{{ $gettext('Download') }}</q-tooltip></q-btn
+      >
+
+      <q-btn
+        v-if="'add' in routes"
+        class="q-ma-sm float-right"
+        color="primary"
+        text-color="white"
+        :aria-label="$gettext('Add')"
+        :icon="appIcon('add')"
+        @click="addElement"
+        ><q-tooltip>{{ $gettext('Add') }}</q-tooltip></q-btn
+      >
     </template>
   </Header>
 
