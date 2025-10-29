@@ -21,6 +21,7 @@
                 outlined
                 autofocus
                 :label="$gettext('Platform')"
+                :aria-label="$gettext('Platform')"
                 :options="platforms"
                 option-value="id"
                 option-label="name"
@@ -38,6 +39,7 @@
                 v-model="element.name"
                 outlined
                 :label="$gettext('Name')"
+                :aria-label="$gettext('Name')"
                 lazy-rules
                 :rules="[
                   (val) => !!val || $gettext('* Required'),
@@ -54,6 +56,7 @@
                 v-model="element.base_os"
                 outlined
                 :label="$gettext('Base Operating System')"
+                :aria-label="$gettext('Base Operating System')"
                 lazy-rules
                 :rules="[
                   (val) =>
@@ -70,6 +73,7 @@
                 v-model="element.auto_register_computers"
                 left-label
                 :label="$gettext('Auto register computers?')"
+                :aria-label="$gettext('Auto register computers?')"
               />
             </div>
 
@@ -78,6 +82,7 @@
                 v-model="element.pms"
                 outlined
                 :label="$gettext('Package Management System')"
+                :aria-label="$gettext('Package Management System')"
                 :options="pms"
                 option-value="id"
                 option-label="name"
@@ -92,8 +97,10 @@
                 v-model="element.architecture"
                 outlined
                 multiple
+                use-chips
                 :rules="[(val) => !!val || $gettext('* Required')]"
                 :label="$gettext('Architecture')"
+                :aria-label="$gettext('Architecture')"
                 :options="architectures"
                 :disable="!element.pms"
               />
@@ -185,7 +192,8 @@ export default {
           !element.base_os.includes(' ')) &&
         element.platform !== undefined &&
         element.pms !== undefined &&
-        element.architecture !== undefined
+        element.architecture !== undefined &&
+        Object.keys(element.architecture || {}).length > 0
       )
     })
 
