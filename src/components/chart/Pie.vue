@@ -48,7 +48,12 @@
           <q-tooltip>{{ $gettext('Data View') }}</q-tooltip>
         </q-btn>
 
-        <q-btn icon="mdi-download" flat color="primary" @click="saveImage">
+        <q-btn
+          :icon="appIcon('download')"
+          flat
+          color="primary"
+          @click="saveImage"
+        >
           <q-tooltip>{{ $gettext('Save as Image') }}</q-tooltip>
         </q-btn>
       </q-card-actions>
