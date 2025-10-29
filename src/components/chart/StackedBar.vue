@@ -312,6 +312,9 @@ export default {
             color: $q.dark.isActive ? '#fff' : '#333',
           },
         },
+        axisLabel: {
+          color: $q.dark.isActive ? '#fff' : '#333',
+        },
       },
       yAxis: {
         type: 'value',
@@ -319,6 +322,9 @@ export default {
           lineStyle: {
             color: $q.dark.isActive ? '#fff' : '#333',
           },
+        },
+        axisLabel: {
+          color: $q.dark.isActive ? '#fff' : '#333',
         },
       },
       series: [],
@@ -518,7 +524,9 @@ export default {
         options.legend.pageTextStyle.color = val ? '#fff' : '#333'
         options.legend.pageIconColor = val ? '#fff' : '#2f4554'
         options.xAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
+        options.xAxis.axisLabel.color = val ? '#fff' : '#333'
         options.yAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
+        options.yAxis.axisLabel.color = val ? '#fff' : '#333'
         if (
           Array.isArray(options.series) &&
           options.series.length > 0 &&
