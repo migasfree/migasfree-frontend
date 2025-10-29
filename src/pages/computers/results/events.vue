@@ -130,6 +130,8 @@
           :rows="items"
           :columns="events[event].columns"
           hide-pagination
+          flat
+          bordered
           :rows-per-page-options="[0]"
           :visible-columns="events[event].visibleColumns"
         >
