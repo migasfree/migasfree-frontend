@@ -643,8 +643,8 @@
       <q-btn
         class="q-ma-xs"
         size="sm"
-        color="info"
-        text-color="black"
+        color="primary"
+        text-color="white"
         :icon="appIcon('export')"
         :loading="isLoadingExport"
         @click="exportData"
