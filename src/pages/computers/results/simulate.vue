@@ -170,7 +170,7 @@
                         <q-item-section side>
                           <q-btn
                             flat
-                            icon="mdi-content-copy"
+                            :icon="appIcon('copy')"
                             color="primary"
                             @click.stop="
                               copyContent(simulation.packages.install)
@@ -228,7 +228,7 @@
                         <q-item-section side>
                           <q-btn
                             flat
-                            icon="mdi-content-copy"
+                            :icon="appIcon('copy')"
                             color="primary"
                             @click.stop="
                               copyContent(simulation.policies.install)
@@ -286,7 +286,7 @@
                         <q-item-section side>
                           <q-btn
                             flat
-                            icon="mdi-content-copy"
+                            :icon="appIcon('copy')"
                             color="primary"
                             @click.stop="
                               copyContent(simulation.packages.remove)
@@ -346,7 +346,7 @@
                         <q-item-section side>
                           <q-btn
                             flat
-                            icon="mdi-content-copy"
+                            :icon="appIcon('copy')"
                             color="primary"
                             @click.stop="
                               copyContent(simulation.policies.remove)
