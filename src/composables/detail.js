@@ -57,7 +57,7 @@ export default function useDetail(
         })
       }
     } else {
-      breadcrumbs.push({ text: $gettext('Add'), icon: 'mdi-plus-circle' })
+      breadcrumbs.push({ text: $gettext('Add'), icon: appIcon('add') })
     }
   }
 
@@ -75,7 +75,7 @@ export default function useDetail(
 
     if (breadcrumbs.length === 5) breadcrumbs.pop()
     breadcrumbs[3].text = $gettext('Add')
-    breadcrumbs[3].icon = 'mdi-plus-circle'
+    breadcrumbs[3].icon = appIcon('add')
 
     router.push({ name: routes.add })
     emit('setTitle', originalTitle)
