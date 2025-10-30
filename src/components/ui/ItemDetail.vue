@@ -119,7 +119,7 @@
         flat
         color="primary"
         :label="$gettext('Save and continue editing')"
-        icon="mdi-content-save-edit"
+        :icon="appIcon('save-edit')"
         :loading="loading"
         :disabled="!isValid || loading"
         @click="updateElement"
@@ -129,7 +129,7 @@
         v-if="saveButton"
         :label="$gettext('Save')"
         color="primary"
-        icon="mdi-content-save-move"
+        :icon="appIcon('save')"
         :loading="loading"
         :disabled="!isValid || loading"
         @click="updateElement('return')"
