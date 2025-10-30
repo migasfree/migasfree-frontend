@@ -11,7 +11,7 @@
     >
       <template #top>
         <q-btn
-          icon="mdi-refresh"
+          :icon="appIcon('update')"
           class="q-my-md"
           :loading="loading"
           :disable="loading"
