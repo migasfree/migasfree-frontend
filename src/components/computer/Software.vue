@@ -65,7 +65,7 @@
                 <q-btn
                   v-if="isSuperUser"
                   flat
-                  icon="mdi-delete"
+                  :icon="appIcon('delete')"
                   :color="$q.dark.isActive ? 'white' : 'negative'"
                   :class="{ 'reversed-delete': $q.dark.isActive }"
                   @click.stop="confirmRemoveInventory = true"
@@ -162,7 +162,7 @@
                 <q-btn
                   v-if="isSuperUser"
                   flat
-                  icon="mdi-delete"
+                  :icon="appIcon('delete')"
                   :color="$q.dark.isActive ? 'white' : 'negative'"
                   :class="{ 'reversed-delete': $q.dark.isActive }"
                   @click.stop="confirmRemoveHistory = true"
@@ -219,7 +219,7 @@
                     <q-btn
                       v-if="isSuperUser && !showSearchHistory"
                       flat
-                      icon="mdi-delete"
+                      :icon="appIcon('delete')"
                       :color="$q.dark.isActive ? 'white' : 'negative'"
                       :class="{ 'reversed-delete': $q.dark.isActive }"
                       @click.stop="deleteHistory(key)"
