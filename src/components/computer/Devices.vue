@@ -77,7 +77,7 @@
       <q-btn
         class="full-width"
         color="primary"
-        icon="mdi-content-save-edit"
+        :icon="appIcon('save-edit')"
         :loading="loading"
         :disabled="loading"
         :label="$gettext('Save and continue editing')"
@@ -94,6 +94,8 @@ import { useGettext } from 'vue3-gettext'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { MIN_CHARS_SEARCH } from 'config/app.conf'
+
+import { appIcon } from 'composables/element'
 
 import MigasLink from 'components/MigasLink'
 
@@ -201,6 +203,7 @@ export default {
       filterAssignedDevices,
       abortFilterAssignedDevices,
       MIN_CHARS_SEARCH,
+      appIcon,
     }
   },
 }
