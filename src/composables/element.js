@@ -19,6 +19,7 @@ const APP_ICON = {
   permission: 'mdi-account-check',
   export: 'mdi-file-export',
   add: 'mdi-plus',
+  delete: 'mdi-delete',
   download: 'mdi-download',
 }
 
