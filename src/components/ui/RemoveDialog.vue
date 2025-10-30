@@ -16,7 +16,7 @@
         />
         <q-btn
           v-close-popup
-          icon="mdi-delete"
+          :icon="appIcon('delete')"
           color="negative"
           :label="$gettext('Delete')"
           @click="$emit('confirmed')"
@@ -29,6 +29,8 @@
 <script>
 import { ref, computed, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
+
+import { appIcon } from 'composables/element'
 
 export default {
   name: 'RemoveDialog',
@@ -63,7 +65,7 @@ export default {
       },
     )
 
-    return { showing, text }
+    return { showing, text, appIcon }
   },
 }
 </script>
