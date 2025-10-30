@@ -72,7 +72,7 @@
 
             <q-btn
               color="primary"
-              icon="mdi-content-save-edit"
+              :icon="appIcon('save-edit')"
               :loading="loading"
               :disabled="loading"
               :aria-label="$gettext('Save and continue editing')"
@@ -196,7 +196,7 @@ import CopyToClipboard from 'components/ui/CopyToClipboard'
 import DateDiff from 'components/DateDiff'
 import DateView from 'components/ui/DateView'
 
-import { useElement } from 'composables/element'
+import { appIcon, useElement } from 'composables/element'
 import useDate from 'composables/date'
 
 export default {
@@ -294,6 +294,7 @@ export default {
       loading,
       hardwareDate,
       humanStorageSize: format.humanStorageSize,
+      appIcon,
       productIcon,
       cpuIcon,
       humanMacAddress,
