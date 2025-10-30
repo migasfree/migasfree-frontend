@@ -482,7 +482,7 @@
           class="q-ma-xs"
           round
           size="sm"
-          icon="mdi-delete"
+          :icon="appIcon('delete')"
           color="negative"
           @click="confirmRemove(props.row.id)"
           ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
@@ -655,7 +655,7 @@
         v-if="hasDeleteAction"
         size="sm"
         color="negative"
-        icon="mdi-delete"
+        :icon="appIcon('delete')"
         @click="confirmRemove"
         ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
       >
