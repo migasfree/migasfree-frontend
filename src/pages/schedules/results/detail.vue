@@ -96,7 +96,7 @@
 
           <div class="q-pa-md">
             <q-btn
-              icon="mdi-plus"
+              :icon="appIcon('add')"
               :label="$gettext('Add other Delay')"
               @click="addInline"
             />
