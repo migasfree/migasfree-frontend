@@ -103,7 +103,7 @@
         <q-toolbar class="q-pa-md">
           <q-btn-dropdown ref="changeLanguage" flat stretch>
             <template #label>
-              <q-icon name="mdi-earth" />
+              <q-icon :name="appIcon('language')" />
               <q-tooltip>
                 {{ $gettext('Change App Language') }}
               </q-tooltip>
@@ -144,7 +144,7 @@ import { MIN_PASSWORD_LEN } from 'config/app.conf'
 
 import ToggleDarkMode from 'components/ui/ToggleDarkMode'
 
-import { modelIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   name: 'Login',
@@ -216,6 +216,7 @@ export default {
       isValid,
       login,
       changeAppLanguage,
+      appIcon,
       modelIcon,
     }
   },
