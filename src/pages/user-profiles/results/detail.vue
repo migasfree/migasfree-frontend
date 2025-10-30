@@ -96,7 +96,7 @@
                 <strong>{{ element.token }}</strong>
                 <q-btn
                   class="q-ma-sm"
-                  icon="mdi-refresh"
+                  :icon="appIcon('update')"
                   color="warning"
                   @click="updateToken"
                   ><q-tooltip>{{ $gettext('Update') }}</q-tooltip></q-btn
