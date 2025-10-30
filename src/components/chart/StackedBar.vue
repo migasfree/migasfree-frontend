@@ -40,7 +40,7 @@
         />
 
         <q-btn
-          icon="mdi-refresh"
+          :icon="appIcon('update')"
           class="q-ma-sm"
           :disabled="loading"
           :loading="loading"
