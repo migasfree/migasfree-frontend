@@ -1,7 +1,7 @@
 <template>
   <q-btn
     :flat="flat"
-    icon="mdi-content-copy"
+    :icon="appIcon('copy')"
     :size="size"
     color="primary"
     :aria-label="$gettext('Copy')"
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { appIcon } from 'composables/element'
 import useCopyPaste from 'composables/copyPaste'
 
 export default {
@@ -35,6 +36,7 @@ export default {
     const { contentToClipboard } = useCopyPaste()
 
     return {
+      appIcon,
       contentToClipboard,
     }
   },
