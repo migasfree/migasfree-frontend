@@ -41,7 +41,7 @@
         <q-tooltip>{{ $gettext('Change App Language') }}</q-tooltip>
 
         <q-item-section avatar>
-          <q-icon name="mdi-earth" />
+          <q-icon :name="appIcon('language')" />
         </q-item-section>
 
         <q-item-section>
