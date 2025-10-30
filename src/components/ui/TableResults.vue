@@ -11,7 +11,10 @@
   <slot name="top" />
 
   <q-list v-if="moreFilters.length > 0" class="more-filters" bordered>
-    <q-expansion-item icon="mdi-filter" :label="$gettext('More Filters')">
+    <q-expansion-item
+      :icon="appIcon('filter')"
+      :label="$gettext('More Filters')"
+    >
       <SearchFilter
         v-model="tableFilters.search"
         class="q-pa-md"
@@ -35,7 +38,7 @@
             @update:model-value="onPlatformFilter"
           >
             <template #before>
-              <q-icon name="mdi-filter" />
+              <q-icon :name="appIcon('filter')" />
             </template>
           </q-select>
         </div>
@@ -55,7 +58,7 @@
             @update:model-value="onProjectFilter"
           >
             <template #before>
-              <q-icon name="mdi-filter" />
+              <q-icon :name="appIcon('filter')" />
             </template>
           </q-select>
         </div>
@@ -75,7 +78,7 @@
             @update:model-value="onArchitectureFilter"
           >
             <template #before>
-              <q-icon name="mdi-filter" />
+              <q-icon :name="appIcon('filter')" />
             </template>
           </q-select>
         </div>
@@ -95,7 +98,7 @@
             @clear="onSerialFilter"
           >
             <template #before>
-              <q-icon name="mdi-filter" />
+              <q-icon :name="appIcon('filter')" />
             </template>
           </q-input>
         </div>
@@ -115,7 +118,7 @@
             @clear="onMacFilter"
           >
             <template #before>
-              <q-icon name="mdi-filter" />
+              <q-icon :name="appIcon('filter')" />
             </template>
           </q-input>
         </div>
@@ -135,7 +138,7 @@
             @clear="onUuidFilter"
           >
             <template #before>
-              <q-icon name="mdi-filter" />
+              <q-icon :name="appIcon('filter')" />
             </template>
           </q-input>
         </div>
@@ -155,7 +158,7 @@
             @update:model-value="onSoftwareInventoryFilter"
           >
             <template #before>
-              <q-icon name="mdi-filter" />
+              <q-icon :name="appIcon('filter')" />
             </template>
           </q-select>
         </div>
@@ -168,7 +171,7 @@
             ref="statusTree"
             v-model="tableFilters.statusIn.selected"
             :placeholder="$gettext('By Status')"
-            prepend-icon="mdi-filter"
+            :prepend-icon="appIcon('filter')"
             :options="tableFilters.statusIn.items"
             @select="onStatusInFilter"
           />
@@ -182,7 +185,7 @@
             ref="machineTree"
             v-model="tableFilters.machine.selected"
             :placeholder="$gettext('By Machine')"
-            prepend-icon="mdi-filter"
+            :prepend-icon="appIcon('filter')"
             :options="tableFilters.machine.items"
             @select="onMachineFilter"
           />
@@ -203,7 +206,7 @@
             @update:model-value="onUserFilter"
           >
             <template #before>
-              <q-icon name="mdi-filter" />
+              <q-icon :name="appIcon('filter')" />
             </template>
           </q-select>
         </div>
@@ -215,7 +218,7 @@
           <DateRangeInput
             ref="startDateRange"
             v-model="tableFilters.startDateRange.selected"
-            prepend-icon="mdi-filter"
+            :prepend-icon="appIcon('filter')"
             :label="$gettext('By Start Date (range)')"
             @select="onStartDateRangeFilter"
           />
@@ -228,7 +231,7 @@
           <DateRangeInput
             ref="createdAtRange"
             v-model="tableFilters.createdAtRange.selected"
-            prepend-icon="mdi-filter"
+            :prepend-icon="appIcon('filter')"
             :label="
               model === 'syncs'
                 ? $gettext('By End Date (range)')
@@ -253,7 +256,7 @@
             @update:model-value="onScheduleFilter"
           >
             <template #before>
-              <q-icon name="mdi-filter" />
+              <q-icon :name="appIcon('filter')" />
             </template>
           </q-select>
         </div>
@@ -273,7 +276,7 @@
             @update:model-value="onModelFilter"
           >
             <template #before>
-              <q-icon name="mdi-filter" />
+              <q-icon :name="appIcon('filter')" />
             </template>
           </q-select>
         </div>
@@ -285,7 +288,7 @@
           <DateRangeInput
             ref="installDateRange"
             v-model="tableFilters.installDateRange.selected"
-            prepend-icon="mdi-filter"
+            :prepend-icon="appIcon('filter')"
             :label="$gettext('By Install Date (range)')"
             @select="onInstallDateRangeFilter"
           />
@@ -298,7 +301,7 @@
           <DateRangeInput
             ref="uninstallDateRange"
             v-model="tableFilters.uninstallDateRange.selected"
-            prepend-icon="mdi-filter"
+            :prepend-icon="appIcon('filter')"
             :label="$gettext('By Uninstall Date (range)')"
             @select="onUninstallDateRangeFilter"
           />
@@ -319,7 +322,7 @@
             @update:model-value="onUninstallDateFilter"
           >
             <template #before>
-              <q-icon name="mdi-filter" />
+              <q-icon :name="appIcon('filter')" />
             </template>
           </q-select>
         </div>
@@ -331,7 +334,7 @@
           <DateRangeInput
             ref="syncEndDateRange"
             v-model="tableFilters.syncEndDateRange.selected"
-            prepend-icon="mdi-filter"
+            :prepend-icon="appIcon('filter')"
             :label="$gettext('By Last Sync Date (range)')"
             @select="onSyncEndDateRangeFilter"
           />
@@ -352,7 +355,7 @@
             @update:model-value="onSyncEndDateFilter"
           >
             <template #before>
-              <q-icon name="mdi-filter" />
+              <q-icon :name="appIcon('filter')" />
             </template>
           </q-select>
         </div>
@@ -361,7 +364,7 @@
       <div class="row q-pa-md">
         <div class="col-12">
           <q-btn
-            icon="mdi-filter-remove"
+            :icon="appIcon('filter-remove')"
             color="info"
             text-color="black"
             :label="$gettext('Reset all filters')"
@@ -382,7 +385,7 @@
     <div class="row q-py-md">
       <div class="col-12">
         <q-btn
-          icon="mdi-filter-remove"
+          :icon="appIcon('filter-remove')"
           color="info"
           text-color="black"
           :label="$gettext('Reset all filters')"
