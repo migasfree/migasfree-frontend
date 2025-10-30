@@ -155,7 +155,7 @@
                   dense
                   round
                   color="negative"
-                  icon="mdi-delete"
+                  :icon="appIcon('delete')"
                   @click="removeInline(index)"
                   ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
                 >
@@ -189,7 +189,7 @@
 
           <div class="q-pa-md">
             <q-btn
-              icon="mdi-plus"
+              :icon="appIcon('add')"
               :label="$gettext('Add other Project')"
               @click="addInline"
             />
