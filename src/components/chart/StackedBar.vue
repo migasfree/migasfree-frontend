@@ -67,12 +67,7 @@
       </q-card-section>
 
       <q-card-actions v-show="isChartVisible" align="around" class="q-pt-sm">
-        <q-btn
-          icon="mdi-database-search"
-          flat
-          color="primary"
-          @click="dataView"
-        >
+        <q-btn :icon="appIcon('data')" flat color="primary" @click="dataView">
           <q-tooltip>{{ $gettext('Data View') }}</q-tooltip>
         </q-btn>
 
@@ -112,11 +107,7 @@
       <q-card flat>
         <q-card-section>
           <div class="text-h5">
-            <q-icon
-              name="mdi-database-search"
-              size="lg"
-              class="vertical-middle"
-            />
+            <q-icon :name="appIcon('data')" size="lg" class="vertical-middle" />
             <span class="vertical-middle">{{ $gettext('Data') }}</span>
           </div>
         </q-card-section>
