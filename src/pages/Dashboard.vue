@@ -459,6 +459,7 @@ export default defineComponent({
       updateEventsHistory,
       loadEventsHistory,
       goTo,
+      appIcon,
     }
   },
 })
