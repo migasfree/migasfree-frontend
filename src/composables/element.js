@@ -23,6 +23,7 @@ const APP_ICON = {
   download: 'mdi-download',
   filter: 'mdi-filter',
   'filter-remove': 'mdi-filter-remove',
+  search: 'mdi-magnify',
 }
 
 const MODEL_ICON = {
