@@ -11,6 +11,7 @@ import { useQuasar } from 'quasar'
 import { useGettext } from 'vue3-gettext'
 import _merge from 'lodash/merge.js'
 
+import { appIcon } from 'composables/element'
 import { useAuthStore } from 'stores/auth'
 import { useUiStore } from 'stores/ui'
 import { api } from 'boot/axios'
@@ -832,7 +833,7 @@ export default function useDataGrid(
       ok: {
         color: 'negative',
         label: $gettext('Delete'),
-        icon: 'mdi-delete',
+        icon: appIcon('delete'),
       },
       cancel: {
         flat: true,
