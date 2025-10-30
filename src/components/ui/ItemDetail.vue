@@ -108,7 +108,7 @@
         flat
         color="primary"
         :label="$gettext('Save and add other')"
-        icon="mdi-plus"
+        :icon="appIcon('add')"
         :loading="loading"
         :disabled="!isValid || loading"
         @click="updateElement('add')"
