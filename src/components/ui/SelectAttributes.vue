@@ -63,7 +63,7 @@
 
     <q-btn
       flat
-      icon="mdi-content-paste"
+      :icon="appIcon('paste')"
       color="primary"
       @click.stop="pasteList(attributesComponent)"
       ><q-tooltip>{{ $gettext('Paste') }}</q-tooltip></q-btn
