@@ -3,7 +3,7 @@
     <q-card
       flat
       bordered
-      :style="$q.screen.lt.sm ? { width: '70%' } : { width: '30%' }"
+      :style="$q.screen.lt.sm ? { width: '70%' } : { width: '40%' }"
     >
       <q-card-section>
         <q-avatar
@@ -20,11 +20,22 @@
         </q-avatar>
       </q-card-section>
 
-      <q-card-section>
-        <div class="text-center q-pt-lg">
+      <q-card-section class="text-center">
+        <div class="q-pt-xl text-subtitle2 text-grey-7">We ❤️ Change</div>
+        <div class="q-pt-lg">
           <div class="col text-h6 ellipsis">
-            {{ $gettext('Log in') }} @ migasfree
-            <span v-if="organization">[{{ organization }}]</span>
+            {{ $gettext('Log in') }} @ migasfree<br />
+            <q-chip
+              v-if="organization"
+              color="grey-4"
+              text-color="black"
+              size="lg"
+              class="q-ml-sm"
+            >
+              <q-icon name="mdi-bank" left />
+              {{ organization }}
+              <q-tooltip>{{ $gettext('Organization') }}</q-tooltip>
+            </q-chip>
           </div>
         </div>
       </q-card-section>
@@ -36,12 +47,10 @@
             autofocus
             lazy-rules
             outlined
+            :label="$gettext('User')"
+            :aria-label="$gettext('User')"
             :rules="[(val) => !!val || $gettext('* Required')]"
           >
-            <template #label>
-              {{ $gettext('User') }}
-            </template>
-
             <template #prepend>
               <q-icon :name="modelIcon('users')" />
             </template>
@@ -53,6 +62,8 @@
             lazy-rules
             outlined
             counter
+            :label="$gettext('Password')"
+            :aria-label="$gettext('Password')"
             :rules="[
               (val) => !!val || $gettext('* Required'),
               (val) =>
@@ -66,10 +77,6 @@
             ]"
             :type="showPassword ? 'text' : 'password'"
           >
-            <template #label>
-              {{ $gettext('Password') }}
-            </template>
-
             <template #prepend>
               <q-icon name="mdi-lock" />
             </template>
@@ -79,6 +86,7 @@
                 :name="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 @click="showPassword = !showPassword"
               />
+              <q-tooltip>{{ $gettext('Show / hide password') }}</q-tooltip>
             </template>
           </q-input>
 
@@ -87,16 +95,21 @@
               class="full-width"
               type="submit"
               color="primary"
+              size="lg"
               :loading="loading"
               :disabled="!isValid"
+              :label="
+                isValid
+                  ? $gettext('Log In')
+                  : $gettext('Please enter your credentials')
+              "
               :aria-disabled="!isValid"
               :aria-label="
                 isValid
                   ? $gettext('Log In')
                   : $gettext('Please enter your credentials')
               "
-              >{{ $gettext('Log In') }}</q-btn
-            >
+            />
           </div>
         </q-form>
 
@@ -228,5 +241,12 @@ export default {
   width: 60px;
   height: 90px;
   object-fit: contain;
+}
+
+@media (max-width: 1024px) {
+  .q-card {
+    width: 60% !important;
+    padding: 16px;
+  }
 }
 </style>
