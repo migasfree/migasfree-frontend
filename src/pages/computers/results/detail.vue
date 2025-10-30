@@ -235,7 +235,7 @@
                 <q-btn
                   class="full-width"
                   color="primary"
-                  icon="mdi-content-save-edit"
+                  :icon="appIcon('save-edit')"
                   :label="$gettext('Save and continue editing')"
                   :loading="loading"
                   :disabled="loading"
