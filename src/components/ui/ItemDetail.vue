@@ -143,7 +143,7 @@
   >
     <q-btn
       flat
-      icon="mdi-delete"
+      :icon="appIcon('delete')"
       :color="$q.dark.isActive ? 'white' : 'negative'"
       :class="{ 'reversed-delete': $q.dark.isActive }"
       :label="$gettext('Delete')"
