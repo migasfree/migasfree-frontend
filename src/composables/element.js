@@ -21,6 +21,8 @@ const APP_ICON = {
   add: 'mdi-plus',
   delete: 'mdi-delete',
   download: 'mdi-download',
+  filter: 'mdi-filter',
+  'filter-remove': 'mdi-filter-remove',
 }
 
 const MODEL_ICON = {
