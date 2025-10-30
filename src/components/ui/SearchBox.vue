@@ -12,7 +12,7 @@
 
     <q-btn-dropdown auto-close color="brown-1" text-color="blue-grey-8" rounded>
       <template #label>
-        <q-icon name="mdi-magnify" />
+        <q-icon :name="appIcon('search')" />
         <q-icon :name="selectedIcon" />
       </template>
 
@@ -35,7 +35,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 
-import { modelIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   name: 'SearchBox',
@@ -96,7 +96,7 @@ export default {
       })
     }
 
-    return { searchText, options, search, selectedIcon, selectedRoute }
+    return { searchText, options, search, selectedIcon, selectedRoute, appIcon }
   },
 }
 </script>
