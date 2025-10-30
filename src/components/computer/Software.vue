@@ -36,7 +36,7 @@
                 <q-btn
                   v-if="softwareInventory.length > 0 && !showSearchInventory"
                   flat
-                  icon="mdi-magnify"
+                  :icon="appIcon('search')"
                   color="primary"
                   @click.stop="toggleSearchInventory"
                   ><q-tooltip>{{ $gettext('Search') }}</q-tooltip></q-btn
@@ -51,7 +51,8 @@
                   dense
                   @clear="showSearchInventory = false"
                   @click.stop
-                  ><template #prepend><q-icon name="mdi-magnify" /></template
+                  ><template #prepend
+                    ><q-icon :name="appIcon('search')" /></template
                 ></q-input>
 
                 <q-btn
@@ -133,7 +134,7 @@
                     !showSearchHistory
                   "
                   flat
-                  icon="mdi-magnify"
+                  :icon="appIcon('search')"
                   color="primary"
                   @click.stop="toggleSearchHistory"
                   ><q-tooltip>{{ $gettext('Search') }}</q-tooltip></q-btn
@@ -148,7 +149,8 @@
                   dense
                   @clear="showSearchHistory = false"
                   @click.stop
-                  ><template #prepend><q-icon name="mdi-magnify" /></template
+                  ><template #prepend
+                    ><q-icon :name="appIcon('search')" /></template
                 ></q-input>
 
                 <q-btn
