@@ -55,7 +55,7 @@
   <div v-if="hasPaste" class="row">
     <q-btn
       flat
-      icon="mdi-content-copy"
+      :icon="appIcon('copy')"
       color="primary"
       @click.stop="copyList(model, localValue)"
       ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
@@ -80,7 +80,7 @@ import { useUiStore } from 'stores/ui'
 import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import useCopyPaste from 'composables/copyPaste'
-import { useElement } from 'composables/element'
+import { appIcon, useElement } from 'composables/element'
 
 export default {
   name: 'SelectAttributes',
@@ -198,6 +198,7 @@ export default {
       copyList,
       pasteList,
       hasPaste,
+      appIcon,
       elementIcon,
       equivalentModel,
       equivalentKey,
