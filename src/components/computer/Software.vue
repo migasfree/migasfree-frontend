@@ -57,7 +57,7 @@
 
                 <q-btn
                   flat
-                  icon="mdi-content-copy"
+                  :icon="appIcon('copy')"
                   color="primary"
                   @click.stop="copyInventory"
                   ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
@@ -155,7 +155,7 @@
 
                 <q-btn
                   flat
-                  icon="mdi-content-copy"
+                  :icon="appIcon('copy')"
                   color="primary"
                   @click.stop="copyHistory"
                   ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
