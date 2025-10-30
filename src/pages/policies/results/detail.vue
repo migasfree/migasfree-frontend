@@ -115,7 +115,7 @@
                   dense
                   round
                   color="negative"
-                  icon="mdi-delete"
+                  :icon="appIcon('delete')"
                   @click="removeInline(index)"
                   ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
                 >
