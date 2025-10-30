@@ -163,7 +163,7 @@
 
           <div class="q-pa-md">
             <q-btn
-              icon="mdi-plus"
+              :icon="appIcon('add')"
               :label="$gettext('Add other Driver')"
               @click="addInline"
             />
