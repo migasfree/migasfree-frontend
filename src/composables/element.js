@@ -24,6 +24,7 @@ const APP_ICON = {
   filter: 'mdi-filter',
   'filter-remove': 'mdi-filter-remove',
   search: 'mdi-magnify',
+  copy: 'mdi-content-copy',
 }
 
 const MODEL_ICON = {
