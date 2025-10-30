@@ -13,7 +13,7 @@
             <q-input v-model="value" outlined :label="$gettext('Name')" />
             <q-btn
               color="primary"
-              icon="mdi-content-save-edit"
+              :icon="appIcon('save-edit')"
               :loading="loading"
               :disabled="loading"
               @click="updateName"
