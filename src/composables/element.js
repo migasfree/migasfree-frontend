@@ -29,6 +29,7 @@ const APP_ICON = {
   update: 'mdi-refresh',
   'save-edit': 'mdi-content-save-edit',
   save: 'mdi-content-save-move',
+  language: 'mdi-earth',
 }
 
 const MODEL_ICON = {
