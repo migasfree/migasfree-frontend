@@ -12,7 +12,7 @@
         <q-btn
           flat
           color="primary"
-          icon="mdi-magnify"
+          :icon="appIcon('search')"
           @click="$emit('search', searchText)"
         />
       </template>
@@ -22,6 +22,8 @@
 
 <script>
 import { computed } from 'vue'
+
+import { appIcon } from 'composables/element'
 
 export default {
   name: 'SearchFilter',
@@ -43,6 +45,7 @@ export default {
 
     return {
       searchText,
+      appIcon,
     }
   },
 }
