@@ -733,6 +733,7 @@ export default {
       pluralize,
       setRelated,
       setTitle,
+      appIcon,
       modelIcon,
       MIN_CHARS_SEARCH,
     }
