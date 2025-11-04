@@ -13,7 +13,7 @@
             :icon="elementIcon(computer.status)"
             :tooltip="computer.summary"
           />
-          <span class="text-h6 float-right">
+          <span class="text-h6 vertical-middle float-right">
             <DateView
               :value="computer.created_at"
               icon="mdi-calendar-plus"
