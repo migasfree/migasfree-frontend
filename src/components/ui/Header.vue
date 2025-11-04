@@ -1,16 +1,10 @@
 <template>
   <div class="row">
-    <q-item class="col-12 items-baseline q-px-none">
-      <slot name="prepend"></slot>
+    <q-toolbar class="q-my-sm q-px-none">
+      <q-icon v-if="icon" :name="icon" size="48px" />
 
-      <q-item-section>
-        <h2 class="text-h4">
-          <q-icon
-            v-if="icon"
-            :name="icon"
-            class="vertical-middle q-mr-sm"
-            size="44px"
-          />
+      <q-toolbar-title class="q-px-sm"
+        ><h2 class="text-h4">
           <span class="vertical-middle">{{ title }}</span>
           <q-chip
             v-if="results !== null && results !== 0"
@@ -19,32 +13,34 @@
             text-color="black"
             >{{ results }}</q-chip
           >
-          <q-btn
-            v-if="hasExportButton && results > 0"
-            class="q-ma-sm float-right"
-            color="primary"
-            text-color="white"
-            :aria-label="$gettext('Export')"
-            :icon="appIcon('export')"
-            :loading="isLoadingExport"
-            :disable="results === 0"
-            @click="exportAction"
-            ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
-          >
-          <q-btn
-            v-if="addRoute"
-            class="q-ma-sm float-right"
-            color="primary"
-            text-color="white"
-            :aria-label="$gettext('Add')"
-            :icon="appIcon('add')"
-            @click="$router.push({ name: addRoute })"
-            ><q-tooltip>{{ $gettext('Add') }}</q-tooltip></q-btn
-          >
           <slot name="append"></slot>
         </h2>
-      </q-item-section>
-    </q-item>
+      </q-toolbar-title>
+
+      <q-btn
+        v-if="addRoute"
+        class="q-ma-sm"
+        color="primary"
+        text-color="white"
+        :aria-label="$gettext('Add')"
+        :icon="appIcon('add')"
+        @click="$router.push({ name: addRoute })"
+        ><q-tooltip>{{ $gettext('Add') }}</q-tooltip></q-btn
+      >
+
+      <q-btn
+        v-if="hasExportButton && results > 0"
+        class="q-ma-sm"
+        color="primary"
+        text-color="white"
+        :aria-label="$gettext('Export')"
+        :icon="appIcon('export')"
+        :loading="isLoadingExport"
+        :disable="results === 0"
+        @click="exportAction"
+        ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
+      >
+    </q-toolbar>
   </div>
 </template>
 
