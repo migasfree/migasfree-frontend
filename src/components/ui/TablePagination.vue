@@ -27,17 +27,8 @@
 
       <q-space />
 
-      <q-toolbar-title>
-        <VgtPaginationPageInfo
-          :total-records="total"
-          :last-page="pagesCount"
-          :current-page="currentPage"
-          :current-per-page="currentPerPage"
-          :of-text="paginationOptions.ofLabel"
-          :page-text="paginationOptions.pageLabel"
-          :mode="paginationOptions.mode"
-          @page-changed="changePage"
-        />
+      <q-toolbar-title class="text-center">
+        {{ recordInfo }}
       </q-toolbar-title>
 
       <q-space />
@@ -64,11 +55,8 @@ import { storeToRefs } from 'pinia'
 import { useUiStore } from 'stores/ui'
 import { RESULTS_PER_PAGE, MAX_RESULTS_PER_PAGE } from 'config/app.conf'
 
-import VgtPaginationPageInfo from 'vue-good-table-next/src/components/pagination/VgtPaginationPageInfo.vue'
-
 export default {
   name: 'TablePagination',
-  components: { VgtPaginationPageInfo },
   props: {
     total: {
       type: Number,
@@ -114,6 +102,10 @@ export default {
     const perPageLabel = computed(
       () =>
         `${props.paginationOptions.rowsPerPageLabel} (${currentPerPage.value})`,
+    )
+    const recordInfo = computed(
+      () =>
+        `${(currentPage.value - 1) * currentPerPage.value + 1} - ${Math.min(currentPage.value * currentPerPage.value, props.total)} / ${props.total}`,
     )
 
     watch(
@@ -197,6 +189,7 @@ export default {
       pagesCount,
       nextIsPossible,
       prevIsPossible,
+      recordInfo,
       perPageLabel,
       customPageChange,
       customPerPageChange,
