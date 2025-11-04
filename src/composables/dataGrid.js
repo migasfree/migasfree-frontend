@@ -51,15 +51,12 @@ export default function useDataGrid(
   const isLoadingExport = ref(false)
   const paginationOptions = reactive({
     enabled: true,
-    mode: 'records',
     perPage,
     perPageDropdown: [10, 50, 100, 150],
     dropdownAllowAll: false,
     nextLabel: $gettext('Next'),
     prevLabel: $gettext('Previous'),
     rowsPerPageLabel: $gettext('Results per page'),
-    ofLabel: $gettext('of'),
-    pageLabel: $gettext('page'), // for 'pages' mode
     allLabel: $gettext('View All'),
   })
   const serverParams = reactive({
