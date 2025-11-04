@@ -53,11 +53,6 @@ export default function useDataGrid(
     enabled: true,
     perPage,
     perPageDropdown: [10, 50, 100, 150],
-    dropdownAllowAll: false,
-    nextLabel: $gettext('Next'),
-    prevLabel: $gettext('Previous'),
-    rowsPerPageLabel: $gettext('Results per page'),
-    allLabel: $gettext('View All'),
   })
   const serverParams = reactive({
     columnFilters: {},
