@@ -6,7 +6,7 @@
         color="primary"
         icon="mdi-table-eye"
         @click.prevent.stop="customPerPageChange(total)"
-        ><q-tooltip>{{ paginationOptions.allLabel }}</q-tooltip></q-btn
+        ><q-tooltip>{{ $gettext('View All') }}</q-tooltip></q-btn
       >
 
       <q-btn-dropdown v-if="perPageDropdownEnabled" :label="perPageLabel">
@@ -52,6 +52,7 @@
 <script>
 import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useGettext } from 'vue3-gettext'
 import { useUiStore } from 'stores/ui'
 import { RESULTS_PER_PAGE, MAX_RESULTS_PER_PAGE } from 'config/app.conf'
 
@@ -75,6 +76,7 @@ export default {
   },
   setup(props) {
     const uiStore = useUiStore()
+    const { $gettext } = useGettext()
 
     const { currentPageTable } = storeToRefs(uiStore)
 
@@ -100,8 +102,7 @@ export default {
       () => currentPage.value > 1 && currentPage.value <= pagesCount.value,
     )
     const perPageLabel = computed(
-      () =>
-        `${props.paginationOptions.rowsPerPageLabel} (${currentPerPage.value})`,
+      () => `${$gettext('Results per page')} (${currentPerPage.value})`,
     )
     const recordInfo = computed(
       () =>
