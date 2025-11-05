@@ -457,6 +457,7 @@ export default {
       packagesByProject,
       removedProjects,
       iconFile,
+      appIcon,
       rand,
       isValid,
       iconPath,
