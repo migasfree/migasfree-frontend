@@ -46,6 +46,7 @@
       <q-btn
         v-if="
           model === 'packages' &&
+          'store' in element &&
           element.store.id &&
           $route.name !== 'package-information'
         "
