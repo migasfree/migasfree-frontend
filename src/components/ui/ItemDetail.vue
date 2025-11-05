@@ -19,7 +19,7 @@
 
     <template #actions>
       <q-btn
-        v-if="model === 'user-profiles'"
+        v-if="model === 'user-profiles' && element.id"
         class="q-ma-sm"
         :aria-label="$gettext('Change Password')"
         color="primary"
