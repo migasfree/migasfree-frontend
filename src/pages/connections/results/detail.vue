@@ -96,7 +96,7 @@ export default {
 
     const deviceTypes = ref([])
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
