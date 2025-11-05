@@ -1,6 +1,7 @@
 <template>
   <q-page padding>
     <ItemDetail
+      :key="$route.fullPath"
       :breadcrumbs="breadcrumbs"
       :original-title="title"
       :model="model"
@@ -96,7 +97,6 @@
                 map-options
                 multiple
                 counter
-                input-debounce="0"
                 :label="$gettext('Computers')"
                 :hint="
                   $gettext('Type to search (minimum %{num} characters)', {
@@ -256,7 +256,7 @@ export default {
     const viewMap = ref(false)
     const coords = ref([0, 0])
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
