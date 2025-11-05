@@ -404,7 +404,7 @@ export default {
         description: undefined,
         level: null,
         category: null,
-        score: undefined,
+        score: 0,
         available_for_attributes: [],
         icon: undefined,
       })
