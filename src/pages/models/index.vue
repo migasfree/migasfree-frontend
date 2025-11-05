@@ -71,7 +71,7 @@ export default {
     const searchText = ref('')
     const addRoute = 'model-add'
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
