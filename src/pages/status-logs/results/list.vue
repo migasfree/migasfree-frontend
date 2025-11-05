@@ -8,34 +8,34 @@
       :model="model"
       :more-filters="moreFilters"
     >
-      <template #fields="slotProps">
-        <span v-if="slotProps.props.column.field == 'computer.__str__'">
+      <template #fields="{ props }">
+        <span v-if="props.column.field == 'computer.__str__'">
           <MigasLink
             model="computers"
-            :pk="slotProps.props.row.computer.id"
-            :value="slotProps.props.row.computer.__str__"
-            :icon="elementIcon(slotProps.props.row.computer.status)"
-            :tooltip="slotProps.props.row.computer.summary"
+            :pk="props.row.computer.id"
+            :value="props.row.computer.__str__"
+            :icon="elementIcon(props.row.computer.status)"
+            :tooltip="props.row.computer.summary"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'created_at'">
-          <DateView :value="slotProps.props.row.created_at" />
+        <span v-else-if="props.column.field == 'created_at'">
+          <DateView :value="props.row.created_at" />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'status'">
+        <span v-else-if="props.column.field == 'status'">
           <q-icon
-            :name="elementIcon(slotProps.props.row.status)"
+            :name="elementIcon(props.row.status)"
             class="vertical-middle q-mr-xs"
             size="sm"
           />
           <span class="vertical-middle">{{
-            computerStatus(slotProps.props.row.status)
+            computerStatus(props.row.status)
           }}</span>
         </span>
 
         <span v-else>
-          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
+          {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
     </TableResults>
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -76,7 +76,7 @@ export default {
 
     const title = ref($gettext('Status Logs'))
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -97,7 +97,7 @@ export default {
       },
     ])
 
-    const columns = reactive([
+    const columns = ref([
       {
         field: 'id',
         hidden: true,
@@ -150,7 +150,7 @@ export default {
       await api
         .get('/api/v1/token/computers/status/')
         .then((response) => {
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'status',
           ).filterOptions.filterDropdownItems = Object.entries(
             response.data.choices,
