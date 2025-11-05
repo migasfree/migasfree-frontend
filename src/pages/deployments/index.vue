@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { ref, reactive, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 import { useRouter } from 'vue-router'
@@ -74,7 +74,7 @@ export default {
     const searchText = ref('')
     const addRoute = 'deployment-add'
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
