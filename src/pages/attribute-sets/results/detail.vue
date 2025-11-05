@@ -169,7 +169,7 @@ export default {
     const viewMap = ref(false)
     const coords = ref([0, 0])
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
