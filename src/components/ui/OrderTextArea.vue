@@ -39,9 +39,14 @@ export default defineComponent({
   emits: ['update:model-value'],
   setup(props, { emit }) {
     const content = computed({
-      get: () => props.modelValue,
+      get: () => {
+        return Array.isArray(props.modelValue)
+          ? props.modelValue.join('\n')
+          : props.modelValue
+      },
       set: (val) => {
-        emit('update:model-value', val)
+        const newValue = Array.isArray(props.modelValue) ? val.split('\n') : val
+        emit('update:model-value', newValue)
       },
     })
 
