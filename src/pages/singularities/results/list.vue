@@ -8,29 +8,29 @@
       :model="model"
       :routes="routes"
     >
-      <template #fields="slotProps">
-        <span v-if="slotProps.props.column.field == 'name'">
+      <template #fields="{ props }">
+        <span v-if="props.column.field == 'name'">
           <MigasLink
             :model="model"
-            :pk="slotProps.props.row.id"
-            :value="slotProps.props.row.name"
+            :pk="props.row.id"
+            :value="props.row.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'enabled'">
-          <BooleanView :value="slotProps.props.row.enabled" />
+        <span v-else-if="props.column.field == 'enabled'">
+          <BooleanView :value="props.row.enabled" />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'property_att'">
+        <span v-else-if="props.column.field == 'property_att'">
           <MigasLink
             model="formulas"
-            :pk="slotProps.props.row.property_att.id"
-            :value="slotProps.props.row.property_att.name || ''"
+            :pk="props.row.property_att.id"
+            :value="props.row.property_att.name || ''"
           />
         </span>
 
         <span v-else>
-          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
+          {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
     </TableResults>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -73,7 +73,7 @@ export default {
 
     const title = ref($gettext('Singularities'))
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -93,7 +93,7 @@ export default {
       },
     ])
 
-    const columns = reactive([
+    const columns = ref([
       {
         field: 'id',
         hidden: true,
@@ -152,15 +152,13 @@ export default {
       await api
         .get('/api/v1/token/formulas/')
         .then((response) => {
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'property_att',
           ).filterOptions.filterDropdownItems = response.data.results.map(
-            (item) => {
-              return {
-                value: item.id,
-                text: item.name,
-              }
-            },
+            ({ id, name }) => ({
+              value: id,
+              text: name,
+            }),
           )
         })
         .catch((error) => {
