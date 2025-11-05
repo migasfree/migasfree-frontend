@@ -32,7 +32,7 @@
               <template #append>
                 <q-icon
                   class="cursor-pointer"
-                  :name="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  :name="appIcon(showPassword ? 'show' : 'hide')"
                   @click="showPassword = !showPassword"
                 />
               </template>
@@ -55,7 +55,7 @@
               <template #append>
                 <q-icon
                   class="cursor-pointer"
-                  :name="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  :name="appIcon(showPassword ? 'show' : 'hide')"
                   @click="showPassword = !showPassword"
                 />
               </template>
@@ -76,7 +76,7 @@
               <template #append>
                 <q-icon
                   class="cursor-pointer"
-                  :name="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  :name="appIcon(showPassword ? 'show' : 'hide')"
                   @click="showPassword = !showPassword"
                 />
               </template>
@@ -307,6 +307,7 @@ export default {
       required,
       requiredOldPassword,
       changePassword,
+      appIcon,
     }
   },
 }
