@@ -8,30 +8,30 @@
       :model="model"
       :routes="routes"
     >
-      <template #fields="slotProps">
-        <span v-if="slotProps.props.column.field == 'name'">
+      <template #fields="{ props }">
+        <span v-if="props.column.field == 'name'">
           <MigasLink
             :model="model"
-            :pk="slotProps.props.row.id"
-            :value="slotProps.props.row.name"
-            :tooltip="slotProps.props.row.description"
+            :pk="props.row.id"
+            :value="props.row.name"
+            :tooltip="props.row.description"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'enabled'">
-          <BooleanView :value="slotProps.props.row.enabled" />
+        <span v-else-if="props.column.field == 'enabled'">
+          <BooleanView :value="props.row.enabled" />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'description'">
+        <span v-else-if="props.column.field == 'description'">
           <Truncate
-            v-if="slotProps.props.row.description"
-            v-model="slotProps.props.row.description"
+            v-if="props.row.description"
+            v-model="props.row.description"
             :formatted="false"
           />
         </span>
 
         <span v-else>
-          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
+          {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
     </TableResults>
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -74,7 +74,7 @@ export default {
 
     const title = ref($gettext('Attribute Sets'))
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -94,7 +94,7 @@ export default {
       },
     ])
 
-    const columns = reactive([
+    const columns = ref([
       {
         field: 'id',
         hidden: true,
