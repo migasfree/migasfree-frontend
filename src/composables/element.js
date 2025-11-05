@@ -31,6 +31,8 @@ const APP_ICON = {
   'save-edit': 'mdi-content-save-edit',
   save: 'mdi-content-save-move',
   language: 'mdi-earth',
+  check: 'mdi-eye-check',
+  uncheck: 'mdi-eye-remove',
 }
 
 const MODEL_ICON = {
