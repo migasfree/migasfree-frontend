@@ -143,7 +143,7 @@ export default {
     }
     const model = 'user-profiles'
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -274,7 +274,7 @@ export default {
 
     // created
     if (route.params.id) {
-      breadcrumbs.push({
+      breadcrumbs.value.push({
         text: windowTitle.value,
         icon: titleIcon,
       })
@@ -282,7 +282,7 @@ export default {
 
     watch(element, (val) => {
       if (val.id !== 0) {
-        breadcrumbs.find((x) => x.text === val.username).to = {
+        breadcrumbs.value.find((x) => x.text === val.username).to = {
           name: routes.detail,
           params: { id: val.id },
         }
