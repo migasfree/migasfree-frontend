@@ -8,34 +8,34 @@
       :model="model"
       :routes="routes"
     >
-      <template #fields="slotProps">
-        <span v-if="slotProps.props.column.field == 'name'">
+      <template #fields="{ props }">
+        <span v-if="props.column.field == 'name'">
           <MigasLink
             :model="model"
-            :pk="slotProps.props.row.id"
-            :value="slotProps.props.row.name"
+            :pk="props.row.id"
+            :value="props.row.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'project.name'">
+        <span v-else-if="props.column.field == 'project.name'">
           <MigasLink
             model="projects"
-            :pk="slotProps.props.row.project.id"
-            :value="slotProps.props.row.project.name"
+            :pk="props.row.project.id"
+            :value="props.row.project.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'store.name'">
+        <span v-else-if="props.column.field == 'store.name'">
           <MigasLink
-            v-if="slotProps.props.row.store.id > 0"
+            v-if="props.row.store.id > 0"
             model="stores"
-            :pk="slotProps.props.row.store.id"
-            :value="slotProps.props.row.store.name"
+            :pk="props.row.store.id"
+            :value="props.row.store.name"
           />
         </span>
 
         <span v-else>
-          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
+          {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
     </TableResults>
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -76,7 +76,7 @@ export default {
 
     const title = ref($gettext('Package Sets'))
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -97,7 +97,7 @@ export default {
       },
     ])
 
-    const columns = reactive([
+    const columns = ref([
       {
         field: 'id',
         hidden: true,
@@ -156,15 +156,13 @@ export default {
       await api
         .get('/api/v1/token/projects/')
         .then((response) => {
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'project.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
-            (item) => {
-              return {
-                value: item.id,
-                text: item.name,
-              }
-            },
+            ({ id, name }) => ({
+              value: id,
+              text: name,
+            }),
           )
         })
         .catch((error) => {
@@ -174,7 +172,7 @@ export default {
       await api
         .get('/api/v1/token/stores/')
         .then((response) => {
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'store.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
             (item) => {
