@@ -1,6 +1,7 @@
 <template>
   <q-page padding>
     <ItemDetail
+      :key="$route.fullPath"
       :breadcrumbs="breadcrumbs"
       :original-title="title"
       :model="model"
@@ -149,7 +150,7 @@ export default {
 
     let element = reactive({ id: 0, auto_register_computers: false })
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
