@@ -181,7 +181,7 @@ export default {
 
     let element = reactive({ id: 0, enabled: false, code: '' })
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
