@@ -221,7 +221,7 @@ export default {
     const projects = ref([])
     const capabilities = ref([])
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -421,6 +421,7 @@ export default {
       setTitle,
       addInline,
       removeInline,
+      appIcon,
       modelIcon,
     }
   },
