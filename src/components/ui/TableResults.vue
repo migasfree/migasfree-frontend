@@ -475,7 +475,7 @@
           class="q-ma-xs"
           round
           size="sm"
-          icon="mdi-pencil"
+          :icon="appIcon('edit')"
           color="primary"
           @click="edit(props.row.id)"
           ><q-tooltip>{{ $gettext('Edit') }}</q-tooltip></q-btn
