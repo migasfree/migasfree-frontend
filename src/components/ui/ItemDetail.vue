@@ -276,7 +276,6 @@ export default defineComponent({
     const confirmRemove = ref(false)
     const titleIcon = props.icon || modelIcon(props.model)
 
-    console.log('props', props) // debug
     const { loading, elementText, addElement, updateElement, remove } =
       useDetail(
         props.originalTitle,
