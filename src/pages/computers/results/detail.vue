@@ -278,8 +278,8 @@
                 </div>
 
                 <template v-else>
-                  <div class="row q-py-sm items-baseline">
-                    <div class="col-md">
+                  <div class="row q-py-sm items-baseline justify-between">
+                    <div class="col-4 col-md">
                       <DateView
                         :value="syncInfo.sync_start_date"
                         icon="mdi-play"
@@ -288,7 +288,7 @@
                     </div>
 
                     <div
-                      class="col-md"
+                      class="col-4 col-md"
                       :class="{
                         'bg-warning text-black':
                           syncInfo.sync_end_date < syncInfo.sync_start_date,
@@ -495,7 +495,7 @@ export default {
     const iconSize = [32, 40]
     const iconAnchor = [16, 37]
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
