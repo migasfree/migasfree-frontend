@@ -127,7 +127,7 @@ export default {
       permissions: [],
     })
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
