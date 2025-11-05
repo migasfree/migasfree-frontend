@@ -178,7 +178,7 @@ export default {
     const models = ref([])
     const capabilities = ref([])
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
