@@ -428,7 +428,7 @@
           class="q-ma-xs"
           round
           size="sm"
-          icon="mdi-eye-check"
+          :icon="appIcon('check')"
           color="positive"
           @click="updateChecked(props.row.id, true)"
           ><q-tooltip>{{ $gettext('Check') }}</q-tooltip></q-btn
@@ -438,7 +438,7 @@
           class="q-ma-xs"
           round
           size="sm"
-          icon="mdi-eye-remove"
+          :icon="appIcon('uncheck')"
           color="negative"
           @click="updateChecked(props.row.id, false)"
           ><q-tooltip>{{ $gettext('Not Check') }}</q-tooltip></q-btn
@@ -607,7 +607,7 @@
         <q-btn
           class="q-ma-xs"
           size="sm"
-          icon="mdi-eye-check"
+          :icon="appIcon('check')"
           color="positive"
           @click="updateItemsChecked(true)"
           ><q-tooltip>{{ $gettext('Check') }}</q-tooltip></q-btn
@@ -616,7 +616,7 @@
         <q-btn
           class="q-ma-xs"
           size="sm"
-          icon="mdi-eye-remove"
+          :icon="appIcon('uncheck')"
           color="negative"
           @click="updateItemsChecked(false)"
           ><q-tooltip>{{ $gettext('Not Check') }}</q-tooltip></q-btn
