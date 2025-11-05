@@ -83,7 +83,7 @@
 
             <template #append>
               <q-icon
-                :name="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                :name="appIcon(showPassword ? 'show' : 'hide')"
                 @click="showPassword = !showPassword"
               />
               <q-tooltip>{{ $gettext('Show / hide password') }}</q-tooltip>
