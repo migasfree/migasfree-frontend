@@ -8,25 +8,25 @@
       :model="model"
       :routes="routes"
     >
-      <template #fields="slotProps">
-        <span v-if="slotProps.props.column.field == 'name'">
+      <template #fields="{ props }">
+        <span v-if="props.column.field == 'name'">
           <MigasLink
             :model="model"
-            :pk="slotProps.props.row.id"
-            :value="slotProps.props.row.name"
+            :pk="props.row.id"
+            :value="props.row.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'enabled'">
-          <BooleanView :value="slotProps.props.row.enabled" />
+        <span v-else-if="props.column.field == 'enabled'">
+          <BooleanView :value="props.row.enabled" />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'exclusive'">
-          <BooleanView :value="slotProps.props.row.exclusive" />
+        <span v-else-if="props.column.field == 'exclusive'">
+          <BooleanView :value="props.row.exclusive" />
         </span>
 
         <span v-else>
-          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
+          {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
     </TableResults>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -65,7 +65,7 @@ export default {
 
     const title = ref($gettext('Policies'))
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -85,7 +85,7 @@ export default {
       },
     ])
 
-    const columns = reactive([
+    const columns = ref([
       {
         field: 'id',
         hidden: true,
