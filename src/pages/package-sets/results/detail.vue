@@ -201,7 +201,7 @@ export default {
     const menu = ref(null)
     const tree = ref(null)
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
