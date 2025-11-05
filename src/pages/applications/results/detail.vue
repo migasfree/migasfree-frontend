@@ -254,7 +254,7 @@ export default {
     const iconFile = ref(null)
     const rand = ref(1)
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
