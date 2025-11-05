@@ -302,7 +302,6 @@
           outlined
           use-input
           map-options
-          input-debounce="0"
           :label="$gettext('Computer')"
           :hint="
             $gettext('Type to search (minimum %{num} characters)', {

@@ -154,7 +154,6 @@
                         multiple
                         counter
                         clearable
-                        input-debounce="0"
                         :label="$gettext('Available Packages')"
                         :hint="
                           $gettext(
@@ -211,7 +210,6 @@
                         multiple
                         counter
                         clearable
-                        input-debounce="0"
                         :label="$gettext('Available Package Sets')"
                         :hint="
                           $gettext(

@@ -23,7 +23,6 @@
                 autofocus
                 use-input
                 map-options
-                input-debounce="0"
                 :label="$gettext('Device')"
                 :hint="
                   $gettext('Type to search (minimum %{num} characters)', {

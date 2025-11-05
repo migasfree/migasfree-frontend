@@ -47,7 +47,6 @@
                 outlined
                 use-input
                 map-options
-                input-debounce="0"
                 :label="$gettext('Model')"
                 :hint="
                   $gettext('Type to search (minimum %{num} characters)', {

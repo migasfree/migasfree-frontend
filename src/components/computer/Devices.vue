@@ -17,7 +17,6 @@
           map-options
           multiple
           counter
-          input-debounce="0"
           :label="$gettext('Assigned')"
           :hint="
             $gettext('Type to search (minimum %{num} characters)', {

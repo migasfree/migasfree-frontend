@@ -38,7 +38,6 @@
                 multiple
                 counter
                 clearable
-                input-debounce="0"
                 :label="$gettext('Permissions')"
                 :hint="
                   $gettext('Type to search (minimum %{num} characters)', {

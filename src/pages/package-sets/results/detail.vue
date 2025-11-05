@@ -93,7 +93,6 @@
                   multiple
                   counter
                   use-input
-                  input-debounce="0"
                   clearable
                   :label="$gettext('Packages')"
                   :options="packages"

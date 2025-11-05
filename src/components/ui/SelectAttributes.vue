@@ -7,7 +7,6 @@
     map-options
     multiple
     counter
-    input-debounce="0"
     clearable
     :label="label"
     :hint="
