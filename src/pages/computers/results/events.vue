@@ -282,7 +282,7 @@ export default {
     const title = $gettext('Events')
     useMeta({ title })
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
