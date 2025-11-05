@@ -8,25 +8,25 @@
       :model="model"
       :routes="routes"
     >
-      <template #fields="slotProps">
-        <span v-if="slotProps.props.column.field == 'name'">
+      <template #fields="{ props }">
+        <span v-if="props.column.field == 'name'">
           <MigasLink
             :model="model"
-            :pk="slotProps.props.row.id"
-            :value="slotProps.props.row.name"
+            :pk="props.row.id"
+            :value="props.row.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'enabled'">
-          <BooleanView :value="slotProps.props.row.enabled" />
+        <span v-else-if="props.column.field == 'enabled'">
+          <BooleanView :value="props.row.enabled" />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'kind'">
-          {{ kind[slotProps.props.row.kind] }}
+        <span v-else-if="props.column.field == 'kind'">
+          {{ kind[props.row.kind] }}
         </span>
 
         <span v-else>
-          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
+          {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
     </TableResults>
@@ -69,7 +69,7 @@ export default {
 
     const title = ref($gettext('Stamps'))
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -89,7 +89,7 @@ export default {
       },
     ])
 
-    const columns = reactive([
+    const columns = ref([
       {
         field: 'id',
         hidden: true,
@@ -151,7 +151,7 @@ export default {
         .get(`/api/v1/token/properties/kind`)
         .then((response) => {
           Object.assign(kind, response.data)
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'kind',
           ).filterOptions.filterDropdownItems = Object.entries(
             response.data,
