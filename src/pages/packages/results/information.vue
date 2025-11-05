@@ -70,7 +70,7 @@ export default {
     const information = ref(null)
     const loading = ref(false)
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
