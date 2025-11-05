@@ -107,7 +107,6 @@
                 use-input
                 map-options
                 multiple
-                input-debounce="0"
                 :label="$gettext('User Profiles')"
                 :options="userProfiles"
                 @filter="filterUserProfiles"
@@ -204,7 +203,7 @@ export default {
       code: '',
     })
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
