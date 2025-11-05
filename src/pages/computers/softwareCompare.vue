@@ -16,7 +16,6 @@
               autofocus
               use-input
               map-options
-              input-debounce="0"
               :label="$gettext('Computer')"
               :hint="
                 $gettext('Type to search (minimum %{num} characters)', {
@@ -84,7 +83,6 @@
               outlined
               use-input
               map-options
-              input-debounce="0"
               :label="$gettext('Computer')"
               :hint="
                 $gettext('Type to search (minimum %{num} characters)', {
@@ -165,7 +163,7 @@
 </template>
 
 <script>
-import { ref, reactive, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -200,7 +198,7 @@ export default {
     const title = $gettext('Software Compare')
     useMeta({ title })
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
