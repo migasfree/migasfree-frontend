@@ -9,34 +9,34 @@
       :routes="routes"
       :more-filters="moreFilters"
     >
-      <template #fields="slotProps">
-        <span v-if="slotProps.props.column.field == 'name'">
+      <template #fields="{ props }">
+        <span v-if="props.column.field == 'name'">
           <MigasLink
             :model="model"
-            :pk="slotProps.props.row.id"
-            :value="slotProps.props.row.name"
+            :pk="props.row.id"
+            :value="props.row.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'score'">
+        <span v-else-if="props.column.field == 'score'">
           <q-rating
-            v-model="slotProps.props.row.score"
+            v-model="props.row.score"
             icon="star_border"
             icon-selected="star"
             readonly
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'category.name'">
+        <span v-else-if="props.column.field == 'category.name'">
           <MigasLink
             model="catalog/categories"
-            :pk="slotProps.props.row.category.id"
-            :value="slotProps.props.row.category.name"
+            :pk="props.row.category.id"
+            :value="props.row.category.name"
           />
         </span>
 
         <span v-else>
-          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
+          {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
     </TableResults>
@@ -78,7 +78,7 @@ export default {
 
     const title = ref($gettext('Applications'))
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -99,7 +99,7 @@ export default {
       },
     ])
 
-    const columns = reactive([
+    const columns = ref([
       {
         field: 'id',
         hidden: true,
@@ -126,7 +126,7 @@ export default {
         field: 'score',
         filterOptions: {
           enabled: true,
-          placeholder: $gettext('Filter'),
+          placeholder: $gettext('All'),
           trigger: 'enter',
         },
       },
@@ -139,7 +139,7 @@ export default {
         field: 'level.name',
         filterOptions: {
           enabled: true,
-          placeholder: $gettext('Filter'),
+          placeholder: $gettext('All'),
           trigger: 'enter',
         },
       },
@@ -152,7 +152,7 @@ export default {
         field: 'category.name',
         filterOptions: {
           enabled: true,
-          placeholder: $gettext('Filter'),
+          placeholder: $gettext('All'),
           trigger: 'enter',
         },
       },
@@ -162,7 +162,7 @@ export default {
       await api
         .get('/api/v1/token/catalog/apps/levels')
         .then((response) => {
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'level.name',
           ).filterOptions.filterDropdownItems = Object.entries(
             response.data,
@@ -180,22 +180,20 @@ export default {
       await api
         .get('/api/v1/token/catalog/categories')
         .then((response) => {
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'category.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
-            (item) => {
-              return {
-                value: item.id,
-                text: item.name,
-              }
-            },
+            ({ id, name }) => ({
+              value: id,
+              text: name,
+            }),
           )
         })
         .catch((error) => {
           uiStore.notifyError(error)
         })
 
-      columns.find(
+      columns.value.find(
         (x) => x.field === 'score',
       ).filterOptions.filterDropdownItems = ['1', '2', '3', '4', '5']
     }
