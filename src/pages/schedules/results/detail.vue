@@ -1,6 +1,7 @@
 <template>
   <q-page padding>
     <ItemDetail
+      :key="$route.fullPath"
       :breadcrumbs="breadcrumbs"
       :original-title="title"
       :model="model"
@@ -149,7 +150,7 @@ export default {
     const delays = ref([])
     const removedDelays = ref([])
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -251,7 +252,7 @@ export default {
           ? parseInt(delays.value[delays.value.length - 1].delay) + 1
           : 0,
         duration: 1,
-        attributes: null,
+        attributes: [],
       })
     }
 
@@ -278,6 +279,7 @@ export default {
       setTitle,
       addInline,
       removeInline,
+      appIcon,
     }
   },
 }
