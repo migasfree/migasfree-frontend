@@ -40,6 +40,8 @@
         @click="exportAction"
         ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
       >
+
+      <slot name="actions"></slot>
     </q-toolbar>
   </div>
 </template>
