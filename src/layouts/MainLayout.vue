@@ -84,7 +84,7 @@
           v-if="domainPreference"
           class="q-ml-md"
           color="info"
-          icon="mdi-web"
+          :icon="modelIcon('domains')"
           removable
           @remove="removeDomainPreference"
         >
@@ -95,7 +95,7 @@
           v-if="scopePreference"
           class="q-ml-md"
           color="info"
-          icon="mdi-eye-outline"
+          :icon="modelIcon('scopes')"
           removable
           @remove="removeScopePreference"
         >
@@ -143,6 +143,8 @@ import ToggleDarkMode from 'components/ui/ToggleDarkMode'
 import ToggleFullScreen from 'components/ui/ToggleFullScreen'
 
 import { useAuthStore } from 'stores/auth'
+
+import { modelIcon } from 'composables/element'
 
 export default defineComponent({
   name: 'MainLayout',
@@ -236,6 +238,7 @@ export default defineComponent({
       removeDomainPreference,
       removeScopePreference,
       debounceMini,
+      modelIcon,
     }
   },
 })
