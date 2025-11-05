@@ -206,7 +206,7 @@ export default {
         field: 'consumer',
         filterOptions: {
           enabled: true,
-          placeholder: $gettext('All'),
+          placeholder: $gettext('Filter'),
           trigger: 'enter',
         },
       },
