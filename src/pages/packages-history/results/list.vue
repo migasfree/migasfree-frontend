@@ -8,45 +8,43 @@
       :model="model"
       :more-filters="moreFilters"
     >
-      <template #fields="slotProps">
-        <span v-if="slotProps.props.column.field == 'computer.__str__'">
+      <template #fields="{ props }">
+        <span v-if="props.column.field == 'computer.__str__'">
           <MigasLink
             model="computers"
-            :pk="slotProps.props.row.computer.id"
-            :value="slotProps.props.row.computer.__str__"
-            :icon="elementIcon(slotProps.props.row.computer.status)"
-            :tooltip="slotProps.props.row.computer.summary"
+            :pk="props.row.computer.id"
+            :value="props.row.computer.__str__"
+            :icon="elementIcon(props.row.computer.status)"
+            :tooltip="props.row.computer.summary"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'package.fullname'">
+        <span v-else-if="props.column.field == 'package.fullname'">
           <MigasLink
             model="packages"
-            :pk="slotProps.props.row.package.id"
-            :value="slotProps.props.row.package.fullname"
+            :pk="props.row.package.id"
+            :value="props.row.package.fullname"
           />
         </span>
 
-        <span
-          v-else-if="slotProps.props.column.field == 'package.project.name'"
-        >
+        <span v-else-if="props.column.field == 'package.project.name'">
           <MigasLink
             model="projects"
-            :pk="slotProps.props.row.package.project.id"
-            :value="slotProps.props.row.package.project.name"
+            :pk="props.row.package.project.id"
+            :value="props.row.package.project.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'install_date'">
-          <DateView :value="slotProps.props.row.install_date" />
+        <span v-else-if="props.column.field == 'install_date'">
+          <DateView :value="props.row.install_date" />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'uninstall_date'">
-          <DateView :value="slotProps.props.row.uninstall_date" />
+        <span v-else-if="props.column.field == 'uninstall_date'">
+          <DateView :value="props.row.uninstall_date" />
         </span>
 
         <span v-else>
-          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
+          {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
     </TableResults>
@@ -54,7 +52,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -91,7 +89,7 @@ export default {
 
     const title = ref($gettext('Packages History'))
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -112,7 +110,7 @@ export default {
       },
     ])
 
-    const columns = reactive([
+    const columns = ref([
       {
         field: 'id',
         hidden: true,
@@ -147,7 +145,7 @@ export default {
         field: 'package.fullname',
         filterOptions: {
           enabled: true,
-          placeholder: $gettext('All'),
+          placeholder: $gettext('Filter'),
           trigger: 'enter',
         },
       },
@@ -179,15 +177,13 @@ export default {
       await api
         .get('/api/v1/token/projects/')
         .then((response) => {
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'package.project.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
-            (item) => {
-              return {
-                value: item.id,
-                text: item.name,
-              }
-            },
+            ({ id, name }) => ({
+              value: id,
+              text: name,
+            }),
           )
         })
         .catch((error) => {
