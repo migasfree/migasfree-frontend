@@ -2,6 +2,8 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { scroll, Notify } from 'quasar'
 
+import { appIcon } from 'composables/element'
+
 export const useUiStore = defineStore('ui', () => {
   const isLoading = ref(false)
   const currentPageTable = ref(1)
@@ -62,7 +64,7 @@ export const useUiStore = defineStore('ui', () => {
       color: 'negative',
       position: 'bottom',
       message,
-      icon: 'mdi-alert-circle-outline',
+      icon: appIcon('error'),
     })
   }
 
@@ -71,7 +73,7 @@ export const useUiStore = defineStore('ui', () => {
       color: 'positive',
       position: 'bottom',
       message,
-      icon: 'mdi-check-bold',
+      icon: appIcon('yes'),
     })
   }
 
