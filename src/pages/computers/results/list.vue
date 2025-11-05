@@ -9,62 +9,62 @@
       :routes="routes"
       :more-filters="moreFilters"
     >
-      <template #fields="slotProps">
-        <span v-if="slotProps.props.column.field == 'name'">
+      <template #fields="{ props }">
+        <span v-if="props.column.field == 'name'">
           <MigasLink
             :model="model"
-            :pk="slotProps.props.row.id"
-            :icon="elementIcon(slotProps.props.row.status)"
-            :value="slotProps.props.row.__str__ || ''"
-            :tooltip="slotProps.props.row.summary"
+            :pk="props.row.id"
+            :icon="elementIcon(props.row.status)"
+            :value="props.row.__str__ || ''"
+            :tooltip="props.row.summary"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'project.name'">
+        <span v-else-if="props.column.field == 'project.name'">
           <MigasLink
             model="projects"
-            :pk="slotProps.props.row.project.id"
-            :value="slotProps.props.row.project.name || ''"
+            :pk="props.row.project.id"
+            :value="props.row.project.name || ''"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'sync_user.name'">
+        <span v-else-if="props.column.field == 'sync_user.name'">
           <MigasLink
-            v-if="slotProps.props.row.sync_user"
+            v-if="props.row.sync_user"
             model="users"
-            :pk="slotProps.props.row.sync_user.id"
-            :value="slotProps.props.row.sync_user.__str__ || ''"
+            :pk="props.row.sync_user.id"
+            :value="props.row.sync_user.__str__ || ''"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'product'">
+        <span v-else-if="props.column.field == 'product'">
           <q-btn
             no-caps
             dense
             color="info"
             text-color="black"
-            :icon="productIcon(slotProps.props.row.product_system)"
-            :label="slotProps.props.row.product || ''"
+            :icon="productIcon(props.row.product_system)"
+            :label="props.row.product || ''"
             @click="
               $router.push({
                 name: 'computer-hardware',
-                params: { id: slotProps.props.row.id },
+                params: { id: props.row.id },
               })
             "
             ><q-tooltip
-              >{{ slotProps.props.row.product_system }} ({{
+              >{{ props.row.product_system }} ({{
                 $gettext('Hardware Information')
               }})</q-tooltip
             ></q-btn
           >
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'sync_end_date'">
-          <DateView :value="slotProps.props.row.sync_end_date" />
+        <span v-else-if="props.column.field == 'sync_end_date'">
+          <DateView :value="props.row.sync_end_date" />
         </span>
 
         <span v-else>
-          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
+          {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
     </TableResults>
@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -120,7 +120,7 @@ export default {
 
     const title = ref($gettext('Computers'))
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -141,7 +141,7 @@ export default {
       },
     ])
 
-    const columns = reactive([
+    const columns = ref([
       {
         field: 'id',
         hidden: true,
@@ -223,15 +223,13 @@ export default {
       await api
         .get('/api/v1/token/projects/')
         .then((response) => {
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'project.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
-            (item) => {
-              return {
-                value: item.id,
-                text: item.name,
-              }
-            },
+            ({ id, name }) => ({
+              value: id,
+              text: name,
+            }),
           )
         })
         .catch((error) => {
