@@ -262,7 +262,7 @@ export default {
     const capabilities = ref([])
     const isLoadingLogical = ref(false)
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -490,6 +490,7 @@ export default {
       removeInline,
       filterModels,
       abortFilterModels,
+      appIcon,
       modelIcon,
       MIN_CHARS_SEARCH,
     }
