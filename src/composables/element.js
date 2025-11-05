@@ -33,6 +33,8 @@ const APP_ICON = {
   language: 'mdi-earth',
   check: 'mdi-eye-check',
   uncheck: 'mdi-eye-remove',
+  show: 'mdi-eye',
+  hide: 'mdi-eye-off',
 }
 
 const MODEL_ICON = {
