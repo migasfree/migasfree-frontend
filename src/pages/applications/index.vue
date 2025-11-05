@@ -80,7 +80,7 @@ export default {
 
     const searchText = ref('')
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
