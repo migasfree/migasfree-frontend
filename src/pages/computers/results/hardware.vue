@@ -294,7 +294,7 @@ export default {
     }
     const model = 'computers'
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
