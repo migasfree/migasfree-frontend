@@ -9,33 +9,33 @@
       :routes="routes"
       :more-filters="moreFilters"
     >
-      <template #fields="slotProps">
-        <span v-if="slotProps.props.column.field == 'name'">
+      <template #fields="{ props }">
+        <span v-if="props.column.field == 'name'">
           <MigasLink
             :model="model"
-            :pk="slotProps.props.row.id"
-            :value="slotProps.props.row.name"
+            :pk="props.row.id"
+            :value="props.row.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'manufacturer.name'">
+        <span v-else-if="props.column.field == 'manufacturer.name'">
           <MigasLink
             model="devices/manufacturers"
-            :pk="slotProps.props.row.manufacturer.id"
-            :value="slotProps.props.row.manufacturer.name"
+            :pk="props.row.manufacturer.id"
+            :value="props.row.manufacturer.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'device_type.name'">
+        <span v-else-if="props.column.field == 'device_type.name'">
           <MigasLink
             model="devices/types"
-            :pk="slotProps.props.row.device_type.id"
-            :value="slotProps.props.row.device_type.name"
+            :pk="props.row.device_type.id"
+            :value="props.row.device_type.name"
           />
         </span>
 
         <span v-else>
-          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
+          {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
     </TableResults>
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -77,7 +77,7 @@ export default {
 
     const title = ref($gettext('Models'))
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -98,7 +98,7 @@ export default {
       },
     ])
 
-    const columns = reactive([
+    const columns = ref([
       {
         field: 'id',
         hidden: true,
@@ -130,7 +130,7 @@ export default {
         html: true,
         filterOptions: {
           enabled: true,
-          placeholder: $gettext('Filter'),
+          placeholder: $gettext('All'),
           trigger: 'enter',
         },
       },
@@ -143,7 +143,7 @@ export default {
         field: 'device_type.name',
         filterOptions: {
           enabled: true,
-          placeholder: $gettext('Filter'),
+          placeholder: $gettext('All'),
           trigger: 'enter',
         },
       },
@@ -153,15 +153,13 @@ export default {
       await api
         .get('/api/v1/token/devices/manufacturers/')
         .then((response) => {
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'manufacturer.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
-            (item) => {
-              return {
-                value: item.id,
-                text: item.name,
-              }
-            },
+            ({ id, name }) => ({
+              value: id,
+              text: name,
+            }),
           )
         })
         .catch((error) => {
@@ -171,15 +169,13 @@ export default {
       await api
         .get('/api/v1/token/devices/types/')
         .then((response) => {
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'device_type.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
-            (item) => {
-              return {
-                value: item.id,
-                text: item.name,
-              }
-            },
+            ({ id, name }) => ({
+              value: id,
+              text: name,
+            }),
           )
         })
         .catch((error) => {
