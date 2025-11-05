@@ -1,6 +1,7 @@
 <template>
   <q-page padding>
     <ItemDetail
+      :key="$route.fullPath"
       :breadcrumbs="breadcrumbs"
       :original-title="title"
       :model="model"
@@ -270,7 +271,7 @@ export default {
     const policyGroups = ref([])
     const removedPolicyGroups = ref([])
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -450,6 +451,7 @@ export default {
       filterApplications,
       abortFilterApplications,
       MIN_CHARS_SEARCH,
+      appIcon,
     }
   },
 }
