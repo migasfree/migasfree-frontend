@@ -1,13 +1,14 @@
 <template>
   <q-footer>
     <q-toolbar>
-      &copy; {{ MIGASFREE_MIN_YEAR }}-{{ new Date().getFullYear() }}
+      <q-icon :name="appIcon('copyright')" />
+      &nbsp; {{ MIGASFREE_MIN_YEAR }}-{{ new Date().getFullYear() }}
       <q-btn
         stretch
         flat
         label="migasfree"
         type="a"
-        href="http://www.migasfree.org/"
+        href="https://migasfree.org/"
         no-caps
         size="16px"
         ><q-tooltip>{{ $gettext('Website') }}</q-tooltip></q-btn
@@ -24,7 +25,7 @@
       >
       <q-btn-dropdown flat stretch>
         <template #label>
-          <q-icon name="mdi-github" />
+          <q-icon :name="appIcon('source-code')" />
 
           <q-tooltip>
             {{ $gettext('Source code') }}
@@ -58,14 +59,14 @@
 
       <q-space />
 
-      <q-btn stretch flat icon="mdi-api" type="a" :href="apiLink">
+      <q-btn stretch flat :icon="appIcon('api')" type="a" :href="apiLink">
         <q-tooltip>{{ $gettext('API Rest Info') }}</q-tooltip></q-btn
       >
 
       <q-btn
         stretch
         flat
-        icon="mdi-text-box-multiple"
+        :icon="appIcon('doc')"
         type="a"
         href="http://fun-with-migasfree.readthedocs.io/"
       >
@@ -84,6 +85,8 @@ import { api } from 'boot/axios'
 import { useAuthStore } from 'stores/auth'
 import { MIGASFREE_MIN_YEAR } from 'config/app.conf'
 
+import { appIcon } from 'composables/element'
+
 const app = require('../../../package.json')
 
 export default {
@@ -100,6 +103,7 @@ export default {
       serverVersion,
       appVersion: app.version,
       MIGASFREE_MIN_YEAR,
+      appIcon,
     }
   },
 }
