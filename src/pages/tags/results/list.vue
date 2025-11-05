@@ -8,26 +8,26 @@
       :model="model"
       :routes="routes"
     >
-      <template #fields="slotProps">
-        <span v-if="slotProps.props.column.field == 'value'">
+      <template #fields="{ props }">
+        <span v-if="props.column.field == 'value'">
           <MigasLink
             :model="model"
-            :pk="slotProps.props.row.id"
-            :value="attributeValue(slotProps.props.row)"
-            :tooltip="slotProps.props.row.description"
+            :pk="props.row.id"
+            :value="attributeValue(props.row)"
+            :tooltip="props.row.description"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'property_att'">
+        <span v-else-if="props.column.field == 'property_att'">
           <MigasLink
             model="stamps"
-            :pk="slotProps.props.row.property_att.id"
-            :value="slotProps.props.row.property_att.name || ''"
+            :pk="props.row.property_att.id"
+            :value="props.row.property_att.name || ''"
           />
         </span>
 
         <span v-else>
-          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
+          {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
     </TableResults>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -69,7 +69,7 @@ export default {
 
     const title = ref($gettext('Tags'))
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -90,7 +90,7 @@ export default {
       },
     ])
 
-    const columns = reactive([
+    const columns = ref([
       {
         field: 'id',
         hidden: true,
@@ -137,7 +137,7 @@ export default {
         sortable: false,
         filterOptions: {
           enabled: true,
-          placeholder: $gettext('All'),
+          placeholder: $gettext('Filter'),
           trigger: 'enter',
         },
       },
@@ -147,15 +147,13 @@ export default {
       await api
         .get('/api/v1/token/stamps/')
         .then((response) => {
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'property_att',
           ).filterOptions.filterDropdownItems = response.data.results.map(
-            (item) => {
-              return {
-                value: item.id,
-                text: item.name,
-              }
-            },
+            ({ id, name }) => ({
+              value: id,
+              text: name,
+            }),
           )
         })
         .catch((error) => {
