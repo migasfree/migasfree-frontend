@@ -62,10 +62,13 @@
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
               <q-field
+                v-model="element.score"
                 outlined
                 :label="$gettext('Score')"
                 stack-label
                 :hint="$gettext('Relevance to the organization')"
+                lazy-rules
+                :rules="[(val) => val > 0 || $gettext('* Required')]"
               >
                 <template #control>
                   <q-rating
@@ -277,7 +280,8 @@ export default {
         element.name.trim() !== '' &&
         element.category !== undefined &&
         element.level !== undefined &&
-        element.score !== undefined
+        element.score !== undefined &&
+        element.score > 0
       )
     })
 
@@ -401,7 +405,7 @@ export default {
       Object.assign(element, {
         id: 0,
         name: undefined,
-        description: undefined,
+        description: '',
         level: null,
         category: null,
         score: 0,
