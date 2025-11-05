@@ -1,6 +1,7 @@
 <template>
   <q-page padding>
     <ItemDetail
+      :key="$route.fullPath"
       :breadcrumbs="breadcrumbs"
       :original-title="title"
       :model="model"
