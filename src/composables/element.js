@@ -35,6 +35,10 @@ const APP_ICON = {
   uncheck: 'mdi-eye-remove',
   show: 'mdi-eye',
   hide: 'mdi-eye-off',
+  doc: 'mdi-text-box-multiple',
+  api: 'mdi-api',
+  'source-code': 'mdi-github',
+  copyright: 'mdi-copyright',
 }
 
 const MODEL_ICON = {
