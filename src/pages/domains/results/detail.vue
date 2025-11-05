@@ -83,7 +83,6 @@
                 map-options
                 multiple
                 counter
-                input-debounce="0"
                 :label="$gettext('Available Tags')"
                 :hint="
                   $gettext('Type to search (minimum %{num} characters)', {
@@ -214,7 +213,7 @@ export default {
       domain_admins: [],
     })
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
