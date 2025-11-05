@@ -160,7 +160,7 @@ export default {
     let infoNodes = ref([])
     let expandedNodes = ref([])
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
