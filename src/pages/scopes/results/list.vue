@@ -9,34 +9,34 @@
       :routes="routes"
       @post-remove="postRemove"
     >
-      <template #fields="slotProps">
-        <span v-if="slotProps.props.column.field == 'name'">
+      <template #fields="{ props }">
+        <span v-if="props.column.field == 'name'">
           <MigasLink
             :model="model"
-            :pk="slotProps.props.row.id"
-            :value="slotProps.props.row.name"
+            :pk="props.row.id"
+            :value="props.row.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'domain.name'">
+        <span v-else-if="props.column.field == 'domain.name'">
           <MigasLink
-            v-if="slotProps.props.row.domain"
+            v-if="props.row.domain"
             model="domains"
-            :pk="slotProps.props.row.domain.id"
-            :value="slotProps.props.row.domain.name"
+            :pk="props.row.domain.id"
+            :value="props.row.domain.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'user.username'">
+        <span v-else-if="props.column.field == 'user.username'">
           <MigasLink
             model="user-profiles"
-            :pk="slotProps.props.row.user.id"
-            :value="slotProps.props.row.user.username"
+            :pk="props.row.user.id"
+            :value="props.row.user.username"
           />
         </span>
 
         <span v-else>
-          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
+          {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
     </TableResults>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 import { useAuthStore } from 'stores/auth'
@@ -75,7 +75,7 @@ export default {
     }
     const model = 'scopes'
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -95,7 +95,7 @@ export default {
       },
     ])
 
-    const columns = reactive([
+    const columns = ref([
       {
         field: 'id',
         hidden: true,
@@ -144,7 +144,7 @@ export default {
 
     // created
     if (authStore.user.is_superuser) {
-      columns.find((x) => x.field === 'user.username').hidden = false
+      columns.value.find((x) => x.field === 'user.username').hidden = false
     }
 
     return { title, breadcrumbs, columns, routes, model, postRemove }
