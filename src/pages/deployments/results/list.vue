@@ -9,62 +9,58 @@
       :routes="routes"
       :more-filters="moreFilters"
     >
-      <template #fields="slotProps">
-        <span v-if="slotProps.props.column.field == 'name'">
+      <template #fields="{ props }">
+        <span v-if="props.column.field == 'name'">
           <MigasLink
             :model="model"
-            :pk="slotProps.props.row.id"
-            :value="slotProps.props.row.name"
+            :pk="props.row.id"
+            :value="props.row.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'project.name'">
+        <span v-else-if="props.column.field == 'project.name'">
           <MigasLink
             model="projects"
-            :pk="slotProps.props.row.project.id"
-            :value="slotProps.props.row.project.name"
+            :pk="props.row.project.id"
+            :value="props.row.project.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'domain.name'">
+        <span v-else-if="props.column.field == 'domain.name'">
           <MigasLink
-            v-if="slotProps.props.row.domain"
+            v-if="props.row.domain"
             model="domains"
-            :pk="slotProps.props.row.domain.id"
-            :value="slotProps.props.row.domain.name"
+            :pk="props.row.domain.id"
+            :value="props.row.domain.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'schedule.name'">
+        <span v-else-if="props.column.field == 'schedule.name'">
           <MigasLink
-            v-if="slotProps.props.row.schedule"
+            v-if="props.row.schedule"
             model="schedules"
-            :pk="slotProps.props.row.schedule.id"
-            :value="slotProps.props.row.schedule.name"
+            :pk="props.row.schedule.id"
+            :value="props.row.schedule.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'enabled'">
-          <BooleanView :value="slotProps.props.row.enabled" />
+        <span v-else-if="props.column.field == 'enabled'">
+          <BooleanView :value="props.row.enabled" />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'start_date'">
-          <DateView :value="slotProps.props.row.start_date" />
-          <q-icon
-            v-if="slotProps.props.row.auto_restart"
-            name="mdi-repeat"
-            size="md"
-          >
+        <span v-else-if="props.column.field == 'start_date'">
+          <DateView :value="props.row.start_date" />
+          <q-icon v-if="props.row.auto_restart" name="mdi-repeat" size="md">
             <q-tooltip>{{ $gettext('Auto Restart') }}</q-tooltip>
           </q-icon>
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'source'">
-          {{ resolveSource(slotProps.props.row.source) }}
+        <span v-else-if="props.column.field == 'source'">
+          {{ resolveSource(props.row.source) }}
         </span>
 
         <span v-else>
-          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
+          {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
     </TableResults>
@@ -72,7 +68,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -110,7 +106,7 @@ export default {
 
     const title = ref($gettext('Deployments'))
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -131,7 +127,7 @@ export default {
       },
     ])
 
-    const columns = reactive([
+    const columns = ref([
       {
         field: 'id',
         hidden: true,
@@ -162,7 +158,7 @@ export default {
         field: 'project.name',
         filterOptions: {
           enabled: true,
-          placeholder: $gettext('Filter'),
+          placeholder: $gettext('All'),
           trigger: 'enter',
         },
       },
@@ -175,7 +171,7 @@ export default {
         field: 'domain.name',
         filterOptions: {
           enabled: true,
-          placeholder: $gettext('Filter'),
+          placeholder: $gettext('All'),
           trigger: 'enter',
         },
       },
@@ -228,15 +224,13 @@ export default {
       await api
         .get('/api/v1/token/projects/')
         .then((response) => {
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'project.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
-            (item) => {
-              return {
-                value: item.id,
-                text: item.name,
-              }
-            },
+            ({ id, name }) => ({
+              value: id,
+              text: name,
+            }),
           )
         })
         .catch((error) => {
@@ -246,15 +240,13 @@ export default {
       await api
         .get('/api/v1/token/domains/')
         .then((response) => {
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'domain.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
-            (item) => {
-              return {
-                value: item.id,
-                text: item.name,
-              }
-            },
+            ({ id, name }) => ({
+              value: id,
+              text: name,
+            }),
           )
         })
         .catch((error) => {
@@ -264,15 +256,13 @@ export default {
       await api
         .get('/api/v1/token/schedules/')
         .then((response) => {
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'schedule.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
-            (item) => {
-              return {
-                value: item.id,
-                text: item.name,
-              }
-            },
+            ({ id, name }) => ({
+              value: id,
+              text: name,
+            }),
           )
         })
         .catch((error) => {
