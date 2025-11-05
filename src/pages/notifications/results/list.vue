@@ -8,17 +8,17 @@
       :model="model"
       :more-filters="moreFilters"
     >
-      <template #fields="slotProps">
-        <span v-if="slotProps.props.column.field == 'created_at'">
-          <DateView :value="slotProps.props.row.created_at" />
+      <template #fields="{ props }">
+        <span v-if="props.column.field == 'created_at'">
+          <DateView :value="props.row.created_at" />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'checked'">
-          <BooleanView :value="slotProps.props.row.checked" />
+        <span v-else-if="props.column.field == 'checked'">
+          <BooleanView :value="props.row.checked" />
         </span>
 
         <span v-else>
-          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
+          {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
     </TableResults>
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -55,7 +55,7 @@ export default {
 
     const title = ref($gettext('Notifications'))
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -76,7 +76,7 @@ export default {
       },
     ])
 
-    const columns = reactive([
+    const columns = ref([
       {
         field: 'id',
         hidden: true,
