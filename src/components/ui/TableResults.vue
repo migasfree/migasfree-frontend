@@ -452,7 +452,7 @@
           class="q-ma-xs"
           round
           size="sm"
-          icon="mdi-check-bold"
+          :icon="appIcon('yes')"
           color="positive"
           @click="updateEnabled(props.row.id, true)"
           ><q-tooltip>{{ $gettext('Enable') }}</q-tooltip></q-btn
@@ -465,7 +465,7 @@
           class="q-ma-xs"
           round
           size="sm"
-          icon="mdi-close-thick"
+          :icon="appIcon('no')"
           color="negative"
           @click="updateEnabled(props.row.id, false)"
           ><q-tooltip>{{ $gettext('Disable') }}</q-tooltip></q-btn
@@ -627,7 +627,7 @@
         <q-btn
           class="q-ma-xs"
           size="sm"
-          icon="mdi-check-bold"
+          :icon="appIcon('yes')"
           color="positive"
           @click="updateItemsEnabled(true)"
           ><q-tooltip>{{ $gettext('Enable') }}</q-tooltip></q-btn
@@ -636,7 +636,7 @@
         <q-btn
           class="q-ma-xs"
           size="sm"
-          icon="mdi-close-thick"
+          :icon="appIcon('no')"
           color="negative"
           @click="updateItemsEnabled(false)"
           ><q-tooltip>{{ $gettext('Disable') }}</q-tooltip></q-btn
