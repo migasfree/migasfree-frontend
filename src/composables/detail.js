@@ -47,6 +47,9 @@ export default function useDetail(
   const setupBreadcrumbs = () => {
     if (route.params.id) {
       if (!['package-information', 'computer-hardware'].includes(route.name)) {
+        while (breadcrumbs.length > 3) {
+          breadcrumbs.pop()
+        }
         breadcrumbs.push({
           text: $gettext('Results'),
           icon: appIcon('results'),
@@ -56,7 +59,7 @@ export default function useDetail(
           text: 'Id',
         })
       }
-    } else {
+    } else if (breadcrumbs.length === 3 && route.name.endsWith('-add')) {
       breadcrumbs.push({ text: $gettext('Add'), icon: appIcon('add') })
     }
   }
@@ -73,16 +76,22 @@ export default function useDetail(
     emit('resetElement')
     emit('resetRelated')
 
-    if (breadcrumbs.length === 5) breadcrumbs.pop()
-    breadcrumbs[3].text = $gettext('Add')
-    breadcrumbs[3].icon = appIcon('add')
+    while (breadcrumbs.length > 3) {
+      breadcrumbs.pop()
+    }
+    breadcrumbs.push({
+      text: $gettext('Add'),
+      icon: appIcon('add'),
+    })
 
     router.push({ name: routes.add })
     emit('setTitle', originalTitle)
   }
 
   const updateBreadcrumbs = () => {
-    breadcrumbs.pop()
+    while (breadcrumbs.length > 3) {
+      breadcrumbs.pop()
+    }
     breadcrumbs.push({
       text: $gettext('Results'),
       icon: appIcon('results'),
