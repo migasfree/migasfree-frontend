@@ -15,10 +15,12 @@
       <template v-else
         ><span class="vertical-middle">{{ elementText }}</span></template
       >
+    </template>
 
+    <template #actions>
       <q-btn
         v-if="model === 'user-profiles'"
-        class="q-ma-sm float-right"
+        class="q-ma-sm"
         :aria-label="$gettext('Change Password')"
         color="primary"
         :icon="appIcon('password')"
@@ -33,7 +35,7 @@
 
       <q-btn
         v-if="model === 'deployments' && element.source === 'I'"
-        class="q-ma-sm float-right"
+        class="q-ma-sm"
         :aria-label="$gettext('Regenerate Metadata')"
         color="primary"
         icon="mdi-autorenew"
@@ -77,7 +79,7 @@
 
       <q-btn
         v-if="'add' in routes"
-        class="q-ma-sm float-right"
+        class="q-ma-sm"
         color="primary"
         text-color="white"
         :aria-label="$gettext('Add')"
@@ -273,6 +275,7 @@ export default defineComponent({
     const confirmRemove = ref(false)
     const titleIcon = props.icon || modelIcon(props.model)
 
+    console.log('props', props) // debug
     const { loading, elementText, addElement, updateElement, remove } =
       useDetail(
         props.originalTitle,
