@@ -24,7 +24,6 @@
               autofocus
               use-input
               map-options
-              input-debounce="0"
               :label="$gettext('Device')"
               :hint="
                 $gettext('Type to search (minimum %{num} characters)', {
@@ -96,7 +95,6 @@
               outlined
               use-input
               map-options
-              input-debounce="0"
               :label="$gettext('Device')"
               :hint="
                 $gettext('Type to search (minimum %{num} characters)', {
@@ -150,7 +148,7 @@
 </template>
 
 <script>
-import { ref, reactive, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -180,7 +178,7 @@ export default {
     const title = $gettext('Devices Replacement')
     useMeta({ title })
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
