@@ -41,7 +41,7 @@
         </div>
 
         <div class="row q-pa-md q-gutter-md">
-          <div class="col-md">
+          <div class="col">
             <q-input
               ref="fldPasswordChange"
               v-model="password"
@@ -58,11 +58,12 @@
                   :name="appIcon(showPassword ? 'show' : 'hide')"
                   @click="showPassword = !showPassword"
                 />
+                <q-tooltip>{{ $gettext('Show / hide password') }}</q-tooltip>
               </template>
             </q-input>
           </div>
 
-          <div class="col-md">
+          <div class="col">
             <q-input
               ref="fldPasswordChangeConfirm"
               v-model="passwordConfirm"
@@ -79,6 +80,7 @@
                   :name="appIcon(showPassword ? 'show' : 'hide')"
                   @click="showPassword = !showPassword"
                 />
+                <q-tooltip>{{ $gettext('Show / hide password') }}</q-tooltip>
               </template>
             </q-input>
           </div>
@@ -101,13 +103,14 @@
 
 <script>
 import { ref, reactive, computed, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { useAuthStore } from 'stores/auth'
+import { MIN_PASSWORD_LEN, MIN_PASSWORD_RECOMMENDED_LEN } from 'config/app.conf'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
@@ -125,6 +128,7 @@ export default {
   setup() {
     const { $gettext, interpolate } = useGettext()
     const route = useRoute()
+    const router = useRouter()
     const uiStore = useUiStore()
     const authStore = useAuthStore()
 
@@ -143,7 +147,7 @@ export default {
     }
     const model = 'user-profiles'
 
-    const breadcrumbs = ref([
+    const breadcrumbs = reactive([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -173,13 +177,15 @@ export default {
     const isValid = computed(() => {
       const hasNewPasswords =
         password.value &&
-        password.value.length > 7 &&
+        password.value.length >= MIN_PASSWORD_RECOMMENDED_LEN &&
         passwordConfirm.value &&
-        passwordConfirm.value.length > 7 &&
+        passwordConfirm.value.length >= MIN_PASSWORD_RECOMMENDED_LEN &&
         password.value === passwordConfirm.value
 
       return element.id === authStore.user.id
-        ? hasNewPasswords && oldPassword.value && oldPassword.value.length > 3
+        ? hasNewPasswords &&
+            oldPassword.value &&
+            oldPassword.value.length >= MIN_PASSWORD_LEN
         : hasNewPasswords
     })
 
@@ -187,12 +193,12 @@ export default {
       return [
         (v) => !!v || $gettext('* Required'),
         (v) =>
-          v.length > 7 ||
+          (typeof v === 'string' && v.length >= MIN_PASSWORD_RECOMMENDED_LEN) ||
           interpolate($gettext('Please use minimum %{n} characters'), {
-            n: 8,
+            n: MIN_PASSWORD_RECOMMENDED_LEN,
           }),
         (v) =>
-          v == fldPasswordChange.value ||
+          v == (fldPasswordChange.value?.modelValue ?? '') ||
           $gettext('The passwords are different'),
       ]
     })
@@ -201,9 +207,9 @@ export default {
       return [
         (v) => !!v || $gettext('* Required'),
         (v) =>
-          v.length > 7 ||
+          (typeof v === 'string' && v.length >= MIN_PASSWORD_RECOMMENDED_LEN) ||
           interpolate($gettext('Please use minimum %{n} characters'), {
-            n: 8,
+            n: MIN_PASSWORD_RECOMMENDED_LEN,
           }),
       ]
     })
@@ -212,9 +218,9 @@ export default {
       return [
         (v) => !!v || $gettext('* Required'),
         (v) =>
-          v.length > 3 ||
+          (typeof v === 'string' && v.length >= MIN_PASSWORD_LEN) ||
           interpolate($gettext('Please use minimum %{n} characters'), {
-            n: 4,
+            n: MIN_PASSWORD_LEN,
           }),
       ]
     })
@@ -250,6 +256,10 @@ export default {
           .post('/rest-auth/password/change/', elementData())
           .then(() => {
             uiStore.notifySuccess($gettext('Password changed!'))
+            router.push({
+              name: routes.detail,
+              params: { id: element.id },
+            })
           })
           .catch((error) => {
             uiStore.notifyError(error)
@@ -264,6 +274,10 @@ export default {
           )
           .then(() => {
             uiStore.notifySuccess($gettext('Password changed!'))
+            router.push({
+              name: routes.detail,
+              params: { id: element.id },
+            })
           })
           .catch((error) => {
             uiStore.notifyError(error)
@@ -274,7 +288,7 @@ export default {
 
     // created
     if (route.params.id) {
-      breadcrumbs.value.push({
+      breadcrumbs.push({
         text: windowTitle.value,
         icon: titleIcon,
       })
@@ -282,7 +296,7 @@ export default {
 
     watch(element, (val) => {
       if (val.id !== 0) {
-        breadcrumbs.value.find((x) => x.text === val.username).to = {
+        breadcrumbs.find((x) => x.text === val.username).to = {
           name: routes.detail,
           params: { id: val.id },
         }
