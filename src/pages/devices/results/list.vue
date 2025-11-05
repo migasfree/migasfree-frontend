@@ -8,47 +8,45 @@
       :model="model"
       :routes="routes"
     >
-      <template #fields="slotProps">
-        <span v-if="slotProps.props.column.field == 'name'">
+      <template #fields="{ props }">
+        <span v-if="props.column.field == 'name'">
           <MigasLink
             :model="model"
-            :pk="slotProps.props.row.id"
-            :value="slotProps.props.row.name"
+            :pk="props.row.id"
+            :value="props.row.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'model.name'">
+        <span v-else-if="props.column.field == 'model.name'">
           <MigasLink
             model="devices/models"
-            :pk="slotProps.props.row.model.id"
-            :value="slotProps.props.row.model.name"
+            :pk="props.row.model.id"
+            :value="props.row.model.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'connection.name'">
+        <span v-else-if="props.column.field == 'connection.name'">
           <MigasLink
             model="devices/connections"
-            :pk="slotProps.props.row.connection.id"
-            :value="slotProps.props.row.connection.name"
+            :pk="props.row.connection.id"
+            :value="props.row.connection.name"
           />
         </span>
 
-        <span
-          v-else-if="slotProps.props.column.field == 'model.manufacturer.name'"
-        >
+        <span v-else-if="props.column.field == 'model.manufacturer.name'">
           <MigasLink
             model="devices/manufacturers"
-            :pk="slotProps.props.row.model.manufacturer.id"
-            :value="slotProps.props.row.model.manufacturer.name"
+            :pk="props.row.model.manufacturer.id"
+            :value="props.row.model.manufacturer.name"
           />
         </span>
 
-        <span v-else-if="slotProps.props.column.field == 'total_computers'">
-          {{ slotProps.props.row.total_computers }}
+        <span v-else-if="props.column.field == 'total_computers'">
+          {{ props.row.total_computers }}
         </span>
 
         <span v-else>
-          {{ slotProps.props.formattedRow[slotProps.props.column.field] }}
+          {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
     </TableResults>
@@ -56,7 +54,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -89,7 +87,7 @@ export default {
 
     const title = ref($gettext('Devices'))
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
@@ -110,7 +108,7 @@ export default {
       },
     ])
 
-    const columns = reactive([
+    const columns = ref([
       {
         field: 'id',
         hidden: true,
@@ -146,7 +144,7 @@ export default {
         html: true,
         filterOptions: {
           enabled: true,
-          placeholder: $gettext('Filter'),
+          placeholder: $gettext('All'),
           trigger: 'enter',
         },
       },
@@ -160,7 +158,7 @@ export default {
         html: true,
         filterOptions: {
           enabled: true,
-          placeholder: $gettext('Filter'),
+          placeholder: $gettext('All'),
           trigger: 'enter',
         },
       },
@@ -174,7 +172,7 @@ export default {
         html: true,
         filterOptions: {
           enabled: true,
-          placeholder: $gettext('Filter'),
+          placeholder: $gettext('All'),
           trigger: 'enter',
         },
       },
@@ -189,15 +187,13 @@ export default {
       await api
         .get('/api/v1/token/devices/models/')
         .then((response) => {
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'model.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
-            (item) => {
-              return {
-                value: item.id,
-                text: item.name,
-              }
-            },
+            ({ id, name }) => ({
+              value: id,
+              text: name,
+            }),
           )
         })
         .catch((error) => {
@@ -207,15 +203,13 @@ export default {
       await api
         .get('/api/v1/token/devices/manufacturers/')
         .then((response) => {
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'model.manufacturer.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
-            (item) => {
-              return {
-                value: item.id,
-                text: item.name,
-              }
-            },
+            ({ id, name }) => ({
+              value: id,
+              text: name,
+            }),
           )
         })
         .catch((error) => {
@@ -225,15 +219,13 @@ export default {
       await api
         .get('/api/v1/token/devices/connections/')
         .then((response) => {
-          columns.find(
+          columns.value.find(
             (x) => x.field === 'connection.name',
           ).filterOptions.filterDropdownItems = response.data.results.map(
-            (item) => {
-              return {
-                value: item.id,
-                text: item.name,
-              }
-            },
+            ({ id, name }) => ({
+              value: id,
+              text: name,
+            }),
           )
         })
         .catch((error) => {
