@@ -156,7 +156,7 @@ export default {
       longitude: null,
     })
 
-    const breadcrumbs = reactive([
+    const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
         icon: appIcon('home'),
