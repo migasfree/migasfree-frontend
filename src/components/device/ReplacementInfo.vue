@@ -82,32 +82,39 @@ export default {
     const loading = ref(true)
 
     const loadComputers = async () => {
-      Object.entries(props.element.logical_devices).map(([key, item]) => {
-        if ('attributes' in item) {
-          let computers = []
-          Object.entries(item.attributes).map(async ([, att]) => {
+      if (
+        !props.element.logical_devices ||
+        props.element.logical_devices.length === 0
+      ) {
+        loading.value = false
+        return
+      }
+
+      for (const item of props.element.logical_devices) {
+        if ('attributes' in item && item.attributes.length > 0) {
+          const computers = []
+
+          const attrPromises = item.attributes.map(async (att) => {
             if (att.property_att.prefix === 'CID') {
-              await api
-                .get(`/api/v1/token/computers/${parseInt(att.value)}`)
-                .then((response) => {
-                  computers.push(response.data)
-                })
-            }
-
-            mutableElement.logical_devices[key].computers = []
-            Object.assign(
-              mutableElement.logical_devices[key].computers,
-              computers,
-            )
-
-            if (!item.attributes[key + 1]) {
-              loading.value = false
+              try {
+                const response = await api.get(
+                  `/api/v1/token/computers/${parseInt(att.value)}`,
+                )
+                computers.push(response.data)
+              } catch (e) {
+                console.error('Error loading computer', e)
+              }
             }
           })
+
+          await Promise.all(attrPromises)
+
+          item.computers = computers
         } else {
-          loading.value = false
+          item.computers = []
         }
-      })
+      }
+      loading.value = false
     }
 
     watch(
