@@ -39,6 +39,7 @@ const APP_ICON = {
   api: 'mdi-api',
   'source-code': 'mdi-github',
   copyright: 'mdi-copyright',
+  organization: 'mdi-bank',
   yes: 'mdi-check-bold',
   no: 'mdi-close-thick',
   error: 'mdi-alert-circle-outline',
