@@ -9,7 +9,7 @@ export const useUiStore = defineStore('ui', () => {
   const currentPageTable = ref(1)
   const server = ref(process.env.MIGASFREE_SERVER || 'http://localhost')
 
-  function scrollToElement(element) {
+  const scrollToElement = (element) => {
     const target = scroll.getScrollTarget(element)
     const offset = element.offsetTop
     const duration = 1000
@@ -17,7 +17,7 @@ export const useUiStore = defineStore('ui', () => {
     scroll.setVerticalScrollPosition(target, offset, duration)
   }
 
-  function notifyError(error) {
+  const notifyError = (error) => {
     let message = ''
 
     // Setup Error Message
@@ -32,6 +32,8 @@ export const useUiStore = defineStore('ui', () => {
       if (error.response.status === 401) {
         message = 'UnAuthorized'
         // vm.$emit('logout') // Emit Logout Event
+      } else if (error.response.status === 403) {
+        message = 'Forbidden'
       } else if (error.response.status === 404) {
         message = 'API Route is Missing or Undefined'
       } else if (error.response.status === 405) {
@@ -68,7 +70,7 @@ export const useUiStore = defineStore('ui', () => {
     })
   }
 
-  function notifySuccess(message) {
+  const notifySuccess = (message) => {
     Notify.create({
       color: 'positive',
       position: 'bottom',
