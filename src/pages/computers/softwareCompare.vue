@@ -10,38 +10,22 @@
           <q-card-section>
             <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('Source') }}</div>
 
-            <q-select
+            <FilteredMultiSelect
               v-model="source"
-              outlined
-              autofocus
-              use-input
-              map-options
+              :multiple="false"
               :label="$gettext('Computer')"
-              :hint="
-                $gettext('Type to search (minimum %{num} characters)', {
-                  num: MIN_CHARS_SEARCH,
-                })
-              "
               :options="computers"
               @filter="filterComputers"
               @filter-abort="abortFilterComputers"
               @update:model-value="loadSoftware(source)"
             >
-              <template #no-option>
-                <q-item>
-                  <q-item-section class="text-grey">
-                    {{ $gettext('No results') }}
-                  </q-item-section>
-                </q-item>
-              </template>
-
-              <template #option="scope">
+              <template #option="{ scope }">
                 <q-item v-bind="scope.itemProps">
                   {{ scope.opt.__str__ }}
                 </q-item>
               </template>
 
-              <template #selected-item="scope">
+              <template #selected-item="{ scope }">
                 <q-chip
                   removable
                   dense
@@ -58,7 +42,7 @@
                   />
                 </q-chip>
               </template>
-            </q-select>
+            </FilteredMultiSelect>
 
             <div v-if="source" class="row q-pa-md q-gutter-md">
               <div class="col">
@@ -78,37 +62,22 @@
           <q-card-section>
             <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('Target') }}</div>
 
-            <q-select
+            <FilteredMultiSelect
               v-model="target"
-              outlined
-              use-input
-              map-options
+              :multiple="false"
               :label="$gettext('Computer')"
-              :hint="
-                $gettext('Type to search (minimum %{num} characters)', {
-                  num: MIN_CHARS_SEARCH,
-                })
-              "
               :options="computers"
               @filter="filterComputers"
               @filter-abort="abortFilterComputers"
               @update:model-value="loadSoftware(target)"
             >
-              <template #no-option>
-                <q-item>
-                  <q-item-section class="text-grey">
-                    {{ $gettext('No results') }}
-                  </q-item-section>
-                </q-item>
-              </template>
-
-              <template #option="scope">
+              <template #option="{ scope }">
                 <q-item v-bind="scope.itemProps">
                   {{ scope.opt.__str__ }}
                 </q-item>
               </template>
 
-              <template #selected-item="scope">
+              <template #selected-item="{ scope }">
                 <q-chip
                   removable
                   dense
@@ -125,7 +94,7 @@
                   />
                 </q-chip>
               </template>
-            </q-select>
+            </FilteredMultiSelect>
 
             <div v-if="target" class="row q-pa-md q-gutter-md">
               <div class="col">
@@ -173,6 +142,7 @@ import { useUiStore } from 'stores/ui'
 import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
+import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import Header from 'components/ui/Header'
 import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
@@ -183,6 +153,7 @@ import { appIcon, useElement } from 'composables/element'
 export default {
   components: {
     Breadcrumbs,
+    FilteredMultiSelect,
     Header,
     DateView,
     MigasLink,
