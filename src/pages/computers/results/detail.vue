@@ -98,39 +98,20 @@
                   :label="$gettext('Comment')"
                 />
 
-                <q-select
+                <FilteredMultiSelect
                   v-model="element.tags"
-                  class="q-my-md"
-                  outlined
-                  use-input
-                  map-options
-                  multiple
-                  counter
-                  :label="$gettext('Tags')"
-                  :hint="
-                    $gettext('Type to search (minimum %{num} characters)', {
-                      num: MIN_CHARS_SEARCH,
-                    })
-                  "
                   :options="tags"
-                  @filter="filterTags"
-                  @filter-abort="abortFilterTags"
+                  :label="$gettext('Tags')"
+                  :onFilter="filterTags"
+                  :onFilterAbort="abortFilterTags"
                 >
-                  <template #no-option>
-                    <q-item>
-                      <q-item-section class="text-grey">
-                        {{ $gettext('No results') }}
-                      </q-item-section>
-                    </q-item>
-                  </template>
-
-                  <template #option="scope">
+                  <template #option="{ scope }">
                     <q-item v-bind="scope.itemProps">
                       {{ attributeValue(scope.opt) }}
                     </q-item>
                   </template>
 
-                  <template #selected-item="scope">
+                  <template #selected-item="{ scope }">
                     <q-chip
                       removable
                       dense
@@ -146,7 +127,7 @@
                       />
                     </q-chip>
                   </template>
-                </q-select>
+                </FilteredMultiSelect>
 
                 <OverflowList
                   model="attribute-sets"
@@ -428,6 +409,7 @@ import ItemDetail from 'components/ui/ItemDetail'
 import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 import DateDiff from 'components/DateDiff'
+import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 
 import ComputerInfo from 'components/computer/Info'
 import ComputerHardwareResume from 'components/computer/HardwareResume'
@@ -444,6 +426,7 @@ export default {
     DateView,
     MigasLink,
     DateDiff,
+    FilteredMultiSelect,
     ComputerInfo,
     ComputerHardwareResume,
     ComputerSoftware,
