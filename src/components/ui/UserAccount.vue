@@ -15,7 +15,7 @@
         <q-tooltip>{{ $gettext('User') }}</q-tooltip>
 
         <q-item-section avatar>
-          <q-icon name="mdi-account" />
+          <q-icon :name="modelIcon('users')" />
         </q-item-section>
 
         <q-item-section>
@@ -27,7 +27,7 @@
         <q-tooltip>{{ $gettext('Organization') }}</q-tooltip>
 
         <q-item-section avatar>
-          <q-icon name="mdi-bank" />
+          <q-icon :name="appIcon('organization')" />
         </q-item-section>
 
         <q-item-section>
