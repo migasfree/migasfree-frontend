@@ -51,9 +51,10 @@ export default defineComponent({
     })
 
     const lineCounter = computed(() => {
-      if (typeof content.value === 'string')
+      if (typeof content.value === 'string' && content.value.trim() !== '')
         return content.value.trim().split('\n').length
-      else return ''
+
+      return ''
     })
 
     const orderAlpha = () => {
