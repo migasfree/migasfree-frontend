@@ -14,7 +14,7 @@ const APP_ICON = {
   simulate: 'mdi-head-sync-outline',
   replacement: 'mdi-compare-horizontal',
   compare: 'mdi-file-compare',
-  information: 'mdi-information',
+  information: 'mdi-information-outline',
   password: 'mdi-account-key',
   permission: 'mdi-account-check',
   export: 'mdi-file-export',
