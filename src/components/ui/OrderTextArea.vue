@@ -7,6 +7,8 @@
     :label="label"
     bottom-slots
   >
+    <template #prepend><slot name="prepend"></slot></template>
+
     <template #counter> {{ lineCounter }} </template>
   </q-input>
 
