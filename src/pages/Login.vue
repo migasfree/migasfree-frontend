@@ -32,7 +32,7 @@
               size="lg"
               class="q-ml-sm"
             >
-              <q-icon name="mdi-bank" left />
+              <q-icon :name="appIcon('organization')" left />
               {{ organization }}
               <q-tooltip>{{ $gettext('Organization') }}</q-tooltip>
             </q-chip>
