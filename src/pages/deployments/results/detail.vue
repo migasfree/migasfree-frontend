@@ -295,14 +295,22 @@
                     <OrderTextArea
                       v-model="element.packages_to_install"
                       :label="$gettext('Packages to Install')"
-                    />
+                    >
+                      <template #prepend>
+                        <q-icon :name="appIcon('install')" />
+                      </template>
+                    </OrderTextArea>
                   </div>
 
                   <div class="col-6 col-md col-sm">
                     <OrderTextArea
                       v-model="element.packages_to_remove"
                       :label="$gettext('Packages to Remove')"
-                    />
+                    >
+                      <template #prepend>
+                        <q-icon :name="appIcon('uninstall')" />
+                      </template>
+                    </OrderTextArea>
                   </div>
                 </div>
 
@@ -311,7 +319,11 @@
                     <OrderTextArea
                       v-model="element.default_preincluded_packages"
                       :label="$gettext('Default Preincluded Packages')"
-                    />
+                    >
+                      <template #prepend>
+                        <q-icon :name="appIcon('install')" />
+                      </template>
+                    </OrderTextArea>
                   </div>
                 </div>
 
@@ -320,7 +332,11 @@
                     <OrderTextArea
                       v-model="element.default_included_packages"
                       :label="$gettext('Default Included Packages')"
-                    />
+                    >
+                      <template #prepend>
+                        <q-icon :name="appIcon('install')" />
+                      </template>
+                    </OrderTextArea>
                   </div>
                 </div>
 
@@ -329,7 +345,11 @@
                     <OrderTextArea
                       v-model="element.default_excluded_packages"
                       :label="$gettext('Default Excluded Packages')"
-                    />
+                    >
+                      <template #prepend>
+                        <q-icon :name="appIcon('uninstall')" />
+                      </template>
+                    </OrderTextArea>
                   </div>
                 </div>
               </q-card-section>
@@ -346,7 +366,7 @@
                 </div>
 
                 <div class="row q-col-gutter-sm">
-                  <div class="col-md-3 col-sm-3">
+                  <div class="col-md-4 col-sm-4">
                     <DayInput
                       v-model="element.start_date"
                       :readonly="false"
@@ -355,7 +375,7 @@
                     />
                   </div>
 
-                  <div class="col-md-3 col-sm-3">
+                  <div class="col-md-4 col-sm-4">
                     <q-select
                       v-model="element.schedule"
                       outlined
@@ -372,7 +392,7 @@
                     </q-select>
                   </div>
 
-                  <div class="col-md-3 col-sm-3">
+                  <div class="col-md-4 col-sm-4 text-right">
                     <q-checkbox
                       v-model="element.auto_restart"
                       left-label
@@ -813,6 +833,7 @@ export default {
       filterPackageSets,
       abortFilterPackageSets,
       MIN_CHARS_SEARCH,
+      appIcon,
     }
   },
 }
