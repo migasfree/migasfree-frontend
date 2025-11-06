@@ -155,7 +155,7 @@
                     <q-expansion-item default-opened :content-inset-level="0.5">
                       <template #header>
                         <q-item-section avatar>
-                          <q-icon name="mdi-package-down" size="md" />
+                          <q-icon :name="appIcon('install')" size="md" />
                         </q-item-section>
 
                         <q-item-section>
@@ -213,7 +213,7 @@
                     <q-expansion-item default-opened :content-inset-level="0.5">
                       <template #header>
                         <q-item-section avatar>
-                          <q-icon name="mdi-package-down" size="md" />
+                          <q-icon :name="appIcon('install')" size="md" />
                         </q-item-section>
 
                         <q-item-section>
@@ -271,7 +271,7 @@
                     <q-expansion-item default-opened :content-inset-level="0.5">
                       <template #header>
                         <q-item-section avatar>
-                          <q-icon name="mdi-package-up" size="md" />
+                          <q-icon :name="appIcon('uninstall')" size="md" />
                         </q-item-section>
 
                         <q-item-section>
@@ -329,7 +329,7 @@
                     <q-expansion-item default-opened :content-inset-level="0.5">
                       <template #header>
                         <q-item-section avatar>
-                          <q-icon name="mdi-package-up" size="md" />
+                          <q-icon :name="appIcon('uninstall')" size="md" />
                         </q-item-section>
 
                         <q-item-section>
@@ -413,7 +413,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -441,7 +441,11 @@ export default {
     const uiStore = useUiStore()
 
     const titleIcon = appIcon('simulate')
-    const title = $gettext('Simulate Synchronization')
+    const title = computed(() =>
+      computer.value?.__str__
+        ? `${$gettext('Simulate Synchronization')}: ${computer.value.__str__}`
+        : $gettext('Simulate Synchronization'),
+    )
     useMeta({ title })
 
     const breadcrumbs = ref([
@@ -612,12 +616,12 @@ export default {
         .get(`/api/v1/token/computers/${route.params.id}/`)
         .then((response) => {
           Object.assign(computer, response.data)
-          breadcrumbs.find((x) => x.text === 'Id').to.params.id = computer.id
-          breadcrumbs.find((x) => x.text === 'Id').icon = elementIcon(
+          breadcrumbs.value.find((x) => x.text === 'Id').to.params.id =
+            computer.id
+          breadcrumbs.value.find((x) => x.text === 'Id').icon = elementIcon(
             computer.status,
           )
-          breadcrumbs.find((x) => x.text === 'Id').text = computer.__str__
-          useMeta({ title: `${title}: ${computer.__str__}` })
+          breadcrumbs.value.find((x) => x.text === 'Id').text = computer.__str__
           loadProject()
           loadSyncInfo()
           loadSimulation()
