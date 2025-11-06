@@ -8,41 +8,22 @@
       </div>
 
       <template v-else>
-        <q-select
+        <FilteredMultiSelect
           v-model="devices.assigned_logical_devices_to_cid"
-          class="q-my-md"
-          outlined
-          use-input
-          use-chips
-          map-options
-          multiple
-          counter
-          :label="$gettext('Assigned')"
-          :hint="
-            $gettext('Type to search (minimum %{num} characters)', {
-              num: MIN_CHARS_SEARCH,
-            })
-          "
           :options="assignedDevices"
-          @filter="filterAssignedDevices"
-          @filter-abort="abortFilterAssignedDevices"
+          :label="$gettext('Assigned')"
+          :onFilter="filterAssignedDevices"
+          :onFilterAbort="abortFilterAssignedDevices"
+          use-chips
           @update:model-value="updateDefaultLogicalDeviceSelect"
         >
-          <template #no-option>
-            <q-item>
-              <q-item-section class="text-grey">
-                {{ $gettext('No results') }}
-              </q-item-section>
-            </q-item>
-          </template>
-
-          <template #option="scope">
+          <template #option="{ scope }">
             <q-item v-bind="scope.itemProps">
               {{ scope.opt.__str__ }}
             </q-item>
           </template>
 
-          <template #selected-item="scope">
+          <template #selected-item="{ scope }">
             <q-chip
               removable
               dense
@@ -57,7 +38,7 @@
               />
             </q-chip>
           </template>
-        </q-select>
+        </FilteredMultiSelect>
 
         <template v-if="devices.assigned_logical_devices_to_cid.length">
           <q-select
@@ -96,11 +77,13 @@ import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import { appIcon } from 'composables/element'
 
+import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import MigasLink from 'components/MigasLink'
 
 export default {
   name: 'ComputerDevices',
   components: {
+    FilteredMultiSelect,
     MigasLink,
   },
   props: {
