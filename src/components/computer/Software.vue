@@ -296,37 +296,22 @@
       </q-card-section>
 
       <q-card-section class="row items-center">
-        <q-select
+        <FilteredMultiSelect
           v-model="target"
-          autofocus
-          outlined
-          use-input
-          map-options
-          :label="$gettext('Computer')"
-          :hint="
-            $gettext('Type to search (minimum %{num} characters)', {
-              num: MIN_CHARS_SEARCH,
-            })
-          "
           :options="computers"
-          @filter="filterComputers"
-          @filter-abort="abortFilterComputers"
+          :label="$gettext('Computer')"
+          :onFilter="filterComputers"
+          :onFilterAbort="abortFilterComputers"
+          autofocus
+          :multiple="false"
         >
-          <template #no-option>
-            <q-item>
-              <q-item-section class="text-grey">
-                {{ $gettext('No results') }}
-              </q-item-section>
-            </q-item>
-          </template>
-
-          <template #option="scope">
+          <template #option="{ scope }">
             <q-item v-bind="scope.itemProps">
               {{ scope.opt.__str__ }}
             </q-item>
           </template>
 
-          <template #selected-item="scope">
+          <template #selected-item="{ scope }">
             <q-chip
               removable
               dense
@@ -343,7 +328,7 @@
               />
             </q-chip>
           </template>
-        </q-select>
+        </FilteredMultiSelect>
       </q-card-section>
 
       <q-card-actions align="right">
@@ -391,6 +376,7 @@ import { useAuthStore } from 'stores/auth'
 import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import DateView from 'components/ui/DateView'
+import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import MigasLink from 'components/MigasLink'
 import RemoveDialog from 'components/ui/RemoveDialog'
 
@@ -400,7 +386,7 @@ import useCopyPaste from 'composables/copyPaste'
 
 export default {
   name: 'ComputerSoftware',
-  components: { DateView, MigasLink, RemoveDialog },
+  components: { DateView, FilteredMultiSelect, MigasLink, RemoveDialog },
   props: {
     cid: {
       type: Number,
