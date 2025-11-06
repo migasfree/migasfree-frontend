@@ -136,38 +136,20 @@
                   </div>
 
                   <div class="col-5 col-md col-sm">
-                    <q-select
+                    <FilteredMultiSelect
                       v-model="line.applications"
-                      outlined
-                      use-input
-                      map-options
-                      multiple
-                      counter
                       :label="$gettext('Applications')"
-                      :hint="
-                        $gettext('Type to search (minimum %{num} characters)', {
-                          num: MIN_CHARS_SEARCH,
-                        })
-                      "
                       :options="applications"
                       @filter="filterApplications"
                       @filter-abort="abortFilterApplications"
                     >
-                      <template #no-option>
-                        <q-item>
-                          <q-item-section class="text-grey">
-                            {{ $gettext('No results') }}
-                          </q-item-section>
-                        </q-item>
-                      </template>
-
-                      <template #option="scope">
+                      <template #option="{ scope }">
                         <q-item v-bind="scope.itemProps">
                           {{ scope.opt.name }}
                         </q-item>
                       </template>
 
-                      <template #selected-item="scope">
+                      <template #selected-item="{ scope }">
                         <q-chip
                           removable
                           dense
@@ -182,7 +164,7 @@
                           />
                         </q-chip>
                       </template>
-                    </q-select>
+                    </FilteredMultiSelect>
                   </div>
                 </div>
 
@@ -227,6 +209,7 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
+import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
 import SelectAttributes from 'components/ui/SelectAttributes'
@@ -235,6 +218,7 @@ import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
+    FilteredMultiSelect,
     ItemDetail,
     MigasLink,
     SelectAttributes,
