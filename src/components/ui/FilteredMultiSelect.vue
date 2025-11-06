@@ -12,7 +12,7 @@
     :label="label"
     :hint="
       $ngettext(
-        'Type to search (minimum %{num} character)',
+        'Type to search',
         'Type to search (minimum %{num} characters)',
         MIN_CHARS_SEARCH,
         { num: MIN_CHARS_SEARCH },
