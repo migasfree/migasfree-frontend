@@ -43,6 +43,8 @@ const APP_ICON = {
   yes: 'mdi-check-bold',
   no: 'mdi-close-thick',
   error: 'mdi-alert-circle-outline',
+  install: 'mdi-package-down',
+  uninstall: 'mdi-package-up',
 }
 
 const MODEL_ICON = {
