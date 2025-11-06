@@ -34,7 +34,7 @@ export default boot(({ app, router }) => {
       config.headers['Accept-Language'] = getAcceptLanguage(currentLang)
 
       if (process.env.NODE_ENV === 'development')
-        console.log('[ REQUEST ]', config.url, config.params, config)
+        console.debug('[ REQUEST ]', config.url, config.params, config)
 
       return config
     },
@@ -46,7 +46,7 @@ export default boot(({ app, router }) => {
 
   api.interceptors.response.use(
     (response) => {
-      console.log('[ RESPONSE ]', response.config.url, response)
+      console.debug('[ RESPONSE ]', response.config.url, response)
       return response
     },
 
