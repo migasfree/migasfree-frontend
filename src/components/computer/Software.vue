@@ -10,7 +10,7 @@
         >
           <template #header>
             <q-item-section avatar>
-              <q-icon name="mdi-package-variant" size="md" />
+              <q-icon :name="modelIcon('packages')" size="md" />
             </q-item-section>
 
             <q-item-section>
@@ -107,7 +107,7 @@
         >
           <template #header>
             <q-item-section avatar>
-              <q-icon name="mdi-history" size="md" />
+              <q-icon :name="modelIcon('packages-history')" size="md" />
             </q-item-section>
 
             <q-item-section>
@@ -300,8 +300,8 @@
           v-model="target"
           :options="computers"
           :label="$gettext('Computer')"
-          :onFilter="filterComputers"
-          :onFilterAbort="abortFilterComputers"
+          :on-filter="filterComputers"
+          :on-filter-abort="abortFilterComputers"
           autofocus
           :multiple="false"
         >
@@ -380,7 +380,7 @@ import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import MigasLink from 'components/MigasLink'
 import RemoveDialog from 'components/ui/RemoveDialog'
 
-import { appIcon, useElement } from 'composables/element'
+import { appIcon, modelIcon, useElement } from 'composables/element'
 import useDate from 'composables/date'
 import useCopyPaste from 'composables/copyPaste'
 
@@ -633,6 +633,7 @@ export default {
       filterComputers,
       abortFilterComputers,
       appIcon,
+      modelIcon,
       elementIcon,
       MIN_CHARS_SEARCH,
       abbreviateNumber,
