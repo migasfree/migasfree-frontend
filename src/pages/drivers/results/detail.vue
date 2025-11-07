@@ -54,7 +54,7 @@
                     <MigasLink
                       model="devices/models"
                       :pk="scope.opt.id"
-                      :value="scope.opt.name"
+                      :value="`${scope.opt.name} (${scope.opt.manufacturer.name})`"
                     />
                   </q-chip>
                 </template>
@@ -73,8 +73,22 @@
                 option-label="name"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
-                ><template #prepend>
+              >
+                <template #prepend>
                   <q-icon :name="modelIcon('projects')" />
+                </template>
+
+                <template #selected-item="scope">
+                  <q-btn
+                    no-caps
+                    flat
+                    color="primary"
+                    :to="{
+                      name: 'project-detail',
+                      params: { id: scope.opt.id },
+                    }"
+                    :label="scope.opt.name"
+                  />
                 </template>
               </q-select>
             </div>
@@ -89,8 +103,22 @@
                 option-label="name"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
-                ><template #prepend>
+              >
+                <template #prepend>
                   <q-icon :name="modelIcon('devices/capabilities')" />
+                </template>
+
+                <template #selected-item="scope">
+                  <q-btn
+                    no-caps
+                    flat
+                    color="primary"
+                    :to="{
+                      name: 'capability-detail',
+                      params: { id: scope.opt.id },
+                    }"
+                    :label="scope.opt.name"
+                  />
                 </template>
               </q-select>
             </div>
