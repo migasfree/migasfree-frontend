@@ -57,6 +57,19 @@
                       <template #prepend>
                         <q-icon :name="modelIcon('projects')" />
                       </template>
+
+                      <template #selected-item="scope">
+                        <q-btn
+                          no-caps
+                          flat
+                          color="primary"
+                          :to="{
+                            name: 'project-detail',
+                            params: { id: scope.opt.id },
+                          }"
+                          :label="scope.opt.name"
+                        />
+                      </template>
                     </q-select>
                   </div>
 
@@ -388,6 +401,19 @@
                     >
                       <template #prepend>
                         <q-icon :name="modelIcon('schedules')" />
+                      </template>
+
+                      <template #selected-item="scope">
+                        <q-btn
+                          no-caps
+                          flat
+                          color="primary"
+                          :to="{
+                            name: 'schedule-detail',
+                            params: { id: scope.opt.id },
+                          }"
+                          :label="scope.opt.name"
+                        />
                       </template>
                     </q-select>
                   </div>
