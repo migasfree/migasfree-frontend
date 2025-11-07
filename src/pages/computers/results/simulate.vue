@@ -3,7 +3,11 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <template v-if="computer.id">
-      <Header :title="title" :icon="titleIcon" :has-export-button="false">
+      <Header
+        :title="$gettext('Simulate Synchronization')"
+        :icon="titleIcon"
+        :has-export-button="false"
+      >
         <template v-if="computer.id" #append
           ><span class="vertical-middle">: </span>
           <MigasLink
@@ -16,7 +20,7 @@
       </Header>
 
       <div class="row q-py-md q-gutter-md">
-        <div class="col-md">
+        <div class="col">
           <q-card>
             <q-card-section>
               <div class="text-h5 q-pb-md">
@@ -117,7 +121,7 @@
           </q-card>
         </div>
 
-        <div class="col-md">
+        <div class="col">
           <q-card>
             <q-card-section>
               <div class="text-h5 q-pb-md">
@@ -440,13 +444,14 @@ export default {
     const { showDate } = useDate()
     const uiStore = useUiStore()
 
+    const computer = reactive({})
     const titleIcon = appIcon('simulate')
     const title = computed(() =>
-      computer.value?.__str__
-        ? `${$gettext('Simulate Synchronization')}: ${computer.value.__str__}`
+      computer?.__str__
+        ? `${$gettext('Simulate Synchronization')}: ${computer.__str__}`
         : $gettext('Simulate Synchronization'),
     )
-    useMeta({ title })
+    useMeta(() => ({ title: title.value }))
 
     const breadcrumbs = ref([
       {
@@ -473,12 +478,11 @@ export default {
         to: { name: 'computer-detail', params: { id: 0 } },
       },
       {
-        text: title,
+        text: $gettext('Simulate Synchronization'),
         icon: titleIcon,
       },
     ])
 
-    const computer = reactive({})
     const platform = reactive({})
     const onlyAttributes = ref([])
     const onlyAttributeSets = ref([])
