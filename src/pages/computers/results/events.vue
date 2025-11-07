@@ -237,7 +237,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { date, useMeta } from 'quasar'
@@ -279,7 +279,11 @@ export default {
     const { elementIcon, computerStatus } = useElement()
 
     const titleIcon = appIcon('events')
-    const title = $gettext('Events')
+    const title = computed(() =>
+      computer.value?.__str__
+        ? `${$gettext('Events')}: ${computer.value.__str__}`
+        : $gettext('Events'),
+    )
     useMeta({ title })
 
     const breadcrumbs = ref([
@@ -668,12 +672,12 @@ export default {
         .get(`/api/v1/token/computers/${route.params.id}/`)
         .then((response) => {
           Object.assign(computer, response.data)
-          breadcrumbs.find((x) => x.text === 'Id').to.params.id = computer.id
-          breadcrumbs.find((x) => x.text === 'Id').icon = elementIcon(
+          breadcrumbs.value.find((x) => x.text === 'Id').to.params.id =
+            computer.id
+          breadcrumbs.value.find((x) => x.text === 'Id').icon = elementIcon(
             computer.status,
           )
-          breadcrumbs.find((x) => x.text === 'Id').text = computer.__str__
-          useMeta({ title: `${title}: ${computer.__str__}` })
+          breadcrumbs.value.find((x) => x.text === 'Id').text = computer.__str__
           loadItems()
         })
         .catch((error) => {
