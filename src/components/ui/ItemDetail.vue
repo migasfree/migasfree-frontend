@@ -18,6 +18,8 @@
     </template>
 
     <template #actions>
+      <slot name="actions"></slot>
+
       <q-btn
         v-if="model === 'user-profiles' && element.id"
         class="q-ma-sm"
