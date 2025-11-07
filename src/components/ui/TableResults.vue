@@ -496,7 +496,7 @@
           round
           size="sm"
           :icon="appIcon('password')"
-          color="info"
+          color="primary"
           @click="
             $router.push({
               name: 'user-profile-change-password',
@@ -510,7 +510,7 @@
           class="q-ma-xs"
           round
           size="sm"
-          icon="mdi-autorenew"
+          :icon="appIcon('regenerate')"
           color="primary"
           @click="regenerateMetadata(props.row.id)"
           ><q-tooltip>{{ $gettext('Regenerate Metadata') }}</q-tooltip></q-btn
