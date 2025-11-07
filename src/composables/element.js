@@ -12,6 +12,7 @@ const APP_ICON = {
   events: 'mdi-calendar-multiple',
   hardware: 'mdi-chip',
   simulate: 'mdi-head-sync-outline',
+  regenerate: 'mdi-autorenew',
   replacement: 'mdi-compare-horizontal',
   compare: 'mdi-file-compare',
   information: 'mdi-information-outline',
