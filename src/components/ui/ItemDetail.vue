@@ -38,7 +38,7 @@
         class="q-ma-sm"
         :aria-label="$gettext('Regenerate Metadata')"
         color="primary"
-        icon="mdi-autorenew"
+        :icon="appIcon('regenerate')"
         @click="regenerateMetadata(element.id)"
         ><q-tooltip>{{ $gettext('Regenerate Metadata') }}</q-tooltip></q-btn
       >
