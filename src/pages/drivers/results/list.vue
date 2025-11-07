@@ -17,7 +17,7 @@
           <MigasLink
             model="devices/models"
             :pk="props.row.model.id"
-            :value="props.row.model.name"
+            :value="`${props.row.model.name} (${props.row.model.manufacturer.name})`"
           />
         </span>
 
