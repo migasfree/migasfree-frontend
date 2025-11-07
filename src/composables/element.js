@@ -45,6 +45,7 @@ const APP_ICON = {
   error: 'mdi-alert-circle-outline',
   install: 'mdi-package-down',
   uninstall: 'mdi-package-up',
+  logout: 'mdi-power-standby',
 }
 
 const MODEL_ICON = {
