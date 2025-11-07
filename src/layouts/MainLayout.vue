@@ -73,7 +73,7 @@
     <q-page-container>
       <q-banner v-if="hasDomainOrScopePreference" class="bg-warning text-black">
         <template #avatar>
-          <q-icon name="mdi-alert-outline" />
+          <q-icon :name="appIcon('warning')" />
         </template>
         {{
           $gettext(
@@ -144,7 +144,7 @@ import ToggleFullScreen from 'components/ui/ToggleFullScreen'
 
 import { useAuthStore } from 'stores/auth'
 
-import { modelIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 
 export default defineComponent({
   name: 'MainLayout',
@@ -238,6 +238,7 @@ export default defineComponent({
       removeDomainPreference,
       removeScopePreference,
       debounceMini,
+      appIcon,
       modelIcon,
     }
   },
