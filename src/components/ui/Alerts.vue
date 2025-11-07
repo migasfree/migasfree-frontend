@@ -1,7 +1,7 @@
 <template>
   <q-btn-dropdown v-if="isAlertsVisible" flat stretch>
     <template #label>
-      <q-icon name="mdi-bell" />
+      <q-icon :name="appIcon('alert')" />
 
       <q-chip :label="totalAlerts" color="white" text-color="black" />
 
@@ -54,6 +54,8 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { useAuthStore } from 'stores/auth'
 
+import { appIcon } from 'composables/element'
+
 export default defineComponent({
   name: 'Alerts',
 
@@ -70,27 +72,21 @@ export default defineComponent({
 
     const { loggedIn } = storeToRefs(authStore)
 
-    const isAlertsVisible = computed(() => {
-      return loggedIn.value && alerts.value.length > 0
-    })
+    const isAlertsVisible = computed(
+      () => loggedIn.value && alerts.value.length > 0,
+    )
 
     const loadAlerts = async () => {
-      await api
-        .get('/api/v1/token/stats/alerts/')
-        .then((response) => {
-          updateData(response.data)
-        })
-        .catch((error) => {
-          if (
-            typeof error !== 'undefined' &&
-            typeof error.response !== 'undefined' &&
-            error.response.status === 403
-          ) {
-            $q.localStorage.remove('auth.token')
-            router.push({ name: 'login' })
-          }
-          uiStore.notifyError(error)
-        })
+      try {
+        const { data } = await api.get('/api/v1/token/stats/alerts/')
+        updateData(data)
+      } catch (error) {
+        if (error?.response?.status === 403) {
+          $q.localStorage.remove('auth.token')
+          router.push({ name: 'login' })
+        }
+        uiStore.notifyError(error)
+      }
     }
 
     const updateData = (newData) => {
@@ -113,76 +109,68 @@ export default defineComponent({
     }
 
     const textColor = (value) => {
-      switch (value) {
-        case 'critical':
-          return 'white'
-        default:
-          return 'black'
-      }
+      if (value === 'critical') return 'white'
+
+      return 'black'
     }
 
     const resolveAlertLink = (value) => {
-      let query = {}
-      if ('query' in value) {
-        Object.entries(value.query).forEach(([key, value]) => {
-          if (typeof value === 'boolean') query[key] = value.toString()
-          else query[key] = value
-        })
+      const query = value.query
+        ? Object.fromEntries(
+            Object.entries(value.query).map(([k, v]) => [
+              k,
+              typeof v === 'boolean' ? v.toString() : v,
+            ]),
+          )
+        : {}
+
+      if (!('model' in value)) return value
+
+      const routes = {
+        errors: 'errors-list',
+        faults: 'faults-list',
+        notifications: 'notifications-list',
+        package_sets: 'package-sets-list',
+        packages: 'packages-list',
+        deployments: 'deployments-list',
+        messages: 'messages-list',
       }
 
-      if ('model' in value) {
-        switch (value.model) {
-          case 'errors':
-            return { name: 'errors-list', query }
-          case 'faults':
-            return { name: 'faults-list', query }
-          case 'notifications':
-            return { name: 'notifications-list', query }
-          case 'package_sets':
-            return { name: 'package-sets-list', query }
-          case 'packages':
-            return { name: 'packages-list', query }
-          case 'deployments':
-            return { name: 'deployments-list', query }
-          case 'messages':
-            return { name: 'messages-list', query }
-        }
-      }
-
-      return value
+      const name = routes[value.model]
+      return name ? { name, query } : value
     }
 
     const resolveAlertText = (value) => {
-      if ('model' in value.api) {
-        switch (value.api.model) {
-          case 'packages':
-            return $gettext('Orphan Packages')
-          case 'notifications':
-            return $gettext('Unchecked Notifications')
-          case 'faults':
-            return $gettext('Unchecked Faults')
-          case 'errors':
-            return $gettext('Unchecked Errors')
-          case 'deployments':
-            if ('id_in' in value.api.query)
-              return $gettext('Generating Repositories')
+      const { api } = value
+      if (!api?.model) return value.msg
 
-            if ('percent__lt' in value.api.query)
-              return $gettext('Active schedule Deployments')
+      const messages = {
+        packages: $gettext('Orphan Packages'),
+        notifications: $gettext('Unchecked Notifications'),
+        faults: $gettext('Unchecked Faults'),
+        errors: $gettext('Unchecked Errors'),
+      }
+      if (api.model in messages) return messages[api.model]
 
-            if ('percent__gte' in value.api.query)
-              return $gettext('Finished schedule Deployments')
+      if (api.model === 'deployments') {
+        const query = api.query ?? {}
 
-            break
-          case 'messages':
-            if ('created_at__gte' in value.api.query)
-              return $gettext('Synchronizing Computers Now')
+        if ('id_in' in query) return $gettext('Generating Repositories')
 
-            if ('created_at__lt' in value.api.query)
-              return $gettext('Delayed Computers')
+        if ('percent__lt' in query)
+          return $gettext('Active schedule Deployments')
 
-            break
-        }
+        if ('percent__gte' in query)
+          return $gettext('Finished schedule Deployments')
+      }
+
+      if (api.model === 'messages') {
+        const query = api.query ?? {}
+
+        if ('created_at__gte' in query)
+          return $gettext('Synchronizing Computers Now')
+
+        if ('created_at__lt' in query) return $gettext('Delayed Computers')
       }
 
       return value.msg
@@ -195,19 +183,14 @@ export default defineComponent({
       )
 
       socket.value.onmessage = (event) => {
-        const response = JSON.parse(event.data)
-        updateData(response)
+        updateData(JSON.parse(event.data))
       }
 
-      socket.value.onclose = () => {
-        setTimeout(() => {
-          connectWS()
-        }, 1000)
-      }
+      socket.value.onclose = () => setTimeout(connectWS(), 1000)
 
       socket.value.onerror = (error) => {
         console.error(error.message)
-        socket.value.close()
+        socket.value?.close()
       }
     }
 
@@ -219,7 +202,7 @@ export default defineComponent({
     })
 
     onUnmounted(() => {
-      socket.value.close()
+      socket.value?.close()
     })
 
     watch(loggedIn, (newValue) => {
@@ -229,16 +212,13 @@ export default defineComponent({
     return {
       alerts,
       totalAlerts,
-      socket,
-      loggedIn,
       isAlertsVisible,
-      loadAlerts,
-      updateData,
       target,
       level,
       textColor,
       resolveAlertLink,
       resolveAlertText,
+      appIcon,
     }
   },
 })
