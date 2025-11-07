@@ -43,7 +43,24 @@
                 option-label="name"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
-              />
+              >
+                <template #prepend>
+                  <q-icon :name="modelIcon('catalog/categories')" />
+                </template>
+
+                <template #selected-item="scope">
+                  <q-btn
+                    no-caps
+                    flat
+                    color="primary"
+                    :to="{
+                      name: 'category-detail',
+                      params: { id: scope.opt.id },
+                    }"
+                    :label="scope.opt.name"
+                  />
+                </template>
+              </q-select>
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -177,7 +194,24 @@
                       option-label="name"
                       lazy-rules
                       :rules="[(val) => !!val || $gettext('* Required')]"
-                    />
+                    >
+                      <template #prepend>
+                        <q-icon :name="modelIcon('projects')" />
+                      </template>
+
+                      <template #selected-item="scope">
+                        <q-btn
+                          no-caps
+                          flat
+                          color="primary"
+                          :to="{
+                            name: 'project-detail',
+                            params: { id: scope.opt.id },
+                          }"
+                          :label="scope.opt.name"
+                        />
+                      </template>
+                    </q-select>
                   </div>
 
                   <div class="col-5 col-md col-sm">
@@ -463,6 +497,7 @@ export default {
       removedProjects,
       iconFile,
       appIcon,
+      modelIcon,
       rand,
       isValid,
       iconPath,
