@@ -20,7 +20,7 @@
           >
         </q-list>
       </q-tooltip>
-      <q-icon name="mdi-calendar-start" class="q-mr-xs" />
+      <q-icon :name="modelIcon('schedules')" class="q-mr-xs" />
       {{ showing.schedule.percent }} %
     </q-circular-progress>
 
@@ -35,7 +35,7 @@
       :max="showing.computers.assigned"
       :value="showing.computers.ok + showing.computers.error"
     >
-      <q-icon name="mdi-desktop-classic" class="q-mr-xs" />
+      <q-icon :name="modelIcon('computers')" class="q-mr-xs" />
       {{ showing.computers.ok + showing.computers.error }}/<q-btn
         flat
         padding="xs"
@@ -69,6 +69,8 @@ import { useRouter } from 'vue-router'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
+
+import { modelIcon } from 'composables/element'
 
 export default {
   name: 'Timeline',
@@ -117,7 +119,7 @@ export default {
       { deep: true },
     )
 
-    return { loading, showing, goToComputers }
+    return { loading, showing, modelIcon, goToComputers }
   },
 }
 </script>
