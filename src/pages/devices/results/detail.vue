@@ -87,8 +87,22 @@
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
                 @update:model-value="localConnectionFields"
-                ><template #prepend>
+              >
+                <template #prepend>
                   <q-icon :name="modelIcon('devices/connections')" />
+                </template>
+
+                <template #selected-item="scope">
+                  <q-btn
+                    no-caps
+                    flat
+                    color="primary"
+                    :to="{
+                      name: 'connection-detail',
+                      params: { id: scope.opt.id },
+                    }"
+                    :label="scope.opt.name"
+                  />
                 </template>
               </q-select>
             </div>
@@ -156,6 +170,19 @@
                       >
                         <template #prepend>
                           <q-icon :name="modelIcon('devices/capabilities')" />
+                        </template>
+
+                        <template #selected-item="scope">
+                          <q-btn
+                            no-caps
+                            flat
+                            color="primary"
+                            :to="{
+                              name: 'capability-detail',
+                              params: { id: scope.opt.id },
+                            }"
+                            :label="scope.opt.name"
+                          />
                         </template>
                       </q-select>
                     </div>
@@ -241,7 +268,7 @@ export default {
     }
     const model = 'devices/devices'
 
-    let element = reactive({ id: 0, available_for_attributes: [] })
+    let element = reactive({ id: 0, available_for_attributes: [], model: null })
 
     const models = ref([])
     const logicalDevices = ref([])
@@ -271,6 +298,7 @@ export default {
         element.name !== undefined &&
         element.name.trim() !== '' &&
         element.model !== undefined &&
+        element.model !== null &&
         element.connection !== null
       )
     })
