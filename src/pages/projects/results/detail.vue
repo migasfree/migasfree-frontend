@@ -32,6 +32,19 @@
                 <template #prepend>
                   <q-icon :name="modelIcon('platforms')" />
                 </template>
+
+                <template #selected-item="scope">
+                  <q-btn
+                    no-caps
+                    flat
+                    color="primary"
+                    :to="{
+                      name: 'platform-detail',
+                      params: { id: scope.opt.id },
+                    }"
+                    :label="scope.opt.name"
+                  />
+                </template>
               </q-select>
             </div>
 
