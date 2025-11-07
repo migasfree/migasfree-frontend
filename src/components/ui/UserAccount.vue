@@ -116,7 +116,7 @@
 
       <q-item v-close-popup clickable @click="logout">
         <q-item-section avatar>
-          <q-icon name="mdi-power-standby" />
+          <q-icon :name="appIcon('logout')" />
         </q-item-section>
 
         <q-item-section>
