@@ -69,8 +69,22 @@
                 option-label="name"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
-                ><template #prepend>
+              >
+                <template #prepend>
                   <q-icon :name="modelIcon('devices/capabilities')" />
+                </template>
+
+                <template #selected-item="scope">
+                  <q-btn
+                    no-caps
+                    flat
+                    color="primary"
+                    :to="{
+                      name: 'capability-detail',
+                      params: { id: scope.opt.id },
+                    }"
+                    :label="scope.opt.name"
+                  />
                 </template>
               </q-select>
             </div>
@@ -131,7 +145,7 @@ export default {
     }
     const model = 'devices/logical'
 
-    let element = reactive({ id: 0, attributes: [] })
+    let element = reactive({ id: 0, attributes: [], device: null })
 
     const devices = ref([])
     const capabilities = ref([])
