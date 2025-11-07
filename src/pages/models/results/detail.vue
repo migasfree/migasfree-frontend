@@ -35,6 +35,19 @@
                 <template #prepend>
                   <q-icon :name="modelIcon('devices/types')" />
                 </template>
+
+                <template #selected-item="scope">
+                  <q-btn
+                    no-caps
+                    flat
+                    color="primary"
+                    :to="{
+                      name: 'device-type-detail',
+                      params: { id: scope.opt.id },
+                    }"
+                    :label="scope.opt.name"
+                  />
+                </template>
               </q-select>
             </div>
 
@@ -51,6 +64,19 @@
               >
                 <template #prepend>
                   <q-icon :name="modelIcon('devices/manufacturers')" />
+                </template>
+
+                <template #selected-item="scope">
+                  <q-btn
+                    no-caps
+                    flat
+                    color="primary"
+                    :to="{
+                      name: 'manufacturer-detail',
+                      params: { id: scope.opt.id },
+                    }"
+                    :label="scope.opt.name"
+                  />
                 </template>
               </q-select>
             </div>
@@ -72,6 +98,27 @@
               >
                 <template #prepend>
                   <q-icon :name="modelIcon('devices/connections')" />
+                </template>
+
+                <template #selected-item="scope">
+                  <q-chip
+                    removable
+                    dense
+                    :tabindex="scope.tabindex"
+                    class="q-ma-md"
+                    @remove="scope.removeAtIndex(scope.index)"
+                  >
+                    <q-btn
+                      no-caps
+                      flat
+                      color="primary"
+                      :to="{
+                        name: 'connection-detail',
+                        params: { id: scope.opt.id },
+                      }"
+                      :label="scope.opt.name"
+                    />
+                  </q-chip>
                 </template>
               </q-select>
             </div>
@@ -121,6 +168,19 @@
                       <template #prepend>
                         <q-icon :name="modelIcon('projects')" />
                       </template>
+
+                      <template #selected-item="scope">
+                        <q-btn
+                          no-caps
+                          flat
+                          color="primary"
+                          :to="{
+                            name: 'project-detail',
+                            params: { id: scope.opt.id },
+                          }"
+                          :label="scope.opt.name"
+                        />
+                      </template>
                     </q-select>
                   </div>
 
@@ -137,6 +197,19 @@
                     >
                       <template #prepend>
                         <q-icon :name="modelIcon('devices/capabilities')" />
+                      </template>
+
+                      <template #selected-item="scope">
+                        <q-btn
+                          no-caps
+                          flat
+                          color="primary"
+                          :to="{
+                            name: 'capability-detail',
+                            params: { id: scope.opt.id },
+                          }"
+                          :label="scope.opt.name"
+                        />
                       </template>
                     </q-select>
                   </div>
