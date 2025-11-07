@@ -17,6 +17,7 @@ const APP_ICON = {
   information: 'mdi-information-outline',
   warning: 'mdi-alert-outline',
   error: 'mdi-alert-circle-outline',
+  alert: 'mdi-bell',
   password: 'mdi-account-key',
   permission: 'mdi-account-check',
   export: 'mdi-file-export',
