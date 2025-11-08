@@ -13,6 +13,30 @@
       @reset-element="resetElement"
       @set-title="setTitle"
     >
+      <template #actions>
+        <q-btn
+          v-if="element.id && !hasStores"
+          class="q-ma-sm"
+          :aria-label="$gettext('Create default stores')"
+          color="secondary"
+          :icon="modelIcon('stores')"
+          @click="createDefaultStores"
+          ><q-tooltip>{{ $gettext('Create default stores') }}</q-tooltip></q-btn
+        >
+
+        <q-btn
+          v-if="element.id && !hasDeployments"
+          class="q-ma-sm"
+          :aria-label="$gettext('Create default deployments')"
+          color="secondary"
+          :icon="modelIcon('deployments')"
+          @click="createDefaultDeployments"
+          ><q-tooltip>{{
+            $gettext('Create default deployments')
+          }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields>
         <q-card-section>
           <div class="row q-pa-md q-gutter-md">
@@ -162,6 +186,8 @@ export default {
     const model = 'projects'
 
     let element = reactive({ id: 0, auto_register_computers: false })
+    const storeCount = ref(0)
+    const deploymentCount = ref(0)
 
     const breadcrumbs = ref([
       {
@@ -189,6 +215,18 @@ export default {
       return pms.value
         .filter((pms) => pms.id === element.pms.id)
         .flatMap((pms) => pms.architectures)
+    })
+
+    const hasStores = computed(() => {
+      if (!element.id) return false
+
+      return storeCount.value > 0
+    })
+
+    const hasDeployments = computed(() => {
+      if (!element.id) return false
+
+      return deploymentCount.value > 0
     })
 
     const updateArchitectures = () => {
@@ -225,29 +263,39 @@ export default {
     }
 
     const loadRelated = async () => {
-      await api
-        .get('/api/v1/token/platforms/')
-        .then((response) => {
-          platforms.value = response.data.results
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const [
+          platformResponse,
+          pmsResponse,
+          storeReponse,
+          deploymentResponse,
+        ] = await Promise.all([
+          api.get('/api/v1/token/platforms/'),
+          api.get('/api/v1/public/pms/'),
+          api.get('/api/v1/token/stores/', {
+            params: { project__id: element.id },
+          }),
+          await api.get('/api/v1/token/deployments/', {
+            params: { project__id: element.id },
+          }),
+        ])
 
-      await api
-        .get('/api/v1/public/pms/')
-        .then((response) => {
-          Object.entries(response.data).map(([key, val]) => {
-            pms.value.push({
-              id: key,
-              name: val.module,
-              architectures: val.architectures,
-            })
+        platforms.value = platformResponse.data.results
+        storeCount.value = storeReponse.data.count
+        deploymentCount.value = deploymentResponse.data.count
+
+        for (const [key, val] of Object.entries(pmsResponse.data)) {
+          pms.value.push({
+            id: key,
+            name: val.module,
+            architectures: val.architectures,
           })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+        }
+      } catch (error) {
+        storeCount.value = 0
+        deploymentCount.value = 0
+        uiStore.notifyError(error)
+      }
 
       if (typeof element.pms === 'string')
         element.pms = pms.value.find((x) => x.id === element.pms)
@@ -274,6 +322,52 @@ export default {
       windowTitle.value = value
     }
 
+    const createDefaultStores = async () => {
+      const url = '/api/v1/token/stores/'
+
+      try {
+        await api.post(url, {
+          name: 'org',
+          project: element.id,
+        })
+
+        await api.post(url, {
+          name: 'thirds',
+          project: element.id,
+        })
+
+        storeCount.value = 2
+        uiStore.notifySuccess($gettext('Data has been added!'))
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
+    }
+
+    const createDefaultDeployments = async () => {
+      const url = '/api/v1/token/deployments/'
+
+      try {
+        await api.post(url, {
+          enabled: true,
+          name: 'org',
+          project: element.id,
+          included_attributes: [1],
+        })
+
+        await api.post(url, {
+          enabled: true,
+          name: 'thirds',
+          project: element.id,
+          included_attributes: [1],
+        })
+
+        deploymentCount.value = 2
+        uiStore.notifySuccess($gettext('Data has been added!'))
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
+    }
+
     return {
       breadcrumbs,
       title,
@@ -285,11 +379,15 @@ export default {
       architectures,
       updateArchitectures,
       isValid,
+      hasStores,
+      hasDeployments,
       elementData,
       loadRelated,
       resetElement,
       setTitle,
       modelIcon,
+      createDefaultStores,
+      createDefaultDeployments,
     }
   },
 }
