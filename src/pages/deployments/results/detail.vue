@@ -379,7 +379,13 @@
                 </div>
 
                 <div class="row q-col-gutter-sm">
-                  <div class="col-md-4 col-sm-4">
+                  <div
+                    :class="
+                      element.timeline
+                        ? 'col-md-3 col-sm-3'
+                        : 'col-md-4 col-sm-4 text-right'
+                    "
+                  >
                     <DayInput
                       v-model="element.start_date"
                       :readonly="false"
@@ -388,7 +394,13 @@
                     />
                   </div>
 
-                  <div class="col-md-4 col-sm-4">
+                  <div
+                    :class="
+                      element.timeline
+                        ? 'col-md-3 col-sm-3'
+                        : 'col-md-4 col-sm-4 text-right'
+                    "
+                  >
                     <q-select
                       v-model="element.schedule"
                       outlined
@@ -418,7 +430,13 @@
                     </q-select>
                   </div>
 
-                  <div class="col-md-4 col-sm-4 text-right">
+                  <div
+                    :class="
+                      element.timeline
+                        ? 'col-md-3 col-sm-3'
+                        : 'col-md-4 col-sm-4 text-right'
+                    "
+                  >
                     <q-checkbox
                       v-model="element.auto_restart"
                       left-label
