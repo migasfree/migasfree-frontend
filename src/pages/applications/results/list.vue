@@ -158,44 +158,38 @@ export default {
       },
     ])
 
+    const setFilterItems = (field, items) => {
+      const col = columns.value.find((x) => x.field === field)
+      if (col) col.filterOptions.filterDropdownItems = items
+    }
+
     const loadFilters = async () => {
-      await api
-        .get('/api/v1/token/catalog/apps/levels')
-        .then((response) => {
-          columns.value.find(
-            (x) => x.field === 'level.name',
-          ).filterOptions.filterDropdownItems = Object.entries(
-            response.data,
-          ).map(([key, val]) => {
-            return {
-              value: key,
-              text: val,
-            }
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const [levelsResponse, categoriesResponse] = await Promise.all([
+          api.get('/api/v1/token/catalog/apps/levels'),
+          api.get('/api/v1/token/catalog/categories'),
+        ])
 
-      await api
-        .get('/api/v1/token/catalog/categories')
-        .then((response) => {
-          columns.value.find(
-            (x) => x.field === 'category.name',
-          ).filterOptions.filterDropdownItems = response.data.results.map(
-            ({ id, name }) => ({
-              value: id,
-              text: name,
-            }),
-          )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+        setFilterItems(
+          'level.name',
+          Object.entries(levelsResponse.data).map(([key, val]) => ({
+            value: key,
+            text: val,
+          })),
+        )
 
-      columns.value.find(
-        (x) => x.field === 'score',
-      ).filterOptions.filterDropdownItems = ['1', '2', '3', '4', '5']
+        setFilterItems(
+          'category.name',
+          categoriesResponse.data.results.map(({ id, name }) => ({
+            value: id,
+            text: name,
+          })),
+        )
+
+        setFilterItems('score', ['1', '2', '3', '4', '5'])
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     onMounted(async () => {
