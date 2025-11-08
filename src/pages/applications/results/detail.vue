@@ -264,11 +264,7 @@ export default {
 
     const title = ref($gettext('Application'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'apps-list',
@@ -320,42 +316,29 @@ export default {
       )
     })
 
-    const iconPath = computed(() => {
-      return `${element.icon}?rand=${rand.value}`
-    })
+    const iconPath = computed(() => `${element.value.icon}?rand=${rand.value}`)
 
     const loadRelated = async () => {
-      await api
-        .get('/api/v1/token/catalog/apps/levels/')
-        .then((response) => {
-          Object.entries(response.data).map(([key, val]) => {
-            levels.value.push({
-              id: key,
-              name: val,
-            })
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const [
+          { data: levelsData },
+          { data: categoriesData },
+          { data: projectsData },
+        ] = await Promise.all([
+          api.get('/api/v1/token/catalog/apps/levels/'),
+          api.get('/api/v1/token/catalog/categories/'),
+          api.get('/api/v1/token/projects/'),
+        ])
 
-      await api
-        .get('/api/v1/token/catalog/categories/')
-        .then((response) => {
-          categories.value = response.data.results
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-
-      await api
-        .get('/api/v1/token/projects/')
-        .then((response) => {
-          projects.value = response.data.results
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+        levels.value = Object.entries(levelsData).map(([id, name]) => ({
+          id,
+          name,
+        }))
+        categories.value = categoriesData.results
+        projects.value = projectsData.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
 
       if (element.id) {
         packagesByProject.value = element.packages_by_project
@@ -386,52 +369,45 @@ export default {
       return data
     }
 
-    const updateRelated = async () => {
-      packagesByProject.value.forEach((project) => {
-        if (
-          project.project === undefined ||
-          project.packages_to_install === undefined
-        ) {
-          return
-        }
+    const saveProjectPackage = async (project) => {
+      const { id, project: proj, packages_to_install } = project
+      const payload = {
+        application: element.id,
+        project: proj.id,
+        packages_to_install:
+          packages_to_install !== null ? packages_to_install.split('\n') : [],
+      }
 
-        if (project.id > 0) {
-          api
-            .patch(`/api/v1/token/catalog/project-packages/${project.id}/`, {
-              id: project.id,
-              application: element.id,
-              project: project.project.id,
-              packages_to_install:
-                project.packages_to_install !== null
-                  ? project.packages_to_install.split('\n')
-                  : [],
-            })
-            .catch((error) => {
-              uiStore.notifyError(error)
-            })
+      try {
+        if (id > 0) {
+          await api.patch(`/api/v1/token/catalog/project-packages/${id}/`, {
+            ...payload,
+            id,
+          })
         } else {
-          api
-            .post('/api/v1/token/catalog/project-packages/', {
-              application: element.id,
-              project: project.project.id,
-              packages_to_install:
-                project.packages_to_install !== null
-                  ? project.packages_to_install.split('\n')
-                  : [],
-            })
-            .catch((error) => {
-              uiStore.notifyError(error)
-            })
+          await api.post('/api/v1/token/catalog/project-packages/', payload)
         }
-      })
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
+    }
 
-      removedProjects.value.forEach((id) => {
+    const updateRelated = async () => {
+      const savePromises = packagesByProject.value
+        .filter(
+          (p) => p.project !== undefined && p.packages_to_install !== undefined,
+        )
+        .map((project) => saveProjectPackage(project))
+
+      const deletePromises = removedProjects.value.map((id) =>
         api
           .delete(`/api/v1/token/catalog/project-packages/${id}/`)
           .catch((error) => {
             uiStore.notifyError(error)
-          })
-      })
+          }),
+      )
+
+      await Promise.all([...savePromises, ...deletePromises])
 
       rand.value = Date.now()
     }
