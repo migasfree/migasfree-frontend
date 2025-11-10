@@ -54,6 +54,7 @@ import BooleanView from 'components/ui/BooleanView'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon } from 'composables/element'
+import { useFilterHelper } from 'composables/filterHelper'
 
 export default {
   components: {
@@ -164,50 +165,44 @@ export default {
       },
     ])
 
+    const { setFilterItems } = useFilterHelper(columns)
+
     const loadFilters = async () => {
-      await api
-        .get(`/api/v1/token/properties/kind/`)
-        .then((response) => {
-          kind.value = response.data
-          columns.value.find(
-            (x) => x.field === 'kind',
-          ).filterOptions.filterDropdownItems = Object.entries(
-            response.data,
-          ).map(([key, val]) => {
-            return {
-              value: key,
-              text: val,
-            }
+      try {
+        const [kindResponse, languagesResponse] = await Promise.all([
+          api.get('/api/v1/token/properties/kind/'),
+          api.get('/api/v1/public/languages/'),
+        ])
+
+        kind.value = kindResponse.data
+
+        setFilterItems(
+          'kind',
+          Object.entries(kindResponse.data).map(([key, val]) => ({
+            value: key,
+            text: val,
+          })),
+        )
+
+        const entries = Object.entries(languagesResponse.data)
+
+        entries.forEach(([key, val]) => {
+          languages.value.push({
+            id: parseInt(key),
+            name: val,
           })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
         })
 
-      await api
-        .get(`/api/v1/public/languages/`)
-        .then((response) => {
-          Object.entries(response.data).map(([key, val]) => {
-            languages.value.push({
-              id: parseInt(key),
-              name: val,
-            })
-          })
-
-          columns.value.find(
-            (x) => x.field === 'language',
-          ).filterOptions.filterDropdownItems = Object.entries(
-            response.data,
-          ).map(([key, val]) => {
-            return {
-              value: parseInt(key),
-              text: val,
-            }
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+        setFilterItems(
+          'language',
+          entries.map(([key, val]) => ({
+            value: parseInt(key),
+            text: val,
+          })),
+        )
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     onMounted(async () => {
