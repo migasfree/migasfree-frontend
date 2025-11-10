@@ -167,11 +167,7 @@ export default {
 
     const title = ref($gettext('Driver'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'drivers-list',
@@ -220,26 +216,20 @@ export default {
     })
 
     const loadRelated = async () => {
-      await api
-        .get('/api/v1/token/devices/capabilities/')
-        .then((response) => {
-          capabilities.value = response.data.results
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const [capabilitiesResponse, projectsResponse] = await Promise.all([
+          api.get('/api/v1/token/devices/capabilities/'),
+          api.get('/api/v1/token/projects/'),
+        ])
 
-      await api
-        .get('/api/v1/token/projects/')
-        .then((response) => {
-          projects.value = response.data.results
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+        capabilities.value = capabilitiesResponse.data.results
+        projects.value = projectsResponse.data.results
 
-      if (element.id) {
-        element.packages_to_install = element.packages_to_install.join('\n')
+        if (Array.isArray(element?.packages_to_install)) {
+          element.packages_to_install = element.packages_to_install.join('\n')
+        }
+      } catch (error) {
+        uiStore.notifyError(error)
       }
     }
 
