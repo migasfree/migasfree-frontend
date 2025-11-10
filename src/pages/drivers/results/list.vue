@@ -58,6 +58,7 @@ import TableResults from 'components/ui/TableResults'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon } from 'composables/element'
+import { useFilterHelper } from 'composables/filterHelper'
 
 export default {
   components: {
@@ -165,54 +166,43 @@ export default {
       },
     ])
 
+    const { setFilterItems } = useFilterHelper(columns)
+
     const loadFilters = async () => {
-      await api
-        .get('/api/v1/token/devices/models/')
-        .then((response) => {
-          columns.value.find(
-            (x) => x.field === 'model.name',
-          ).filterOptions.filterDropdownItems = response.data.results.map(
-            ({ id, name }) => ({
-              value: id,
-              text: name,
-            }),
-          )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const [modelsResponse, projectsResponse, capabilitiesResponse] =
+          await Promise.all([
+            api.get('/api/v1/token/devices/models/'),
+            api.get('/api/v1/token/projects/'),
+            api.get('/api/v1/token/devices/capabilities/'),
+          ])
 
-      await api
-        .get('/api/v1/token/projects/')
-        .then((response) => {
-          columns.value.find(
-            (x) => x.field === 'project.name',
-          ).filterOptions.filterDropdownItems = response.data.results.map(
-            ({ id, name }) => ({
-              value: id,
-              text: name,
-            }),
-          )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+        setFilterItems(
+          'model.name',
+          modelsResponse.data.results.map(({ id, name }) => ({
+            value: id,
+            text: name,
+          })),
+        )
 
-      await api
-        .get('/api/v1/token/devices/capabilities/')
-        .then((response) => {
-          columns.value.find(
-            (x) => x.field === 'capability.name',
-          ).filterOptions.filterDropdownItems = response.data.results.map(
-            ({ id, name }) => ({
-              value: id,
-              text: name,
-            }),
-          )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+        setFilterItems(
+          'project.name',
+          projectsResponse.data.results.map(({ id, name }) => ({
+            value: id,
+            text: name,
+          })),
+        )
+
+        setFilterItems(
+          'capability.name',
+          capabilitiesResponse.data.results.map(({ id, name }) => ({
+            value: id,
+            text: name,
+          })),
+        )
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     onMounted(async () => {
