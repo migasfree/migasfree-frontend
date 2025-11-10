@@ -132,11 +132,7 @@ export default {
 
     const title = ref($gettext('Schedule'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'schedules-list',
@@ -172,15 +168,15 @@ export default {
     })
 
     const loadRelated = async () => {
-      if (element.id) {
-        await api
-          .get(`/api/v1/token/schedule-delays/?schedule__id=${element.id}`)
-          .then((response) => {
-            delays.value = response.data.results
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+      if (!element.id) return
+
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/schedule-delays/?schedule__id=${element.id}`,
+        )
+        delays.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
       }
     }
 
