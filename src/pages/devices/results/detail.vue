@@ -255,11 +255,7 @@ export default {
 
     const title = ref($gettext('Device'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'devices-list',
