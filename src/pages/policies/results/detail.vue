@@ -229,11 +229,7 @@ export default {
 
     const title = ref($gettext('Policy'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'policies-list',
@@ -276,15 +272,15 @@ export default {
     })
 
     const loadRelated = async () => {
-      if (element.id) {
-        await api
-          .get(`/api/v1/token/catalog/policy-groups/?policy__id=${element.id}`)
-          .then((response) => {
-            policyGroups.value = response.data.results
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+      if (!element.id) return
+
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/catalog/policy-groups/?policy__id=${element.id}`,
+        )
+        policyGroups.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
       }
     }
 
