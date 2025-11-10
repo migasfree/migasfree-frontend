@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -47,6 +47,7 @@ import BooleanView from 'components/ui/BooleanView'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon } from 'composables/element'
+import { useFilterHelper } from 'composables/filterHelper'
 
 export default {
   components: {
@@ -144,27 +145,28 @@ export default {
       },
     ])
 
-    const kind = reactive({})
+    const kind = ref({})
+
+    const { setFilterItems } = useFilterHelper(columns)
 
     const loadFilters = async () => {
-      await api
-        .get(`/api/v1/token/properties/kind`)
-        .then((response) => {
-          Object.assign(kind, response.data)
-          columns.value.find(
-            (x) => x.field === 'kind',
-          ).filterOptions.filterDropdownItems = Object.entries(
-            response.data,
-          ).map(([key, val]) => {
+      try {
+        const response = await api.get('/api/v1/token/properties/kind/')
+
+        kind.value = response.data
+
+        setFilterItems(
+          'kind',
+          Object.entries(response.data).map(([key, val]) => {
             return {
               value: key,
               text: val,
             }
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+          }),
+        )
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     onMounted(async () => {
