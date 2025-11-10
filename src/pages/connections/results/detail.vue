@@ -137,14 +137,12 @@ export default {
     })
 
     const loadRelated = async () => {
-      await api
-        .get('/api/v1/token/devices/types/')
-        .then((response) => {
-          deviceTypes.value = response.data.results
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const { data } = await api.get('/api/v1/token/devices/types/')
+        deviceTypes.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const elementData = () => {
