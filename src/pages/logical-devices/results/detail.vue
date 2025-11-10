@@ -132,11 +132,7 @@ export default {
 
     const title = ref($gettext('Logical Device'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'logical-devices-list',
@@ -172,14 +168,12 @@ export default {
     })
 
     const loadRelated = async () => {
-      await api
-        .get('/api/v1/token/devices/capabilities/')
-        .then((response) => {
-          capabilities.value = response.data.results
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const { data } = await api.get('/api/v1/token/devices/capabilities/')
+        capabilities.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const elementData = () => {
@@ -212,15 +206,16 @@ export default {
         return
       }
 
-      await api
-        .get('/api/v1/token/devices/devices/', {
+      try {
+        const { data } = await api.get('/api/v1/token/devices/devices/', {
           params: { search: val.toLowerCase() },
         })
-        .then((response) => {
-          devices.value = response.data.results
-        })
-
-      update(() => {})
+        devices.value = data.results
+        update(() => {})
+      } catch (error) {
+        uiStore.notifyError(error)
+        abort()
+      }
     }
 
     const abortFilterDevices = () => {
