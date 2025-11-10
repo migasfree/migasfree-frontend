@@ -42,6 +42,13 @@
             :pk="props.row.schedule.id"
             :value="props.row.schedule.name"
           />
+
+          <template v-if="props.row.schedule_timeline">
+            <ScheduleProgress
+              :timeline="props.row.schedule_timeline"
+              class="q-mt-sm"
+            />
+          </template>
         </span>
 
         <span v-else-if="props.column.field == 'enabled'">
@@ -80,6 +87,7 @@ import TableResults from 'components/ui/TableResults'
 import BooleanView from 'components/ui/BooleanView'
 import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
+import ScheduleProgress from 'components/deployment/ScheduleProgress.vue'
 
 import { appIcon, modelIcon } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'
@@ -91,6 +99,7 @@ export default {
     BooleanView,
     DateView,
     MigasLink,
+    ScheduleProgress,
   },
   setup() {
     const { $gettext } = useGettext()
