@@ -72,6 +72,7 @@ import Truncate from 'components/ui/Truncate'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon, useElement } from 'composables/element'
+import { useFilterHelper } from 'composables/filterHelper'
 
 export default {
   components: {
@@ -205,38 +206,33 @@ export default {
       },
     ])
 
-    const loadFilters = async () => {
-      await api
-        .get('/api/v1/token/projects/')
-        .then((response) => {
-          columns.value.find(
-            (x) => x.field === 'project.name',
-          ).filterOptions.filterDropdownItems = response.data.results.map(
-            ({ id, name }) => ({
-              value: id,
-              text: name,
-            }),
-          )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+    const { setFilterItems } = useFilterHelper(columns)
 
-      await api
-        .get('/api/v1/token/fault-definitions/')
-        .then((response) => {
-          columns.value.find(
-            (x) => x.field === 'fault_definition.name',
-          ).filterOptions.filterDropdownItems = response.data.results.map(
-            ({ id, name }) => ({
-              value: id,
-              text: name,
-            }),
-          )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+    const loadFilters = async () => {
+      try {
+        const [projectsResponse, faultDefinitionsResponse] = await Promise.all([
+          api.get('/api/v1/token/projects/'),
+          api.get('/api/v1/token/fault-definitions/'),
+        ])
+
+        setFilterItems(
+          'project.name',
+          projectsResponse.data.results.map(({ id, name }) => ({
+            value: id,
+            text: name,
+          })),
+        )
+
+        setFilterItems(
+          'fault_definition.name',
+          faultDefinitionsResponse.data.results.map(({ id, name }) => ({
+            value: id,
+            text: name,
+          })),
+        )
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     onMounted(async () => {
