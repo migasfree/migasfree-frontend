@@ -55,11 +55,7 @@ export default {
     const titleIcon = appIcon('information')
     const title = $gettext('Package Information')
     const windowTitle = ref(title)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'packages-list',
