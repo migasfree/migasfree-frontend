@@ -50,11 +50,7 @@ export default {
 
     const title = ref($gettext('Application Category'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'categories-list',
