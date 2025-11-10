@@ -272,11 +272,7 @@ export default {
 
     const title = ref($gettext('Model'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'models-list',
@@ -322,63 +318,35 @@ export default {
     })
 
     const loadRelated = async () => {
-      await api
-        .get('/api/v1/token/devices/types/')
-        .then((response) => {
-          deviceTypes.value = response.data.results
-        })
-        .catch((error) => {
+      const fetchAndAssign = async (url, target) => {
+        try {
+          const { data } = await api.get(url)
+          target.value = data.results
+        } catch (error) {
           uiStore.notifyError(error)
-        })
+        }
+      }
 
-      await api
-        .get('/api/v1/token/devices/manufacturers/')
-        .then((response) => {
-          manufacturers.value = response.data.results
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-
-      await api
-        .get('/api/v1/token/devices/connections/')
-        .then((response) => {
-          connections.value = response.data.results
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-
-      await api
-        .get('/api/v1/token/projects/')
-        .then((response) => {
-          projects.value = response.data.results
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-
-      await api
-        .get('/api/v1/token/devices/capabilities/')
-        .then((response) => {
-          capabilities.value = response.data.results
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      await Promise.all([
+        fetchAndAssign('/api/v1/token/devices/types/', deviceTypes),
+        fetchAndAssign('/api/v1/token/devices/manufacturers/', manufacturers),
+        fetchAndAssign('/api/v1/token/devices/connections/', connections),
+        fetchAndAssign('/api/v1/token/projects/', projects),
+        fetchAndAssign('/api/v1/token/devices/capabilities/', capabilities),
+      ])
 
       if (element.id) {
-        await api
-          .get(`/api/v1/token/devices/drivers/?model__id=${element.id}`)
-          .then((response) => {
-            drivers.value = response.data.results
-            drivers.value.forEach((item) => {
-              item.packages_to_install = item.packages_to_install.join('\n')
-            })
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+        try {
+          const { data } = await api.get(
+            `/api/v1/token/devices/drivers/?model__id=${element.id}`,
+          )
+          drivers.value = data.results.map((item) => ({
+            ...item,
+            packages_to_install: item.packages_to_install.join('\n'),
+          }))
+        } catch (error) {
+          uiStore.notifyError(error)
+        }
       }
     }
 
