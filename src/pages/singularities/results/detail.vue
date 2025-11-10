@@ -188,11 +188,7 @@ export default {
 
     const title = ref($gettext('Singularity'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'singularities-list',
