@@ -541,77 +541,45 @@ export default {
       }
 
       loading.value = true
-      await api
-        .get(`/api/v1/token/stats/syncs/by-day/`, { params: queryString })
-        .then((response) => {
-          events.syncs.data = response.data
-          events.syncs.total = response.data.reduce(
+
+      const fetchEventData = async (endpoint, target) => {
+        try {
+          const { data } = await api.get(endpoint, { params: queryString })
+          target.data = data
+          target.total = data.reduce(
             (accumulator, current) => accumulator + parseInt(current[1]),
             0,
           )
-
-          // default event
-          event.value = 'syncs'
-          updateEvent(event.value)
-        })
-        .catch((error) => {
+        } catch (error) {
           uiStore.notifyError(error)
-        })
-        .finally(() => {
-          loading.value = false
-        })
+        }
+      }
 
-      await api
-        .get(`/api/v1/token/stats/errors/by-day/`, { params: queryString })
-        .then((response) => {
-          events.errors.data = response.data
-          events.errors.total = response.data.reduce(
-            (accumulator, current) => accumulator + parseInt(current[1]),
-            0,
-          )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      // ---- syncs (needs to set default event after load)
+      await fetchEventData('/api/v1/token/stats/syncs/by-day/', events.syncs)
 
-      await api
-        .get(`/api/v1/token/stats/faults/by-day/`, { params: queryString })
-        .then((response) => {
-          events.faults.data = response.data
-          events.faults.total = response.data.reduce(
-            (accumulator, current) => accumulator + parseInt(current[1]),
-            0,
-          )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      // default event
+      event.value = 'syncs'
+      updateEvent(event.value)
 
-      await api
-        .get(`/api/v1/token/stats/migrations/by-day/`, { params: queryString })
-        .then((response) => {
-          events.migrations.data = response.data
-          events.migrations.total = response.data.reduce(
-            (accumulator, current) => accumulator + parseInt(current[1]),
-            0,
-          )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      const otherEndpoints = [
+        { url: '/api/v1/token/stats/errors/by-day/', target: events.errors },
+        { url: '/api/v1/token/stats/faults/by-day/', target: events.faults },
+        {
+          url: '/api/v1/token/stats/migrations/by-day/',
+          target: events.migrations,
+        },
+        {
+          url: '/api/v1/token/stats/status-logs/by-day/',
+          target: events.statusLogs,
+        },
+      ]
 
-      await api
-        .get(`/api/v1/token/stats/status-logs/by-day/`, { params: queryString })
-        .then((response) => {
-          events.statusLogs.data = response.data
-          events.statusLogs.total = response.data.reduce(
-            (accumulator, current) => accumulator + parseInt(current[1]),
-            0,
-          )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      await Promise.all(
+        otherEndpoints.map(({ url, target }) => fetchEventData(url, target)),
+      )
+
+      loading.value = false
     }
 
     const updateEvent = (evt) => {
