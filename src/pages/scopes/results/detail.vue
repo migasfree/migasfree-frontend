@@ -194,9 +194,7 @@ export default {
         const [domainsResponse, profilesResponse] = await Promise.all([
           api.get('/api/v1/token/domains/'),
           authStore.user.is_superuser
-            ? api.get('/api/v1/token/user-profiles/', {
-                params: { page_size: 99999 }, // FIXME
-              })
+            ? api.get('/api/v1/token/user-profiles/')
             : Promise.resolve(null),
         ])
 
