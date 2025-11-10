@@ -138,11 +138,7 @@ export default {
 
     const title = ref($gettext('Package'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'packages-list',
@@ -246,23 +242,19 @@ export default {
     }
 
     const loadRelated = async () => {
-      await api
-        .get('/api/v1/token/projects/')
-        .then((response) => {
-          const projects = response.data.results
+      try {
+        const { data } = await api.get('/api/v1/token/projects/')
+        const projects = data.results
 
-          projectStore.items = Object.entries(projects).map(([, item]) => {
-            return {
-              id: item.id,
-              label: item.name,
-              icon: modelIcon('projects'),
-              lazy: true,
-            }
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+        projectStore.items = Object.values(projects).map((item) => ({
+          id: item.id,
+          label: item.name,
+          icon: modelIcon('projects'),
+          lazy: true,
+        }))
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const elementData = () => {
