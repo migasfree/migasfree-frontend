@@ -29,6 +29,7 @@
         :update-options="updateOptions"
         :style="cssVars"
         autoresize
+        manual-update
         @click="passData"
         @legendselectchanged="changeRange"
       />
