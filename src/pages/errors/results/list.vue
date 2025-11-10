@@ -64,6 +64,7 @@ import Truncate from 'components/ui/Truncate'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon, useElement } from 'composables/element'
+import { useFilterHelper } from 'composables/filterHelper'
 
 export default {
   components: {
@@ -184,22 +185,22 @@ export default {
       },
     ])
 
+    const { setFilterItems } = useFilterHelper(columns)
+
     const loadFilters = async () => {
-      await api
-        .get('/api/v1/token/projects/')
-        .then((response) => {
-          columns.value.find(
-            (x) => x.field === 'project.name',
-          ).filterOptions.filterDropdownItems = response.data.results.map(
-            ({ id, name }) => ({
-              value: id,
-              text: name,
-            }),
-          )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const response = await api.get('/api/v1/token/projects/')
+
+        setFilterItems(
+          'project.name',
+          response.data.results.map(({ id, name }) => ({
+            value: id,
+            text: name,
+          })),
+        )
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     onMounted(async () => {
