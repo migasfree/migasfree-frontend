@@ -778,16 +778,17 @@ export default function useDataGrid(
     if (isLoading.value) return
 
     isLoading.value = true
-    await api
-      .get(`/api/v1/token/${model.value}/`, { params: queryParams() })
-      .then((response) => {
-        totalRecords.value = response.data.count
-        rows.value = response.data.results
+    try {
+      const response = await api.get(`/api/v1/token/${model.value}/`, {
+        params: queryParams(),
       })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
-      .finally(() => (isLoading.value = false))
+      totalRecords.value = response.data.count
+      rows.value = response.data.results
+    } catch (error) {
+      uiStore.notifyError(error)
+    } finally {
+      isLoading.value = false
+    }
   }
 
   const edit = (id) => {
