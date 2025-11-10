@@ -179,11 +179,7 @@ export default {
 
     const title = ref($gettext('Fault Definition'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'fault-definitions-list',
@@ -238,23 +234,21 @@ export default {
     })
 
     const loadRelated = async () => {
-      await api
-        .get('/api/v1/public/languages/')
-        .then((response) => {
-          Object.entries(response.data).map(([key, val]) => {
-            languages.value.push({
-              id: parseInt(key),
-              name: val,
-            })
-          })
-          if (element.id && typeof element.language === 'number')
-            element.language = languages.value.find(
-              (x) => x.id === element.language,
-            )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const { data } = await api.get('/api/v1/public/languages/')
+        languages.value = Object.entries(data).map(([key, val]) => ({
+          id: Number(key),
+          name: val,
+        }))
+
+        if (element.id && typeof element.language === 'number') {
+          element.language = languages.value.find(
+            (x) => x.id === element.language,
+          )
+        }
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const elementData = () => {
