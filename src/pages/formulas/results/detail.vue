@@ -167,11 +167,7 @@ export default {
 
     const title = ref($gettext('Formula'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'formulas-list',
@@ -226,39 +222,36 @@ export default {
     })
 
     const loadRelated = async () => {
-      await api
-        .get(`/api/v1/token/properties/kind/`)
-        .then((response) => {
-          Object.entries(response.data).map(([key, val]) => {
-            kind.value.push({
-              id: key,
-              name: val,
-            })
-          })
-          if (element.id && typeof element.kind === 'string')
-            element.kind = kind.value.find((x) => x.id == element.kind)
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const [kindResponse, languagesResponse] = await Promise.all([
+          api.get(`/api/v1/token/properties/kind/`),
+          api.get(`/api/v1/public/languages/`),
+        ])
 
-      await api
-        .get(`/api/v1/public/languages/`)
-        .then((response) => {
-          Object.entries(response.data).map(([key, val]) => {
-            languages.value.push({
-              id: parseInt(key),
-              name: val,
-            })
-          })
-          if (element.id && typeof element.language === 'number')
-            element.language = languages.value.find(
-              (x) => x.id === element.language,
-            )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+        kind.value = Object.entries(kindResponse.data).map(([key, val]) => ({
+          id: key,
+          name: val,
+        }))
+
+        if (element.id && typeof element.kind === 'string') {
+          element.kind = kind.value.find((x) => x.id == element.kind)
+        }
+
+        languages.value = Object.entries(languagesResponse.data).map(
+          ([key, val]) => ({
+            id: Number(key),
+            name: val,
+          }),
+        )
+
+        if (element.id && typeof element.language === 'number') {
+          element.language = languages.value.find(
+            (x) => x.id === element.language,
+          )
+        }
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const elementData = () => {
