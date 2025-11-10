@@ -56,6 +56,7 @@ import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon, useElement } from 'composables/element'
+import { useFilterHelper } from 'composables/filterHelper'
 
 export default {
   components: {
@@ -146,24 +147,24 @@ export default {
       },
     ])
 
+    const { setFilterItems } = useFilterHelper(columns)
+
     const loadFilters = async () => {
-      await api
-        .get('/api/v1/token/computers/status/')
-        .then((response) => {
-          columns.value.find(
-            (x) => x.field === 'status',
-          ).filterOptions.filterDropdownItems = Object.entries(
-            response.data.choices,
-          ).map(([key, val]) => {
+      try {
+        const response = await api.get('/api/v1/token/computers/status/')
+
+        setFilterItems(
+          'status',
+          Object.entries(response.data.choices).map(([key, val]) => {
             return {
               value: key,
               text: val,
             }
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+          }),
+        )
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     onMounted(async () => {
