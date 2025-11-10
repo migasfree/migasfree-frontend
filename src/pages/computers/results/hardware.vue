@@ -283,11 +283,7 @@ export default {
     const titleIcon = appIcon('hardware')
     const title = $gettext('Hardware Information')
     const windowTitle = ref(title)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'computers-list',
