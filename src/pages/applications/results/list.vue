@@ -56,6 +56,7 @@ import TableResults from 'components/ui/TableResults'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon } from 'composables/element'
+import { useFilterHelper } from 'composables/filterHelper'
 
 export default {
   components: {
@@ -158,10 +159,7 @@ export default {
       },
     ])
 
-    const setFilterItems = (field, items) => {
-      const col = columns.value.find((x) => x.field === field)
-      if (col) col.filterOptions.filterDropdownItems = items
-    }
+    const { setFilterItems } = useFilterHelper(columns)
 
     const loadFilters = async () => {
       try {
