@@ -586,99 +586,90 @@ export default {
     })
 
     const updateSchedule = async () => {
-      if (element.id) {
-        await api
-          .get(`/api/v1/token/stats/deployments/${element.id}/timeline/`)
-          .then((response) => {
-            element.timeline = response.data
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+      if (!element.id) return
 
-        if (element.schedule) {
-          await api
-            .get(
-              `/api/v1/token/stats/deployments/${element.id}/computers/delay/`,
-            )
-            .then((response) => {
-              const series = []
+      try {
+        const timelineReponse = await api.get(
+          `/api/v1/token/stats/deployments/${element.id}/timeline/`,
+        )
 
-              Object.entries(response.data.data).map(([key, val]) => {
-                series.push({
-                  type: 'line',
-                  smooth: true,
-                  name: key,
-                  data: val,
-                })
-              })
+        element.timeline = timelineReponse.data
 
-              const today = showDate(new Date(Date.now()), 'YYYY-MM-DD')
-              const madeValue =
-                element.timeline.computers.error + element.timeline.computers.ok
-              series.push({
-                type: 'line',
-                name: $gettext('Made'),
-                markPoint: {
-                  data: [
-                    {
-                      coord: [today, madeValue],
-                      label: { show: true },
-                      value: madeValue,
-                    },
-                  ],
-                },
-              })
+        if (!element.schedule) return
 
-              element.stats = {
-                xData: response.data.x_labels,
-                series,
-              }
+        const delaysResponse = await api.get(
+          `/api/v1/token/stats/deployments/${element.id}/computers/delay/`,
+        )
+
+        const buildSeries = (data) => {
+          const series = []
+          Object.entries(data).forEach(([key, val]) => {
+            series.push({
+              type: 'line',
+              smooth: true,
+              name: key,
+              data: val,
             })
-            .catch((error) => {
-              uiStore.notifyError(error)
-            })
+          })
+          return series
         }
+
+        const series = buildSeries(delaysResponse.data.data)
+
+        const today = showDate(new Date(), 'YYYY-MM-DD')
+        const madeValue =
+          element.timeline.computers.error + element.timeline.computers.ok
+
+        series.push({
+          type: 'line',
+          name: $gettext('Made'),
+          markPoint: {
+            data: [
+              {
+                coord: [today, madeValue],
+                label: { show: true },
+                value: madeValue,
+              },
+            ],
+          },
+        })
+
+        element.stats = {
+          xData: delaysResponse.data.x_labels,
+          series,
+        }
+      } catch (error) {
+        uiStore.notifyError(error)
       }
     }
 
     const loadRelated = async () => {
-      await api
-        .get('/api/v1/token/projects/')
-        .then((response) => {
-          projects.value = response.data.results
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const [projectsResponse, domainsResponse, schedulesResponse] =
+          await Promise.all([
+            api.get('/api/v1/token/projects/'),
+            api.get('/api/v1/token/domains/'),
+            api.get('/api/v1/token/schedules/'),
+          ])
 
-      await api
-        .get('/api/v1/token/domains/')
-        .then((response) => {
-          Object.entries(response.data.results).map(([, item]) => {
-            domains.value.push({
-              id: item.id,
-              name: item.name,
-            })
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+        projects.value = projectsResponse.data.results
 
-      await api
-        .get('/api/v1/token/schedules/')
-        .then((response) => {
-          Object.entries(response.data.results).map(([, item]) => {
-            schedules.value.push({
-              id: item.id,
-              name: item.name,
-            })
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+        domains.value = Object.values(domainsResponse.data.results).map(
+          (item) => ({
+            id: item.id,
+            name: item.name,
+          }),
+        )
+
+        schedules.value = Object.values(schedulesResponse.data.results).map(
+          (item) => ({
+            id: item.id,
+            name: item.name,
+          }),
+        )
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
 
       if (element.id) {
         element.packages_to_install = element.packages_to_install.join('\n')
@@ -697,6 +688,7 @@ export default {
           a.name > b.name ? 1 : b.name > a.name ? -1 : 0,
         )
       }
+
       updateSchedule()
     }
 
