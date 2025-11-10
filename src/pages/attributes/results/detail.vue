@@ -138,11 +138,7 @@ export default {
 
     const title = ref($gettext('Attribute'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'attributes-list',
