@@ -49,6 +49,7 @@ import BooleanView from 'components/ui/BooleanView'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon } from 'composables/element'
+import { useFilterHelper } from 'composables/filterHelper'
 
 export default {
   components: {
@@ -140,31 +141,31 @@ export default {
       },
     ])
 
-    const loadFilters = async () => {
-      await api
-        .get(`/api/v1/public/languages/`)
-        .then((response) => {
-          Object.entries(response.data).map(([key, val]) => {
-            languages.value.push({
-              id: parseInt(key),
-              name: val,
-            })
-          })
+    const { setFilterItems } = useFilterHelper(columns)
 
-          columns.value.find(
-            (x) => x.field === 'language',
-          ).filterOptions.filterDropdownItems = Object.entries(
-            response.data,
-          ).map(([key, val]) => {
-            return {
-              value: parseInt(key),
-              text: val,
-            }
+    const loadFilters = async () => {
+      try {
+        const { data } = await api.get('/api/v1/public/languages/')
+
+        const entries = Object.entries(data)
+
+        entries.forEach(([key, val]) => {
+          languages.value.push({
+            id: parseInt(key),
+            name: val,
           })
         })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+
+        setFilterItems(
+          'language',
+          entries.map(([key, val]) => ({
+            value: parseInt(key),
+            text: val,
+          })),
+        )
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     onMounted(async () => {
