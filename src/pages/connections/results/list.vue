@@ -46,6 +46,7 @@ import TableResults from 'components/ui/TableResults'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon } from 'composables/element'
+import { useFilterHelper } from 'composables/filterHelper'
 
 export default {
   components: {
@@ -129,22 +130,22 @@ export default {
       },
     ])
 
+    const { setFilterItems } = useFilterHelper(columns)
+
     const loadFilters = async () => {
-      await api
-        .get('/api/v1/token/devices/types/')
-        .then((response) => {
-          columns.value.find(
-            (x) => x.field === 'device_type.name',
-          ).filterOptions.filterDropdownItems = response.data.results.map(
-            ({ id, name }) => ({
-              value: id,
-              text: name,
-            }),
-          )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const response = await api.get('/api/v1/token/devices/types/')
+
+        setFilterItems(
+          'device_type.name',
+          response.data.results.map(({ id, name }) => ({
+            value: id,
+            text: name,
+          })),
+        )
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     onMounted(async () => {
