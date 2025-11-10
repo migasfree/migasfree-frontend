@@ -82,6 +82,7 @@ import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon } from 'composables/element'
+import { useFilterHelper } from 'composables/filterHelper'
 
 export default {
   components: {
@@ -214,72 +215,56 @@ export default {
         field: 'schedule.name',
         filterOptions: {
           enabled: true,
-          placeholder: $gettext('Filter'),
+          placeholder: $gettext('All'),
           trigger: 'enter',
         },
       },
     ])
 
+    const { setFilterItems } = useFilterHelper(columns)
+
     const loadFilters = async () => {
-      await api
-        .get('/api/v1/token/projects/')
-        .then((response) => {
-          columns.value.find(
-            (x) => x.field === 'project.name',
-          ).filterOptions.filterDropdownItems = response.data.results.map(
-            ({ id, name }) => ({
-              value: id,
-              text: name,
-            }),
-          )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const [projectsResponse, domainsResponse, schedulesResponse] =
+          await Promise.all([
+            api.get('/api/v1/token/projects/'),
+            api.get('/api/v1/token/domains/'),
+            api.get('/api/v1/token/schedules/'),
+          ])
 
-      await api
-        .get('/api/v1/token/domains/')
-        .then((response) => {
-          columns.value.find(
-            (x) => x.field === 'domain.name',
-          ).filterOptions.filterDropdownItems = response.data.results.map(
-            ({ id, name }) => ({
-              value: id,
-              text: name,
-            }),
-          )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+        setFilterItems(
+          'project.name',
+          projectsResponse.data.results.map(({ id, name }) => ({
+            value: id,
+            text: name,
+          })),
+        )
 
-      await api
-        .get('/api/v1/token/schedules/')
-        .then((response) => {
-          columns.value.find(
-            (x) => x.field === 'schedule.name',
-          ).filterOptions.filterDropdownItems = response.data.results.map(
-            ({ id, name }) => ({
-              value: id,
-              text: name,
-            }),
-          )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-    }
+        setFilterItems(
+          'domain.name',
+          domainsResponse.data.results.map(({ id, name }) => ({
+            value: id,
+            text: name,
+          })),
+        )
 
-    const resolveSource = (value) => {
-      switch (value) {
-        case 'I':
-          return $gettext('Internal')
-        case 'E':
-          return $gettext('External')
-        default:
-          return ''
+        setFilterItems(
+          'schedule.name',
+          schedulesResponse.data.results.map(({ id, name }) => ({
+            value: id,
+            text: name,
+          })),
+        )
+      } catch (error) {
+        uiStore.notifyError(error)
       }
     }
+
+    const resolveSource = (value) =>
+      ({
+        I: $gettext('Internal'),
+        E: $gettext('External'),
+      })[value] ?? ''
 
     onMounted(async () => {
       await loadFilters()
