@@ -85,11 +85,7 @@ export default {
 
     const title = ref($gettext('Store'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'stores-list',
@@ -128,14 +124,12 @@ export default {
     })
 
     const loadRelated = async () => {
-      await api
-        .get(`/api/v1/token/projects/`)
-        .then((response) => {
-          projects.value = response.data.results
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const { data } = await api.get('/api/v1/token/projects/')
+        projects.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const elementData = () => {
