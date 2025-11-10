@@ -87,11 +87,7 @@ export default {
 
     const title = ref($gettext('Group'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'groups-list',
