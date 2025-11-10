@@ -102,8 +102,8 @@
                   v-model="element.tags"
                   :options="tags"
                   :label="$gettext('Tags')"
-                  :onFilter="filterTags"
-                  :onFilterAbort="abortFilterTags"
+                  :on-filter="filterTags"
+                  :on-filter-abort="abortFilterTags"
                 >
                   <template #option="{ scope }">
                     <q-item v-bind="scope.itemProps">
@@ -450,11 +450,7 @@ export default {
 
     const title = ref($gettext('Computer'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const loading = ref(false)
     const loadingSync = ref(false)
