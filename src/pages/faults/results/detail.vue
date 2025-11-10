@@ -113,11 +113,7 @@ export default {
 
     const title = ref($gettext('Fault'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'faults-list',
