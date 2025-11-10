@@ -135,11 +135,7 @@ export default {
     const titleIcon = appIcon('password')
     const title = $gettext('Change Password')
     const windowTitle = ref(title)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'user-profiles-list',
