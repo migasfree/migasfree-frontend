@@ -149,11 +149,7 @@ export default {
 
     const title = ref($gettext('Scope'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'scopes-list',
@@ -194,34 +190,30 @@ export default {
     })
 
     const loadRelated = async () => {
-      await api
-        .get('/api/v1/token/domains/')
-        .then((response) => {
-          Object.entries(response.data.results).map(([, item]) => {
-            domains.value.push({
-              id: item.id,
-              name: item.name,
-            })
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-
-      if (authStore.user.is_superuser)
-        await api
-          .get('/api/v1/token/user-profiles/')
-          .then((response) => {
-            Object.entries(response.data.results).map(([, item]) => {
-              userProfiles.value.push({
-                id: item.id,
-                name: item.username,
+      try {
+        const [domainsResponse, profilesResponse] = await Promise.all([
+          api.get('/api/v1/token/domains/'),
+          authStore.user.is_superuser
+            ? api.get('/api/v1/token/user-profiles/', {
+                params: { page_size: 99999 }, // FIXME
               })
-            })
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+            : Promise.resolve(null),
+        ])
+
+        domains.value = domainsResponse.data.results.map((item) => ({
+          id: item.id,
+          name: item.name,
+        }))
+
+        if (profilesResponse) {
+          userProfiles.value = profilesResponse.data.results.map((item) => ({
+            id: item.id,
+            name: item.username,
+          }))
+        }
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const setRelated = () => {
