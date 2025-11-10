@@ -175,11 +175,7 @@ export default {
 
     const title = ref($gettext('Domain'))
     const windowTitle = ref(title.value)
-    useMeta(() => {
-      return {
-        title: windowTitle.value,
-      }
-    })
+    useMeta(() => ({ title: windowTitle.value }))
 
     const routes = {
       list: 'domains-list',
@@ -223,19 +219,18 @@ export default {
     })
 
     const loadRelated = async () => {
-      await api
-        .get('/api/v1/token/user-profiles/domain-admins/')
-        .then((response) => {
-          Object.entries(response.data).map(([, item]) => {
-            userProfiles.value.push({
-              id: item.id,
-              name: item.username,
-            })
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const { data } = await api.get(
+          '/api/v1/token/user-profiles/domain-admins/',
+        )
+        const profiles = Object.values(data).map((item) => ({
+          id: item.id,
+          name: item.username,
+        }))
+        userProfiles.value = profiles
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const setRelated = () => {
