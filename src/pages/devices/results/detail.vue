@@ -304,51 +304,47 @@ export default {
     })
 
     const localConnectionFields = async () => {
-      if (element.connection.id)
-        await api
-          .get(`/api/v1/token/devices/connections/${element.connection.id}/`)
-          .then((response) => {
-            element.connection.fields = response.data.fields
-              .split(',')
-              .map((item) => {
-                const field = item.trim().split(':')
+      if (!element.connection?.id) return
 
-                return {
-                  id: field[0],
-                  value:
-                    'data' in element && field[0] in element.data
-                      ? element.data[field[0]]
-                      : null,
-                  hint: field[1] ? field[1] : null,
-                }
-              })
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/devices/connections/${element.connection.id}/`,
+        )
+        // `data.fields` is a string separated by commas
+        element.connection.fields = data.fields.split(',').map((item) => {
+          const [id, hint] = item.trim().split(':')
+
+          return {
+            id,
+            value: element.data?.[id] ?? null,
+            hint: hint ?? null,
+          }
+        })
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const loadRelated = async () => {
-      await api
-        .get('/api/v1/token/devices/capabilities/')
-        .then((response) => {
-          capabilities.value = response.data.results
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const { data } = await api.get('/api/v1/token/devices/capabilities/')
+        capabilities.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
 
       if (element.id) {
         isLoadingLogical.value = true
-        await api
-          .get(`/api/v1/token/devices/logical/?device__id=${element.id}`)
-          .then((response) => {
-            logicalDevices.value = response.data.results
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
-          .finally(() => (isLoadingLogical.value = false))
+        try {
+          const { data } = await api.get(
+            `/api/v1/token/devices/logical/?device__id=${element.id}`,
+          )
+          logicalDevices.value = data.results
+        } catch (error) {
+          uiStore.notifyError(error)
+        } finally {
+          isLoadingLogical.value = false
+        }
 
         localConnectionFields()
       }
