@@ -222,7 +222,6 @@ export default {
         }
       })
 
-      // Wait for all requests to finish
       await Promise.all([...delayPromises, ...deletePromises])
     }
 
