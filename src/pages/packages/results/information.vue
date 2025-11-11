@@ -98,15 +98,16 @@ export default {
 
     const setRelated = async () => {
       loading.value = true
-      await api
-        .get(`/api/v1/token/${model}/${element.id}/info/`)
-        .then((response) => {
-          information.value = response.data.data
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-        .finally(() => (loading.value = false))
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/${model}/${element.id}/info/`,
+        )
+        information.value = data.data
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        loading.value = false
+      }
     }
 
     const setTitle = (value) => {
