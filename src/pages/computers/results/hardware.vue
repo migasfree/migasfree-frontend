@@ -368,18 +368,19 @@ export default {
 
     const setRelated = async () => {
       loading.value = true
-      await api
-        .get(`/api/v1/token/${model}/${route.params.id}/hardware/`)
-        .then((response) => {
-          hardwareInfo.value = arrayToTree(response.data, {
-            dataField: null,
-            parentId: 'parent',
-          })
+      try {
+        const response = await api.get(
+          `/api/v1/token/${model}/${route.params.id}/hardware/`,
+        )
+        hardwareInfo.value = arrayToTree(response.data, {
+          dataField: null,
+          parentId: 'parent',
         })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-        .finally(() => (loading.value = false))
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        loading.value = false
+      }
     }
 
     const header = (row) => {
