@@ -262,25 +262,22 @@ export default {
     })
 
     const loadRelated = async () => {
-      await api
-        .get('/api/v1/token/stamps/')
-        .then((response) => {
-          stamps.value = response.data.results
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const [stampsResponse, computersResponse] = await Promise.all([
+          api.get('/api/v1/token/stamps/'),
+          element.id
+            ? api.get(`/api/v1/token/tags/${element.id}/computers/`)
+            : Promise.resolve({ data: { computers: [], inflicted: [] } }),
+        ])
 
-      if (element.id) {
-        await api
-          .get(`/api/v1/token/tags/${element.id}/computers/`)
-          .then((response) => {
-            element.computers = response.data.computers
-            inflicted.value = response.data.inflicted
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+        stamps.value = stampsResponse.data.results
+
+        if (element.id) {
+          element.computers = computersResponse.data.computers
+          inflicted.value = computersResponse.data.inflicted
+        }
+      } catch (error) {
+        uiStore.notifyError(error)
       }
     }
 
@@ -306,15 +303,14 @@ export default {
     }
 
     const updateRelated = async () => {
-      await api
-        .patch(`/api/v1/token/${model}/${element.id}/computers/`, {
-          computers: element.computers
-            ? element.computers.map((item) => item.id)
-            : [],
+      const computers = element.computers?.map((item) => item.id) ?? []
+      try {
+        await api.patch(`/api/v1/token/${model}/${element.id}/computers/`, {
+          computers,
         })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const resetElement = () => {
@@ -358,15 +354,17 @@ export default {
         return
       }
 
-      await api
-        .get('/api/v1/token/computers/', {
+      try {
+        const response = await api.get('/api/v1/token/computers/', {
           params: { search: val.toLowerCase() },
         })
-        .then((response) => {
-          computers.value = response.data.results
-        })
 
-      update(() => {})
+        computers.value = response.data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        update(() => {})
+      }
     }
 
     const abortFilterComputers = () => {
