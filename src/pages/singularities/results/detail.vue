@@ -243,32 +243,29 @@ export default {
     })
 
     const loadRelated = async () => {
-      await api
-        .get('/api/v1/token/formulas/?sort=client')
-        .then((response) => {
-          formulas.value = response.data.results
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const [formulasResponse, languagesResponse] = await Promise.all([
+          api.get('/api/v1/token/formulas/?sort=client'),
+          api.get('/api/v1/public/languages/'),
+        ])
 
-      await api
-        .get(`/api/v1/public/languages/`)
-        .then((response) => {
-          Object.entries(response.data).map(([key, val]) => {
-            languages.value.push({
-              id: parseInt(key),
-              name: val,
-            })
-          })
-          if (element.id && typeof element.language === 'number')
-            element.language = languages.value.find(
-              (x) => x.id === element.language,
-            )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+        formulas.value = formulasResponse.data.results
+
+        languages.value = Object.entries(languagesResponse.data).map(
+          ([id, name]) => ({
+            id: parseInt(id),
+            name,
+          }),
+        )
+
+        if (element.id && typeof element.language === 'number') {
+          element.language = languages.value.find(
+            (x) => x.id === element.language,
+          )
+        }
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const elementData = () => {
