@@ -425,47 +425,34 @@ export default {
     }
 
     const loadRelated = async () => {
-      await api
-        .get('/api/v1/token/accounts/groups/')
-        .then((response) => {
-          Object.entries(response.data.results).map(([, item]) => {
-            groups.value.push({
-              id: item.id,
-              name: item.name,
-            })
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const [
+          { data: groupsData },
+          { data: domainsData },
+          { data: scopesData },
+        ] = await Promise.all([
+          api.get('/api/v1/token/accounts/groups/'),
+          api.get('/api/v1/token/domains/'),
+          api.get('/api/v1/token/scopes/'),
+        ])
 
-      await api
-        .get('/api/v1/token/domains/')
-        .then((response) => {
-          Object.entries(response.data.results).map(([, item]) => {
-            domains.value.push({
-              id: item.id,
-              name: item.name,
-            })
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+        groups.value = groupsData.results.map((item) => ({
+          id: item.id,
+          name: item.name,
+        }))
 
-      await api
-        .get('/api/v1/token/scopes/')
-        .then((response) => {
-          Object.entries(response.data.results).map(([, item]) => {
-            scopes.value.push({
-              id: item.id,
-              name: item.name,
-            })
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+        domains.value = domainsData.results.map((item) => ({
+          id: item.id,
+          name: item.name,
+        }))
+
+        scopes.value = scopesData.results.map((item) => ({
+          id: item.id,
+          name: item.name,
+        }))
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const elementData = () => {
@@ -517,15 +504,15 @@ export default {
         cancel: { label: $gettext('Cancel'), flat: true },
         persistent: true,
       }).onOk(async () => {
-        await api
-          .post(`/api/v1/token/user-profiles/${element.id}/update-token/`)
-          .then((response) => {
-            element.token = response.data.info
-            uiStore.notifySuccess(response.data.detail)
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+        try {
+          const { data } = await api.post(
+            `/api/v1/token/user-profiles/${element.id}/update-token/`,
+          )
+          element.token = data.info
+          uiStore.notifySuccess(data.detail)
+        } catch (error) {
+          uiStore.notifyError(error)
+        }
       })
     }
 
@@ -536,15 +523,17 @@ export default {
         return
       }
 
-      await api
-        .get('/api/v1/token/accounts/permissions', {
+      try {
+        const response = await api.get('/api/v1/token/accounts/permissions', {
           params: { search: val.toLowerCase() },
         })
-        .then((response) => {
-          userPermissions.value = response.data.results
-        })
 
-      update(() => {})
+        userPermissions.value = response.data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        update(() => {})
+      }
     }
 
     const abortFilterUserPermissions = () => {
