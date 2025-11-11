@@ -150,24 +150,19 @@ export default {
     })
 
     const loadRelated = async () => {
-      await api
-        .get('/api/v1/token/properties/kind/')
-        .then((response) => {
-          Object.entries(response.data).map(([key, val]) => {
-            kind.value.push({
-              id: key,
-              name: val,
-            })
-          })
-          if (element.id)
-            element.kind = kind.value.find((x) => x.id == element.kind)
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const { data } = await api.get('/api/v1/token/properties/kind/')
+        kind.value = Object.entries(data).map(([key, val]) => ({
+          id: key,
+          name: val,
+        }))
 
-      if (typeof element.kind === 'string')
-        element.kind = kind.value.find((x) => x.id == element.kind)
+        if (typeof element.kind === 'string') {
+          element.kind = kind.value.find((x) => x.id == element.kind)
+        }
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const elementData = () => {
