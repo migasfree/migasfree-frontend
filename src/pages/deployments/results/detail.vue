@@ -794,19 +794,20 @@ export default {
         return
       }
 
-      await api
-        .get('/api/v1/token/packages/', {
+      try {
+        const { data } = await api.get('/api/v1/token/packages/', {
           params: {
             search: val.toLowerCase(),
             project__id: element.project.id,
             store__isnull: false,
           },
         })
-        .then((response) => {
-          packages.value = response.data.results
-        })
-
-      update(() => {})
+        packages.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        update(() => {})
+      }
     }
 
     const abortFilterPackages = () => {
@@ -820,18 +821,19 @@ export default {
         return
       }
 
-      await api
-        .get('/api/v1/token/package-sets/', {
+      try {
+        const { data } = await api.get('/api/v1/token/package-sets/', {
           params: {
             search: val.toLowerCase(),
             project__id: element.project.id,
           },
         })
-        .then((response) => {
-          packageSets.value = response.data.results
-        })
-
-      update(() => {})
+        packageSets.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        update(() => {})
+      }
     }
 
     const abortFilterPackageSets = () => {
