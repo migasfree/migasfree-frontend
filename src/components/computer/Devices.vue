@@ -110,43 +110,39 @@ export default {
 
     const loadDevices = async () => {
       loading.value = true
-      await api
-        .get(`/api/v1/token/computers/${props.cid}/devices/`)
-        .then((response) => {
-          Object.assign(devices, response.data)
-          updateDefaultLogicalDeviceSelect()
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/computers/${props.cid}/devices/`,
+        )
 
-          devices.default_logical_device = defaultLogicalDevices.value.find(
-            (x) => x.id === devices.default_logical_device,
-          )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-        .finally(() => {
-          loading.value = false
-        })
+        Object.assign(devices, data)
+
+        updateDefaultLogicalDeviceSelect()
+
+        devices.default_logical_device = defaultLogicalDevices.value.find(
+          (x) => x.id === devices.default_logical_device,
+        )
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        loading.value = false
+      }
     }
 
     const updateDevices = async () => {
       loading.value = true
-      await api
-        .patch(`/api/v1/token/computers/${props.cid}/`, {
-          default_logical_device:
-            devices.default_logical_device !== undefined &&
-            devices.default_logical_device !== null
-              ? devices.default_logical_device.id
-              : null,
+      try {
+        await api.patch(`/api/v1/token/computers/${props.cid}/`, {
+          default_logical_device: devices.default_logical_device?.id ?? null,
           assigned_logical_devices_to_cid:
             devices.assigned_logical_devices_to_cid.map((item) => item.id),
         })
-        .then(() => {
-          uiStore.notifySuccess($gettext('Devices have been changed!'))
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-        .finally(() => (loading.value = false))
+        uiStore.notifySuccess($gettext('Devices have been changed!'))
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        loading.value = false
+      }
     }
 
     const filterAssignedDevices = async (val, update, abort) => {
@@ -156,15 +152,16 @@ export default {
         return
       }
 
-      await api
-        .get(`/api/v1/token/devices/logical/`, {
+      try {
+        const { data } = await api.get('/api/v1/token/devices/logical/', {
           params: { search: val.toLowerCase() },
         })
-        .then((response) => {
-          assignedDevices.value = response.data.results
-        })
-
-      update(() => {})
+        assignedDevices.value = data.results ?? []
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        update(() => {})
+      }
     }
 
     const abortFilterAssignedDevices = () => {
