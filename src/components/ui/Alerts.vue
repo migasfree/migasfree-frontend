@@ -189,7 +189,7 @@ export default defineComponent({
       socket.value.onclose = () => setTimeout(connectWS(), 1000)
 
       socket.value.onerror = (error) => {
-        console.error(error.message)
+        console.error(error.message ?? error)
         socket.value?.close()
       }
     }
