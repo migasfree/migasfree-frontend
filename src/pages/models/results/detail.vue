@@ -360,49 +360,42 @@ export default {
     }
 
     const updateRelated = async () => {
-      drivers.value.forEach((driver) => {
-        if (driver.project === undefined || driver.capability === undefined) {
-          return
-        }
-
-        if (driver.id > 0) {
-          api
-            .patch(`/api/v1/token/devices/drivers/${driver.id}/`, {
-              model: element.id,
-              project: driver.project.id,
-              capability: driver.capability.id,
-              name: driver.name,
-              packages_to_install:
-                driver.packages_to_install !== null
-                  ? driver.packages_to_install.split('\n')
-                  : [],
-            })
-            .catch((error) => {
-              uiStore.notifyError(error)
-            })
-        } else {
-          api
-            .post('/api/v1/token/devices/drivers/', {
-              model: element.id,
-              project: driver.project.id,
-              capability: driver.capability.id,
-              name: driver.name,
-              packages_to_install:
-                driver.packages_to_install !== null
-                  ? driver.packages_to_install.split('\n')
-                  : [],
-            })
-            .catch((error) => {
-              uiStore.notifyError(error)
-            })
-        }
+      const buildPayload = (driver) => ({
+        model: element.id,
+        project: driver.project.id,
+        capability: driver.capability.id,
+        name: driver.name,
+        packages_to_install:
+          driver.packages_to_install !== null
+            ? driver.packages_to_install.split('\n')
+            : [],
       })
 
-      removedDrivers.value.forEach((id) => {
-        api.delete(`/api/v1/token/devices/drivers/${id}/`).catch((error) => {
-          uiStore.notifyError(error)
+      const driverPromises = drivers.value
+        .filter((d) => d.project && d.capability) // skip invalid entries
+        .map(async (driver) => {
+          const payload = buildPayload(driver)
+          try {
+            if (driver.id > 0) {
+              await api.patch(
+                `/api/v1/token/devices/drivers/${driver.id}/`,
+                payload,
+              )
+            } else {
+              await api.post('/api/v1/token/devices/drivers/', payload)
+            }
+          } catch (error) {
+            uiStore.notifyError(error)
+          }
         })
-      })
+
+      const removePromises = removedDrivers.value.map((id) =>
+        api
+          .delete(`/api/v1/token/devices/drivers/${id}/`)
+          .catch((error) => uiStore.notifyError(error)),
+      )
+
+      await Promise.all([...driverPromises, ...removePromises])
     }
 
     const resetElement = () => {
