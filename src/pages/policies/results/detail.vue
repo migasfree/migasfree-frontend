@@ -296,53 +296,40 @@ export default {
     }
 
     const updateRelated = async () => {
-      policyGroups.value.forEach((line) => {
-        if (line.priority === undefined) {
-          return
+      const policyPromises = policyGroups.value.map(async (line) => {
+        if (line.priority === undefined) return
+
+        const payload = {
+          policy: element.id,
+          priority: line.priority,
+          included_attributes: line.included_attributes.map((item) => item.id),
+          excluded_attributes: line.excluded_attributes.map((item) => item.id),
+          applications: line.applications.map((item) => item.id),
         }
 
-        if (line.id > 0) {
-          api
-            .patch(`/api/v1/token/catalog/policy-groups/${line.id}/`, {
-              policy: element.id,
-              priority: line.priority,
-              included_attributes: line.included_attributes.map(
-                (item) => item.id,
-              ),
-              excluded_attributes: line.excluded_attributes.map(
-                (item) => item.id,
-              ),
-              applications: line.applications.map((item) => item.id),
-            })
-            .catch((error) => {
-              uiStore.notifyError(error)
-            })
-        } else {
-          api
-            .post('/api/v1/token/catalog/policy-groups/', {
-              policy: element.id,
-              priority: line.priority,
-              included_attributes: line.included_attributes.map(
-                (item) => item.id,
-              ),
-              excluded_attributes: line.excluded_attributes.map(
-                (item) => item.id,
-              ),
-              applications: line.applications.map((item) => item.id),
-            })
-            .catch((error) => {
-              uiStore.notifyError(error)
-            })
+        try {
+          if (line.id > 0) {
+            await api.patch(
+              `/api/v1/token/catalog/policy-groups/${line.id}/`,
+              payload,
+            )
+          } else {
+            await api.post('/api/v1/token/catalog/policy-groups/', payload)
+          }
+        } catch (error) {
+          uiStore.notifyError(error)
         }
       })
 
-      removedPolicyGroups.value.forEach((id) => {
-        api
-          .delete(`/api/v1/token/catalog/policy-groups/${id}/`)
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+      const deletePromises = removedPolicyGroups.value.map(async (id) => {
+        try {
+          await api.delete(`/api/v1/token/catalog/policy-groups/${id}/`)
+        } catch (error) {
+          uiStore.notifyError(error)
+        }
       })
+
+      await Promise.all([...policyPromises, ...deletePromises])
     }
 
     const resetElement = () => {
