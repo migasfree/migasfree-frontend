@@ -188,41 +188,42 @@ export default {
     }
 
     const updateRelated = async () => {
-      delays.value.forEach((delay) => {
+      const delayPromises = delays.value.map(async (delay) => {
         if (delay.delay === undefined || delay.duration === undefined) {
           return
         }
 
-        if (delay.id > 0) {
-          api
-            .patch(`/api/v1/token/schedule-delays/${delay.id}/`, {
-              schedule: element.id,
-              delay: delay.delay,
-              duration: delay.duration,
-              attributes: delay.attributes.map((item) => item.id),
-            })
-            .catch((error) => {
-              uiStore.notifyError(error)
-            })
-        } else {
-          api
-            .post('/api/v1/token/schedule-delays/', {
-              schedule: element.id,
-              delay: delay.delay,
-              duration: delay.duration,
-              attributes: delay.attributes.map((item) => item.id),
-            })
-            .catch((error) => {
-              uiStore.notifyError(error)
-            })
+        const payload = {
+          schedule: element.id,
+          delay: delay.delay,
+          duration: delay.duration,
+          attributes: delay.attributes.map((item) => item.id),
+        }
+
+        try {
+          if (delay.id > 0) {
+            await api.patch(
+              `/api/v1/token/schedule-delays/${delay.id}/`,
+              payload,
+            )
+          } else {
+            await api.post('/api/v1/token/schedule-delays/', payload)
+          }
+        } catch (error) {
+          uiStore.notifyError(error)
         }
       })
 
-      removedDelays.value.forEach((id) => {
-        api.delete(`/api/v1/token/schedule-delays/${id}/`).catch((error) => {
+      const deletePromises = removedDelays.value.map(async (id) => {
+        try {
+          await api.delete(`/api/v1/token/schedule-delays/${id}/`)
+        } catch (error) {
           uiStore.notifyError(error)
-        })
+        }
       })
+
+      // Wait for all requests to finish
+      await Promise.all([...delayPromises, ...deletePromises])
     }
 
     const resetElement = () => {
