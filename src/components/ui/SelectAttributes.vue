@@ -104,18 +104,18 @@ export default {
         return
       }
 
-      await api
-        .get(`/api/v1/token/${model}/`, {
-          params: { search: val.toLowerCase() },
+      try {
+        const { data } = await api.get(`/api/v1/token/${model}/`, {
+          params: {
+            search: val.toLowerCase(),
+          },
         })
-        .then((response) => {
-          attributes.value = response.data.results
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-
-      update(() => {})
+        attributes.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        update(() => {})
+      }
     }
 
     const abortFilterAttributes = () => {
