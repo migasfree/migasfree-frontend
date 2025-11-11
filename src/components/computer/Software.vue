@@ -490,30 +490,32 @@ export default {
     const loadSoftwareInventory = async () => {
       if (softwareInventory.value.length === 0) {
         loading.inventory = true
-        await api
-          .get(`/api/v1/token/computers/${props.cid}/software/inventory/`)
-          .then((response) => {
-            softwareInventory.value = response.data
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
-          .finally(() => (loading.inventory = false))
+        try {
+          const { data } = await api.get(
+            `/api/v1/token/computers/${props.cid}/software/inventory/`,
+          )
+          softwareInventory.value = data
+        } catch (error) {
+          uiStore.notifyError(error)
+        } finally {
+          loading.inventory = false
+        }
       }
     }
 
     const loadSoftwareHistory = async () => {
       if (Object.keys(softwareHistory).length === 0) {
         loading.history = true
-        await api
-          .get(`/api/v1/token/computers/${props.cid}/software/history/`)
-          .then((response) => {
-            softwareHistory.value = response.data
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
-          .finally(() => (loading.history = false))
+        try {
+          const { data } = await api.get(
+            `/api/v1/token/computers/${props.cid}/software/history/`,
+          )
+          softwareHistory.value = data
+        } catch (error) {
+          uiStore.notifyError(error)
+        } finally {
+          loading.history = false
+        }
       }
     }
 
@@ -558,15 +560,18 @@ export default {
         return
       }
 
-      await api
-        .get('/api/v1/token/computers/', {
-          params: { search: val.toLowerCase() },
+      try {
+        const { data } = await api.get('/api/v1/token/computers/', {
+          params: {
+            search: val.toLowerCase(),
+          },
         })
-        .then((response) => {
-          computers.value = response.data.results
-        })
-
-      update(() => {})
+        computers.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        update(() => {})
+      }
     }
 
     const abortFilterComputers = () => {
@@ -575,33 +580,33 @@ export default {
 
     const deleteInventory = async () => {
       loading.inventory = true
-      await api
-        .delete(`/api/v1/token/computers/${props.cid}/software/inventory/`)
-        .then((response) => {
-          softwareInventory.value = response.data
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-        .finally(() => (loading.inventory = false))
+      try {
+        const { data } = await api.delete(
+          `/api/v1/token/computers/${props.cid}/software/inventory/`,
+        )
+        softwareInventory.value = data
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        loading.inventory = false
+      }
     }
 
     const deleteHistory = async (key = null) => {
       loading.history = true
-      await api
-        .delete(
-          `/api/v1/token/computers/${props.cid}/software/history/?key=${key}`,
-        )
-        .then((response) => {
-          for (var key in softwareHistory) {
-            delete softwareHistory[key]
-          }
-          Object.assign(softwareHistory, response.data)
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-        .finally(() => (loading.history = false))
+
+      try {
+        const url =
+          `/api/v1/token/computers/${props.cid}/software/history/` +
+          (key ? `?key=${key}` : '')
+        const { data } = await api.delete(url)
+        Object.keys(softwareHistory).forEach((k) => delete softwareHistory[k])
+        Object.assign(softwareHistory, data)
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        loading.history = false
+      }
     }
 
     return {
