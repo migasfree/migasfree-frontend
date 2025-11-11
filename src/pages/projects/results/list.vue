@@ -158,13 +158,24 @@ export default {
 
     const loadFilters = async () => {
       try {
-        const response = await api.get('/api/v1/token/platforms/')
+        const [platformsResponse, pmsResponse] = await Promise.all([
+          api.get('/api/v1/token/platforms/'),
+          api.get('/api/v1/public/pms/'),
+        ])
 
         setFilterItems(
           'platform.name',
-          response.data.results.map(({ id, name }) => ({
+          platformsResponse.data.results.map(({ id, name }) => ({
             value: id,
             text: name,
+          })),
+        )
+
+        setFilterItems(
+          'pms',
+          Object.keys(pmsResponse.data).map((key) => ({
+            value: key,
+            text: key,
           })),
         )
       } catch (error) {
