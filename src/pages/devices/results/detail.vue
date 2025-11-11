@@ -362,48 +362,38 @@ export default {
     }
 
     const updateRelated = async () => {
-      logicalDevices.value.forEach((logical) => {
-        if (logical.capability === undefined) {
-          return
+      for (const logical of logicalDevices.value) {
+        if (!logical.capability) return
+
+        const payload = {
+          device: element.id,
+          capability: logical.capability.id,
+          alternative_capability_name: logical.alternative_capability_name,
+          attributes: logical.attributes?.map((item) => item.id) ?? [],
         }
 
-        if (logical.id > 0) {
-          api
-            .patch(`/api/v1/token/devices/logical/${logical.id}/`, {
-              id: logical.id,
-              device: element.id,
-              capability: logical.capability.id,
-              alternative_capability_name: logical.alternative_capability_name,
-              attributes:
-                logical.attributes !== null
-                  ? logical.attributes.map((item) => item.id)
-                  : [],
-            })
-            .catch((error) => {
-              uiStore.notifyError(error)
-            })
-        } else {
-          api
-            .post('/api/v1/token/devices/logical/', {
-              device: element.id,
-              capability: logical.capability.id,
-              alternative_capability_name: logical.alternative_capability_name,
-              attributes:
-                logical.attributes !== null
-                  ? logical.attributes.map((item) => item.id)
-                  : [],
-            })
-            .catch((error) => {
-              uiStore.notifyError(error)
-            })
-        }
-      })
+        const isExisting = logical.id > 0
+        const method = isExisting ? 'patch' : 'post'
+        const url = isExisting
+          ? `/api/v1/token/devices/logical/${logical.id}/`
+          : '/api/v1/token/devices/logical/'
 
-      removedLogicalDevices.value.forEach((id) => {
-        api.delete(`/api/v1/token/devices/logical/${id}/`).catch((error) => {
+        if (isExisting) payload.id = logical.id
+
+        try {
+          await api[method](url, payload)
+        } catch (error) {
           uiStore.notifyError(error)
-        })
-      })
+        }
+      }
+
+      for (const id of removedLogicalDevices.value) {
+        try {
+          await api.delete(`/api/v1/token/devices/logical/${id}/`)
+        } catch (error) {
+          uiStore.notifyError(error)
+        }
+      }
     }
 
     const setRelated = async () => {
@@ -457,15 +447,18 @@ export default {
         return
       }
 
-      await api
-        .get('/api/v1/token/devices/models/', {
-          params: { search: val.toLowerCase() },
+      try {
+        const { data } = await api.get('/api/v1/token/devices/models/', {
+          params: {
+            search: val.toLowerCase(),
+          },
         })
-        .then((response) => {
-          models.value = response.data.results
-        })
-
-      update(() => {})
+        models.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        update(() => {})
+      }
     }
 
     const abortFilterModels = () => {
