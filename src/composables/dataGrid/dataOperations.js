@@ -48,17 +48,15 @@ export function useDataOperations(deps) {
     router.push({ name: detailRoute.value, params: { id } })
   }
 
-  const remove = (id, reload = true) => {
-    api
-      .delete(`/api/v1/token/${model.value}/${id}/`)
-      .then(() => {
-        emit('postRemove', id)
-        uiStore.notifySuccess($gettext('Item deleted!'))
-        if (reload) loadItems()
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+  const remove = async (id, reload = true) => {
+    try {
+      await api.delete(`/api/v1/token/${model.value}/${id}/`)
+      emit('postRemove', id)
+      uiStore.notifySuccess($gettext('Item deleted!'))
+      if (reload) loadItems()
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
   const confirmRemove = (id) => {
@@ -93,37 +91,42 @@ export function useDataOperations(deps) {
     })
   }
 
-  const _export = (url, params = {}) => {
+  const _export = async (url, params = {}) => {
     isLoadingExport.value = true
-    api
-      .get(url, {
+    try {
+      const { data, headers } = await api.get(url, {
         params,
         responseType: 'blob',
       })
-      .then((response) => {
-        let fileURL = window.URL.createObjectURL(new Blob([response.data]))
-        let fileLink = document.createElement('a')
 
-        fileLink.href = fileURL
-        fileLink.setAttribute('download', `${model.value}.csv`)
-        document.body.appendChild(fileLink)
+      // Prefer filename from server (Content‑Disposition), fall back to model name
+      const filename = headers['content-disposition']
+        ? headers['content-disposition'].split('filename=')[1]
+        : `${model.value}.csv`
 
-        fileLink.click()
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
-      .finally(() => {
-        isLoadingExport.value = false
-      })
+      const blobURL = URL.createObjectURL(data)
+      const link = document.createElement('a')
+      link.href = blobURL
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      URL.revokeObjectURL(blobURL) // free memory
+    } catch (error) {
+      uiStore.notifyError(error)
+    } finally {
+      isLoadingExport.value = false
+    }
   }
 
-  const exportData = () => {
+  const exportData = async () => {
     const items = selectedRows.value.map((item) => item.id)
 
     if (items.length === 0) return
 
-    _export(`/api/v1/token/${model.value}/export/?id__in=${items.join(',')}`)
+    await _export(
+      `/api/v1/token/${model.value}/export/?id__in=${items.join(',')}`,
+    )
   }
 
   const paramsToBackend = (obj) => {
@@ -141,69 +144,71 @@ export function useDataOperations(deps) {
     return ret
   }
 
-  const exportAll = () => {
+  const exportAll = async () => {
     const params = paramsToBackend(route.query)
     Object.assign(params, queryParams())
     delete params.page
     delete params.page_size
 
-    _export(`/api/v1/token/${model.value}/export/`, params)
+    await _export(`/api/v1/token/${model.value}/export/`, params)
   }
 
-  const updateChecked = (id, value, reload = true) => {
-    api
-      .patch(`/api/v1/token/${model.value}/${id}/`, { checked: value })
-      .then(() => {
-        uiStore.notifySuccess($gettext('Changed item check value!'))
-        if (reload) loadItems()
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+  const updateChecked = async (id, value, reload = true) => {
+    try {
+      await api.patch(`/api/v1/token/${model.value}/${id}/`, { checked: value })
+      uiStore.notifySuccess($gettext('Changed item check value!'))
+      if (reload) await loadItems()
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
-  const updateItemsChecked = (value) => {
-    const items = selectedRows.value.map((item) => item.id)
+  const updateItemsChecked = async (value) => {
+    const items = selectedRows.value.map(({ id }) => id)
     if (items.length === 0) return
 
-    items.forEach((id) => {
-      updateChecked(id, value, items[items.length - 1] === id)
-    })
+    await Promise.all(
+      items.map((id, idx) =>
+        updateChecked(id, value, idx === items.length - 1),
+      ),
+    )
   }
 
-  const updateEnabled = (id, value, reload = true) => {
-    let data = { enabled: value }
-    if (model.value === 'user-profiles') data = { is_active: value }
+  const updateEnabled = async (id, value, reload = true) => {
+    const payload =
+      model.value === 'user-profiles'
+        ? { is_active: value }
+        : { enabled: value }
 
-    api
-      .patch(`/api/v1/token/${model.value}/${id}/`, data)
-      .then(() => {
-        uiStore.notifySuccess($gettext('Changed item enable value!'))
-        if (reload) loadItems()
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+    try {
+      await api.patch(`/api/v1/token/${model.value}/${id}/`, payload)
+      uiStore.notifySuccess($gettext('Changed item enable value!'))
+      if (reload) loadItems()
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
-  const updateItemsEnabled = (value) => {
-    const items = selectedRows.value.map((item) => item.id)
+  const updateItemsEnabled = async (value) => {
+    const items = selectedRows.value.map(({ id }) => id)
     if (items.length === 0) return
 
-    items.forEach((id) => {
-      updateEnabled(id, value, items[items.length - 1] === id)
-    })
+    await Promise.all(
+      items.map((id, idx) =>
+        updateEnabled(id, value, idx === items.length - 1),
+      ),
+    )
   }
 
   const regenerateMetadata = async (id) => {
-    await api
-      .get(`/api/v1/token/${model.value}/internal-sources/${id}/metadata/`)
-      .then((response) => {
-        uiStore.notifySuccess(response.data.detail)
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+    try {
+      const response = await api.get(
+        `/api/v1/token/${model.value}/internal-sources/${id}/metadata/`,
+      )
+      uiStore.notifySuccess(response.data.detail)
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
   return {
