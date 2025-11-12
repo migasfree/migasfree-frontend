@@ -381,15 +381,16 @@ export default {
         return
       }
 
-      await api
-        .get('/api/v1/token/catalog/apps/', {
+      try {
+        const { data } = await api.get('/api/v1/token/catalog/apps/', {
           params: { search: val.toLowerCase() },
         })
-        .then((response) => {
-          applications.value = response.data.results
-        })
-
-      update(() => {})
+        applications.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        update(() => {})
+      }
     }
 
     const abortFilterApplications = () => {
