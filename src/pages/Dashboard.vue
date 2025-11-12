@@ -229,62 +229,64 @@ export default defineComponent({
     })
 
     const loadProjects = async () => {
-      await api
-        .get('/api/v1/token/projects')
-        .then((response) => {
-          projects.value = response.data.results
-          loadMonthlySyncs()
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const response = await api.get('/api/v1/token/projects')
+        projects.value = response.data.results
+        loadMonthlySyncs()
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const loadMonthlySyncs = async () => {
       monthlySyncs.series = []
-
       loadingMonthlySyncs.value = true
-      await api
-        .get('/api/v1/token/stats/syncs/monthly/', {
-          params: { begin: begin.value, end: end.value },
-        })
-        .then((response) => {
-          monthlySyncs.xData = response.data.x_labels
-          Object.entries(response.data.data).map(([, val]) => {
+
+      try {
+        const baseParams = { begin: begin.value, end: end.value }
+
+        // 1️⃣ Load the overall monthly syncs
+        const baseResponse = await api.get(
+          '/api/v1/token/stats/syncs/monthly/',
+          {
+            params: baseParams,
+          },
+        )
+        monthlySyncs.xData = baseResponse.data.x_labels
+        for (const [, val] of Object.entries(baseResponse.data.data)) {
+          monthlySyncs.series.push({
+            type: 'line',
+            smooth: true,
+            name: 'Total',
+            data: val,
+          })
+        }
+
+        // 2️⃣ Load project‑specific syncs in parallel
+        const projectPromises = projects.value.map((item) =>
+          api
+            .get('/api/v1/token/stats/syncs/monthly/', {
+              params: { ...baseParams, project_id: item.id },
+            })
+            .then((resp) => ({ item, data: resp.data.data })),
+        )
+        const projectResults = await Promise.all(projectPromises)
+
+        for (const { item, data } of projectResults) {
+          for (const [, val] of Object.entries(data)) {
             monthlySyncs.series.push({
               type: 'line',
               smooth: true,
-              name: 'Total',
+              name: item.name,
               data: val,
             })
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-        .finally(() => {
-          loadingMonthlySyncs.value = false
-        })
-
-      projects.value.forEach((item) => {
-        api
-          .get('/api/v1/token/stats/syncs/monthly/', {
-            params: { begin: begin.value, end: end.value, project_id: item.id },
-          })
-          .then((response) => {
-            Object.entries(response.data.data).map(([, val]) => {
-              monthlySyncs.series.push({
-                type: 'line',
-                smooth: true,
-                name: item.name,
-                data: val,
-              })
-            })
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
-      })
+          }
+        }
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        loadingMonthlySyncs.value = false
+      }
     }
 
     const calculateBeginDate = () => {
@@ -300,75 +302,42 @@ export default defineComponent({
 
     const loadEventsHistory = async () => {
       const begin = calculateBeginDate()
-
       loading.value = true
 
-      const syncs = await api
-        .get('/api/v1/token/stats/syncs/history/', { params: { begin } })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-
-      const errors = await api
-        .get('/api/v1/token/stats/errors/history/', { params: { begin } })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-
-      const faults = await api
-        .get('/api/v1/token/stats/faults/history/', { params: { begin } })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-
-      const migrations = await api
-        .get('/api/v1/token/stats/migrations/history/', { params: { begin } })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-
-      const statusLogs = await api
-        .get('/api/v1/token/stats/status-logs/history/', { params: { begin } })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-
-      eventsHistory.xData = syncs ? syncs.data.x_labels : []
-      eventsHistory.series = [
-        {
-          type: 'line',
-          smooth: true,
-          name: syncs ? Object.keys(syncs.data.data)[0] : '',
-          data: syncs ? Object.values(syncs.data.data)[0] : [],
-        },
-        {
-          type: 'line',
-          smooth: true,
-          name: errors ? Object.keys(errors.data.data)[0] : '',
-          data: errors ? Object.values(errors.data.data)[0] : [],
-        },
-        {
-          type: 'line',
-          smooth: true,
-          name: faults ? Object.keys(faults.data.data)[0] : '',
-          data: faults ? Object.values(faults.data.data)[0] : [],
-        },
-        {
-          type: 'line',
-          smooth: true,
-          name: migrations ? Object.keys(migrations.data.data)[0] : '',
-          data: migrations ? Object.values(migrations.data.data)[0] : [],
-        },
-        {
-          type: 'line',
-          smooth: true,
-          name: statusLogs ? Object.keys(statusLogs.data.data)[0] : '',
-          data: statusLogs ? Object.values(statusLogs.data.data)[0] : [],
-        },
+      const endpoints = [
+        { url: '/api/v1/token/stats/syncs/history/', key: 'syncs' },
+        { url: '/api/v1/token/stats/errors/history/', key: 'errors' },
+        { url: '/api/v1/token/stats/faults/history/', key: 'faults' },
+        { url: '/api/v1/token/stats/migrations/history/', key: 'migrations' },
+        { url: '/api/v1/token/stats/status-logs/history/', key: 'statusLogs' },
       ]
 
-      loading.value = false
+      // Run all requests in parallel
+      const results = await Promise.all(
+        endpoints.map(async ({ url, key }) => {
+          try {
+            const resp = await api.get(url, { params: { begin } })
+            return { key, data: resp.data }
+          } catch (error) {
+            uiStore.notifyError(error)
+            return { key, data: null }
+          }
+        }),
+      )
 
+      // Extract the x‑axis labels from the first successful response
+      const firstSuccess = results.find((r) => r.data?.x_labels)
+      eventsHistory.xData = firstSuccess?.data?.x_labels ?? []
+
+      // Build the series array dynamically
+      eventsHistory.series = results.map((r) => ({
+        type: 'line',
+        smooth: true,
+        name: r.data ? Object.keys(r.data.data)[0] : '',
+        data: r.data ? Object.values(r.data.data)[0] : [],
+      }))
+
+      loading.value = false
       uiStore.scrollToElement(document.getElementById('events-history'))
     }
 
@@ -383,6 +352,7 @@ export default defineComponent({
     }
 
     const goTo = (params) => {
+      // console.log('goTo **********', params)
       let query = {}
 
       if (params.data.project_id) {
@@ -420,14 +390,12 @@ export default defineComponent({
     }
 
     const resolveRoute = (model) => {
-      switch (model) {
-        case 'synchronizations':
-          return 'syncs-list'
-        case 'statuslogs':
-          return 'status-logs-list'
-        default:
-          return `${model}-list`
+      const specialRoutes = {
+        synchronizations: 'syncs-list',
+        statuslogs: 'status-logs-list',
       }
+
+      return specialRoutes[model] ?? `${model}-list`
     }
 
     onMounted(async () => {
@@ -444,7 +412,6 @@ export default defineComponent({
       dailySyncsTitle,
       monthlySyncs,
       monthlySyncsTitle,
-      projects,
       loading,
       loadingMonthlySyncs,
       lastHours,
@@ -454,7 +421,6 @@ export default defineComponent({
       productiveUrl,
       uncheckedErrorsUrl,
       uncheckedFaultsUrl,
-      loadProjects,
       updateMonthlySyncs,
       updateEventsHistory,
       loadEventsHistory,
