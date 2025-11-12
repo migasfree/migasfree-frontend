@@ -100,10 +100,8 @@
 
                 <FilteredMultiSelect
                   v-model="element.tags"
-                  :options="tags"
                   :label="$gettext('Tags')"
-                  :on-filter="filterTags"
-                  :on-filter-abort="abortFilterTags"
+                  :fetch-options="filterTags"
                 >
                   <template #option="{ scope }">
                     <q-item v-bind="scope.itemProps">
@@ -404,7 +402,6 @@ import pluralize from 'pluralize-esm'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
-import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import OverflowList from 'components/ui/OverflowList'
 import ItemDetail from 'components/ui/ItemDetail'
@@ -463,7 +460,6 @@ export default {
     const onlyAttributes = ref([])
     const onlyAttributeSets = ref([])
     const onlyDomains = ref([])
-    const tags = ref([])
     const errors = reactive({})
     const faults = reactive({})
 
@@ -616,27 +612,12 @@ export default {
         .finally(() => (loading.value = false))
     }
 
-    const filterTags = async (val, update, abort) => {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < MIN_CHARS_SEARCH) {
-        abort()
-        return
-      }
+    const filterTags = async (val) => {
+      const { data } = await api.get('/api/v1/token/tags/', {
+        params: { search: val.toLowerCase() },
+      })
 
-      try {
-        const { data } = await api.get('/api/v1/token/tags/', {
-          params: { search: val.toLowerCase() },
-        })
-        tags.value = data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        update(() => {})
-      }
-    }
-
-    const abortFilterTags = () => {
-      // console.log('delayed filter aborted')
+      return data.results
     }
 
     const getComputerStatus = async () => {
@@ -697,7 +678,6 @@ export default {
       onlyAttributes,
       onlyAttributeSets,
       onlyDomains,
-      tags,
       errors,
       faults,
       markers,
@@ -713,13 +693,11 @@ export default {
       centerMarkers,
       updateCurrentSituation,
       filterTags,
-      abortFilterTags,
       pluralize,
       setRelated,
       setTitle,
       appIcon,
       modelIcon,
-      MIN_CHARS_SEARCH,
     }
   },
 }
