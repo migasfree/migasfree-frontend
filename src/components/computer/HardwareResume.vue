@@ -274,20 +274,24 @@ export default {
 
     const updateCapture = async () => {
       loading.value = true
+
       if (hardwareDate.value === '') hardwareDate.value = null
-      await api
-        .patch(`/api/v1/token/computers/${props.cid}/`, {
+
+      try {
+        await api.patch(`/api/v1/token/computers/${props.cid}/`, {
           last_hardware_capture: hardwareDate.value,
         })
-        .then(() => {
-          uiStore.notifySuccess(
-            $gettext('Last hardware capture date has been changed!'),
-          )
-        })
-        .catch((error) => {
-          uiStore.notifyError(error.response.data.last_hardware_capture[0])
-        })
-        .finally(() => (loading.value = false))
+        uiStore.notifySuccess(
+          $gettext('Last hardware capture date has been changed!'),
+        )
+      } catch (error) {
+        const msg =
+          error?.response?.data?.last_hardware_capture?.[0] ??
+          $gettext('Failed to update hardware capture date.')
+        uiStore.notifyError(msg)
+      } finally {
+        loading.value = false
+      }
     }
 
     return {
