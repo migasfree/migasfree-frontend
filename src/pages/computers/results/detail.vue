@@ -130,12 +130,14 @@
                 </FilteredMultiSelect>
 
                 <OverflowList
+                  class="q-mt-md"
                   model="attribute-sets"
                   :label="$gettext('Attribute Sets')"
                   :items="onlyAttributeSets"
                 />
 
                 <OverflowList
+                  class="q-mt-md"
                   model="domains"
                   :label="$gettext('Domains')"
                   :items="onlyDomains"
