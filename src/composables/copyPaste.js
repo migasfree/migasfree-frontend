@@ -26,41 +26,40 @@ export default function useCopyPaste() {
     }
   }
 
-  const pasteList = (element) => {
-    if (element != null) {
-      let data = null
+  const pasteList = async (addCallback) => {
+    if (!addCallback || typeof addCallback !== 'function') {
+      uiStore.notifyError($gettext('Invalid callback function'))
+      return
+    }
 
-      if (!('readText' in navigator.clipboard)) {
-        uiStore.notifyError(
-          $gettext('This browser does not implement clipboard reading'),
-        )
-        return
-      }
+    if (!('readText' in navigator.clipboard)) {
+      uiStore.notifyError(
+        $gettext('This browser does not implement clipboard reading'),
+      )
+      return
+    }
 
-      navigator.clipboard.readText().then((value) => {
-        if (value) {
-          try {
-            data = JSON.parse(value)
-          } catch (error) {
-            console.error(error, value)
-          }
+    try {
+      const value = await navigator.clipboard.readText()
+      if (!value) return
 
-          if (typeof data === 'object') {
-            const model = Object.keys(data)[0]
-            data[model].map((item) => {
-              if (typeof item === 'number')
-                api
-                  .get(`/api/v1/token/${model}/${item}/`)
-                  .then((response) => {
-                    element.add(response.data)
-                  })
-                  .catch((error) => {
-                    uiStore.notifyError(error)
-                  })
-            })
-          }
+      const data = JSON.parse(value)
+      if (typeof data !== 'object' || data == null) return
+
+      const model = Object.keys(data)[0]
+      const items = Array.isArray(data[model]) ? data[model] : []
+      const numberIds = items.filter((id) => typeof id === 'number')
+
+      for (const id of numberIds) {
+        try {
+          const { data } = await api.get(`/api/v1/token/${model}/${id}/`)
+          addCallback(data)
+        } catch (error) {
+          uiStore.notifyError(error)
         }
-      })
+      }
+    } catch (error) {
+      uiStore.notifyError(error)
     }
   }
 
