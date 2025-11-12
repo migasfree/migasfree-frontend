@@ -289,15 +289,16 @@ export default {
         return
       } */
 
-      await api
-        .get('/api/v1/token/user-profiles/', {
+      try {
+        const { data } = await api.get('/api/v1/token/user-profiles/', {
           params: { search: val.toLowerCase() },
         })
-        .then((response) => {
-          userProfiles.value = response.data.results
-        })
-
-      update(() => {})
+        userProfiles.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        update(() => {})
+      }
     }
 
     const abortFilterUserProfiles = () => {
