@@ -368,38 +368,37 @@ export default {
       if (!props.endPoint) return
 
       loading.value = true
-      await api
-        .get(props.endPoint, { params: { begin: begin.value, end: end.value } })
-        .then((response) => {
-          const series = []
+      try {
+        const { data: resp } = await api.get(props.endPoint, {
+          params: { begin: begin.value, end: end.value },
+        })
 
-          Object.entries(response.data.data).map(([key, val]) => {
-            series.push({
-              type: 'line',
-              smooth: true,
-              name: key,
-              data: val,
-            })
+        const series = Object.entries(resp.data).reduce((acc, [key, val]) => {
+          acc.push({
+            type: 'line',
+            smooth: true,
+            name: key,
+            data: val,
           })
+          return acc
+        }, [])
 
-          Object.assign(data, {
-            xData: response.data.x_labels,
-            series,
-          })
+        Object.assign(data, {
+          xData: resp.x_labels,
+          series,
+        })
 
-          if ('series' in data) {
-            options.series = data.series
-          }
-          if ('xData' in data) {
-            options.xAxis.data = data.xData
-          }
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-        .finally(() => {
-          loading.value = false
-        })
+        if ('series' in data) {
+          options.series = data.series
+        }
+        if ('xData' in data) {
+          options.xAxis.data = data.xData
+        }
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        loading.value = false
+      }
     }
 
     onMounted(async () => {
@@ -438,11 +437,11 @@ export default {
       const linkSource = chart.value.getDataURL()
       const downloadLink = document.createElement('a')
 
-      document.body.appendChild(downloadLink)
       downloadLink.href = linkSource
-      downloadLink.target = '_self'
       downloadLink.download = `${props.title}.svg`
+      document.body.appendChild(downloadLink)
       downloadLink.click()
+      document.body.removeChild(downloadLink)
     }
 
     const dataView = () => {
