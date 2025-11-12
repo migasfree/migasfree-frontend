@@ -293,30 +293,24 @@ export default {
 
     onMounted(async () => {
       loading.value = true
-      await api
-        .get(props.endPoint)
-        .then((response) => {
-          if ('inner' in response.data) {
-            options.series = nestedSeries
-          } else {
-            options.series = normalSeries
-          }
+      try {
+        const response = await api.get(props.endPoint)
 
-          Object.assign(data, response.data)
+        options.series = 'inner' in response.data ? nestedSeries : normalSeries
 
-          if ('inner' in data) {
-            options.series[0].data = data.inner
-            options.series[1].data = data.outer
-          } else {
-            options.series[0].data = data.data
-          }
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-        .finally(() => {
-          loading.value = false
-        })
+        Object.assign(data, response.data)
+
+        if ('inner' in data) {
+          options.series[0].data = data.inner
+          options.series[1].data = data.outer
+        } else {
+          options.series[0].data = data.data
+        }
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        loading.value = false
+      }
     })
 
     onBeforeMount(() => {
@@ -353,11 +347,11 @@ export default {
       const linkSource = chart.value.getDataURL()
       const downloadLink = document.createElement('a')
 
-      document.body.appendChild(downloadLink)
       downloadLink.href = linkSource
-      downloadLink.target = '_self'
       downloadLink.download = `${props.title}.svg`
+      document.body.appendChild(downloadLink)
       downloadLink.click()
+      document.body.removeChild(downloadLink)
     }
 
     const groupBy = (data, key) => {
