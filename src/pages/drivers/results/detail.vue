@@ -268,15 +268,16 @@ export default {
         return
       }
 
-      await api
-        .get('/api/v1/token/devices/models/', {
+      try {
+        const { data } = await api.get('/api/v1/token/devices/models/', {
           params: { search: val.toLowerCase() },
         })
-        .then((response) => {
-          models.value = response.data.results
-        })
-
-      update(() => {})
+        models.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        update(() => {})
+      }
     }
 
     const abortFilterModels = () => {
