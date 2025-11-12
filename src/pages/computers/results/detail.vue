@@ -623,13 +623,16 @@ export default {
         return
       }
 
-      await api
-        .get('/api/v1/token/tags/', { params: { search: val.toLowerCase() } })
-        .then((response) => {
-          tags.value = response.data.results
+      try {
+        const { data } = await api.get('/api/v1/token/tags/', {
+          params: { search: val.toLowerCase() },
         })
-
-      update(() => {})
+        tags.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        update(() => {})
+      }
     }
 
     const abortFilterTags = () => {
