@@ -93,9 +93,7 @@
               <FilteredMultiSelect
                 v-model="element.computers"
                 :label="$gettext('Computers')"
-                :options="computers"
-                @filter="filterComputers"
-                @filter-abort="abortFilterComputers"
+                :fetch-options="filterComputers"
               >
                 <template #option="{ scope }">
                   <q-item v-bind="scope.itemProps">
@@ -193,7 +191,6 @@ import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
-import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
@@ -230,7 +227,6 @@ export default {
     let element = reactive({ id: 0, computers: [] })
 
     const stamps = ref([])
-    const computers = ref([])
     const inflicted = ref([])
 
     const viewMap = ref(false)
@@ -347,28 +343,12 @@ export default {
       coords.value = [element.latitude, element.longitude]
     }
 
-    const filterComputers = async (val, update, abort) => {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < MIN_CHARS_SEARCH) {
-        abort()
-        return
-      }
+    const filterComputers = async (val) => {
+      const { data } = await api.get('/api/v1/token/computers/', {
+        params: { search: val.toLowerCase() },
+      })
 
-      try {
-        const response = await api.get('/api/v1/token/computers/', {
-          params: { search: val.toLowerCase() },
-        })
-
-        computers.value = response.data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        update(() => {})
-      }
-    }
-
-    const abortFilterComputers = () => {
-      // console.log('delayed filter aborted')
+      return data.results
     }
 
     return {
@@ -378,7 +358,6 @@ export default {
       routes,
       element,
       stamps,
-      computers,
       inflicted,
       viewMap,
       coords,
@@ -393,10 +372,8 @@ export default {
       updateCoords,
       updateMapCoords,
       filterComputers,
-      abortFilterComputers,
       elementIcon,
       modelIcon,
-      MIN_CHARS_SEARCH,
     }
   },
 }
