@@ -211,15 +211,16 @@ export default {
         return
       }
 
-      await api
-        .get('/api/v1/token/computers/', {
+      try {
+        const { data } = await api.get('/api/v1/token/computers/', {
           params: { search: val.toLowerCase() },
         })
-        .then((response) => {
-          computers.value = response.data.results
-        })
-
-      update(() => {})
+        computers.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        update(() => {})
+      }
     }
 
     const abortFilterComputers = () => {
