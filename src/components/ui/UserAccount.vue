@@ -206,19 +206,18 @@ export default {
     }
 
     const updatePreferences = async (data) => {
-      await api
-        .patch(`/api/v1/token/user-profiles/${authStore.user.id}/`, data)
-        .then((response) => {
-          uiStore.notifySuccess($gettext('Preferences changed!'))
+      try {
+        const response = await api.patch(
+          `/api/v1/token/user-profiles/${authStore.user.id}/`,
+          data,
+        )
 
-          authStore.setUser(response.data)
-          userAccount.value.hide()
-
-          window.location.reload(true)
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+        uiStore.notifySuccess($gettext('Preferences changed!'))
+        authStore.setUser(response.data)
+        userAccount.value.hide()
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     authStore.$subscribe(() => {
