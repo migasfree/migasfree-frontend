@@ -41,11 +41,7 @@
       ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
     >
 
-    <q-btn
-      flat
-      :icon="appIcon('paste')"
-      color="primary"
-      @click.stop="pasteList(addAttribute)"
+    <q-btn flat :icon="appIcon('paste')" color="primary" @click.stop="onPaste"
       ><q-tooltip>{{ $gettext('Paste') }}</q-tooltip></q-btn
     >
   </div>
@@ -96,9 +92,43 @@ export default {
       }
     }
 
-    onMounted(() => {
-      updateAttributes()
-    })
+    const enrichAttribute = async (val) => {
+      if (val.status && val.summary) {
+        return val
+      }
+
+      if (
+        val.property_att?.prefix === 'CID' ||
+        val.property_att?.prefix === 'SET' ||
+        val.property_att?.prefix === 'DMN'
+      ) {
+        const { data } = await api.get(
+          `/api/v1/token/${model}/${val.id}/badge/`,
+        )
+        return {
+          ...val,
+          ...data,
+          description: data.text,
+        }
+      }
+
+      if (val.property_att?.sort === 'server') {
+        return {
+          ...val,
+          status: 'tag',
+        }
+      }
+
+      return val
+    }
+
+    const updateAttributes = async () => {
+      const updatedArray = await Promise.all(
+        localValue.value.map(enrichAttribute),
+      )
+      localValue.value = updatedArray
+      emit('update:model-value', [...updatedArray])
+    }
 
     const filterAttributes = async (val, update, abort) => {
       // call abort() at any time if you can't retrieve data somehow
@@ -125,51 +155,20 @@ export default {
       // console.log('delayed filter aborted')
     }
 
-    const updateAttributes = () => {
-      if (localValue.value === null) {
-        localValue.value = []
-        return
-      }
-
-      Object.entries(localValue.value).map(([key, val]) => {
-        if (
-          !('status' in val) &&
-          'property_att' in val &&
-          (val.property_att.prefix === 'CID' ||
-            val.property_att.prefix === 'SET' ||
-            val.property_att.prefix === 'DMN')
-        ) {
-          api
-            .get(`/api/v1/token/${model}/${val.id}/badge/`)
-            .then((response) => {
-              localValue.value[key] = Object.assign(
-                {},
-                localValue.value[key],
-                response.data,
-              )
-              localValue.value[key].description = response.data.text
-            })
-            .catch((error) => {
-              uiStore.notifyError(error)
-            })
-        }
-        if (
-          !('status' in val) &&
-          'property_att' in val &&
-          val.property_att.sort === 'server'
-        ) {
-          localValue.value[key].status = 'tag'
-        }
-      })
-      emit('update:model-value', localValue.value)
+    const onPaste = async () => {
+      await pasteList(addAttribute)
+      await updateAttributes()
     }
 
     watch(
       () => props.modelValue,
-      (newValue) => {
-        localValue.value = newValue
-        updateAttributes()
+      async (newVal, oldVal) => {
+        if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
+          localValue.value = [...newVal]
+          await updateAttributes()
+        }
       },
+      { immediate: true },
     )
 
     watch(localValue, (newValue) => {
@@ -177,12 +176,16 @@ export default {
       emit('update:model-value', newValue)
     })
 
+    onMounted(async () => {
+      await updateAttributes()
+    })
+
     return {
       model,
       attributes,
       localValue,
       copyList,
-      pasteList,
+      onPaste,
       hasPaste,
       appIcon,
       elementIcon,
@@ -193,7 +196,6 @@ export default {
       abortFilterAttributes,
       updateAttributes,
       MIN_CHARS_SEARCH,
-      addAttribute,
     }
   },
 }
