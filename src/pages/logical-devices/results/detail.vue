@@ -211,10 +211,10 @@ export default {
           params: { search: val.toLowerCase() },
         })
         devices.value = data.results
-        update(() => {})
       } catch (error) {
         uiStore.notifyError(error)
-        abort()
+      } finally {
+        update(() => {})
       }
     }
 
