@@ -3,9 +3,7 @@
     v-model="localValue"
     clearable
     :label="label"
-    :options="attributes"
-    @filter="filterAttributes"
-    @filter-abort="abortFilterAttributes"
+    :fetch-options="filterAttributes"
   >
     <template #option="{ scope }">
       <q-item v-bind="scope.itemProps">
@@ -55,9 +53,6 @@ import { api } from 'boot/axios'
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import MigasLink from 'components/MigasLink'
 
-import { useUiStore } from 'stores/ui'
-import { MIN_CHARS_SEARCH } from 'config/app.conf'
-
 import useCopyPaste from 'composables/copyPaste'
 import { appIcon, useElement } from 'composables/element'
 
@@ -76,14 +71,11 @@ export default {
   },
   emits: ['update:model-value'],
   setup(props, { emit }) {
-    const uiStore = useUiStore()
-
     const { copyList, pasteList, hasPaste } = useCopyPaste()
     const { elementIcon, equivalentModel, equivalentKey, attributeValue } =
       useElement()
 
     const model = 'attributes'
-    const attributes = ref([])
     const localValue = ref(props.modelValue)
 
     const addAttribute = (item) => {
@@ -130,29 +122,12 @@ export default {
       emit('update:model-value', [...updatedArray])
     }
 
-    const filterAttributes = async (val, update, abort) => {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < MIN_CHARS_SEARCH) {
-        abort()
-        return
-      }
+    const filterAttributes = async (val) => {
+      const { data } = await api.get(`/api/v1/token/${model}/`, {
+        params: { search: val.toLowerCase() },
+      })
 
-      try {
-        const { data } = await api.get(`/api/v1/token/${model}/`, {
-          params: {
-            search: val.toLowerCase(),
-          },
-        })
-        attributes.value = data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        update(() => {})
-      }
-    }
-
-    const abortFilterAttributes = () => {
-      // console.log('delayed filter aborted')
+      return data.results
     }
 
     const onPaste = async () => {
@@ -182,7 +157,6 @@ export default {
 
     return {
       model,
-      attributes,
       localValue,
       copyList,
       onPaste,
@@ -193,9 +167,7 @@ export default {
       equivalentKey,
       attributeValue,
       filterAttributes,
-      abortFilterAttributes,
       updateAttributes,
-      MIN_CHARS_SEARCH,
     }
   },
 }
