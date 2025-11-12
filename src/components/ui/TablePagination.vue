@@ -81,7 +81,6 @@ export default {
     const { currentPageTable } = storeToRefs(uiStore)
 
     const currentPage = ref(1)
-    const prevPage = ref(0)
     const currentPerPage = ref(RESULTS_PER_PAGE)
 
     const rowsPerPageOptions = computed(
@@ -91,23 +90,26 @@ export default {
     const showAllOption = computed(() =>
       props.total ? props.total <= MAX_RESULTS_PER_PAGE : false,
     )
+
     const pagesCount = computed(() => {
       const quotient = Math.floor(props.total / currentPerPage.value)
-      const remainder = props.total % currentPerPage.value
 
-      return remainder === 0 ? quotient : quotient + 1
+      return props.total % currentPerPage.value === 0 ? quotient : quotient + 1
     })
-    const nextIsPossible = computed(() => currentPage.value < pagesCount.value)
-    const prevIsPossible = computed(
-      () => currentPage.value > 1 && currentPage.value <= pagesCount.value,
-    )
+
     const perPageLabel = computed(
       () => `${$gettext('Results per page')} (${currentPerPage.value})`,
     )
-    const recordInfo = computed(
-      () =>
-        `${(currentPage.value - 1) * currentPerPage.value + 1} - ${Math.min(currentPage.value * currentPerPage.value, props.total)} / ${props.total}`,
-    )
+
+    const recordInfo = computed(() => {
+      const start = (currentPage.value - 1) * currentPerPage.value + 1
+      const end = Math.min(
+        currentPage.value * currentPerPage.value,
+        props.total,
+      )
+
+      return `${start} - ${end} / ${props.total}`
+    })
 
     watch(
       currentPerPage,
@@ -117,15 +119,7 @@ export default {
       { immediate: true },
     )
 
-    /*watch(() => props.total, (newValue, oldValue) => {
-      if (props.rowsPerPageOptions.indexOf(currentPerPage.value) === -1) {
-        currentPerPage.value = newValue;
-      }
-    })*/
-
-    watch(currentPageTable, (val) => {
-      currentPage.value = val
-    })
+    watch(currentPageTable, (val) => (currentPage.value = val))
 
     const customPageChange = (customCurrentPage) => {
       props.pageChanged({
@@ -139,66 +133,17 @@ export default {
       if (customPerPage === props.total) currentPage.value = 1
     }
 
-    const nextPage = () => {
-      if (nextIsPossible.value) {
-        prevPage.value = currentPage.value
-        ++currentPage.value
-        customPageChange()
-      }
-    }
-
-    const previousPage = () => {
-      if (prevIsPossible.value) {
-        prevPage.value = currentPage.value
-        --currentPage.value
-        customPageChange()
-      }
-    }
-
-    const firstPage = () => {
-      if (prevIsPossible.value) {
-        currentPage.value = 1
-        customPageChange()
-      }
-    }
-
-    const lastPage = () => {
-      if (nextIsPossible.value) {
-        currentPage.value = pagesCount.value
-        customPageChange()
-      }
-    }
-
-    const changePage = (pageNumber, emit = true) => {
-      if (
-        pageNumber > 0 &&
-        props.total > currentPerPage.value * (pageNumber - 1)
-      ) {
-        prevPage.value = currentPage.value
-        currentPage.value = pageNumber
-        if (emit) customPageChange()
-      }
-    }
-
     return {
       currentPage,
-      prevPage,
       currentPerPage,
       rowsPerPageOptions,
       showPagination,
       showAllOption,
       pagesCount,
-      nextIsPossible,
-      prevIsPossible,
       recordInfo,
       perPageLabel,
       customPageChange,
       customPerPageChange,
-      nextPage,
-      previousPage,
-      firstPage,
-      lastPage,
-      changePage,
     }
   },
 }
