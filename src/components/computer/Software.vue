@@ -298,11 +298,9 @@
       <q-card-section class="row items-center">
         <FilteredMultiSelect
           v-model="target"
-          :options="computers"
-          :label="$gettext('Computer')"
-          :on-filter="filterComputers"
-          :on-filter-abort="abortFilterComputers"
           autofocus
+          :label="$gettext('Computer')"
+          :fetch-options="filterComputers"
           :multiple="false"
         >
           <template #option="{ scope }">
@@ -373,7 +371,6 @@ import { abbreviateNumber } from 'js-abbreviation-number'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { useAuthStore } from 'stores/auth'
-import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import DateView from 'components/ui/DateView'
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
@@ -408,7 +405,6 @@ export default {
     const softwareInventory = ref([])
     const softwareHistory = reactive({})
     const showingCompare = ref(false)
-    const computers = ref([])
     const target = ref(null)
 
     const searchInventory = ref('')
@@ -553,29 +549,12 @@ export default {
       })
     }
 
-    const filterComputers = async (val, update, abort) => {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < MIN_CHARS_SEARCH) {
-        abort()
-        return
-      }
+    const filterComputers = async (val) => {
+      const { data } = await api.get('/api/v1/token/computers/', {
+        params: { search: val.toLowerCase() },
+      })
 
-      try {
-        const { data } = await api.get('/api/v1/token/computers/', {
-          params: {
-            search: val.toLowerCase(),
-          },
-        })
-        computers.value = data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        update(() => {})
-      }
-    }
-
-    const abortFilterComputers = () => {
-      // console.log('delayed filter aborted')
+      return data.results
     }
 
     const deleteInventory = async () => {
@@ -623,7 +602,6 @@ export default {
       showingCompare,
       filteredSoftwareInventory,
       filteredSoftwareHistory,
-      computers,
       target,
       isCompareEnabled,
       softwareHistoryLength,
@@ -636,11 +614,9 @@ export default {
       copyHistory,
       compare,
       filterComputers,
-      abortFilterComputers,
       appIcon,
       modelIcon,
       elementIcon,
-      MIN_CHARS_SEARCH,
       abbreviateNumber,
       confirmRemoveInventory,
       confirmRemoveHistory,
