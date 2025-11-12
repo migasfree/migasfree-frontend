@@ -22,9 +22,7 @@
                 autofocus
                 :label="$gettext('Device')"
                 :multiple="false"
-                :options="devices"
-                @filter="filterDevices"
-                @filter-abort="abortFilterDevices"
+                :fetch-options="filterDevices"
               >
                 <template #option="{ scope }">
                   <q-item v-bind="scope.itemProps">
@@ -110,7 +108,6 @@ import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
-import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
@@ -143,7 +140,6 @@ export default {
 
     let element = reactive({ id: 0, attributes: [], device: null })
 
-    const devices = ref([])
     const capabilities = ref([])
 
     const breadcrumbs = ref([
@@ -199,27 +195,12 @@ export default {
       windowTitle.value = value
     }
 
-    const filterDevices = async (val, update, abort) => {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < MIN_CHARS_SEARCH) {
-        abort()
-        return
-      }
+    const filterDevices = async (val) => {
+      const { data } = await api.get('/api/v1/token/devices/devices/', {
+        params: { search: val.toLowerCase() },
+      })
 
-      try {
-        const { data } = await api.get('/api/v1/token/devices/devices/', {
-          params: { search: val.toLowerCase() },
-        })
-        devices.value = data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        update(() => {})
-      }
-    }
-
-    const abortFilterDevices = () => {
-      // console.log('delayed filter aborted')
+      return data.results
     }
 
     return {
@@ -228,7 +209,6 @@ export default {
       model,
       routes,
       element,
-      devices,
       capabilities,
       isValid,
       loadRelated,
@@ -237,8 +217,6 @@ export default {
       setTitle,
       modelIcon,
       filterDevices,
-      abortFilterDevices,
-      MIN_CHARS_SEARCH,
     }
   },
 }
