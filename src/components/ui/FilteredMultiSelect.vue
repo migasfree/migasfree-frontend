@@ -18,7 +18,7 @@
         { num: MIN_CHARS_SEARCH },
       )
     "
-    :options="options"
+    :options="filteredOptions"
     @filter="onFilter"
     @filter-abort="onFilterAbort"
     @update:model-value="updateValue"
@@ -60,29 +60,61 @@
 </template>
 
 <script>
+import { useUiStore } from 'stores/ui'
+
 import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 export default {
   name: 'FilteredMultiSelect',
   props: {
     modelValue: { type: [Array, Object], default: () => [] },
-    options: { type: Array, required: true },
     label: { type: String, required: true },
     autofocus: { type: Boolean, default: false },
     clearable: { type: Boolean, default: false },
     multiple: { type: Boolean, default: true },
     useChips: { type: Boolean, default: false },
-    onFilter: { type: Function, required: true },
-    onFilterAbort: { type: Function, required: true },
+    fetchOptions: { type: Function, required: true },
   },
   emits: ['update:modelValue'],
+  setup() {
+    return { MIN_CHARS_SEARCH }
+  },
+  data() {
+    return {
+      filteredOptions: [],
+    }
+  },
+  watch: {
+    options(newVal) {
+      this.filteredOptions = newVal.slice()
+    },
+  },
   methods: {
+    async onFilter(val, update, abort) {
+      if (val.length < MIN_CHARS_SEARCH) {
+        abort()
+        this.filteredOptions = []
+        return
+      }
+
+      const uiStore = useUiStore()
+
+      try {
+        const results = await this.fetchOptions(val)
+        this.filteredOptions = results
+      } catch (error) {
+        uiStore.notifyError(error)
+        abort()
+      } finally {
+        update(() => {})
+      }
+    },
+    onFilterAbort() {
+      // console.log('delayed filter aborted')
+    },
     updateValue(val) {
       this.$emit('update:modelValue', val)
     },
-  },
-  setup() {
-    return { MIN_CHARS_SEARCH }
   },
 }
 </script>
