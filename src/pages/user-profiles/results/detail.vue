@@ -244,9 +244,7 @@
               <FilteredMultiSelect
                 v-model="element.user_permissions"
                 :label="$gettext('User Permissions')"
-                :options="userPermissions"
-                @filter="filterUserPermissions"
-                @filter-abort="abortFilterUserPermissions"
+                :fetch-options="filterUserPermissions"
               >
                 <template #prepend>
                   <q-icon :name="appIcon('permission')" />
@@ -347,7 +345,6 @@ import { useMeta, useQuasar } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
-import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import CopyToClipboard from 'components/ui/CopyToClipboard'
 import DateView from 'components/ui/DateView'
@@ -384,7 +381,6 @@ export default {
     const groups = ref([])
     const domains = ref([])
     const scopes = ref([])
-    const userPermissions = ref([])
 
     let element = reactive({
       id: 0,
@@ -516,28 +512,12 @@ export default {
       })
     }
 
-    const filterUserPermissions = async (val, update, abort) => {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < MIN_CHARS_SEARCH) {
-        abort()
-        return
-      }
+    const filterUserPermissions = async (val) => {
+      const { data } = await api.get('/api/v1/token/accounts/permissions', {
+        params: { search: val.toLowerCase() },
+      })
 
-      try {
-        const response = await api.get('/api/v1/token/accounts/permissions', {
-          params: { search: val.toLowerCase() },
-        })
-
-        userPermissions.value = response.data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        update(() => {})
-      }
-    }
-
-    const abortFilterUserPermissions = () => {
-      // console.log('delayed filter aborted')
+      return data.results
     }
 
     return {
@@ -549,7 +529,6 @@ export default {
       groups,
       domains,
       scopes,
-      userPermissions,
       isValid,
       isValidEmail,
       loadRelated,
@@ -558,10 +537,8 @@ export default {
       setTitle,
       updateToken,
       filterUserPermissions,
-      abortFilterUserPermissions,
       appIcon,
       modelIcon,
-      MIN_CHARS_SEARCH,
     }
   },
 }
