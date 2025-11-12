@@ -19,7 +19,7 @@
 
             <q-item-section v-if="softwareInventory.length > 0">
               <q-chip>
-                <q-avatar color="info" text-color="black"
+                <q-avatar color="grey-4" text-color="black"
                   ><strong>{{
                     abbreviateNumber(softwareInventory.length, 0)
                   }}</strong>
@@ -116,7 +116,7 @@
 
             <q-item-section v-if="softwareHistoryLength > 0">
               <q-chip>
-                <q-avatar color="info" text-color="black"
+                <q-avatar color="grey-4" text-color="black"
                   ><strong>{{
                     abbreviateNumber(softwareHistoryLength, 0)
                   }}</strong
