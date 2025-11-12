@@ -91,23 +91,22 @@ export default {
     const loading = ref(false)
     const showing = ref(props.modelValue)
 
-    const goToComputers = () => {
-      if (props.id > 0) {
-        loading.value = true
-        api
-          .get(
-            `/api/v1/token/stats/deployments/${props.id}/computers/assigned/`,
-          )
-          .then((response) => {
-            router.push({
-              name: 'computers-list',
-              query: { id_in: response.data.join(',') },
-            })
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
-          .finally(() => (loading.value = false))
+    const goToComputers = async () => {
+      if (props.id <= 0) return
+
+      loading.value = true
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/stats/deployments/${props.id}/computers/assigned/`,
+        )
+        router.push({
+          name: 'computers-list',
+          query: { id_in: data.join(',') },
+        })
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        loading.value = false
       }
     }
 
