@@ -139,9 +139,7 @@
                     <FilteredMultiSelect
                       v-model="line.applications"
                       :label="$gettext('Applications')"
-                      :options="applications"
-                      @filter="filterApplications"
-                      @filter-abort="abortFilterApplications"
+                      :fetch-options="filterApplications"
                     >
                       <template #option="{ scope }">
                         <q-item v-bind="scope.itemProps">
@@ -207,7 +205,6 @@ import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
-import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
@@ -246,7 +243,6 @@ export default {
       excluded_attributes: [],
     })
 
-    const applications = ref([])
     const policyGroups = ref([])
     const removedPolicyGroups = ref([])
 
@@ -374,27 +370,12 @@ export default {
       }
     }
 
-    const filterApplications = async (val, update, abort) => {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < MIN_CHARS_SEARCH) {
-        abort()
-        return
-      }
+    const filterApplications = async (val) => {
+      const { data } = await api.get('/api/v1/token/catalog/apps/', {
+        params: { search: val.toLowerCase() },
+      })
 
-      try {
-        const { data } = await api.get('/api/v1/token/catalog/apps/', {
-          params: { search: val.toLowerCase() },
-        })
-        applications.value = data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        update(() => {})
-      }
-    }
-
-    const abortFilterApplications = () => {
-      // console.log('delayed filter aborted')
+      return data.results
     }
 
     return {
@@ -403,7 +384,6 @@ export default {
       model,
       routes,
       element,
-      applications,
       policyGroups,
       removedPolicyGroups,
       isValid,
@@ -416,8 +396,6 @@ export default {
       addInline,
       removeInline,
       filterApplications,
-      abortFilterApplications,
-      MIN_CHARS_SEARCH,
       appIcon,
     }
   },
