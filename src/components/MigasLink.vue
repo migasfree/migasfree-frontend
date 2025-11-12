@@ -111,27 +111,33 @@ export default {
     const validRelations = ref([])
     const loading = ref(false)
 
+    const modelMap = {
+      synchronizations: 'syncs',
+      applications: 'apps',
+      application: 'app',
+      type: 'device-type',
+      types: 'device-types',
+      logical: 'logical-devices',
+      apps: 'applications',
+      attributes: 'features',
+      properties: 'formulas',
+    }
+
     const link = computed(() => {
       return `/${normalizeModel(props.model)}/results/${props.pk}`
     })
 
     const tooltipToView = computed(() => {
-      switch (props.model) {
-        case 'computers': {
-          const pieces = props.tooltip.split(',')
-          return [
-            {
-              icon: elementIcon(pieces[0].trim()),
-              text: computerStatus(pieces[0].trim()),
-            },
-            { icon: modelIcon('projects'), text: pieces[1].trim() },
-            { icon: 'mdi-ip-network', text: pieces[2].trim() },
-            { icon: modelIcon('users'), text: pieces[3].trim() },
-          ]
-        }
-        default:
-          return [{ icon: '', text: props.tooltip.trim() }]
-      }
+      if (props.model !== 'computers')
+        return [{ icon: '', text: props.tooltip.trim() }]
+
+      const pieces = props.tooltip.split(',').map((p) => p.trim())
+      return [
+        { icon: elementIcon(pieces[0]), text: computerStatus(pieces[0]) },
+        { icon: modelIcon('projects'), text: pieces[1] },
+        { icon: 'mdi-ip-network', text: pieces[2] },
+        { icon: modelIcon('users'), text: pieces[3] },
+      ]
     })
 
     const getIcon = computed(() =>
@@ -167,32 +173,12 @@ export default {
       }, {})
 
     const normalizeModel = (model) => {
-      model = model
+      const cleaned = model
         .replaceAll(' ', '-')
         .replace('devices/', '')
         .replace('catalog/', '')
-      switch (model) {
-        case 'synchronizations':
-          return 'syncs'
-        case 'applications':
-          return 'apps'
-        case 'application':
-          return 'app'
-        case 'type':
-          return 'device-type'
-        case 'types':
-          return 'device-types'
-        case 'logical':
-          return 'logical-devices'
-        case 'apps':
-          return 'applications'
-        case 'attributes':
-          return 'features'
-        case 'properties':
-          return 'formulas'
-        default:
-          return model
-      }
+
+      return modelMap[cleaned] ?? cleaned
     }
 
     const filterRelations = () => {
@@ -261,18 +247,15 @@ export default {
       }
 
       loading.value = true
-      await api
-        .get(url)
-        .then((response) => {
-          relations.value = response.data
-          filterRelations()
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-        .finally(() => {
-          loading.value = false
-        })
+      try {
+        const { data } = await api.get(url)
+        relations.value = data
+        filterRelations()
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        loading.value = false
+      }
     }
 
     return {
