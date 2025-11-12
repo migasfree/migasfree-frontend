@@ -14,9 +14,7 @@
               v-model="source"
               :multiple="false"
               :label="$gettext('Computer')"
-              :options="computers"
-              @filter="filterComputers"
-              @filter-abort="abortFilterComputers"
+              :fetch-options="filterComputers"
               @update:model-value="loadSoftware(source)"
             >
               <template #option="{ scope }">
@@ -66,9 +64,7 @@
               v-model="target"
               :multiple="false"
               :label="$gettext('Computer')"
-              :options="computers"
-              @filter="filterComputers"
-              @filter-abort="abortFilterComputers"
+              :fetch-options="filterComputers"
               @update:model-value="loadSoftware(target)"
             >
               <template #option="{ scope }">
@@ -139,7 +135,6 @@ import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
-import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
@@ -185,7 +180,6 @@ export default {
       },
     ])
 
-    const computers = ref([])
     const source = ref(null)
     const target = ref(null)
 
@@ -204,27 +198,12 @@ export default {
       return source.value !== null && target.value !== null
     })
 
-    const filterComputers = async (val, update, abort) => {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < MIN_CHARS_SEARCH) {
-        abort()
-        return
-      }
+    const filterComputers = async (val) => {
+      const { data } = await api.get('/api/v1/token/computers/', {
+        params: { search: val.toLowerCase() },
+      })
 
-      try {
-        const { data } = await api.get('/api/v1/token/computers/', {
-          params: { search: val.toLowerCase() },
-        })
-        computers.value = data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        update(() => {})
-      }
-    }
-
-    const abortFilterComputers = () => {
-      // console.log('delayed filter aborted')
+      return data.results
     }
 
     const sortArray = (array) => {
@@ -233,50 +212,48 @@ export default {
     }
 
     const loadSoftware = async (obj) => {
-      if (obj !== null) {
-        await api
-          .get(`/api/v1/token/computers/${obj.id}/software/inventory/`)
-          .then((response) => {
-            const inventory = response.data.map((item) => item.name)
+      if (!obj) return
 
-            obj.inventory = sortArray(inventory).join('\n')
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/computers/${obj.id}/software/inventory/`,
+        )
+        obj.inventory = sortArray(data.map((item) => item.name)).join('\n')
+      } catch (error) {
+        uiStore.notifyError(error)
       }
     }
 
-    // created
-    if (route.query.source) {
-      api.get(`${url}${route.query.source}/`).then((response) => {
-        source.value = response.data
-        loadSoftware(source.value)
-      })
+    const fetchAndLoad = async (key, setter) => {
+      if (route.query[key]) {
+        return await api.get(`${url}${route.query[key]}/`).then((response) => {
+          setter.value = response.data
+          loadSoftware(setter.value)
+        })
+      }
+      return Promise.resolve()
     }
 
-    if (route.query.target) {
-      api.get(`${url}${route.query.target}/`).then((response) => {
-        target.value = response.data
-        loadSoftware(target.value)
-      })
-    }
+    // created
+    Promise.all([
+      fetchAndLoad('source', source),
+      fetchAndLoad('target', target),
+    ]).catch((error) => {
+      uiStore.notifyError(error)
+    })
     // end created
 
     return {
       title,
       titleIcon,
       breadcrumbs,
-      computers,
       source,
       target,
       isEnabled,
       isLoading,
       loadSoftware,
       filterComputers,
-      abortFilterComputers,
       elementIcon,
-      MIN_CHARS_SEARCH,
     }
   },
 }
