@@ -311,14 +311,14 @@ export default defineComponent({
     })
 
     const regenerateMetadata = async (id) => {
-      await api
-        .get(`/api/v1/token/${props.model}/internal-sources/${id}/metadata/`)
-        .then((response) => {
-          uiStore.notifySuccess(response.data.detail)
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/${props.model}/internal-sources/${id}/metadata/`,
+        )
+        uiStore.notifySuccess(data.detail)
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     return {
