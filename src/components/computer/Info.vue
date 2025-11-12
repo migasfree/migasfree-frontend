@@ -199,17 +199,16 @@ export default {
 
     const updateName = async () => {
       loading.value = true
-      await api
-        .patch(`/api/v1/token/computers/${props.cid}/`, {
+      try {
+        await api.patch(`/api/v1/token/computers/${props.cid}/`, {
           name: value.value,
         })
-        .then(() => {
-          uiStore.notifySuccess($gettext('Name has been changed!'))
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-        .finally(() => (loading.value = false))
+        uiStore.notifySuccess($gettext('Name has been changed!'))
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        loading.value = false
+      }
     }
 
     return {
