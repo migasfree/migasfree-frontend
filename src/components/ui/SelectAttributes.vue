@@ -1,6 +1,5 @@
 <template>
   <FilteredMultiSelect
-    ref="attributesComponent"
     v-model="localValue"
     clearable
     :label="label"
@@ -46,7 +45,7 @@
       flat
       :icon="appIcon('paste')"
       color="primary"
-      @click.stop="pasteList(attributesComponent)"
+      @click.stop="pasteList(addAttribute)"
       ><q-tooltip>{{ $gettext('Paste') }}</q-tooltip></q-btn
     >
   </div>
@@ -87,11 +86,15 @@ export default {
     const { elementIcon, equivalentModel, equivalentKey, attributeValue } =
       useElement()
 
-    const attributesComponent = ref(null)
-
     const model = 'attributes'
     const attributes = ref([])
     const localValue = ref(props.modelValue)
+
+    const addAttribute = (item) => {
+      if (!localValue.value.find((attr) => attr.id === item.id)) {
+        localValue.value.push(item)
+      }
+    }
 
     onMounted(() => {
       updateAttributes()
@@ -175,7 +178,6 @@ export default {
     })
 
     return {
-      attributesComponent,
       model,
       attributes,
       localValue,
@@ -191,6 +193,7 @@ export default {
       abortFilterAttributes,
       updateAttributes,
       MIN_CHARS_SEARCH,
+      addAttribute,
     }
   },
 }
