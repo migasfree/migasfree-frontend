@@ -23,9 +23,7 @@
               autofocus
               :label="$gettext('Device')"
               :multiple="false"
-              :options="devices"
-              @filter="filterDevices"
-              @filter-abort="abortFilterDevices"
+              :fetch-options="filterDevices"
               @update:model-value="loadInfo(source)"
             >
               <template #option="{ scope }">
@@ -79,9 +77,7 @@
               v-model="target"
               :label="$gettext('Device')"
               :multiple="false"
-              :options="devices"
-              @filter="filterDevices"
-              @filter-abort="abortFilterDevices"
+              :fetch-options="filterDevices"
               @update:model-value="loadInfo(target)"
             >
               <template #option="{ scope }">
@@ -124,7 +120,6 @@ import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
-import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
@@ -166,7 +161,6 @@ export default {
       },
     ])
 
-    const devices = ref([])
     const source = ref(null)
     const target = ref(null)
     const loading = ref(false)
@@ -176,72 +170,54 @@ export default {
     })
 
     const loadInfo = async (obj) => {
-      if (obj !== null) {
-        await api
-          .get(`/api/v1/token/devices/logical/?device__id=${obj.id}`)
-          .then((response) => {
-            obj.logical_devices = response.data.results
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+      if (!obj) return
+
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/devices/logical/?device__id=${obj.id}`,
+        )
+        obj.logical_devices = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
       }
     }
 
     const replace = async () => {
-      if (isEnabled.value) {
-        loading.value = true
-        await api
-          .post(
-            `/api/v1/token/devices/devices/${source.value.id}/replacement/`,
-            {
-              target: target.value.id,
-            },
-          )
-          .then(() => {
-            let tmp = null
+      if (!isEnabled.value) return
 
-            tmp = source.value.logical_devices
-            source.value.logical_devices = target.value.logical_devices
-            target.value.logical_devices = tmp
-
-            uiStore.notifySuccess($gettext('Replacement done!'))
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
-          .finally(() => (loading.value = false))
-      }
-    }
-
-    const filterDevices = async (val, update, abort) => {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < MIN_CHARS_SEARCH) {
-        abort()
-        return
-      }
-
+      loading.value = true
       try {
-        const { data } = await api.get('/api/v1/token/devices/devices/', {
-          params: { search: val.toLowerCase() },
-        })
-        devices.value = data.results
+        await api.post(
+          `/api/v1/token/devices/devices/${source.value.id}/replacement/`,
+          { target: target.value.id },
+        )
+
+        // swap logical devices with destructuring (no temporary variable)
+        ;[source.value.logical_devices, target.value.logical_devices] = [
+          target.value.logical_devices,
+          source.value.logical_devices,
+        ]
+
+        uiStore.notifySuccess($gettext('Replacement done!'))
       } catch (error) {
         uiStore.notifyError(error)
       } finally {
-        update(() => {})
+        loading.value = false
       }
     }
 
-    const abortFilterDevices = () => {
-      // console.log('delayed filter aborted')
+    const filterDevices = async (val) => {
+      const { data } = await api.get('/api/v1/token/devices/devices/', {
+        params: { search: val.toLowerCase() },
+      })
+
+      return data.results
     }
 
     return {
       title,
       titleIcon,
       breadcrumbs,
-      devices,
       source,
       target,
       loading,
@@ -249,8 +225,6 @@ export default {
       loadInfo,
       replace,
       filterDevices,
-      abortFilterDevices,
-      MIN_CHARS_SEARCH,
     }
   },
 }
