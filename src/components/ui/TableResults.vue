@@ -842,100 +842,76 @@ export default defineComponent({
       ].includes(props.model)
     })
 
+    const loadFilter = async (endpoint, filterKey, queryParam) => {
+      try {
+        const { data } = await api.get(endpoint)
+        tableFilters[filterKey].items = tableFilters[filterKey].items.concat(
+          data.results,
+        )
+        if (queryParam && route.query[queryParam]) {
+          tableFilters[filterKey].selected = tableFilters[filterKey].items.find(
+            (x) => x.id == route.query[queryParam],
+          )
+        }
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
+    }
+
     onMounted(async () => {
       if (props.moreFilters.length === 0) return
 
       if (props.moreFilters.includes('platform')) {
-        await api
-          .get('/api/v1/token/platforms/')
-          .then((response) => {
-            tableFilters.platform.items = tableFilters.platform.items.concat(
-              response.data.results,
-            )
-
-            if (route.query.platform_id) {
-              tableFilters.platform.selected = tableFilters.platform.items.find(
-                (x) => x.id == route.query.platform_id,
-              )
-            }
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+        await loadFilter('/api/v1/token/platforms/', 'platform', 'platform_id')
       }
 
       if (props.moreFilters.includes('project')) {
-        await api
-          .get('/api/v1/token/projects/')
-          .then((response) => {
-            tableFilters.project.items = tableFilters.project.items.concat(
-              response.data.results,
+        try {
+          const { data } = await api.get('/api/v1/token/projects/')
+          tableFilters.project.items = tableFilters.project.items.concat(
+            data.results,
+          )
+
+          const projectQuery =
+            route.query.packages_by_project_project_id ||
+            route.query.drivers_project_id
+          if (projectQuery) {
+            tableFilters.project.selected = tableFilters.project.items.find(
+              (x) => x.id == projectQuery,
             )
-
-            if (route.query.packages_by_project_project_id) {
-              tableFilters.project.selected = tableFilters.project.items.find(
-                (x) => x.id == route.query.packages_by_project_project_id,
-              )
-            }
-
-            if (route.query.drivers_project_id) {
-              tableFilters.project.selected = tableFilters.project.items.find(
-                (x) => x.id == route.query.drivers_project_id,
-              )
-            }
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+          }
+        } catch (error) {
+          uiStore.notifyError(error)
+        }
       }
 
       if (props.moreFilters.includes('statusIn')) {
-        await api
-          .get('/api/v1/token/computers/status/')
-          .then((response) => {
-            updateStatusInFilter(response.data)
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+        try {
+          const { data } = await api.get('/api/v1/token/computers/status/')
+          updateStatusInFilter(data)
+        } catch (error) {
+          uiStore.notifyError(error)
+        }
       }
 
       if (props.moreFilters.includes('model')) {
-        await api
-          .get('/api/v1/token/devices/models/')
-          .then((response) => {
-            tableFilters.model.items = tableFilters.model.items.concat(
-              response.data.results,
-            )
-
-            if (route.query.model_id) {
-              tableFilters.model.selected = tableFilters.model.items.find(
-                (x) => x.id == route.query.model_id,
-              )
-            }
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+        await loadFilter('/api/v1/token/devices/models/', 'model', 'model_id')
       }
 
       if (props.moreFilters.includes('user')) {
-        await api
-          .get('/api/v1/token/faults/user/')
-          .then((response) => {
-            Object.entries(response.data.choices).map(([key, val]) => {
-              tableFilters.user.items.push({ id: key, name: val })
-            })
-
-            if (route.query.user) {
-              tableFilters.user.selected = tableFilters.user.items.find(
-                (x) => x.id == route.query.user,
-              )
-            }
+        try {
+          const { data } = await api.get('/api/v1/token/faults/user/')
+          Object.entries(data.choices).forEach(([key, val]) => {
+            tableFilters.user.items.push({ id: key, name: val })
           })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+          if (route.query.user) {
+            tableFilters.user.selected = tableFilters.user.items.find(
+              (x) => x.id == route.query.user,
+            )
+          }
+        } catch (error) {
+          uiStore.notifyError(error)
+        }
       }
     })
 
