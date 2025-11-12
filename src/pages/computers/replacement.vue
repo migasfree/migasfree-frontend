@@ -20,12 +20,10 @@
 
             <FilteredMultiSelect
               v-model="source"
-              :multiple="false"
               autofocus
+              :multiple="false"
               :label="$gettext('Computer')"
-              :options="computers"
-              @filter="filterComputers"
-              @filter-abort="abortFilterComputers"
+              :fetch-options="filterComputers"
               @update:model-value="loadComputer(source)"
             >
               <template #option="{ scope }">
@@ -81,9 +79,7 @@
               v-model="target"
               :multiple="false"
               :label="$gettext('Computer')"
-              :options="computers"
-              @filter="filterComputers"
-              @filter-abort="abortFilterComputers"
+              :fetch-options="filterComputers"
               @update:model-value="loadComputer(target)"
             >
               <template #option="{ scope }">
@@ -128,7 +124,6 @@ import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
-import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
@@ -171,7 +166,6 @@ export default {
       },
     ])
 
-    const computers = ref([])
     const source = ref(null)
     const target = ref(null)
     const loading = ref(false)
@@ -237,34 +231,18 @@ export default {
       }
     }
 
-    const filterComputers = async (val, update, abort) => {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < MIN_CHARS_SEARCH) {
-        abort()
-        return
-      }
+    const filterComputers = async (val) => {
+      const { data } = await api.get('/api/v1/token/computers/', {
+        params: { search: val.toLowerCase() },
+      })
 
-      try {
-        const { data } = await api.get('/api/v1/token/computers/', {
-          params: { search: val.toLowerCase() },
-        })
-        computers.value = data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        update(() => {})
-      }
-    }
-
-    const abortFilterComputers = () => {
-      // console.log('delayed filter aborted')
+      return data.results
     }
 
     return {
       title,
       titleIcon,
       breadcrumbs,
-      computers,
       source,
       target,
       loading,
@@ -272,9 +250,7 @@ export default {
       loadComputer,
       replace,
       filterComputers,
-      abortFilterComputers,
       elementIcon,
-      MIN_CHARS_SEARCH,
     }
   },
 }
