@@ -80,9 +80,7 @@
               <FilteredMultiSelect
                 v-model="element.tags"
                 :label="$gettext('Available Tags')"
-                :options="tags"
-                @filter="filterTags"
-                @filter-abort="abortFilterTags"
+                :fetch-options="filterTags"
               >
                 <template #option="{ scope }">
                   <q-item v-bind="scope.itemProps">
@@ -151,7 +149,6 @@ import { useMeta } from 'quasar'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { useAuthStore } from 'stores/auth'
-import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
@@ -211,7 +208,6 @@ export default {
       },
     ])
 
-    const tags = ref([])
     const userProfiles = ref([])
 
     const isValid = computed(() => {
@@ -263,27 +259,12 @@ export default {
       }
     }
 
-    const filterTags = async (val, update, abort) => {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < MIN_CHARS_SEARCH) {
-        abort()
-        return
-      }
+    const filterTags = async (val) => {
+      const { data } = await api.get('/api/v1/token/tags/', {
+        params: { search: val.toLowerCase() },
+      })
 
-      try {
-        const { data } = await api.get('/api/v1/token/tags/', {
-          params: { search: val.toLowerCase() },
-        })
-        tags.value = data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        update(() => {})
-      }
-    }
-
-    const abortFilterTags = () => {
-      // console.log('delayed filter aborted')
+      return data.results
     }
 
     const resetElement = () => {
@@ -309,10 +290,8 @@ export default {
       routes,
       element,
       userProfiles,
-      tags,
       isValid,
       filterTags,
-      abortFilterTags,
       attributeValue,
       loadRelated,
       setRelated,
@@ -321,7 +300,6 @@ export default {
       elementData,
       resetElement,
       setTitle,
-      MIN_CHARS_SEARCH,
     }
   },
 }
