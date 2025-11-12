@@ -163,9 +163,7 @@
                         v-model="element.available_packages"
                         clearable
                         :label="$gettext('Available Packages')"
-                        :options="packages"
-                        @filter="filterPackages"
-                        @filter-abort="abortFilterPackages"
+                        :fetch-options="filterPackages"
                       >
                         <template #option="{ scope }">
                           <q-item v-bind="scope.itemProps">
@@ -198,9 +196,7 @@
                         v-model="element.available_package_sets"
                         clearable
                         :label="$gettext('Available Package Sets')"
-                        :options="packageSets"
-                        @filter="filterPackageSets"
-                        @filter-abort="abortFilterPackageSets"
+                        :fetch-options="filterPackageSets"
                       >
                         <template #option="{ scope }">
                           <q-item v-bind="scope.itemProps">
@@ -481,7 +477,6 @@ import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
-import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
@@ -557,8 +552,6 @@ export default {
     const projects = ref([])
     const domains = ref([])
     const schedules = ref([])
-    const packages = ref([])
-    const packageSets = ref([])
     const source = ref(null)
 
     const sources = reactive([
@@ -787,57 +780,31 @@ export default {
       windowTitle.value = value
     }
 
-    const filterPackages = async (val, update, abort) => {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < MIN_CHARS_SEARCH || element.project === undefined) {
-        abort()
-        return
-      }
+    const filterPackages = async (val) => {
+      if (!element.project) return
 
-      try {
-        const { data } = await api.get('/api/v1/token/packages/', {
-          params: {
-            search: val.toLowerCase(),
-            project__id: element.project.id,
-            store__isnull: false,
-          },
-        })
-        packages.value = data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        update(() => {})
-      }
+      const { data } = await api.get('/api/v1/token/packages/', {
+        params: {
+          search: val.toLowerCase(),
+          project__id: element.project.id,
+          store__isnull: false,
+        },
+      })
+
+      return data.results
     }
 
-    const abortFilterPackages = () => {
-      // console.log('delayed filter aborted')
-    }
+    const filterPackageSets = async (val) => {
+      if (!element.project) return
 
-    const filterPackageSets = async (val, update, abort) => {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < MIN_CHARS_SEARCH || element.project === undefined) {
-        abort()
-        return
-      }
+      const { data } = await api.get('/api/v1/token/package-sets/', {
+        params: {
+          search: val.toLowerCase(),
+          project__id: element.project.id,
+        },
+      })
 
-      try {
-        const { data } = await api.get('/api/v1/token/package-sets/', {
-          params: {
-            search: val.toLowerCase(),
-            project__id: element.project.id,
-          },
-        })
-        packageSets.value = data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        update(() => {})
-      }
-    }
-
-    const abortFilterPackageSets = () => {
-      // console.log('delayed filter aborted')
+      return data.results
     }
 
     return {
@@ -850,8 +817,6 @@ export default {
       projects,
       domains,
       schedules,
-      packages,
-      packageSets,
       source,
       sources,
       showDate,
@@ -863,10 +828,7 @@ export default {
       resetElement,
       setTitle,
       filterPackages,
-      abortFilterPackages,
       filterPackageSets,
-      abortFilterPackageSets,
-      MIN_CHARS_SEARCH,
       appIcon,
     }
   },
