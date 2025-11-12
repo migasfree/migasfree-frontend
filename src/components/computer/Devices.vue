@@ -10,11 +10,9 @@
       <template v-else>
         <FilteredMultiSelect
           v-model="devices.assigned_logical_devices_to_cid"
-          :options="assignedDevices"
-          :label="$gettext('Assigned')"
-          :onFilter="filterAssignedDevices"
-          :onFilterAbort="abortFilterAssignedDevices"
           use-chips
+          :label="$gettext('Assigned')"
+          :fetch-options="filterAssignedDevices"
           @update:model-value="updateDefaultLogicalDeviceSelect"
         >
           <template #option="{ scope }">
@@ -73,7 +71,6 @@ import { useGettext } from 'vue3-gettext'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
-import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import { appIcon } from 'composables/element'
 
@@ -98,7 +95,6 @@ export default {
 
     const loading = ref(false)
     const devices = reactive({})
-    const assignedDevices = ref([])
     const defaultLogicalDevices = ref([])
 
     const updateDefaultLogicalDeviceSelect = () => {
@@ -145,27 +141,12 @@ export default {
       }
     }
 
-    const filterAssignedDevices = async (val, update, abort) => {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < MIN_CHARS_SEARCH) {
-        abort()
-        return
-      }
+    const filterAssignedDevices = async (val) => {
+      const { data } = await api.get('/api/v1/token/devices/logical/', {
+        params: { search: val.toLowerCase() },
+      })
 
-      try {
-        const { data } = await api.get('/api/v1/token/devices/logical/', {
-          params: { search: val.toLowerCase() },
-        })
-        assignedDevices.value = data.results ?? []
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        update(() => {})
-      }
-    }
-
-    const abortFilterAssignedDevices = () => {
-      // console.log('delayed filter aborted')
+      return data.results
     }
 
     onMounted(async () => {
@@ -175,13 +156,10 @@ export default {
     return {
       loading,
       devices,
-      assignedDevices,
       defaultLogicalDevices,
       updateDevices,
       updateDefaultLogicalDeviceSelect,
       filterAssignedDevices,
-      abortFilterAssignedDevices,
-      MIN_CHARS_SEARCH,
       appIcon,
     }
   },
