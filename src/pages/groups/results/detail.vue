@@ -34,9 +34,7 @@
                 v-model="element.permissions"
                 clearable
                 :label="$gettext('Permissions')"
-                :options="permissions"
-                @filter="filterPermissions"
-                @filter-abort="abortFilterPermissions"
+                :fetch-options="filterPermissions"
               >
                 <template #option="{ scope }">
                   <q-item v-bind="scope.itemProps">
@@ -70,7 +68,6 @@ import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
-import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
@@ -95,8 +92,6 @@ export default {
       detail: 'group-detail',
     }
     const model = 'accounts/groups'
-
-    const permissions = ref([])
 
     let element = reactive({
       id: 0,
@@ -143,27 +138,12 @@ export default {
       windowTitle.value = value
     }
 
-    const filterPermissions = async (val, update, abort) => {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < MIN_CHARS_SEARCH) {
-        abort()
-        return
-      }
+    const filterPermissions = async (val) => {
+      const { data } = await api.get('/api/v1/token/accounts/permissions/', {
+        params: { search: val.toLowerCase() },
+      })
 
-      try {
-        const { data } = await api.get('/api/v1/token/accounts/permissions/', {
-          params: { search: val.toLowerCase() },
-        })
-        permissions.value = data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        update(() => {})
-      }
-    }
-
-    const abortFilterPermissions = () => {
-      // console.log('delayed filter aborted')
+      return data.results
     }
 
     return {
@@ -172,15 +152,12 @@ export default {
       model,
       routes,
       element,
-      permissions,
       isValid,
       elementData,
       resetElement,
       setTitle,
       filterPermissions,
-      abortFilterPermissions,
       appIcon,
-      MIN_CHARS_SEARCH,
     }
   },
 }
