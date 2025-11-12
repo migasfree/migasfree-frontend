@@ -150,15 +150,16 @@ export default {
         return
       }
 
-      await api
-        .get('/api/v1/token/accounts/permissions', {
+      try {
+        const { data } = await api.get('/api/v1/token/accounts/permissions/', {
           params: { search: val.toLowerCase() },
         })
-        .then((response) => {
-          permissions.value = response.data.results
-        })
-
-      update(() => {})
+        permissions.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        update(() => {})
+      }
     }
 
     const abortFilterPermissions = () => {
