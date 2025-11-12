@@ -33,9 +33,7 @@
                 v-model="element.model"
                 :label="$gettext('Model')"
                 :multiple="false"
-                :options="models"
-                @filter="filterModels"
-                @filter-abort="abortFilterModels"
+                :fetch-options="filterModels"
               >
                 <template #option="{ scope }">
                   <q-item v-bind="scope.itemProps">
@@ -145,7 +143,6 @@ import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
-import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
@@ -186,7 +183,6 @@ export default {
     })
 
     const projects = ref([])
-    const models = ref([])
     const capabilities = ref([])
 
     const breadcrumbs = ref([
@@ -261,27 +257,12 @@ export default {
       windowTitle.value = value
     }
 
-    const filterModels = async (val, update, abort) => {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < MIN_CHARS_SEARCH) {
-        abort()
-        return
-      }
+    const filterModels = async (val) => {
+      const { data } = await api.get('/api/v1/token/devices/models/', {
+        params: { search: val.toLowerCase() },
+      })
 
-      try {
-        const { data } = await api.get('/api/v1/token/devices/models/', {
-          params: { search: val.toLowerCase() },
-        })
-        models.value = data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        update(() => {})
-      }
-    }
-
-    const abortFilterModels = () => {
-      // console.log('delayed filter aborted')
+      return data.results
     }
 
     return {
@@ -291,7 +272,6 @@ export default {
       routes,
       element,
       projects,
-      models,
       capabilities,
       isValid,
       loadRelated,
@@ -300,8 +280,6 @@ export default {
       setTitle,
       modelIcon,
       filterModels,
-      abortFilterModels,
-      MIN_CHARS_SEARCH,
     }
   },
 }
