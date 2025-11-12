@@ -105,7 +105,7 @@ export default function useDetail(
 
   const updateElement = async (action = null) => {
     try {
-      const isUpdate = element.id
+      const isUpdate = Boolean(element.id)
       const data = elementData()
       const config =
         data instanceof FormData
@@ -114,9 +114,9 @@ export default function useDetail(
 
       loading.value = true
 
-      const response = isUpdate
-        ? await api.patch(`/api/v1/token/${model}/${element.id}/`, data)
-        : await api.post(`/api/v1/token/${model}/`, data, config)
+      const url = `/api/v1/token/${model}/${isUpdate ? `${element.id}/` : ''}`
+      const method = isUpdate ? api.patch : api.post
+      const response = await method(url, data, config)
 
       // Update element if it's a create operation
       if (!isUpdate) {
@@ -154,33 +154,36 @@ export default function useDetail(
   }
 
   const remove = async () => {
-    await api
-      .delete(`/api/v1/token/${model}/${element.id}/`)
-      .then(() => {
-        emit('postRemove')
-        router.push({ name: routes.list })
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+    try {
+      await api.delete(`/api/v1/token/${model}/${element.id}/`)
+      emit('postRemove')
+      router.push({ name: routes.list })
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
   onMounted(async () => {
     if (route.params.id) {
-      await api
-        .get(`/api/v1/token/${model}/${route.params.id}/`)
-        .then((response) => {
-          Object.assign(element, response.data)
-          emit('setRelated')
-          if ('to' in breadcrumbs.find((x) => x.text === 'Id'))
-            breadcrumbs.find((x) => x.text === 'Id').to.params.id = element.id
-          breadcrumbs.find((x) => x.text === 'Id').icon = getElementIcon.value
-          breadcrumbs.find((x) => x.text === 'Id').text = elementText.value
-          emit('setTitle', `${originalTitle}: ${elementText.value}`)
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/${model}/${route.params.id}/`,
+        )
+        Object.assign(element, data)
+
+        emit('setRelated')
+
+        const idCrumb = breadcrumbs.find((x) => x.text === 'Id')
+        if (idCrumb) {
+          if ('to' in idCrumb) idCrumb.to.params.id = element.id
+          idCrumb.icon = getElementIcon.value
+          idCrumb.text = elementText.value
+        }
+
+        emit('setTitle', `${originalTitle}: ${elementText.value}`)
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     emit('loadRelated')
