@@ -181,60 +181,59 @@ export default {
     })
 
     const loadComputer = async (obj) => {
-      if (obj !== null) {
-        await api
-          .get(`/api/v1/token/computers/${obj.id}/`)
-          .then((response) => {
-            obj = Object.assign(obj, response.data)
-            loadDevices(obj)
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+      if (!obj) return
+
+      try {
+        const { data } = await api.get(`/api/v1/token/computers/${obj.id}/`)
+        Object.assign(obj, data)
+        await loadDevices(obj)
+      } catch (error) {
+        uiStore.notifyError(error)
       }
     }
 
     const loadDevices = async (obj) => {
-      if (obj !== null) {
-        await api
-          .get(`/api/v1/token/computers/${obj.id}/devices/`)
-          .then((response) => {
-            obj.devices = response.data
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
+      if (!obj) return
+
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/computers/${obj.id}/devices/`,
+        )
+        obj.devices = data
+      } catch (error) {
+        uiStore.notifyError(error)
       }
     }
 
     const replace = async () => {
-      if (source.value !== null && target.value !== null) {
+      if (source.value && target.value) {
         loading.value = true
-        await api
-          .post(`/api/v1/token/computers/${source.value.id}/replacement/`, {
-            target: target.value.id,
-          })
-          .then(() => {
-            let tmp = null
+        try {
+          await api.post(
+            `/api/v1/token/computers/${source.value.id}/replacement/`,
+            {
+              target: target.value.id,
+            },
+          )
 
-            tmp = source.value.status
-            source.value.status = target.value.status
-            target.value.status = tmp
+          const src = source.value
+          const tgt = target.value
+          const { status: sStatus, tags: sTags, devices: sDevices } = src
 
-            tmp = source.value.tags
-            source.value.tags = target.value.tags
-            target.value.tags = tmp
+          src.status = tgt.status
+          src.tags = tgt.tags
+          src.devices = tgt.devices
 
-            tmp = source.value.devices
-            source.value.devices = target.value.devices
-            target.value.devices = tmp
+          tgt.status = sStatus
+          tgt.tags = sTags
+          tgt.devices = sDevices
 
-            uiStore.notifySuccess($gettext('Replacement done!'))
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
-          .finally(() => (loading.value = false))
+          uiStore.notifySuccess($gettext('Replacement done!'))
+        } catch (error) {
+          uiStore.notifyError(error)
+        } finally {
+          loading.value = false
+        }
       }
     }
 
@@ -245,15 +244,16 @@ export default {
         return
       }
 
-      await api
-        .get('/api/v1/token/computers/', {
+      try {
+        const { data } = await api.get('/api/v1/token/computers/', {
           params: { search: val.toLowerCase() },
         })
-        .then((response) => {
-          computers.value = response.data.results
-        })
-
-      update(() => {})
+        computers.value = data.results
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        update(() => {})
+      }
     }
 
     const abortFilterComputers = () => {
