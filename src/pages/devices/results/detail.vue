@@ -46,9 +46,7 @@
                 v-model="element.model"
                 :label="$gettext('Model')"
                 :multiple="false"
-                :options="models"
-                @filter="filterModels"
-                @filter-abort="abortFilterModels"
+                :fetch-options="filterModels"
                 @update:model-value="resetConnections"
               >
                 <template #option="{ scope }">
@@ -233,7 +231,6 @@ import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
-import { MIN_CHARS_SEARCH } from 'config/app.conf'
 
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
@@ -266,7 +263,6 @@ export default {
 
     let element = reactive({ id: 0, available_for_attributes: [], model: null })
 
-    const models = ref([])
     const logicalDevices = ref([])
     const removedLogicalDevices = ref([])
     const capabilities = ref([])
@@ -440,29 +436,12 @@ export default {
       }
     }
 
-    const filterModels = async (val, update, abort) => {
-      // call abort() at any time if you can't retrieve data somehow
-      if (val.length < MIN_CHARS_SEARCH) {
-        abort()
-        return
-      }
+    const filterModels = async (val) => {
+      const { data } = await api.get('/api/v1/token/devices/models/', {
+        params: { search: val.toLowerCase() },
+      })
 
-      try {
-        const { data } = await api.get('/api/v1/token/devices/models/', {
-          params: {
-            search: val.toLowerCase(),
-          },
-        })
-        models.value = data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        update(() => {})
-      }
-    }
-
-    const abortFilterModels = () => {
-      // console.log('delayed filter aborted')
+      return data.results
     }
 
     return {
@@ -471,7 +450,6 @@ export default {
       model,
       routes,
       element,
-      models,
       logicalDevices,
       removedLogicalDevices,
       capabilities,
@@ -489,10 +467,8 @@ export default {
       addInline,
       removeInline,
       filterModels,
-      abortFilterModels,
       appIcon,
       modelIcon,
-      MIN_CHARS_SEARCH,
     }
   },
 }
