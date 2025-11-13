@@ -18,48 +18,39 @@ export const useUiStore = defineStore('ui', () => {
   }
 
   const notifyError = (error) => {
-    let message = ''
+    let message = typeof error === 'string' ? error : (error?.message ?? '')
 
-    // Setup Error Message
-    if (typeof error !== 'undefined') {
-      if (Object.hasOwn(error, 'message')) {
-        message = error.message
+    const status = error?.response?.status
+    if (status) {
+      switch (status) {
+        case 401:
+          message = 'UnAuthorized'
+          break
+        case 403:
+          message = 'Forbidden'
+          break
+        case 404:
+          message = 'API Route is Missing or Undefined'
+          break
+        case 405:
+          message = 'API Route Method Not Allowed'
+          break
+        case 422:
+          message = 'Validation Error'
+          break
+        default:
+          if (status >= 500) message = 'Server Error'
       }
     }
 
-    if (typeof error.response !== 'undefined') {
-      // Setup Generic Response Messages
-      if (error.response.status === 401) {
-        message = 'UnAuthorized'
-        // vm.$emit('logout') // Emit Logout Event
-      } else if (error.response.status === 403) {
-        message = 'Forbidden'
-      } else if (error.response.status === 404) {
-        message = 'API Route is Missing or Undefined'
-      } else if (error.response.status === 405) {
-        message = 'API Route Method Not Allowed'
-      } else if (error.response.status === 422) {
-        // Validation Message
-      } else if (error.response.status >= 500) {
-        message = 'Server Error'
+    // Attempt to override with response body
+    const data = error?.response?.data
+    if (data) {
+      if (typeof data === 'string') {
+        message = data
+      } else if (Object.keys(data).length) {
+        message = data[Object.keys(data)[0]]
       }
-
-      // Try to Use the Response Message
-      if (
-        Object.hasOwn(error, 'response') &&
-        Object.hasOwn(error.response, 'data') &&
-        typeof error.response.data !== 'undefined'
-      ) {
-        if (typeof error.response.data === 'string') {
-          message = error.response.data
-        } else if (Object.keys(error.response.data).length > 0) {
-          message = error.response.data[Object.keys(error.response.data)[0]]
-        }
-      }
-    }
-
-    if (typeof error === 'string') {
-      message = error
     }
 
     Notify.create({
@@ -79,15 +70,15 @@ export const useUiStore = defineStore('ui', () => {
     })
   }
 
-  function loading() {
+  const loading = () => {
     isLoading.value = true
   }
 
-  function finished() {
+  const finished = () => {
     isLoading.value = false
   }
 
-  function setCurrentPageTable(value) {
+  const setCurrentPageTable = (value) => {
     currentPageTable.value = value
   }
 
