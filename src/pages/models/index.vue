@@ -113,30 +113,30 @@ export default {
     }
 
     onMounted(async () => {
-      await api
-        .get('/api/v1/token/stats/devices/models/project/')
-        .then((response) => {
-          byProject.xData = response.data.x_labels
-          byProject.series = [
-            {
-              type: 'bar',
-              data: response.data.data,
-              name: $gettext('Models'),
-              markLine: {
-                data: [
-                  {
-                    label: { show: true },
-                    name: $gettext('Total'),
-                    yAxis: response.data.total,
-                  },
-                ],
-              },
+      try {
+        const { data } = await api.get(
+          '/api/v1/token/stats/devices/models/project/',
+        )
+        byProject.xData = data.x_labels
+        byProject.series = [
+          {
+            type: 'bar',
+            data: data.data,
+            name: $gettext('Models'),
+            markLine: {
+              data: [
+                {
+                  label: { show: true },
+                  name: $gettext('Total'),
+                  yAxis: data.total,
+                },
+              ],
             },
-          ]
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+          },
+        ]
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     })
 
     return {
