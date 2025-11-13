@@ -56,15 +56,15 @@ export default {
     const label = reactive({})
 
     onMounted(async () => {
-      await api
-        .get(`/api/v1/token/computers/${route.params.id}/label`)
-        .then((response) => {
-          Object.assign(label, response.data)
-          useMeta({ title: `${$gettext('Identification')}: ${label.search}` })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/computers/${route.params.id}/label`,
+        )
+        Object.assign(label, data)
+        useMeta({ title: `${$gettext('Identification')}: ${label.search}` })
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     })
 
     return { label, server: uiStore.server }
