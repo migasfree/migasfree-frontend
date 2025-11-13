@@ -246,39 +246,23 @@ export default {
     )
 
     const changePassword = async () => {
-      if (element.id && element.id === authStore.user.id) {
-        loading.value = true
-        await api
-          .post('/rest-auth/password/change/', elementData())
-          .then(() => {
-            uiStore.notifySuccess($gettext('Password changed!'))
-            router.push({
-              name: routes.detail,
-              params: { id: element.id },
-            })
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
-          .finally(() => (loading.value = false))
-      } else if (element.id) {
-        loading.value = true
-        await api
-          .put(
-            `/api/v1/token/user-profiles/${element.id}/change-password/`,
-            elementData(),
-          )
-          .then(() => {
-            uiStore.notifySuccess($gettext('Password changed!'))
-            router.push({
-              name: routes.detail,
-              params: { id: element.id },
-            })
-          })
-          .catch((error) => {
-            uiStore.notifyError(error)
-          })
-          .finally(() => (loading.value = false))
+      if (!element.id) return
+
+      loading.value = true
+      const endpoint =
+        element.id === authStore.user.id
+          ? '/rest-auth/password/change/'
+          : `/api/v1/token/user-profiles/${element.id}/change-password/`
+      const method = element.id === authStore.user.id ? 'post' : 'put'
+
+      try {
+        await api[method](endpoint, elementData())
+        uiStore.notifySuccess($gettext('Password changed!'))
+        router.push({ name: routes.detail, params: { id: element.id } })
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        loading.value = false
       }
     }
 
