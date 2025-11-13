@@ -124,19 +124,19 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function loadDomains() {
+  const loadDomains = async () => {
     const uiStore = useUiStore()
 
-    await api
-      .get('/api/v1/token/domains/')
-      .then((response) => {
-        Object.entries(response.data.results).map(([, item]) => {
-          addDomain({ id: item.id, name: item.name })
-        })
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+    try {
+      const response = await api.get('/api/v1/token/domains/')
+      const results = response?.data?.results ?? []
+
+      for (const item of results) {
+        addDomain({ id: item.id, name: item.name })
+      }
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
   const addScope = (payload) => {
@@ -148,23 +148,25 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function loadScopes() {
+  const loadScopes = async () => {
     const uiStore = useUiStore()
 
-    await api
-      .get('/api/v1/token/scopes/', { user__id: user.id })
-      .then((response) => {
-        Object.entries(response.data.results).map(([, item]) => {
-          addScope({
-            id: item.id,
-            name: item.name,
-            domain: item.domain,
-          })
+    try {
+      const response = await api.get('/api/v1/token/scopes/', {
+        user__id: user.id,
+      })
+      const results = response?.data?.results ?? []
+
+      for (const item of results) {
+        addScope({
+          id: item.id,
+          name: item.name,
+          domain: item.domain,
         })
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+      }
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
   const setLoggedIn = (value) => {
