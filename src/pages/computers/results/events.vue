@@ -604,18 +604,16 @@ export default {
 
       itemsDate.value = params.data[0]
 
-      await api
-        .get(url, { params: queryString })
-        .then((response) => {
-          items.value = response.data.results
+      try {
+        const { data } = await api.get(url, { params: queryString })
+        items.value = data.results
 
-          setTimeout(() => {
-            uiStore.scrollToElement(document.getElementById('events'))
-          }, 250)
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+        setTimeout(() => {
+          uiStore.scrollToElement(document.getElementById('events'))
+        }, 250)
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const goToModel = () => {
@@ -640,21 +638,23 @@ export default {
     }
 
     onMounted(async () => {
-      await api
-        .get(`/api/v1/token/computers/${route.params.id}/`)
-        .then((response) => {
-          Object.assign(computer, response.data)
-          breadcrumbs.value.find((x) => x.text === 'Id').to.params.id =
-            computer.id
-          breadcrumbs.value.find((x) => x.text === 'Id').icon = elementIcon(
-            computer.status,
-          )
-          breadcrumbs.value.find((x) => x.text === 'Id').text = computer.__str__
-          loadItems()
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/computers/${route.params.id}/`,
+        )
+        Object.assign(computer, data)
+
+        const idBreadcrumb = breadcrumbs.value.find((b) => b.text === 'Id')
+        if (idBreadcrumb) {
+          idBreadcrumb.to.params.id = computer.id
+          idBreadcrumb.icon = elementIcon(computer.status)
+          idBreadcrumb.text = computer.__str__
+        }
+
+        loadItems()
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     })
 
     return {
