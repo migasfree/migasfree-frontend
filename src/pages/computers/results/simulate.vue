@@ -394,8 +394,11 @@
                 </div>
 
                 <p>
-                  {{ $gettext('Capture Hardware') }}:
+                  <span class="vertical-middle"
+                    >{{ $gettext('Capture Hardware') }}:</span
+                  >
                   <q-chip
+                    class="vertical-middle"
                     :color="
                       simulation.capture_hardware ? 'positive' : 'negative'
                     "
@@ -495,118 +498,111 @@ export default {
     })
 
     const loadProject = async () => {
-      await api
-        .get(`/api/v1/token/projects/${computer.project.id}/`)
-        .then((response) => {
-          Object.assign(platform, response.data.platform)
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/projects/${computer.project.id}/`,
+        )
+        Object.assign(platform, data.platform)
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const loadSyncInfo = async () => {
       loading.input = true
-      await api
-        .get(`/api/v1/token/computers/${computer.id}/sync/`)
-        .then((response) => {
-          Object.entries(response.data.sync_attributes).map(([, val]) => {
-            if (val.property_att.prefix === 'SET') {
-              api
-                .get(`/api/v1/token/attributes/${val.id}/badge/`)
-                .then((response) => {
-                  onlyAttributeSets.value.push({
-                    id: response.data.pk,
-                    icon: modelIcon('attribute-sets'),
-                    value: attributeValue(val),
-                    summary: response.data.summary,
-                  })
-                })
-                .catch((error) => {
-                  uiStore.notifyError(error)
-                })
-            } else if (val.property_att.prefix === 'DMN') {
-              api
-                .get(`/api/v1/token/attributes/${val.id}/badge/`)
-                .then((response) => {
-                  onlyDomains.value.push({
-                    id: response.data.pk,
-                    icon: modelIcon('domains'),
-                    value: attributeValue(val),
-                    summary: response.data.summary,
-                  })
-                })
-                .catch((error) => {
-                  uiStore.notifyError(error)
-                })
-            } else {
-              onlyAttributes.value.push({
-                id: val.id,
-                value: attributeValue(val),
-                icon:
-                  val.property_att.sort === 'server'
-                    ? modelIcon('tags')
-                    : modelIcon('attributes'),
-              })
-            }
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-        .finally(() => {
-          loading.input = false
-        })
+      try {
+        const response = await api.get(
+          `/api/v1/token/computers/${computer.id}/sync/`,
+        )
+
+        const fetchBadge = async (val, type) => {
+          const { data } = await api.get(
+            `/api/v1/token/attributes/${val.id}/badge/`,
+          )
+
+          return {
+            id: data.pk,
+            icon: modelIcon(type),
+            value: attributeValue(val),
+            summary: data.summary,
+          }
+        }
+
+        const badgePromises = []
+        for (const [, val] of Object.entries(response.data.sync_attributes)) {
+          if (val.property_att.prefix === 'SET') {
+            badgePromises.push(
+              fetchBadge(val, 'attribute-sets').then((obj) =>
+                onlyAttributeSets.value.push(obj),
+              ),
+            )
+          } else if (val.property_att.prefix === 'DMN') {
+            badgePromises.push(
+              fetchBadge(val, 'domains').then((obj) =>
+                onlyDomains.value.push(obj),
+              ),
+            )
+          } else {
+            onlyAttributes.value.push({
+              id: val.id,
+              value: attributeValue(val),
+              model: val.property_att.sort === 'server' ? 'tags' : 'features',
+              icon:
+                val.property_att.sort === 'server'
+                  ? modelIcon('tags')
+                  : modelIcon('attributes'),
+              summary: val.description,
+            })
+          }
+        }
+
+        await Promise.all(badgePromises)
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        loading.input = false
+      }
     }
 
     const loadSimulation = async () => {
       loading.output = true
-      await api
-        .get(`/api/v1/token/computers/${computer.id}/sync/simulation/`)
-        .then((response) => {
-          Object.assign(simulation, response.data)
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/computers/${computer.id}/sync/simulation/`,
+        )
+        Object.assign(simulation, data)
 
-          if ('packages' in simulation && 'install' in simulation.packages)
-            simulation.packages.install.sort((a, b) =>
-              a.package.localeCompare(b.package),
-            )
+        const sortByPackage = (arr) =>
+          arr?.sort((a, b) => a.package.localeCompare(b.package))
 
-          if ('packages' in simulation && 'remove' in simulation.packages)
-            simulation.packages.remove.sort((a, b) =>
-              a.package.localeCompare(b.package),
-            )
+        const assignIcon = (obj, iconName) =>
+          Object.values(obj).forEach((item) => {
+            item.icon = modelIcon(iconName)
+          })
 
-          if ('policies' in simulation && 'install' in simulation.policies)
-            simulation.policies.install.sort((a, b) =>
-              a.package.localeCompare(b.package),
-            )
-
-          if ('policies' in simulation && 'remove' in simulation.policies)
-            simulation.policies.remove.sort((a, b) =>
-              a.package.localeCompare(b.package),
-            )
-
-          if ('logical_devices' in simulation)
-            Object.entries(simulation.logical_devices).map(([, item]) => {
-              item.icon = modelIcon('devices/logical')
+        ;['packages', 'policies'].forEach((section) => {
+          if (simulation[section]) {
+            ;['install', 'remove'].forEach((action) => {
+              if (simulation[section][action]) {
+                sortByPackage(simulation[section][action])
+              }
             })
+          }
+        })
 
-          if ('fault_definitions' in simulation)
-            Object.entries(simulation.fault_definitions).map(([, item]) => {
-              item.icon = modelIcon('fault-definitions')
-            })
-
-          if ('deployments' in simulation)
-            Object.entries(simulation.deployments).map(([, item]) => {
-              item.icon = modelIcon('deployments')
-            })
+        const iconMap = {
+          logical_devices: 'devices/logical',
+          fault_definitions: 'fault-definitions',
+          deployments: 'deployments',
+        }
+        Object.entries(iconMap).forEach(([key, iconName]) => {
+          if (simulation[key]) assignIcon(simulation[key], iconName)
         })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-        .finally(() => {
-          loading.output = false
-        })
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        loading.output = false
+      }
     }
 
     const copyContent = (items) => {
@@ -616,31 +612,34 @@ export default {
     }
 
     onMounted(async () => {
-      await api
-        .get(`/api/v1/token/computers/${route.params.id}/`)
-        .then((response) => {
-          Object.assign(computer, response.data)
-          breadcrumbs.value.find((x) => x.text === 'Id').to.params.id =
-            computer.id
-          breadcrumbs.value.find((x) => x.text === 'Id').icon = elementIcon(
-            computer.status,
-          )
-          breadcrumbs.value.find((x) => x.text === 'Id').text = computer.__str__
-          loadProject()
-          loadSyncInfo()
-          loadSimulation()
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/computers/${route.params.id}/`,
+        )
 
-          Object.entries(response.data.tags).map(([, val]) => {
-            onlyTags.value.push({
-              id: val.id,
-              icon: modelIcon('tags'),
-              value: attributeValue(val),
-            })
+        Object.assign(computer, data)
+
+        const breadcrumb = breadcrumbs.value.find((x) => x.text === 'Id')
+        if (breadcrumb) {
+          breadcrumb.to.params.id = computer.id
+          breadcrumb.icon = elementIcon(computer.status)
+          breadcrumb.text = computer.__str__
+        }
+
+        loadProject()
+        loadSyncInfo()
+        loadSimulation()
+
+        Object.entries(data.tags).forEach(([, val]) => {
+          onlyTags.value.push({
+            id: val.id,
+            icon: modelIcon('tags'),
+            value: attributeValue(val),
           })
         })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     })
 
     return {
