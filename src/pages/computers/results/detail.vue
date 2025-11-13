@@ -502,114 +502,118 @@ export default {
 
     const loadSyncInfo = async () => {
       loadingSync.value = true
-      await api
-        .get(`/api/v1/token/${model}/${route.params.id}/sync/`)
-        .then((response) => {
-          Object.assign(syncInfo, response.data)
-          Object.entries(response.data.sync_attributes).map(([, val]) => {
-            if (val.property_att.prefix === 'SET') {
-              api
-                .get(`/api/v1/token/attributes/${val.id}/badge/`)
-                .then((response) => {
-                  onlyAttributeSets.value.push({
-                    id: response.data.pk,
-                    icon: modelIcon('attribute-sets'),
-                    model:
-                      response.data.pk === 1 ? 'features' : 'attribute-sets',
-                    value: attributeValue(val),
-                    summary: response.data.summary,
-                  })
-                })
-                .catch((error) => {
-                  uiStore.notifyError(error)
-                })
-            } else if (val.property_att.prefix === 'DMN') {
-              api
-                .get(`/api/v1/token/attributes/${val.id}/badge/`)
-                .then((response) => {
-                  onlyDomains.value.push({
-                    id: response.data.pk,
-                    icon: modelIcon('domains'),
-                    value: attributeValue(val),
-                    summary: response.data.summary,
-                  })
-                })
-                .catch((error) => {
-                  uiStore.notifyError(error)
-                })
-            } else {
-              onlyAttributes.value.push({
-                id: val.id,
-                value: attributeValue(val),
-                model: val.property_att.sort === 'server' ? 'tags' : 'features',
-                icon:
-                  val.property_att.sort === 'server'
-                    ? modelIcon('tags')
-                    : modelIcon('attributes'),
-                summary: val.description,
-              })
-            }
+      try {
+        const response = await api.get(
+          `/api/v1/token/${model}/${route.params.id}/sync/`,
+        )
+        Object.assign(syncInfo, response.data)
 
-            if (val.latitude !== null) {
-              markers.value.push({
-                id: val.id,
-                model: val.property_att.sort === 'server' ? 'tags' : 'features',
-                lat: val.latitude,
-                lng: val.longitude,
-                tooltip: attributeValue(val),
-                description: val.description
-                  ? val.description.replaceAll('\n', '<br />')
-                  : null,
-              })
-              centerMarkers()
-            }
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-        .finally(() => {
-          loadingSync.value = false
-        })
+        const fetchBadge = async (val, type) => {
+          const { data } = await api.get(
+            `/api/v1/token/attributes/${val.id}/badge/`,
+          )
+          const icon = modelIcon(type)
+          const model =
+            type === 'attribute-sets'
+              ? data.pk === 1
+                ? 'features'
+                : 'attribute-sets'
+              : 'domains'
+          return {
+            id: data.pk,
+            icon,
+            model,
+            value: attributeValue(val),
+            summary: data.summary,
+          }
+        }
+
+        const badgePromises = []
+        for (const [, val] of Object.entries(response.data.sync_attributes)) {
+          if (val.property_att.prefix === 'SET') {
+            badgePromises.push(
+              fetchBadge(val, 'attribute-sets').then((obj) =>
+                onlyAttributeSets.value.push(obj),
+              ),
+            )
+          } else if (val.property_att.prefix === 'DMN') {
+            badgePromises.push(
+              fetchBadge(val, 'domains').then((obj) =>
+                onlyDomains.value.push(obj),
+              ),
+            )
+          } else {
+            onlyAttributes.value.push({
+              id: val.id,
+              value: attributeValue(val),
+              model: val.property_att.sort === 'server' ? 'tags' : 'features',
+              icon:
+                val.property_att.sort === 'server'
+                  ? modelIcon('tags')
+                  : modelIcon('attributes'),
+              summary: val.description,
+            })
+          }
+
+          if (val.latitude !== null) {
+            markers.value.push({
+              id: val.id,
+              model: val.property_att.sort === 'server' ? 'tags' : 'features',
+              lat: val.latitude,
+              lng: val.longitude,
+              tooltip: attributeValue(val),
+              description: val.description
+                ? val.description.replaceAll('\n', '<br />')
+                : null,
+            })
+          }
+        }
+
+        await Promise.all(badgePromises)
+        if (markers.value.length) centerMarkers()
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        loadingSync.value = false
+      }
     }
 
     const loadErrors = async () => {
-      await api
-        .get(`/api/v1/token/${model}/${route.params.id}/errors/`)
-        .then((response) => {
-          Object.assign(errors, response.data)
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/${model}/${route.params.id}/errors/`,
+        )
+        Object.assign(errors, data)
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const loadFaults = async () => {
-      await api
-        .get(`/api/v1/token/${model}/${route.params.id}/faults/`)
-        .then((response) => {
-          Object.assign(faults, response.data)
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/${model}/${route.params.id}/faults/`,
+        )
+        Object.assign(faults, data)
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const updateCurrentSituation = async () => {
       loading.value = true
-      await api
-        .patch(`/api/v1/token/${model}/${element.id}/`, {
+      try {
+        await api.patch(`/api/v1/token/${model}/${element.id}/`, {
           status: element.status,
           comment: element.comment,
           tags: element.tags.map((item) => item.id),
         })
-        .then(() => {
-          uiStore.notifySuccess($gettext('Current Situation has been changed!'))
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
-        .finally(() => (loading.value = false))
+        uiStore.notifySuccess($gettext('Current Situation has been changed!'))
+      } catch (error) {
+        uiStore.notifyError(error)
+      } finally {
+        loading.value = false
+      }
     }
 
     const filterTags = async (val) => {
@@ -621,20 +625,20 @@ export default {
     }
 
     const getComputerStatus = async () => {
-      await api
-        .get(`/api/v1/token/${model}/status/`)
-        .then((response) => {
-          Object.entries(response.data.choices).map(([key, val]) => {
-            status.value.push({
-              label: val,
-              value: key,
-              icon: elementIcon(key),
-            })
+      try {
+        const response = await api.get(`/api/v1/token/${model}/status/`)
+        const { choices } = response.data
+
+        Object.entries(choices).forEach(([key, val]) => {
+          status.value.push({
+            label: val,
+            value: key,
+            icon: elementIcon(key),
           })
         })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const setRelated = () => {
