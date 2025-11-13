@@ -391,15 +391,13 @@ export default {
     }
 
     const showDetails = async (id) => {
-      await api
-        .get(`/api/v1/token/hardware/${id}/info/`)
-        .then((response) => {
-          Object.assign(detailInfo, response.data)
-          details.value = true
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+      try {
+        const { data } = await api.get(`/api/v1/token/hardware/${id}/info/`)
+        Object.assign(detailInfo, data)
+        details.value = true
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const setTitle = (value) => {
