@@ -40,71 +40,65 @@ export const useAuthStore = defineStore('auth', () => {
     return scopes.value
   })
 
-  async function login(data) {
+  const login = async (payload) => {
     const uiStore = useUiStore()
 
-    await api
-      .post('/rest-auth/login/', data)
-      .then((response) => {
-        setToken(response.data.key)
-        getUser()
-        if (token.value) {
-          setLoggedIn(true)
-          getServerInfo()
-          loadDomains()
-          loadScopes()
-        }
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+    try {
+      const { data } = await api.post('/rest-auth/login/', payload)
+
+      setToken(data.key)
+      if (token.value) {
+        setLoggedIn(true)
+        await Promise.all([
+          getUser(),
+          getServerInfo(),
+          loadDomains(),
+          loadScopes(),
+        ])
+      }
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
-  function getUser() {
+  const getUser = async () => {
     const uiStore = useUiStore()
 
-    api
-      .get('/rest-auth/user/')
-      .then((response) => {
-        if (response.data.is_staff === false) {
-          reset()
-          throw new Error(gettext.$gettext('Invalid credentials'))
-        }
-
-        setUser(response.data)
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
-  }
-
-  async function getServerInfo() {
-    const uiStore = useUiStore()
-
-    await api
-      .get('/api/v1/public/server/info/')
-      .then((response) => {
-        setServerInfo(response.data)
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
-  }
-
-  async function logout() {
-    const uiStore = useUiStore()
-
-    await api
-      .post('/rest-auth/logout/')
-      .then(() => {
+    try {
+      const { data } = await api.get('/rest-auth/user/')
+      if (!data.is_staff) {
         reset()
-      })
-      .catch((error) => {
-        uiStore.notifyError(error)
-      })
+        throw new Error(gettext.$gettext('Invalid credentials'))
+      }
+      setUser(data)
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
-  function reset() {
+  const getServerInfo = async () => {
+    const uiStore = useUiStore()
+
+    try {
+      const { data } = await api.get('/api/v1/public/server/info/')
+      setServerInfo(data)
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
+  }
+
+  const logout = async () => {
+    const uiStore = useUiStore()
+
+    try {
+      await api.post('/rest-auth/logout/')
+      reset()
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
+  }
+
+  const reset = () => {
     setToken('')
     setLoggedIn(false)
     resetUser()
@@ -113,7 +107,7 @@ export const useAuthStore = defineStore('auth', () => {
     resetScopes()
   }
 
-  function sortByName(a, b) {
+  const sortByName = (a, b) => {
     return a.id && b.id && a.name > b.name
       ? 1
       : a.id && b.id && b.name > a.name
@@ -121,7 +115,7 @@ export const useAuthStore = defineStore('auth', () => {
         : 0
   }
 
-  function addDomain(payload) {
+  const addDomain = (payload) => {
     if (!domains.value.find((el) => el.name === payload.name)) {
       deleteDomain(payload.id)
       domains.value.push(payload)
@@ -145,7 +139,7 @@ export const useAuthStore = defineStore('auth', () => {
       })
   }
 
-  function addScope(payload) {
+  const addScope = (payload) => {
     if (!scopes.value.find((el) => el.name === payload.name)) {
       deleteScope(payload.id)
       scopes.value.push(payload)
@@ -173,42 +167,42 @@ export const useAuthStore = defineStore('auth', () => {
       })
   }
 
-  function setLoggedIn(value) {
+  const setLoggedIn = (value) => {
     loggedIn.value = value
     LocalStorage.set('auth.loggedIn', loggedIn.value)
   }
 
-  function setUser(value) {
+  const setUser = (value) => {
     user.value = value
     LocalStorage.set('auth.user', user.value)
   }
 
-  function setServerInfo(value) {
+  const setServerInfo = (value) => {
     server.value = value
     LocalStorage.set('auth.server', server.value)
   }
 
-  function setToken(value) {
+  const setToken = (value) => {
     token.value = value
     LocalStorage.set('auth.token', token.value)
   }
 
-  function resetUser() {
+  const resetUser = () => {
     user.value = {}
     LocalStorage.set('auth.user', user.value)
   }
 
-  function resetServerInfo() {
+  const resetServerInfo = () => {
     server.value = {}
     LocalStorage.set('auth.server', server.value)
   }
 
-  function deleteDomain(id) {
+  const deleteDomain = (id) => {
     const removeIndex = domains.value.map((item) => item.id).indexOf(id)
     if (removeIndex >= 0) domains.value.splice(removeIndex, 1)
   }
 
-  function resetDomains() {
+  const resetDomains = () => {
     domains.value = [
       {
         id: 0,
@@ -218,12 +212,12 @@ export const useAuthStore = defineStore('auth', () => {
     LocalStorage.set('auth.domains', domains.value)
   }
 
-  function deleteScope(id) {
+  const deleteScope = (id) => {
     const removeIndex = scopes.value.map((item) => item.id).indexOf(id)
     if (removeIndex >= 0) scopes.value.splice(removeIndex, 1)
   }
 
-  function resetScopes() {
+  const resetScopes = () => {
     scopes.value = [
       {
         id: 0,
