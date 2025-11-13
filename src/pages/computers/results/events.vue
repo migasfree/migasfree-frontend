@@ -592,6 +592,8 @@ export default {
     }
 
     const showItems = async (params) => {
+      if (itemsDate.value === params.data[0] && items.value.length) return
+
       const queryString = {
         computer__id: computer.id,
         created_at__gte: params.data[0],
