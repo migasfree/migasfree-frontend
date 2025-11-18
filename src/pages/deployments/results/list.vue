@@ -57,13 +57,19 @@
 
         <span v-else-if="props.column.field == 'start_date'">
           <DateView :value="props.row.start_date" />
-          <q-icon v-if="props.row.auto_restart" name="mdi-repeat" size="md">
+          <q-icon v-if="props.row.auto_restart" name="mdi-repeat" size="sm">
             <q-tooltip>{{ $gettext('Auto Restart') }}</q-tooltip>
           </q-icon>
         </span>
 
         <span v-else-if="props.column.field == 'source'">
           {{ resolveSource(props.row.source) }}
+          <q-icon
+            v-if="props.row.source === 'E' && props.row.frozen"
+            name="mdi-fridge"
+            size="sm"
+            ><q-tooltip>{{ $gettext('Frozen') }}</q-tooltip></q-icon
+          >
         </span>
 
         <span v-else>
