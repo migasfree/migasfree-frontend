@@ -245,7 +245,6 @@ export default defineComponent({
       try {
         const baseParams = { begin: begin.value, end: end.value }
 
-        // 1️⃣ Load the overall monthly syncs
         const baseResponse = await api.get(
           '/api/v1/token/stats/syncs/monthly/',
           {
@@ -262,7 +261,7 @@ export default defineComponent({
           })
         }
 
-        // 2️⃣ Load project‑specific syncs in parallel
+        // Run project requests in parallel
         const projectPromises = projects.value.map((item) =>
           api
             .get('/api/v1/token/stats/syncs/monthly/', {
