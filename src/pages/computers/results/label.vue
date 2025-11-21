@@ -55,7 +55,7 @@ export default {
 
     const label = reactive({})
 
-    onMounted(async () => {
+    const getLabel = async () => {
       try {
         const { data } = await api.get(
           `/api/v1/token/computers/${route.params.id}/label`,
@@ -65,7 +65,9 @@ export default {
       } catch (error) {
         uiStore.notifyError(error)
       }
-    })
+    }
+
+    onMounted(getLabel)
 
     return { label, server: uiStore.server }
   },
