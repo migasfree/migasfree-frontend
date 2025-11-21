@@ -8,6 +8,24 @@
       :model="model"
       :routes="routes"
     >
+      <template #actions="{ props }">
+        <q-btn
+          v-if="model === 'catalog/categories'"
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="modelIcon('catalog/apps')"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'app-add',
+              query: { category: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Application') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields="{ props }">
         <span v-if="props.column.field == 'name'">
           <MigasLink
@@ -99,7 +117,7 @@ export default {
       },
     ])
 
-    return { title, breadcrumbs, columns, routes, model }
+    return { title, breadcrumbs, columns, routes, model, modelIcon }
   },
 }
 </script>
