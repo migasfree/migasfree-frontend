@@ -99,7 +99,6 @@ export default function useDataGrid(
     updateItemsChecked,
     updateEnabled,
     updateItemsEnabled,
-    regenerateMetadata,
   } = useDataOperations({
     model,
     detailRoute,
@@ -248,7 +247,6 @@ export default function useDataGrid(
     updateItemsChecked,
     updateEnabled,
     updateItemsEnabled,
-    regenerateMetadata,
     resetFilters,
   }
 }
