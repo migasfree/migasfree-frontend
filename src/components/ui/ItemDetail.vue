@@ -21,66 +21,6 @@
       <slot name="actions"></slot>
 
       <q-btn
-        v-if="model === 'user-profiles' && element.id"
-        class="q-ma-sm"
-        :aria-label="$gettext('Change Password')"
-        color="primary"
-        :icon="appIcon('password')"
-        @click="
-          $router.push({
-            name: 'user-profile-change-password',
-            params: { id: element.id },
-          })
-        "
-        ><q-tooltip>{{ $gettext('Change Password') }}</q-tooltip></q-btn
-      >
-
-      <q-btn
-        v-if="model === 'deployments' && element.source === 'I'"
-        class="q-ma-sm"
-        :aria-label="$gettext('Regenerate Metadata')"
-        color="primary"
-        :icon="appIcon('regenerate')"
-        @click="regenerateMetadata(element.id)"
-        ><q-tooltip>{{ $gettext('Regenerate Metadata') }}</q-tooltip></q-btn
-      >
-
-      <q-btn
-        v-if="
-          model === 'packages' &&
-          'store' in element &&
-          element.store.id &&
-          $route.name !== 'package-information'
-        "
-        class="q-ma-md"
-        size="md"
-        :icon="appIcon('information')"
-        :aria-label="$gettext('Package Information')"
-        color="primary"
-        text-color="white"
-        @click="
-          $router.push({
-            name: 'package-information',
-            params: { id: element.id },
-          })
-        "
-        ><q-tooltip>{{ $gettext('Package Information') }}</q-tooltip></q-btn
-      >
-
-      <q-btn
-        v-if="model === 'packages' && element.url"
-        class="q-ma-md"
-        size="md"
-        :icon="appIcon('download')"
-        :aria-label="$gettext('Download')"
-        color="primary"
-        text-color="white"
-        type="a"
-        :href="`${server}${element.url}`"
-        ><q-tooltip>{{ $gettext('Download') }}</q-tooltip></q-btn
-      >
-
-      <q-btn
         v-if="'add' in routes"
         class="q-ma-sm"
         color="primary"
@@ -171,9 +111,6 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import RemoveDialog from 'components/ui/RemoveDialog'
-
-import { api } from 'boot/axios'
-import { useUiStore } from 'stores/ui'
 
 import useDetail from 'composables/detail'
 import { appIcon, modelIcon, useElement } from 'composables/element'
@@ -273,8 +210,6 @@ export default defineComponent({
     'setTitle',
   ],
   setup(props) {
-    const uiStore = useUiStore()
-
     const confirmRemove = ref(false)
     const titleIcon = props.icon || modelIcon(props.model)
 
@@ -310,19 +245,7 @@ export default defineComponent({
       return modelIcon(props.model)
     })
 
-    const regenerateMetadata = async (id) => {
-      try {
-        const { data } = await api.get(
-          `/api/v1/token/${props.model}/internal-sources/${id}/metadata/`,
-        )
-        uiStore.notifySuccess(data.detail)
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
     return {
-      server: uiStore.server,
       titleIcon,
       loading,
       elementText,
@@ -332,7 +255,6 @@ export default defineComponent({
       remove,
       addElement,
       updateElement,
-      regenerateMetadata,
       appIcon,
     }
   },
