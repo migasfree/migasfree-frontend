@@ -490,107 +490,8 @@
           @click="confirmRemove(props.row.id)"
           ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
         >
-        <q-btn
-          v-if="model === 'user-profiles'"
-          class="q-ma-xs"
-          round
-          size="sm"
-          :icon="appIcon('password')"
-          color="primary"
-          @click="
-            $router.push({
-              name: 'user-profile-change-password',
-              params: { id: props.row.id },
-            })
-          "
-          ><q-tooltip>{{ $gettext('Change Password') }}</q-tooltip></q-btn
-        >
-        <q-btn
-          v-if="model === 'deployments' && props.row.source === 'I'"
-          class="q-ma-xs"
-          round
-          size="sm"
-          :icon="appIcon('regenerate')"
-          color="primary"
-          @click="regenerateMetadata(props.row.id)"
-          ><q-tooltip>{{ $gettext('Regenerate Metadata') }}</q-tooltip></q-btn
-        >
-        <q-btn
-          v-if="model === 'packages' && props.row.store.id"
-          class="q-ma-xs"
-          round
-          size="sm"
-          :icon="appIcon('information')"
-          color="info"
-          @click="
-            $router.push({
-              name: 'package-information',
-              params: { id: props.row.id },
-            })
-          "
-          ><q-tooltip>{{ $gettext('Package Information') }}</q-tooltip></q-btn
-        >
-        <q-btn
-          v-if="model === 'packages' && props.row.url"
-          class="q-ma-xs"
-          round
-          size="sm"
-          :icon="appIcon('download')"
-          color="info"
-          type="a"
-          :href="`${server}${props.row.url}`"
-          ><q-tooltip>{{ $gettext('Download') }}</q-tooltip></q-btn
-        >
 
-        <q-btn
-          v-if="model === 'computers'"
-          class="q-ma-xs"
-          round
-          size="sm"
-          :icon="appIcon('events')"
-          color="info"
-          @click="
-            $router.push({
-              name: 'computer-events',
-              params: { id: props.row.id },
-            })
-          "
-          ><q-tooltip>{{ $gettext('Events') }}</q-tooltip></q-btn
-        >
-
-        <q-btn
-          v-if="model === 'computers'"
-          class="q-ma-xs"
-          round
-          size="sm"
-          :icon="appIcon('simulate')"
-          color="info"
-          @click="
-            $router.push({
-              name: 'computer-simulate',
-              params: { id: props.row.id },
-            })
-          "
-          ><q-tooltip>{{
-            $gettext('Simulate synchronization')
-          }}</q-tooltip></q-btn
-        >
-
-        <q-btn
-          v-if="model === 'computers'"
-          class="q-ma-xs"
-          round
-          size="sm"
-          icon="mdi-card-account-details-outline"
-          color="info"
-          @click="
-            $router.push({
-              name: 'computer-label',
-              params: { id: props.row.id },
-            })
-          "
-          ><q-tooltip>{{ $gettext('Identification') }}</q-tooltip></q-btn
-        >
+        <slot name="actions" :props="props"></slot>
       </span>
 
       <slot name="fields" :props="props"></slot>
@@ -806,7 +707,6 @@ export default defineComponent({
       confirmRemove,
       updateChecked,
       updateEnabled,
-      regenerateMetadata,
       updateStatusInFilter,
       updateItemsChecked,
       updateItemsEnabled,
@@ -916,7 +816,6 @@ export default defineComponent({
     })
 
     return {
-      server: uiStore.server,
       titleIcon,
       statusTree,
       machineTree,
@@ -973,8 +872,8 @@ export default defineComponent({
       updateItemsChecked,
       updateEnabled,
       updateItemsEnabled,
-      regenerateMetadata,
       appIcon,
+      modelIcon,
       detailRoute,
       addRoute,
     }
