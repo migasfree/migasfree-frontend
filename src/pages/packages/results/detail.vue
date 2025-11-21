@@ -16,6 +16,42 @@
       @reset-related="resetRelated"
       @set-title="setTitle"
     >
+      <template #actions>
+        <q-btn
+          v-if="
+            'store' in element &&
+            element.store.id &&
+            $route.name !== 'package-information'
+          "
+          class="q-ma-md"
+          size="md"
+          :icon="appIcon('information')"
+          :aria-label="$gettext('Package Information')"
+          color="primary"
+          text-color="white"
+          @click="
+            $router.push({
+              name: 'package-information',
+              params: { id: element.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Package Information') }}</q-tooltip></q-btn
+        >
+
+        <q-btn
+          v-if="element.url"
+          class="q-ma-md"
+          size="md"
+          :icon="appIcon('download')"
+          :aria-label="$gettext('Download')"
+          color="primary"
+          text-color="white"
+          type="a"
+          :href="`${server}${element.url}`"
+          ><q-tooltip>{{ $gettext('Download') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields>
         <q-card-section>
           <div class="row q-pa-md q-gutter-md">
@@ -292,6 +328,7 @@ export default {
     }
 
     return {
+      server: uiStore.server,
       breadcrumbs,
       title,
       model,
@@ -311,6 +348,7 @@ export default {
       resetElement,
       resetRelated,
       setTitle,
+      appIcon,
       modelIcon,
     }
   },
