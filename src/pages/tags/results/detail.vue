@@ -19,7 +19,6 @@
       <template #fields>
         <q-card-section>
           <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
-
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
               <q-select
@@ -64,6 +63,15 @@
                   </q-chip>
                 </template>
               </q-select>
+
+              <q-btn
+                color="secondary"
+                class="q-ma-sm"
+                :icon="appIcon('add')"
+                :icon-right="modelIcon('stamps')"
+                @click="$router.push({ name: 'stamp-add' })"
+                ><q-tooltip>{{ $gettext('Add Stamp') }}</q-tooltip></q-btn
+              >
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -186,6 +194,7 @@
 
 <script>
 import { ref, reactive, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -212,6 +221,7 @@ export default {
     const { $gettext } = useGettext()
     const { elementIcon } = useElement()
     const uiStore = useUiStore()
+    const route = useRoute()
 
     const title = ref($gettext('Tag'))
     const windowTitle = ref(title.value)
@@ -272,6 +282,12 @@ export default {
           element.computers = computersResponse.data.computers
           inflicted.value = computersResponse.data.inflicted
         }
+
+        if (route.query.property_att)
+          element.property_att =
+            stamps.value.find(
+              (item) => item.id === Number(route.query.property_att),
+            ) || null
       } catch (error) {
         uiStore.notifyError(error)
       }
@@ -373,6 +389,7 @@ export default {
       updateMapCoords,
       filterComputers,
       elementIcon,
+      appIcon,
       modelIcon,
     }
   },
