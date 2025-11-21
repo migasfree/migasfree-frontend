@@ -200,17 +200,6 @@ export function useDataOperations(deps) {
     )
   }
 
-  const regenerateMetadata = async (id) => {
-    try {
-      const response = await api.get(
-        `/api/v1/token/${model.value}/internal-sources/${id}/metadata/`,
-      )
-      uiStore.notifySuccess(response.data.detail)
-    } catch (error) {
-      uiStore.notifyError(error)
-    }
-  }
-
   return {
     loadItems,
     edit,
@@ -222,6 +211,5 @@ export function useDataOperations(deps) {
     updateItemsChecked,
     updateEnabled,
     updateItemsEnabled,
-    regenerateMetadata,
   }
 }
