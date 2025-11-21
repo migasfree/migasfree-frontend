@@ -8,6 +8,23 @@
       :model="model"
       :routes="routes"
     >
+      <template #actions="{ props }">
+        <q-btn
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="appIcon('password')"
+          color="primary"
+          @click="
+            $router.push({
+              name: 'user-profile-change-password',
+              params: { id: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Change Password') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields="{ props }">
         <span v-if="props.column.field == 'username'">
           <MigasLink
@@ -152,7 +169,7 @@ export default {
       },
     ])
 
-    return { title, breadcrumbs, columns, routes, model }
+    return { title, breadcrumbs, columns, routes, model, appIcon }
   },
 }
 </script>
