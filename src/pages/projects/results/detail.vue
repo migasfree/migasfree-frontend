@@ -70,6 +70,15 @@
                   />
                 </template>
               </q-select>
+
+              <q-btn
+                color="secondary"
+                class="q-ma-sm"
+                :icon="appIcon('add')"
+                :icon-right="modelIcon('platforms')"
+                @click="$router.push({ name: 'platform-add' })"
+                ><q-tooltip>{{ $gettext('Add Platform') }}</q-tooltip></q-btn
+              >
             </div>
 
             <div class="col-4 col-md col-sm">
@@ -152,6 +161,7 @@
 
 <script>
 import { ref, reactive, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -168,6 +178,7 @@ export default {
   },
   setup() {
     const uiStore = useUiStore()
+    const route = useRoute()
     const { $gettext } = useGettext()
 
     const title = ref($gettext('Project'))
@@ -287,6 +298,12 @@ export default {
             architectures: val.architectures,
           })
         }
+
+        if (route.query.platform)
+          element.platform =
+            platforms.value.find(
+              (item) => item.id === Number(route.query.platform),
+            ) || null
       } catch (error) {
         storeCount.value = 0
         deploymentCount.value = 0
@@ -381,6 +398,7 @@ export default {
       loadRelated,
       resetElement,
       setTitle,
+      appIcon,
       modelIcon,
       createDefaultStores,
       createDefaultDeployments,
