@@ -61,6 +61,17 @@
                   />
                 </template>
               </q-select>
+
+              <q-btn
+                color="secondary"
+                class="q-ma-sm"
+                :icon="appIcon('add')"
+                :icon-right="modelIcon('catalog/categories')"
+                @click="$router.push({ name: 'category-add' })"
+                ><q-tooltip>{{
+                  $gettext('Add Application Category')
+                }}</q-tooltip></q-btn
+              >
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -240,6 +251,7 @@
 
 <script>
 import { ref, reactive, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -260,6 +272,7 @@ export default {
   },
   setup() {
     const uiStore = useUiStore()
+    const route = useRoute()
     const { $gettext, interpolate } = useGettext()
 
     const title = ref($gettext('Application'))
@@ -336,6 +349,12 @@ export default {
         }))
         categories.value = categoriesData.results
         projects.value = projectsData.results
+
+        if (route.query.category)
+          element.category =
+            categories.value.find(
+              (item) => item.id === Number(route.query.category),
+            ) || null
       } catch (error) {
         uiStore.notifyError(error)
       }
