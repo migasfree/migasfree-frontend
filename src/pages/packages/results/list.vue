@@ -8,6 +8,36 @@
       :model="model"
       :routes="routes"
     >
+      <template #actions="{ props }">
+        <q-btn
+          v-if="props.row.store.id"
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="appIcon('information')"
+          color="info"
+          @click="
+            $router.push({
+              name: 'package-information',
+              params: { id: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Package Information') }}</q-tooltip></q-btn
+        >
+
+        <q-btn
+          v-if="props.row.url"
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="appIcon('download')"
+          color="info"
+          type="a"
+          :href="`${server}${props.row.url}`"
+          ><q-tooltip>{{ $gettext('Download') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields="{ props }">
         <span v-if="props.column.field == 'fullname'">
           <MigasLink
@@ -186,7 +216,15 @@ export default {
       await loadFilters()
     })
 
-    return { title, breadcrumbs, columns, routes, model }
+    return {
+      title,
+      breadcrumbs,
+      columns,
+      routes,
+      model,
+      appIcon,
+      server: uiStore.server,
+    }
   },
 }
 </script>
