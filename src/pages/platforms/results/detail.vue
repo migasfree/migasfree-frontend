@@ -12,6 +12,21 @@
       @reset-element="resetElement"
       @set-title="setTitle"
     >
+      <template v-if="element.id" #actions>
+        <q-btn
+          color="secondary"
+          :icon="appIcon('add')"
+          :icon-right="modelIcon('projects')"
+          @click="
+            $router.push({
+              name: 'project-add',
+              query: { platform: element.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Project') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields>
         <q-card-section>
           <div class="row q-pa-md q-gutter-md">
@@ -109,6 +124,8 @@ export default {
       elementData,
       resetElement,
       setTitle,
+      appIcon,
+      modelIcon,
     }
   },
 }
