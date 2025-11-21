@@ -15,6 +15,18 @@
       @reset-element="resetElement"
       @set-title="setTitle"
     >
+      <template #actions>
+        <q-btn
+          v-if="element.source === 'I'"
+          class="q-ma-sm"
+          :aria-label="$gettext('Regenerate Metadata')"
+          color="primary"
+          :icon="appIcon('regenerate')"
+          @click="regenerateMetadata(element.id)"
+          ><q-tooltip>{{ $gettext('Regenerate Metadata') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields>
         <div class="row q-pb-md q-col-gutter-md">
           <div class="col-6 col-md col-sm-12">
@@ -780,6 +792,17 @@ export default {
       windowTitle.value = value
     }
 
+    const regenerateMetadata = async (id) => {
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/${model}/internal-sources/${id}/metadata/`,
+        )
+        uiStore.notifySuccess(data.detail)
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
+    }
+
     const filterPackages = async (val) => {
       if (!element.project) return
 
@@ -827,6 +850,7 @@ export default {
       updateStats,
       resetElement,
       setTitle,
+      regenerateMetadata,
       filterPackages,
       filterPackageSets,
       appIcon,
