@@ -13,6 +13,21 @@
       @reset-element="resetElement"
       @set-title="setTitle"
     >
+      <template v-if="element.id" #actions>
+        <q-btn
+          color="secondary"
+          :icon="appIcon('add')"
+          :icon-right="modelIcon('tags')"
+          @click="
+            $router.push({
+              name: 'tag-add',
+              query: { property_att: element.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Tag') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields>
         <q-card-section>
           <div class="row q-pa-md q-gutter-md">
@@ -201,6 +216,8 @@ export default {
       resetElement,
       setTitle,
       MAX_PREFIX_LEN,
+      appIcon,
+      modelIcon,
     }
   },
 }
