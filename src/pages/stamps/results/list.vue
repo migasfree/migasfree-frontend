@@ -8,6 +8,23 @@
       :model="model"
       :routes="routes"
     >
+      <template #actions="{ props }">
+        <q-btn
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="modelIcon('tags')"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'tag-add',
+              query: { property_att: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Tag') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields="{ props }">
         <span v-if="props.column.field == 'name'">
           <MigasLink
@@ -173,7 +190,7 @@ export default {
       await loadFilters()
     })
 
-    return { breadcrumbs, title, model, routes, columns, kind }
+    return { breadcrumbs, title, model, routes, columns, kind, modelIcon }
   },
 }
 </script>
