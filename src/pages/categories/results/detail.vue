@@ -12,6 +12,21 @@
       @reset-element="resetElement"
       @set-title="setTitle"
     >
+      <template v-if="element.id" #actions>
+        <q-btn
+          color="secondary"
+          :icon="appIcon('add')"
+          :icon-right="modelIcon('catalog/apps')"
+          @click="
+            $router.push({
+              name: 'app-add',
+              query: { category: element.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Application') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields>
         <q-card-section>
           <div class="row q-pa-md q-gutter-md">
@@ -109,6 +124,8 @@ export default {
       elementData,
       resetElement,
       setTitle,
+      appIcon,
+      modelIcon,
     }
   },
 }
