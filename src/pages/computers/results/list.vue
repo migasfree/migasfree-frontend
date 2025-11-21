@@ -9,6 +9,55 @@
       :routes="routes"
       :more-filters="moreFilters"
     >
+      <template #actions="{ props }">
+        <q-btn
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="appIcon('events')"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'computer-events',
+              params: { id: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Events') }}</q-tooltip></q-btn
+        >
+
+        <q-btn
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="appIcon('simulate')"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'computer-simulate',
+              params: { id: props.row.id },
+            })
+          "
+          ><q-tooltip>{{
+            $gettext('Simulate synchronization')
+          }}</q-tooltip></q-btn
+        >
+
+        <q-btn
+          class="q-ma-xs"
+          round
+          size="sm"
+          icon="mdi-card-account-details-outline"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'computer-label',
+              params: { id: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Identification') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields="{ props }">
         <span v-if="props.column.field == 'name'">
           <MigasLink
@@ -251,6 +300,7 @@ export default {
       moreFilters,
       elementIcon,
       productIcon,
+      appIcon,
     }
   },
 }
