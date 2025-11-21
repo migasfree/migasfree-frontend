@@ -9,6 +9,19 @@
       :routes="routes"
       :more-filters="moreFilters"
     >
+      <template #actions="{ props }">
+        <q-btn
+          v-if="props.row.source === 'I'"
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="appIcon('regenerate')"
+          color="primary"
+          @click="regenerateMetadata(props.row.id)"
+          ><q-tooltip>{{ $gettext('Regenerate Metadata') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields="{ props }">
         <span v-if="props.column.field == 'name'">
           <MigasLink
@@ -281,6 +294,17 @@ export default {
         E: $gettext('External'),
       })[value] ?? ''
 
+    const regenerateMetadata = async (id) => {
+      try {
+        const { data } = await api.get(
+          `/api/v1/token/${model}/internal-sources/${id}/metadata/`,
+        )
+        uiStore.notifySuccess(data.detail)
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
+    }
+
     onMounted(async () => {
       await loadFilters()
     })
@@ -292,7 +316,9 @@ export default {
       title,
       breadcrumbs,
       columns,
+      appIcon,
       resolveSource,
+      regenerateMetadata,
     }
   },
 }
