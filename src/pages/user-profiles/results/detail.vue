@@ -13,6 +13,23 @@
       @reset-element="resetElement"
       @set-title="setTitle"
     >
+      <template #actions>
+        <q-btn
+          v-if="element.id"
+          class="q-ma-sm"
+          :aria-label="$gettext('Change Password')"
+          color="primary"
+          :icon="appIcon('password')"
+          @click="
+            $router.push({
+              name: 'user-profile-change-password',
+              params: { id: element.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Change Password') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields>
         <q-card-section>
           <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
