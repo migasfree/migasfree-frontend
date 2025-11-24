@@ -14,6 +14,21 @@
       @reset-element="resetElement"
       @set-title="setTitle"
     >
+      <template v-if="element.id" #actions>
+        <q-btn
+          color="secondary"
+          :icon="appIcon('add')"
+          :icon-right="modelIcon('deployments')"
+          @click="
+            $router.push({
+              name: 'deployment-add',
+              query: { schedule: element.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Deployment') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields>
         <q-card-section>
           <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
@@ -276,6 +291,7 @@ export default {
       addInline,
       removeInline,
       appIcon,
+      modelIcon,
     }
   },
 }
