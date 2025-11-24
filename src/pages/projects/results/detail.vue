@@ -37,6 +37,8 @@
         >
 
         <q-btn
+          v-if="element.id"
+          class="q-ma-sm"
           color="secondary"
           :icon="appIcon('add')"
           :icon-right="modelIcon('deployments')"
@@ -47,6 +49,21 @@
             })
           "
           ><q-tooltip>{{ $gettext('Add Deployment') }}</q-tooltip></q-btn
+        >
+
+        <q-btn
+          v-if="element.id"
+          class="q-ma-sm"
+          color="secondary"
+          :icon="appIcon('add')"
+          :icon-right="modelIcon('devices/drivers')"
+          @click="
+            $router.push({
+              name: 'driver-add',
+              query: { project: element.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Driver') }}</q-tooltip></q-btn
         >
       </template>
 
