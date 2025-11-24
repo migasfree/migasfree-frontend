@@ -90,8 +90,7 @@
           <q-btn
             no-caps
             dense
-            color="info"
-            text-color="black"
+            color="secondary"
             :icon="productIcon(props.row.product_system)"
             :label="props.row.product || ''"
             @click="
