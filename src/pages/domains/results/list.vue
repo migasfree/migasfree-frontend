@@ -14,6 +14,21 @@
           class="q-ma-xs"
           round
           size="sm"
+          :icon="modelIcon('scopes')"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'scope-add',
+              query: { domain: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Scope') }}</q-tooltip></q-btn
+        >
+
+        <q-btn
+          class="q-ma-xs"
+          round
+          size="sm"
           :icon="modelIcon('deployments')"
           color="secondary"
           @click="
