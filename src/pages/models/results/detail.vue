@@ -49,6 +49,15 @@
                   />
                 </template>
               </q-select>
+
+              <q-btn
+                color="secondary"
+                class="q-ma-sm"
+                :icon="appIcon('add')"
+                :icon-right="modelIcon('devices/types')"
+                @click="$router.push({ name: 'device-type-add' })"
+                ><q-tooltip>{{ $gettext('Add Device Type') }}</q-tooltip></q-btn
+              >
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -79,6 +88,17 @@
                   />
                 </template>
               </q-select>
+
+              <q-btn
+                color="secondary"
+                class="q-ma-sm"
+                :icon="appIcon('add')"
+                :icon-right="modelIcon('devices/manufacturers')"
+                @click="$router.push({ name: 'manufacturer-add' })"
+                ><q-tooltip>{{
+                  $gettext('Add Manufacturer')
+                }}</q-tooltip></q-btn
+              >
             </div>
           </div>
 
@@ -121,6 +141,15 @@
                   </q-chip>
                 </template>
               </q-select>
+
+              <q-btn
+                color="secondary"
+                class="q-ma-sm"
+                :icon="appIcon('add')"
+                :icon-right="modelIcon('devices/connections')"
+                @click="$router.push({ name: 'connection-add' })"
+                ><q-tooltip>{{ $gettext('Add Connection') }}</q-tooltip></q-btn
+              >
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -250,6 +279,7 @@
 
 <script>
 import { ref, reactive, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -268,6 +298,7 @@ export default {
   },
   setup() {
     const { $gettext } = useGettext()
+    const route = useRoute()
     const uiStore = useUiStore()
 
     const title = ref($gettext('Model'))
@@ -334,6 +365,26 @@ export default {
         fetchAndAssign('/api/v1/token/projects/', projects),
         fetchAndAssign('/api/v1/token/devices/capabilities/', capabilities),
       ])
+
+      if (route.query.device_type)
+        element.device_type =
+          deviceTypes.value.find(
+            (item) => item.id === Number(route.query.device_type),
+          ) || null
+
+      if (route.query.manufacturer)
+        element.manufacturer =
+          manufacturers.value.find(
+            (item) => item.id === Number(route.query.manufacturer),
+          ) || null
+
+      if (route.query.connections) {
+        const ids = route.query.connections.split(',').map((v) => Number(v))
+
+        element.connections = connections.value.filter((item) =>
+          ids.includes(item.id),
+        )
+      }
 
       if (element.id) {
         try {
