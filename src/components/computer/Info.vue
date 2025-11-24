@@ -98,8 +98,7 @@
     <q-card-actions class="justify-between q-px-md">
       <q-btn
         :icon="appIcon('events')"
-        color="info"
-        text-color="black"
+        color="secondary"
         no-caps
         :to="{
           name: 'computer-events',
@@ -110,8 +109,7 @@
 
       <q-btn
         :icon="appIcon('simulate')"
-        color="info"
-        text-color="black"
+        color="secondary"
         no-caps
         :to="{
           name: 'computer-simulate',
@@ -122,8 +120,7 @@
 
       <q-btn
         icon="mdi-card-account-details-outline"
-        color="info"
-        text-color="black"
+        color="secondary"
         no-caps
         :to="{
           name: 'computer-label',
