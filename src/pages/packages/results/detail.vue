@@ -19,15 +19,16 @@
       <template #actions>
         <q-btn
           v-if="
+            element.id &&
             'store' in element &&
             element.store.id &&
             $route.name !== 'package-information'
           "
-          class="q-ma-md"
+          class="q-ma-sm"
           size="md"
           :icon="appIcon('information')"
           :aria-label="$gettext('Package Information')"
-          color="primary"
+          color="secondary"
           text-color="white"
           @click="
             $router.push({
@@ -40,11 +41,11 @@
 
         <q-btn
           v-if="element.url"
-          class="q-ma-md"
+          class="q-ma-sm"
           size="md"
           :icon="appIcon('download')"
           :aria-label="$gettext('Download')"
-          color="primary"
+          color="secondary"
           text-color="white"
           type="a"
           :href="`${server}${element.url}`"
@@ -183,7 +184,7 @@ export default {
     }
     const model = 'packages'
 
-    let element = reactive({ id: 0, files: null })
+    const element = reactive({ id: 0, files: null })
 
     const projectStore = reactive({ items: [], selected: null })
 
@@ -232,24 +233,25 @@ export default {
       menu.value.hide()
     }
 
-    const onLazyLoad = ({ key, done }) => {
-      api
-        .get('/api/v1/token/stores/', { params: { project__id: key } })
-        .then((response) => {
-          done(
-            Object.entries(response.data.results).map(([, item]) => {
-              return {
-                id: `${key}|${item.id}`,
-                label: item.name,
-                icon: modelIcon('stores'),
-                store_id: item.id,
-              }
-            }),
-          )
+    const onLazyLoad = async ({ key, done }) => {
+      try {
+        const {
+          data: { results },
+        } = await api.get('/api/v1/token/stores/', {
+          params: { project__id: key },
         })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+
+        const items = Object.values(results).map((item) => ({
+          id: `${key}|${item.id}`,
+          label: item.name,
+          icon: modelIcon('stores'),
+          store_id: item.id,
+        }))
+
+        done(items)
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const setRelated = () => {
