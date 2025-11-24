@@ -148,6 +148,17 @@
                   </q-chip>
                 </template>
               </q-select>
+
+              <q-btn
+                color="secondary"
+                class="q-ma-sm"
+                :icon="appIcon('add')"
+                :icon-right="modelIcon('user-profiles')"
+                @click="$router.push({ name: 'user-profile-add' })"
+                ><q-tooltip>{{
+                  $gettext('Add User Profile')
+                }}</q-tooltip></q-btn
+              >
             </div>
           </div>
         </q-card-section>
@@ -196,7 +207,7 @@ export default {
     }
     const model = 'domains'
 
-    let element = reactive({
+    const element = reactive({
       id: 0,
       name: undefined,
       comment: undefined,
@@ -234,11 +245,10 @@ export default {
         const { data } = await api.get(
           '/api/v1/token/user-profiles/domain-admins/',
         )
-        const profiles = Object.values(data).map((item) => ({
-          id: item.id,
-          name: item.username,
+        userProfiles.value = Object.values(data).map(({ id, username }) => ({
+          id,
+          name: username,
         }))
-        userProfiles.value = profiles
       } catch (error) {
         uiStore.notifyError(error)
       }
