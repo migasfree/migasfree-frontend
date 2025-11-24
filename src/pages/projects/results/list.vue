@@ -13,6 +13,21 @@
           class="q-ma-xs"
           round
           size="sm"
+          :icon="modelIcon('stores')"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'store-add',
+              query: { project: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Store') }}</q-tooltip></q-btn
+        >
+
+        <q-btn
+          class="q-ma-xs"
+          round
+          size="sm"
           :icon="modelIcon('deployments')"
           color="secondary"
           @click="
