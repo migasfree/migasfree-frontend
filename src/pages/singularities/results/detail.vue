@@ -60,13 +60,22 @@
                     flat
                     color="primary"
                     :to="{
-                      name: 'feature-detail',
+                      name: 'formula-detail',
                       params: { id: scope.opt.id },
                     }"
                     :label="scope.opt.name"
                   />
                 </template>
               </q-select>
+
+              <q-btn
+                color="secondary"
+                class="q-ma-sm"
+                :icon="appIcon('add')"
+                :icon-right="modelIcon('formulas')"
+                @click="$router.push({ name: 'formula-add' })"
+                ><q-tooltip>{{ $gettext('Add Formula') }}</q-tooltip></q-btn
+              >
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -164,6 +173,7 @@
 
 <script>
 import { ref, reactive, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -183,8 +193,9 @@ export default {
     CodeEditor,
   },
   setup() {
-    const uiStore = useUiStore()
     const { $gettext } = useGettext()
+    const route = useRoute()
+    const uiStore = useUiStore()
 
     const title = ref($gettext('Singularity'))
     const windowTitle = ref(title.value)
@@ -197,7 +208,7 @@ export default {
     }
     const model = 'singularities'
 
-    let element = reactive({
+    const element = reactive({
       id: 0,
       enabled: false,
       included_attributes: [],
@@ -263,6 +274,12 @@ export default {
             (x) => x.id === element.language,
           )
         }
+
+        if (route.query.property_att)
+          element.property_att =
+            formulas.value.find(
+              (item) => item.id === Number(route.query.property_att),
+            ) || null
       } catch (error) {
         uiStore.notifyError(error)
       }
@@ -312,6 +329,7 @@ export default {
       elementData,
       resetElement,
       setTitle,
+      appIcon,
       modelIcon,
     }
   },
