@@ -8,6 +8,23 @@
       :model="model"
       :routes="routes"
     >
+      <template #actions="{ props }">
+        <q-btn
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="modelIcon('devices/connections')"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'connection-add',
+              query: { device_type: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Connection') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields="{ props }">
         <span v-if="props.column.field == 'name'">
           <MigasLink
@@ -99,7 +116,7 @@ export default {
       },
     ])
 
-    return { title, breadcrumbs, columns, routes, model }
+    return { title, breadcrumbs, columns, routes, model, modelIcon }
   },
 }
 </script>
