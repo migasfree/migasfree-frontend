@@ -16,6 +16,22 @@
       @reset-element="resetElement"
       @set-title="setTitle"
     >
+      <template v-if="element.id" #actions>
+        <q-btn
+          color="secondary"
+          class="q-ma-sm"
+          :icon="appIcon('add')"
+          :icon-right="modelIcon('singularities')"
+          @click="
+            $router.push({
+              name: 'singularity-add',
+              query: { property_att: element.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Singularity') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template v-if="!isBasic" #fields>
         <q-card-section>
           <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
@@ -296,6 +312,8 @@ export default {
       loadRelated,
       resetElement,
       setTitle,
+      appIcon,
+      modelIcon,
       MAX_PREFIX_LEN,
     }
   },
