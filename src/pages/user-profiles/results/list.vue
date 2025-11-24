@@ -23,6 +23,22 @@
           "
           ><q-tooltip>{{ $gettext('Change Password') }}</q-tooltip></q-btn
         >
+
+        <q-btn
+          v-if="isSuperUser"
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="modelIcon('scopes')"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'scope-add',
+              query: { user: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Scope') }}</q-tooltip></q-btn
+        >
       </template>
 
       <template #fields="{ props }">
@@ -59,6 +75,8 @@ import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
+import { useAuthStore } from 'stores/auth'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
 import MigasLink from 'components/MigasLink'
@@ -75,6 +93,7 @@ export default {
   },
   setup() {
     const { $gettext } = useGettext()
+    const authStore = useAuthStore()
 
     useMeta({ title: $gettext('User Profiles List') })
 
@@ -169,7 +188,16 @@ export default {
       },
     ])
 
-    return { title, breadcrumbs, columns, routes, model, appIcon }
+    return {
+      title,
+      isSuperUser: authStore.user.is_superuser,
+      breadcrumbs,
+      columns,
+      routes,
+      model,
+      appIcon,
+      modelIcon,
+    }
   },
 }
 </script>
