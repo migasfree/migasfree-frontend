@@ -23,6 +23,21 @@
           "
           ><q-tooltip>{{ $gettext('Add Connection') }}</q-tooltip></q-btn
         >
+
+        <q-btn
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="modelIcon('devices/models')"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'model-add',
+              query: { device_type: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Model') }}</q-tooltip></q-btn
+        >
       </template>
 
       <template #fields="{ props }">
