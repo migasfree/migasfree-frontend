@@ -108,8 +108,7 @@
             <q-btn
               no-caps
               dense
-              color="info"
-              text-color="black"
+              color="secondary"
               :icon="productIcon(productSystem)"
               :label="product"
               :aria-label="productSystem"
