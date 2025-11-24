@@ -15,6 +15,21 @@
     >
       <template #actions>
         <q-btn
+          v-if="element.is_superuser"
+          color="secondary"
+          class="q-ma-sm"
+          :icon="appIcon('add')"
+          :icon-right="modelIcon('scopes')"
+          @click="
+            $router.push({
+              name: 'scope-add',
+              query: { user: element.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Scope') }}</q-tooltip></q-btn
+        >
+
+        <q-btn
           v-if="element.id"
           class="q-ma-sm"
           :aria-label="$gettext('Change Password')"
