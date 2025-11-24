@@ -55,6 +55,15 @@
                   />
                 </template>
               </q-select>
+
+              <q-btn
+                color="secondary"
+                class="q-ma-sm"
+                :icon="appIcon('add')"
+                :icon-right="modelIcon('devices/types')"
+                @click="$router.push({ name: 'device-type-add' })"
+                ><q-tooltip>{{ $gettext('Add Device Type') }}</q-tooltip></q-btn
+              >
             </div>
           </div>
 
@@ -76,6 +85,7 @@
 
 <script>
 import { ref, reactive, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -90,6 +100,7 @@ export default {
   components: { ItemDetail },
   setup() {
     const { $gettext } = useGettext()
+    const route = useRoute()
     const uiStore = useUiStore()
 
     const title = ref($gettext('Connection'))
@@ -136,6 +147,12 @@ export default {
       try {
         const { data } = await api.get('/api/v1/token/devices/types/')
         deviceTypes.value = data.results
+
+        if (route.query.device_type)
+          element.device_type =
+            deviceTypes.value.find(
+              (item) => item.id === Number(route.query.device_type),
+            ) || null
       } catch (error) {
         uiStore.notifyError(error)
       }
@@ -174,6 +191,7 @@ export default {
       elementData,
       resetElement,
       setTitle,
+      appIcon,
       modelIcon,
     }
   },
