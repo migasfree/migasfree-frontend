@@ -52,7 +52,7 @@
           <div class="row q-pa-md q-gutter-md">
             <div class="col-md col-sm">
               <q-input
-                v-model="element.username"
+                v-model.trim="element.username"
                 outlined
                 counter
                 maxlength="150"
@@ -90,7 +90,7 @@
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
               <q-input
-                v-model="element.email"
+                v-model.trim="element.email"
                 outlined
                 type="email"
                 :label="$gettext('Email')"
@@ -239,6 +239,15 @@
                   </q-chip>
                 </template>
               </q-select>
+
+              <q-btn
+                color="secondary"
+                class="q-ma-sm"
+                :icon="appIcon('add')"
+                :icon-right="modelIcon('accounts/groups')"
+                @click="$router.push({ name: 'group-add' })"
+                ><q-tooltip>{{ $gettext('Add Group') }}</q-tooltip></q-btn
+              >
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -268,6 +277,15 @@
                   </q-chip>
                 </template>
               </q-select>
+
+              <q-btn
+                color="secondary"
+                class="q-ma-sm"
+                :icon="appIcon('add')"
+                :icon-right="modelIcon('domains')"
+                @click="$router.push({ name: 'domain-add' })"
+                ><q-tooltip>{{ $gettext('Add Domain') }}</q-tooltip></q-btn
+              >
             </div>
           </div>
 
@@ -335,6 +353,15 @@
                   </q-chip>
                 </template>
               </q-select>
+
+              <q-btn
+                color="secondary"
+                class="q-ma-sm"
+                :icon="appIcon('add')"
+                :icon-right="modelIcon('domains')"
+                @click="$router.push({ name: 'domain-add' })"
+                ><q-tooltip>{{ $gettext('Add Domain') }}</q-tooltip></q-btn
+              >
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -362,6 +389,15 @@
                   </q-chip>
                 </template>
               </q-select>
+
+              <q-btn
+                color="secondary"
+                class="q-ma-sm"
+                :icon="appIcon('add')"
+                :icon-right="modelIcon('scopes')"
+                @click="$router.push({ name: 'scope-add' })"
+                ><q-tooltip>{{ $gettext('Add Scope') }}</q-tooltip></q-btn
+              >
             </div>
           </div>
         </q-card-section>
@@ -372,6 +408,7 @@
 
 <script>
 import { ref, reactive, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta, useQuasar } from 'quasar'
 
@@ -397,6 +434,7 @@ export default {
   setup() {
     const { $gettext } = useGettext()
     const $q = useQuasar()
+    const route = useRoute()
     const uiStore = useUiStore()
 
     const title = ref($gettext('User Profile'))
@@ -414,7 +452,7 @@ export default {
     const domains = ref([])
     const scopes = ref([])
 
-    let element = reactive({
+    const element = reactive({
       id: 0,
       is_active: false,
       is_superuser: false,
@@ -441,9 +479,7 @@ export default {
       },
     ])
 
-    const isValid = computed(() => {
-      return element.username !== undefined && element.username.trim() !== ''
-    })
+    const isValid = computed(() => !!element.username?.trim())
 
     const isValidEmail = (val) => {
       if (val === undefined || val === '') return true
@@ -464,20 +500,28 @@ export default {
           api.get('/api/v1/token/scopes/'),
         ])
 
-        groups.value = groupsData.results.map((item) => ({
-          id: item.id,
-          name: item.name,
+        groups.value = groupsData.results.map(({ id, name }) => ({ id, name }))
+
+        domains.value = domainsData.results.map(({ id, name }) => ({
+          id,
+          name,
         }))
 
-        domains.value = domainsData.results.map((item) => ({
-          id: item.id,
-          name: item.name,
-        }))
+        scopes.value = scopesData.results.map(({ id, name }) => ({ id, name }))
 
-        scopes.value = scopesData.results.map((item) => ({
-          id: item.id,
-          name: item.name,
-        }))
+        if (route.query.groups) {
+          const ids = route.query.groups.split(',').map((v) => Number(v))
+
+          element.groups = groups.value.filter((item) => ids.includes(item.id))
+        }
+
+        if (route.query.domains) {
+          const ids = route.query.domains.split(',').map((v) => Number(v))
+
+          element.domains = domains.value.filter((item) =>
+            ids.includes(item.id),
+          )
+        }
       } catch (error) {
         uiStore.notifyError(error)
       }
