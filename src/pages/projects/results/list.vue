@@ -23,6 +23,21 @@
           "
           ><q-tooltip>{{ $gettext('Add Deployment') }}</q-tooltip></q-btn
         >
+
+        <q-btn
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="modelIcon('devices/drivers')"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'driver-add',
+              query: { project: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Driver') }}</q-tooltip></q-btn
+        >
       </template>
 
       <template #fields="{ props }">
