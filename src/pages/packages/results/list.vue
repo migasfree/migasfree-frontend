@@ -15,7 +15,7 @@
           round
           size="sm"
           :icon="appIcon('information')"
-          color="info"
+          color="secondary"
           @click="
             $router.push({
               name: 'package-information',
@@ -31,7 +31,7 @@
           round
           size="sm"
           :icon="appIcon('download')"
-          color="info"
+          color="secondary"
           type="a"
           :href="`${server}${props.row.url}`"
           ><q-tooltip>{{ $gettext('Download') }}</q-tooltip></q-btn
