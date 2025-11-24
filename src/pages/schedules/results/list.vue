@@ -8,6 +8,23 @@
       :model="model"
       :routes="routes"
     >
+      <template #actions="{ props }">
+        <q-btn
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="modelIcon('deployments')"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'deployment-add',
+              query: { schedule: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Deployment') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields="{ props }">
         <span v-if="props.column.field == 'name'">
           <MigasLink
@@ -109,7 +126,7 @@ export default {
       },
     ])
 
-    return { model, routes, title, breadcrumbs, columns }
+    return { model, routes, title, breadcrumbs, columns, modelIcon }
   },
 }
 </script>
