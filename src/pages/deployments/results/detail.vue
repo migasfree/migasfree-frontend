@@ -83,6 +83,17 @@
                         />
                       </template>
                     </q-select>
+
+                    <q-btn
+                      color="secondary"
+                      class="q-ma-sm"
+                      :icon="appIcon('add')"
+                      :icon-right="modelIcon('projects')"
+                      @click="$router.push({ name: 'project-add' })"
+                      ><q-tooltip>{{
+                        $gettext('Add Project')
+                      }}</q-tooltip></q-btn
+                    >
                   </div>
 
                   <div class="col-6 col-md col-sm">
@@ -98,7 +109,31 @@
                       <template #prepend>
                         <q-icon :name="modelIcon('domains')" />
                       </template>
+
+                      <template #selected-item="scope">
+                        <q-btn
+                          no-caps
+                          flat
+                          color="primary"
+                          :to="{
+                            name: 'domain-detail',
+                            params: { id: scope.opt.id },
+                          }"
+                          :label="scope.opt.name"
+                        />
+                      </template>
                     </q-select>
+
+                    <q-btn
+                      color="secondary"
+                      class="q-ma-sm"
+                      :icon="appIcon('add')"
+                      :icon-right="modelIcon('domains')"
+                      @click="$router.push({ name: 'domain-add' })"
+                      ><q-tooltip>{{
+                        $gettext('Add Domain')
+                      }}</q-tooltip></q-btn
+                    >
                   </div>
                 </div>
 
@@ -406,7 +441,7 @@
                     :class="
                       element.timeline
                         ? 'col-md-3 col-sm-3'
-                        : 'col-md-4 col-sm-4 text-right'
+                        : 'col-md-4 col-sm-4'
                     "
                   >
                     <q-select
@@ -436,6 +471,17 @@
                         />
                       </template>
                     </q-select>
+
+                    <q-btn
+                      color="secondary"
+                      class="q-ma-sm"
+                      :icon="appIcon('add')"
+                      :icon-right="modelIcon('schedules')"
+                      @click="$router.push({ name: 'schedule-add' })"
+                      ><q-tooltip>{{
+                        $gettext('Add Schedule')
+                      }}</q-tooltip></q-btn
+                    >
                   </div>
 
                   <div
@@ -484,6 +530,7 @@
 
 <script>
 import { ref, reactive, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -516,6 +563,7 @@ export default {
   setup() {
     const { $gettext } = useGettext()
     const { showDate } = useDate()
+    const route = useRoute()
     const uiStore = useUiStore()
 
     const title = ref($gettext('Deployment'))
@@ -668,6 +716,24 @@ export default {
             name: item.name,
           }),
         )
+
+        if (route.query.project)
+          element.project =
+            projects.value.find(
+              (item) => item.id === Number(route.query.project),
+            ) || null
+
+        if (route.query.domain)
+          element.domain =
+            domains.value.find(
+              (item) => item.id === Number(route.query.domain),
+            ) || null
+
+        if (route.query.schedule)
+          element.schedule =
+            schedules.value.find(
+              (item) => item.id === Number(route.query.schedule),
+            ) || null
       } catch (error) {
         uiStore.notifyError(error)
       }
