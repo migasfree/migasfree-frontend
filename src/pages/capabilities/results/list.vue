@@ -8,6 +8,23 @@
       :model="model"
       :routes="routes"
     >
+      <template #actions="{ props }">
+        <q-btn
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="modelIcon('devices/drivers')"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'driver-add',
+              query: { capability: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Driver') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields="{ props }">
         <span v-if="props.column.field == 'name'">
           <MigasLink
@@ -105,6 +122,7 @@ export default {
       columns,
       model,
       routes,
+      modelIcon,
     }
   },
 }
