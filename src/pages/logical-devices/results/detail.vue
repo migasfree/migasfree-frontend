@@ -85,6 +85,15 @@
                   />
                 </template>
               </q-select>
+
+              <q-btn
+                color="secondary"
+                class="q-ma-sm"
+                :icon="appIcon('add')"
+                :icon-right="modelIcon('devices/capabilities')"
+                @click="$router.push({ name: 'capability-add' })"
+                ><q-tooltip>{{ $gettext('Add Capability') }}</q-tooltip></q-btn
+              >
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -103,6 +112,7 @@
 
 <script>
 import { ref, reactive, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -125,6 +135,7 @@ export default {
   },
   setup() {
     const { $gettext } = useGettext()
+    const route = useRoute()
     const uiStore = useUiStore()
 
     const title = ref($gettext('Logical Device'))
@@ -138,7 +149,7 @@ export default {
     }
     const model = 'devices/logical'
 
-    let element = reactive({ id: 0, attributes: [], device: null })
+    const element = reactive({ id: 0, attributes: [], device: null })
 
     const capabilities = ref([])
 
@@ -167,6 +178,12 @@ export default {
       try {
         const { data } = await api.get('/api/v1/token/devices/capabilities/')
         capabilities.value = data.results
+
+        if (route.query.capability)
+          element.capability =
+            capabilities.value.find(
+              (item) => item.id === Number(route.query.capability),
+            ) || null
       } catch (error) {
         uiStore.notifyError(error)
       }
@@ -215,6 +232,7 @@ export default {
       elementData,
       resetElement,
       setTitle,
+      appIcon,
       modelIcon,
       filterDevices,
     }
