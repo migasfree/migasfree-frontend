@@ -35,6 +35,19 @@
             $gettext('Create default deployments')
           }}</q-tooltip></q-btn
         >
+
+        <q-btn
+          color="secondary"
+          :icon="appIcon('add')"
+          :icon-right="modelIcon('deployments')"
+          @click="
+            $router.push({
+              name: 'deployment-add',
+              query: { project: element.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Deployment') }}</q-tooltip></q-btn
+        >
       </template>
 
       <template #fields>
