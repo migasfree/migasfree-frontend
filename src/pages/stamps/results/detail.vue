@@ -16,6 +16,7 @@
       <template v-if="element.id" #actions>
         <q-btn
           color="secondary"
+          class="q-ma-sm"
           :icon="appIcon('add')"
           :icon-right="modelIcon('tags')"
           @click="
