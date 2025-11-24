@@ -278,8 +278,7 @@
     <q-card-actions class="justify-around">
       <q-btn
         :icon="appIcon('compare')"
-        color="info"
-        text-color="black"
+        color="secondary"
         no-caps
         :label="`${$gettext('Compare')}...`"
         @click="showingCompare = true"
