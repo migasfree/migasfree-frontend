@@ -312,7 +312,7 @@ export default {
           api.get('/api/v1/token/stores/', {
             params: { project__id: element.id },
           }),
-          await api.get('/api/v1/token/deployments/', {
+          api.get('/api/v1/token/deployments/', {
             params: { project__id: element.id },
           }),
         ])
