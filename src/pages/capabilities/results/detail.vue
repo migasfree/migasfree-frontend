@@ -15,6 +15,7 @@
       <template v-if="element.id" #actions>
         <q-btn
           color="secondary"
+          class="q-ma-sm"
           :icon="appIcon('add')"
           :icon-right="modelIcon('devices/drivers')"
           @click="
@@ -24,6 +25,20 @@
             })
           "
           ><q-tooltip>{{ $gettext('Add Driver') }}</q-tooltip></q-btn
+        >
+
+        <q-btn
+          color="secondary"
+          class="q-ma-sm"
+          :icon="appIcon('add')"
+          :icon-right="modelIcon('devices/logical')"
+          @click="
+            $router.push({
+              name: 'logical-device-add',
+              query: { capability: element.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Logical Device') }}</q-tooltip></q-btn
         >
       </template>
 
