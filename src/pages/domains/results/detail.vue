@@ -19,6 +19,21 @@
       <template v-if="element.id" #actions>
         <q-btn
           color="secondary"
+          class="q-ma-sm"
+          :icon="appIcon('add')"
+          :icon-right="modelIcon('scopes')"
+          @click="
+            $router.push({
+              name: 'scope-add',
+              query: { domain: element.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Scope') }}</q-tooltip></q-btn
+        >
+
+        <q-btn
+          color="secondary"
+          class="q-ma-sm"
           :icon="appIcon('add')"
           :icon-right="modelIcon('deployments')"
           @click="
