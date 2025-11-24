@@ -15,6 +15,21 @@
       @set-related="setRelated"
       @set-title="setTitle"
     >
+      <template #actions>
+        <q-btn
+          v-if="element.url"
+          class="q-ma-sm"
+          size="md"
+          :icon="appIcon('download')"
+          :aria-label="$gettext('Download')"
+          color="secondary"
+          text-color="white"
+          type="a"
+          :href="`${server}${element.url}`"
+          ><q-tooltip>{{ $gettext('Download') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields>
         <q-card-section>
           <div class="row q-pa-md q-gutter-md">
@@ -125,6 +140,7 @@ export default {
       information,
       loading,
       setTitle,
+      appIcon,
       setRelated,
     }
   },
