@@ -184,7 +184,7 @@ export default {
     }
     const model = 'package-sets'
 
-    let element = reactive({
+    const element = reactive({
       id: 0,
       project: null,
       description: '',
@@ -215,7 +215,12 @@ export default {
     ])
 
     const isValid = computed(() => {
-      return element.project !== null && element.name !== null
+      return (
+        element.project !== null &&
+        element.name !== null &&
+        Array.isArray(element.packages) &&
+        element.packages.length > 0
+      )
     })
 
     const nodeSelected = (value) => {
@@ -238,43 +243,40 @@ export default {
       menu.value.hide()
     }
 
-    const onLazyLoad = ({ key, done }) => {
-      api
-        .get('/api/v1/token/stores/', { params: { project__id: key } })
-        .then((response) => {
-          done(
-            Object.entries(response.data.results).map(([, item]) => {
-              return {
-                id: `${key}|${item.id}`,
-                label: item.name,
-                icon: modelIcon('stores'),
-                store_id: item.id,
-              }
-            }),
-          )
+    const onLazyLoad = async ({ key, done }) => {
+      try {
+        const { data } = await api.get('/api/v1/token/stores/', {
+          params: { project__id: key },
         })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+
+        const items = Object.values(data.results).map((item) => ({
+          id: `${key}|${item.id}`,
+          label: item.name,
+          icon: modelIcon('stores'),
+          store_id: item.id,
+        }))
+
+        done(items)
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
-    const loadPackages = () => {
-      api
-        .get('/api/v1/token/packages/', {
+    const loadPackages = async () => {
+      try {
+        const { data } = await api.get('/api/v1/token/packages/', {
           params: { store__id: element.store.id },
         })
-        .then((response) => {
-          packages.value = []
-          Object.entries(response.data.results).map(([, item]) => {
-            packages.value.push({
-              id: item.id,
-              fullname: item.fullname,
-            })
-          })
-        })
-        .catch((error) => {
-          uiStore.notifyError(error)
-        })
+
+        packages.value = Object.values(data.results).map(
+          ({ id, fullname }) => ({
+            id,
+            fullname,
+          }),
+        )
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     }
 
     const loadRelated = async () => {
@@ -282,9 +284,9 @@ export default {
         const { data } = await api.get('/api/v1/token/projects/')
         const projects = data.results
 
-        projectStore.items = Object.values(projects).map((item) => ({
-          id: item.id,
-          label: item.name,
+        projectStore.items = Object.values(projects).map(({ id, name }) => ({
+          id,
+          label: name,
           icon: modelIcon('projects'),
           lazy: true,
         }))
@@ -293,7 +295,7 @@ export default {
       }
 
       if (element.id) {
-        loadPackages()
+        await loadPackages()
       }
     }
 
