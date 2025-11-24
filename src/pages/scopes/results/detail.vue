@@ -62,6 +62,15 @@
                   </q-chip>
                 </template>
               </q-select>
+
+              <q-btn
+                color="secondary"
+                class="q-ma-sm"
+                :icon="appIcon('add')"
+                :icon-right="modelIcon('domains')"
+                @click="$router.push({ name: 'domain-add' })"
+                ><q-tooltip>{{ $gettext('Add Domain') }}</q-tooltip></q-btn
+              >
             </div>
           </div>
 
@@ -91,6 +100,17 @@
                   </q-chip>
                 </template>
               </q-select>
+
+              <q-btn
+                color="secondary"
+                class="q-ma-sm"
+                :icon="appIcon('add')"
+                :icon-right="modelIcon('user-profiles')"
+                @click="$router.push({ name: 'user-profile-add' })"
+                ><q-tooltip>{{
+                  $gettext('Add User Profile')
+                }}</q-tooltip></q-btn
+              >
             </div>
           </div>
         </q-card-section>
@@ -123,6 +143,7 @@
 
 <script>
 import { ref, reactive, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -143,9 +164,10 @@ export default {
     SelectAttributes,
   },
   setup() {
+    const { $gettext } = useGettext()
+    const route = useRoute()
     const uiStore = useUiStore()
     const authStore = useAuthStore()
-    const { $gettext } = useGettext()
 
     const title = ref($gettext('Scope'))
     const windowTitle = ref(title.value)
@@ -158,7 +180,7 @@ export default {
     }
     const model = 'scopes'
 
-    let element = reactive({
+    const element = reactive({
       id: 0,
       domain: null,
       included_attributes: [],
@@ -208,7 +230,19 @@ export default {
             id: item.id,
             name: item.username,
           }))
+
+          if (route.query.user)
+            element.user =
+              userProfiles.value.find(
+                (item) => item.id === Number(route.query.user),
+              ) || null
         }
+
+        if (route.query.domain)
+          element.domain =
+            domains.value.find(
+              (item) => item.id === Number(route.query.domain),
+            ) || null
       } catch (error) {
         uiStore.notifyError(error)
       }
@@ -275,6 +309,8 @@ export default {
       elementData,
       resetElement,
       setTitle,
+      appIcon,
+      modelIcon,
     }
   },
 }
