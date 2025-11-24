@@ -39,6 +39,21 @@
           "
           ><q-tooltip>{{ $gettext('Add Deployment') }}</q-tooltip></q-btn
         >
+
+        <q-btn
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="modelIcon('user-profiles')"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'user-profile-add',
+              query: { domains: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add User Profile') }}</q-tooltip></q-btn
+        >
       </template>
 
       <template #fields="{ props }">
