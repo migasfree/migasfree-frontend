@@ -41,6 +41,21 @@
           class="q-ma-sm"
           color="secondary"
           :icon="appIcon('add')"
+          :icon-right="modelIcon('stores')"
+          @click="
+            $router.push({
+              name: 'store-add',
+              query: { project: element.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Store') }}</q-tooltip></q-btn
+        >
+
+        <q-btn
+          v-if="element.id"
+          class="q-ma-sm"
+          color="secondary"
+          :icon="appIcon('add')"
           :icon-right="modelIcon('deployments')"
           @click="
             $router.push({
