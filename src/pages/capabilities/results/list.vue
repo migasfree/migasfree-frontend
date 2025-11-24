@@ -23,6 +23,21 @@
           "
           ><q-tooltip>{{ $gettext('Add Driver') }}</q-tooltip></q-btn
         >
+
+        <q-btn
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="modelIcon('devices/logical')"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'logical-device-add',
+              query: { capability: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Logical Device') }}</q-tooltip></q-btn
+        >
       </template>
 
       <template #fields="{ props }">
