@@ -45,6 +45,15 @@
                   />
                 </template>
               </q-select>
+
+              <q-btn
+                color="secondary"
+                class="q-ma-sm"
+                :icon="appIcon('add')"
+                :icon-right="modelIcon('projects')"
+                @click="$router.push({ name: 'project-add' })"
+                ><q-tooltip>{{ $gettext('Add Project') }}</q-tooltip></q-btn
+              >
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -65,6 +74,7 @@
 
 <script>
 import { ref, reactive, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -80,8 +90,9 @@ export default {
     ItemDetail,
   },
   setup() {
-    const uiStore = useUiStore()
     const { $gettext } = useGettext()
+    const route = useRoute()
+    const uiStore = useUiStore()
 
     const title = ref($gettext('Store'))
     const windowTitle = ref(title.value)
@@ -96,7 +107,7 @@ export default {
 
     const projects = ref([])
 
-    let element = reactive({ id: 0 })
+    const element = reactive({ id: 0 })
 
     const breadcrumbs = ref([
       {
@@ -127,6 +138,12 @@ export default {
       try {
         const { data } = await api.get('/api/v1/token/projects/')
         projects.value = data.results
+
+        if (route.query.project)
+          element.project =
+            projects.value.find(
+              (item) => item.id === Number(route.query.project),
+            ) || null
       } catch (error) {
         uiStore.notifyError(error)
       }
@@ -163,6 +180,7 @@ export default {
       elementData,
       resetElement,
       setTitle,
+      appIcon,
       modelIcon,
     }
   },
