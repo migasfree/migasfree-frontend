@@ -9,6 +9,23 @@
       :routes="routes"
       @post-remove="postRemove"
     >
+      <template #actions="{ props }">
+        <q-btn
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="modelIcon('deployments')"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'deployment-add',
+              query: { domain: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Deployment') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields="{ props }">
         <span v-if="props.column.field == 'name'">
           <MigasLink
@@ -106,7 +123,7 @@ export default {
       authStore.deleteDomain(id)
     }
 
-    return { title, breadcrumbs, columns, routes, model, postRemove }
+    return { title, breadcrumbs, columns, routes, model, modelIcon, postRemove }
   },
 }
 </script>
