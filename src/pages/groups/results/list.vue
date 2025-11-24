@@ -8,6 +8,23 @@
       :model="model"
       :routes="routes"
     >
+      <template #actions="{ props }">
+        <q-btn
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="modelIcon('user-profiles')"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'user-profile-add',
+              query: { groups: props.row.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add User Profile') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields="{ props }">
         <span>
           {{ props.formattedRow[props.column.field] }}
@@ -89,7 +106,7 @@ export default {
       },
     ])
 
-    return { title, breadcrumbs, columns, routes, model }
+    return { title, breadcrumbs, columns, routes, model, modelIcon }
   },
 }
 </script>
