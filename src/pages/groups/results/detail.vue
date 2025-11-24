@@ -13,6 +13,22 @@
       @reset-element="resetElement"
       @set-title="setTitle"
     >
+      <template v-if="element.id" #actions>
+        <q-btn
+          color="secondary"
+          class="q-ma-sm"
+          :icon="appIcon('add')"
+          :icon-right="modelIcon('user-profiles')"
+          @click="
+            $router.push({
+              name: 'user-profile-add',
+              query: { groups: element.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add User Profile') }}</q-tooltip></q-btn
+        >
+      </template>
+
       <template #fields>
         <q-card-section>
           <div class="row q-pa-md q-gutter-md">
@@ -158,6 +174,7 @@ export default {
       setTitle,
       filterPermissions,
       appIcon,
+      modelIcon,
     }
   },
 }
