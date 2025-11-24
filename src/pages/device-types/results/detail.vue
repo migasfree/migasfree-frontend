@@ -15,6 +15,7 @@
       <template v-if="element.id" #actions>
         <q-btn
           color="secondary"
+          class="q-ma-sm"
           :icon="appIcon('add')"
           :icon-right="modelIcon('devices/connections')"
           @click="
@@ -24,6 +25,20 @@
             })
           "
           ><q-tooltip>{{ $gettext('Add Connection') }}</q-tooltip></q-btn
+        >
+
+        <q-btn
+          color="secondary"
+          class="q-ma-sm"
+          :icon="appIcon('add')"
+          :icon-right="modelIcon('devices/models')"
+          @click="
+            $router.push({
+              name: 'model-add',
+              query: { device_type: element.id },
+            })
+          "
+          ><q-tooltip>{{ $gettext('Add Model') }}</q-tooltip></q-btn
         >
       </template>
 
