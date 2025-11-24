@@ -13,8 +13,8 @@
               size="lg"
               padding="xs md"
               :disable="data.total <= 0"
-              :color="critical && data.total > 0 ? 'negative' : 'info'"
-              :text-color="critical && data.total > 0 ? 'white' : 'black'"
+              :color="critical && data.total > 0 ? 'negative' : 'secondary'"
+              text-color="white"
               :label="data.total"
               @click="goTo"
             />
