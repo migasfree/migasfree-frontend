@@ -176,18 +176,20 @@
                     />
                   </q-chip>
                 </template>
-              </q-select>
 
-              <q-btn
-                color="secondary"
-                class="q-ma-sm"
-                :icon="appIcon('add')"
-                :icon-right="modelIcon('user-profiles')"
-                @click="$router.push({ name: 'user-profile-add' })"
-                ><q-tooltip>{{
-                  $gettext('Add User Profile')
-                }}</q-tooltip></q-btn
-              >
+                <template #append>
+                  <q-btn
+                    round
+                    dense
+                    color="secondary"
+                    :icon="appIcon('add')"
+                    @click="$router.push({ name: 'user-profile-add' })"
+                    ><q-tooltip>{{
+                      $gettext('Add User Profile')
+                    }}</q-tooltip></q-btn
+                  >
+                </template>
+              </q-select>
             </div>
           </div>
         </q-card-section>
