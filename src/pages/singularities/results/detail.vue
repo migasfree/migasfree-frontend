@@ -40,44 +40,17 @@
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.property_att"
-                outlined
-                :label="$gettext('Formula')"
                 :options="formulas"
-                option-value="id"
-                option-label="name"
+                :label="$gettext('Formula')"
+                detail-route="formula-detail"
+                add-route="formula-add"
+                :add-tooltip="$gettext('Add Formula')"
+                :prepend-icon="modelIcon('formulas')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
-              >
-                <template #prepend>
-                  <q-icon :name="modelIcon('formulas')" />
-                </template>
-
-                <template #selected-item="scope">
-                  <q-btn
-                    no-caps
-                    flat
-                    color="primary"
-                    :to="{
-                      name: 'formula-detail',
-                      params: { id: scope.opt.id },
-                    }"
-                    :label="scope.opt.name"
-                  />
-                </template>
-
-                <template #append>
-                  <q-btn
-                    round
-                    dense
-                    color="secondary"
-                    :icon="appIcon('add')"
-                    @click="$router.push({ name: 'formula-add' })"
-                    ><q-tooltip>{{ $gettext('Add Formula') }}</q-tooltip></q-btn
-                  >
-                </template>
-              </q-select>
+              />
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -182,6 +155,7 @@ import { useMeta } from 'quasar'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
+import EntitySelect from 'components/ui/EntitySelect'
 import ItemDetail from 'components/ui/ItemDetail'
 import SelectAttributes from 'components/ui/SelectAttributes'
 import CodeEditor from 'components/ui/CodeEditor'
@@ -190,6 +164,7 @@ import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
+    EntitySelect,
     ItemDetail,
     SelectAttributes,
     CodeEditor,
