@@ -238,16 +238,18 @@
                     />
                   </q-chip>
                 </template>
-              </q-select>
 
-              <q-btn
-                color="secondary"
-                class="q-ma-sm"
-                :icon="appIcon('add')"
-                :icon-right="modelIcon('accounts/groups')"
-                @click="$router.push({ name: 'group-add' })"
-                ><q-tooltip>{{ $gettext('Add Group') }}</q-tooltip></q-btn
-              >
+                <template #append>
+                  <q-btn
+                    round
+                    dense
+                    color="secondary"
+                    :icon="appIcon('add')"
+                    @click="$router.push({ name: 'group-add' })"
+                    ><q-tooltip>{{ $gettext('Add Group') }}</q-tooltip></q-btn
+                  >
+                </template>
+              </q-select>
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -276,16 +278,18 @@
                     />
                   </q-chip>
                 </template>
-              </q-select>
 
-              <q-btn
-                color="secondary"
-                class="q-ma-sm"
-                :icon="appIcon('add')"
-                :icon-right="modelIcon('domains')"
-                @click="$router.push({ name: 'domain-add' })"
-                ><q-tooltip>{{ $gettext('Add Domain') }}</q-tooltip></q-btn
-              >
+                <template #append>
+                  <q-btn
+                    round
+                    dense
+                    color="secondary"
+                    :icon="appIcon('add')"
+                    @click="$router.push({ name: 'domain-add' })"
+                    ><q-tooltip>{{ $gettext('Add Domain') }}</q-tooltip></q-btn
+                  >
+                </template>
+              </q-select>
             </div>
           </div>
 
@@ -352,16 +356,18 @@
                     />
                   </q-chip>
                 </template>
-              </q-select>
 
-              <q-btn
-                color="secondary"
-                class="q-ma-sm"
-                :icon="appIcon('add')"
-                :icon-right="modelIcon('domains')"
-                @click="$router.push({ name: 'domain-add' })"
-                ><q-tooltip>{{ $gettext('Add Domain') }}</q-tooltip></q-btn
-              >
+                <template #append>
+                  <q-btn
+                    round
+                    dense
+                    color="secondary"
+                    :icon="appIcon('add')"
+                    @click="$router.push({ name: 'domain-add' })"
+                    ><q-tooltip>{{ $gettext('Add Domain') }}</q-tooltip></q-btn
+                  >
+                </template>
+              </q-select>
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -388,16 +394,18 @@
                     />
                   </q-chip>
                 </template>
-              </q-select>
 
-              <q-btn
-                color="secondary"
-                class="q-ma-sm"
-                :icon="appIcon('add')"
-                :icon-right="modelIcon('scopes')"
-                @click="$router.push({ name: 'scope-add' })"
-                ><q-tooltip>{{ $gettext('Add Scope') }}</q-tooltip></q-btn
-              >
+                <template #append>
+                  <q-btn
+                    round
+                    dense
+                    color="secondary"
+                    :icon="appIcon('add')"
+                    @click="$router.push({ name: 'scope-add' })"
+                    ><q-tooltip>{{ $gettext('Add Scope') }}</q-tooltip></q-btn
+                  >
+                </template>
+              </q-select>
             </div>
           </div>
         </q-card-section>
