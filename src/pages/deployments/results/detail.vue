@@ -56,88 +56,30 @@
 
                 <div class="row q-gutter-sm">
                   <div class="col-6 col-md col-sm">
-                    <q-select
+                    <EntitySelect
                       v-model="element.project"
-                      outlined
-                      :label="$gettext('Project')"
                       :options="projects"
-                      option-value="id"
-                      option-label="name"
+                      :label="$gettext('Project')"
+                      detail-route="project-detail"
+                      add-route="project-add"
+                      :add-tooltip="$gettext('Add Project')"
+                      :prepend-icon="modelIcon('projects')"
                       lazy-rules
                       :rules="[(val) => !!val || $gettext('* Required')]"
-                    >
-                      <template #prepend>
-                        <q-icon :name="modelIcon('projects')" />
-                      </template>
-
-                      <template #selected-item="scope">
-                        <q-btn
-                          no-caps
-                          flat
-                          color="primary"
-                          :to="{
-                            name: 'project-detail',
-                            params: { id: scope.opt.id },
-                          }"
-                          :label="scope.opt.name"
-                        />
-                      </template>
-
-                      <template #append>
-                        <q-btn
-                          round
-                          dense
-                          color="secondary"
-                          :icon="appIcon('add')"
-                          @click="$router.push({ name: 'project-add' })"
-                          ><q-tooltip>{{
-                            $gettext('Add Project')
-                          }}</q-tooltip></q-btn
-                        >
-                      </template>
-                    </q-select>
+                    />
                   </div>
 
                   <div class="col-6 col-md col-sm">
-                    <q-select
+                    <EntitySelect
                       v-model="element.domain"
-                      outlined
                       clearable
                       :label="$gettext('Editable by Domain Administrators')"
                       :options="domains"
-                      option-value="id"
-                      option-label="name"
-                    >
-                      <template #prepend>
-                        <q-icon :name="modelIcon('domains')" />
-                      </template>
-
-                      <template #selected-item="scope">
-                        <q-btn
-                          no-caps
-                          flat
-                          color="primary"
-                          :to="{
-                            name: 'domain-detail',
-                            params: { id: scope.opt.id },
-                          }"
-                          :label="scope.opt.name"
-                        />
-                      </template>
-
-                      <template #append>
-                        <q-btn
-                          round
-                          dense
-                          color="secondary"
-                          :icon="appIcon('add')"
-                          @click="$router.push({ name: 'domain-add' })"
-                          ><q-tooltip>{{
-                            $gettext('Add Domain')
-                          }}</q-tooltip></q-btn
-                        >
-                      </template>
-                    </q-select>
+                      detail-route="domain-detail"
+                      add-route="domain-add"
+                      :add-tooltip="$gettext('Add Domain')"
+                      :prepend-icon="modelIcon('domains')"
+                    />
                   </div>
                 </div>
 
@@ -448,46 +390,17 @@
                         : 'col-md-4 col-sm-4'
                     "
                   >
-                    <q-select
+                    <EntitySelect
                       v-model="element.schedule"
-                      outlined
-                      clearable
-                      :label="$gettext('Schedule')"
                       :options="schedules"
-                      option-value="id"
-                      option-label="name"
+                      :label="$gettext('Schedule')"
+                      clearable
+                      detail-route="schedule-detail"
+                      add-route="schedule-add"
+                      :add-tooltip="$gettext('Add Schedule')"
+                      :prepend-icon="modelIcon('schedules')"
                       @clear="updateStats"
-                    >
-                      <template #prepend>
-                        <q-icon :name="modelIcon('schedules')" />
-                      </template>
-
-                      <template #selected-item="scope">
-                        <q-btn
-                          no-caps
-                          flat
-                          color="primary"
-                          :to="{
-                            name: 'schedule-detail',
-                            params: { id: scope.opt.id },
-                          }"
-                          :label="scope.opt.name"
-                        />
-                      </template>
-
-                      <template #append>
-                        <q-btn
-                          round
-                          dense
-                          color="secondary"
-                          :icon="appIcon('add')"
-                          @click="$router.push({ name: 'schedule-add' })"
-                          ><q-tooltip>{{
-                            $gettext('Add Schedule')
-                          }}</q-tooltip></q-btn
-                        >
-                      </template>
-                    </q-select>
+                    />
                   </div>
 
                   <div
@@ -543,6 +456,7 @@ import { useMeta } from 'quasar'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
+import EntitySelect from 'components/ui/EntitySelect'
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
@@ -557,6 +471,7 @@ import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
+    EntitySelect,
     FilteredMultiSelect,
     ItemDetail,
     MigasLink,
