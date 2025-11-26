@@ -151,45 +151,16 @@
             </div>
 
             <div class="col-6 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.domain_admins"
-                :options="userProfiles"
-                :label="$gettext('Domain Admins')"
-                outlined
                 multiple
-                counter
-                option-value="id"
-                option-label="name"
-              >
-                <template #selected-item="scope">
-                  <q-chip
-                    removable
-                    dense
-                    :tabindex="scope.tabindex"
-                    class="q-ma-md"
-                    @remove="scope.removeAtIndex(scope.index)"
-                  >
-                    <MigasLink
-                      model="user-profiles"
-                      :pk="scope.opt.id"
-                      :value="scope.opt.name"
-                    />
-                  </q-chip>
-                </template>
-
-                <template #append>
-                  <q-btn
-                    round
-                    dense
-                    color="secondary"
-                    :icon="appIcon('add')"
-                    @click="$router.push({ name: 'user-profile-add' })"
-                    ><q-tooltip>{{
-                      $gettext('Add User Profile')
-                    }}</q-tooltip></q-btn
-                  >
-                </template>
-              </q-select>
+                chip-mode
+                :label="$gettext('Domain Admins')"
+                :options="userProfiles"
+                link-model="user-profiles"
+                add-route="user-profile-add"
+                :add-tooltip="$gettext('Add User Profile')"
+              />
             </div>
           </div>
         </q-card-section>
@@ -207,6 +178,7 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { useAuthStore } from 'stores/auth'
 
+import EntitySelect from 'components/ui/EntitySelect'
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
@@ -216,6 +188,7 @@ import { appIcon, modelIcon, useElement } from 'composables/element'
 
 export default {
   components: {
+    EntitySelect,
     FilteredMultiSelect,
     ItemDetail,
     MigasLink,
