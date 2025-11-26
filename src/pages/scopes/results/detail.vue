@@ -38,83 +38,29 @@
             </div>
 
             <div class="col-6 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.domain"
                 :options="domains"
                 :label="$gettext('Domain')"
-                outlined
-                option-value="id"
-                option-label="name"
-              >
-                <template #selected-item="scope">
-                  <q-chip
-                    removable
-                    dense
-                    :tabindex="scope.tabindex"
-                    class="q-ma-md"
-                    @remove="scope.removeAtIndex(scope.index)"
-                  >
-                    <MigasLink
-                      model="domains"
-                      :pk="scope.opt.id"
-                      :value="scope.opt.name"
-                    />
-                  </q-chip>
-                </template>
-
-                <template #append>
-                  <q-btn
-                    round
-                    dense
-                    color="secondary"
-                    :icon="appIcon('add')"
-                    @click="$router.push({ name: 'domain-add' })"
-                    ><q-tooltip>{{ $gettext('Add Domain') }}</q-tooltip></q-btn
-                  >
-                </template>
-              </q-select>
+                link-model="domains"
+                chip-mode
+                add-route="domain-add"
+                :add-tooltip="$gettext('Add Domain')"
+              />
             </div>
           </div>
 
           <div v-if="isSuperUser" class="row q-pa-md q-gutter-md">
             <div class="col-12 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.user"
                 :options="userProfiles"
                 :label="$gettext('User')"
-                outlined
-                option-value="id"
-                option-label="name"
-              >
-                <template #selected-item="scope">
-                  <q-chip
-                    removable
-                    dense
-                    :tabindex="scope.tabindex"
-                    class="q-ma-md"
-                    @remove="scope.removeAtIndex(scope.index)"
-                  >
-                    <MigasLink
-                      model="user-profiles"
-                      :pk="scope.opt.id"
-                      :value="scope.opt.name"
-                    />
-                  </q-chip>
-                </template>
-
-                <template #append>
-                  <q-btn
-                    round
-                    dense
-                    color="secondary"
-                    :icon="appIcon('add')"
-                    @click="$router.push({ name: 'user-profile-add' })"
-                    ><q-tooltip>{{
-                      $gettext('Add User Profile')
-                    }}</q-tooltip></q-btn
-                  >
-                </template>
-              </q-select>
+                link-model="user-profiles"
+                chip-mode
+                add-route="user-profile-add"
+                :add-tooltip="$gettext('Add User Profile')"
+              />
             </div>
           </div>
         </q-card-section>
@@ -155,16 +101,16 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { useAuthStore } from 'stores/auth'
 
+import EntitySelect from 'components/ui/EntitySelect'
 import ItemDetail from 'components/ui/ItemDetail'
-import MigasLink from 'components/MigasLink'
 import SelectAttributes from 'components/ui/SelectAttributes'
 
 import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
+    EntitySelect,
     ItemDetail,
-    MigasLink,
     SelectAttributes,
   },
   setup() {
