@@ -204,92 +204,30 @@
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.groups"
                 :options="groups"
                 :label="$gettext('Groups')"
-                outlined
                 multiple
-                counter
-                option-value="id"
-                option-label="name"
-              >
-                <template #prepend>
-                  <q-icon :name="modelIcon('accounts/groups')" />
-                </template>
-
-                <template #selected-item="scope">
-                  <q-chip
-                    removable
-                    dense
-                    :tabindex="scope.tabindex"
-                    class="q-ma-md"
-                    @remove="scope.removeAtIndex(scope.index)"
-                  >
-                    <q-btn
-                      no-caps
-                      flat
-                      color="primary"
-                      :to="{
-                        name: 'group-detail',
-                        params: { id: scope.opt.id },
-                      }"
-                      :label="scope.opt.name"
-                    />
-                  </q-chip>
-                </template>
-
-                <template #append>
-                  <q-btn
-                    round
-                    dense
-                    color="secondary"
-                    :icon="appIcon('add')"
-                    @click="$router.push({ name: 'group-add' })"
-                    ><q-tooltip>{{ $gettext('Add Group') }}</q-tooltip></q-btn
-                  >
-                </template>
-              </q-select>
+                chip-mode
+                detail-route="group-detail"
+                add-route="group-add"
+                :add-tooltip="$gettext('Add Group')"
+                :prepend-icon="modelIcon('accounts/groups')"
+              />
             </div>
 
             <div class="col-6 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.domains"
                 :options="domains"
                 :label="$gettext('Domains')"
-                outlined
+                link-model="domains"
+                chip-mode
                 multiple
-                counter
-                option-value="id"
-                option-label="name"
-              >
-                <template #selected-item="scope">
-                  <q-chip
-                    removable
-                    dense
-                    :tabindex="scope.tabindex"
-                    class="q-ma-md"
-                    @remove="scope.removeAtIndex(scope.index)"
-                  >
-                    <MigasLink
-                      model="domains"
-                      :pk="scope.opt.id"
-                      :value="scope.opt.name"
-                    />
-                  </q-chip>
-                </template>
-
-                <template #append>
-                  <q-btn
-                    round
-                    dense
-                    color="secondary"
-                    :icon="appIcon('add')"
-                    @click="$router.push({ name: 'domain-add' })"
-                    ><q-tooltip>{{ $gettext('Add Domain') }}</q-tooltip></q-btn
-                  >
-                </template>
-              </q-select>
+                add-route="domain-add"
+                :add-tooltip="$gettext('Add Domain')"
+              />
             </div>
           </div>
 
@@ -333,79 +271,27 @@
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.domain_preference"
                 :options="domains"
                 :label="$gettext('Domain')"
-                outlined
-                option-value="id"
-                option-label="name"
-              >
-                <template #selected-item="scope">
-                  <q-chip
-                    removable
-                    dense
-                    :tabindex="scope.tabindex"
-                    class="q-ma-md"
-                    @remove="scope.removeAtIndex(scope.index)"
-                  >
-                    <MigasLink
-                      model="domains"
-                      :pk="scope.opt.id"
-                      :value="scope.opt.name"
-                    />
-                  </q-chip>
-                </template>
-
-                <template #append>
-                  <q-btn
-                    round
-                    dense
-                    color="secondary"
-                    :icon="appIcon('add')"
-                    @click="$router.push({ name: 'domain-add' })"
-                    ><q-tooltip>{{ $gettext('Add Domain') }}</q-tooltip></q-btn
-                  >
-                </template>
-              </q-select>
+                link-model="domains"
+                chip-mode
+                add-route="domain-add"
+                :add-tooltip="$gettext('Add Domain')"
+              />
             </div>
 
             <div class="col-6 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.scope_preference"
                 :options="scopes"
                 :label="$gettext('Scope')"
-                outlined
-                option-value="id"
-                option-label="name"
-              >
-                <template #selected-item="scope">
-                  <q-chip
-                    removable
-                    dense
-                    :tabindex="scope.tabindex"
-                    class="q-ma-md"
-                    @remove="scope.removeAtIndex(scope.index)"
-                  >
-                    <MigasLink
-                      model="scopes"
-                      :pk="scope.opt.id"
-                      :value="scope.opt.name"
-                    />
-                  </q-chip>
-                </template>
-
-                <template #append>
-                  <q-btn
-                    round
-                    dense
-                    color="secondary"
-                    :icon="appIcon('add')"
-                    @click="$router.push({ name: 'scope-add' })"
-                    ><q-tooltip>{{ $gettext('Add Scope') }}</q-tooltip></q-btn
-                  >
-                </template>
-              </q-select>
+                link-model="scopes"
+                chip-mode
+                add-route="scope-add"
+                :add-tooltip="$gettext('Add Scope')"
+              />
             </div>
           </div>
         </q-card-section>
@@ -425,9 +311,9 @@ import { useUiStore } from 'stores/ui'
 
 import CopyToClipboard from 'components/ui/CopyToClipboard'
 import DateView from 'components/ui/DateView'
+import EntitySelect from 'components/ui/EntitySelect'
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
-import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon } from 'composables/element'
 
@@ -435,9 +321,9 @@ export default {
   components: {
     CopyToClipboard,
     DateView,
+    EntitySelect,
     FilteredMultiSelect,
     ItemDetail,
-    MigasLink,
   },
   setup() {
     const { $gettext } = useGettext()
