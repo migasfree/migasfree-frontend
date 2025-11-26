@@ -92,14 +92,20 @@
           </template>
         </q-btn-toggle>
 
-        <q-btn
-          :icon="appIcon('download')"
-          flat
-          color="primary"
-          @click="saveImage"
-        >
-          <q-tooltip>{{ $gettext('Save as Image') }}</q-tooltip>
-        </q-btn>
+        <q-btn-dropdown flat stretch color="primary">
+          <template #label>
+            <q-icon :name="appIcon('download')" />
+
+            <q-tooltip>
+              {{ $gettext('Save as Image') }}
+            </q-tooltip>
+          </template>
+
+          <q-list>
+            <q-item clickable @click="saveSvgImage">SVG</q-item>
+            <q-item clickable @click="savePngImage">PNG</q-item>
+          </q-list>
+        </q-btn-dropdown>
       </q-card-actions>
     </q-card>
 
@@ -171,15 +177,7 @@
 </template>
 
 <script>
-import {
-  ref,
-  reactive,
-  computed,
-  watch,
-  onMounted,
-  onBeforeMount,
-  onBeforeUnmount,
-} from 'vue'
+import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { exportFile, useQuasar } from 'quasar'
 import { useGettext } from 'vue3-gettext'
 
@@ -187,6 +185,9 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
 import { appIcon } from 'composables/element'
+import { useChartExport } from 'composables/chart/export'
+import { useChartOptions } from 'composables/chart/options'
+import { useChartUtils } from 'composables/chart/utils'
 
 import BannerInfo from 'components/ui/BannerInfo'
 import DayInput from 'components/ui/DayInput'
@@ -204,10 +205,6 @@ import {
   MarkLineComponent,
 } from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
-import {
-  MIGASFREE_CHART_COLORS,
-  MIGASFREE_CHART_DARK_COLORS,
-} from 'config/app.conf'
 
 echarts.use([
   LineChart,
@@ -275,11 +272,15 @@ export default {
 
     const chart = ref(null)
     const data = reactive(props.initialData)
+
+    const { initOptions, loadingOptions, getChartColors, getTextColor } =
+      useChartOptions()
+    useChartUtils(chart)
+    const { saveSvgImage, savePngImage, wrapCsvValue } = useChartExport()
+
     const options = reactive({
       animation: false,
-      color: $q.dark.isActive
-        ? MIGASFREE_CHART_DARK_COLORS
-        : MIGASFREE_CHART_COLORS,
+      color: getChartColors(),
       textStyle: {
         fontFamily: 'Dosis',
         fontSize: 14,
@@ -293,10 +294,10 @@ export default {
         show: true,
         bottom: 'bottom',
         textStyle: {
-          color: $q.dark.isActive ? '#fff' : '#333',
+          color: getTextColor(),
         },
         pageTextStyle: {
-          color: $q.dark.isActive ? '#fff' : '#333',
+          color: getTextColor(),
         },
         pageIconColor: $q.dark.isActive ? '#fff' : '#2f4554',
       },
@@ -305,22 +306,22 @@ export default {
         data: [],
         axisLine: {
           lineStyle: {
-            color: $q.dark.isActive ? '#fff' : '#333',
+            color: getTextColor(),
           },
         },
         axisLabel: {
-          color: $q.dark.isActive ? '#fff' : '#333',
+          color: getTextColor(),
         },
       },
       yAxis: {
         type: 'value',
         axisLine: {
           lineStyle: {
-            color: $q.dark.isActive ? '#fff' : '#333',
+            color: getTextColor(),
           },
         },
         axisLabel: {
-          color: $q.dark.isActive ? '#fff' : '#333',
+          color: getTextColor(),
         },
       },
       series: [],
@@ -330,23 +331,7 @@ export default {
       },
     })
 
-    const initOptions = reactive({
-      renderer: 'svg',
-    })
-
     const loading = ref(false)
-    const loadingOptions = reactive({
-      showSpinner: true,
-      text: $gettext('Loading data...'),
-      color: '#39BEDA',
-      textColor: $q.dark.isActive
-        ? 'rgba(255, 255, 255, 0.5)'
-        : 'rgba(0, 0, 0, 0.5)',
-      maskColor: $q.dark.isActive ? '#3A4149' : 'white',
-      fontFamily: 'Dosis',
-      fontSize: 14,
-    })
-
     const viewData = ref(false)
 
     const isChartVisible = computed(() => {
@@ -405,14 +390,6 @@ export default {
       await loadData()
     })
 
-    onBeforeMount(() => {
-      window.addEventListener('resize', windowResize)
-    })
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', windowResize)
-    })
-
     const selectCell = (data) => {
       const params = new Object()
       params.data = data
@@ -423,46 +400,12 @@ export default {
       emit('get-link', params)
     }
 
-    const windowResize = () => {
-      if (chart.value !== null && chart.value !== undefined) {
-        chart.value.resize()
-      }
-    }
-
     const updateSelectedMode = () => {
       options.legend.selectedMode = selectedMode
     }
 
-    const saveImage = () => {
-      const linkSource = chart.value.getDataURL()
-      const downloadLink = document.createElement('a')
-
-      downloadLink.href = linkSource
-      downloadLink.download = `${props.title}.svg`
-      document.body.appendChild(downloadLink)
-      downloadLink.click()
-      document.body.removeChild(downloadLink)
-    }
-
     const dataView = () => {
       viewData.value = true
-    }
-
-    const wrapCsvValue = (val, formatFn, row) => {
-      let formatted = formatFn !== void 0 ? formatFn(val, row) : val
-
-      formatted =
-        formatted === void 0 || formatted === null ? '' : String(formatted)
-
-      formatted = formatted.split('"').join('""')
-      /**
-       * Excel accepts \n and \r in strings, but some other CSV parsers do not
-       * Uncomment the next two lines to escape new lines
-       */
-      // .split('\n').join('\\n')
-      // .split('\r').join('\\r')
-
-      return `"${formatted}"`
     }
 
     const exportTable = () => {
@@ -512,22 +455,20 @@ export default {
     watch(
       () => $q.dark.isActive,
       (val) => {
-        options.color = val
-          ? MIGASFREE_CHART_DARK_COLORS
-          : MIGASFREE_CHART_COLORS
-        options.legend.textStyle.color = val ? '#fff' : '#333'
-        options.legend.pageTextStyle.color = val ? '#fff' : '#333'
+        options.color = getChartColors()
+        options.legend.textStyle.color = getTextColor()
+        options.legend.pageTextStyle.color = getTextColor()
         options.legend.pageIconColor = val ? '#fff' : '#2f4554'
-        options.xAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
-        options.xAxis.axisLabel.color = val ? '#fff' : '#333'
-        options.yAxis.axisLine.lineStyle.color = val ? '#fff' : '#333'
-        options.yAxis.axisLabel.color = val ? '#fff' : '#333'
+        options.xAxis.axisLine.lineStyle.color = getTextColor()
+        options.xAxis.axisLabel.color = getTextColor()
+        options.yAxis.axisLine.lineStyle.color = getTextColor()
+        options.yAxis.axisLabel.color = getTextColor()
         if (
           Array.isArray(options.series) &&
           options.series.length > 0 &&
           'markLine' in options.series[0]
         )
-          options.series[0].markLine.label.color = val ? '#fff' : '#333'
+          options.series[0].markLine.label.color = getTextColor()
       },
     )
 
@@ -548,7 +489,8 @@ export default {
       selectCell,
       passData,
       updateSelectedMode,
-      saveImage,
+      saveSvgImage: () => saveSvgImage(chart.value, props.title),
+      savePngImage: () => savePngImage(chart.value, props.title),
       dataView,
       exportTable,
       loadData,

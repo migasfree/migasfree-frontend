@@ -44,14 +44,20 @@
           <q-tooltip>{{ $gettext('Data View') }}</q-tooltip>
         </q-btn>
 
-        <q-btn
-          :icon="appIcon('download')"
-          flat
-          color="primary"
-          @click="saveImage"
-        >
-          <q-tooltip>{{ $gettext('Save as Image') }}</q-tooltip>
-        </q-btn>
+        <q-btn-dropdown flat stretch color="primary">
+          <template #label>
+            <q-icon :name="appIcon('download')" />
+
+            <q-tooltip>
+              {{ $gettext('Save as Image') }}
+            </q-tooltip>
+          </template>
+
+          <q-list>
+            <q-item clickable @click="saveSvgImage">SVG</q-item>
+            <q-item clickable @click="savePngImage">PNG</q-item>
+          </q-list>
+        </q-btn-dropdown>
       </q-card-actions>
     </q-card>
 
@@ -110,23 +116,18 @@
 </template>
 
 <script>
-import {
-  ref,
-  reactive,
-  computed,
-  watch,
-  onMounted,
-  onBeforeMount,
-  onBeforeUnmount,
-} from 'vue'
+import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { exportFile, useQuasar } from 'quasar'
+import { useQuasar } from 'quasar'
 import { useGettext } from 'vue3-gettext'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
 import { appIcon } from 'composables/element'
+import { useChartExport } from 'composables/chart/export'
+import { useChartOptions } from 'composables/chart/options'
+import { useChartUtils } from 'composables/chart/utils'
 
 import BannerInfo from 'components/ui/BannerInfo'
 
@@ -134,10 +135,6 @@ import * as echarts from 'echarts/core'
 import { PieChart } from 'echarts/charts'
 import { TooltipComponent, TitleComponent } from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
-import {
-  MIGASFREE_CHART_COLORS,
-  MIGASFREE_CHART_DARK_COLORS,
-} from 'config/app.conf'
 
 echarts.use([PieChart, TooltipComponent, TitleComponent, SVGRenderer])
 
@@ -172,9 +169,11 @@ export default {
 
     const chart = ref(null)
     const data = reactive({})
-    const initOptions = reactive({
-      renderer: 'svg',
-    })
+
+    const { initOptions, loadingOptions, getChartColors, getTextColor } =
+      useChartOptions()
+    const { groupBy } = useChartUtils(chart)
+    const { saveSvgImage, savePngImage, exportTableToCsv } = useChartExport()
 
     const options = reactive({
       animation: false,
@@ -186,9 +185,7 @@ export default {
         trigger: 'item',
         formatter: '{b} ({c}): <strong>{d}%</strong>',
       },
-      color: $q.dark.isActive
-        ? MIGASFREE_CHART_DARK_COLORS
-        : MIGASFREE_CHART_COLORS,
+      color: getChartColors(),
       series: [],
       title: {
         text: props.title,
@@ -210,7 +207,7 @@ export default {
           },
         },
         label: {
-          color: $q.dark.isActive ? 'white' : 'black',
+          color: getTextColor(),
         },
       },
     ]
@@ -238,7 +235,7 @@ export default {
         type: 'pie',
         radius: ['40%', '55%'],
         label: {
-          color: $q.dark.isActive ? 'white' : 'black',
+          color: getTextColor(),
           formatter: '{b} ({c}): {per|{d}%}',
           rich: {
             per: {
@@ -254,18 +251,6 @@ export default {
     ]
 
     const loading = ref(false)
-    const loadingOptions = reactive({
-      showSpinner: true,
-      text: $gettext('Loading data...'),
-      color: '#39BEDA',
-      textColor: $q.dark.isActive
-        ? 'rgba(255, 255, 255, 0.5)'
-        : 'rgba(0, 0, 0, 0.5)',
-      maskColor: $q.dark.isActive ? '#3A4149' : 'white',
-      fontFamily: 'Dosis',
-      fontSize: 14,
-    })
-
     const viewData = ref(false)
     const dataGrid = ref([])
 
@@ -313,14 +298,6 @@ export default {
       }
     })
 
-    onBeforeMount(() => {
-      window.addEventListener('resize', windowResize)
-    })
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', windowResize)
-    })
-
     const rowClick = (evt, row) => {
       const params = new Object()
       params.data = row
@@ -331,35 +308,10 @@ export default {
       emit('get-link', Object.assign(params, { url: props.url }))
     }
 
-    const windowResize = () => {
-      if (chart.value !== null && chart.value !== undefined) {
-        chart.value.resize()
-      }
-    }
-
     const goTo = () => {
       if (props.url) {
         router.push(props.url)
       }
-    }
-
-    const saveImage = () => {
-      const linkSource = chart.value.getDataURL()
-      const downloadLink = document.createElement('a')
-
-      downloadLink.href = linkSource
-      downloadLink.download = `${props.title}.svg`
-      document.body.appendChild(downloadLink)
-      downloadLink.click()
-      document.body.removeChild(downloadLink)
-    }
-
-    const groupBy = (data, key) => {
-      return data.reduce(function (r, a) {
-        r[a[key]] = r[a[key]] || []
-        r[a[key]].push(a)
-        return r
-      }, {})
     }
 
     const dataView = () => {
@@ -400,56 +352,14 @@ export default {
       }
     }
 
-    const wrapCsvValue = (val, formatFn, row) => {
-      let formatted = formatFn !== void 0 ? formatFn(val, row) : val
-
-      formatted =
-        formatted === void 0 || formatted === null ? '' : String(formatted)
-
-      formatted = formatted.split('"').join('""')
-      /**
-       * Excel accepts \n and \r in strings, but some other CSV parsers do not
-       * Uncomment the next two lines to escape new lines
-       */
-      // .split('\n').join('\\n')
-      // .split('\r').join('\\r')
-
-      return `"${formatted}"`
-    }
-
     const exportTable = (serie) => {
-      // naive encoding to csv format
-      const content = [columns.map((col) => wrapCsvValue(col.label))]
-        .concat(
-          serie.itemData.map((row) =>
-            columns
-              .map((col) =>
-                wrapCsvValue(
-                  typeof col.field === 'function'
-                    ? col.field(row)
-                    : row[col.field === void 0 ? col.name : col.field],
-                  col.format,
-                  row,
-                ),
-              )
-              .join(','),
-          ),
-        )
-        .join('\r\n')
-
-      const status = exportFile(`${serie.title}.csv`, content, 'text/csv')
-
-      if (status !== true) {
-        uiStore.notifyError($gettext('Browser denied file download...'))
-      }
+      exportTableToCsv(`${serie.title}.csv`, columns, serie.itemData)
     }
 
     watch(
       () => $q.dark.isActive,
       (val) => {
-        options.color = val
-          ? MIGASFREE_CHART_DARK_COLORS
-          : MIGASFREE_CHART_COLORS
+        options.color = getChartColors()
 
         if ('series' in options) {
           options.series.map((item) => {
@@ -457,7 +367,7 @@ export default {
               item.label.color = val ? 'black' : 'white'
               item.label.textBorderColor = val ? 'white' : 'black'
             } else {
-              item.label.color = val ? 'white' : 'black'
+              item.label.color = getTextColor()
             }
           })
         }
@@ -479,7 +389,8 @@ export default {
       rowClick,
       passData,
       goTo,
-      saveImage,
+      saveSvgImage: () => saveSvgImage(chart.value, props.title),
+      savePngImage: () => savePngImage(chart.value, props.title),
       dataView,
       exportTable,
       appIcon,
