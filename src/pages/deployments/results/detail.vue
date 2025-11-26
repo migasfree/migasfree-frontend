@@ -82,18 +82,20 @@
                           :label="scope.opt.name"
                         />
                       </template>
-                    </q-select>
 
-                    <q-btn
-                      color="secondary"
-                      class="q-ma-sm"
-                      :icon="appIcon('add')"
-                      :icon-right="modelIcon('projects')"
-                      @click="$router.push({ name: 'project-add' })"
-                      ><q-tooltip>{{
-                        $gettext('Add Project')
-                      }}</q-tooltip></q-btn
-                    >
+                      <template #append>
+                        <q-btn
+                          round
+                          dense
+                          color="secondary"
+                          :icon="appIcon('add')"
+                          @click="$router.push({ name: 'project-add' })"
+                          ><q-tooltip>{{
+                            $gettext('Add Project')
+                          }}</q-tooltip></q-btn
+                        >
+                      </template>
+                    </q-select>
                   </div>
 
                   <div class="col-6 col-md col-sm">
@@ -122,18 +124,20 @@
                           :label="scope.opt.name"
                         />
                       </template>
-                    </q-select>
 
-                    <q-btn
-                      color="secondary"
-                      class="q-ma-sm"
-                      :icon="appIcon('add')"
-                      :icon-right="modelIcon('domains')"
-                      @click="$router.push({ name: 'domain-add' })"
-                      ><q-tooltip>{{
-                        $gettext('Add Domain')
-                      }}</q-tooltip></q-btn
-                    >
+                      <template #append>
+                        <q-btn
+                          round
+                          dense
+                          color="secondary"
+                          :icon="appIcon('add')"
+                          @click="$router.push({ name: 'domain-add' })"
+                          ><q-tooltip>{{
+                            $gettext('Add Domain')
+                          }}</q-tooltip></q-btn
+                        >
+                      </template>
+                    </q-select>
                   </div>
                 </div>
 
@@ -470,18 +474,20 @@
                           :label="scope.opt.name"
                         />
                       </template>
-                    </q-select>
 
-                    <q-btn
-                      color="secondary"
-                      class="q-ma-sm"
-                      :icon="appIcon('add')"
-                      :icon-right="modelIcon('schedules')"
-                      @click="$router.push({ name: 'schedule-add' })"
-                      ><q-tooltip>{{
-                        $gettext('Add Schedule')
-                      }}</q-tooltip></q-btn
-                    >
+                      <template #append>
+                        <q-btn
+                          round
+                          dense
+                          color="secondary"
+                          :icon="appIcon('add')"
+                          @click="$router.push({ name: 'schedule-add' })"
+                          ><q-tooltip>{{
+                            $gettext('Add Schedule')
+                          }}</q-tooltip></q-btn
+                        >
+                      </template>
+                    </q-select>
                   </div>
 
                   <div
