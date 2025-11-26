@@ -70,16 +70,20 @@
                     :label="scope.opt.name"
                   />
                 </template>
-              </q-select>
 
-              <q-btn
-                color="secondary"
-                class="q-ma-sm"
-                :icon="appIcon('add')"
-                :icon-right="modelIcon('devices/types')"
-                @click="$router.push({ name: 'device-type-add' })"
-                ><q-tooltip>{{ $gettext('Add Device Type') }}</q-tooltip></q-btn
-              >
+                <template #append>
+                  <q-btn
+                    round
+                    dense
+                    color="secondary"
+                    :icon="appIcon('add')"
+                    @click="$router.push({ name: 'device-type-add' })"
+                    ><q-tooltip>{{
+                      $gettext('Add Device Type')
+                    }}</q-tooltip></q-btn
+                  >
+                </template>
+              </q-select>
             </div>
           </div>
 
