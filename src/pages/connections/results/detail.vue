@@ -44,46 +44,17 @@
             </div>
 
             <div class="col-6 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.device_type"
-                outlined
-                :label="$gettext('Device Type')"
                 :options="deviceTypes"
-                option-value="id"
-                option-label="name"
+                :label="$gettext('Device Type')"
+                detail-route="device-type-detail"
+                add-route="device-type-add"
+                :add-tooltip="$gettext('Add Device Type')"
+                :prepend-icon="modelIcon('devices/types')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
-              >
-                <template #prepend>
-                  <q-icon :name="modelIcon('devices/types')" />
-                </template>
-
-                <template #selected-item="scope">
-                  <q-btn
-                    no-caps
-                    flat
-                    color="primary"
-                    :to="{
-                      name: 'device-type-detail',
-                      params: { id: scope.opt.id },
-                    }"
-                    :label="scope.opt.name"
-                  />
-                </template>
-
-                <template #append>
-                  <q-btn
-                    round
-                    dense
-                    color="secondary"
-                    :icon="appIcon('add')"
-                    @click="$router.push({ name: 'device-type-add' })"
-                    ><q-tooltip>{{
-                      $gettext('Add Device Type')
-                    }}</q-tooltip></q-btn
-                  >
-                </template>
-              </q-select>
+              />
             </div>
           </div>
 
@@ -112,12 +83,13 @@ import { useMeta } from 'quasar'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
+import EntitySelect from 'components/ui/EntitySelect'
 import ItemDetail from 'components/ui/ItemDetail'
 
 import { appIcon, modelIcon } from 'composables/element'
 
 export default {
-  components: { ItemDetail },
+  components: { EntitySelect, ItemDetail },
   setup() {
     const { $gettext } = useGettext()
     const route = useRoute()
