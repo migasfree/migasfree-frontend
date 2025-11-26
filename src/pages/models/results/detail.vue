@@ -48,16 +48,20 @@
                     :label="scope.opt.name"
                   />
                 </template>
-              </q-select>
 
-              <q-btn
-                color="secondary"
-                class="q-ma-sm"
-                :icon="appIcon('add')"
-                :icon-right="modelIcon('devices/types')"
-                @click="$router.push({ name: 'device-type-add' })"
-                ><q-tooltip>{{ $gettext('Add Device Type') }}</q-tooltip></q-btn
-              >
+                <template #append>
+                  <q-btn
+                    round
+                    dense
+                    color="secondary"
+                    :icon="appIcon('add')"
+                    @click="$router.push({ name: 'device-type-add' })"
+                    ><q-tooltip>{{
+                      $gettext('Add Device Type')
+                    }}</q-tooltip></q-btn
+                  >
+                </template>
+              </q-select>
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -87,18 +91,20 @@
                     :label="scope.opt.name"
                   />
                 </template>
-              </q-select>
 
-              <q-btn
-                color="secondary"
-                class="q-ma-sm"
-                :icon="appIcon('add')"
-                :icon-right="modelIcon('devices/manufacturers')"
-                @click="$router.push({ name: 'manufacturer-add' })"
-                ><q-tooltip>{{
-                  $gettext('Add Manufacturer')
-                }}</q-tooltip></q-btn
-              >
+                <template #append>
+                  <q-btn
+                    round
+                    dense
+                    color="secondary"
+                    :icon="appIcon('add')"
+                    @click="$router.push({ name: 'manufacturer-add' })"
+                    ><q-tooltip>{{
+                      $gettext('Add Manufacturer')
+                    }}</q-tooltip></q-btn
+                  >
+                </template>
+              </q-select>
             </div>
           </div>
 
@@ -140,16 +146,20 @@
                     />
                   </q-chip>
                 </template>
-              </q-select>
 
-              <q-btn
-                color="secondary"
-                class="q-ma-sm"
-                :icon="appIcon('add')"
-                :icon-right="modelIcon('devices/connections')"
-                @click="$router.push({ name: 'connection-add' })"
-                ><q-tooltip>{{ $gettext('Add Connection') }}</q-tooltip></q-btn
-              >
+                <template #append>
+                  <q-btn
+                    round
+                    dense
+                    color="secondary"
+                    :icon="appIcon('add')"
+                    @click="$router.push({ name: 'connection-add' })"
+                    ><q-tooltip>{{
+                      $gettext('Add Connection')
+                    }}</q-tooltip></q-btn
+                  >
+                </template>
+              </q-select>
             </div>
 
             <div class="col-6 col-md col-sm">
