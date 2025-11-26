@@ -34,46 +34,17 @@
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.category"
-                outlined
-                :label="$gettext('Category')"
                 :options="categories"
-                option-value="id"
-                option-label="name"
+                :label="$gettext('Category')"
+                detail-route="category-detail"
+                add-route="category-add"
+                :add-tooltip="$gettext('Add Application Category')"
+                :prepend-icon="modelIcon('catalog/categories')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
-              >
-                <template #prepend>
-                  <q-icon :name="modelIcon('catalog/categories')" />
-                </template>
-
-                <template #selected-item="scope">
-                  <q-btn
-                    no-caps
-                    flat
-                    color="primary"
-                    :to="{
-                      name: 'category-detail',
-                      params: { id: scope.opt.id },
-                    }"
-                    :label="scope.opt.name"
-                  />
-                </template>
-
-                <template #append>
-                  <q-btn
-                    round
-                    dense
-                    color="secondary"
-                    :icon="appIcon('add')"
-                    @click="$router.push({ name: 'category-add' })"
-                    ><q-tooltip>{{
-                      $gettext('Add Application Category')
-                    }}</q-tooltip></q-btn
-                  >
-                </template>
-              </q-select>
+              />
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -198,33 +169,15 @@
               <q-item-section>
                 <div class="row q-pa-md q-gutter-md">
                   <div class="col-5 col-md col-sm">
-                    <q-select
+                    <EntitySelect
                       v-model="project.project"
-                      outlined
-                      :label="$gettext('Project')"
                       :options="projects"
-                      option-value="id"
-                      option-label="name"
+                      :label="$gettext('Project')"
+                      detail-route="project-detail"
+                      :prepend-icon="modelIcon('projects')"
                       lazy-rules
                       :rules="[(val) => !!val || $gettext('* Required')]"
-                    >
-                      <template #prepend>
-                        <q-icon :name="modelIcon('projects')" />
-                      </template>
-
-                      <template #selected-item="scope">
-                        <q-btn
-                          no-caps
-                          flat
-                          color="primary"
-                          :to="{
-                            name: 'project-detail',
-                            params: { id: scope.opt.id },
-                          }"
-                          :label="scope.opt.name"
-                        />
-                      </template>
-                    </q-select>
+                    />
                   </div>
 
                   <div class="col-5 col-md col-sm">
@@ -260,6 +213,7 @@ import { useMeta } from 'quasar'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
+import EntitySelect from 'components/ui/EntitySelect'
 import ItemDetail from 'components/ui/ItemDetail'
 import OrderTextArea from 'components/ui/OrderTextArea'
 import SelectAttributes from 'components/ui/SelectAttributes'
@@ -268,6 +222,7 @@ import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
+    EntitySelect,
     ItemDetail,
     OrderTextArea,
     SelectAttributes,
