@@ -66,16 +66,18 @@
                     :label="scope.opt.name"
                   />
                 </template>
-              </q-select>
 
-              <q-btn
-                color="secondary"
-                class="q-ma-sm"
-                :icon="appIcon('add')"
-                :icon-right="modelIcon('formulas')"
-                @click="$router.push({ name: 'formula-add' })"
-                ><q-tooltip>{{ $gettext('Add Formula') }}</q-tooltip></q-btn
-              >
+                <template #append>
+                  <q-btn
+                    round
+                    dense
+                    color="secondary"
+                    :icon="appIcon('add')"
+                    @click="$router.push({ name: 'formula-add' })"
+                    ><q-tooltip>{{ $gettext('Add Formula') }}</q-tooltip></q-btn
+                  >
+                </template>
+              </q-select>
             </div>
 
             <div class="col-6 col-md col-sm">
