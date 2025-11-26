@@ -62,87 +62,31 @@
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.project"
-                outlined
-                :label="$gettext('Project')"
                 :options="projects"
-                option-value="id"
-                option-label="name"
+                :label="$gettext('Project')"
+                detail-route="project-detail"
+                add-route="project-add"
+                :add-tooltip="$gettext('Add Project')"
+                :prepend-icon="modelIcon('projects')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
-              >
-                <template #prepend>
-                  <q-icon :name="modelIcon('projects')" />
-                </template>
-
-                <template #selected-item="scope">
-                  <q-btn
-                    no-caps
-                    flat
-                    color="primary"
-                    :to="{
-                      name: 'project-detail',
-                      params: { id: scope.opt.id },
-                    }"
-                    :label="scope.opt.name"
-                  />
-                </template>
-
-                <template #append>
-                  <q-btn
-                    round
-                    dense
-                    color="secondary"
-                    :icon="appIcon('add')"
-                    @click="$router.push({ name: 'project-add' })"
-                    ><q-tooltip>{{ $gettext('Add Project') }}</q-tooltip></q-btn
-                  >
-                </template>
-              </q-select>
+              />
             </div>
 
             <div class="col-6 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.capability"
-                outlined
-                :label="$gettext('Capability')"
                 :options="capabilities"
-                option-value="id"
-                option-label="name"
+                :label="$gettext('Capability')"
+                detail-route="capability-detail"
+                add-route="capability-add"
+                :add-tooltip="$gettext('Add Capability')"
+                :prepend-icon="modelIcon('devices/capabilities')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
-              >
-                <template #prepend>
-                  <q-icon :name="modelIcon('devices/capabilities')" />
-                </template>
-
-                <template #selected-item="scope">
-                  <q-btn
-                    no-caps
-                    flat
-                    color="primary"
-                    :to="{
-                      name: 'capability-detail',
-                      params: { id: scope.opt.id },
-                    }"
-                    :label="scope.opt.name"
-                  />
-                </template>
-
-                <template #append>
-                  <q-btn
-                    round
-                    dense
-                    color="secondary"
-                    :icon="appIcon('add')"
-                    @click="$router.push({ name: 'capability-add' })"
-                    ><q-tooltip>{{
-                      $gettext('Add Capability')
-                    }}</q-tooltip></q-btn
-                  >
-                </template>
-              </q-select>
+              />
             </div>
           </div>
 
@@ -169,6 +113,7 @@ import { useMeta } from 'quasar'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
+import EntitySelect from 'components/ui/EntitySelect'
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
 import OrderTextArea from 'components/ui/OrderTextArea'
@@ -178,6 +123,7 @@ import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
+    EntitySelect,
     FilteredMultiSelect,
     ItemDetail,
     OrderTextArea,
