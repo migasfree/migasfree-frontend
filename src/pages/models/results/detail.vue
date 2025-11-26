@@ -21,145 +21,50 @@
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.device_type"
-                outlined
                 autofocus
-                :label="$gettext('Type')"
                 :options="deviceTypes"
-                option-value="id"
-                option-label="name"
+                :label="$gettext('Type')"
+                detail-route="device-type-detail"
+                add-route="device-type-add"
+                :add-tooltip="$gettext('Add Device Type')"
+                :prepend-icon="modelIcon('devices/types')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
-              >
-                <template #prepend>
-                  <q-icon :name="modelIcon('devices/types')" />
-                </template>
-
-                <template #selected-item="scope">
-                  <q-btn
-                    no-caps
-                    flat
-                    color="primary"
-                    :to="{
-                      name: 'device-type-detail',
-                      params: { id: scope.opt.id },
-                    }"
-                    :label="scope.opt.name"
-                  />
-                </template>
-
-                <template #append>
-                  <q-btn
-                    round
-                    dense
-                    color="secondary"
-                    :icon="appIcon('add')"
-                    @click="$router.push({ name: 'device-type-add' })"
-                    ><q-tooltip>{{
-                      $gettext('Add Device Type')
-                    }}</q-tooltip></q-btn
-                  >
-                </template>
-              </q-select>
+              />
             </div>
 
             <div class="col-6 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.manufacturer"
-                outlined
-                :label="$gettext('Manufacturer')"
                 :options="manufacturers"
-                option-value="id"
-                option-label="name"
+                :label="$gettext('Manufacturer')"
+                detail-route="manufacturer-detail"
+                add-route="manufacturer-add"
+                :add-tooltip="$gettext('Add Manufacturer')"
+                :prepend-icon="modelIcon('devices/manufacturers')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
-              >
-                <template #prepend>
-                  <q-icon :name="modelIcon('devices/manufacturers')" />
-                </template>
-
-                <template #selected-item="scope">
-                  <q-btn
-                    no-caps
-                    flat
-                    color="primary"
-                    :to="{
-                      name: 'manufacturer-detail',
-                      params: { id: scope.opt.id },
-                    }"
-                    :label="scope.opt.name"
-                  />
-                </template>
-
-                <template #append>
-                  <q-btn
-                    round
-                    dense
-                    color="secondary"
-                    :icon="appIcon('add')"
-                    @click="$router.push({ name: 'manufacturer-add' })"
-                    ><q-tooltip>{{
-                      $gettext('Add Manufacturer')
-                    }}</q-tooltip></q-btn
-                  >
-                </template>
-              </q-select>
+              />
             </div>
           </div>
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.connections"
-                outlined
-                multiple
-                counter
-                :label="$gettext('Connections')"
                 :options="connections"
-                option-value="id"
-                option-label="name"
+                multiple
+                chip-mode
+                :label="$gettext('Connections')"
+                detail-route="connection-detail"
+                add-route="connection-add"
+                :add-tooltip="$gettext('Add Connection')"
+                :prepend-icon="modelIcon('devices/connections')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
-              >
-                <template #prepend>
-                  <q-icon :name="modelIcon('devices/connections')" />
-                </template>
-
-                <template #selected-item="scope">
-                  <q-chip
-                    removable
-                    dense
-                    :tabindex="scope.tabindex"
-                    class="q-ma-md"
-                    @remove="scope.removeAtIndex(scope.index)"
-                  >
-                    <q-btn
-                      no-caps
-                      flat
-                      color="primary"
-                      :to="{
-                        name: 'connection-detail',
-                        params: { id: scope.opt.id },
-                      }"
-                      :label="scope.opt.name"
-                    />
-                  </q-chip>
-                </template>
-
-                <template #append>
-                  <q-btn
-                    round
-                    dense
-                    color="secondary"
-                    :icon="appIcon('add')"
-                    @click="$router.push({ name: 'connection-add' })"
-                    ><q-tooltip>{{
-                      $gettext('Add Connection')
-                    }}</q-tooltip></q-btn
-                  >
-                </template>
-              </q-select>
+              />
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -194,63 +99,27 @@
               <q-item-section>
                 <div class="row q-pa-md q-gutter-md">
                   <div class="col-5 col-md col-sm">
-                    <q-select
+                    <EntitySelect
                       v-model="driver.project"
-                      outlined
-                      :label="$gettext('Project')"
                       :options="projects"
-                      option-value="id"
-                      option-label="name"
+                      :label="$gettext('Project')"
+                      detail-route="project-detail"
+                      :prepend-icon="modelIcon('projects')"
                       lazy-rules
                       :rules="[(val) => !!val || $gettext('* Required')]"
-                    >
-                      <template #prepend>
-                        <q-icon :name="modelIcon('projects')" />
-                      </template>
-
-                      <template #selected-item="scope">
-                        <q-btn
-                          no-caps
-                          flat
-                          color="primary"
-                          :to="{
-                            name: 'project-detail',
-                            params: { id: scope.opt.id },
-                          }"
-                          :label="scope.opt.name"
-                        />
-                      </template>
-                    </q-select>
+                    />
                   </div>
 
                   <div class="col-5 col-md col-sm">
-                    <q-select
+                    <EntitySelect
                       v-model="driver.capability"
-                      outlined
-                      :label="$gettext('Capability')"
                       :options="capabilities"
-                      option-value="id"
-                      option-label="name"
+                      :label="$gettext('Capability')"
+                      detail-route="capability-detail"
+                      :prepend-icon="modelIcon('devices/capabilities')"
                       lazy-rules
                       :rules="[(val) => !!val || $gettext('* Required')]"
-                    >
-                      <template #prepend>
-                        <q-icon :name="modelIcon('devices/capabilities')" />
-                      </template>
-
-                      <template #selected-item="scope">
-                        <q-btn
-                          no-caps
-                          flat
-                          color="primary"
-                          :to="{
-                            name: 'capability-detail',
-                            params: { id: scope.opt.id },
-                          }"
-                          :label="scope.opt.name"
-                        />
-                      </template>
-                    </q-select>
+                    />
                   </div>
                 </div>
 
@@ -296,6 +165,7 @@ import { useMeta } from 'quasar'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
+import EntitySelect from 'components/ui/EntitySelect'
 import ItemDetail from 'components/ui/ItemDetail'
 import OrderTextArea from 'components/ui/OrderTextArea'
 
@@ -303,6 +173,7 @@ import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
+    EntitySelect,
     ItemDetail,
     OrderTextArea,
   },
