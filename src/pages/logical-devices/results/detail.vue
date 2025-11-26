@@ -58,46 +58,17 @@
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.capability"
-                outlined
-                :label="$gettext('Capability')"
                 :options="capabilities"
-                option-value="id"
-                option-label="name"
+                :label="$gettext('Capability')"
+                detail-route="capability-detail"
+                add-route="capability-add"
+                :add-tooltip="$gettext('Add Capability')"
+                :prepend-icon="modelIcon('devices/capabilities')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
-              >
-                <template #prepend>
-                  <q-icon :name="modelIcon('devices/capabilities')" />
-                </template>
-
-                <template #selected-item="scope">
-                  <q-btn
-                    no-caps
-                    flat
-                    color="primary"
-                    :to="{
-                      name: 'capability-detail',
-                      params: { id: scope.opt.id },
-                    }"
-                    :label="scope.opt.name"
-                  />
-                </template>
-
-                <template #append>
-                  <q-btn
-                    round
-                    dense
-                    color="secondary"
-                    :icon="appIcon('add')"
-                    @click="$router.push({ name: 'capability-add' })"
-                    ><q-tooltip>{{
-                      $gettext('Add Capability')
-                    }}</q-tooltip></q-btn
-                  >
-                </template>
-              </q-select>
+              />
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -123,6 +94,7 @@ import { useMeta } from 'quasar'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
+import EntitySelect from 'components/ui/EntitySelect'
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
@@ -132,6 +104,7 @@ import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
+    EntitySelect,
     FilteredMultiSelect,
     ItemDetail,
     MigasLink,
