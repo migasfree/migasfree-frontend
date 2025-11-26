@@ -21,59 +21,17 @@
           <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.property_att"
-                outlined
-                autofocus
-                :label="$gettext('Stamp')"
                 :options="stamps"
-                option-value="id"
-                option-label="name"
+                :label="$gettext('Stamp')"
+                link-model="stamps"
+                chip-mode
+                add-route="stamp-add"
+                :add-tooltip="$gettext('Add Stamp')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
-              >
-                <template #no-option>
-                  <q-item>
-                    <q-item-section class="text-grey">
-                      {{ $gettext('No results') }}
-                    </q-item-section>
-                  </q-item>
-                </template>
-
-                <template #option="scope">
-                  <q-item v-bind="scope.itemProps">
-                    {{ scope.opt.name }}
-                  </q-item>
-                </template>
-
-                <template #selected-item="scope">
-                  <q-chip
-                    removable
-                    dense
-                    :tabindex="scope.tabindex"
-                    class="q-ma-md"
-                    @remove="scope.removeAtIndex(scope.index)"
-                  >
-                    <MigasLink
-                      model="stamps"
-                      :pk="scope.opt.id"
-                      :value="scope.opt.name"
-                      :icon="modelIcon('stamps')"
-                    />
-                  </q-chip>
-                </template>
-
-                <template #append>
-                  <q-btn
-                    round
-                    dense
-                    color="secondary"
-                    :icon="appIcon('add')"
-                    @click="$router.push({ name: 'stamp-add' })"
-                    ><q-tooltip>{{ $gettext('Add Stamp') }}</q-tooltip></q-btn
-                  >
-                </template>
-              </q-select>
+              />
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -203,6 +161,7 @@ import { useMeta } from 'quasar'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
+import EntitySelect from 'components/ui/EntitySelect'
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
 import OverflowList from 'components/ui/OverflowList'
@@ -213,6 +172,7 @@ import { appIcon, modelIcon, useElement } from 'composables/element'
 
 export default {
   components: {
+    EntitySelect,
     FilteredMultiSelect,
     ItemDetail,
     MigasLink,
