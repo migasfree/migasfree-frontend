@@ -27,60 +27,36 @@
           v-if="moreFilters.includes('platform')"
           class="col-12 col-sm-6 col-md-4"
         >
-          <q-select
+          <FilterSelect
             v-model="tableFilters.platform.selected"
             :options="tableFilters.platform.items"
             :label="$gettext('By Platform')"
-            dense
-            outlined
-            option-value="id"
-            option-label="name"
             @update:model-value="onPlatformFilter"
-          >
-            <template #before>
-              <q-icon :name="appIcon('filter')" />
-            </template>
-          </q-select>
+          />
         </div>
 
         <div
           v-if="moreFilters.includes('project')"
           class="col-12 col-sm-6 col-md-4"
         >
-          <q-select
+          <FilterSelect
             v-model="tableFilters.project.selected"
             :options="tableFilters.project.items"
             :label="$gettext('By Project')"
-            dense
-            outlined
-            option-value="id"
-            option-label="name"
             @update:model-value="onProjectFilter"
-          >
-            <template #before>
-              <q-icon :name="appIcon('filter')" />
-            </template>
-          </q-select>
+          />
         </div>
 
         <div
           v-if="moreFilters.includes('architecture')"
           class="col-12 col-sm-6 col-md-4"
         >
-          <q-select
+          <FilterSelect
             v-model="tableFilters.architecture.selected"
             :options="tableFilters.architecture.items"
             :label="$gettext('By Architecture')"
-            dense
-            outlined
-            option-value="id"
-            option-label="name"
             @update:model-value="onArchitectureFilter"
-          >
-            <template #before>
-              <q-icon :name="appIcon('filter')" />
-            </template>
-          </q-select>
+          />
         </div>
 
         <div
@@ -147,20 +123,12 @@
           v-if="moreFilters.includes('softwareInventory')"
           class="col-12 col-sm-6 col-md-4"
         >
-          <q-select
+          <FilterSelect
             v-model="tableFilters.softwareInventory.selected"
             :options="tableFilters.softwareInventory.items"
             :label="$gettext('By Software Inventory')"
-            dense
-            outlined
-            option-value="id"
-            option-label="name"
             @update:model-value="onSoftwareInventoryFilter"
-          >
-            <template #before>
-              <q-icon :name="appIcon('filter')" />
-            </template>
-          </q-select>
+          />
         </div>
 
         <div
@@ -195,20 +163,12 @@
           v-if="moreFilters.includes('user')"
           class="col-12 col-sm-6 col-md-4"
         >
-          <q-select
+          <FilterSelect
             v-model="tableFilters.user.selected"
             :options="tableFilters.user.items"
             :label="$gettext('By Assignment')"
-            dense
-            outlined
-            option-value="id"
-            option-label="name"
             @update:model-value="onUserFilter"
-          >
-            <template #before>
-              <q-icon :name="appIcon('filter')" />
-            </template>
-          </q-select>
+          />
         </div>
 
         <div
@@ -245,40 +205,24 @@
           v-if="moreFilters.includes('schedule')"
           class="col-12 col-sm-6 col-md-4"
         >
-          <q-select
+          <FilterSelect
             v-model="tableFilters.schedule.selected"
             :options="tableFilters.schedule.items"
             :label="$gettext('By Schedule')"
-            dense
-            outlined
-            option-value="id"
-            option-label="name"
             @update:model-value="onScheduleFilter"
-          >
-            <template #before>
-              <q-icon :name="appIcon('filter')" />
-            </template>
-          </q-select>
+          />
         </div>
 
         <div
           v-if="moreFilters.includes('model')"
           class="col-12 col-sm-6 col-md-4"
         >
-          <q-select
+          <FilterSelect
             v-model="tableFilters.model.selected"
             :options="tableFilters.model.items"
             :label="$gettext('By Model')"
-            dense
-            outlined
-            option-value="id"
-            option-label="name"
             @update:model-value="onModelFilter"
-          >
-            <template #before>
-              <q-icon :name="appIcon('filter')" />
-            </template>
-          </q-select>
+          />
         </div>
 
         <div
@@ -311,20 +255,12 @@
           v-if="moreFilters.includes('uninstallDate')"
           class="col-12 col-sm-6 col-md-4"
         >
-          <q-select
+          <FilterSelect
             v-model="tableFilters.uninstallDate.selected"
             :options="tableFilters.uninstallDate.items"
             :label="$gettext('By Uninstall Date')"
-            dense
-            outlined
-            option-value="id"
-            option-label="name"
             @update:model-value="onUninstallDateFilter"
-          >
-            <template #before>
-              <q-icon :name="appIcon('filter')" />
-            </template>
-          </q-select>
+          />
         </div>
 
         <div
@@ -344,20 +280,12 @@
           v-if="moreFilters.includes('syncEndDate')"
           class="col-12 col-sm-6 col-md-4"
         >
-          <q-select
+          <FilterSelect
             v-model="tableFilters.syncEndDate.selected"
             :options="tableFilters.syncEndDate.items"
             :label="$gettext('By last sync date')"
-            dense
-            outlined
-            option-value="id"
-            option-label="name"
             @update:model-value="onSyncEndDateFilter"
-          >
-            <template #before>
-              <q-icon :name="appIcon('filter')" />
-            </template>
-          </q-select>
+          />
         </div>
       </div>
 
@@ -584,6 +512,7 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
 import BannerInfo from 'components/ui/BannerInfo'
+import FilterSelect from 'components/ui/FilterSelect'
 import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
 import TablePagination from 'components/ui/TablePagination'
@@ -597,6 +526,7 @@ export default defineComponent({
   name: 'TableResults',
   components: {
     BannerInfo,
+    FilterSelect,
     Header,
     SearchFilter,
     TablePagination,
