@@ -11,12 +11,28 @@ const api = axios.create({
   baseURL: process.env.MIGASFREE_SERVER || 'http://localhost',
 })
 
-function getAcceptLanguage(lang) {
+const getAcceptLanguage = (lang) => {
   const [language, country] = lang.split('_')
   return `${language}-${country}, ${language};q=0.9`
 }
 
 export default boot(({ app, router }) => {
+  let abortController = null
+
+  router.beforeEach(async (to, from, next) => {
+    // cancel any ongoing requests
+    if (abortController) {
+      abortController.abort()
+      abortController = null
+    }
+
+    // set new abortController
+    abortController = new AbortController()
+    api.defaults.signal = abortController.signal
+
+    next()
+  })
+
   api.interceptors.request.use(
     (config) => {
       const authToken = LocalStorage.getItem('auth.token')
@@ -51,6 +67,11 @@ export default boot(({ app, router }) => {
     },
 
     (error) => {
+      if (error.code === 'ERR_CANCELED') {
+        console.debug('Cancelled request')
+        return Promise.reject(error)
+      }
+
       if ('response' in error && 'status' in error.response) {
         switch (error.response.status) {
           case 400:
