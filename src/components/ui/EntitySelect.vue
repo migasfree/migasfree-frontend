@@ -9,13 +9,33 @@
     :clearable="clearable"
     :option-value="optionValue"
     :option-label="optionLabel"
+    :use-input="useInput"
+    :map-options="mapOptions"
     :lazy-rules="lazyRules"
     :rules="rules"
     @update:model-value="$emit('update:modelValue', $event)"
     @clear="$emit('clear')"
+    @filter="onFilter"
+    @filter-abort="onFilterAbort"
   >
     <template v-if="prependIcon" #prepend>
       <q-icon :name="prependIcon" />
+    </template>
+
+    <template #no-option>
+      <q-item>
+        <q-item-section class="text-grey">
+          {{ $gettext('No results') }}
+        </q-item-section>
+      </q-item>
+    </template>
+
+    <template v-if="useCustomOption" #option="scope">
+      <slot name="option" v-bind="scope">
+        <q-item v-bind="scope.itemProps">
+          {{ scope.opt[optionLabel] }}
+        </q-item>
+      </slot>
     </template>
 
     <template #selected-item="scope">
@@ -153,12 +173,36 @@ export default defineComponent({
       type: Array,
       default: () => [],
     },
+    useInput: {
+      type: Boolean,
+      default: false,
+    },
+    mapOptions: {
+      type: Boolean,
+      default: false,
+    },
+    useCustomOption: {
+      type: Boolean,
+      default: false,
+    },
   },
 
-  setup() {
-    return { appIcon }
+  setup(props, { emit }) {
+    const onFilter = (val, update, abort) => {
+      emit('filter', val, update, abort)
+    }
+
+    const onFilterAbort = () => {
+      emit('filter-abort')
+    }
+
+    return {
+      appIcon,
+      onFilter,
+      onFilterAbort,
+    }
   },
 
-  emits: ['update:modelValue', 'clear'],
+  emits: ['update:modelValue', 'clear', 'filter', 'filter-abort'],
 })
 </script>
