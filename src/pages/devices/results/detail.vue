@@ -74,35 +74,17 @@
             </div>
 
             <div class="col-6 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-if="element.model"
                 v-model="element.connection"
-                outlined
-                :label="$gettext('Connection')"
                 :options="element.model.connections"
-                option-value="id"
-                option-label="name"
+                :label="$gettext('Connection')"
+                detail-route="connection-detail"
+                :prepend-icon="modelIcon('devices/connections')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
                 @update:model-value="localConnectionFields"
-              >
-                <template #prepend>
-                  <q-icon :name="modelIcon('devices/connections')" />
-                </template>
-
-                <template #selected-item="scope">
-                  <q-btn
-                    no-caps
-                    flat
-                    color="primary"
-                    :to="{
-                      name: 'connection-detail',
-                      params: { id: scope.opt.id },
-                    }"
-                    :label="scope.opt.name"
-                  />
-                </template>
-              </q-select>
+              />
             </div>
           </div>
         </q-card-section>
@@ -232,6 +214,7 @@ import { useMeta } from 'quasar'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
+import EntitySelect from 'components/ui/EntitySelect'
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
@@ -241,6 +224,7 @@ import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
+    EntitySelect,
     FilteredMultiSelect,
     ItemDetail,
     MigasLink,
