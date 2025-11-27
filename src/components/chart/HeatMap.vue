@@ -33,22 +33,30 @@
         @click="passData"
         @legendselectchanged="changeRange"
       />
-      <BannerInfo
-        v-if="noData"
-        :message="$gettext('No data available.')"
-      /> </q-card-section
-  ></q-card>
+      <BannerInfo v-if="noData" :message="$gettext('No data available.')" />
+    </q-card-section>
+
+    <q-card-actions v-show="isChartVisible" align="around" class="q-pt-none">
+      <q-btn-dropdown flat stretch color="primary">
+        <template #label>
+          <q-icon :name="appIcon('download')" />
+
+          <q-tooltip>
+            {{ $gettext('Save as Image') }}
+          </q-tooltip>
+        </template>
+
+        <q-list>
+          <q-item clickable @click="saveSvgImage">SVG</q-item>
+          <q-item clickable @click="savePngImage">PNG</q-item>
+        </q-list>
+      </q-btn-dropdown>
+    </q-card-actions>
+  </q-card>
 </template>
 
 <script>
-import {
-  ref,
-  reactive,
-  computed,
-  watch,
-  onBeforeMount,
-  onBeforeUnmount,
-} from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { useQuasar, date } from 'quasar'
 import { useGettext } from 'vue3-gettext'
 
@@ -64,7 +72,11 @@ import {
 import { SVGRenderer } from 'echarts/renderers'
 import { format } from 'echarts/lib/util/time'
 
+import { appIcon } from 'composables/element'
 import useDate from 'composables/date'
+import { useChartExport } from 'composables/chart/export'
+import { useChartOptions } from 'composables/chart/options'
+import { useChartUtils } from 'composables/chart/utils'
 
 import BannerInfo from 'components/ui/BannerInfo'
 
@@ -108,9 +120,9 @@ export default {
 
     const chart = ref(null)
 
-    const initOptions = reactive({
-      renderer: 'svg',
-    })
+    const { saveSvgImage, savePngImage } = useChartExport()
+    const { initOptions, getTextColor } = useChartOptions()
+    useChartUtils(chart)
 
     const options = reactive({
       legend: {
@@ -119,7 +131,7 @@ export default {
         selectedMode: 'single',
         selected: {},
         textStyle: {
-          color: $q.dark.isActive ? '#fff' : '#000',
+          color: getTextColor(),
         },
       },
       textStyle: {
@@ -140,7 +152,7 @@ export default {
         calculable: true,
         left: 'center',
         top: 40,
-        textStyle: { color: $q.dark.isActive ? '#fff' : '#000' },
+        textStyle: { color: getTextColor() },
       },
       calendar: {
         top: 120,
@@ -155,11 +167,11 @@ export default {
         yearLabel: { show: true, margin: 30 },
         dayLabel: {
           firstDay: current.startsWith('es') ? 1 : 0,
-          color: $q.dark.isActive ? '#fff' : '#000',
+          color: getTextColor(),
           nameMap: localeDate.daysShort,
         },
         monthLabel: {
-          color: $q.dark.isActive ? '#fff' : '#000',
+          color: getTextColor(),
           nameMap: localeDate.monthsShort,
         },
       },
@@ -212,10 +224,6 @@ export default {
       return result
     })
 
-    const windowResize = () => {
-      if (chart.value) chart.value.resize()
-    }
-
     const passData = (params) => {
       emit('get-date', params)
     }
@@ -250,14 +258,6 @@ export default {
       const value = monthsSummary.value[index]
       return value ? `${param.nameMap} (${value})` : param.nameMap
     }
-
-    onBeforeMount(() => {
-      window.addEventListener('resize', windowResize)
-    })
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', windowResize)
-    })
 
     watch(
       () => props.data,
@@ -324,11 +324,29 @@ export default {
     watch(
       () => $q.dark.isActive,
       (val) => {
-        options.visualMap.textStyle.color = val ? '#fff' : '#000'
-        options.calendar.monthLabel.color = val ? '#fff' : '#000'
-        options.calendar.dayLabel.color = val ? '#fff' : '#000'
-        options.calendar.itemStyle.color = val ? '#757575' : '#fff'
-        options.legend.textStyle.color = val ? '#fff' : '#000'
+        const textColor = getTextColor()
+
+        if (chart.value) {
+          chart.value.setOption({
+            visualMap: {
+              textStyle: { color: textColor },
+            },
+            calendar: {
+              monthLabel: { color: textColor },
+              dayLabel: { color: textColor },
+              itemStyle: { color: val ? '#757575' : '#fff' },
+            },
+            legend: {
+              textStyle: { color: textColor },
+            },
+          })
+        } else {
+          options.visualMap.textStyle.color = textColor
+          options.calendar.monthLabel.color = textColor
+          options.calendar.dayLabel.color = textColor
+          options.calendar.itemStyle.color = val ? '#757575' : '#fff'
+          options.legend.textStyle.color = textColor
+        }
       },
     )
 
@@ -342,6 +360,9 @@ export default {
       noData,
       passData,
       changeRange,
+      saveSvgImage: () => saveSvgImage(chart.value, props.title),
+      savePngImage: () => savePngImage(chart.value, props.title),
+      appIcon,
     }
   },
 }
