@@ -15,8 +15,14 @@
     :rules="rules"
     @update:model-value="$emit('update:modelValue', $event)"
     @clear="$emit('clear')"
-    @filter="onFilter"
-    @filter-abort="onFilterAbort"
+    v-on="
+      useInput
+        ? {
+            filter: (val, update, abort) => $emit('filter', val, update, abort),
+            'filter-abort': () => $emit('filter-abort'),
+          }
+        : {}
+    "
   >
     <template v-if="prependIcon" #prepend>
       <q-icon :name="prependIcon" />
@@ -72,7 +78,7 @@
       </q-chip>
 
       <q-btn
-        v-else-if="detailRoute"
+        v-else-if="detailRoute && !multiple"
         no-caps
         flat
         color="primary"
@@ -82,6 +88,8 @@
         }"
         :label="scope.opt[optionLabel]"
       />
+
+      <span v-else>{{ scope.opt[optionLabel] }}</span>
     </template>
 
     <template v-if="addRoute" #append>
@@ -187,19 +195,9 @@ export default defineComponent({
     },
   },
 
-  setup(props, { emit }) {
-    const onFilter = (val, update, abort) => {
-      emit('filter', val, update, abort)
-    }
-
-    const onFilterAbort = () => {
-      emit('filter-abort')
-    }
-
+  setup() {
     return {
       appIcon,
-      onFilter,
-      onFilterAbort,
     }
   },
 
