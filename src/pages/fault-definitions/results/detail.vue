@@ -102,47 +102,27 @@
 
           <div class="row q-pa-md q-gutter-md">
             <div class="col-12 col-md col-sm">
-              <q-select
+              <EntitySelect
                 v-model="element.users"
-                outlined
-                use-input
-                map-options
-                multiple
                 :label="$gettext('User Profiles')"
                 :options="userProfiles"
+                option-value="id"
+                option-label="username"
+                multiple
+                use-input
+                map-options
+                chip-mode
+                link-model="user-profiles"
+                use-custom-option
                 @filter="filterUserProfiles"
                 @filter-abort="abortFilterUserProfiles"
               >
-                <template #no-option>
-                  <q-item>
-                    <q-item-section class="text-grey">
-                      {{ $gettext('No results') }}
-                    </q-item-section>
-                  </q-item>
-                </template>
-
                 <template #option="scope">
                   <q-item v-bind="scope.itemProps">
                     {{ scope.opt.username }}
                   </q-item>
                 </template>
-
-                <template #selected-item="scope">
-                  <q-chip
-                    removable
-                    dense
-                    :tabindex="scope.tabindex"
-                    class="q-ma-md"
-                    @remove="scope.removeAtIndex(scope.index)"
-                  >
-                    <MigasLink
-                      model="user-profiles"
-                      :pk="scope.opt.id"
-                      :value="scope.opt.username"
-                    />
-                  </q-chip>
-                </template>
-              </q-select>
+              </EntitySelect>
             </div>
           </div>
         </q-card-section>
@@ -159,8 +139,8 @@ import { useMeta } from 'quasar'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
+import EntitySelect from 'components/ui/EntitySelect'
 import ItemDetail from 'components/ui/ItemDetail'
-import MigasLink from 'components/MigasLink'
 import SelectAttributes from 'components/ui/SelectAttributes'
 import CodeEditor from 'components/ui/CodeEditor'
 
@@ -168,8 +148,8 @@ import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
+    EntitySelect,
     ItemDetail,
-    MigasLink,
     SelectAttributes,
     CodeEditor,
   },
