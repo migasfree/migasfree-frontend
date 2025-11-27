@@ -39,6 +39,7 @@
                 >
                   <template #control>
                     <MigasLink
+                      v-if="element.project.id"
                       model="projects"
                       :pk="element.project.id"
                       :value="element.project.name"
@@ -87,34 +88,16 @@
           <template v-if="element.store || element.id">
             <div v-if="packages.length > 0" class="row q-pa-md q-gutter-md">
               <div class="col-12 col-md col-sm">
-                <q-select
+                <EntitySelect
                   v-model="element.packages"
-                  outlined
-                  multiple
-                  counter
-                  use-input
-                  clearable
                   :label="$gettext('Packages')"
                   :options="packages"
-                  option-value="id"
                   option-label="fullname"
-                >
-                  <template #selected-item="scope">
-                    <q-chip
-                      removable
-                      dense
-                      :tabindex="scope.tabindex"
-                      class="q-ma-md"
-                      @remove="scope.removeAtIndex(scope.index)"
-                    >
-                      <MigasLink
-                        model="packages"
-                        :pk="scope.opt.id"
-                        :value="scope.opt.fullname"
-                      />
-                    </q-chip>
-                  </template>
-                </q-select>
+                  multiple
+                  clearable
+                  chip-mode
+                  link-model="packages"
+                />
               </div>
             </div>
 
@@ -159,6 +142,7 @@ import { useMeta } from 'quasar'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
+import EntitySelect from 'components/ui/EntitySelect'
 import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
 
@@ -166,6 +150,7 @@ import { appIcon, modelIcon } from 'composables/element'
 
 export default {
   components: {
+    EntitySelect,
     ItemDetail,
     MigasLink,
   },
@@ -215,12 +200,13 @@ export default {
     ])
 
     const isValid = computed(() => {
-      return (
+      return element.project !== null && element.name !== null
+      /* return (
         element.project !== null &&
         element.name !== null &&
         Array.isArray(element.packages) &&
         element.packages.length > 0
-      )
+      ) */
     })
 
     const nodeSelected = (value) => {
