@@ -138,33 +138,15 @@
                 <q-item-section>
                   <div class="row q-pa-md q-gutter-md">
                     <div class="col-5 col-md col-sm">
-                      <q-select
+                      <EntitySelect
                         v-model="logical.capability"
-                        outlined
-                        :label="$gettext('Capability')"
                         :options="capabilities"
-                        option-value="id"
-                        option-label="name"
+                        :label="$gettext('Capability')"
+                        detail-route="capability-detail"
+                        :prepend-icon="modelIcon('devices/capabilities')"
                         lazy-rules
                         :rules="[(val) => !!val || $gettext('* Required')]"
-                      >
-                        <template #prepend>
-                          <q-icon :name="modelIcon('devices/capabilities')" />
-                        </template>
-
-                        <template #selected-item="scope">
-                          <q-btn
-                            no-caps
-                            flat
-                            color="primary"
-                            :to="{
-                              name: 'capability-detail',
-                              params: { id: scope.opt.id },
-                            }"
-                            :label="scope.opt.name"
-                          />
-                        </template>
-                      </q-select>
+                      />
                     </div>
 
                     <div class="col-5 col-md col-sm">
