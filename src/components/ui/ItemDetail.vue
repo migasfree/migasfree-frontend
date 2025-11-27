@@ -53,6 +53,7 @@
         flat
         color="primary"
         :label="$gettext('Save and add other')"
+        :aria-label="$gettext('Save and add other')"
         :icon="appIcon('add')"
         :loading="loading"
         :disabled="!isValid || loading"
@@ -64,6 +65,7 @@
         flat
         color="primary"
         :label="$gettext('Save and continue editing')"
+        :aria-label="$gettext('Save and continue editing')"
         :icon="appIcon('save-edit')"
         :loading="loading"
         :disabled="!isValid || loading"
@@ -73,6 +75,7 @@
       <q-btn
         v-if="saveButton"
         :label="$gettext('Save')"
+        :aria-label="$gettext('Save')"
         color="primary"
         :icon="appIcon('save')"
         :loading="loading"
