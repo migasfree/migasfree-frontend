@@ -6,7 +6,13 @@ import prettierSkipFormatting from '@vue/eslint-config-prettier/skip-formatting'
 
 export default [
   {
-    ignores: ['src-bex/www/*', 'babel.config.js', '.gitignore'],
+    ignores: [
+      'src-bex/www/*',
+      'babel.config.js',
+      '.gitignore',
+      'cypress/videos/*',
+      'cypress/screenshots/*',
+    ],
 
     languageOptions: {
       ecmaVersion: 'latest', // Allows for the parsing of modern ECMAScript features
@@ -51,6 +57,23 @@ export default [
     languageOptions: {
       globals: {
         ...globals.serviceworker,
+      },
+    },
+  },
+
+  {
+    files: ['cypress/**/*.js'],
+    languageOptions: {
+      globals: {
+        cy: 'readonly',
+        Cypress: 'readonly',
+        describe: 'readonly',
+        it: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        before: 'readonly',
+        after: 'readonly',
+        expect: 'readonly',
       },
     },
   },
