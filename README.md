@@ -1,5 +1,8 @@
 # migasfree-frontend
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Build Status](https://github.com/migasfree/migasfree-frontend/actions/workflows/webpack.yml/badge.svg)](https://github.com/migasfree/migasfree-frontend/actions/workflows/webpack.yml)
+
 Migasfree is an application to manage systems. Fundamentally to deploy software to computers in an organization.
 
 This project is the frontend (with [Quasar framework](https://quasar.dev/)).
