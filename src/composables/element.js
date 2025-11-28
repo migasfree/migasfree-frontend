@@ -1,6 +1,22 @@
 import { useGettext } from 'vue3-gettext'
 
 const MAC_RAW_LEN = 12
+const MAC_SEGMENT_LEN = 2
+const DEFAULT_ELEMENT_ICON = 'mdi-pound'
+const DEFAULT_PRODUCT_ICON = 'mdi-help'
+
+const ATTR_PREFIX = {
+  SET: 'SET',
+  CID: 'CID',
+  DMN: 'DMN',
+}
+
+const PRODUCT_ICONS = {
+  desktop: 'mdi-desktop-tower-monitor',
+  laptop: 'mdi-laptop',
+  virtual: 'mdi-cube-outline',
+  docker: 'mdi-docker',
+}
 
 const APP_ICON = {
   home: 'mdi-home',
@@ -101,19 +117,19 @@ const MODEL_ICON = {
   notifications: 'mdi-comment-text-outline',
 }
 
-export function appIcon(item) {
+export const appIcon = (item) => {
   if (item in APP_ICON) return APP_ICON[item]
 
   return ''
 }
 
-export function modelIcon(model) {
+export const modelIcon = (model) => {
   if (model in MODEL_ICON) return MODEL_ICON[model]
 
   return ''
 }
 
-export function useElement() {
+export const useElement = () => {
   const { $gettext } = useGettext()
 
   const ELEMENT_ICON = {
@@ -139,7 +155,7 @@ export function useElement() {
   }
 
   const elementIcon = (value) => {
-    return ELEMENT_ICON[value] ?? 'mdi-pound'
+    return ELEMENT_ICON[value] ?? DEFAULT_ELEMENT_ICON
   }
 
   const computerStatus = (value) => {
@@ -150,18 +166,7 @@ export function useElement() {
   }
 
   const productIcon = (value) => {
-    switch (value) {
-      case 'desktop':
-        return 'mdi-desktop-tower-monitor'
-      case 'laptop':
-        return 'mdi-laptop'
-      case 'virtual':
-        return 'mdi-cube-outline'
-      case 'docker':
-        return 'mdi-docker'
-      default:
-        return 'mdi-help'
-    }
+    return PRODUCT_ICONS[value] ?? DEFAULT_PRODUCT_ICON
   }
 
   const cpuIcon = (value) => {
@@ -173,24 +178,27 @@ export function useElement() {
   const humanMacAddress = (value) => {
     if (!value) return ''
 
-    const format = (s) => s.match(/.{2}/g).join(':')
+    const format = (s) =>
+      s.match(new RegExp(`.{${MAC_SEGMENT_LEN}}`, 'g')).join(':')
+
     return chunk(value, MAC_RAW_LEN).map(format).join(', ')
   }
 
   const attributeValue = (att) => {
-    if (att.property_att.prefix === 'SET') return att.value
-    if (att.property_att.prefix === 'CID') return att.description
+    if (att.property_att.prefix === ATTR_PREFIX.SET) return att.value
+    if (att.property_att.prefix === ATTR_PREFIX.CID) return att.description
+
     return `${att.property_att.prefix}-${att.value}`
   }
 
   const equivalentModel = (att) => {
     switch (att.property_att.prefix) {
-      case 'SET':
+      case ATTR_PREFIX.SET:
         if (att.id > 1) return 'attribute-sets'
         return 'attributes'
-      case 'CID':
+      case ATTR_PREFIX.CID:
         return 'computers'
-      case 'DMN':
+      case ATTR_PREFIX.DMN:
         return 'domains'
       default:
         if ('sort' in att.property_att && att.property_att.sort === 'server')
@@ -201,7 +209,7 @@ export function useElement() {
 
   const equivalentKey = (att) => {
     switch (att.property_att.prefix) {
-      case 'CID':
+      case ATTR_PREFIX.CID:
         return parseInt(att.value)
       default:
         return 'pk' in att ? att.pk : att.id
