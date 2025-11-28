@@ -41,6 +41,7 @@
                       left-label
                       autofocus
                       :label="$gettext('Enabled?')"
+                      :aria-label="$gettext('Enabled?')"
                     />
                   </div>
                   <div class="col-6 col-md col-sm">
@@ -48,6 +49,7 @@
                       v-model="element.name"
                       outlined
                       :label="$gettext('Name')"
+                      :aria-label="$gettext('Name')"
                       lazy-rules
                       :rules="[(val) => !!val || $gettext('* Required')]"
                     />
@@ -60,6 +62,7 @@
                       v-model="element.project"
                       :options="projects"
                       :label="$gettext('Project')"
+                      :aria-label="$gettext('Project')"
                       detail-route="project-detail"
                       add-route="project-add"
                       :add-tooltip="$gettext('Add Project')"
@@ -90,6 +93,7 @@
                       outlined
                       type="textarea"
                       :label="$gettext('Comment')"
+                      :aria-label="$gettext('Comment')"
                     />
                   </div>
                 </div>
@@ -141,6 +145,7 @@
                       outlined
                       class="q-my-md"
                       :label="$gettext('Source')"
+                      :aria-label="$gettext('Source')"
                       :options="sources"
                       option-value="id"
                       option-label="name"
@@ -156,6 +161,7 @@
                         v-model="element.available_packages"
                         clearable
                         :label="$gettext('Available Packages')"
+                        :aria-label="$gettext('Available Packages')"
                         :fetch-options="filterPackages"
                       >
                         <template #option="{ scope }">
@@ -189,6 +195,7 @@
                         v-model="element.available_package_sets"
                         clearable
                         :label="$gettext('Available Package Sets')"
+                        :aria-label="$gettext('Available Package Sets')"
                         :fetch-options="filterPackageSets"
                       >
                         <template #option="{ scope }">
@@ -247,6 +254,7 @@
                         class="q-my-md"
                         outlined
                         :label="$gettext('Components')"
+                        :aria-label="$gettext('Components')"
                       />
                     </div>
                   </div>
@@ -258,6 +266,7 @@
                         class="q-my-md"
                         outlined
                         :label="$gettext('Options')"
+                        :aria-label="$gettext('Options')"
                       />
                     </div>
                   </div>
@@ -270,6 +279,7 @@
                         class="q-my-md"
                         type="number"
                         :label="$gettext('Expire (minutes)')"
+                        :aria-label="$gettext('Expire (minutes)')"
                       />
                     </div>
 
@@ -279,6 +289,7 @@
                         class="q-my-md"
                         left-label
                         :label="$gettext('Frozen?')"
+                        :aria-label="$gettext('Frozen?')"
                       />
                     </div>
                   </div>
@@ -297,6 +308,7 @@
                     <OrderTextArea
                       v-model="element.packages_to_install"
                       :label="$gettext('Packages to Install')"
+                      :aria-label="$gettext('Packages to Install')"
                     >
                       <template #prepend>
                         <q-icon :name="appIcon('install')" />
@@ -308,6 +320,7 @@
                     <OrderTextArea
                       v-model="element.packages_to_remove"
                       :label="$gettext('Packages to Remove')"
+                      :aria-label="$gettext('Packages to Remove')"
                     >
                       <template #prepend>
                         <q-icon :name="appIcon('uninstall')" />
@@ -321,6 +334,7 @@
                     <OrderTextArea
                       v-model="element.default_preincluded_packages"
                       :label="$gettext('Default Preincluded Packages')"
+                      :aria-label="$gettext('Default Preincluded Packages')"
                     >
                       <template #prepend>
                         <q-icon :name="appIcon('install')" />
@@ -334,6 +348,7 @@
                     <OrderTextArea
                       v-model="element.default_included_packages"
                       :label="$gettext('Default Included Packages')"
+                      :aria-label="$gettext('Default Included Packages')"
                     >
                       <template #prepend>
                         <q-icon :name="appIcon('install')" />
@@ -347,6 +362,7 @@
                     <OrderTextArea
                       v-model="element.default_excluded_packages"
                       :label="$gettext('Default Excluded Packages')"
+                      :aria-label="$gettext('Default Excluded Packages')"
                     >
                       <template #prepend>
                         <q-icon :name="appIcon('uninstall')" />
@@ -414,6 +430,7 @@
                       v-model="element.auto_restart"
                       left-label
                       :label="$gettext('Auto Restart?')"
+                      :aria-label="$gettext('Auto Restart?')"
                     />
                   </div>
 
