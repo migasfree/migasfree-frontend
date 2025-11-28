@@ -10,13 +10,15 @@ export default function useDate() {
   const { $gettext, current } = useGettext()
 
   const locale = current.split('_')[0]
-  try {
-    import(`dayjs/locale/${locale}.js`).then((module) => {
+
+  ;(async () => {
+    try {
+      const module = await import(`dayjs/locale/${locale}.js`)
       dayjs.locale(module.default.name)
-    })
-  } catch {
-    console.warn(`Locale ${locale} not found for Day.js`)
-  }
+    } catch (error) {
+      console.warn(`Locale ${locale} not found for Day.js`, error)
+    }
+  })()
 
   const localeDate = {
     days: [
