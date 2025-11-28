@@ -44,23 +44,34 @@ export default function useDetail(
         : ''
   })
 
+  // Breadcrumb helpers
+  const resetBreadcrumbs = (keepCount = 3) => {
+    while (breadcrumbs.length > keepCount) {
+      breadcrumbs.pop()
+    }
+  }
+
+  const addResultsBreadcrumb = () => {
+    breadcrumbs.push({
+      text: $gettext('Results'),
+      icon: appIcon('results'),
+      to: routes.list,
+    })
+  }
+
+  const addElementBreadcrumb = (text, icon) => {
+    breadcrumbs.push({ text, icon })
+  }
+
   const setupBreadcrumbs = () => {
     if (route.params.id) {
       if (!['package-information', 'computer-hardware'].includes(route.name)) {
-        while (breadcrumbs.length > 3) {
-          breadcrumbs.pop()
-        }
-        breadcrumbs.push({
-          text: $gettext('Results'),
-          icon: appIcon('results'),
-          to: routes.list,
-        })
-        breadcrumbs.push({
-          text: 'Id',
-        })
+        resetBreadcrumbs()
+        addResultsBreadcrumb()
+        addElementBreadcrumb('Id')
       }
     } else if (breadcrumbs.length === 3 && route.name.endsWith('-add')) {
-      breadcrumbs.push({ text: $gettext('Add'), icon: appIcon('add') })
+      addElementBreadcrumb($gettext('Add'), appIcon('add'))
     }
   }
 
@@ -76,31 +87,17 @@ export default function useDetail(
     emit('resetElement')
     emit('resetRelated')
 
-    while (breadcrumbs.length > 3) {
-      breadcrumbs.pop()
-    }
-    breadcrumbs.push({
-      text: $gettext('Add'),
-      icon: appIcon('add'),
-    })
+    resetBreadcrumbs()
+    addElementBreadcrumb($gettext('Add'), appIcon('add'))
 
     router.push({ name: routes.add })
     emit('setTitle', originalTitle)
   }
 
   const updateBreadcrumbs = () => {
-    while (breadcrumbs.length > 3) {
-      breadcrumbs.pop()
-    }
-    breadcrumbs.push({
-      text: $gettext('Results'),
-      icon: appIcon('results'),
-      to: routes.list,
-    })
-    breadcrumbs.push({
-      text: elementText.value,
-      icon: getElementIcon.value,
-    })
+    resetBreadcrumbs()
+    addResultsBreadcrumb()
+    addElementBreadcrumb(elementText.value, getElementIcon.value)
   }
 
   const updateElement = async (action = null) => {
