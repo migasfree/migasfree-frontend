@@ -13,9 +13,12 @@ export default function useCopyPaste() {
   })
 
   const contentToClipboard = async (value) => {
-    copyToClipboard(value).then(() => {
+    try {
+      await copyToClipboard(value)
       uiStore.notifySuccess($gettext('Content copied to clipboard'))
-    })
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
   }
 
   const copyList = (model, value) => {
