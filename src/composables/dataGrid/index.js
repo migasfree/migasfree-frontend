@@ -188,6 +188,7 @@ export default function useDataGrid(
   }
 
   return {
+    // Refs
     myTable,
     machineTree,
     statusTree,
@@ -195,20 +196,29 @@ export default function useDataGrid(
     startDateRange,
     installDateRange,
     uninstallDateRange,
+
+    // State
     rows,
     totalRecords,
     isLoading,
     isLoadingExport,
+    selectedRows,
+    tableFilters,
+
+    // Configuration
     paginationOptions,
     serverParams,
     selectOptions,
-    tableFilters,
-    selectedRows,
     searchOptions,
+    queryParams,
+
+    // Utils
     loadQueryParams,
     findById,
     updateParams,
     resetColumnFilters,
+
+    // Handlers
     onPageChange,
     onPerPageChange,
     onSortChange,
@@ -236,7 +246,8 @@ export default function useDataGrid(
     onSerialFilter,
     onMacFilter,
     onUuidFilter,
-    queryParams,
+
+    // Operations
     loadItems,
     edit,
     remove,
