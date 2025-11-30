@@ -98,6 +98,14 @@ export default boot(({ app, router }) => {
             router.push({ name: 'not-found' })
             break
 
+          case 500:
+            Notify.create({
+              type: 'negative',
+              message: 'Internal Server Error',
+              caption: 'Please try again later',
+            })
+            break
+
           default:
             console.error(
               `Unexpected error: ${error.response.status}`,
@@ -105,12 +113,22 @@ export default boot(({ app, router }) => {
             )
             if ('data' in error.response)
               console.error('Server response:', error.response.data)
-          /* Notify.create({
+
+            Notify.create({
               type: 'negative',
-              message: 'An unexpected error occurred',
-              caption: 'Server Error',
-            }) */
+              message: `Error ${error.response.status}`,
+              caption: error.message || 'An unexpected error occurred',
+            })
         }
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('Network Error:', error.message)
+        Notify.create({
+          type: 'negative',
+          message: 'Network Error',
+          caption:
+            'Unable to connect to the server. Please check your connection.',
+        })
       }
 
       return Promise.reject(error)
