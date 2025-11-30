@@ -10,6 +10,10 @@ const routes = [
       },
 
       {
+        path: '/platforms',
+        redirect: { name: 'platforms-list' },
+      },
+      {
         path: '/platforms/results',
         name: 'platforms-list',
         component: () => import('pages/platforms/results/list'),
@@ -25,6 +29,10 @@ const routes = [
         component: () => import('pages/platforms/results/detail'),
       },
 
+      {
+        path: '/projects',
+        redirect: { name: 'projects-list' },
+      },
       {
         path: '/projects/results',
         name: 'projects-list',
@@ -42,6 +50,10 @@ const routes = [
       },
 
       {
+        path: '/formulas',
+        redirect: { name: 'formulas-list' },
+      },
+      {
         path: '/formulas/results',
         name: 'formulas-list',
         component: () => import('pages/formulas/results/list'),
@@ -57,6 +69,10 @@ const routes = [
         component: () => import('pages/formulas/results/detail'),
       },
 
+      {
+        path: '/singularities',
+        redirect: { name: 'singularities-list' },
+      },
       {
         path: '/singularities/results',
         name: 'singularities-list',
@@ -74,6 +90,10 @@ const routes = [
       },
 
       {
+        path: '/stamps',
+        redirect: { name: 'stamps-list' },
+      },
+      {
         path: '/stamps/results',
         name: 'stamps-list',
         component: () => import('pages/stamps/results/list'),
@@ -89,6 +109,10 @@ const routes = [
         component: () => import('pages/stamps/results/detail'),
       },
 
+      {
+        path: '/attribute-sets',
+        redirect: { name: 'attribute-sets-list' },
+      },
       {
         path: '/attribute-sets/results',
         name: 'attribute-sets-list',
@@ -106,6 +130,10 @@ const routes = [
       },
 
       {
+        path: '/fault-definitions',
+        redirect: { name: 'fault-definitions-list' },
+      },
+      {
         path: '/fault-definitions/results',
         name: 'fault-definitions-list',
         component: () => import('pages/fault-definitions/results/list'),
@@ -121,6 +149,10 @@ const routes = [
         component: () => import('pages/fault-definitions/results/detail'),
       },
 
+      {
+        path: '/user-profiles',
+        redirect: { name: 'user-profiles-list' },
+      },
       {
         path: '/user-profiles/results',
         name: 'user-profiles-list',
@@ -143,6 +175,10 @@ const routes = [
       },
 
       {
+        path: '/groups',
+        redirect: { name: 'groups-list' },
+      },
+      {
         path: '/groups/results',
         name: 'groups-list',
         component: () => import('pages/groups/results/list'),
@@ -158,6 +194,10 @@ const routes = [
         component: () => import('pages/groups/results/detail'),
       },
 
+      {
+        path: '/domains',
+        redirect: { name: 'domains-list' },
+      },
       {
         path: '/domains/results',
         name: 'domains-list',
@@ -175,6 +215,10 @@ const routes = [
       },
 
       {
+        path: '/scopes',
+        redirect: { name: 'scopes-list' },
+      },
+      {
         path: '/scopes/results',
         name: 'scopes-list',
         component: () => import('pages/scopes/results/list'),
@@ -190,6 +234,10 @@ const routes = [
         component: () => import('pages/scopes/results/detail'),
       },
 
+      {
+        path: '/manufacturers',
+        redirect: { name: 'manufacturers-list' },
+      },
       {
         path: '/manufacturers/results',
         name: 'manufacturers-list',
@@ -227,6 +275,10 @@ const routes = [
         component: () => import('pages/models/results/detail'),
       },
 
+      {
+        path: '/capabilities',
+        redirect: { name: 'capabilities-list' },
+      },
       {
         path: '/capabilities/results',
         name: 'capabilities-list',
@@ -270,6 +322,10 @@ const routes = [
       },
 
       {
+        path: '/connections',
+        redirect: { name: 'connections-list' },
+      },
+      {
         path: '/connections/results',
         name: 'connections-list',
         component: () => import('pages/connections/results/list'),
@@ -285,6 +341,10 @@ const routes = [
         component: () => import('pages/connections/results/detail'),
       },
 
+      {
+        path: '/device-types',
+        redirect: { name: 'device-types-list' },
+      },
       {
         path: '/device-types/results',
         name: 'device-types-list',
@@ -302,6 +362,10 @@ const routes = [
       },
 
       {
+        path: '/logical-devices',
+        redirect: { name: 'logical-devices-list' },
+      },
+      {
         path: '/logical-devices/results',
         name: 'logical-devices-list',
         component: () => import('pages/logical-devices/results/list'),
@@ -317,6 +381,10 @@ const routes = [
         component: () => import('pages/logical-devices/results/detail'),
       },
 
+      {
+        path: '/drivers',
+        redirect: { name: 'drivers-list' },
+      },
       {
         path: '/drivers/results',
         name: 'drivers-list',
@@ -354,6 +422,10 @@ const routes = [
         component: () => import('pages/deployments/results/detail'),
       },
 
+      {
+        path: '/schedules',
+        redirect: { name: 'schedules-list' },
+      },
       {
         path: '/schedules/results',
         name: 'schedules-list',
@@ -418,6 +490,10 @@ const routes = [
       },
 
       {
+        path: '/package-sets',
+        redirect: { name: 'package-sets-list' },
+      },
+      {
         path: '/package-sets/results',
         name: 'package-sets-list',
         component: () => import('pages/package-sets/results/list'),
@@ -455,6 +531,10 @@ const routes = [
       },
 
       {
+        path: '/categories',
+        redirect: { name: 'categories-list' },
+      },
+      {
         path: '/categories/results',
         name: 'categories-list',
         component: () => import('pages/categories/results/list'),
@@ -470,6 +550,10 @@ const routes = [
         component: () => import('pages/categories/results/detail'),
       },
 
+      {
+        path: '/policies',
+        redirect: { name: 'policies-list' },
+      },
       {
         path: '/policies/results',
         name: 'policies-list',
@@ -539,6 +623,10 @@ const routes = [
       },
 
       {
+        path: '/users',
+        redirect: { name: 'users-list' },
+      },
+      {
         path: '/users/results',
         name: 'users-list',
         component: () => import('pages/users/results/list'),
@@ -607,6 +695,10 @@ const routes = [
         component: () => import('pages/syncs/index'),
       },
       {
+        path: '/syncs',
+        redirect: { name: 'syncs-list' },
+      },
+      {
         path: '/syncs/results',
         name: 'syncs-list',
         component: () => import('pages/syncs/results/list'),
@@ -616,6 +708,10 @@ const routes = [
         path: '/errors',
         name: 'errors-dashboard',
         component: () => import('pages/errors/index'),
+      },
+      {
+        path: '/errors',
+        redirect: { name: 'errors-list' },
       },
       {
         path: '/errors/results',
@@ -634,6 +730,10 @@ const routes = [
         component: () => import('pages/faults/index'),
       },
       {
+        path: '/faults',
+        redirect: { name: 'faults-list' },
+      },
+      {
         path: '/faults/results',
         name: 'faults-list',
         component: () => import('pages/faults/results/list'),
@@ -650,6 +750,10 @@ const routes = [
         component: () => import('pages/status-logs/index'),
       },
       {
+        path: '/status-logs',
+        redirect: { name: 'status-logs-list' },
+      },
+      {
         path: '/status-logs/results',
         name: 'status-logs-list',
         component: () => import('pages/status-logs/results/list'),
@@ -661,11 +765,19 @@ const routes = [
         component: () => import('pages/migrations/index'),
       },
       {
+        path: '/migrations',
+        redirect: { name: 'migrations-list' },
+      },
+      {
         path: '/migrations/results',
         name: 'migrations-list',
         component: () => import('pages/migrations/results/list'),
       },
 
+      {
+        path: '/messages',
+        redirect: { name: 'messages-list' },
+      },
       {
         path: '/messages/results',
         name: 'messages-list',
@@ -676,6 +788,10 @@ const routes = [
         path: '/notifications',
         name: 'notifications-dashboard',
         component: () => import('pages/notifications/index'),
+      },
+      {
+        path: '/notifications',
+        redirect: { name: 'notifications-list' },
       },
       {
         path: '/notifications/results',
