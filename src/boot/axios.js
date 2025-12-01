@@ -3,6 +3,8 @@ import { boot } from 'quasar/wrappers'
 import axios from 'axios'
 import { parse, stringify } from 'qs'
 
+import { gettext } from 'boot/gettext'
+
 const api = axios.create({
   paramsSerializer: {
     encode: parse,
@@ -87,8 +89,8 @@ export default boot(({ app, router }) => {
           case 401:
             Notify.create({
               type: 'warning',
-              message: 'Session Expired',
-              caption: 'Please login again',
+              message: gettext.$gettext('Session Expired'),
+              caption: gettext.$gettext('Please login again'),
             })
             LocalStorage.remove('auth.token')
             router.push({ name: 'login' })
@@ -101,8 +103,8 @@ export default boot(({ app, router }) => {
           case 500:
             Notify.create({
               type: 'negative',
-              message: 'Internal Server Error',
-              caption: 'Please try again later',
+              message: gettext.$gettext('Internal Server Error'),
+              caption: gettext.$gettext('Please try again later'),
             })
             break
 
@@ -116,8 +118,10 @@ export default boot(({ app, router }) => {
 
             Notify.create({
               type: 'negative',
-              message: `Error ${error.response.status}`,
-              caption: error.message || 'An unexpected error occurred',
+              message: gettext.$gettext(`Error ${error.response.status}`),
+              caption:
+                error.message ||
+                gettext.$gettext('An unexpected error occurred'),
             })
         }
       } else if (error.request) {
@@ -125,9 +129,10 @@ export default boot(({ app, router }) => {
         console.error('Network Error:', error.message)
         Notify.create({
           type: 'negative',
-          message: 'Network Error',
-          caption:
+          message: gettext.$gettext('Network Error'),
+          caption: gettext.$gettext(
             'Unable to connect to the server. Please check your connection.',
+          ),
         })
       }
 
