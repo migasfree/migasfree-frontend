@@ -38,5 +38,6 @@ yarn-error.log*
 
 # other files
 yarn.lock
+/.yarn
 *.mo
 /coverage
