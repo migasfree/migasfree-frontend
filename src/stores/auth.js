@@ -93,6 +93,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       await api.post('/rest-auth/logout/')
       reset()
+      resetServerInfo()
     } catch (error) {
       uiStore.notifyError(error)
     }
@@ -102,7 +103,6 @@ export const useAuthStore = defineStore('auth', () => {
     setToken('')
     setLoggedIn(false)
     resetUser()
-    resetServerInfo()
     resetDomains()
     resetScopes()
   }
