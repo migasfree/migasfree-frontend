@@ -1,5 +1,8 @@
 <template>
-  <q-page class="flex bg-image flex-center">
+  <q-page
+    class="flex flex-center"
+    :class="$q.dark.isActive ? 'bg-gradient-dark' : 'bg-gradient'"
+  >
     <q-card
       flat
       bordered
@@ -241,6 +244,14 @@ export default {
   width: 60px;
   height: 90px;
   object-fit: contain;
+}
+
+.bg-gradient {
+  background: linear-gradient(135deg, #5d4037 0%, #4e342e 100%);
+}
+
+.bg-gradient-dark {
+  background: linear-gradient(135deg, #3e2723 0%, #212121 100%);
 }
 
 @media (max-width: 1024px) {
