@@ -7,6 +7,7 @@ import { useUiStore } from 'stores/ui'
 import { api } from 'boot/axios'
 
 import { appIcon } from 'composables/element'
+import { useSmartRequest } from 'composables/useSmartRequest'
 
 export function useDataOperations(deps) {
   const {
@@ -26,15 +27,17 @@ export function useDataOperations(deps) {
   const { $gettext } = useGettext()
   const uiStore = useUiStore()
   const { emit } = getCurrentInstance()
+  const { smartRequest, smartExportRequest } = useSmartRequest()
 
   const loadItems = async () => {
     if (isLoading.value) return
 
     isLoading.value = true
     try {
-      const response = await api.get(`/api/v1/token/${model.value}/`, {
-        params: queryParams(),
-      })
+      const response = await smartRequest(
+        `/api/v1/token/${model.value}/`,
+        queryParams(),
+      )
       totalRecords.value = response.data.count
       rows.value = response.data.results
     } catch (error) {
@@ -94,10 +97,7 @@ export function useDataOperations(deps) {
   const _export = async (url, params = {}) => {
     isLoadingExport.value = true
     try {
-      const { data, headers } = await api.get(url, {
-        params,
-        responseType: 'blob',
-      })
+      const { data, headers } = await smartExportRequest(url, params)
 
       // Prefer filename from server (Content‑Disposition), fall back to model name
       const filename = headers['content-disposition']
@@ -124,9 +124,11 @@ export function useDataOperations(deps) {
 
     if (items.length === 0) return
 
-    await _export(
-      `/api/v1/token/${model.value}/export/?id__in=${items.join(',')}`,
-    )
+    // Use smart export with id__in filter parameter
+    // This will automatically use POST if the ID list is too long
+    await _export(`/api/v1/token/${model.value}/export/`, {
+      id__in: items.join(','),
+    })
   }
 
   const paramsToBackend = (obj) => {
