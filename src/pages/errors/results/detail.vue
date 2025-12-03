@@ -32,6 +32,15 @@
                 :tooltip-text="$gettext('Date')"
               />
             </div>
+
+            <div class="col-6 col-md col-sm">
+              <DateView
+                v-if="element.synchronization"
+                :value="element.synchronization.start_date"
+                :icon="modelIcon('syncs')"
+                :tooltip-text="$gettext('Synchronization')"
+              />
+            </div>
           </div>
 
           <div class="row q-pa-md q-gutter-md">
@@ -150,6 +159,7 @@ export default {
       elementIcon,
       elementData,
       setTitle,
+      modelIcon,
     }
   },
 }
