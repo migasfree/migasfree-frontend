@@ -32,6 +32,13 @@
           <DateView :value="props.row.created_at" />
         </span>
 
+        <span v-else-if="props.column.field == 'synchronization.start_date'">
+          <DateView
+            v-if="props.row.synchronization"
+            :value="props.row.synchronization.start_date"
+          />
+        </span>
+
         <span v-else-if="props.column.field == 'description'">
           <Truncate v-model="props.row.description" />
         </span>
@@ -126,6 +133,10 @@ export default {
       {
         label: $gettext('Date'),
         field: 'created_at',
+      },
+      {
+        label: $gettext('Synchronization'),
+        field: 'synchronization.start_date',
       },
       {
         field: 'computer.id',
