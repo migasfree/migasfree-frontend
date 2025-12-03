@@ -60,11 +60,20 @@
           </div>
 
           <div class="row q-pa-md q-gutter-md">
-            <div class="col">
+            <div class="col-6 col-md col-sm">
               <DateView
                 :value="element.created_at"
                 icon="mdi-calendar-plus"
                 :tooltip-text="$gettext('Date')"
+              />
+            </div>
+
+            <div class="col-6 col-md col-sm">
+              <DateView
+                v-if="element.synchronization"
+                :value="element.synchronization.start_date"
+                :icon="modelIcon('syncs')"
+                :tooltip-text="$gettext('Synchronization')"
               />
             </div>
           </div>
@@ -162,6 +171,7 @@ export default {
       elementIcon,
       elementData,
       setTitle,
+      modelIcon,
     }
   },
 }
