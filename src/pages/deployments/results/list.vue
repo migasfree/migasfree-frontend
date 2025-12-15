@@ -131,7 +131,7 @@ export default {
       detail: 'deployment-detail',
     }
     const model = 'deployments'
-    const moreFilters = ['schedule']
+    const moreFilters = ['platform', 'schedule']
 
     const title = ref($gettext('Deployments'))
 
