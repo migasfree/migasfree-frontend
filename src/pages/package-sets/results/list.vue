@@ -7,6 +7,7 @@
       :columns="columns"
       :model="model"
       :routes="routes"
+      :more-filters="moreFilters"
     >
       <template #fields="{ props }">
         <span v-if="props.column.field == 'name'">
@@ -74,6 +75,7 @@ export default {
       detail: 'package-set-detail',
     }
     const model = 'package-sets'
+    const moreFilters = ['platform']
 
     const title = ref($gettext('Package Sets'))
 
@@ -186,7 +188,7 @@ export default {
       await loadFilters()
     })
 
-    return { title, breadcrumbs, columns, routes, model }
+    return { title, breadcrumbs, columns, routes, model, moreFilters }
   },
 }
 </script>
