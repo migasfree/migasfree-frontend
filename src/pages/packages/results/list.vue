@@ -7,6 +7,7 @@
       :columns="columns"
       :model="model"
       :routes="routes"
+      :more-filters="moreFilters"
     >
       <template #actions="{ props }">
         <q-btn
@@ -104,6 +105,7 @@ export default {
       detail: 'package-detail',
     }
     const model = 'packages'
+    const moreFilters = ['platform']
 
     const title = ref($gettext('Packages'))
 
@@ -222,6 +224,7 @@ export default {
       columns,
       routes,
       model,
+      moreFilters,
       appIcon,
       server: uiStore.server,
     }
