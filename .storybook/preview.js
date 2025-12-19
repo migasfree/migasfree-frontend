@@ -1,6 +1,8 @@
 import { setup } from '@storybook/vue3'
 import { Quasar } from 'quasar'
 import { createGettext } from 'vue3-gettext'
+import { createPinia } from 'pinia'
+import { createRouter, createMemoryHistory } from 'vue-router'
 
 // Import Quasar styles
 import 'quasar/dist/quasar.css'
@@ -15,6 +17,15 @@ const gettext = createGettext({
   silent: true,
 })
 
+// Create Pinia instance
+const pinia = createPinia()
+
+// Create minimal router for components that use router-link
+const router = createRouter({
+  history: createMemoryHistory(),
+  routes: [{ path: '/:pathMatch(.*)*', component: { template: '<div />' } }],
+})
+
 setup((app) => {
   // Install Quasar
   app.use(Quasar, {
@@ -24,6 +35,12 @@ setup((app) => {
 
   // Install vue3-gettext
   app.use(gettext)
+
+  // Install Pinia
+  app.use(pinia)
+
+  // Install Vue Router
+  app.use(router)
 })
 
 /** @type { import('@storybook/vue3').Preview } */
