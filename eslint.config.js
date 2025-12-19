@@ -2,6 +2,7 @@ import js from '@eslint/js'
 import globals from 'globals'
 import pluginQuasar from '@quasar/app-webpack/eslint'
 import pluginVue from 'eslint-plugin-vue'
+import pluginVueA11y from 'eslint-plugin-vuejs-accessibility'
 import prettierSkipFormatting from '@vue/eslint-config-prettier/skip-formatting'
 
 export default [
@@ -34,6 +35,7 @@ export default [
   ...pluginQuasar.configs.recommended(),
   js.configs.recommended,
   ...pluginVue.configs['flat/recommended'],
+  ...pluginVueA11y.configs['flat/recommended'],
 
   {
     rules: {
