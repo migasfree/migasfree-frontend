@@ -1,5 +1,6 @@
 <template>
   <q-select
+    ref="selectInput"
     :model-value="modelValue"
     :options="options"
     :label="label"
@@ -194,6 +195,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    focus: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   emits: ['update:modelValue', 'clear', 'filter', 'filter-abort'],
@@ -201,6 +206,14 @@ export default defineComponent({
   setup() {
     return {
       appIcon,
+    }
+  },
+
+  mounted() {
+    if (this.focus && this.$refs.selectInput) {
+      this.$nextTick(() => {
+        this.$refs.selectInput.focus()
+      })
     }
   },
 })
