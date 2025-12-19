@@ -1,4 +1,4 @@
-import DateDiff from '../DateDiff.vue'
+import DateDiff from './DateDiff.vue'
 
 export default {
   title: 'Components/DateDiff',

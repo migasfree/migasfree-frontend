@@ -1,4 +1,4 @@
-import MigasLink from '../MigasLink.vue'
+import MigasLink from './MigasLink.vue'
 
 export default {
   title: 'Components/MigasLink',
