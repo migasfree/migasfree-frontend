@@ -34,9 +34,9 @@
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
               <q-input
+                ref="primaryInput"
                 v-model="element.name"
                 outlined
-                autofocus
                 :label="$gettext('Name')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
@@ -87,11 +87,13 @@ import EntitySelect from 'components/ui/EntitySelect'
 import ItemDetail from 'components/ui/ItemDetail'
 
 import { appIcon, modelIcon } from 'composables/element'
+import useAutoFocus from 'composables/useAutoFocus'
 
 export default {
   components: { EntitySelect, ItemDetail },
   setup() {
     const { $gettext } = useGettext()
+    const { inputRef: primaryInput } = useAutoFocus()
     const route = useRoute()
     const uiStore = useUiStore()
 
@@ -185,6 +187,7 @@ export default {
       setTitle,
       appIcon,
       modelIcon,
+      primaryInput,
     }
   },
 }
