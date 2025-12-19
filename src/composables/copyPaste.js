@@ -4,6 +4,32 @@ import { useGettext } from 'vue3-gettext'
 import { useUiStore } from 'stores/ui'
 import { api } from 'boot/axios'
 
+/**
+ * Composable for clipboard operations (copy/paste lists of items).
+ *
+ * Provides functionality to:
+ * - Copy content to clipboard with success notification
+ * - Copy lists of items (serialized as JSON with IDs)
+ * - Paste lists from clipboard and fetch items from API
+ *
+ * @returns {Object} Clipboard utilities
+ * @property {ComputedRef<boolean>} hasPaste - Whether browser supports clipboard reading
+ * @property {Function} contentToClipboard - Copy string content to clipboard
+ * @property {Function} copyList - Copy array of items as JSON {model: [ids]}
+ * @property {Function} pasteList - Read clipboard and fetch items via API
+ *
+ * @example
+ * const { contentToClipboard, copyList, pasteList, hasPaste } = useCopyPaste()
+ *
+ * // Copy text
+ * await contentToClipboard('Hello World')
+ *
+ * // Copy list of items
+ * copyList('computers', [{id: 1}, {id: 2}])
+ *
+ * // Paste and fetch items
+ * await pasteList((item) => myList.push(item))
+ */
 export default function useCopyPaste() {
   const uiStore = useUiStore()
   const { $gettext } = useGettext()
