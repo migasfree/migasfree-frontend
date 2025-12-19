@@ -46,8 +46,8 @@
       <q-card-section>
         <q-form class="q-gutter-md" @submit.prevent="login">
           <q-input
+            ref="usernameInput"
             v-model="model.username"
-            autofocus
             lazy-rules
             outlined
             :label="$gettext('User')"
@@ -161,6 +161,7 @@ import { MIN_PASSWORD_LEN } from 'config/app.conf'
 import ToggleDarkMode from 'components/ui/ToggleDarkMode'
 
 import { appIcon, modelIcon } from 'composables/element'
+import useAutoFocus from 'composables/useAutoFocus'
 
 export default {
   name: 'Login',
@@ -179,6 +180,7 @@ export default {
     const showPassword = ref(false)
     const model = reactive({ username: '', password: '' })
     const changeLanguage = ref(null)
+    const { inputRef: usernameInput } = useAutoFocus()
 
     const { server } = storeToRefs(authStore)
 
@@ -229,6 +231,7 @@ export default {
       showPassword,
       model,
       changeLanguage,
+      usernameInput,
       isValid,
       login,
       changeAppLanguage,
