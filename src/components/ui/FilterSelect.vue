@@ -36,12 +36,12 @@ export default {
     },
   },
 
+  emits: ['update:modelValue'],
+
   setup() {
     return {
       appIcon,
     }
   },
-
-  emits: ['update:modelValue'],
 }
 </script>
