@@ -23,9 +23,9 @@
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
               <q-input
+                ref="primaryInput"
                 v-model="element.name"
                 outlined
-                autofocus
                 :label="$gettext('Name')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
@@ -106,6 +106,7 @@ import ItemDetail from 'components/ui/ItemDetail'
 import SelectAttributes from 'components/ui/SelectAttributes'
 
 import { appIcon, modelIcon } from 'composables/element'
+import useAutoFocus from 'composables/useAutoFocus'
 
 export default {
   components: {
@@ -115,6 +116,7 @@ export default {
   },
   setup() {
     const { $gettext } = useGettext()
+    const { inputRef: primaryInput } = useAutoFocus()
     const route = useRoute()
     const uiStore = useUiStore()
     const authStore = useAuthStore()
@@ -261,6 +263,7 @@ export default {
       setTitle,
       appIcon,
       modelIcon,
+      primaryInput,
     }
   },
 }
