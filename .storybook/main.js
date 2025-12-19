@@ -20,6 +20,24 @@ const config = {
       boot: require('path').resolve(__dirname, '../src/boot'),
       stores: require('path').resolve(__dirname, '../src/stores'),
     }
+
+    // Add sass-loader for .sass files
+    config.module.rules.push({
+      test: /\.sass$/,
+      use: [
+        'style-loader',
+        'css-loader',
+        {
+          loader: 'sass-loader',
+          options: {
+            sassOptions: {
+              indentedSyntax: true,
+            },
+          },
+        },
+      ],
+    })
+
     return config
   },
 }
