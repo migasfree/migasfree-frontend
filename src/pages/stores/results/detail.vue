@@ -19,7 +19,7 @@
             <div class="col-6 col-md col-sm">
               <EntitySelect
                 v-model="element.project"
-                autofocus
+                focus
                 :options="projects"
                 :label="$gettext('Project')"
                 detail-route="project-detail"
@@ -60,6 +60,7 @@ import EntitySelect from 'components/ui/EntitySelect'
 import ItemDetail from 'components/ui/ItemDetail'
 
 import { appIcon, modelIcon } from 'composables/element'
+import useAutoFocus from 'composables/useAutoFocus'
 
 export default {
   components: {
@@ -68,6 +69,7 @@ export default {
   },
   setup() {
     const { $gettext } = useGettext()
+    const { inputRef: primaryInput } = useAutoFocus()
     const route = useRoute()
     const uiStore = useUiStore()
 
@@ -159,6 +161,7 @@ export default {
       setTitle,
       appIcon,
       modelIcon,
+      primaryInput,
     }
   },
 }
