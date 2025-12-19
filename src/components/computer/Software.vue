@@ -296,8 +296,8 @@
 
       <q-card-section class="row items-center">
         <FilteredMultiSelect
+          ref="primaryInput"
           v-model="target"
-          autofocus
           :label="$gettext('Computer')"
           :fetch-options="filterComputers"
           :multiple="false"
