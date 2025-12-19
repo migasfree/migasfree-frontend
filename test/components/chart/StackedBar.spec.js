@@ -135,6 +135,18 @@ describe('StackedBar.vue', () => {
             template: '<input class="day-input" />',
             props: ['modelValue', 'label'],
           },
+          'q-th': {
+            template: '<th class="q-th"><slot /></th>',
+          },
+          'q-tr': {
+            template: '<tr class="q-tr"><slot /></tr>',
+          },
+          'q-td': {
+            template: '<td class="q-td"><slot /></td>',
+          },
+        },
+        directives: {
+          'close-popup': {},
         },
       },
     })
