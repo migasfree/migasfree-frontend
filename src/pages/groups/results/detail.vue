@@ -34,10 +34,10 @@
           <div class="row q-pa-md q-gutter-md">
             <div class="col-md col-sm">
               <q-input
+                ref="primaryInput"
                 v-model="element.name"
                 :label="$gettext('Name')"
                 outlined
-                autofocus
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
               />
@@ -89,6 +89,7 @@ import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
 
 import { appIcon, modelIcon } from 'composables/element'
+import useAutoFocus from 'composables/useAutoFocus'
 
 export default {
   components: {
@@ -97,6 +98,7 @@ export default {
   },
   setup() {
     const { $gettext } = useGettext()
+    const { inputRef: primaryInput } = useAutoFocus()
 
     const title = ref($gettext('Group'))
     const windowTitle = ref(title.value)
@@ -175,6 +177,7 @@ export default {
       filterPermissions,
       appIcon,
       modelIcon,
+      primaryInput,
     }
   },
 }
