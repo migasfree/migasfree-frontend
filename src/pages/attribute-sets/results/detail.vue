@@ -21,9 +21,9 @@
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
               <q-checkbox
+                ref="primaryInput"
                 v-model="element.enabled"
                 left-label
-                autofocus
                 :label="$gettext('Enabled?')"
               />
             </div>
@@ -133,6 +133,7 @@ import SelectAttributes from 'components/ui/SelectAttributes'
 import AddLocation from 'components/map/AddLocation'
 
 import { appIcon, modelIcon } from 'composables/element'
+import useAutoFocus from 'composables/useAutoFocus'
 
 export default {
   components: {
@@ -142,6 +143,7 @@ export default {
   },
   setup() {
     const { $gettext } = useGettext()
+    const { inputRef: primaryInput } = useAutoFocus()
 
     const title = ref($gettext('Attribute Set'))
     const windowTitle = ref(title.value)
@@ -260,6 +262,7 @@ export default {
       setTitle,
       updateCoords,
       updateMapCoords,
+      primaryInput,
     }
   },
 }
