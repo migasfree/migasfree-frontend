@@ -1,9 +1,9 @@
 <template>
   <q-select
+    ref="primaryInput"
     :model-value="modelValue"
     outlined
     use-input
-    :autofocus="autofocus"
     :use-chips="useChips"
     map-options
     :multiple="multiple"
@@ -88,6 +88,13 @@ export default {
     options(newVal) {
       this.filteredOptions = newVal.slice()
     },
+  },
+  mounted() {
+    if (this.autofocus && this.$refs.primaryInput) {
+      this.$nextTick(() => {
+        this.$refs.primaryInput.focus()
+      })
+    }
   },
   methods: {
     async onFilter(val, update, abort) {
