@@ -66,6 +66,8 @@
       bordered
       @mouseover="debounceMini(false)"
       @mouseout="debounceMini(true)"
+      @focusin="debounceMini(false)"
+      @focusout="debounceMini(true)"
     >
       <AppMenu />
     </q-drawer>
