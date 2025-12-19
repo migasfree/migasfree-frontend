@@ -18,8 +18,8 @@
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
               <FilteredMultiSelect
+                ref="primaryInput"
                 v-model="element.device"
-                autofocus
                 :label="$gettext('Device')"
                 :multiple="false"
                 :fetch-options="filterDevices"
@@ -101,6 +101,7 @@ import MigasLink from 'components/MigasLink'
 import SelectAttributes from 'components/ui/SelectAttributes'
 
 import { appIcon, modelIcon } from 'composables/element'
+import useAutoFocus from 'composables/useAutoFocus'
 
 export default {
   components: {
@@ -112,6 +113,7 @@ export default {
   },
   setup() {
     const { $gettext } = useGettext()
+    const { inputRef: primaryInput } = useAutoFocus()
     const route = useRoute()
     const uiStore = useUiStore()
 
@@ -211,6 +213,7 @@ export default {
       setTitle,
       appIcon,
       modelIcon,
+      primaryInput,
       filterDevices,
     }
   },
