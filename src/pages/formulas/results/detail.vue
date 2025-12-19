@@ -39,9 +39,9 @@
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
               <q-checkbox
+                ref="primaryInput"
                 v-model="element.enabled"
                 left-label
-                autofocus
                 :label="$gettext('Enabled?')"
               />
             </div>
@@ -170,6 +170,7 @@ import ItemDetail from 'components/ui/ItemDetail'
 import CodeEditor from 'components/ui/CodeEditor'
 
 import { appIcon, modelIcon } from 'composables/element'
+import useAutoFocus from 'composables/useAutoFocus'
 import { MAX_PREFIX_LEN } from 'config/app.conf'
 
 export default {
@@ -180,6 +181,7 @@ export default {
   setup() {
     const uiStore = useUiStore()
     const { $gettext } = useGettext()
+    const { inputRef: primaryInput } = useAutoFocus()
 
     const title = ref($gettext('Formula'))
     const windowTitle = ref(title.value)
@@ -314,6 +316,7 @@ export default {
       setTitle,
       appIcon,
       modelIcon,
+      primaryInput,
       MAX_PREFIX_LEN,
     }
   },
