@@ -1,10 +1,10 @@
 <template>
   <div class="row">
     <q-input
+      ref="primaryInput"
       v-model="searchText"
       :label="$gettext('Search...')"
       clearable
-      autofocus
       @keydown.enter="$emit('search', searchText)"
       @clear="$emit('clear')"
     >
