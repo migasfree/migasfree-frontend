@@ -37,9 +37,9 @@
                 <div class="row q-gutter-md">
                   <div class="col-6 col-md col-sm">
                     <q-checkbox
+                      ref="primaryInput"
                       v-model="element.enabled"
                       left-label
-                      autofocus
                       :label="$gettext('Enabled?')"
                       :aria-label="$gettext('Enabled?')"
                     />
@@ -485,6 +485,7 @@ import DayInput from 'components/ui/DayInput'
 
 import useDate from 'composables/date'
 import { appIcon, modelIcon } from 'composables/element'
+import useAutoFocus from 'composables/useAutoFocus'
 
 export default {
   components: {
@@ -500,6 +501,7 @@ export default {
   },
   setup() {
     const { $gettext } = useGettext()
+    const { inputRef: primaryInput } = useAutoFocus()
     const { showDate } = useDate()
     const route = useRoute()
     const uiStore = useUiStore()
@@ -839,6 +841,7 @@ export default {
       title,
       model,
       modelIcon,
+      primaryInput,
       routes,
       element,
       projects,
