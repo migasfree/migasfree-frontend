@@ -117,18 +117,56 @@ const MODEL_ICON = {
   notifications: 'mdi-comment-text-outline',
 }
 
+/**
+ * Get application icon by name.
+ *
+ * @param {string} item - Icon identifier (e.g., 'home', 'add', 'delete')
+ * @returns {string} Material Design Icon class name
+ *
+ * @example
+ * appIcon('home') // "mdi-home"
+ * appIcon('add') // "mdi-plus"
+ */
 export const appIcon = (item) => {
   if (item in APP_ICON) return APP_ICON[item]
 
   return ''
 }
 
+/**
+ * Get icon for a data model.
+ *
+ * @param {string} model - Model path (e.g., 'computers', 'deployments')
+ * @returns {string} Material Design Icon class name
+ *
+ * @example
+ * modelIcon('computers') // "mdi-desktop-classic"
+ * modelIcon('deployments') // "mdi-rocket-launch"
+ */
 export const modelIcon = (model) => {
   if (model in MODEL_ICON) return MODEL_ICON[model]
 
   return ''
 }
 
+/**
+ * Composable for element utilities (icons, status, formatting).
+ *
+ * Provides functions for:
+ * - Element status icons and translations
+ * - Computer status translations
+ * - Product type icons
+ * - MAC address formatting
+ * - Attribute value extraction
+ *
+ * @returns {Object} Element utilities
+ *
+ * @example
+ * const { elementIcon, computerStatus, humanMacAddress } = useElement()
+ * elementIcon('intended') // "mdi-heart-pulse"
+ * computerStatus('reserved') // "Reserved" (translated)
+ * humanMacAddress('001122334455') // "00:11:22:33:44:55"
+ */
 export const useElement = () => {
   const { $gettext } = useGettext()
 
