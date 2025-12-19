@@ -9,6 +9,33 @@ import { appIcon, modelIcon, useElement } from 'composables/element'
 
 const defaultElementData = () => {}
 
+/**
+ * Composable for managing detail/edit pages of data models.
+ *
+ * Provides:
+ * - CRUD operations (create, read, update, delete)
+ * - Dynamic breadcrumb management
+ * - Loading state management
+ * - Element text formatting per model type
+ *
+ * @param {string} originalTitle - Page title (e.g., "Computer")
+ * @param {string} model - API model path (e.g., "computers", "deployments")
+ * @param {Object} routes - Route names object { list, add, detail }
+ * @param {Array} breadcrumbs - Reactive breadcrumb array
+ * @param {Object} element - Reactive element data object
+ * @param {Function} [elementData] - Function returning data for API calls
+ * @returns {Object} Detail page utilities
+ *
+ * @example
+ * const { loading, updateElement, remove, addElement } = useDetail(
+ *   'Computer',
+ *   'computers',
+ *   { list: 'computers-list', add: 'computer-add', detail: 'computer-detail' },
+ *   breadcrumbs,
+ *   element,
+ *   () => ({ name: element.name })
+ * )
+ */
 export default function useDetail(
   originalTitle,
   model,
