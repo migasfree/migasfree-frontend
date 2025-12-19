@@ -6,6 +6,25 @@ import localeData from 'dayjs/plugin/localeData.js'
 dayjs.extend(relativeTime)
 dayjs.extend(localeData)
 
+/**
+ * Composable for date formatting and localization.
+ *
+ * Provides:
+ * - `localeDate`: Localized date configuration for Quasar date components
+ * - `showDate`: Format ISO date strings with customizable format
+ * - `diffForHumans`: Get relative time string (e.g., "2 hours ago")
+ *
+ * @returns {Object} Date utilities
+ * @property {Object} localeDate - Localized day/month names and calendar config
+ * @property {Function} showDate - Format date string
+ * @property {Function} diffForHumans - Get relative time
+ *
+ * @example
+ * const { showDate, diffForHumans } = useDate()
+ * showDate('2024-01-15') // "2024-01-15"
+ * showDate('2024-01-15T10:30:00Z') // "2024-01-15 10:30:00"
+ * diffForHumans('2024-01-15') // "3 months ago"
+ */
 export default function useDate() {
   const { $gettext, current } = useGettext()
 
