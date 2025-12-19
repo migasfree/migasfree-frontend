@@ -69,7 +69,7 @@ export default {
   props: {
     modelValue: { type: [Array, Object], default: () => [] },
     label: { type: String, required: true },
-    autofocus: { type: Boolean, default: false },
+    focus: { type: Boolean, default: false },
     clearable: { type: Boolean, default: false },
     multiple: { type: Boolean, default: true },
     useChips: { type: Boolean, default: false },
@@ -90,7 +90,7 @@ export default {
     },
   },
   mounted() {
-    if (this.autofocus && this.$refs.primaryInput) {
+    if (this.focus && this.$refs.primaryInput) {
       this.$nextTick(() => {
         this.$refs.primaryInput.focus()
       })
