@@ -52,11 +52,11 @@
           <div class="row q-pa-md q-gutter-md">
             <div class="col-md col-sm">
               <q-input
+                ref="primaryInput"
                 v-model.trim="element.username"
                 outlined
                 counter
                 maxlength="150"
-                autofocus
                 :label="$gettext('Username')"
                 :hint="$gettext('Only letters, digits and @/./+/-/_')"
                 lazy-rules
@@ -316,6 +316,7 @@ import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
 
 import { appIcon, modelIcon } from 'composables/element'
+import useAutoFocus from 'composables/useAutoFocus'
 
 export default {
   components: {
@@ -327,6 +328,7 @@ export default {
   },
   setup() {
     const { $gettext } = useGettext()
+    const { inputRef: primaryInput } = useAutoFocus()
     const $q = useQuasar()
     const route = useRoute()
     const uiStore = useUiStore()
@@ -509,6 +511,7 @@ export default {
       filterUserPermissions,
       appIcon,
       modelIcon,
+      primaryInput,
     }
   },
 }
