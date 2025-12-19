@@ -46,7 +46,7 @@
       <q-card-section>
         <q-form class="q-gutter-md" @submit.prevent="login">
           <q-input
-            ref="usernameInput"
+            ref="primaryInput"
             v-model="model.username"
             lazy-rules
             outlined
@@ -169,6 +169,7 @@ export default {
   setup() {
     const $q = useQuasar()
     const { $gettext } = useGettext()
+    const { inputRef: primaryInput } = useAutoFocus()
     const route = useRoute()
     const router = useRouter()
     const authStore = useAuthStore()
@@ -180,7 +181,6 @@ export default {
     const showPassword = ref(false)
     const model = reactive({ username: '', password: '' })
     const changeLanguage = ref(null)
-    const { inputRef: usernameInput } = useAutoFocus()
 
     const { server } = storeToRefs(authStore)
 
@@ -231,12 +231,12 @@ export default {
       showPassword,
       model,
       changeLanguage,
-      usernameInput,
       isValid,
       login,
       changeAppLanguage,
       appIcon,
       modelIcon,
+      primaryInput,
     }
   },
 }
