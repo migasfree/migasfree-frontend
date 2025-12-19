@@ -23,9 +23,9 @@
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
               <q-input
+                ref="primaryInput"
                 v-model="element.name"
                 outlined
-                autofocus
                 :label="$gettext('Name')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
@@ -203,6 +203,7 @@ import MigasLink from 'components/MigasLink'
 import SelectAttributes from 'components/ui/SelectAttributes'
 
 import { appIcon, modelIcon } from 'composables/element'
+import useAutoFocus from 'composables/useAutoFocus'
 
 export default {
   components: {
@@ -214,6 +215,7 @@ export default {
   },
   setup() {
     const { $gettext } = useGettext()
+    const { inputRef: primaryInput } = useAutoFocus()
     const uiStore = useUiStore()
 
     const title = ref($gettext('Device'))
@@ -435,6 +437,7 @@ export default {
       filterModels,
       appIcon,
       modelIcon,
+      primaryInput,
     }
   },
 }
