@@ -55,10 +55,10 @@
           <div class="row q-pa-md">
             <div class="col">
               <q-input
+                ref="primaryInput"
                 v-model="element.description"
                 outlined
                 type="textarea"
-                autofocus
                 :label="$gettext('Description')"
               />
             </div>
