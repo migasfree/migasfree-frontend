@@ -41,3 +41,4 @@ yarn.lock
 /.yarn
 *.mo
 /coverage
+/debug-storybook.log
