@@ -28,7 +28,9 @@
     "gettext:extract": "vue-gettext-extract",
     "gettext:compile": "vue-gettext-compile",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "storybook": "storybook dev -p 6006",
+    "storybook:build": "storybook build -o storybook-static"
   },
   "dependencies": {
     "@fontsource/dosis": "5.2.8",
@@ -62,6 +64,10 @@
     "@pinia/testing": "1.0.3",
     "@quasar/app-webpack": "4.3.1",
     "@quasar/quasar-app-extension-qmarkdown": "2.0.5",
+    "@storybook/addon-essentials": "8.6.15",
+    "@storybook/addon-links": "8.6.15",
+    "@storybook/vue3": "8.6.15",
+    "@storybook/vue3-webpack5": "8.6.15",
     "@vitejs/plugin-vue": "6.0.2",
     "@vitest/coverage-v8": "4.0.14",
     "@vue/eslint-config-prettier": "10.2.0",
@@ -78,6 +84,7 @@
     "jsdom": "27.2.0",
     "postcss": "8.5.6",
     "prettier": "3.6.2",
+    "storybook": "8.6.15",
     "vitest": "4.0.14",
     "vitest-axe": "0.1.0",
     "vue-eslint-parser": "10.2.0",
