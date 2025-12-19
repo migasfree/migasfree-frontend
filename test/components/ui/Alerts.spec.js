@@ -17,7 +17,8 @@ vi.mock('composables/element', () => ({
 }))
 
 // Mock Pinia stores
-const mockLoggedIn = { value: true }
+import { ref } from 'vue'
+const mockLoggedIn = ref(true)
 const mockAuthStore = {
   loggedIn: mockLoggedIn,
 }
@@ -110,6 +111,9 @@ describe('Alerts.vue', () => {
           'q-item-label': {
             template: '<span class="q-item-label"><slot /></span>',
           },
+        },
+        directives: {
+          'close-popup': {},
         },
       },
       ...options,
