@@ -18,9 +18,9 @@
           <div class="row q-pa-md q-gutter-md">
             <div class="col-6 col-md col-sm">
               <q-checkbox
+                ref="primaryInput"
                 v-model="element.checked"
                 left-label
-                autofocus
                 :label="$gettext('Checked?')"
               />
             </div>
@@ -96,6 +96,7 @@ import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon, useElement } from 'composables/element'
+import useAutoFocus from 'composables/useAutoFocus'
 
 export default {
   components: {
@@ -107,6 +108,7 @@ export default {
   setup() {
     const { $gettext } = useGettext()
     const { elementIcon } = useElement()
+    const { inputRef: primaryInput } = useAutoFocus()
 
     const title = ref($gettext('Error'))
     const windowTitle = ref(title.value)
@@ -160,6 +162,7 @@ export default {
       elementData,
       setTitle,
       modelIcon,
+      primaryInput,
     }
   },
 }
