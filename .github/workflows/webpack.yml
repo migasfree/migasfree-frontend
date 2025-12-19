@@ -35,3 +35,8 @@ jobs:
           yarn lint
           yarn format:check
           yarn test
+
+      - name: Security audit
+        run: |
+          yarn npm audit --severity high
+        continue-on-error: true
