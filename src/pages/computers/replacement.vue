@@ -20,7 +20,7 @@
 
             <FilteredMultiSelect
               v-model="source"
-              autofocus
+              focus
               :multiple="false"
               :label="$gettext('Computer')"
               :fetch-options="filterComputers"
