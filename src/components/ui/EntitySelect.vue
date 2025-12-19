@@ -196,12 +196,12 @@ export default defineComponent({
     },
   },
 
+  emits: ['update:modelValue', 'clear', 'filter', 'filter-abort'],
+
   setup() {
     return {
       appIcon,
     }
   },
-
-  emits: ['update:modelValue', 'clear', 'filter', 'filter-abort'],
 })
 </script>
