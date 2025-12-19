@@ -33,9 +33,9 @@
           <div class="row q-pa-md q-gutter-md">
             <div class="col-12 col-md col-sm">
               <q-input
+                ref="primaryInput"
                 v-model="element.name"
                 outlined
-                autofocus
                 :label="$gettext('Name')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
@@ -56,6 +56,7 @@ import { useMeta } from 'quasar'
 import ItemDetail from 'components/ui/ItemDetail'
 
 import { appIcon, modelIcon } from 'composables/element'
+import useAutoFocus from 'composables/useAutoFocus'
 
 export default {
   components: {
@@ -63,6 +64,7 @@ export default {
   },
   setup() {
     const { $gettext } = useGettext()
+    const { inputRef: primaryInput } = useAutoFocus()
 
     const title = ref($gettext('Manufacturer'))
     const windowTitle = ref(title.value)
@@ -127,6 +129,7 @@ export default {
       setTitle,
       appIcon,
       modelIcon,
+      primaryInput,
     }
   },
 }
