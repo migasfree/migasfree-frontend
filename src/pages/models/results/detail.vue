@@ -23,7 +23,7 @@
             <div class="col-6 col-md col-sm">
               <EntitySelect
                 v-model="element.device_type"
-                autofocus
+                focus
                 :options="deviceTypes"
                 :label="$gettext('Type')"
                 detail-route="device-type-detail"
@@ -170,6 +170,7 @@ import ItemDetail from 'components/ui/ItemDetail'
 import OrderTextArea from 'components/ui/OrderTextArea'
 
 import { appIcon, modelIcon } from 'composables/element'
+import useAutoFocus from 'composables/useAutoFocus'
 
 export default {
   components: {
@@ -179,6 +180,7 @@ export default {
   },
   setup() {
     const { $gettext } = useGettext()
+    const { inputRef: primaryInput } = useAutoFocus()
     const route = useRoute()
     const uiStore = useUiStore()
 
@@ -390,6 +392,7 @@ export default {
       removeInline,
       appIcon,
       modelIcon,
+      primaryInput,
     }
   },
 }
