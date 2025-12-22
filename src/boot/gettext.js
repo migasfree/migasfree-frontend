@@ -8,6 +8,7 @@ const gettext = createGettext({
     ca_ES: 'Català',
     es_ES: 'Español',
     eu_ES: 'Euskara',
+    fr_FR: 'Français',
     gl_ES: 'Galego',
   },
   translations,

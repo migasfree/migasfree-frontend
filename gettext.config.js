@@ -8,7 +8,7 @@ export default {
     path: './src/i18n',
     potPath: './app.pot',
     jsonPath: './translations.json',
-    locales: ['es_ES', 'ca_ES', 'eu_ES', 'gl_ES'],
+    locales: ['es_ES', 'ca_ES', 'eu_ES', 'gl_ES', 'fr_FR'],
     flat: true,
     linguas: false,
     splitJson: false, // create separate json files for each locale. If used, jsonPath must end with a directory, not a file
