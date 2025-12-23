@@ -519,7 +519,7 @@ export default {
 
     let element = reactive({
       id: 0,
-      enabled: false,
+      enabled: true,
       included_attributes: [],
       excluded_attributes: [],
       packages_to_install: null,
@@ -530,6 +530,7 @@ export default {
       auto_restart: false,
       expire: 1440,
       frozen: false,
+      start_date: showDate(new Date(), 'YYYY-MM-DD'),
     })
 
     const breadcrumbs = ref([
@@ -767,7 +768,7 @@ export default {
       Object.assign(element, {
         id: 0,
         name: undefined,
-        enabled: false,
+        enabled: true,
         project: null,
         domain: null,
         comment: '',
@@ -779,7 +780,7 @@ export default {
         default_preincluded_packages: null,
         default_included_packages: null,
         default_excluded_packages: null,
-        start_date: undefined,
+        start_date: showDate(new Date(), 'YYYY-MM-DD'),
         schedule: null,
         auto_restart: false,
         available_packages: [],
