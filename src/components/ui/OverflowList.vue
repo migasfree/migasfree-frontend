@@ -1,6 +1,11 @@
 <template>
   <q-list v-if="items.length > 0" bordered>
-    <q-expansion-item default-opened :icon="icon" :content-inset-level="0.5">
+    <q-expansion-item
+      default-opened
+      :icon="icon"
+      :content-inset-level="0.5"
+      role="listitem"
+    >
       <template #header>
         <q-item-section>
           <q-chip>
