@@ -398,9 +398,19 @@
 
 <script>
 import { ref, reactive, nextTick } from 'vue'
-import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
+import { useRoute } from 'vue-router'
 import { useMeta } from 'quasar'
+import {
+  LMap,
+  LTileLayer,
+  LControlScale,
+  LControl,
+  LMarker,
+  LIcon,
+  LTooltip,
+} from '@vue-leaflet/vue-leaflet'
+import 'leaflet/dist/leaflet.css'
 import pluralize from 'pluralize-esm'
 
 import { api } from 'boot/axios'
@@ -434,6 +444,13 @@ export default {
     ComputerHardwareResume,
     ComputerSoftware,
     ComputerDevices,
+    LMap,
+    LTileLayer,
+    LControlScale,
+    LControl,
+    LMarker,
+    LIcon,
+    LTooltip,
   },
   setup() {
     const { $gettext } = useGettext()

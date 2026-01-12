@@ -21,10 +21,26 @@
 
 <script>
 import { ref, watch } from 'vue'
+import {
+  LMap,
+  LTileLayer,
+  LControlScale,
+  LMarker,
+  LIcon,
+} from '@vue-leaflet/vue-leaflet'
+import 'leaflet/dist/leaflet.css'
+
 import useMap from 'composables/map'
 
 export default {
   name: 'AddLocation',
+  components: {
+    LMap,
+    LTileLayer,
+    LControlScale,
+    LMarker,
+    LIcon,
+  },
   props: {
     modelValue: {
       type: Array,

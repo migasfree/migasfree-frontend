@@ -120,6 +120,7 @@ import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import { useGettext } from 'vue3-gettext'
+import VChart from 'vue-echarts'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -140,7 +141,7 @@ echarts.use([PieChart, TooltipComponent, TitleComponent, SVGRenderer])
 
 export default {
   name: 'PieChart',
-  components: { BannerInfo },
+  components: { BannerInfo, VChart },
   props: {
     title: { type: String, required: true },
     endPoint: {

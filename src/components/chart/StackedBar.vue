@@ -180,6 +180,7 @@
 import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { exportFile, useQuasar } from 'quasar'
 import { useGettext } from 'vue3-gettext'
+import VChart from 'vue-echarts'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -220,7 +221,7 @@ echarts.use([
 
 export default {
   name: 'StackedBarChart',
-  components: { BannerInfo, DayInput, MonthInput },
+  components: { BannerInfo, DayInput, MonthInput, VChart },
   props: {
     title: {
       type: String,
