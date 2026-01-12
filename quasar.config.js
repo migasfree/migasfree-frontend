@@ -23,14 +23,7 @@ export default defineConfig((ctx) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-webpack/boot-files
-    boot: [
-      'axios',
-      'fonts',
-      'gettext',
-      'leaflet',
-      'vue-echarts',
-      'vue-good-table-next',
-    ],
+    boot: ['axios', 'fonts', 'gettext', 'vue-good-table-next'],
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#css
     css: ['app.sass'],
@@ -65,7 +58,7 @@ export default defineConfig((ctx) => {
       // preloadChunks: true,
       // webpackShowProgress: false,
       // gzip: true,
-      // analyze: true,
+      analyze: true,
       // webpackDevtool: ?,
 
       // Options below are automatically set depending on the env, set them if you want to override
@@ -85,6 +78,26 @@ export default defineConfig((ctx) => {
           'config',
           fileURLToPath(new URL('./src/config', import.meta.url)),
         )
+
+        const splitChunks = chain.optimization.get('splitChunks') || {}
+        chain.optimization.splitChunks({
+          ...splitChunks,
+          cacheGroups: {
+            ...(splitChunks.cacheGroups || {}),
+            echarts: {
+              name: 'chunk-echarts',
+              test: /[\\/]node_modules[\\/](echarts|vue-echarts)[\\/]/,
+              chunks: 'all',
+              priority: 20,
+            },
+            leaflet: {
+              name: 'chunk-leaflet',
+              test: /[\\/]node_modules[\\/](leaflet|@vue-leaflet)[\\/]/,
+              chunks: 'all',
+              priority: 20,
+            },
+          },
+        })
       },
 
       extendWebpack(cfg) {
