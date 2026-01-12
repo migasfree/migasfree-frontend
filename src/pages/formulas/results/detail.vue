@@ -170,7 +170,7 @@ import ItemDetail from 'components/ui/ItemDetail'
 import CodeEditor from 'components/ui/CodeEditor'
 
 import { appIcon, modelIcon } from 'composables/element'
-import useAutoFocus from 'composables/useAutoFocus'
+import useAutoFocus from 'composables/autoFocus'
 import { MAX_PREFIX_LEN } from 'config/app.conf'
 
 export default {

@@ -7,7 +7,7 @@ import { useUiStore } from 'stores/ui'
 import { api } from 'boot/axios'
 
 import { appIcon } from 'composables/element'
-import { useSmartRequest } from 'composables/useSmartRequest'
+import { useSmartRequest } from 'composables/smartRequest'
 
 export function useDataOperations(deps) {
   const {

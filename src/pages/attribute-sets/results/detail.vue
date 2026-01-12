@@ -133,7 +133,7 @@ import SelectAttributes from 'components/ui/SelectAttributes'
 import AddLocation from 'components/map/AddLocation'
 
 import { appIcon, modelIcon } from 'composables/element'
-import useAutoFocus from 'composables/useAutoFocus'
+import useAutoFocus from 'composables/autoFocus'
 
 export default {
   components: {

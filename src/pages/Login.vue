@@ -161,7 +161,7 @@ import { MIN_PASSWORD_LEN } from 'config/app.conf'
 import ToggleDarkMode from 'components/ui/ToggleDarkMode'
 
 import { appIcon, modelIcon } from 'composables/element'
-import useAutoFocus from 'composables/useAutoFocus'
+import useAutoFocus from 'composables/autoFocus'
 
 export default {
   name: 'Login',

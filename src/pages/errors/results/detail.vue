@@ -96,7 +96,7 @@ import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon, useElement } from 'composables/element'
-import useAutoFocus from 'composables/useAutoFocus'
+import useAutoFocus from 'composables/autoFocus'
 
 export default {
   components: {

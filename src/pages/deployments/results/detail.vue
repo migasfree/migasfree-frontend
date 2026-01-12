@@ -485,7 +485,7 @@ import DayInput from 'components/ui/DayInput'
 
 import useDate from 'composables/date'
 import { appIcon, modelIcon } from 'composables/element'
-import useAutoFocus from 'composables/useAutoFocus'
+import useAutoFocus from 'composables/autoFocus'
 
 export default {
   components: {
