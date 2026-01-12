@@ -38,3 +38,14 @@ export const MIGASFREE_CHART_DARK_COLORS = [
   '#d4526e',
   '#f9a3a4',
 ]
+
+// Map configuration (Leaflet/OpenStreetMap)
+export const MAP_MIN_ZOOM = 3
+export const MAP_MAX_ZOOM = 19
+export const MAP_DEFAULT_ZOOM = 12
+export const MAP_DETAIL_ZOOM = 16
+export const MAP_TILE_URL = 'https://{s}.tile.osm.org/{z}/{x}/{y}.png'
+export const MAP_ATTRIBUTION =
+  '© <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+export const MAP_ICON_SIZE = [32, 40]
+export const MAP_ICON_ANCHOR = [16, 37]
