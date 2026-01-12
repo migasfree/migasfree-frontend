@@ -59,6 +59,7 @@
 import { ref, reactive, computed, watch } from 'vue'
 import { useQuasar, date } from 'quasar'
 import { useGettext } from 'vue3-gettext'
+import VChart from 'vue-echarts'
 
 import * as echarts from 'echarts/core'
 import { HeatmapChart } from 'echarts/charts'
@@ -92,7 +93,7 @@ echarts.use([
 
 export default {
   name: 'HeatMap',
-  components: { BannerInfo },
+  components: { BannerInfo, VChart },
   props: {
     data: {
       type: Array,
