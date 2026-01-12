@@ -1,9 +1,9 @@
 <template>
-  <q-dialog v-model="showing" persistent>
+  <q-dialog v-model="showing" persistent aria-labelledby="dialog-title">
     <q-card>
       <q-card-section class="row items-center">
         <q-avatar icon="mdi-alert-remove" color="negative" text-color="white" />
-        <span class="q-ml-sm">{{ text }}</span>
+        <span id="dialog-title" class="q-ml-sm">{{ text }}</span>
       </q-card-section>
 
       <q-card-actions align="right">
