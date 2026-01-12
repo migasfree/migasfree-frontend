@@ -5,36 +5,52 @@ export default {
   component: Truncate,
   tags: ['autodocs'],
   argTypes: {
-    value: {
+    modelValue: {
       control: 'text',
       description: 'Text to truncate',
     },
-    length: {
+    len: {
       control: 'number',
       description: 'Maximum length before truncating',
+    },
+    formatted: {
+      control: 'boolean',
+      description: 'Whether to display as preformatted text',
     },
   },
 }
 
 export const ShortText = {
   args: {
-    value: 'Short text',
-    length: 50,
+    modelValue: 'Short text',
+    len: 50,
+    formatted: true,
   },
 }
 
 export const LongText = {
   args: {
-    value:
+    modelValue:
       'This is a very long text that will be truncated because it exceeds the maximum length',
-    length: 30,
+    len: 30,
+    formatted: true,
   },
 }
 
 export const VeryLongText = {
   args: {
-    value:
+    modelValue:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    length: 50,
+    len: 50,
+    formatted: true,
+  },
+}
+
+export const HTMLContent = {
+  args: {
+    modelValue:
+      '<p>This is <strong>HTML content</strong> that can be truncated properly.</p><p>Second paragraph here.</p>',
+    len: 40,
+    formatted: false,
   },
 }
