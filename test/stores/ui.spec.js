@@ -172,5 +172,97 @@ describe('UI Store', () => {
       const store = useUiStore()
       expect(typeof store.scrollToElement).toBe('function')
     })
+
+    it('can be called with a DOM element', () => {
+      const store = useUiStore()
+      const mockElement = {
+        offsetTop: 100,
+      }
+
+      // Should not throw
+      expect(() => store.scrollToElement(mockElement)).not.toThrow()
+    })
+  })
+
+  describe('notifyError edge cases', () => {
+    it('handles error with null message', () => {
+      const store = useUiStore()
+      store.notifyError({ message: null })
+      expect(mockNotifyCreate).toHaveBeenCalled()
+    })
+
+    it('handles undefined error', () => {
+      const store = useUiStore()
+      store.notifyError(undefined)
+      expect(mockNotifyCreate).toHaveBeenCalled()
+    })
+
+    it('handles error with empty response data object', () => {
+      const store = useUiStore()
+      store.notifyError({
+        response: { status: 400, data: {} },
+      })
+      expect(mockNotifyCreate).toHaveBeenCalled()
+    })
+
+    it('handles 502 status as Server Error', () => {
+      const store = useUiStore()
+      store.notifyError({ response: { status: 502 } })
+      expect(mockNotifyCreate).toHaveBeenCalledWith(
+        expect.objectContaining({ message: 'Server Error' }),
+      )
+    })
+
+    it('handles 503 status as Server Error', () => {
+      const store = useUiStore()
+      store.notifyError({ response: { status: 503 } })
+      expect(mockNotifyCreate).toHaveBeenCalledWith(
+        expect.objectContaining({ message: 'Server Error' }),
+      )
+    })
+  })
+
+  describe('server state', () => {
+    it('has default server value from process.env', () => {
+      const store = useUiStore()
+      expect(store.server).toBeDefined()
+      expect(typeof store.server).toBe('string')
+    })
+  })
+
+  describe('loading state transitions', () => {
+    it('can toggle loading state multiple times', () => {
+      const store = useUiStore()
+
+      store.loading()
+      expect(store.isLoading).toBe(true)
+
+      store.finished()
+      expect(store.isLoading).toBe(false)
+
+      store.loading()
+      expect(store.isLoading).toBe(true)
+
+      store.loading() // Call loading again
+      expect(store.isLoading).toBe(true)
+
+      store.finished()
+      expect(store.isLoading).toBe(false)
+    })
+  })
+
+  describe('currentPageTable', () => {
+    it('can be set to various values', () => {
+      const store = useUiStore()
+
+      store.setCurrentPageTable(1)
+      expect(store.currentPageTable).toBe(1)
+
+      store.setCurrentPageTable(100)
+      expect(store.currentPageTable).toBe(100)
+
+      store.setCurrentPageTable(0)
+      expect(store.currentPageTable).toBe(0)
+    })
   })
 })
