@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { useSmartRequest } from 'composables/useSmartRequest'
+import { useSmartRequest } from 'composables/smartRequest'
 
 // Mock the axios api
 vi.mock('boot/axios', () => ({
