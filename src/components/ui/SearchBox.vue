@@ -16,15 +16,17 @@
         <q-icon :name="selectedIcon" />
       </template>
 
-      <q-list v-for="option in options" :key="option.to">
-        <q-separator v-if="option.separatorBefore" />
-        <q-item clickable @click="search(option)">
-          <q-item-section v-if="option.icon" avatar>
-            <q-icon :name="option.icon" size="sm" />
-          </q-item-section>
-          <q-item-section>{{ option.title }}</q-item-section>
-        </q-item>
-        <q-separator v-if="option.separatorAfter" />
+      <q-list role="menu">
+        <template v-for="option in options" :key="option.to">
+          <q-item v-if="option.separatorBefore" role="separator" />
+          <q-item clickable role="menuitem" @click="search(option)">
+            <q-item-section v-if="option.icon" avatar>
+              <q-icon :name="option.icon" size="sm" />
+            </q-item-section>
+            <q-item-section>{{ option.title }}</q-item-section>
+          </q-item>
+          <q-separator v-if="option.separatorAfter" />
+        </template>
       </q-list>
     </q-btn-dropdown>
   </q-btn-group>
