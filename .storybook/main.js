@@ -1,7 +1,11 @@
 /** @type { import('@storybook/vue3-webpack5').StorybookConfig } */
 const config = {
   stories: ['../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
-  addons: ['@storybook/addon-essentials', '@storybook/addon-links'],
+  addons: [
+    '@storybook/addon-essentials',
+    '@storybook/addon-links',
+    '@storybook/addon-a11y',
+  ],
   framework: {
     name: '@storybook/vue3-webpack5',
     options: {},
