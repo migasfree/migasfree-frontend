@@ -326,13 +326,16 @@
                 <l-map
                   id="map"
                   ref="map"
-                  :zoom="zoom"
-                  :min-zoom="3"
-                  :max-zoom="19"
+                  :zoom="MAP_DEFAULT_ZOOM"
+                  :min-zoom="MAP_MIN_ZOOM"
+                  :max-zoom="MAP_MAX_ZOOM"
                   :center="[markers[0].lat, markers[0].lng]"
                   @ready="centerMarkers"
                 >
-                  <l-tile-layer :url="url" :attribution="attribution" />
+                  <l-tile-layer
+                    :url="MAP_TILE_URL"
+                    :attribution="MAP_ATTRIBUTION"
+                  />
 
                   <l-control-scale
                     position="bottomleft"
@@ -417,6 +420,7 @@ import ComputerDevices from 'components/computer/Devices'
 
 import { appIcon, modelIcon, useElement } from 'composables/element'
 import useDate from 'composables/date'
+import useMap from 'composables/map'
 
 export default {
   components: {
@@ -464,13 +468,17 @@ export default {
     const faults = reactive({})
 
     const markers = ref([])
-    const zoom = 12
-    const url = 'https://{s}.tile.osm.org/{z}/{x}/{y}.png'
-    const attribution =
-      '© <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-    const iconUrl = require('leaflet/dist/images/marker-icon.png')
-    const iconSize = [32, 40]
-    const iconAnchor = [16, 37]
+
+    const {
+      MAP_MIN_ZOOM,
+      MAP_MAX_ZOOM,
+      MAP_DEFAULT_ZOOM,
+      MAP_TILE_URL,
+      MAP_ATTRIBUTION,
+      iconUrl,
+      iconSize,
+      iconAnchor,
+    } = useMap()
 
     const breadcrumbs = ref([
       {
@@ -685,9 +693,11 @@ export default {
       errors,
       faults,
       markers,
-      zoom,
-      url,
-      attribution,
+      MAP_MIN_ZOOM,
+      MAP_MAX_ZOOM,
+      MAP_DEFAULT_ZOOM,
+      MAP_TILE_URL,
+      MAP_ATTRIBUTION,
       iconUrl,
       iconSize,
       iconAnchor,

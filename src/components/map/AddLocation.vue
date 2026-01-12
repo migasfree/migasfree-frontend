@@ -1,13 +1,13 @@
 <template>
   <l-map
     id="map"
-    :zoom="zoom"
-    :min-zoom="3"
-    :max-zoom="19"
+    :zoom="MAP_DETAIL_ZOOM"
+    :min-zoom="MAP_MIN_ZOOM"
+    :max-zoom="MAP_MAX_ZOOM"
     :center="coords"
     @click="updateMarker"
   >
-    <l-tile-layer :url="url" :attribution="attribution" />
+    <l-tile-layer :url="MAP_TILE_URL" :attribution="MAP_ATTRIBUTION" />
     <l-control-scale position="bottomleft" :imperial="false" :metric="true" />
     <l-marker :lat-lng="coords">
       <l-icon
@@ -21,6 +21,7 @@
 
 <script>
 import { ref, watch } from 'vue'
+import useMap from 'composables/map'
 
 export default {
   name: 'AddLocation',
@@ -32,16 +33,18 @@ export default {
   },
   emits: ['update-coords'],
   setup(props, { emit }) {
-    const zoom = 16
-    const url = 'https://{s}.tile.osm.org/{z}/{x}/{y}.png'
-    const attribution =
-      '© <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+    const {
+      MAP_MIN_ZOOM,
+      MAP_MAX_ZOOM,
+      MAP_DETAIL_ZOOM,
+      MAP_TILE_URL,
+      MAP_ATTRIBUTION,
+      iconUrl,
+      iconSize,
+      iconAnchor,
+    } = useMap()
 
     const coords = ref(props.modelValue || [0, 0])
-
-    const iconUrl = require('leaflet/dist/images/marker-icon.png')
-    const iconSize = [32, 40]
-    const iconAnchor = [16, 37]
 
     const updateMarker = ($evt) => {
       if ($evt.latlng === undefined) return
@@ -57,9 +60,11 @@ export default {
     )
 
     return {
-      zoom,
-      url,
-      attribution,
+      MAP_MIN_ZOOM,
+      MAP_MAX_ZOOM,
+      MAP_DETAIL_ZOOM,
+      MAP_TILE_URL,
+      MAP_ATTRIBUTION,
       coords,
       iconUrl,
       iconSize,
