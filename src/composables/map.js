@@ -9,8 +9,8 @@ import {
   MAP_ICON_ANCHOR,
 } from 'config/app.conf'
 
-// Icon URL requires bundler (webpack) - cannot be in static config
-const iconUrl = require('leaflet/dist/images/marker-icon.png')
+// Icon URL requires bundler (webpack/vite) - cannot be in static config
+import iconUrl from 'leaflet/dist/images/marker-icon.png'
 
 export default function useMap() {
   return {
