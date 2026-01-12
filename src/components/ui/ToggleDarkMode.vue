@@ -3,6 +3,11 @@
     flat
     round
     :icon="$q.dark.isActive ? 'nights_stay' : 'wb_sunny'"
+    :aria-label="
+      $q.dark.isActive
+        ? $gettext('Switch to Light mode')
+        : $gettext('Switch to Dark mode')
+    "
     @click="toggleDarkMode"
   >
     <q-tooltip>{{
