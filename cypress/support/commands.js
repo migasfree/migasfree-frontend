@@ -9,6 +9,31 @@
 // -- Login command --
 Cypress.Commands.add('login', (username, password) => {
   cy.session([username, password], () => {
+    // Mock API requests for login
+    cy.intercept('POST', '**/rest-auth/login/', { key: 'fake-token' }).as(
+      'login',
+    )
+    cy.intercept('GET', '**/rest-auth/user/', {
+      id: 1,
+      username: username,
+      email: `${username}@example.com`,
+      is_staff: true,
+      domain_preference: null,
+    }).as('getUser')
+    cy.intercept('GET', '**/api/v1/public/server/info/', {
+      version: '5.0',
+      name: 'Test Server',
+    }).as('getServerInfo')
+
+    // Default empty results for domains and scopes during login
+    // Individual tests can override these if needed
+    cy.intercept('GET', '**/api/v1/token/domains/', { results: [] }).as(
+      'getDomainsLogin',
+    )
+    cy.intercept('GET', '**/api/v1/token/scopes/', { results: [] }).as(
+      'getScopesLogin',
+    )
+
     // Set language to English for consistent test expectations
     cy.setCookie('language', 'en_US')
 
