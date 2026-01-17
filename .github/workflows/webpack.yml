@@ -34,7 +34,7 @@ jobs:
         run: |
           yarn lint
           yarn format:check
-          yarn test
+          yarn test:coverage
 
       - name: Security audit
         run: |
