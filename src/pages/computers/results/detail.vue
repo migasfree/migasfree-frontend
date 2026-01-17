@@ -382,9 +382,12 @@
                         v-if="
                           item.description && item.description !== item.tooltip
                         "
-                        v-html="item.description"
-                      ></p
-                    ></l-tooltip>
+                        style="white-space: pre-wrap"
+                      >
+                        {{ item.description }}
+                      </p>
+                      ></l-tooltip
+                    >
                   </l-marker>
                 </l-map>
               </q-card-section>
@@ -587,9 +590,7 @@ export default {
               lat: val.latitude,
               lng: val.longitude,
               tooltip: attributeValue(val),
-              description: val.description
-                ? val.description.replaceAll('\n', '<br />')
-                : null,
+              description: val.description ? val.description : null,
             })
           }
         }
@@ -681,9 +682,7 @@ export default {
             lat: val.latitude,
             lng: val.longitude,
             tooltip: attributeValue(val),
-            description: val.description
-              ? val.description.replaceAll('\n', '<br />')
-              : null,
+            description: val.description ? val.description : null,
           })
         }
       })
