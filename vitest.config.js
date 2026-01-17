@@ -8,6 +8,20 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     include: ['test/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      include: ['src/**/*.{js,vue}'],
+      exclude: [
+        'src/**/*.spec.js',
+        'src/**/*.test.js',
+        'src/boot/**',
+        'src/router/**',
+        'src/App.vue',
+        'src/main.js',
+      ],
+      all: true,
+    },
   },
   resolve: {
     alias: {
