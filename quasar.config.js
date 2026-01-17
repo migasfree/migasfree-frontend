@@ -44,6 +44,9 @@ export default defineConfig((ctx) => {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#build
     build: {
+      env: {
+        MIGASFREE_SERVER: process.env.MIGASFREE_SERVER,
+      },
       // publicPath: '/',
       vueRouterMode: 'history', // available values: 'hash', 'history'
 
