@@ -40,3 +40,15 @@ jobs:
         run: |
           yarn npm audit --severity high
         continue-on-error: true
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          start: yarn dev
+          wait-on: 'http://localhost:3002'
+          browser: chrome
