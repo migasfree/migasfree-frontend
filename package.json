@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "@cypress/vue": "6.0.2",
-    "@cypress/webpack-dev-server": "5.4.1",
+    "@cypress/webpack-dev-server": "5.5.0",
     "@eslint/js": "9.39.2",
     "@pinia/testing": "1.0.3",
     "@quasar/app-webpack": "4.3.1",
