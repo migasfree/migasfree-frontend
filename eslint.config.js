@@ -41,7 +41,7 @@ export default [
     rules: {
       'prefer-promise-reject-errors': 'off',
       'object-shorthand': 'off',
-      'vue/no-v-html': 'off',
+      'vue/no-v-html': 'warn',
       'vue/multi-word-component-names': 'off',
       'vue/no-deprecated-slot-attribute': 'off',
       'vue/no-deprecated-slot-scope-attribute': 'off',
