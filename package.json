@@ -36,7 +36,7 @@
     "@fontsource/dosis": "5.2.8",
     "@quasar/extras": "1.17.0",
     "@vue-leaflet/vue-leaflet": "0.7.0",
-    "@vue/compiler-sfc": "3.5.26",
+    "@vue/compiler-sfc": "3.5.27",
     "ace-builds": "1.43.5",
     "axios": "1.13.2",
     "core-js": "3.47.0",
