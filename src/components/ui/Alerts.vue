@@ -177,7 +177,7 @@ export default defineComponent({
     }
 
     const connectWS = () => {
-      const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws'
+      const wsScheme = uiStore.server.startsWith('https') ? 'wss' : 'ws'
       socket.value = new WebSocket(
         `${wsScheme}://${uiStore.server.split('//')[1]}/alerts/`,
       )
