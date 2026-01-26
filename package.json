@@ -66,7 +66,7 @@
     "@quasar/quasar-app-extension-qmarkdown": "2.0.5",
     "@storybook/addon-a11y": "8.6.15",
     "@storybook/addon-essentials": "8.6.15",
-    "@storybook/addon-links": "8.6.15",
+    "@storybook/addon-links": "10.2.0",
     "@storybook/vue3": "8.6.15",
     "@storybook/vue3-webpack5": "8.6.15",
     "@vitejs/plugin-vue": "6.0.3",
