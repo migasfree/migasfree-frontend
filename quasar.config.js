@@ -11,8 +11,25 @@
 import ESLintPlugin from 'eslint-webpack-plugin'
 import { defineConfig } from '#q-app/wrappers'
 import { fileURLToPath } from 'node:url'
+import fs from 'fs'
+
+function getEnvVar(name) {
+  if (process.env[name]) return process.env[name]
+  try {
+    const envPath = fileURLToPath(new URL('./.env', import.meta.url))
+    if (fs.existsSync(envPath)) {
+      const content = fs.readFileSync(envPath, 'utf-8')
+      // Simple parse for KEY="VALUE" or KEY=VALUE
+      const match = content.match(new RegExp(`^${name}="?([^"\\n]+)"?`, 'm'))
+      if (match) return match[1]
+    }
+  } catch (e) {}
+  return ''
+}
 
 export default defineConfig((ctx) => {
+  const MIGASFREE_SERVER = getEnvVar('MIGASFREE_SERVER')
+
   return {
     // https://v2.quasar.dev/quasar-cli-webpack/supporting-ts
     supportTS: false,
@@ -45,7 +62,7 @@ export default defineConfig((ctx) => {
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#build
     build: {
       env: {
-        MIGASFREE_SERVER: process.env.MIGASFREE_SERVER || '',
+        MIGASFREE_SERVER: MIGASFREE_SERVER || 'http://localhost',
       },
       // publicPath: '/',
       vueRouterMode: 'history', // available values: 'hash', 'history'
