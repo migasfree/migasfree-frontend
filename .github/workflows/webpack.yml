@@ -38,7 +38,7 @@ jobs:
 
       - name: Security audit
         run: |
-          yarn npm audit --severity high
+          yarn audit --severity high
         continue-on-error: true
 
   e2e:
