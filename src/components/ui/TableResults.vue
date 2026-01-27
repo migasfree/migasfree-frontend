@@ -65,8 +65,6 @@
         >
           <q-input
             v-model="tableFilters.serial"
-            outlined
-            dense
             clearable
             :label="$gettext('By Serial Number')"
             @blur="onSerialFilter"
@@ -85,8 +83,6 @@
         >
           <q-input
             v-model="tableFilters.mac"
-            outlined
-            dense
             clearable
             :label="$gettext('By MAC Address')"
             @blur="onMacFilter"
@@ -105,8 +101,6 @@
         >
           <q-input
             v-model="tableFilters.uuid"
-            outlined
-            dense
             clearable
             :label="$gettext('By UUID')"
             @blur="onUuidFilter"
