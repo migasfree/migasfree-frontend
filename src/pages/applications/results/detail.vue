@@ -24,7 +24,6 @@
               <q-input
                 ref="primaryInput"
                 v-model="element.name"
-                outlined
                 :label="$gettext('Name')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
@@ -50,7 +49,6 @@
             <div class="col-6 col-md col-sm">
               <q-select
                 v-model="element.level"
-                outlined
                 :label="$gettext('Level')"
                 :options="levels"
                 option-value="id"
@@ -65,7 +63,6 @@
             <div class="col-6 col-md col-sm">
               <q-field
                 v-model="element.score"
-                outlined
                 :label="$gettext('Score')"
                 stack-label
                 :hint="$gettext('Relevance to the organization')"
@@ -87,7 +84,6 @@
               <div class="col-6">
                 <q-file
                   v-model="iconFile"
-                  outlined
                   clearable
                   counter
                   :label="$gettext('Change Icon')"
@@ -121,7 +117,6 @@
             <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.description"
-                outlined
                 type="textarea"
                 autogrow
                 :label="$gettext('Description')"
@@ -131,7 +126,6 @@
 
             <div class="col-6 col-md col-sm">
               <q-field
-                outlined
                 :label="$gettext('Description Preview')"
                 readonly
                 stack-label
