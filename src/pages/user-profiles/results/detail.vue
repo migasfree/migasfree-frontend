@@ -54,7 +54,6 @@
               <q-input
                 ref="primaryInput"
                 v-model.trim="element.username"
-                outlined
                 counter
                 maxlength="150"
                 :label="$gettext('Username')"
@@ -73,7 +72,6 @@
             <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.first_name"
-                outlined
                 :label="$gettext('First Name')"
               />
             </div>
@@ -81,7 +79,6 @@
             <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.last_name"
-                outlined
                 :label="$gettext('Last Name')"
               />
             </div>
@@ -91,7 +88,6 @@
             <div class="col-6 col-md col-sm">
               <q-input
                 v-model.trim="element.email"
-                outlined
                 type="email"
                 :label="$gettext('Email')"
                 lazy-rules
