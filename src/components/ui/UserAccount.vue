@@ -69,6 +69,7 @@
             v-model="domainPreference"
             standout
             :options="domains"
+            option-value="id"
             option-label="name"
             :options-dense="true"
             @update:model-value="updateDomainPreference"
@@ -88,6 +89,7 @@
             v-model="scopePreference"
             standout
             :options="filteredScopes"
+            option-value="id"
             option-label="name"
             :options-dense="true"
             @update:model-value="updateScopePreference"
