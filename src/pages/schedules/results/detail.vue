@@ -38,7 +38,6 @@
               <q-input
                 ref="primaryInput"
                 v-model="element.name"
-                outlined
                 :label="$gettext('Name')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
@@ -48,7 +47,6 @@
             <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.description"
-                outlined
                 type="textarea"
                 :label="$gettext('Description')"
               />
@@ -78,7 +76,6 @@
                   <div class="col-5 col-md col-sm">
                     <q-input
                       v-model="delay.delay"
-                      outlined
                       type="number"
                       :label="$gettext('Delay')"
                       lazy-rules
@@ -89,7 +86,6 @@
                   <div class="col-5 col-md col-sm">
                     <q-input
                       v-model="delay.duration"
-                      outlined
                       type="number"
                       :label="$gettext('Duration')"
                       lazy-rules
