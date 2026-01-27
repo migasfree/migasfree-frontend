@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-card :bordered="!borderless">
+    <q-card :bordered="!borderless" :flat="borderless">
       <q-card-section v-if="title && showTitle" class="q-pb-none">
         <div class="text-h5">{{ title }}</div>
       </q-card-section>
