@@ -1,5 +1,5 @@
 <template>
-  <q-card flat bordered>
+  <q-card>
     <q-card-section>
       <div class="row">
         <div class="col-md">
@@ -23,7 +23,6 @@
               v-model="hardwareDate"
               :label="$gettext('Last hardware capture date')"
               :aria-label="$gettext('Last hardware capture date')"
-              outlined
               clearable
             >
               <template #prepend>
