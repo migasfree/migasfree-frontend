@@ -1,15 +1,20 @@
 <template>
-  <q-btn-group outlined rounded class="q-ml-lg">
+  <q-btn-group
+    outlined
+    class="q-ml-lg overflow-hidden self-center"
+    style="border-radius: 4px 24px 24px 4px"
+  >
     <q-input
       v-model="searchText"
       :label="$gettext('Search...')"
       borderless
+      dense
       clearable
       :bg-color="$q.dark.isActive ? 'dark' : 'white'"
       @keydown.enter="search({ to: selectedRoute, icon: selectedIcon })"
     />
 
-    <q-btn-dropdown auto-close color="brown-1" text-color="blue-grey-8" rounded>
+    <q-btn-dropdown auto-close color="brown-1" text-color="blue-grey-8" dense>
       <template #label>
         <q-icon :name="appIcon('search')" />
         <q-icon :name="selectedIcon" />
