@@ -70,7 +70,6 @@
             <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.name"
-                outlined
                 :label="$gettext('Name')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
@@ -125,11 +124,7 @@
 
                 <div class="row q-pa-md q-gutter-md">
                   <div class="col-5 col-md col-sm">
-                    <q-input
-                      v-model="driver.name"
-                      outlined
-                      :label="$gettext('Name')"
-                    />
+                    <q-input v-model="driver.name" :label="$gettext('Name')" />
                   </div>
 
                   <div class="col-5 col-md col-sm">
