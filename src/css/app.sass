@@ -1,3 +1,5 @@
+@import 'tokens.sass'
+
 h2
   margin-block-start: 0.3em
   margin-block-end: .3em
@@ -140,3 +142,45 @@ div.ace_editor
 
   .vgt-selection-info-row a
     color: $primary
+
+.animated-background
+  position: relative
+  overflow: hidden
+  background: var(--background)
+
+  &::before
+    content: ''
+    position: absolute
+    width: 200%
+    height: 200%
+    top: -50%
+    left: -50%
+    background: unquote('radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--primary), transparent 85%) 0%, transparent 50%), radial-gradient(circle at 80% 80%, color-mix(in srgb, var(--accent), transparent 90%) 0%, transparent 50%)')
+    animation: float 20s ease-in-out infinite
+    z-index: 0
+
+    z-index: 0
+
+.q-card
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal)
+
+  &:hover
+    border-color: var(--border-focus)
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2)
+    z-index: 1
+
+.glass-card
+  @extend .q-card
+  position: relative
+  background: var(--surface)
+  backdrop-filter: blur(20px)
+  -webkit-backdrop-filter: blur(20px)
+  border: 1px solid var(--border)
+  border-radius: var(--radius-xl)
+  box-shadow: var(--shadow-lg)
+
+@keyframes float
+  0%, 100%
+    transform: translate(0, 0) rotate(0deg)
+  50%
+    transform: translate(20px, -20px) rotate(2deg)
