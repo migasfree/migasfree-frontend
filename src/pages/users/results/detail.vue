@@ -20,7 +20,6 @@
             <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.name"
-                outlined
                 readonly
                 :label="$gettext('Name')"
               />
@@ -29,7 +28,6 @@
             <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.fullname"
-                outlined
                 readonly
                 :label="$gettext('Fullname')"
               />
