@@ -37,7 +37,6 @@
                 ref="primaryInput"
                 v-model="element.name"
                 :label="$gettext('Name')"
-                outlined
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
               />
