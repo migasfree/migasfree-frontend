@@ -34,7 +34,6 @@
             <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.name"
-                outlined
                 :label="$gettext('Name')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
