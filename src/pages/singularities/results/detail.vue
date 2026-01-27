@@ -30,7 +30,6 @@
             <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.name"
-                outlined
                 :label="$gettext('Name')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
@@ -56,7 +55,6 @@
             <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.priority"
-                outlined
                 type="number"
                 :label="$gettext('Priority')"
                 lazy-rules
@@ -95,7 +93,6 @@
             <div class="col-md-3 col-sm-3 col-xs-3">
               <q-select
                 v-model="element.language"
-                outlined
                 :label="$gettext('Language')"
                 :options="languages"
                 option-value="id"
