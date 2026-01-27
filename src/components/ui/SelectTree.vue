@@ -1,8 +1,6 @@
 <template>
   <q-input
     v-model="selected"
-    outlined
-    dense
     readonly
     :label="placeholder"
     :disable="disable"
