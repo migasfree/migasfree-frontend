@@ -2,7 +2,6 @@
   <q-select
     ref="primaryInput"
     :model-value="modelValue"
-    outlined
     use-input
     :use-chips="useChips"
     map-options
