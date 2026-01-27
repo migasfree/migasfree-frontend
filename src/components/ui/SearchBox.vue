@@ -3,7 +3,6 @@
     <q-input
       v-model="searchText"
       :label="$gettext('Search...')"
-      dense
       borderless
       clearable
       :bg-color="$q.dark.isActive ? 'dark' : 'white'"
