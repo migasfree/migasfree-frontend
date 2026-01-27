@@ -57,7 +57,6 @@
               <q-input
                 ref="primaryInput"
                 v-model="element.description"
-                outlined
                 type="textarea"
                 :label="$gettext('Description')"
               />
@@ -86,7 +85,6 @@
                 <div class="col-6 col-md col-sm">
                   <q-input
                     v-model="element.latitude"
-                    outlined
                     :label="$gettext('Latitude')"
                     @update:model-value="updateMapCoords"
                   />
@@ -95,7 +93,6 @@
                 <div class="col-6 col-md col-sm">
                   <q-input
                     v-model="element.longitude"
-                    outlined
                     :label="$gettext('Longitude')"
                     @update:model-value="updateMapCoords"
                   />
