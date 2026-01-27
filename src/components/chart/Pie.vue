@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-card flat bordered>
+    <q-card>
       <q-card-section class="q-pb-none">
         <div class="row">
           <div class="col">
@@ -62,7 +62,7 @@
     </q-card>
 
     <q-dialog v-model="viewData">
-      <q-card flat>
+      <q-card>
         <q-card-section>
           <div class="text-h5">
             <q-icon :name="appIcon('data')" size="lg" class="vertical-middle" />
@@ -82,8 +82,6 @@
             row-key="name"
             hide-header
             hide-pagination
-            flat
-            bordered
             @row-click="rowClick"
           >
             <template #top-right>
