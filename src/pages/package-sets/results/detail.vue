@@ -22,7 +22,6 @@
               <q-input
                 ref="primaryInput"
                 v-model="element.name"
-                outlined
                 :label="$gettext('Name')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
@@ -32,7 +31,6 @@
             <div class="col-6 col-md col-sm">
               <template v-if="element.id">
                 <q-field
-                  outlined
                   :label="$gettext('Project / Store')"
                   readonly
                   stack-label
@@ -59,7 +57,6 @@
               <q-input
                 v-else
                 v-model="projectStore.selected"
-                outlined
                 readonly
                 :label="$gettext('Project / Store')"
                 @update:model-value="menu.value.show()"
@@ -106,7 +103,6 @@
                 <q-file
                   v-model="element.files"
                   clearable
-                  outlined
                   counter
                   multiple
                   append
@@ -122,7 +118,6 @@
             <div class="col-12 col-md col-sm">
               <q-input
                 v-model="element.description"
-                outlined
                 type="textarea"
                 :label="$gettext('Description')"
               />
