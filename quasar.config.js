@@ -153,7 +153,11 @@ export default defineConfig((ctx) => {
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#framework
     framework: {
-      config: {},
+      config: {
+        input: { outlined: true, dense: true },
+        select: { outlined: true, dense: true },
+        card: { flat: true, bordered: true },
+      },
 
       iconSet: 'mdi-v7', // Quasar icon set
       lang: 'en-US', // Quasar language pack
