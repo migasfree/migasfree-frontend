@@ -86,7 +86,6 @@
                 type="textarea"
                 class="pre overflow"
                 readonly
-                outlined
               />
               <CopyToClipboard size="md" :content="element.result" />
             </div>
