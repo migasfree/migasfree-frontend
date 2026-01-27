@@ -24,7 +24,6 @@
               <q-input
                 ref="primaryInput"
                 v-model="element.name"
-                outlined
                 :label="$gettext('Name')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
@@ -68,7 +67,6 @@
             <div class="col">
               <q-input
                 v-model="element.comment"
-                outlined
                 type="textarea"
                 :label="$gettext('Comment')"
               />
@@ -127,7 +125,6 @@
                   <div class="col-5 col-md col-sm">
                     <q-input
                       v-model="line.priority"
-                      outlined
                       type="number"
                       :label="$gettext('Priority')"
                       lazy-rules
