@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-card>
+    <q-card :bordered="!borderless">
       <q-card-section class="q-pb-none">
         <div class="row">
           <div class="col">
@@ -154,6 +154,11 @@ export default {
       },
     },
     critical: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    borderless: {
       type: Boolean,
       required: false,
       default: false,
