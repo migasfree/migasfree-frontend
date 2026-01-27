@@ -1,7 +1,7 @@
 <template>
   <q-card flat bordered>
     <q-card-section>
-      <div class="text-h5">{{ $gettext('Devices') }}</div>
+      <div class="text-h5 q-pb-md">{{ $gettext('Devices') }}</div>
 
       <div v-if="Object.keys(devices).length == 0" class="justify-center">
         <q-spinner-dots color="primary" size="3em" />
