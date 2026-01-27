@@ -68,7 +68,6 @@
               <q-input
                 v-else
                 v-model="projectStore.selected"
-                outlined
                 readonly
                 :label="$gettext('Project / Store')"
                 @update:model-value="menu.value.show()"
