@@ -2,7 +2,6 @@
   <q-input
     v-model="dayPicked"
     :readonly="readonly"
-    outlined
     :dense="dense"
     clearable
     input-class="cursor-pointer"
