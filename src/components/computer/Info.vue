@@ -1,5 +1,5 @@
 <template>
-  <q-card flat bordered>
+  <q-card>
     <q-card-section>
       <div class="row">
         <div class="col">
@@ -10,7 +10,7 @@
       <div class="row q-py-sm">
         <div class="col col-md col-sm">
           <q-btn-group v-if="isSuperUser">
-            <q-input v-model="value" outlined :label="$gettext('Name')" />
+            <q-input v-model="value" :label="$gettext('Name')" />
             <q-btn
               color="primary"
               :icon="appIcon('save-edit')"
