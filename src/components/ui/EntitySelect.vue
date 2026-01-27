@@ -5,7 +5,6 @@
     :options="options"
     :label="label"
     :aria-label="label"
-    outlined
     :multiple="multiple"
     :counter="multiple"
     :clearable="clearable"
