@@ -106,7 +106,6 @@
             <div class="col-4 col-md col-sm">
               <q-input
                 v-model="element.name"
-                outlined
                 :label="$gettext('Name')"
                 :aria-label="$gettext('Name')"
                 lazy-rules
@@ -123,7 +122,6 @@
             <div class="col-4 col-md col-sm">
               <q-input
                 v-model="element.base_os"
-                outlined
                 :label="$gettext('Base Operating System')"
                 :aria-label="$gettext('Base Operating System')"
                 lazy-rules
@@ -149,7 +147,6 @@
             <div class="col-4 col-md col-sm">
               <q-select
                 v-model="element.pms"
-                outlined
                 :label="$gettext('Package Management System')"
                 :aria-label="$gettext('Package Management System')"
                 :options="pms"
@@ -164,7 +161,6 @@
             <div class="col-4 col-md col-sm">
               <q-select
                 v-model="element.architecture"
-                outlined
                 multiple
                 use-chips
                 :rules="[(val) => !!val || $gettext('* Required')]"
