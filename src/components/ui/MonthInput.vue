@@ -2,8 +2,6 @@
   <q-input
     v-model="monthPicked"
     readonly
-    outlined
-    dense
     input-class="cursor-pointer"
     :label="label"
     @click="monthPicker.show()"
