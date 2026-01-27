@@ -1,5 +1,5 @@
 <template>
-  <q-card flat bordered>
+  <q-card>
     <q-card-section>
       <div class="text-h5 q-pb-md">{{ $gettext('Software') }}</div>
 
@@ -48,7 +48,6 @@
                   v-model="searchInventory"
                   :label="$gettext('Search')"
                   clearable
-                  dense
                   @clear="showSearchInventory = false"
                   @click.stop
                   ><template #prepend
@@ -146,7 +145,6 @@
                   v-model="searchHistory"
                   :label="$gettext('Search')"
                   clearable
-                  dense
                   @clear="showSearchHistory = false"
                   @click.stop
                   ><template #prepend
