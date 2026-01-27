@@ -1,12 +1,13 @@
 <template>
-  <q-page
-    class="flex flex-center"
-    :class="$q.dark.isActive ? 'bg-gradient-dark' : 'bg-gradient'"
-  >
+  <q-page class="flex flex-center animated-background">
     <q-card
       flat
-      bordered
-      :style="$q.screen.lt.sm ? { width: '70%' } : { width: '40%' }"
+      class="glass-card"
+      :style="
+        $q.screen.lt.sm
+          ? { width: '85%' }
+          : { width: '400px', maxWidth: '90vw' }
+      "
     >
       <q-card-section>
         <q-avatar
@@ -242,25 +243,10 @@ export default {
 }
 </script>
 
-<style scoped>
-#logo {
-  width: 60px;
-  height: 90px;
-  object-fit: contain;
-}
-
-.bg-gradient {
-  background: linear-gradient(135deg, #5d4037 0%, #4e342e 100%);
-}
-
-.bg-gradient-dark {
-  background: linear-gradient(135deg, #3e2723 0%, #212121 100%);
-}
-
-@media (max-width: 1024px) {
-  .q-card {
-    width: 60% !important;
-    padding: 16px;
-  }
-}
+<style scoped lang="sass">
+#logo
+  width: 80px
+  height: 100px
+  object-fit: contain
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1))
 </style>
