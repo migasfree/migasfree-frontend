@@ -3,8 +3,6 @@
     :model-value="modelValue"
     :options="options"
     :label="label"
-    dense
-    outlined
     option-value="id"
     option-label="name"
     @update:model-value="$emit('update:modelValue', $event)"
