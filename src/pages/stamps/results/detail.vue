@@ -44,7 +44,6 @@
             <div class="col-6 col-md col-sm">
               <q-select
                 v-model="element.kind"
-                outlined
                 :label="$gettext('Kind')"
                 :options="kind"
                 option-value="id"
@@ -59,7 +58,6 @@
             <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.prefix"
-                outlined
                 :label="$gettext('Prefix')"
                 counter
                 :maxlength="MAX_PREFIX_LEN"
@@ -86,7 +84,6 @@
             <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.name"
-                outlined
                 :label="$gettext('Name')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
