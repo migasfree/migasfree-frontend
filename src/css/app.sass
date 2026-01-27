@@ -184,3 +184,23 @@ div.ace_editor
     transform: translate(0, 0) rotate(0deg)
   50%
     transform: translate(20px, -20px) rotate(2deg)
+
+// === Sidebar / Drawer Navigation ===
+.q-drawer
+  .q-item--active
+    position: relative
+    background: linear-gradient(90deg, color-mix(in srgb, var(--primary), transparent 85%) 0%, transparent 100%)
+
+    &::before
+      content: ''
+      position: absolute
+      left: 0
+      top: 0
+      bottom: 0
+      width: 4px
+      background: var(--primary)
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0
+
+  .q-expansion-item--expanded > .q-expansion-item__container > .q-item
+    color: var(--primary)
+    font-weight: 600
