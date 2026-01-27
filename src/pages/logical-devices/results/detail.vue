@@ -74,7 +74,6 @@
             <div class="col-6 col-md col-sm">
               <q-input
                 v-model="element.alternative_capability_name"
-                outlined
                 :label="$gettext('Alternative Capability Name')"
               />
             </div>
