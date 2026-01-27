@@ -38,7 +38,7 @@
     "@vue-leaflet/vue-leaflet": "0.7.0",
     "@vue/compiler-sfc": "3.5.27",
     "ace-builds": "1.43.5",
-    "axios": "1.13.2",
+    "axios": "1.13.3",
     "core-js": "3.47.0",
     "dayjs": "1.11.19",
     "echarts": "6.0.0",
