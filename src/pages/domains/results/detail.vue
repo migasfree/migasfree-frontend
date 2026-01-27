@@ -69,7 +69,6 @@
               <q-input
                 ref="primaryInput"
                 v-model="element.name"
-                outlined
                 :label="$gettext('Name')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
@@ -86,7 +85,6 @@
             <div class="col-12 col-md col-sm">
               <q-input
                 v-model="element.comment"
-                outlined
                 type="textarea"
                 :label="$gettext('Comment')"
               />
