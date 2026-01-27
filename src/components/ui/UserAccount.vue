@@ -48,6 +48,7 @@
           <q-select
             v-model="currentLanguage"
             standout
+            dense
             :options="languages"
             option-value="label"
             option-label="value"
@@ -68,6 +69,7 @@
           <q-select
             v-model="domainPreference"
             standout
+            dense
             :options="domains"
             option-value="id"
             option-label="name"
@@ -88,6 +90,7 @@
           <q-select
             v-model="scopePreference"
             standout
+            dense
             :options="filteredScopes"
             option-value="id"
             option-label="name"
