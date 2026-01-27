@@ -48,14 +48,13 @@
 
         <div class="row q-pb-md q-col-gutter-md">
           <div class="col-6 col-md col-sm-12 col-xs-12">
-            <q-card flat bordered>
+            <q-card>
               <q-card-section>
                 <div class="text-h5">{{ $gettext('Current Situation') }}</div>
 
                 <q-select
                   v-model="element.status"
                   class="q-my-md"
-                  outlined
                   emit-value
                   map-options
                   :label="$gettext('Status')"
@@ -93,7 +92,6 @@
                 <q-input
                   v-model="element.comment"
                   class="q-my-md"
-                  outlined
                   type="textarea"
                   :label="$gettext('Comment')"
                 />
@@ -227,7 +225,7 @@
           </div>
 
           <div class="col-6 col-md col-sm-12 col-xs-12">
-            <q-card flat bordered>
+            <q-card>
               <q-card-section>
                 <div class="row">
                   <div class="col">
@@ -319,7 +317,7 @@
 
         <div v-if="markers.length > 0" class="row q-pb-md q-col-gutter-md">
           <div class="col col-md col-sm-12">
-            <q-card flat bordered>
+            <q-card>
               <q-card-section>
                 <div class="text-h5 q-pb-sm">{{ $gettext('Locations') }}</div>
 
