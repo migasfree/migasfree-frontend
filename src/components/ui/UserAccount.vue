@@ -51,7 +51,6 @@
             :options="languages"
             option-value="label"
             option-label="value"
-            :dense="true"
             :options-dense="true"
             @update:model-value="changeAppLanguage"
           />
@@ -70,9 +69,7 @@
             v-model="domainPreference"
             standout
             :options="domains"
-            option-value="id"
             option-label="name"
-            :dense="true"
             :options-dense="true"
             @update:model-value="updateDomainPreference"
           />
@@ -91,9 +88,7 @@
             v-model="scopePreference"
             standout
             :options="filteredScopes"
-            option-value="id"
             option-label="name"
-            :dense="true"
             :options-dense="true"
             @update:model-value="updateScopePreference"
           />
