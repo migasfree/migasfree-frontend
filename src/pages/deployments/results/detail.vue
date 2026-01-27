@@ -30,7 +30,7 @@
       <template #fields>
         <div class="row q-pb-md q-col-gutter-md">
           <div class="col-6 col-md col-sm-12">
-            <q-card flat bordered>
+            <q-card>
               <q-card-section>
                 <div class="text-h5 q-pb-sm">{{ $gettext('General') }}</div>
 
@@ -47,7 +47,6 @@
                   <div class="col-6 col-md col-sm">
                     <q-input
                       v-model="element.name"
-                      outlined
                       :label="$gettext('Name')"
                       :aria-label="$gettext('Name')"
                       lazy-rules
@@ -90,7 +89,6 @@
                   <div class="col-12 col-md col-sm">
                     <q-input
                       v-model="element.comment"
-                      outlined
                       type="textarea"
                       :label="$gettext('Comment')"
                       :aria-label="$gettext('Comment')"
@@ -102,7 +100,7 @@
           </div>
 
           <div class="col-6 col-md col-sm-12">
-            <q-card flat bordered>
+            <q-card>
               <q-card-section>
                 <div class="text-h5 q-pb-sm">
                   {{ $gettext('To who (attributes)') }}
@@ -132,7 +130,7 @@
 
         <div class="row q-pb-md q-col-gutter-md">
           <div class="col-6 col-md col-sm-12">
-            <q-card flat bordered>
+            <q-card>
               <q-card-section>
                 <div class="text-h5 q-pb-sm">
                   {{ $gettext('What (packages)') }}
@@ -142,7 +140,6 @@
                   <div class="col-12 col-md col-sm">
                     <q-select
                       v-model="source"
-                      outlined
                       class="q-my-md"
                       :label="$gettext('Source')"
                       :aria-label="$gettext('Source')"
@@ -229,7 +226,6 @@
                     <div class="col-12 col-md col-sm">
                       <q-input
                         v-model="element.base_url"
-                        outlined
                         class="q-my-md"
                         :label="$gettext('Base URL')"
                       />
@@ -241,7 +237,6 @@
                       <q-input
                         v-model="element.suite"
                         class="q-my-md"
-                        outlined
                         :label="$gettext('Suite')"
                       />
                     </div>
@@ -252,7 +247,6 @@
                       <q-input
                         v-model="element.components"
                         class="q-my-md"
-                        outlined
                         :label="$gettext('Components')"
                         :aria-label="$gettext('Components')"
                       />
@@ -264,7 +258,6 @@
                       <q-input
                         v-model="element.options"
                         class="q-my-md"
-                        outlined
                         :label="$gettext('Options')"
                         :aria-label="$gettext('Options')"
                       />
@@ -275,7 +268,6 @@
                     <div class="col-6 col-md col-sm">
                       <q-input
                         v-model="element.expire"
-                        outlined
                         class="q-my-md"
                         type="number"
                         :label="$gettext('Expire (minutes)')"
@@ -299,7 +291,7 @@
           </div>
 
           <div class="col-6 col-md col-sm-12">
-            <q-card flat bordered>
+            <q-card>
               <q-card-section>
                 <div class="text-h5 q-pb-sm">{{ $gettext('Actions') }}</div>
 
@@ -377,7 +369,7 @@
 
         <div class="row q-pb-md q-col-gutter-md">
           <div class="col-12 col-md-12 col-sm-12">
-            <q-card flat bordered>
+            <q-card>
               <q-card-section>
                 <div class="text-h5 q-pb-sm">
                   {{ $gettext('When (schedule)') }}
