@@ -37,18 +37,14 @@
 
     <div class="row q-pb-md">
       <div class="col-12">
-        <q-list
-          id="events-history"
-          :class="[
-            'q-card q-card--flat no-shadow',
-            $q.dark.isActive ? 'q-card--dark q-dark' : '',
-          ]"
-          bordered
-        >
-          <q-expansion-item @show="loadEventsHistory">
+        <q-list id="events-history" class="q-card" bordered>
+          <q-expansion-item
+            header-class="q-card__section q-pb-none"
+            @show="loadEventsHistory"
+          >
             <template #header>
               <q-item-section>
-                <div class="text-h5 q-py-sm">
+                <div class="text-h5 q-my-sm">
                   {{
                     $gettext(
                       'History of events in the last %{ number } hours',
