@@ -1,8 +1,6 @@
 <template>
   <q-input
     :model-value="dateView"
-    outlined
-    dense
     readonly
     :label="label"
     @click="qDateProxy.show()"
