@@ -25,7 +25,6 @@
               <q-input
                 ref="primaryInput"
                 v-model="element.name"
-                outlined
                 :label="$gettext('Name')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
@@ -102,7 +101,6 @@
             <div class="col-md">
               <q-input
                 v-model="field.value"
-                outlined
                 :label="field.id"
                 :hint="field.hint"
               />
@@ -152,7 +150,6 @@
                     <div class="col-5 col-md col-sm">
                       <q-input
                         v-model="logical.alternative_capability_name"
-                        outlined
                         :label="$gettext('Alternative Capability Name')"
                       />
                     </div>
