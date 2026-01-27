@@ -1,5 +1,5 @@
 <template>
-  <q-card flat bordered>
+  <q-card>
     <q-card-section>
       <div class="text-h5 q-pb-md">{{ $gettext('Devices') }}</div>
 
@@ -42,7 +42,6 @@
           <q-select
             v-model="devices.default_logical_device"
             class="q-my-md"
-            outlined
             clearable
             :options="defaultLogicalDevices"
             :label="$gettext('By default')"
