@@ -51,6 +51,7 @@
             v-model="model.username"
             lazy-rules
             outlined
+            autocomplete="username"
             :label="$gettext('User')"
             :aria-label="$gettext('User')"
             :rules="[(val) => !!val || $gettext('* Required')]"
@@ -66,6 +67,7 @@
             lazy-rules
             outlined
             counter
+            autocomplete="current-password"
             :label="$gettext('Password')"
             :aria-label="$gettext('Password')"
             :rules="[
@@ -245,8 +247,8 @@ export default {
 
 <style scoped lang="sass">
 #logo
-  width: 80px
-  height: 100px
+  width: 60px
+  height: 90px
   object-fit: contain
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1))
 </style>
