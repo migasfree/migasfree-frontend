@@ -23,7 +23,9 @@ function getEnvVar(name) {
       const match = content.match(new RegExp(`^${name}="?([^"\\n]+)"?`, 'm'))
       if (match) return match[1]
     }
-  } catch (e) {}
+  } catch {
+    /* empty */
+  }
   return ''
 }
 
