@@ -87,7 +87,7 @@
     "prettier": "3.8.1",
     "sass": "1.97.2",
     "sass-loader": "16.0.6",
-    "storybook": "10.2.0",
+    "storybook": "10.2.3",
     "style-loader": "4.0.0",
     "vitest": "4.0.18",
     "vitest-axe": "0.1.0",
