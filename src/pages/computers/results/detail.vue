@@ -380,7 +380,7 @@
                         v-if="
                           item.description && item.description !== item.tooltip
                         "
-                        style="white-space: pre-wrap"
+                        class="pre-wrap"
                       >
                         {{ item.description }}
                       </p>
@@ -732,6 +732,9 @@ export default {
 </script>
 
 <style scoped>
+.pre-wrap {
+  white-space: pre-wrap;
+}
 #map {
   width: 100%;
   aspect-ratio: 16 / 9;

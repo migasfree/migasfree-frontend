@@ -1,8 +1,7 @@
 <template>
   <q-btn-group
     outlined
-    class="q-ml-lg overflow-hidden self-center"
-    style="border-radius: 4px 24px 24px 4px"
+    class="q-ml-lg overflow-hidden self-center search-btn-group"
   >
     <q-input
       v-model="searchText"
@@ -106,3 +105,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.search-btn-group {
+  border-radius: 4px 24px 24px 4px;
+}
+</style>

@@ -37,7 +37,7 @@
 | ID         | Severity | Finding                    | Location           | Recommendation                                                                                                                                            |
 | :--------- | :------- | :------------------------- | :----------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **FE-001** | Medium   | **Standard Material Look** | Global             | The interface relies heavily on standard Material Design. Lacks the "Premium" custom aesthetic (Glassmorphism, custom typography) required by guidelines. |
-| **FE-002** | Low      | **Inline Styles**          | Various Components | Occasional use of inline styling or specific utility classes that could be abstracted into the Design System.                                             |
+| **FE-002** | Low      | **Inline Styles**          | Various Components | **[FIXED]** ~~Occasional use of inline styling or specific utility classes that could be abstracted into the Design System.~~                             |
 
 ### 1.2 Recommendations Summary
 
@@ -129,7 +129,7 @@ graph TD
 | **Medium (P2)** | UX-002  | UX       | **[FIXED]** ~~**Empty States**: Audit all charts and lists to ensure informative "No Data" states are present.~~                                                        |
 | **Medium (P2)** | TW-001  | Docs     | **[FIXED]** ~~**Diátaxis Framework**: Restructure documentation into Tutorials, Guides, Reference, and Explanations.~~                                                  |
 | **Low (P3)**    | TW-002  | Code     | **[FIXED]** ~~**Inline Documentation**: Complex logic in `setup()` functions often lacks explanatory comments for business logic.~~                                     |
-| **Low (P3)**    | FE-002  | Code     | **Refactor Inline Styles**: Move scattered inline styles to SCSS modules or utility classes.                                                                            |
+| **Low (P3)**    | FE-002  | Code     | **[FIXED]** ~~**Refactor Inline Styles**: Move scattered inline styles to SCSS modules or utility classes.~~                                                            |
 | **Low (P3)**    | SEC-001 | Security | **CSP Verification**: Verify Content Security Policy for production builds.                                                                                             |
 | **Low (P3)**    | SEC-002 | Security | **[FIXED]** ~~**Input Sanitization**: Ensure all form inputs (e.g., in `Dashboard.vue` hours selector) have bounds checking.~~                                          |
 

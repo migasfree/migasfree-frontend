@@ -3,7 +3,7 @@
     class="fullscreen bg-brown-7 text-white text-center q-pa-md flex flex-center"
   >
     <div>
-      <div style="font-size: 30vh">404</div>
+      <div class="text-error-code">404</div>
 
       <div class="text-h2">{{ $gettext('Oops. Nothing here...') }}</div>
 
@@ -26,3 +26,9 @@ export default defineComponent({
   name: 'ErrorNotFound',
 })
 </script>
+
+<style scoped>
+.text-error-code {
+  font-size: 30vh;
+}
+</style>

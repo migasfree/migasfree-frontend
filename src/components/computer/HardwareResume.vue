@@ -85,7 +85,7 @@
 
       <div class="row q-py-sm">
         <div class="col-4 col-md-4 col-sm">
-          <q-icon :name="productIcon(productSystem)" style="font-size: 6em">
+          <q-icon :name="productIcon(productSystem)" size="6em">
             <q-tooltip>{{ productSystem }}</q-tooltip>
             <q-badge floating transparent>
               {{ architecture }} {{ $gettext('bits') }}
