@@ -336,18 +336,15 @@ export default {
     const viewData = ref(false)
 
     const isChartVisible = computed(() => {
-      return (
-        Object.keys(data).length > 0 ||
-        ('series' in data && data.series.length > 0)
-      )
+      return 'series' in data && data.series.length > 0
     })
 
     const isSelectedModeVisible = computed(() => {
-      return options.series.length > 1
+      return isChartVisible.value && options.series.length > 1
     })
 
     const noData = computed(() => {
-      return !('series' in data)
+      return !isChartVisible.value
     })
 
     const loadData = async () => {
