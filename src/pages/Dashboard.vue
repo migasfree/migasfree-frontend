@@ -37,7 +37,7 @@
 
     <div class="row q-pb-md">
       <div class="col-12">
-        <q-list id="events-history" class="q-card" bordered>
+        <q-card id="events-history">
           <q-expansion-item
             header-class="q-card__section q-pb-none"
             @show="loadEventsHistory"
@@ -91,7 +91,7 @@
               </template>
             </StackedBarChart>
           </q-expansion-item>
-        </q-list>
+        </q-card>
       </div>
     </div>
 

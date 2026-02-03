@@ -42,7 +42,7 @@ export default defineConfig((ctx) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-webpack/boot-files
-    boot: ['axios', 'fonts', 'gettext', 'vue-good-table-next'],
+    boot: ['axios', 'fonts', 'gettext', 'vue-good-table-next', 'ui-defaults'],
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#css
     css: ['app.sass'],
@@ -155,11 +155,7 @@ export default defineConfig((ctx) => {
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#framework
     framework: {
-      config: {
-        input: { outlined: true, dense: true },
-        select: { outlined: true, dense: true },
-        card: { flat: true, bordered: true },
-      },
+      config: {},
 
       iconSet: 'mdi-v7', // Quasar icon set
       lang: 'en-US', // Quasar language pack

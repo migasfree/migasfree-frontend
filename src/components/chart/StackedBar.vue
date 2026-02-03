@@ -1,8 +1,8 @@
 <template>
   <div>
-    <q-card :bordered="!borderless" :flat="borderless">
+    <q-card :bordered="!borderless">
       <q-card-section v-if="title && showTitle" class="q-pb-none">
-        <div class="text-h5">{{ title }}</div>
+        <div class="text-h5 q-mt-sm">{{ title }}</div>
       </q-card-section>
 
       <slot name="selector"></slot>
