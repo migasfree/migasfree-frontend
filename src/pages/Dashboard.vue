@@ -224,6 +224,7 @@ export default defineComponent({
       }
     })
 
+    // Fetches the list of all available projects and triggers monthly syncs load
     const loadProjects = async () => {
       try {
         const response = await api.get('/api/v1/token/projects')
@@ -234,6 +235,8 @@ export default defineComponent({
       }
     }
 
+    // Loads monthly synchronization statistics for all projects.
+    // Executes requests in parallel for better performance.
     const loadMonthlySyncs = async () => {
       monthlySyncs.series = []
       loadingMonthlySyncs.value = true
@@ -241,6 +244,7 @@ export default defineComponent({
       try {
         const baseParams = { begin: begin.value, end: end.value }
 
+        // Fetch global total first to set x-axis labels
         const baseResponse = await api.get(
           '/api/v1/token/stats/syncs/monthly/',
           {
@@ -257,7 +261,7 @@ export default defineComponent({
           })
         }
 
-        // Run project requests in parallel
+        // Run detailed project requests in parallel
         const projectPromises = projects.value.map((item) =>
           api
             .get('/api/v1/token/stats/syncs/monthly/', {
@@ -295,6 +299,8 @@ export default defineComponent({
       }-${date.getDate()}T${date.getHours()}`
     }
 
+    // Aggregates history data from multiple endpoints (syncs, errors, faults, etc.)
+    // Transforms the data into a series format compatible with StackedBarChart.
     const loadEventsHistory = async () => {
       const begin = calculateBeginDate()
       loading.value = true
@@ -346,8 +352,9 @@ export default defineComponent({
       uiStore.scrollToElement(document.getElementById('monthly-syncs'))
     }
 
+    // Handles chart click navigation.
+    // Resolves destination routes and builds query parameters based on chart data context.
     const goTo = (params) => {
-      // console.log('goTo **********', params)
       let query = {}
 
       if (params.data.project_id) {
