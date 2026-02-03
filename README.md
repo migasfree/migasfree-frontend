@@ -11,46 +11,20 @@ This project is the frontend (with [Quasar framework](https://quasar.dev/)).
 
 Migasfree is free software, released under [GNU GPL v3](https://github.com/migasfree/migasfree-frontend/blob/master/LICENSE).
 
-## Install the dependencies
+## Documentation
+
+- **[Getting Started](docs/tutorials/getting-started.md)**: Setup and installation guide.
+- **[How to Contribute](docs/how-to/contributing.md)**: Guidelines for contributing code and running tests.
+- **[Script Reference](docs/reference/scripts.md)**: List of available yarn commands.
+
+## Quick Start
 
 ```bash
+# Install dependencies
 yarn
-```
 
-### Configure server
-
-Create and .env file. You can take the content of file .env.example as a sample.
-
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
-
-```bash
+# Start development server
 yarn dev
-```
-
-### Lint the files
-
-```bash
-yarn lint
-```
-
-### i18n
-
-```bash
-yarn gettext:extract
-yarn gettext:compile
-```
-
-### Build the app for production
-
-```bash
-yarn build
-```
-
-## Build docker container (develop purpose)
-
-```bash
-docker build -t migasfree-frontend .
-docker run -p 3000:3000 migasfree-frontend
 ```
 
 ## Screenshots
