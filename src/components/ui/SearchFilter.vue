@@ -5,6 +5,7 @@
       v-model="searchText"
       :label="$gettext('Search...')"
       clearable
+      :outlined="false"
       @keydown.enter="$emit('search', searchText)"
       @clear="$emit('clear')"
     >
