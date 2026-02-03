@@ -70,12 +70,19 @@
               <template #selector>
                 <q-card-section class="row justify-center q-py-none">
                   <q-input
-                    v-model="lastHours"
+                    v-model.number="lastHours"
                     type="number"
                     class="q-ma-sm"
                     outlined
                     dense
                     :label="$gettext('Last Hours')"
+                    min="1"
+                    max="720"
+                    :rules="[
+                      (val) => val > 0 || $gettext('Must be positive'),
+                      (val) =>
+                        val <= 720 || $gettext('Max 720 hours (30 days)'),
+                    ]"
                     @keydown.enter="updateEventsHistory"
                   />
 
@@ -343,6 +350,9 @@ export default defineComponent({
     }
 
     const updateEventsHistory = () => {
+      if (!lastHours.value || lastHours.value < 1) lastHours.value = 1
+      if (lastHours.value > 720) lastHours.value = 720
+
       Object.assign(eventsHistory, { series: [], xData: [] })
       loadEventsHistory()
     }
