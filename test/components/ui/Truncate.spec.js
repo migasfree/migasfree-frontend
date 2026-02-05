@@ -64,7 +64,7 @@ describe('Truncate.vue', () => {
       modelValue: textWithNewlines,
       formatted: false,
     })
-    expect(wrapper.vm.localValue).toContain('<br />')
+    expect(wrapper.vm.localValue).toContain('<br>')
   })
 
   it('keeps newlines when formatted is true', () => {

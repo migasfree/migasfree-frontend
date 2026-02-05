@@ -21,6 +21,7 @@
 <script>
 import { computed } from 'vue'
 import clip from 'text-clipper'
+import DOMPurify from 'dompurify'
 
 export default {
   name: 'Truncate',
@@ -42,15 +43,20 @@ export default {
   },
   setup(props) {
     const truncatedValue = computed(() => {
-      return clip(props.modelValue, props.len, {
+      const clipped = clip(props.modelValue, props.len, {
         html: true,
         maxLines: 3,
       })
+      // Sanitize the clipped value as well, just in case
+      return DOMPurify.sanitize(clipped)
     })
 
     const localValue = computed(() => {
-      if (props.formatted) return props.modelValue
-      else return props.modelValue.replaceAll('\n', '<br />')
+      let content = props.modelValue
+      if (!props.formatted) {
+        content = content.replaceAll('\n', '<br />')
+      }
+      return DOMPurify.sanitize(content)
     })
 
     return { truncatedValue, localValue }
