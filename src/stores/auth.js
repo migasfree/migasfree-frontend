@@ -1,18 +1,18 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { LocalStorage } from 'quasar'
+import { SessionStorage } from 'quasar'
 
 import { api } from 'boot/axios'
 import { gettext } from 'boot/gettext'
 import { useUiStore } from './ui.js'
 
 export const useAuthStore = defineStore('auth', () => {
-  const token = ref(LocalStorage.getItem('auth.token')) || ref('')
-  const loggedIn = ref(LocalStorage.getItem('auth.loggedIn')) || ref(false)
-  const user = ref(LocalStorage.getItem('auth.user')) || ref({})
-  const server = ref(LocalStorage.getItem('auth.server')) || ref({})
+  const token = ref(SessionStorage.getItem('auth.token')) || ref('')
+  const loggedIn = ref(SessionStorage.getItem('auth.loggedIn')) || ref(false)
+  const user = ref(SessionStorage.getItem('auth.user')) || ref({})
+  const server = ref(SessionStorage.getItem('auth.server')) || ref({})
   const domains =
-    ref(LocalStorage.getItem('auth.domains')) ||
+    ref(SessionStorage.getItem('auth.domains')) ||
     ref([
       {
         id: 0,
@@ -20,7 +20,7 @@ export const useAuthStore = defineStore('auth', () => {
       },
     ])
   const scopes =
-    ref(LocalStorage.getItem('auth.scopes')) ||
+    ref(SessionStorage.getItem('auth.scopes')) ||
     ref([
       {
         id: 0,
@@ -120,7 +120,7 @@ export const useAuthStore = defineStore('auth', () => {
       deleteDomain(payload.id)
       domains.value.push(payload)
       domains.value.sort(sortByName)
-      LocalStorage.set('auth.domains', domains.value)
+      SessionStorage.set('auth.domains', domains.value)
     }
   }
 
@@ -144,7 +144,7 @@ export const useAuthStore = defineStore('auth', () => {
       deleteScope(payload.id)
       scopes.value.push(payload)
       scopes.value.sort(sortByName)
-      LocalStorage.set('auth.scopes', scopes.value)
+      SessionStorage.set('auth.scopes', scopes.value)
     }
   }
 
@@ -171,32 +171,32 @@ export const useAuthStore = defineStore('auth', () => {
 
   const setLoggedIn = (value) => {
     loggedIn.value = value
-    LocalStorage.set('auth.loggedIn', loggedIn.value)
+    SessionStorage.set('auth.loggedIn', loggedIn.value)
   }
 
   const setUser = (value) => {
     user.value = value
-    LocalStorage.set('auth.user', user.value)
+    SessionStorage.set('auth.user', user.value)
   }
 
   const setServerInfo = (value) => {
     server.value = value
-    LocalStorage.set('auth.server', server.value)
+    SessionStorage.set('auth.server', server.value)
   }
 
   const setToken = (value) => {
     token.value = value
-    LocalStorage.set('auth.token', token.value)
+    SessionStorage.set('auth.token', token.value)
   }
 
   const resetUser = () => {
     user.value = {}
-    LocalStorage.set('auth.user', user.value)
+    SessionStorage.set('auth.user', user.value)
   }
 
   const resetServerInfo = () => {
     server.value = {}
-    LocalStorage.set('auth.server', server.value)
+    SessionStorage.set('auth.server', server.value)
   }
 
   const deleteDomain = (id) => {
@@ -211,7 +211,7 @@ export const useAuthStore = defineStore('auth', () => {
         name: gettext.$gettext('All').toUpperCase(),
       },
     ]
-    LocalStorage.set('auth.domains', domains.value)
+    SessionStorage.set('auth.domains', domains.value)
   }
 
   const deleteScope = (id) => {
@@ -226,7 +226,7 @@ export const useAuthStore = defineStore('auth', () => {
         name: gettext.$gettext('All').toLowerCase(),
       },
     ]
-    LocalStorage.set('auth.scopes', scopes.value)
+    SessionStorage.set('auth.scopes', scopes.value)
   }
 
   return {

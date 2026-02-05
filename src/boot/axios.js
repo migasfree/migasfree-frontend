@@ -1,4 +1,4 @@
-import { LocalStorage, Notify } from 'quasar'
+import { SessionStorage, Notify } from 'quasar'
 import { boot } from 'quasar/wrappers'
 import axios from 'axios'
 import { parse, stringify } from 'qs'
@@ -37,7 +37,7 @@ export default boot(({ app, router }) => {
 
   api.interceptors.request.use(
     (config) => {
-      const authToken = LocalStorage.getItem('auth.token')
+      const authToken = SessionStorage.getItem('auth.token')
 
       if (
         authToken &&
@@ -92,7 +92,8 @@ export default boot(({ app, router }) => {
               message: gettext.$gettext('Session Expired'),
               caption: gettext.$gettext('Please login again'),
             })
-            LocalStorage.remove('auth.token')
+            SessionStorage.remove('auth.token')
+
             router.push({ name: 'login' })
             break
 
