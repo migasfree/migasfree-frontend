@@ -256,6 +256,7 @@ export default {
       const method = element.id === authStore.user.id ? 'post' : 'put'
 
       try {
+        // eslint-disable-next-line security/detect-object-injection
         await api[method](endpoint, elementData())
         uiStore.notifySuccess($gettext('Password changed!'))
         router.push({ name: routes.detail, params: { id: element.id } })

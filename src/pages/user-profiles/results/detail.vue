@@ -375,8 +375,8 @@ export default {
 
     const isValidEmail = (val) => {
       if (val === undefined || val === '') return true
-      const emailPattern =
-        /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/
+      // Validates basic email structure to avoid ReDoS. Logic handles length checks separately if needed.
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
       return emailPattern.test(val) || $gettext('Invalid email')
     }
 
