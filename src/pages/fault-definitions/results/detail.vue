@@ -280,9 +280,7 @@ export default {
       }
     }
 
-    const abortFilterUserProfiles = () => {
-      // console.log('delayed filter aborted')
-    }
+    const abortFilterUserProfiles = () => {}
 
     return {
       breadcrumbs,

@@ -115,9 +115,7 @@ export default {
         update(() => {})
       }
     },
-    onFilterAbort() {
-      // console.log('delayed filter aborted')
-    },
+    onFilterAbort() {},
     updateValue(val) {
       this.$emit('update:modelValue', val)
     },

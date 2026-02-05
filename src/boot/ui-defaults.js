@@ -21,6 +21,4 @@ export default boot(() => {
 
   setPropDefault(QCard, 'flat', true)
   setPropDefault(QCard, 'bordered', true)
-
-  console.log('Applied global defaults for QInput, QSelect, QCard')
 })
