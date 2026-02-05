@@ -10,7 +10,7 @@ const defaultDomains = [{ id: 0, name: 'All' }]
 const defaultScopes = [{ id: 0, name: 'all' }]
 
 vi.mock('quasar', () => ({
-  LocalStorage: {
+  SessionStorage: {
     getItem: (key) => {
       if (mockLocalStorage.has(key)) return mockLocalStorage.get(key)
       // Return defaults for arrays and objects
