@@ -1,48 +1,15 @@
 <template>
-  <q-card>
-    <q-card-section>
-      <div class="row">
-        <div class="col">
-          <div class="text-h5">{{ $gettext('General') }}</div>
+  <q-card class="info-card shadow-2 rounded-borders">
+    <q-card-section class="q-pb-none">
+      <!-- Header -->
+      <div class="row items-center justify-between q-mb-md">
+        <div
+          class="text-h6 text-weight-bold"
+          :class="$q.dark.isActive ? 'text-white' : 'text-grey-8'"
+        >
+          {{ $gettext('General') }}
         </div>
-      </div>
-
-      <div class="row q-py-sm">
-        <div class="col col-md col-sm">
-          <q-btn-group v-if="isSuperUser">
-            <q-input v-model="value" :label="$gettext('Name')" />
-            <q-btn
-              color="primary"
-              :icon="appIcon('save-edit')"
-              :loading="loading"
-              :disabled="loading"
-              @click="updateName"
-            >
-              <q-tooltip>{{ $gettext('Save and continue editing') }}</q-tooltip>
-            </q-btn>
-          </q-btn-group>
-          <div v-else class="text-h5">
-            {{ name }}
-            <CopyToClipboard :content="name" />
-          </div>
-        </div>
-      </div>
-
-      <div class="row q-py-sm">
-        <div class="col-6 col-md col-sm">
-          <q-icon
-            :name="appIcon('information')"
-            size="sm"
-            class="vertical-middle"
-          />
-          <span class="vertical-middle">
-            {{ fqdn }}
-            <q-tooltip>{{ $gettext('full qualified domain name') }}</q-tooltip>
-          </span>
-          <CopyToClipboard v-if="fqdn" :content="fqdn" />
-        </div>
-
-        <div class="col-6 col-md col-sm">
+        <div class="row items-center no-wrap">
           <DateView
             :value="createdAt"
             icon="mdi-calendar-plus"
@@ -51,54 +18,198 @@
         </div>
       </div>
 
-      <div class="row q-py-sm">
-        <div class="col-6 col-md col-sm">
-          <MigasLink
-            model="platforms"
-            :pk="project.platform.id"
-            :value="project.platform.name"
-            :tooltip="$gettext('Platform')"
-          />
-        </div>
+      <!-- Hero Section: Name & FQDN -->
+      <div
+        class="row items-center q-pa-lg rounded-borders q-mb-lg hero-section"
+        :class="$q.dark.isActive ? 'bg-blue-grey-10' : 'bg-blue-grey-1'"
+      >
+        <div class="col-12">
+          <!-- Editable Name -->
+          <q-btn-group v-if="isSuperUser" class="full-width">
+            <q-input
+              v-model="value"
+              :label="$gettext('Name')"
+              :aria-label="$gettext('Computer Name')"
+              dense
+              outlined
+              class="col"
+              style="border-top-right-radius: 0; border-bottom-right-radius: 0"
+            />
+            <q-btn
+              color="primary"
+              :icon="appIcon('save-edit')"
+              :loading="loading"
+              :disabled="loading"
+              unelevated
+              @click="updateName"
+            >
+              <q-tooltip>{{ $gettext('Save and continue editing') }}</q-tooltip>
+            </q-btn>
+          </q-btn-group>
 
-        <div class="col-6 col-md col-sm">
-          <MigasLink
-            model="projects"
-            :pk="project.id"
-            :value="project.name"
-            :tooltip="$gettext('Project')"
-          />
+          <!-- Readonly Name -->
+          <div v-else class="row items-center no-wrap">
+            <div
+              class="text-h4 text-weight-medium q-mr-sm"
+              :class="
+                $q.dark.isActive ? 'text-blue-grey-2' : 'text-blue-grey-10'
+              "
+            >
+              {{ name }}
+            </div>
+            <CopyToClipboard :content="name" size="sm" flat />
+          </div>
+
+          <!-- FQDN -->
+          <div v-if="fqdn" class="row items-center no-wrap q-mt-sm">
+            <q-icon
+              :name="appIcon('information')"
+              size="sm"
+              class="q-mr-sm"
+              :class="
+                $q.dark.isActive ? 'text-blue-grey-4' : 'text-blue-grey-6'
+              "
+            />
+            <span
+              class="text-subtitle1"
+              :class="
+                $q.dark.isActive ? 'text-blue-grey-3' : 'text-blue-grey-7'
+              "
+            >
+              {{ fqdn }}
+              <q-tooltip>{{
+                $gettext('full qualified domain name')
+              }}</q-tooltip>
+            </span>
+            <CopyToClipboard :content="fqdn" size="xs" flat class="q-ml-xs" />
+          </div>
         </div>
       </div>
 
-      <div class="row q-py-sm">
-        <div class="col-6 col-md col-sm">
-          <q-icon name="mdi-ip-network" size="sm" class="vertical-middle" />
-          <span class="vertical-middle">
-            {{ ipAddress }}
-            <q-tooltip>{{ $gettext('ip address') }}</q-tooltip>
-          </span>
-          <CopyToClipboard v-if="ipAddress" :content="ipAddress" />
+      <!-- Info Grid 2x2 -->
+      <div class="row q-col-gutter-lg q-mb-lg">
+        <!-- Platform -->
+        <div class="col-12 col-sm-6">
+          <div
+            class="spec-box q-pa-md rounded-borders text-white"
+            :class="$q.dark.isActive ? 'bg-black' : 'bg-blue-grey-9'"
+          >
+            <div class="col overflow-hidden">
+              <div class="text-caption uppercase q-mb-sm text-white">
+                {{ $gettext('Platform') }}
+              </div>
+              <MigasLink
+                model="platforms"
+                :pk="project.platform.id"
+                :value="project.platform.name"
+                class="migaslink-elevated"
+                light
+              />
+            </div>
+          </div>
         </div>
 
-        <div class="col-6 col-md col-sm">
-          <q-icon name="mdi-ip" size="sm" class="vertical-middle" />
-          <span class="vertical-middle">
-            {{ forwardedIpAddress }}
-            <q-tooltip>{{ $gettext('forwarded ip address') }}</q-tooltip>
-          </span>
-          <CopyToClipboard
-            v-if="forwardedIpAddress"
-            :content="forwardedIpAddress"
-          />
+        <!-- Project -->
+        <div class="col-12 col-sm-6">
+          <div
+            class="spec-box q-pa-md rounded-borders text-white"
+            :class="$q.dark.isActive ? 'bg-black' : 'bg-blue-grey-9'"
+          >
+            <div class="col overflow-hidden">
+              <div class="text-caption uppercase q-mb-sm text-white">
+                {{ $gettext('Project') }}
+              </div>
+              <MigasLink
+                model="projects"
+                :pk="project.id"
+                :value="project.name"
+                class="migaslink-elevated"
+                light
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- IP Address -->
+        <div v-if="ipAddress" class="col-12 col-sm-6">
+          <div
+            class="spec-box q-pa-md rounded-borders text-white"
+            :class="$q.dark.isActive ? 'bg-black' : 'bg-blue-grey-9'"
+          >
+            <div class="row no-wrap items-center">
+              <q-icon
+                name="mdi-ip-network"
+                size="md"
+                class="q-mr-md"
+                :class="$q.dark.isActive ? 'text-blue-3' : 'text-blue-2'"
+              />
+              <div class="col overflow-hidden">
+                <div
+                  class="text-caption uppercase q-mb-xs"
+                  :class="$q.dark.isActive ? 'text-blue-3' : 'text-blue-2'"
+                >
+                  {{ $gettext('IP Address') }}
+                </div>
+                <div class="row no-wrap items-center">
+                  <div class="text-subtitle1 text-weight-medium q-mr-sm">
+                    {{ ipAddress }}
+                  </div>
+                  <CopyToClipboard
+                    :content="ipAddress"
+                    size="xs"
+                    flat
+                    :color="$q.dark.isActive ? 'blue-3' : 'blue-2'"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Forwarded IP Address -->
+        <div v-if="forwardedIpAddress" class="col-12 col-sm-6">
+          <div
+            class="spec-box q-pa-md rounded-borders text-white"
+            :class="$q.dark.isActive ? 'bg-black' : 'bg-blue-grey-9'"
+          >
+            <div class="row no-wrap items-center">
+              <q-icon
+                name="mdi-ip"
+                size="md"
+                class="q-mr-md"
+                :class="$q.dark.isActive ? 'text-blue-3' : 'text-blue-2'"
+              />
+              <div class="col overflow-hidden">
+                <div
+                  class="text-caption uppercase q-mb-xs"
+                  :class="$q.dark.isActive ? 'text-blue-3' : 'text-blue-2'"
+                >
+                  {{ $gettext('Forwarded IP') }}
+                </div>
+                <div class="row no-wrap items-center">
+                  <div class="text-subtitle1 text-weight-medium q-mr-sm">
+                    {{ forwardedIpAddress }}
+                  </div>
+                  <CopyToClipboard
+                    :content="forwardedIpAddress"
+                    size="xs"
+                    flat
+                    :color="$q.dark.isActive ? 'blue-3' : 'blue-2'"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </q-card-section>
 
-    <q-card-actions class="justify-between q-px-md">
+    <!-- Action Buttons -->
+    <q-card-actions class="justify-around q-px-md q-pb-md">
       <q-btn
         :icon="appIcon('events')"
-        color="secondary"
+        outline
+        color="primary"
         no-caps
         :to="{
           name: 'computer-events',
@@ -109,7 +220,8 @@
 
       <q-btn
         :icon="appIcon('simulate')"
-        color="secondary"
+        outline
+        color="primary"
         no-caps
         :to="{
           name: 'computer-simulate',
@@ -120,7 +232,8 @@
 
       <q-btn
         icon="mdi-card-account-details-outline"
-        color="secondary"
+        outline
+        color="primary"
         no-caps
         :to="{
           name: 'computer-label',
@@ -218,3 +331,10 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.info-card {
+  max-width: 1000px;
+  margin: auto;
+}
+</style>

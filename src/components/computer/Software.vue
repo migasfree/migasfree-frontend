@@ -1,9 +1,19 @@
 <template>
-  <q-card>
-    <q-card-section>
-      <div class="text-h5 q-pb-md">{{ $gettext('Software') }}</div>
+  <q-card class="software-card shadow-2 rounded-borders">
+    <q-card-section class="q-pb-none">
+      <!-- Header -->
+      <div class="row items-center justify-between q-mb-md">
+        <div class="row items-center q-gutter-sm">
+          <div
+            class="text-h6 text-weight-bold"
+            :class="$q.dark.isActive ? 'text-white' : 'text-grey-8'"
+          >
+            {{ $gettext('Software') }}
+          </div>
+        </div>
+      </div>
 
-      <q-list bordered>
+      <q-list>
         <q-expansion-item
           :content-inset-level="0.5"
           @show="loadSoftwareInventory"
@@ -18,8 +28,13 @@
             </q-item-section>
 
             <q-item-section v-if="softwareInventory.length > 0">
-              <q-chip>
-                <q-avatar color="grey-4" text-color="black"
+              <q-chip
+                :color="$q.dark.isActive ? 'info' : 'primary'"
+                text-color="white"
+              >
+                <q-avatar
+                  :color="$q.dark.isActive ? 'cyan-8' : 'primary-dark'"
+                  text-color="white"
                   ><strong>{{
                     abbreviateNumber(softwareInventory.length, 0)
                   }}</strong>
@@ -114,8 +129,13 @@
             </q-item-section>
 
             <q-item-section v-if="softwareHistoryLength > 0">
-              <q-chip>
-                <q-avatar color="grey-4" text-color="black"
+              <q-chip
+                :color="$q.dark.isActive ? 'info' : 'primary'"
+                text-color="white"
+              >
+                <q-avatar
+                  :color="$q.dark.isActive ? 'cyan-8' : 'primary-dark'"
+                  text-color="white"
                   ><strong>{{
                     abbreviateNumber(softwareHistoryLength, 0)
                   }}</strong
@@ -273,10 +293,11 @@
       </q-list>
     </q-card-section>
 
-    <q-card-actions class="justify-around">
+    <q-card-actions class="justify-around q-pa-md">
       <q-btn
         :icon="appIcon('compare')"
-        color="secondary"
+        outline
+        color="primary"
         no-caps
         :label="`${$gettext('Compare')}...`"
         @click="showingCompare = true"
@@ -432,10 +453,12 @@ export default {
         return softwareHistory.value
       } else {
         const result = Object.keys(softwareHistory.value).reduce((acc, key) => {
+          // eslint-disable-next-line security/detect-object-injection
           const filter = softwareHistory.value[key].filter((item) =>
             item.name.toLowerCase().includes(searchHistory.value.toLowerCase()),
           )
           if (filter.length > 0) {
+            // eslint-disable-next-line security/detect-object-injection
             acc[key] = filter
           }
           return acc
@@ -576,6 +599,7 @@ export default {
           `/api/v1/token/computers/${props.cid}/software/history/` +
           (key ? `?key=${key}` : '')
         const { data } = await api.delete(url)
+        // eslint-disable-next-line security/detect-object-injection
         Object.keys(softwareHistory).forEach((k) => delete softwareHistory[k])
         Object.assign(softwareHistory, data)
       } catch (error) {
@@ -623,3 +647,10 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.software-card {
+  max-width: 1000px;
+  margin: auto;
+}
+</style>

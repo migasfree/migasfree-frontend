@@ -209,3 +209,34 @@ body
   .q-expansion-item--expanded > .q-expansion-item__container > .q-item
     color: var(--primary)
     font-weight: 600
+
+// === Dashboard Component Shared Styles ===
+.dashboard-card
+  max-width: 1000px
+  margin: auto
+
+.hero-section
+  border: 1px solid rgba(0, 0, 0, 0.05)
+
+.spec-box
+  min-height: 80px
+  transition: filter var(--transition-normal)
+  &:hover
+    filter: brightness(1.1)
+
+.uppercase
+  text-transform: uppercase
+  letter-spacing: 1px
+  font-weight: 700
+
+.text-monospace
+  font-family: 'Roboto Mono', 'Courier New', Courier, monospace
+
+.op-80
+  opacity: 0.8
+
+// MigasLink elevated style for dark containers (depth cues only)
+.migaslink-elevated .q-btn-dropdown
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35)
+  border: 1px solid rgba(255, 255, 255, 0.15)
+  border-radius: 4px

@@ -48,257 +48,25 @@
 
         <div class="row q-pb-md q-col-gutter-md">
           <div class="col-6 col-md col-sm-12 col-xs-12">
-            <q-card>
-              <q-card-section>
-                <div class="text-h5">{{ $gettext('Current Situation') }}</div>
-
-                <q-select
-                  v-model="element.status"
-                  class="q-my-md"
-                  emit-value
-                  map-options
-                  :label="$gettext('Status')"
-                  :options="status"
-                >
-                  <template #option="scope">
-                    <q-item v-bind="scope.itemProps">
-                      <q-item-section avatar>
-                        <q-icon :name="scope.opt.icon" />
-                      </q-item-section>
-                      <q-item-section>
-                        <q-item-label>{{ scope.opt.label }}</q-item-label>
-                        <q-item-label caption>{{
-                          scope.opt.description
-                        }}</q-item-label>
-                      </q-item-section>
-                    </q-item>
-                  </template>
-
-                  <template #selected-item="scope">
-                    <q-item v-bind="scope.itemProps">
-                      <q-item-section avatar>
-                        <q-icon :name="scope.opt.icon" />
-                      </q-item-section>
-                      <q-item-section>
-                        <q-item-label>{{ scope.opt.label }}</q-item-label>
-                        <q-item-label caption>{{
-                          scope.opt.description
-                        }}</q-item-label>
-                      </q-item-section>
-                    </q-item>
-                  </template>
-                </q-select>
-
-                <q-input
-                  v-model="element.comment"
-                  class="q-my-md"
-                  type="textarea"
-                  :label="$gettext('Comment')"
-                />
-
-                <FilteredMultiSelect
-                  v-model="element.tags"
-                  :label="$gettext('Tags')"
-                  :fetch-options="filterTags"
-                >
-                  <template #option="{ scope }">
-                    <q-item v-bind="scope.itemProps">
-                      {{ attributeValue(scope.opt) }}
-                    </q-item>
-                  </template>
-
-                  <template #selected-item="{ scope }">
-                    <q-chip
-                      removable
-                      dense
-                      :tabindex="scope.tabindex"
-                      class="q-ma-md"
-                      @remove="scope.removeAtIndex(scope.index)"
-                    >
-                      <MigasLink
-                        model="tags"
-                        :pk="scope.opt.id"
-                        :value="attributeValue(scope.opt)"
-                        :tooltip="scope.opt.description"
-                      />
-                    </q-chip>
-                  </template>
-                </FilteredMultiSelect>
-
-                <OverflowList
-                  class="q-mt-md"
-                  model="attribute-sets"
-                  :label="$gettext('Attribute Sets')"
-                  :items="onlyAttributeSets"
-                />
-
-                <OverflowList
-                  class="q-mt-md"
-                  model="domains"
-                  :label="$gettext('Domains')"
-                  :items="onlyDomains"
-                />
-
-                <div class="row q-pa-md text-center">
-                  <div class="col">
-                    <q-tooltip>{{ $gettext('Errors') }}</q-tooltip>
-                    <q-icon :name="modelIcon('errors')" size="xl" />
-                    <q-btn
-                      round
-                      size="md"
-                      :color="errors.unchecked > 0 ? 'negative' : 'grey-3'"
-                      :text-color="errors.unchecked > 0 ? 'white' : 'black'"
-                      :to="{
-                        name: 'errors-list',
-                        query: { computer_id: element.id, checked: false },
-                      }"
-                      ><strong>{{ errors.unchecked }}</strong>
-                      <q-tooltip anchor="top middle" self="bottom middle">{{
-                        $gettext('Unchecked')
-                      }}</q-tooltip></q-btn
-                    >
-                    /
-                    <q-btn
-                      round
-                      size="md"
-                      color="grey-3"
-                      text-color="black"
-                      :to="{
-                        name: 'errors-list',
-                        query: { computer_id: element.id },
-                      }"
-                      ><strong>{{ errors.total }}</strong>
-                      <q-tooltip anchor="top middle" self="bottom middle">{{
-                        $gettext('Total')
-                      }}</q-tooltip></q-btn
-                    >
-                  </div>
-
-                  <div class="col">
-                    <q-tooltip>{{ $gettext('Faults') }}</q-tooltip>
-                    <q-icon :name="modelIcon('faults')" size="xl" />
-                    <q-btn
-                      round
-                      size="md"
-                      :color="faults.unchecked > 0 ? 'negative' : 'grey-3'"
-                      :text-color="faults.unchecked > 0 ? 'white' : 'black'"
-                      :to="{
-                        name: 'faults-list',
-                        query: { computer_id: element.id, checked: false },
-                      }"
-                      ><strong>{{ faults.unchecked }}</strong>
-                      <q-tooltip anchor="top middle" self="bottom middle">{{
-                        $gettext('Unchecked')
-                      }}</q-tooltip></q-btn
-                    >
-                    /
-                    <q-btn
-                      round
-                      size="md"
-                      color="grey-3"
-                      text-color="black"
-                      :to="{
-                        name: 'faults-list',
-                        query: { computer_id: element.id },
-                      }"
-                      ><strong>{{ faults.total }}</strong>
-                      <q-tooltip anchor="top middle" self="bottom middle">{{
-                        $gettext('Total')
-                      }}</q-tooltip></q-btn
-                    >
-                  </div>
-                </div>
-              </q-card-section>
-
-              <q-card-actions class="q-px-md">
-                <q-btn
-                  class="full-width"
-                  color="primary"
-                  :icon="appIcon('save-edit')"
-                  :label="$gettext('Save and continue editing')"
-                  :loading="loading"
-                  :disabled="loading"
-                  @click="updateCurrentSituation"
-                />
-              </q-card-actions>
-            </q-card>
+            <ComputerCurrentSituation
+              :cid="element.id"
+              :status="element.status"
+              :comment="element.comment"
+              :tags="element.tags"
+              :attribute-sets="onlyAttributeSets"
+              :domains="onlyDomains"
+              @updated="onCurrentSituationUpdated"
+            />
           </div>
 
           <div class="col-6 col-md col-sm-12 col-xs-12">
-            <q-card>
-              <q-card-section>
-                <div class="row">
-                  <div class="col">
-                    <div class="text-h5">{{ $gettext('Synchronization') }}</div>
-                  </div>
-
-                  <div v-if="element.id" class="col-auto">
-                    <DateDiff
-                      :begin="new Date(element.sync_end_date)"
-                      :tooltip="$gettext('unsynchronized from')"
-                    />
-                  </div>
-                </div>
-
-                <div v-if="element.sync_user" class="row q-py-sm">
-                  <MigasLink
-                    model="users"
-                    :pk="element.sync_user.id"
-                    :value="element.sync_user.__str__ || ''"
-                    :tooltip="$gettext('User')"
-                  />
-                </div>
-
-                <div
-                  v-if="loadingSync || Object.keys(syncInfo).length == 0"
-                  class="justify-center"
-                >
-                  <q-spinner-dots color="primary" size="3em" />
-                </div>
-
-                <template v-else>
-                  <div class="row q-py-sm items-baseline justify-between">
-                    <div class="col-4 col-md">
-                      <DateView
-                        :value="syncInfo.sync_start_date"
-                        icon="mdi-play"
-                        :tooltip-text="$gettext('sync start date')"
-                      />
-                    </div>
-
-                    <div
-                      class="col-4 col-md"
-                      :class="{
-                        'bg-warning text-black':
-                          syncInfo.sync_end_date < syncInfo.sync_start_date,
-                      }"
-                    >
-                      <DateView
-                        :value="syncInfo.sync_end_date"
-                        icon="mdi-stop"
-                        :tooltip-text="$gettext('sync end date')"
-                      />
-                    </div>
-
-                    <div class="col-auto">
-                      <DateDiff
-                        v-if="syncInfo.sync_start_date"
-                        class="vertical-middle"
-                        :begin="new Date(syncInfo.sync_start_date)"
-                        :end="new Date(syncInfo.sync_end_date)"
-                        :tooltip="$gettext('last sync time')"
-                      />
-                    </div>
-                  </div>
-
-                  <OverflowList
-                    model="attributes"
-                    :label="$gettext('Attributes')"
-                    :items="onlyAttributes"
-                  />
-                </template>
-              </q-card-section>
-            </q-card>
+            <ComputerSynchronization
+              :cid="element.id"
+              :sync-user="element.sync_user"
+              :sync-info="syncInfo"
+              :attributes="onlyAttributes"
+              :loading="loadingSync"
+            />
           </div>
         </div>
 
@@ -317,9 +85,14 @@
 
         <div v-if="markers.length > 0" class="row q-pb-md q-col-gutter-md">
           <div class="col col-md col-sm-12">
-            <q-card>
+            <q-card class="shadow-2 rounded-borders">
               <q-card-section>
-                <div class="text-h5 q-pb-sm">{{ $gettext('Locations') }}</div>
+                <div
+                  class="text-h6 text-weight-bold q-mb-md"
+                  :class="$q.dark.isActive ? 'text-white' : 'text-grey-8'"
+                >
+                  {{ $gettext('Locations') }}
+                </div>
 
                 <l-map
                   id="map"
@@ -417,17 +190,14 @@ import pluralize from 'pluralize-esm'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
-import OverflowList from 'components/ui/OverflowList'
 import ItemDetail from 'components/ui/ItemDetail'
-import DateView from 'components/ui/DateView'
-import MigasLink from 'components/MigasLink'
-import DateDiff from 'components/DateDiff'
-import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 
 import ComputerInfo from 'components/computer/Info'
 import ComputerHardwareResume from 'components/computer/HardwareResume'
 import ComputerSoftware from 'components/computer/Software'
 import ComputerDevices from 'components/computer/Devices'
+import ComputerCurrentSituation from 'components/computer/CurrentSituation'
+import ComputerSynchronization from 'components/computer/Synchronization'
 
 import { appIcon, modelIcon, useElement } from 'composables/element'
 import useDate from 'composables/date'
@@ -435,16 +205,13 @@ import useMap from 'composables/map'
 
 export default {
   components: {
-    OverflowList,
     ItemDetail,
-    DateView,
-    MigasLink,
-    DateDiff,
-    FilteredMultiSelect,
     ComputerInfo,
     ComputerHardwareResume,
     ComputerSoftware,
     ComputerDevices,
+    ComputerCurrentSituation,
+    ComputerSynchronization,
     LMap,
     LTileLayer,
     LControlScale,
@@ -690,6 +457,12 @@ export default {
       windowTitle.value = value
     }
 
+    const onCurrentSituationUpdated = (data) => {
+      element.status = data.status
+      element.comment = data.comment
+      element.tags = data.tags
+    }
+
     return {
       title,
       breadcrumbs,
@@ -726,6 +499,7 @@ export default {
       setTitle,
       appIcon,
       modelIcon,
+      onCurrentSituationUpdated,
     }
   },
 }
@@ -739,5 +513,28 @@ export default {
   width: 100%;
   aspect-ratio: 16 / 9;
   height: 400px;
+}
+
+/* Counter mini-cards */
+.counter-card {
+  border: 1px solid rgba(128, 128, 128, 0.2);
+}
+.counter-row {
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s ease;
+  color: inherit;
+}
+.counter-row:hover {
+  background-color: rgba(128, 128, 128, 0.15);
+}
+.counter-row--alert {
+  background-color: rgba(var(--q-negative-rgb, 198, 40, 40), 0.1);
+}
+.counter-row--alert:hover {
+  background-color: rgba(var(--q-negative-rgb, 198, 40, 40), 0.2);
+}
+.text-decoration-none {
+  text-decoration: none;
 }
 </style>

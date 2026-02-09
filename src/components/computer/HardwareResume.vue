@@ -1,21 +1,26 @@
 <template>
-  <q-card>
-    <q-card-section>
-      <div class="row">
-        <div class="col-md">
-          <div class="text-h5">{{ $gettext('Hardware') }}</div>
+  <q-card class="hardware-card shadow-2 rounded-borders">
+    <q-card-section class="q-pb-none">
+      <!-- Header Service info -->
+      <div class="row items-center justify-between q-mb-md">
+        <div
+          class="text-h6 text-weight-bold"
+          :class="$q.dark.isActive ? 'text-white' : 'text-grey-8'"
+        >
+          {{ $gettext('Hardware') }}
         </div>
-      </div>
-
-      <div class="row q-py-sm">
-        <div class="col-md">
-          <p v-if="readonly">
-            <DateView :value="hardwareDate" icon="mdi-calendar-star" />
+        <div class="capture-info row items-center no-wrap">
+          <p v-if="readonly" class="q-ma-none row items-center">
+            <DateView
+              :value="hardwareDate"
+              icon="mdi-calendar-star"
+              class="q-mr-sm"
+            />
             <DateDiff
               :begin="new Date(hardwareDate)"
               :tooltip="$gettext('unsynchronized from')"
+              class="capture-badge"
             />
-
             <q-tooltip>{{ $gettext('Last hardware capture date') }}</q-tooltip>
           </p>
           <q-btn-group v-else>
@@ -23,7 +28,11 @@
               v-model="hardwareDate"
               :label="$gettext('Last hardware capture date')"
               :aria-label="$gettext('Last hardware capture date')"
+              dense
+              outlined
               clearable
+              class="q-mr-none"
+              style="border-top-right-radius: 0; border-bottom-right-radius: 0"
             >
               <template #prepend>
                 <q-icon name="mdi-clock-outline" class="cursor-pointer">
@@ -63,7 +72,6 @@
                   </q-popup-proxy>
                 </q-icon>
               </template>
-
               <q-tooltip v-if="hardwareDate">{{
                 diffForHumans(hardwareDate)
               }}</q-tooltip>
@@ -74,7 +82,7 @@
               :icon="appIcon('save-edit')"
               :loading="loading"
               :disabled="loading"
-              :aria-label="$gettext('Save and continue editing')"
+              unelevated
               @click="updateCapture"
             >
               <q-tooltip>{{ $gettext('Save and continue editing') }}</q-tooltip>
@@ -83,100 +91,205 @@
         </div>
       </div>
 
-      <div class="row q-py-sm">
-        <div class="col-4 col-md-4 col-sm">
-          <q-icon :name="productIcon(productSystem)" size="6em">
-            <q-tooltip>{{ productSystem }}</q-tooltip>
-            <q-badge floating transparent>
-              {{ architecture }} {{ $gettext('bits') }}
-            </q-badge></q-icon
-          >
-        </div>
-
-        <div class="col-8 col-md-8 col-sm">
-          <p v-if="readonly">
-            <q-icon
-              :name="productIcon(productSystem)"
-              size="sm"
-              class="vertical-middle q-mr-xs"
-            />
-            <span class="vertical-middle"> {{ product }}</span>
-            <q-tooltip>{{ productSystem }}</q-tooltip>
-          </p>
-          <p v-else>
-            <q-btn
-              no-caps
-              dense
-              color="secondary"
-              :icon="productIcon(productSystem)"
-              :label="product"
-              :aria-label="productSystem"
-              @click="
-                $router.push({
-                  name: 'computer-hardware',
-                  params: { id: cid },
-                })
-              "
-              ><q-tooltip
-                >{{ productSystem }} ({{
-                  $gettext('Hardware Information')
-                }})</q-tooltip
-              ></q-btn
-            >
-          </p>
-          <p>
-            <q-icon
-              name="mdi-card-account-details-outline"
-              size="sm"
-              class="vertical-middle q-mr-xs"
-            />
-            <span class="vertical-middle">
-              {{ uuid }}
-              <q-tooltip>{{ $gettext('UUID') }}</q-tooltip>
-            </span>
-            <CopyToClipboard v-if="uuid" :content="uuid" />
-          </p>
-        </div>
-      </div>
-
-      <div class="row q-py-sm">
-        <div class="col-6 col-md col-sm">
+      <!-- Hero Section: Product & Model -->
+      <div
+        class="row items-center q-pa-lg rounded-borders q-mb-lg hero-section"
+        :class="$q.dark.isActive ? 'bg-blue-grey-10' : 'bg-blue-grey-1'"
+      >
+        <div class="col-auto q-mr-xl relative-position">
           <q-icon
-            :name="cpuIcon(architecture)"
-            size="sm"
-            class="vertical-middle"
-          />
-          <span class="vertical-middle" :aria-label="$gettext('Processor')">
-            {{ cpu }}
-            <q-tooltip>{{ $gettext('Processor') }}</q-tooltip>
-          </span>
+            :name="productIcon(productSystem)"
+            size="6em"
+            :color="$q.dark.isActive ? 'blue-grey-3' : 'blue-grey-8'"
+          >
+            <q-tooltip>{{ productSystem }}</q-tooltip>
+          </q-icon>
         </div>
-
-        <div v-if="ram" class="col-6 col-md col-sm">
-          <q-icon name="mdi-memory" size="sm" class="vertical-middle" />
-          <span class="vertical-middle" :aria-label="$gettext('RAM')">
-            {{ humanStorageSize(ram) }}
-            <q-tooltip>{{ $gettext('RAM') }}</q-tooltip>
-          </span>
+        <div class="col col-md">
+          <div
+            v-if="readonly"
+            class="text-h4 text-weight-medium"
+            :class="$q.dark.isActive ? 'text-blue-grey-2' : 'text-blue-grey-10'"
+          >
+            {{ product }}
+            <q-tooltip>{{ productSystem }}</q-tooltip>
+          </div>
+          <q-btn
+            v-else
+            no-caps
+            outline
+            align="left"
+            color="primary"
+            class="text-h4 text-weight-medium product-link-btn"
+            :class="$q.dark.isActive ? 'bg-grey-10' : 'bg-white'"
+            :label="product"
+            @click="
+              $router.push({ name: 'computer-hardware', params: { id: cid } })
+            "
+          >
+            <q-tooltip
+              >{{ productSystem }} ({{
+                $gettext('Hardware Information')
+              }})</q-tooltip
+            >
+          </q-btn>
         </div>
       </div>
 
-      <div class="row q-py-sm">
-        <div v-if="storage" class="col-6 col-md col-sm">
-          <q-icon name="mdi-harddisk" size="sm" class="vertical-middle" />
-          <span class="vertical-middle" :aria-label="$gettext('Storage')">
-            {{ humanStorageSize(storage) }} ({{ disks }})
-            <q-tooltip>{{ $gettext('Storage') }}</q-tooltip>
-          </span>
+      <!-- Spec Grid 2x2 -->
+      <div class="row q-col-gutter-lg q-mb-lg">
+        <!-- CPU Component -->
+        <div class="col-12 col-sm-6">
+          <div
+            class="spec-box q-pa-md rounded-borders text-white"
+            :class="$q.dark.isActive ? 'bg-black' : 'bg-blue-grey-9'"
+          >
+            <div class="row no-wrap items-center">
+              <q-icon
+                :name="cpuIcon(architecture)"
+                size="md"
+                class="q-mr-md"
+                :class="$q.dark.isActive ? 'text-blue-3' : 'text-blue-2'"
+              />
+              <div class="col overflow-hidden">
+                <div
+                  class="text-caption uppercase q-mb-xs"
+                  :class="$q.dark.isActive ? 'text-blue-3' : 'text-blue-2'"
+                >
+                  {{ $gettext('Processor') }}
+                </div>
+                <div class="text-subtitle1 text-weight-medium ellipsis">
+                  {{ cpu }}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div v-if="macAddress" class="col-6 col-md col-sm">
-          <q-icon name="mdi-swap-vertical" size="sm" class="vertical-middle" />
-          <span class="vertical-middle" :aria-label="$gettext('MAC Address')">
-            {{ humanMacAddress(macAddress) }}
-            <q-tooltip>{{ $gettext('MAC Address') }}</q-tooltip>
-          </span>
-          <CopyToClipboard :content="humanMacAddress(macAddress)" />
+
+        <!-- RAM Component -->
+        <div v-if="ram" class="col-12 col-sm-6">
+          <div
+            class="spec-box q-pa-md rounded-borders text-white"
+            :class="$q.dark.isActive ? 'bg-black' : 'bg-blue-grey-9'"
+          >
+            <div class="row no-wrap items-center">
+              <q-icon
+                name="mdi-memory"
+                size="md"
+                class="q-mr-md"
+                :class="$q.dark.isActive ? 'text-blue-3' : 'text-blue-2'"
+              />
+              <div class="col overflow-hidden">
+                <div
+                  class="text-caption uppercase q-mb-xs"
+                  :class="$q.dark.isActive ? 'text-blue-3' : 'text-blue-2'"
+                >
+                  {{ $gettext('RAM') }}
+                </div>
+                <div class="text-subtitle1 text-weight-medium">
+                  {{ humanStorageSize(ram) }}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- Storage Component -->
+        <div v-if="storage" class="col-12 col-sm-6">
+          <div
+            class="spec-box q-pa-md rounded-borders text-white"
+            :class="$q.dark.isActive ? 'bg-black' : 'bg-blue-grey-9'"
+          >
+            <div class="row no-wrap items-center">
+              <q-icon
+                name="mdi-harddisk"
+                size="md"
+                class="q-mr-md"
+                :class="$q.dark.isActive ? 'text-blue-3' : 'text-blue-2'"
+              />
+              <div class="col overflow-hidden">
+                <div
+                  class="text-caption uppercase q-mb-xs"
+                  :class="$q.dark.isActive ? 'text-blue-3' : 'text-blue-2'"
+                >
+                  {{ $gettext('Storage') }}
+                </div>
+                <div class="text-subtitle1 text-weight-medium">
+                  {{ humanStorageSize(storage) }}
+                  <span class="text-caption q-ml-sm text-blue-grey-3">
+                    ({{ disks }} {{ $ngettext('Disk', 'Disks', disks) }})
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Network Component -->
+        <div v-if="macAddress" class="col-12 col-sm-6">
+          <div
+            class="spec-box q-pa-md rounded-borders text-white"
+            :class="$q.dark.isActive ? 'bg-black' : 'bg-blue-grey-9'"
+          >
+            <div class="row no-wrap items-center">
+              <q-icon
+                name="mdi-swap-vertical"
+                size="md"
+                class="q-mr-md"
+                :class="$q.dark.isActive ? 'text-blue-3' : 'text-blue-2'"
+              />
+              <div class="col overflow-hidden">
+                <div
+                  class="text-caption uppercase q-mb-xs"
+                  :class="$q.dark.isActive ? 'text-blue-3' : 'text-blue-2'"
+                >
+                  {{ $gettext('MAC Address') }}
+                </div>
+                <div class="row no-wrap items-center">
+                  <div
+                    class="text-subtitle1 text-weight-medium q-mr-sm ellipsis"
+                  >
+                    {{ humanMacAddress(macAddress) }}
+                  </div>
+                  <CopyToClipboard
+                    :content="humanMacAddress(macAddress)"
+                    size="xs"
+                    flat
+                    :color="$q.dark.isActive ? 'blue-3' : 'blue-2'"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </q-card-section>
+
+    <!-- Footer: UUID -->
+    <q-card-section v-if="uuid" class="q-pt-none">
+      <div
+        class="uuid-footer q-pa-sm rounded-borders row items-center no-wrap"
+        :class="
+          $q.dark.isActive
+            ? 'bg-black text-blue-2'
+            : 'bg-blue-grey-10 text-blue-1'
+        "
+      >
+        <q-icon
+          name="mdi-card-account-details-outline"
+          size="sm"
+          class="q-mr-sm op-80"
+        />
+        <span class="text-caption text-monospace col ellipsis"
+          >UUID: {{ uuid }}</span
+        >
+        <CopyToClipboard
+          :content="uuid"
+          size="xs"
+          flat
+          :color="$q.dark.isActive ? 'blue-2' : 'blue-1'"
+          class="q-ml-sm"
+        />
       </div>
     </q-card-section>
   </q-card>
@@ -307,3 +420,22 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.hardware-card {
+  max-width: 1000px;
+  margin: auto;
+}
+.capture-badge {
+  font-weight: 500;
+}
+.product-link-btn {
+  border-radius: 8px;
+  padding: 8px 20px;
+  transition: all 0.2s ease;
+}
+.product-link-btn:hover {
+  filter: brightness(0.95);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+</style>

@@ -14,12 +14,16 @@ import { fileURLToPath } from 'node:url'
 import fs from 'fs'
 
 function getEnvVar(name) {
+  // eslint-disable-next-line security/detect-object-injection
   if (process.env[name]) return process.env[name]
   try {
     const envPath = fileURLToPath(new URL('./.env', import.meta.url))
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     if (fs.existsSync(envPath)) {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
       const content = fs.readFileSync(envPath, 'utf-8')
       // Simple parse for KEY="VALUE" or KEY=VALUE
+      // eslint-disable-next-line security/detect-non-literal-regexp
       const match = content.match(new RegExp(`^${name}="?([^"\\n]+)"?`, 'm'))
       if (match) return match[1]
     }

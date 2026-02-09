@@ -1,7 +1,15 @@
 <template>
-  <q-card>
-    <q-card-section>
-      <div class="text-h5 q-pb-md">{{ $gettext('Devices') }}</div>
+  <q-card class="devices-card shadow-2 rounded-borders">
+    <q-card-section class="q-pb-none">
+      <!-- Header -->
+      <div class="row items-center justify-between q-mb-md">
+        <div
+          class="text-h6 text-weight-bold"
+          :class="$q.dark.isActive ? 'text-white' : 'text-grey-8'"
+        >
+          {{ $gettext('Devices') }}
+        </div>
+      </div>
 
       <div v-if="Object.keys(devices).length == 0" class="justify-center">
         <q-spinner-dots color="primary" size="3em" />
@@ -50,7 +58,7 @@
       </template>
     </q-card-section>
 
-    <q-card-actions class="q-px-md">
+    <q-card-actions class="q-px-md q-pb-md q-mt-lg">
       <q-btn
         class="full-width"
         color="primary"
@@ -164,3 +172,10 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.devices-card {
+  max-width: 1000px;
+  margin: auto;
+}
+</style>

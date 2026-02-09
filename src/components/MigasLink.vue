@@ -4,7 +4,7 @@
     no-caps
     dense
     auto-close
-    :class="$q.dark.isActive ? 'text-info' : 'text-primary'"
+    :class="buttonClass"
     :loading="loading"
     :to="link"
     @before-show="getRelations"
@@ -12,14 +12,10 @@
     <template #label>
       <q-icon v-if="hasIcon" left :name="getIcon" />
 
-      <q-chip
-        v-if="valueHasPrefix"
-        square
-        :text-color="$q.dark.isActive ? 'info' : 'primary'"
-      >
+      <q-chip v-if="valueHasPrefix" square :text-color="chipTextColor">
         <q-avatar
-          :color="$q.dark.isActive ? 'info' : 'primary'"
-          :text-color="$q.dark.isActive ? 'black' : 'white'"
+          :color="light ? 'white' : $q.dark.isActive ? 'info' : 'primary'"
+          :text-color="light ? 'dark' : $q.dark.isActive ? 'black' : 'white'"
           >{{ getPrefix }}</q-avatar
         >
         {{ getValueIfHasPrefix }}
@@ -84,6 +80,7 @@
 <script>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useQuasar } from 'quasar'
 import { abbreviateNumber } from 'js-abbreviation-number'
 import pluralize from 'pluralize-esm'
 
@@ -101,8 +98,10 @@ export default {
     value: { type: String, required: true },
     tooltip: { type: String, required: false, default: '' },
     icon: { type: String, required: false, default: '' },
+    light: { type: Boolean, required: false, default: false },
   },
   setup(props) {
+    const $q = useQuasar()
     const uiStore = useUiStore()
     const router = useRouter()
     const { computerStatus, elementIcon } = useElement()
@@ -148,6 +147,16 @@ export default {
       return getIcon.value !== ''
     })
 
+    const buttonClass = computed(() => {
+      if (props.light) return 'text-white'
+      return $q.dark.isActive ? 'text-info' : 'text-primary'
+    })
+
+    const chipTextColor = computed(() => {
+      if (props.light) return 'white'
+      return $q.dark.isActive ? 'info' : 'primary'
+    })
+
     const valueHasPrefix = computed(() => {
       return (
         ['attributes', 'features', 'tags'].includes(props.model) &&
@@ -168,6 +177,7 @@ export default {
     const normalizeQuery = (obj) =>
       Object.entries(obj).reduce((acc, [key, val]) => {
         const newKey = key.includes('__') ? key.replaceAll('__', '_') : key
+        // eslint-disable-next-line security/detect-object-injection
         acc[newKey] = val
         return acc
       }, {})
@@ -178,6 +188,7 @@ export default {
         .replace('devices/', '')
         .replace('catalog/', '')
 
+      // eslint-disable-next-line security/detect-object-injection
       return modelMap[cleaned] ?? cleaned
     }
 
@@ -266,6 +277,8 @@ export default {
       tooltipToView,
       getIcon,
       hasIcon,
+      buttonClass,
+      chipTextColor,
       valueHasPrefix,
       getPrefix,
       getValueIfHasPrefix,
