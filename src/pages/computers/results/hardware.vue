@@ -67,7 +67,7 @@
                       class="q-ma-md"
                       :label="$gettext('Details')"
                       icon="mdi-text-box-search"
-                      @click="showDetails(prop.node.id)"
+                      @click.stop="showDetails(prop.node.id)"
                     />
                   </div>
                 </div>
