@@ -85,84 +85,7 @@
 
         <div v-if="markers.length > 0" class="row q-pb-md q-col-gutter-md">
           <div class="col col-md col-sm-12">
-            <q-card class="shadow-2 rounded-borders">
-              <q-card-section>
-                <div
-                  class="text-h6 text-weight-bold q-mb-md"
-                  :class="$q.dark.isActive ? 'text-white' : 'text-grey-8'"
-                >
-                  {{ $gettext('Locations') }}
-                </div>
-
-                <l-map
-                  id="map"
-                  ref="map"
-                  :zoom="MAP_DEFAULT_ZOOM"
-                  :min-zoom="MAP_MIN_ZOOM"
-                  :max-zoom="MAP_MAX_ZOOM"
-                  :center="[markers[0].lat, markers[0].lng]"
-                  @ready="centerMarkers"
-                >
-                  <l-tile-layer
-                    :url="MAP_TILE_URL"
-                    :attribution="MAP_ATTRIBUTION"
-                  />
-
-                  <l-control-scale
-                    position="bottomleft"
-                    :imperial="false"
-                    :metric="true"
-                  />
-
-                  <l-control position="topright">
-                    <q-btn
-                      icon="mdi-crosshairs-gps"
-                      padding="xs"
-                      color="white"
-                      text-color="black"
-                      size="md"
-                      @click="centerMarkers"
-                      ><q-tooltip>{{
-                        $gettext('Center Markers')
-                      }}</q-tooltip></q-btn
-                    >
-                  </l-control>
-
-                  <l-marker
-                    v-for="(item, key) in markers"
-                    :key="key"
-                    :lat-lng="[item.lat, item.lng]"
-                    @click="
-                      $router.push({
-                        name: `${pluralize.singular(item.model)}-detail`,
-                        params: { id: item.id },
-                      })
-                    "
-                  >
-                    <l-icon
-                      :icon-url="iconUrl"
-                      :icon-size="iconSize"
-                      :icon-anchor="iconAnchor"
-                    />
-
-                    <l-tooltip>
-                      <p>
-                        <strong>{{ item.tooltip }}</strong>
-                      </p>
-                      <p
-                        v-if="
-                          item.description && item.description !== item.tooltip
-                        "
-                        class="pre-wrap"
-                      >
-                        {{ item.description }}
-                      </p>
-                      ></l-tooltip
-                    >
-                  </l-marker>
-                </l-map>
-              </q-card-section>
-            </q-card>
+            <ComputerLocations :markers="markers" />
           </div>
         </div>
       </template>
@@ -171,20 +94,10 @@
 </template>
 
 <script>
-import { ref, reactive, nextTick } from 'vue'
+import { ref, reactive } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useRoute } from 'vue-router'
 import { useMeta } from 'quasar'
-import {
-  LMap,
-  LTileLayer,
-  LControlScale,
-  LControl,
-  LMarker,
-  LIcon,
-  LTooltip,
-} from '@vue-leaflet/vue-leaflet'
-import 'leaflet/dist/leaflet.css'
 import pluralize from 'pluralize-esm'
 
 import { api } from 'boot/axios'
@@ -198,10 +111,10 @@ import ComputerSoftware from 'components/computer/Software'
 import ComputerDevices from 'components/computer/Devices'
 import ComputerCurrentSituation from 'components/computer/CurrentSituation'
 import ComputerSynchronization from 'components/computer/Synchronization'
+import ComputerLocations from 'components/computer/Locations'
 
 import { appIcon, modelIcon, useElement } from 'composables/element'
 import useDate from 'composables/date'
-import useMap from 'composables/map'
 
 export default {
   components: {
@@ -212,13 +125,7 @@ export default {
     ComputerDevices,
     ComputerCurrentSituation,
     ComputerSynchronization,
-    LMap,
-    LTileLayer,
-    LControlScale,
-    LControl,
-    LMarker,
-    LIcon,
-    LTooltip,
+    ComputerLocations,
   },
   setup() {
     const { $gettext } = useGettext()
@@ -254,17 +161,6 @@ export default {
 
     const markers = ref([])
 
-    const {
-      MAP_MIN_ZOOM,
-      MAP_MAX_ZOOM,
-      MAP_DEFAULT_ZOOM,
-      MAP_TILE_URL,
-      MAP_ATTRIBUTION,
-      iconUrl,
-      iconSize,
-      iconAnchor,
-    } = useMap()
-
     const breadcrumbs = ref([
       {
         text: $gettext('Dashboard'),
@@ -281,17 +177,6 @@ export default {
         to: 'computers-dashboard',
       },
     ])
-
-    const centerMarkers = () => {
-      if (map.value !== null && markers.value.length) {
-        nextTick(() => {
-          map.value.leafletObject.panTo([
-            markers.value[0].lat,
-            markers.value[0].lng,
-          ])
-        })
-      }
-    }
 
     const loadSyncInfo = async () => {
       loadingSync.value = true
@@ -361,7 +246,6 @@ export default {
         }
 
         await Promise.all(badgePromises)
-        if (markers.value.length) centerMarkers()
       } catch (error) {
         uiStore.notifyError(error)
       } finally {
@@ -480,18 +364,9 @@ export default {
       errors,
       faults,
       markers,
-      MAP_MIN_ZOOM,
-      MAP_MAX_ZOOM,
-      MAP_DEFAULT_ZOOM,
-      MAP_TILE_URL,
-      MAP_ATTRIBUTION,
-      iconUrl,
-      iconSize,
-      iconAnchor,
       elementIcon,
       attributeValue,
       showDate,
-      centerMarkers,
       updateCurrentSituation,
       filterTags,
       pluralize,

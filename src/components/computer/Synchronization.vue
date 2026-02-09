@@ -4,11 +4,6 @@
       <!-- Header -->
       <div class="row items-center justify-between q-mb-md">
         <div class="row items-center q-gutter-sm">
-          <q-icon
-            name="mdi-sync"
-            size="md"
-            :color="$q.dark.isActive ? 'info' : 'primary'"
-          />
           <div
             class="text-h6 text-weight-bold"
             :class="$q.dark.isActive ? 'text-white' : 'text-grey-8'"
