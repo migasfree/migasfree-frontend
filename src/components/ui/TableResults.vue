@@ -667,13 +667,44 @@ export default defineComponent({
     })
 
     const loadFilter = async (endpoint, filterKey, queryParam) => {
+      const allowedFilterKeys = [
+        'platform',
+        'project',
+        'statusIn',
+        'model',
+        'user',
+        'architecture',
+        'machine',
+        'syncEndDate',
+        'softwareInventory',
+      ]
+      const allowedQueryParams = [
+        'platform_id',
+        'model_id',
+        'packages_by_project_project_id',
+        'drivers_project_id',
+        'user',
+      ]
+
+      if (!allowedFilterKeys.includes(filterKey)) {
+        throw new Error(`Invalid filter key: ${filterKey}`)
+      }
+
       try {
         const { data } = await api.get(endpoint)
+        // eslint-disable-next-line security/detect-object-injection
         tableFilters[filterKey].items = tableFilters[filterKey].items.concat(
           data.results,
         )
-        if (queryParam && route.query[queryParam]) {
+        if (
+          queryParam &&
+          allowedQueryParams.includes(queryParam) &&
+          // eslint-disable-next-line security/detect-object-injection
+          route.query[queryParam]
+        ) {
+          // eslint-disable-next-line security/detect-object-injection
           tableFilters[filterKey].selected = tableFilters[filterKey].items.find(
+            // eslint-disable-next-line security/detect-object-injection
             (x) => x.id == route.query[queryParam],
           )
         }
