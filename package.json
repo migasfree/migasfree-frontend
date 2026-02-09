@@ -61,7 +61,7 @@
   "devDependencies": {
     "@cypress/vue": "6.0.2",
     "@cypress/webpack-dev-server": "5.6.0",
-    "@eslint/js": "9.39.2",
+    "@eslint/js": "10.0.1",
     "@pinia/testing": "1.0.3",
     "@quasar/app-webpack": "4.3.1",
     "@quasar/quasar-app-extension-qmarkdown": "2.0.5",
