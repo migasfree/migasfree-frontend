@@ -6,15 +6,11 @@
       :style="
         $q.screen.lt.sm
           ? { width: '85%' }
-          : { width: '400px', maxWidth: '90vw' }
+          : { width: '25rem', maxWidth: '90vw' }
       "
     >
       <q-card-section>
-        <q-avatar
-          size="120px"
-          class="absolute-center shadow-10"
-          :color="$q.dark.isActive ? 'blue-grey-9' : 'white'"
-        >
+        <q-avatar size="120px" class="absolute-center shadow-10 bg-surface">
           <img
             id="logo"
             src="../assets/migasfree-logo.svg"
@@ -248,7 +244,7 @@ export default {
 <style scoped lang="sass">
 #logo
   width: 60px
-  height: 90px
+  height: 92px
   object-fit: contain
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1))
 </style>

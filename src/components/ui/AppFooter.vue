@@ -1,5 +1,5 @@
 <template>
-  <q-footer>
+  <q-footer class="site-footer">
     <q-toolbar>
       <q-icon :name="appIcon('copyright')" />
       &nbsp; {{ MIGASFREE_MIN_YEAR }}-{{ new Date().getFullYear() }}

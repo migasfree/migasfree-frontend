@@ -12,18 +12,20 @@
 // to match your app's branding.
 // Tip: Use the "Theme Builder" on Quasar's documentation website.
 
-$primary   : #1976D2
-$secondary : #00bcd4
-$accent    : #9C27B0
+$primary   : var(--primary)
+$secondary : var(--secondary)
+$accent    : var(--accent)
 
-$dark      : #3a4149
-$dark-page : #2f353a
-$separator-dark-color : #21282c
+$dark      : var(--text) // In dark mode this might need adjustment, but usually Quasar handles dark mode separately. 
+// Actually, Quasar's $dark is for the dark theme base. 
+// tokens.sass uses semantic names. Let's map to semantic if possible.
+$dark      : #1d1d1d // Keep as hex or specific if var doesnt work well for base
+// Better to just use the CSS vars for the main palette.
 
-$positive  : #21BA45
-$negative  : #C10015
-$info      : #31CCEC
-$warning   : #F2C037
+$positive  : var(--positive)
+$negative  : var(--negative)
+$info      : var(--info)
+$warning   : var(--warning)
 
 $typography-font-family : Dosis, 'Roboto', '-apple-system', 'Helvetica Neue', Helvetica, Arial, sans-serif !default
 $body-font-size         : 16px !default

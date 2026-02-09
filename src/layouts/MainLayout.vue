@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh Lpr lFf">
-    <q-header>
+    <q-header class="site-header">
       <q-toolbar>
         <q-btn
           flat
@@ -18,7 +18,7 @@
           label="migasfree"
           :to="{ name: 'home' }"
           no-caps
-          size="22px"
+          size="24px"
         >
           <q-avatar>
             <img
@@ -111,7 +111,7 @@
       <q-page-scroller
         position="bottom-right"
         reverse
-        :offset="[10, 10]"
+        :offset="[8, 8]"
         :scroll-offset="0"
       >
         <q-btn fab icon="mdi-chevron-down" color="primary" />
@@ -119,7 +119,7 @@
 
       <q-page-scroller
         position="bottom-right"
-        :offset="[10, 10]"
+        :offset="[8, 8]"
         :scroll-offset="300"
       >
         <q-btn fab icon="mdi-chevron-up" color="primary" />

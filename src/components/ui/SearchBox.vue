@@ -6,6 +6,7 @@
     <q-input
       v-model="searchText"
       :label="$gettext('Search...')"
+      square
       borderless
       dense
       clearable
@@ -108,6 +109,6 @@ export default {
 
 <style scoped>
 .search-btn-group {
-  border-radius: 4px 24px 24px 4px;
+  border-radius: 0 24px 24px 0;
 }
 </style>
