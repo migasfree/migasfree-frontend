@@ -18,10 +18,6 @@ export default {
       control: 'boolean',
       description: 'Flat button style',
     },
-    round: {
-      control: 'boolean',
-      description: 'Round button style',
-    },
   },
 }
 
