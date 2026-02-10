@@ -1,13 +1,22 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { reactive } from 'vue'
 import MigasLink from 'src/components/MigasLink.vue'
 import { createTestingPinia } from '@pinia/testing'
 
 // Mocks
+const mockDark = reactive({ isActive: false })
+
 const mockRouter = {
   push: vi.fn(),
   resolve: vi.fn().mockReturnValue({ matched: ['found'] }),
 }
+
+vi.mock('quasar', () => ({
+  useQuasar: () => ({
+    dark: mockDark,
+  }),
+}))
 
 vi.mock('vue-router', () => ({
   useRouter: () => mockRouter,
@@ -51,6 +60,7 @@ describe('MigasLink.vue', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
+    mockDark.isActive = false
   })
 
   it('renders correctly', () => {
@@ -60,7 +70,6 @@ describe('MigasLink.vue', () => {
         plugins: [createTestingPinia({ createSpy: vi.fn })],
         mocks: {
           ...mockGettext,
-          $q: { dark: { isActive: false } }, // Mock Quasar $q
         },
         stubs: {
           'q-btn-dropdown': {
@@ -92,7 +101,6 @@ describe('MigasLink.vue', () => {
         plugins: [createTestingPinia({ createSpy: vi.fn })],
         mocks: {
           ...mockGettext,
-          $q: { dark: { isActive: false } },
         },
         stubs: {
           'q-btn-dropdown': true,
