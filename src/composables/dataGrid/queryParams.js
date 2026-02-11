@@ -56,7 +56,6 @@ export function useQueryParams(deps) {
       const value =
         typeof rawValue === 'boolean' ? rawValue.toString() : rawValue
 
-      // eslint-disable-next-line security/detect-object-injection
       const { columnKey, filterKey } = keyMap[key] || {}
 
       updateParams({
@@ -92,11 +91,8 @@ export function useQueryParams(deps) {
           if (item) tableFilters.user.selected = item.name
         } else {
           // Generic filters
-          // eslint-disable-next-line security/detect-object-injection
           if (typeof tableFilters[key] === 'object')
-            // eslint-disable-next-line security/detect-object-injection
             tableFilters[key].selected = value
-          // eslint-disable-next-line security/detect-object-injection
           else tableFilters[key] = value
         }
       }
@@ -135,12 +131,10 @@ export function useQueryParams(deps) {
     //  Apply filters
     if (Object.keys(serverParams.columnFilters).length) {
       Object.entries(serverParams.columnFilters).forEach(([key, val]) => {
-        // eslint-disable-next-line security/detect-object-injection
         const mapper = fieldMap[key] ?? fieldMap.__default
         if (typeof mapper === 'function') {
           Object.assign(ret, mapper(key, val))
         } else {
-          // eslint-disable-next-line security/detect-object-injection
           ret[mapper] = val
         }
       })

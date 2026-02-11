@@ -177,7 +177,6 @@ export default {
     const normalizeQuery = (obj) =>
       Object.entries(obj).reduce((acc, [key, val]) => {
         const newKey = key.includes('__') ? key.replaceAll('__', '_') : key
-        // eslint-disable-next-line security/detect-object-injection
         acc[newKey] = val
         return acc
       }, {})
@@ -188,7 +187,6 @@ export default {
         .replace('devices/', '')
         .replace('catalog/', '')
 
-      // eslint-disable-next-line security/detect-object-injection
       return modelMap[cleaned] ?? cleaned
     }
 

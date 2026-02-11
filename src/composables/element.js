@@ -128,7 +128,6 @@ const MODEL_ICON = {
  * appIcon('add') // "mdi-plus"
  */
 export const appIcon = (item) => {
-  // eslint-disable-next-line security/detect-object-injection
   if (item in APP_ICON) return APP_ICON[item]
 
   return ''
@@ -145,7 +144,6 @@ export const appIcon = (item) => {
  * modelIcon('deployments') // "mdi-rocket-launch"
  */
 export const modelIcon = (model) => {
-  // eslint-disable-next-line security/detect-object-injection
   if (model in MODEL_ICON) return MODEL_ICON[model]
 
   return ''
@@ -195,20 +193,17 @@ export const useElement = () => {
   }
 
   const elementIcon = (value) => {
-    // eslint-disable-next-line security/detect-object-injection
     return ELEMENT_ICON[value] ?? DEFAULT_ELEMENT_ICON
   }
 
   const computerStatus = (value) => {
     const lowerValue = value.toLowerCase()
     return lowerValue && lowerValue in STATUS_I18N
-      ? // eslint-disable-next-line security/detect-object-injection
-        STATUS_I18N[lowerValue]
+      ? STATUS_I18N[lowerValue]
       : value
   }
 
   const productIcon = (value) => {
-    // eslint-disable-next-line security/detect-object-injection
     return PRODUCT_ICONS[value] ?? DEFAULT_PRODUCT_ICON
   }
 
@@ -217,7 +212,6 @@ export const useElement = () => {
   }
 
   const chunk = (str, n) =>
-    // eslint-disable-next-line security/detect-non-literal-regexp
     str.match(new RegExp(`.{1,${Number(n)}}`, 'g')) || []
 
   const humanMacAddress = (value) => {

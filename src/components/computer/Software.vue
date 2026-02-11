@@ -453,12 +453,10 @@ export default {
         return softwareHistory.value
       } else {
         const result = Object.keys(softwareHistory.value).reduce((acc, key) => {
-          // eslint-disable-next-line security/detect-object-injection
           const filter = softwareHistory.value[key].filter((item) =>
             item.name.toLowerCase().includes(searchHistory.value.toLowerCase()),
           )
           if (filter.length > 0) {
-            // eslint-disable-next-line security/detect-object-injection
             acc[key] = filter
           }
           return acc
@@ -599,7 +597,6 @@ export default {
           `/api/v1/token/computers/${props.cid}/software/history/` +
           (key ? `?key=${key}` : '')
         const { data } = await api.delete(url)
-        // eslint-disable-next-line security/detect-object-injection
         Object.keys(softwareHistory).forEach((k) => delete softwareHistory[k])
         Object.assign(softwareHistory, data)
       } catch (error) {

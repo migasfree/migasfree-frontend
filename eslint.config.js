@@ -3,7 +3,9 @@ import globals from 'globals'
 import pluginQuasar from '@quasar/app-webpack/eslint'
 import pluginVue from 'eslint-plugin-vue'
 import pluginVueA11y from 'eslint-plugin-vuejs-accessibility'
-import pluginSecurity from 'eslint-plugin-security'
+// TODO: re-enable when compatible with ESLint 10
+// See: https://github.com/eslint-community/eslint-plugin-security/issues/185
+// import pluginSecurity from 'eslint-plugin-security'
 import prettierSkipFormatting from '@vue/eslint-config-prettier/skip-formatting'
 
 export default [
@@ -37,7 +39,7 @@ export default [
   js.configs.recommended,
   ...pluginVue.configs['flat/recommended'],
   ...pluginVueA11y.configs['flat/recommended'],
-  pluginSecurity.configs.recommended,
+  // pluginSecurity.configs.recommended,
 
   {
     rules: {

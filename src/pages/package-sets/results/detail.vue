@@ -290,7 +290,6 @@ export default {
 
       if (element.packages) {
         for (let i = 0; i < element.packages.length; i++) {
-          // eslint-disable-next-line security/detect-object-injection
           data.append('packages', element.packages[i].id)
         }
       } else {
@@ -299,7 +298,6 @@ export default {
 
       if (element.files) {
         for (let i = 0; i < element.files.length; i++) {
-          // eslint-disable-next-line security/detect-object-injection
           data.append('files', element.files[i])
         }
       }

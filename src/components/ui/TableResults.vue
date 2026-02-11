@@ -692,19 +692,15 @@ export default defineComponent({
 
       try {
         const { data } = await api.get(endpoint)
-        // eslint-disable-next-line security/detect-object-injection
         tableFilters[filterKey].items = tableFilters[filterKey].items.concat(
           data.results,
         )
         if (
           queryParam &&
           allowedQueryParams.includes(queryParam) &&
-          // eslint-disable-next-line security/detect-object-injection
           route.query[queryParam]
         ) {
-          // eslint-disable-next-line security/detect-object-injection
           tableFilters[filterKey].selected = tableFilters[filterKey].items.find(
-            // eslint-disable-next-line security/detect-object-injection
             (x) => x.id == route.query[queryParam],
           )
         }
