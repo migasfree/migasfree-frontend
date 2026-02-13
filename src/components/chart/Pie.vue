@@ -85,13 +85,30 @@
             @row-click="rowClick"
           >
             <template #top-right>
-              <q-btn
+              <q-btn-dropdown
                 flat
                 :icon="appIcon('export')"
                 color="primary"
-                @click.stop="exportTable(serie)"
-                ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
+                @click.stop
               >
+                <q-list>
+                  <q-item
+                    v-close-popup
+                    clickable
+                    @click="exportTable(serie, 'csv')"
+                  >
+                    <q-item-section>CSV</q-item-section>
+                  </q-item>
+                  <q-item
+                    v-close-popup
+                    clickable
+                    @click="exportTable(serie, 'json')"
+                  >
+                    <q-item-section>JSON</q-item-section>
+                  </q-item>
+                </q-list>
+                <q-tooltip>{{ $gettext('Export') }}</q-tooltip>
+              </q-btn-dropdown>
             </template>
           </q-table>
           <BannerInfo
@@ -177,7 +194,8 @@ export default {
     const { initOptions, loadingOptions, getChartColors, getTextColor } =
       useChartOptions()
     const { groupBy } = useChartUtils(chart)
-    const { saveSvgImage, savePngImage, exportTableToCsv } = useChartExport()
+    const { saveSvgImage, savePngImage, exportTableToCsv, exportTableToJson } =
+      useChartExport()
 
     const options = reactive({
       animation: false,
@@ -356,8 +374,13 @@ export default {
       }
     }
 
-    const exportTable = (serie) => {
-      exportTableToCsv(`${serie.title}.csv`, columns, serie.itemData)
+    const exportTable = (serie, format) => {
+      const filename = `${serie.title}.${format}`
+      if (format === 'csv') {
+        exportTableToCsv(filename, columns, serie.itemData)
+      } else {
+        exportTableToJson(filename, serie.itemData)
+      }
     }
 
     watch(

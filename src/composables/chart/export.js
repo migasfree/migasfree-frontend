@@ -84,10 +84,22 @@ export function useChartExport() {
     return status
   }
 
+  const exportTableToJson = (filename, data) => {
+    const content = JSON.stringify(data, null, 2)
+    const status = exportFile(filename, content, 'application/json')
+
+    if (status !== true) {
+      uiStore.notifyError($gettext('Browser denied file download...'))
+    }
+
+    return status
+  }
+
   return {
     saveSvgImage,
     savePngImage,
     wrapCsvValue,
     exportTableToCsv,
+    exportTableToJson,
   }
 }

@@ -129,13 +129,22 @@
             bordered
           >
             <template #top-left>
-              <q-btn
+              <q-btn-dropdown
                 flat
                 :icon="appIcon('export')"
                 color="primary"
-                @click.stop="exportTable"
-                ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
+                @click.stop
               >
+                <q-list>
+                  <q-item v-close-popup clickable @click="exportTable('csv')">
+                    <q-item-section>CSV</q-item-section>
+                  </q-item>
+                  <q-item v-close-popup clickable @click="exportTable('json')">
+                    <q-item-section>JSON</q-item-section>
+                  </q-item>
+                </q-list>
+                <q-tooltip>{{ $gettext('Export') }}</q-tooltip>
+              </q-btn-dropdown>
             </template>
 
             <template #header>
@@ -277,7 +286,8 @@ export default {
     const { initOptions, loadingOptions, getChartColors, getTextColor } =
       useChartOptions()
     useChartUtils(chart)
-    const { saveSvgImage, savePngImage, wrapCsvValue } = useChartExport()
+    const { saveSvgImage, savePngImage, wrapCsvValue, exportTableToJson } =
+      useChartExport()
 
     const options = reactive({
       animation: false,
@@ -406,33 +416,39 @@ export default {
       viewData.value = true
     }
 
-    const exportTable = () => {
-      // naive encoding to csv format
-      const head = [
-        wrapCsvValue(''),
-        data.xData.map((col) => wrapCsvValue(col)),
-      ].join(',')
-      const body = data.series
-        .map((row) => {
-          return [
-            wrapCsvValue(row.name),
-            row.data
-              .map((item) => {
-                return wrapCsvValue(item.value)
-              })
-              .join(','),
-          ].join(',')
-        })
-        .join('\r\n')
+    const exportTable = (format) => {
+      const filename = `${props.title}.${format}`
 
-      const status = exportFile(
-        `${props.title}.csv`,
-        [head, body].join('\r\n'),
-        'text/csv',
-      )
+      if (format === 'csv') {
+        // naive encoding to csv format
+        const head = [
+          wrapCsvValue(''),
+          data.xData.map((col) => wrapCsvValue(col)),
+        ].join(',')
+        const body = data.series
+          .map((row) => {
+            return [
+              wrapCsvValue(row.name),
+              row.data
+                .map((item) => {
+                  return wrapCsvValue(item.value)
+                })
+                .join(','),
+            ].join(',')
+          })
+          .join('\r\n')
 
-      if (status !== true) {
-        uiStore.notifyError($gettext('Browser denied file download...'))
+        const status = exportFile(
+          filename,
+          [head, body].join('\r\n'),
+          'text/csv',
+        )
+
+        if (status !== true) {
+          uiStore.notifyError($gettext('Browser denied file download...'))
+        }
+      } else {
+        exportTableToJson(filename, data)
       }
     }
 

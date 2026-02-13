@@ -39,6 +39,21 @@
     <q-card-actions v-show="isChartVisible" align="around" class="q-pt-none">
       <q-btn-dropdown flat stretch color="primary">
         <template #label>
+          <q-icon :name="appIcon('export')" />
+          <q-tooltip>{{ $gettext('Export') }}</q-tooltip>
+        </template>
+        <q-list>
+          <q-item v-close-popup clickable @click="exportData('csv')">
+            <q-item-section>CSV</q-item-section>
+          </q-item>
+          <q-item v-close-popup clickable @click="exportData('json')">
+            <q-item-section>JSON</q-item-section>
+          </q-item>
+        </q-list>
+      </q-btn-dropdown>
+
+      <q-btn-dropdown flat stretch color="primary">
+        <template #label>
           <q-icon :name="appIcon('download')" />
 
           <q-tooltip>
@@ -121,7 +136,8 @@ export default {
 
     const chart = ref(null)
 
-    const { saveSvgImage, savePngImage } = useChartExport()
+    const { saveSvgImage, savePngImage, exportTableToCsv, exportTableToJson } =
+      useChartExport()
     const { initOptions, getTextColor } = useChartOptions()
     useChartUtils(chart)
 
@@ -363,6 +379,18 @@ export default {
       changeRange,
       saveSvgImage: () => saveSvgImage(chart.value, props.title),
       savePngImage: () => savePngImage(chart.value, props.title),
+      exportData: (format) => {
+        const filename = `${props.title}.${format}`
+        if (format === 'csv') {
+          const columns = [
+            { label: 'Date', field: 0 },
+            { label: 'Value', field: 1 },
+          ]
+          exportTableToCsv(filename, columns, props.data)
+        } else {
+          exportTableToJson(filename, props.data)
+        }
+      },
       appIcon,
     }
   },
