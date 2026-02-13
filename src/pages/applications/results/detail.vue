@@ -87,7 +87,7 @@
                   clearable
                   counter
                   :label="$gettext('Change Icon')"
-                  accept="image/*"
+                  accept=".jpg,.jpeg,.png,.gif,.svg,.webp,.bmp,.ico,.tiff,.tif"
                   @rejected="onRejected"
                   ><template #prepend><q-icon name="mdi-image" /> </template
                 ></q-file>
@@ -282,7 +282,7 @@ export default {
       )
     })
 
-    const iconPath = computed(() => `${element.value.icon}?rand=${rand.value}`)
+    const iconPath = computed(() => `${element.icon}?rand=${rand.value}`)
 
     const loadRelated = async () => {
       try {
