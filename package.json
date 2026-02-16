@@ -93,7 +93,7 @@
     "style-loader": "4.0.0",
     "vitest": "4.0.18",
     "vitest-axe": "0.1.0",
-    "vue-eslint-parser": "10.2.0",
+    "vue-eslint-parser": "10.4.0",
     "webpack": "5.105.0"
   },
   "browserslist": [
