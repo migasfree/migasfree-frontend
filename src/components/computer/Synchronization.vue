@@ -11,9 +11,9 @@
             {{ $gettext('Synchronization') }}
           </div>
         </div>
-        <div v-if="syncEndDate" class="col-auto">
+        <div v-if="syncInfo.sync_end_date" class="col-auto">
           <DateDiff
-            :begin="new Date(syncEndDate)"
+            :begin="new Date(syncInfo.sync_end_date)"
             :tooltip="$gettext('unsynchronized from')"
           />
         </div>
