@@ -18,20 +18,22 @@
   </q-btn>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from 'quasar'
 
-export default {
-  name: 'ToggleDarkMode',
-  setup() {
-    const $q = useQuasar()
+const $q = useQuasar()
 
-    const toggleDarkMode = () => {
-      $q.dark.toggle()
-      $q.cookies.set('darkMode', $q.dark.isActive, { expires: '30d' })
-    }
+const toggleDarkMode = () => {
+  $q.dark.toggle()
 
-    return { toggleDarkMode }
-  },
+  const isDark = $q.dark.isActive
+
+  $q.cookies.set('darkMode', isDark, { expires: '30d' })
+
+  const theme = isDark ? 'dark' : 'light'
+  document.documentElement.setAttribute('data-theme', theme)
+  document.body.setAttribute('data-theme', theme)
+
+  window.dispatchEvent(new CustomEvent('theme-changed', { detail: theme }))
 }
 </script>
