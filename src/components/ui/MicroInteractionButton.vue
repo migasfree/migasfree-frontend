@@ -122,23 +122,4 @@ const handleClick = async () => {
   align-items: center;
   justify-content: center;
 }
-
-.glass-tooltip {
-  background: rgba(var(--brand-primary-rgb), 0.95) !important;
-  color: white;
-  backdrop-filter: blur(8px);
-  border-radius: var(--radius, 8px);
-  text-transform: uppercase;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  font-size: 10px;
-  padding: 4px 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-[data-theme='dark'] .glass-tooltip {
-  background: rgba(0, 0, 0, 0.8) !important;
-  color: var(--brand-tertiary, #fbbf24);
-  border-color: rgba(var(--brand-tertiary-rgb), 0.2);
-}
 </style>
