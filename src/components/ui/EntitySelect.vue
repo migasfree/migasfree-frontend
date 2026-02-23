@@ -16,22 +16,15 @@
     :rules="rules"
     @update:model-value="$emit('update:modelValue', $event)"
     @clear="$emit('clear')"
-    v-on="
-      useInput
-        ? {
-            filter: (val, update, abort) => $emit('filter', val, update, abort),
-            'filter-abort': () => $emit('filter-abort'),
-          }
-        : {}
-    "
+    v-on="filterListeners"
   >
     <template v-if="prependIcon" #prepend>
-      <q-icon :name="prependIcon" />
+      <q-icon :name="prependIcon" size="20px" class="opacity-60" />
     </template>
 
     <template #no-option>
       <q-item>
-        <q-item-section class="text-grey">
+        <q-item-section class="text-grey text-italic opacity-50">
           {{ $gettext('No results') }}
         </q-item-section>
       </q-item>
@@ -40,7 +33,9 @@
     <template v-if="useCustomOption" #option="scope">
       <slot name="option" v-bind="scope">
         <q-item v-bind="scope.itemProps">
-          {{ scope.opt[optionLabel] }}
+          <q-item-section>
+            <q-item-label>{{ scope.opt[optionLabel] }}</q-item-label>
+          </q-item-section>
         </q-item>
       </slot>
     </template>
@@ -50,32 +45,31 @@
         v-if="chipMode"
         removable
         dense
+        outline
         :tabindex="scope.tabindex"
-        class="q-ma-md"
+        class="q-ma-xs"
         @remove="scope.removeAtIndex(scope.index)"
       >
-        <template v-if="linkModel">
-          <MigasLink
-            :model="linkModel"
-            :pk="scope.opt[optionValue]"
-            :value="scope.opt[optionLabel]"
-            @click.stop
-          />
-        </template>
+        <MigasLink
+          v-if="linkModel"
+          :model="linkModel"
+          :pk="scope.opt[optionValue]"
+          :value="scope.opt[optionLabel]"
+          class="chip-text"
+          @click.stop
+        />
 
         <q-btn
           v-else-if="detailRoute"
           no-caps
           flat
           color="primary"
-          :to="{
-            name: detailRoute,
-            params: { id: scope.opt[optionValue] },
-          }"
+          class="chip-text"
+          :to="detailTo(scope.opt)"
           :label="scope.opt[optionLabel]"
         />
 
-        <span v-else>{{ scope.opt[optionLabel] }}</span>
+        <span v-else class="chip-text">{{ scope.opt[optionLabel] }}</span>
       </q-chip>
 
       <q-btn
@@ -83,10 +77,7 @@
         no-caps
         flat
         color="primary"
-        :to="{
-          name: detailRoute,
-          params: { id: scope.opt[optionValue] },
-        }"
+        :to="detailTo(scope.opt)"
         :label="scope.opt[optionLabel]"
       />
 
@@ -95,11 +86,14 @@
 
     <template v-if="addRoute" #append>
       <q-btn
+        flat
         round
         dense
-        color="secondary"
+        color="primary"
         :icon="appIcon('add')"
-        @click="$router.push({ name: addRoute })"
+        size="sm"
+        class="add-btn-select opacity-60 hover-opacity-100"
+        @click.stop="$router.push({ name: addRoute })"
       >
         <q-tooltip>{{ addTooltip }}</q-tooltip>
       </q-btn>
@@ -107,113 +101,83 @@
   </q-select>
 </template>
 
-<script>
-import { defineComponent } from 'vue'
-
-import MigasLink from 'components/MigasLink'
-
+<script setup>
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { appIcon } from 'composables/element'
+import MigasLink from 'components/MigasLink.vue'
 
-export default defineComponent({
-  name: 'EntitySelect',
+defineOptions({ name: 'EntitySelect' })
 
-  components: {
-    MigasLink,
-  },
+const props = defineProps({
+  modelValue: { type: [Object, Array, String, Number], default: null },
+  options: { type: Array, required: true },
+  label: { type: String, required: true },
+  multiple: { type: Boolean, default: false },
+  clearable: { type: Boolean, default: false },
+  optionValue: { type: String, default: 'id' },
+  optionLabel: { type: String, default: 'name' },
+  linkModel: { type: String, default: '' },
+  chipMode: { type: Boolean, default: false },
+  detailRoute: { type: String, default: '' },
+  addRoute: { type: String, default: '' },
+  addTooltip: { type: String, default: 'Add' },
+  prependIcon: { type: String, default: '' },
+  lazyRules: { type: Boolean, default: false },
+  rules: { type: Array, default: () => [] },
+  useInput: { type: Boolean, default: false },
+  mapOptions: { type: Boolean, default: false },
+  useCustomOption: { type: Boolean, default: false },
+  focus: { type: Boolean, default: false },
+})
 
-  props: {
-    modelValue: {
-      type: [Object, Array, String, Number],
-      default: null,
-    },
-    options: {
-      type: Array,
-      required: true,
-    },
-    label: {
-      type: String,
-      required: true,
-    },
-    multiple: {
-      type: Boolean,
-      default: false,
-    },
-    clearable: {
-      type: Boolean,
-      default: false,
-    },
-    optionValue: {
-      type: String,
-      default: 'id',
-    },
-    optionLabel: {
-      type: String,
-      default: 'name',
-    },
-    linkModel: {
-      type: String,
-      default: '',
-    },
-    chipMode: {
-      type: Boolean,
-      default: false,
-    },
-    detailRoute: {
-      type: String,
-      default: '',
-    },
-    addRoute: {
-      type: String,
-      default: '',
-    },
-    addTooltip: {
-      type: String,
-      default: 'Add',
-    },
-    prependIcon: {
-      type: String,
-      default: '',
-    },
-    lazyRules: {
-      type: Boolean,
-      default: false,
-    },
-    rules: {
-      type: Array,
-      default: () => [],
-    },
-    useInput: {
-      type: Boolean,
-      default: false,
-    },
-    mapOptions: {
-      type: Boolean,
-      default: false,
-    },
-    useCustomOption: {
-      type: Boolean,
-      default: false,
-    },
-    focus: {
-      type: Boolean,
-      default: false,
-    },
-  },
+const emit = defineEmits([
+  'update:modelValue',
+  'clear',
+  'filter',
+  'filter-abort',
+])
 
-  emits: ['update:modelValue', 'clear', 'filter', 'filter-abort'],
+const selectInput = ref(null)
 
-  setup() {
-    return {
-      appIcon,
-    }
-  },
+// Computed to avoid inline object creation in the template on every render
+const filterListeners = computed(() =>
+  props.useInput
+    ? {
+        filter: (val, update, abort) => emit('filter', val, update, abort),
+        'filter-abort': () => emit('filter-abort'),
+      }
+    : {},
+)
 
-  mounted() {
-    if (this.focus && this.$refs.selectInput) {
-      this.$nextTick(() => {
-        this.$refs.selectInput.focus()
-      })
-    }
-  },
+const detailTo = (opt) => ({
+  name: props.detailRoute,
+  params: { id: opt[props.optionValue] },
+})
+
+onMounted(() => {
+  if (props.focus && selectInput.value) {
+    nextTick(() => selectInput.value.focus())
+  }
 })
 </script>
+
+<style scoped>
+.chip-text {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.add-btn-select {
+  font-size: 14px !important;
+  margin-left: 4px;
+  transition: transform 0.2s;
+}
+
+.add-btn-select:hover {
+  transform: scale(1.1);
+}
+</style>
