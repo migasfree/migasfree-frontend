@@ -40,11 +40,10 @@ const props = defineProps({
 
 const { $gettext } = useGettext()
 
- 
 const iconName = computed(() => appIcon(props.value ? 'yes' : 'no'))
- 
+
 const iconColor = computed(() => (props.value ? 'positive' : 'negative'))
- 
+
 const tooltipText = computed(() => $gettext(props.value ? 'Yes' : 'No'))
 </script>
 
@@ -87,13 +86,5 @@ const tooltipText = computed(() => $gettext(props.value ? 'Yes' : 'No'))
 
 .boolean-icon {
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
-}
-
-.glass-tooltip {
-  background: rgba(var(--brand-primary-rgb), 0.9) !important;
-  color: white;
-  backdrop-filter: blur(8px);
-  border-radius: 6px;
-  font-size: 0.75rem;
 }
 </style>
