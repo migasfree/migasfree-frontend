@@ -171,7 +171,7 @@
                 <q-item-section avatar class="legend-item-section">
                   <div
                     class="color-dot-child"
-                    :style="{ backgroundColor: group.color }"
+                    :style="{ backgroundColor: getOuterColor(child.index) }"
                   ></div>
                 </q-item-section>
                 <q-item-section>
@@ -489,6 +489,12 @@ const flatData = computed(() => {
     }
   })
 })
+
+const getOuterColor = (index) => {
+  const palette = getChartColors()
+  const offset = data.inner?.length || 0
+  return palette[(offset + index) % palette.length]
+}
 
 // --- Interactivity: legend <-> chart ---
 
