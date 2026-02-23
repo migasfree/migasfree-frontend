@@ -68,7 +68,7 @@
     "@storybook/addon-a11y": "10.2.10",
     "@storybook/addon-links": "10.2.10",
     "@storybook/vue3": "10.2.10",
-    "@storybook/vue3-webpack5": "8.6.15",
+    "@storybook/vue3-webpack5": "8.6.17",
     "@vitejs/plugin-vue": "6.0.4",
     "@vitest/coverage-v8": "4.0.18",
     "@vue/eslint-config-prettier": "10.2.0",
