@@ -1,93 +1,101 @@
 <template>
-  <div class="row">
-    <q-toolbar class="q-my-sm q-px-none">
-      <q-icon v-if="icon" :name="icon" size="48px" />
+  <div class="page-header no-wrap">
+    <div class="title-group no-wrap col-grow">
+      <q-icon v-if="icon" :name="icon" size="2rem" class="shrink-0" />
+      <h1 class="ellipsis" :title="title">
+        {{ title }}
+        <q-chip
+          v-if="results"
+          size="md"
+          color="warning-surface"
+          text-color="brand-primary"
+          class="q-ml-sm text-bold"
+        >
+          {{ results }}
+        </q-chip>
+      </h1>
 
-      <q-toolbar-title class="q-px-sm"
-        ><h2 class="text-h4">
-          <span class="vertical-middle">{{ title }}</span>
-          <q-chip
-            v-if="results !== null && results !== 0"
-            size="lg"
-            color="grey-4"
-            text-color="black"
-            >{{ results }}</q-chip
-          >
-          <slot name="append"></slot>
-        </h2>
-      </q-toolbar-title>
+      <div v-if="$slots.append" class="flex items-center q-ml-sm gap-sm">
+        <slot name="append"></slot>
+      </div>
+    </div>
 
+    <!-- Actions -->
+    <div class="header-actions row no-wrap items-center q-gutter-md q-ml-md">
       <q-btn
         v-if="addRoute"
-        class="q-ma-sm"
+        flat
+        round
+        size="1.1rem"
         color="primary"
-        text-color="white"
-        :aria-label="$gettext('Add')"
         :icon="appIcon('add')"
         @click="$router.push({ name: addRoute })"
-        ><q-tooltip>{{ $gettext('Add') }}</q-tooltip></q-btn
       >
+        <q-tooltip>{{ addButtonTitle || $gettext('Add') }}</q-tooltip>
+      </q-btn>
 
       <q-btn
         v-if="hasExportButton && results > 0"
-        class="q-ma-sm"
+        flat
+        round
+        size="1.1rem"
         color="primary"
-        text-color="white"
-        :aria-label="$gettext('Export')"
         :icon="appIcon('export')"
         :loading="isLoadingExport"
         :disable="results === 0"
         @click="exportAction"
-        ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
       >
+        <q-tooltip>{{ $gettext('Export results') }}</q-tooltip>
+      </q-btn>
 
       <slot name="actions"></slot>
-    </q-toolbar>
+    </div>
   </div>
 </template>
 
-<script>
-import { defineComponent } from 'vue'
+<script setup>
 import { useQuasar } from 'quasar'
 import { useGettext } from 'vue3-gettext'
-
 import { appIcon } from 'composables/element'
 
-export default defineComponent({
-  name: 'Header',
+defineOptions({ name: 'Header' })
 
-  props: {
-    title: { type: String, required: true },
-    icon: { type: String, required: false, default: null },
-    results: { type: Number, required: false, default: null },
-    addRoute: { type: String, required: false, default: null },
-    hasExportButton: { type: Boolean, required: false, default: true },
-    isLoadingExport: { type: Boolean, required: false, default: false },
-  },
+const LARGE_EXPORT_THRESHOLD = 1000
 
-  emits: ['exportAll'],
-
-  setup(props, { emit }) {
-    const $q = useQuasar()
-    const { $gettext } = useGettext()
-
-    const exportAction = () => {
-      if (props.results > 1000) {
-        $q.dialog({
-          title: $gettext('Confirm'),
-          message: $gettext('Do you want to export so many results?'),
-          ok: { label: $gettext('Export'), icon: appIcon('export') },
-          cancel: { label: $gettext('Cancel'), flat: true },
-          persistent: true,
-        }).onOk(async () => {
-          emit('exportAll')
-        })
-      } else {
-        emit('exportAll')
-      }
-    }
-
-    return { exportAction, appIcon }
-  },
+const props = defineProps({
+  title: { type: String, required: true },
+  icon: { type: String, default: null },
+  results: { type: Number, default: null },
+  addRoute: { type: String, default: null },
+  addButtonTitle: { type: String, default: null },
+  hasExportButton: { type: Boolean, default: true },
+  isLoadingExport: { type: Boolean, default: false },
 })
+
+const emit = defineEmits(['exportAll'])
+
+const $q = useQuasar()
+const { $gettext } = useGettext()
+
+const exportAction = () => {
+  if (props.results > LARGE_EXPORT_THRESHOLD) {
+    $q.dialog({
+      title: $gettext('Confirm Export'),
+      message: $gettext(
+        'Do you want to export so many results? This might take a while.',
+      ),
+      ok: { label: $gettext('Export'), flat: true, color: 'primary' },
+      cancel: { label: $gettext('Cancel'), flat: true, color: 'negative' },
+      persistent: true,
+    }).onOk(() => emit('exportAll'))
+  } else {
+    emit('exportAll')
+  }
+}
 </script>
+
+<style scoped>
+.header-actions {
+  margin-left: auto;
+}
+</style>
