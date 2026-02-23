@@ -1,12 +1,9 @@
 <template>
-  <q-card class="info-card shadow-2 rounded-borders">
-    <q-card-section class="q-pb-none">
-      <!-- Header -->
+  <q-card class="panel info-card overflow-hidden">
+    <q-card-section class="q-pa-md">
+      <!-- Header with Title and Creation Date -->
       <div class="row items-center justify-between q-mb-md">
-        <div
-          class="text-h6 text-weight-bold"
-          :class="$q.dark.isActive ? 'text-white' : 'text-grey-8'"
-        >
+        <div class="text-h6 text-weight-bold text-primary">
           {{ $gettext('General') }}
         </div>
         <div class="row items-center no-wrap">
@@ -19,183 +16,195 @@
       </div>
 
       <!-- Hero Section: Name & FQDN -->
-      <div
-        class="row items-center q-pa-lg rounded-borders q-mb-lg hero-section"
-        :class="$q.dark.isActive ? 'bg-blue-grey-10' : 'bg-blue-grey-1'"
-      >
-        <div class="col-12">
-          <!-- Editable Name -->
-          <q-btn-group v-if="isSuperUser" class="full-width">
-            <q-input
-              v-model="value"
-              :label="$gettext('Name')"
-              :aria-label="$gettext('Computer Name')"
-              dense
-              outlined
-              class="col"
-              style="border-top-right-radius: 0; border-bottom-right-radius: 0"
+      <div class="glass-panel q-pa-lg q-mb-lg">
+        <div class="row items-center no-wrap full-width">
+          <!-- Avatar Icon -->
+          <div class="hero-icon-section flex-center q-mr-md gt-xs">
+            <q-icon
+              name="mdi-laptop-account"
+              size="20px"
+              color="brand-primary"
             />
-            <q-btn
-              color="primary"
-              :icon="appIcon('save-edit')"
-              :loading="loading"
-              :disabled="loading"
-              unelevated
-              @click="updateName"
-            >
-              <q-tooltip>{{ $gettext('Save and continue editing') }}</q-tooltip>
-            </q-btn>
-          </q-btn-group>
-
-          <!-- Readonly Name -->
-          <div v-else class="row items-center no-wrap">
-            <div
-              class="text-h4 text-weight-medium q-mr-sm"
-              :class="
-                $q.dark.isActive ? 'text-blue-grey-2' : 'text-blue-grey-10'
-              "
-            >
-              {{ name }}
-            </div>
-            <CopyToClipboard :content="name" size="sm" flat />
           </div>
 
-          <!-- FQDN -->
-          <div v-if="fqdn" class="row items-center no-wrap q-mt-sm">
-            <q-icon
-              :name="appIcon('information')"
-              size="sm"
-              class="q-mr-sm"
-              :class="
-                $q.dark.isActive ? 'text-blue-grey-4' : 'text-blue-grey-6'
-              "
-            />
-            <span
-              class="text-subtitle1"
-              :class="
-                $q.dark.isActive ? 'text-blue-grey-3' : 'text-blue-grey-7'
-              "
+          <div class="col overflow-hidden">
+            <!-- Edit Mode -->
+            <div
+              v-if="isSuperUser && editing"
+              class="row items-center no-wrap full-width"
             >
-              {{ fqdn }}
+              <q-input
+                ref="nameInput"
+                v-model="value"
+                dense
+                borderless
+                class="col name-input"
+                :placeholder="$gettext('Computer Name')"
+                @keyup.enter="saveName"
+                @keyup.esc="cancelEdit"
+              />
+              <div class="row no-wrap q-ml-sm">
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="check"
+                  color="positive"
+                  :loading="loading"
+                  @click="saveName"
+                >
+                  <q-tooltip>{{ $gettext('Save') }}</q-tooltip>
+                </q-btn>
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="close"
+                  color="negative"
+                  @click="cancelEdit"
+                >
+                  <q-tooltip>{{ $gettext('Cancel') }}</q-tooltip>
+                </q-btn>
+              </div>
+            </div>
+
+            <!-- Display Mode -->
+            <div v-else class="row items-center no-wrap name-display-group">
+              <div class="text-h4 text-weight-medium q-mr-sm">
+                <TextTooltip :text="name" />
+              </div>
+              <q-btn
+                v-if="isSuperUser"
+                flat
+                round
+                dense
+                icon="mdi-pencil-outline"
+                class="edit-trigger opacity-40"
+                @click="startEdit"
+              >
+                <q-tooltip>{{ $gettext('Edit name') }}</q-tooltip>
+              </q-btn>
+              <CopyToClipboard
+                :content="name"
+                size="sm"
+                flat
+                class="opacity-40"
+              />
+            </div>
+
+            <!-- FQDN -->
+            <div v-if="fqdn" class="row items-center no-wrap q-mt-sm">
+              <q-icon
+                name="mdi-dns-outline"
+                size="16px"
+                class="q-mr-xs opacity-50"
+              />
+              <TextTooltip
+                :text="fqdn"
+                text-class="text-subtitle1 opacity-70"
+              />
               <q-tooltip>{{
                 $gettext('full qualified domain name')
               }}</q-tooltip>
-            </span>
-            <CopyToClipboard :content="fqdn" size="xs" flat class="q-ml-xs" />
+              <CopyToClipboard
+                :content="fqdn"
+                size="xs"
+                flat
+                class="q-ml-xs opacity-30"
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Info Grid 2x2 -->
-      <div class="row q-col-gutter-lg q-mb-lg">
-        <!-- Platform -->
-        <div class="col-12 col-sm-6">
-          <div
-            class="spec-box q-pa-md rounded-borders text-white"
-            :class="$q.dark.isActive ? 'bg-black' : 'bg-blue-grey-9'"
-          >
-            <div class="col overflow-hidden">
-              <div class="text-caption uppercase q-mb-sm text-white">
-                {{ $gettext('Platform') }}
-              </div>
-              <MigasLink
-                model="platforms"
-                :pk="project.platform.id"
-                :value="project.platform.name"
-                class="migaslink-elevated"
-                light
-              />
-            </div>
-          </div>
-        </div>
+      <!-- Data Grid -->
+      <div class="row q-col-gutter-md q-mb-md">
+        <!-- Environment Section -->
+        <div class="col-12">
+          <div class="solid-panel">
+            <div class="section-label">{{ $gettext('Environment') }}</div>
 
-        <!-- Project -->
-        <div class="col-12 col-sm-6">
-          <div
-            class="spec-box q-pa-md rounded-borders text-white"
-            :class="$q.dark.isActive ? 'bg-black' : 'bg-blue-grey-9'"
-          >
-            <div class="col overflow-hidden">
-              <div class="text-caption uppercase q-mb-sm text-white">
-                {{ $gettext('Project') }}
-              </div>
-              <MigasLink
-                model="projects"
-                :pk="project.id"
-                :value="project.name"
-                class="migaslink-elevated"
-                light
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- IP Address -->
-        <div v-if="ipAddress" class="col-12 col-sm-6">
-          <div
-            class="spec-box q-pa-md rounded-borders text-white"
-            :class="$q.dark.isActive ? 'bg-black' : 'bg-blue-grey-9'"
-          >
-            <div class="row no-wrap items-center">
-              <q-icon
-                name="mdi-ip-network"
-                size="md"
-                class="q-mr-md"
-                :class="$q.dark.isActive ? 'text-blue-3' : 'text-blue-2'"
-              />
-              <div class="col overflow-hidden">
-                <div
-                  class="text-caption uppercase q-mb-xs"
-                  :class="$q.dark.isActive ? 'text-blue-3' : 'text-blue-2'"
-                >
-                  {{ $gettext('IP Address') }}
-                </div>
-                <div class="row no-wrap items-center">
-                  <div class="text-subtitle1 text-weight-medium q-mr-sm">
-                    {{ ipAddress }}
+            <div class="row q-col-gutter-md">
+              <!-- Platform -->
+              <div class="col-12 col-sm-6">
+                <div class="data-field">
+                  <span class="data-field-label">{{
+                    $gettext('Platform')
+                  }}</span>
+                  <div class="q-mt-xs">
+                    <MigasLink
+                      model="platforms"
+                      :pk="project.platform.id"
+                      :value="project.platform.name"
+                    />
                   </div>
-                  <CopyToClipboard
-                    :content="ipAddress"
-                    size="xs"
-                    flat
-                    :color="$q.dark.isActive ? 'blue-3' : 'blue-2'"
-                  />
+                </div>
+              </div>
+
+              <!-- Project -->
+              <div class="col-12 col-sm-6">
+                <div class="data-field">
+                  <span class="data-field-label">{{
+                    $gettext('Project')
+                  }}</span>
+                  <div class="q-mt-xs">
+                    <MigasLink
+                      model="projects"
+                      :pk="project.id"
+                      :value="project.name"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Forwarded IP Address -->
-        <div v-if="forwardedIpAddress" class="col-12 col-sm-6">
-          <div
-            class="spec-box q-pa-md rounded-borders text-white"
-            :class="$q.dark.isActive ? 'bg-black' : 'bg-blue-grey-9'"
-          >
-            <div class="row no-wrap items-center">
-              <q-icon
-                name="mdi-ip"
-                size="md"
-                class="q-mr-md"
-                :class="$q.dark.isActive ? 'text-blue-3' : 'text-blue-2'"
-              />
-              <div class="col overflow-hidden">
-                <div
-                  class="text-caption uppercase q-mb-xs"
-                  :class="$q.dark.isActive ? 'text-blue-3' : 'text-blue-2'"
-                >
-                  {{ $gettext('Forwarded IP') }}
-                </div>
-                <div class="row no-wrap items-center">
-                  <div class="text-subtitle1 text-weight-medium q-mr-sm">
-                    {{ forwardedIpAddress }}
+        <!-- Network Section -->
+        <div v-if="ipAddress || forwardedIpAddress" class="col-12">
+          <div class="glass-panel">
+            <div class="section-label">{{ $gettext('Network') }}</div>
+
+            <div class="row q-col-gutter-md">
+              <!-- Main IP -->
+              <div v-if="ipAddress" class="col-12 col-sm-6">
+                <div class="data-field">
+                  <span class="data-field-label">{{
+                    $gettext('IP Address')
+                  }}</span>
+                  <div class="net-value-row q-mt-xs">
+                    <q-icon name="mdi-ip-network" color="info" size="18px" />
+                    <span class="text-mono text-weight-medium">{{
+                      ipAddress
+                    }}</span>
+                    <CopyToClipboard
+                      :content="ipAddress"
+                      size="xs"
+                      flat
+                      class="opacity-40"
+                    />
                   </div>
-                  <CopyToClipboard
-                    :content="forwardedIpAddress"
-                    size="xs"
-                    flat
-                    :color="$q.dark.isActive ? 'blue-3' : 'blue-2'"
-                  />
+                </div>
+              </div>
+
+              <!-- Forwarded IP -->
+              <div v-if="forwardedIpAddress" class="col-12 col-sm-6">
+                <div class="data-field">
+                  <span class="data-field-label">{{
+                    $gettext('Forwarded IP')
+                  }}</span>
+                  <div class="net-value-row q-mt-xs">
+                    <q-icon name="mdi-ip" size="18px" class="opacity-50" />
+                    <span class="text-mono text-weight-medium">{{
+                      forwardedIpAddress
+                    }}</span>
+                    <CopyToClipboard
+                      :content="forwardedIpAddress"
+                      size="xs"
+                      flat
+                      class="opacity-40"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -205,12 +214,12 @@
     </q-card-section>
 
     <!-- Action Buttons -->
-    <q-card-actions class="justify-around q-px-md q-pb-md">
+    <q-card-actions class="row justify-center q-gutter-sm q-px-md q-pb-md">
       <q-btn
         :icon="appIcon('events')"
-        outline
-        color="primary"
+        flat
         no-caps
+        class="action-btn"
         :to="{
           name: 'computer-events',
           params: { id: cid },
@@ -220,9 +229,9 @@
 
       <q-btn
         :icon="appIcon('simulate')"
-        outline
-        color="primary"
+        flat
         no-caps
+        class="action-btn"
         :to="{
           name: 'computer-simulate',
           params: { id: cid },
@@ -232,9 +241,9 @@
 
       <q-btn
         icon="mdi-card-account-details-outline"
-        outline
-        color="primary"
+        flat
         no-caps
+        class="action-btn"
         :to="{
           name: 'computer-label',
           params: { id: cid },
@@ -246,7 +255,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { useGettext } from 'vue3-gettext'
 
 import { api } from 'boot/axios'
@@ -256,6 +265,7 @@ import { useAuthStore } from 'stores/auth'
 import CopyToClipboard from 'components/ui/CopyToClipboard'
 import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
+import TextTooltip from 'components/ui/TextTooltip'
 
 import { appIcon } from 'composables/element'
 
@@ -265,6 +275,7 @@ export default {
     CopyToClipboard,
     DateView,
     MigasLink,
+    TextTooltip,
   },
   props: {
     cid: {
@@ -299,21 +310,38 @@ export default {
       default: null,
     },
   },
-  setup(props) {
+  emits: ['update:name'],
+  setup(props, { emit }) {
     const { $gettext } = useGettext()
     const uiStore = useUiStore()
     const authStore = useAuthStore()
 
     const loading = ref(false)
     const value = ref(props.name)
+    const editing = ref(false)
+    const nameInput = ref(null)
 
-    const updateName = async () => {
+    const startEdit = () => {
+      value.value = props.name
+      editing.value = true
+      nextTick(() => {
+        if (nameInput.value) nameInput.value.focus()
+      })
+    }
+
+    const cancelEdit = () => {
+      editing.value = false
+    }
+
+    const saveName = async () => {
       loading.value = true
       try {
         await api.patch(`/api/v1/token/computers/${props.cid}/`, {
           name: value.value,
         })
         uiStore.notifySuccess($gettext('Name has been changed!'))
+        emit('update:name', value.value)
+        editing.value = false
       } catch (error) {
         uiStore.notifyError(error)
       } finally {
@@ -324,8 +352,12 @@ export default {
     return {
       loading,
       value,
+      editing,
+      nameInput,
       isSuperUser: authStore.user.is_superuser,
-      updateName,
+      startEdit,
+      cancelEdit,
+      saveName,
       appIcon,
     }
   },
@@ -336,5 +368,92 @@ export default {
 .info-card {
   max-width: 1000px;
   margin: auto;
+}
+
+.hero-icon-section {
+  width: 44px;
+  height: 44px;
+  background: var(--warning-surface);
+  border-radius: 12px;
+  flex-shrink: 0;
+  display: flex;
+}
+
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+  margin-bottom: 12px;
+}
+
+.data-field-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.5;
+}
+
+.net-value-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.text-mono {
+  font-family: 'Fira Code', 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+}
+
+.solid-panel {
+  background: rgba(var(--brand-primary-rgb), 0.04);
+  border: 1px solid rgba(var(--brand-primary-rgb), 0.08);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+[data-theme='dark'] .solid-panel {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+/* Action buttons */
+.action-btn {
+  background: rgba(var(--brand-primary-rgb), 0.05);
+  border-radius: 12px;
+  padding: 8px 20px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.action-btn:hover {
+  background: rgba(var(--brand-primary-rgb), 0.1);
+}
+
+[data-theme='dark'] .action-btn {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Edit micro-interaction */
+.name-display-group .edit-trigger {
+  transition: opacity 0.2s;
+}
+
+.name-display-group:hover .edit-trigger {
+  opacity: 0.8 !important;
+}
+
+.name-input :deep(.q-field__native) {
+  font-size: 1.5rem;
+  line-height: 1.2;
+  color: var(--brand-primary);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+[data-theme='dark'] .name-input :deep(.q-field__native) {
+  color: var(--brand-tertiary);
 }
 </style>
