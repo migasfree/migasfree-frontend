@@ -49,7 +49,7 @@ export default defineConfig((ctx) => {
     boot: ['axios', 'fonts', 'gettext', 'vue-good-table-next', 'ui-defaults'],
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#css
-    css: ['app.sass'],
+    css: ['app.sass', 'style.css'],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
