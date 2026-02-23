@@ -26,6 +26,7 @@
               :created-at="element.created_at"
               :ip-address="element.ip_address"
               :forwarded-ip-address="element.forwarded_ip_address"
+              @update:name="(val) => (element.name = val)"
             />
           </div>
 
