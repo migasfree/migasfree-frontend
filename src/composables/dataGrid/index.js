@@ -33,6 +33,7 @@ export default function useDataGrid(
   const startDateRange = ref(null)
   const installDateRange = ref(null)
   const uninstallDateRange = ref(null)
+  const syncEndDateRange = ref(null)
 
   // State
   const perPage = RESULTS_PER_PAGE
@@ -157,6 +158,7 @@ export default function useDataGrid(
       startDateRange,
       installDateRange,
       uninstallDateRange,
+      syncEndDateRange,
     }
 
     resetTableFilters(rangeRefs, machineTree, statusTree, loadItemsAfter)
@@ -170,6 +172,24 @@ export default function useDataGrid(
     loadQueryParams()
     loadItems()
   })
+
+  // Automatic refresh when preferences change
+  watch(
+    () => [
+      authStore.user?.domain_preference?.id ??
+        authStore.user?.domain_preference,
+      authStore.user?.scope_preference?.id ?? authStore.user?.scope_preference,
+    ],
+    (newVal, oldVal) => {
+      // Only reload if the values actually changed (not on mount)
+      if (
+        oldVal !== undefined &&
+        JSON.stringify(newVal) !== JSON.stringify(oldVal)
+      ) {
+        loadItems()
+      }
+    },
+  )
 
   // Lifecycle
   onMounted(async () => {
@@ -196,6 +216,7 @@ export default function useDataGrid(
     startDateRange,
     installDateRange,
     uninstallDateRange,
+    syncEndDateRange,
 
     // State
     rows,
