@@ -13,7 +13,7 @@ h2
   white-space: pre
 
 .reversed-delete
-  background: var(--negative)
+  background: var(--error)
   color: white
 
 .q-btn-dropdown--split .q-btn-dropdown__arrow-container
@@ -97,8 +97,10 @@ body
   color: var(--header-text)
 
 .q-footer.site-footer
-  background-color: var(--footer-bg)
-  color: var(--footer-text)
+  background: var(--bg-card) !important;
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  color: var(--neutral-500);
 
 .body--light
   // main background rule removed as it is covered by body
@@ -172,7 +174,6 @@ body
   &:hover
     border-color: var(--border-focus)
     box-shadow: var(--shadow-lg)
-    z-index: 1
 
 .glass-card
   @extend .q-card

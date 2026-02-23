@@ -1,85 +1,31 @@
-// === HSL Color Tokens ===
-:root
-  --primary: hsl(210, 78%, 46%)
-  --primary-light: hsl(210, 78%, 66%)
-  --primary-dark: hsl(210, 78%, 36%)
-  --secondary: hsl(187, 100%, 42%)
-  --accent: hsl(291, 64%, 42%)
-  --positive: hsl(134, 70%, 43%)
-  --negative: hsl(354, 70%, 54%)
-  --info: hsl(190, 85%, 56%)
-  --warning: hsl(44, 88%, 58%)
-  --border-focus: var(--primary)
-  
-  --background: hsl(220, 20%, 97%)
-  --surface: hsla(0, 0%, 100%, 0.8)
-  --text: hsl(210, 11%, 15%)
-  --border: hsla(210, 11%, 15%, 0.1)
-  
-  --header-bg: hsl(15, 25%, 34%)
-  --footer-bg: hsl(20, 16%, 93%)
-  --footer-text: hsl(199, 18%, 33%)
-  --header-text: hsl(0, 0%, 100%)
-  
-  --separator: rgba(0, 0, 0, 0.12)
+// Redefinimos las variables de Sass para que apunten a las Custom Properties de CSS
+// definidas en style.css. Esto asegura una única fuente de verdad.
 
-  --q-primary: var(--primary)
-  --q-secondary: var(--secondary)
-  --q-accent: var(--accent)
-  --q-positive: var(--positive)
-  --q-negative: var(--negative)
-  --q-info: var(--info)
-  --q-warning: var(--warning)
-  --q-border-focus: var(--border-focus)
+// === Colors ===
+$primary:   var(--brand-primary)
+$secondary: var(--brand-secondary)
+$accent:    var(--brand-tertiary)
 
-.body--dark
-  --background: hsl(200, 5%, 11%)
-  --surface: hsla(200, 5%, 16%, 0.8)
-  --text: hsl(0, 0%, 87%)
-  --border: hsla(0, 0%, 100%, 0.08)
-  --negative: hsl(354, 100%, 65%)
-  --border-focus: var(--primary-light)
+$positive:  var(--success)
+$negative:  var(--error)
+$info:      var(--info)
+$warning:   var(--warning)
 
-  --header-bg: hsl(200, 19%, 18%)
-  --footer-bg: hsl(200, 18%, 26%)
-  --footer-text: hsl(24, 14%, 93%)
-  
-  --separator: rgba(255, 255, 255, 0.28)
+// === Spacing ===
+$space-xs:  4px
+$space-sm:  8px
+$space-md:  16px
+$space-lg:  24px
+$space-xl:  32px
 
+// === Typography ===
+// Usamos las variables CSS para mantener consistencia
+$font-ui:   var(--font-ui)
+$text-xs:   var(--text-xs)
+$text-sm:   var(--text-sm)
+$text-base: var(--text-base)
+$text-xl:   var(--text-xl)
 
-// === Spacing Tokens ===
-:root
-  --space-xs: 4px
-  --space-sm: 8px
-  --space-md: 16px
-  --space-lg: 24px
-  --space-xl: 32px
-  --space-xxl: 48px
-
-// === Typography (Fluid) ===
-:root
-  --font-size-sm: clamp(0.75rem, 1vw + 0.5rem, 0.875rem)
-  --font-size-md: clamp(0.875rem, 1vw + 0.5rem, 1rem)
-  --font-size-lg: clamp(1.25rem, 2vw + 1rem, 1.5rem)
-  --font-size-xl: clamp(1.5rem, 4vw + 1rem, 3rem)
-
-// === Border Radius ===
-:root
-  --radius-sm: 4px
-  --radius-md: 8px
-  --radius-lg: 16px
-  --radius-xl: 24px
-
-// === Shadows ===
-:root
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12)
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15)
-  --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.2)
-  --shadow-focus: 0 0 0 3px rgba(25, 118, 210, 0.3)
-
-
-// === Transitions ===
-:root
-  --transition-fast: 150ms ease
-  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1)
-  --transition-slow: 400ms ease-out
+// === Borders & Radius ===
+$radius:    var(--radius)
+$border:    var(--border)
