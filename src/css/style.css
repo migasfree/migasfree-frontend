@@ -132,6 +132,24 @@ h2 {
   margin-top: 2rem;
 }
 
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--neutral-300);
+  border-radius: 10px;
+}
+
+[data-theme='dark'] ::-webkit-scrollbar-thumb {
+  background: var(--neutral-700);
+}
+
 /* =========================================
    3. LAYOUT
    ========================================= */
@@ -201,7 +219,7 @@ h2 {
   box-shadow: var(--shadow);
 }
 
-/* Glass Panels */
+/* Glassmorphism Components */
 .glass-card,
 .glass-panel {
   background: rgba(255, 255, 255, 0.7) !important;
@@ -213,8 +231,71 @@ h2 {
 
 [data-theme='dark'] .glass-card,
 [data-theme='dark'] .glass-panel {
-  background: rgba(254, 252, 232, 0.05) !important;
+  background: rgba(var(--brand-primary-rgb), 0.05) !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.glass-menu {
+  background: rgba(var(--bg-card-rgb), 0.8) !important;
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(var(--brand-primary-rgb), 0.1);
+  border-radius: 16px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme='dark'] .glass-menu {
+  background: rgba(13, 8, 7, 0.95) !important;
+  border-color: rgba(254, 252, 232, 0.1) !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+.glass-badge {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(4px);
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--brand-primary);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] .glass-badge {
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--brand-tertiary);
+  border-color: rgba(254, 252, 232, 0.2);
+}
+
+.glass-blur-bar {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='dark'] .glass-blur-bar {
+  background: rgba(0, 0, 0, 0.6);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.glass-tooltip {
+  background: rgba(var(--brand-primary-rgb), 0.95) !important;
+  color: #fff !important;
+  backdrop-filter: blur(8px);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme='dark'] .glass-tooltip {
+  background: rgba(15, 23, 42, 0.9) !important;
+  color: var(--brand-tertiary) !important;
+  border-color: rgba(255, 255, 255, 0.05);
 }
 
 /* FAB Buttons */
@@ -455,6 +536,39 @@ h2 {
 [data-theme='dark'] .q-field__native,
 [data-theme='dark'] .q-field__input {
   color: #fefce8;
+}
+
+/* --- Input Decorations (Prefixes/Icons) --- */
+.filter-icon-box,
+.input-prefix-box {
+  width: 28px;
+  height: 28px;
+  background: rgba(var(--brand-primary-rgb), 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand-primary);
+  margin-right: 4px;
+  transition: all 0.3s ease;
+}
+
+[data-theme='dark'] .filter-icon-box,
+[data-theme='dark'] .input-prefix-box {
+  background: rgba(var(--brand-tertiary-rgb, 251, 191, 36), 0.1);
+  color: var(--brand-tertiary);
+}
+
+.q-field--focused .filter-icon-box,
+.q-field--focused .input-prefix-box {
+  background: var(--brand-primary);
+  color: var(--brand-on-primary);
+}
+
+[data-theme='dark'] .q-field--focused .filter-icon-box,
+[data-theme='dark'] .q-field--focused .input-prefix-box {
+  background: var(--brand-tertiary);
+  color: var(--brand-on-primary);
 }
 
 /* --- Select Menus --- */
@@ -822,55 +936,4 @@ h2 {
 
 .hover-opacity-100:hover {
   opacity: 1 !important;
-}
-
-/* --- Filter Icons & Input Prefixes --- */
-.filter-icon-box,
-.input-prefix-box {
-  width: 28px;
-  height: 28px;
-  background: rgba(var(--brand-primary-rgb), 0.1);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--brand-primary);
-  margin-right: 4px;
-  transition: all 0.3s ease;
-}
-
-[data-theme='dark'] .filter-icon-box,
-[data-theme='dark'] .input-prefix-box {
-  background: rgba(var(--brand-tertiary-rgb, 251, 191, 36), 0.1);
-  color: var(--brand-tertiary);
-}
-
-.q-field--focused .filter-icon-box,
-.q-field--focused .input-prefix-box {
-  background: var(--brand-primary);
-  color: var(--brand-on-primary);
-}
-
-[data-theme='dark'] .q-field--focused .filter-icon-box,
-[data-theme='dark'] .q-field--focused .input-prefix-box {
-  background: var(--brand-tertiary);
-  color: var(--brand-on-primary);
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--neutral-300);
-  border-radius: 10px;
-}
-
-[data-theme='dark'] ::-webkit-scrollbar-thumb {
-  background: var(--neutral-700);
 }
