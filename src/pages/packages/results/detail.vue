@@ -65,31 +65,17 @@
                   :tooltip="$gettext('Project')"
                 />
               </template>
-              <q-input
+              <SelectTree
                 v-else
                 v-model="projectStore.selected"
-                readonly
-                :label="$gettext('Project / Store')"
-                @update:model-value="menu.value.show()"
-              >
-                <template #append>
-                  <q-icon name="mdi-menu-down" class="cursor-pointer" />
-                </template>
-
-                <q-menu ref="menu" fit auto-close>
-                  <q-tree
-                    ref="tree"
-                    class="q-ma-sm"
-                    :nodes="projectStore.items"
-                    node-key="id"
-                    label-key="label"
-                    :default-expand-all="true"
-                    :selected="projectStore.selected"
-                    @update:selected="nodeSelected"
-                    @lazy-load="onLazyLoad"
-                  />
-                </q-menu>
-              </q-input>
+                :options="projectStore.items"
+                node-key="id"
+                label-key="label"
+                :default-expand-all="true"
+                :placeholder="$gettext('Project / Store')"
+                @select="nodeSelected"
+                @lazy-load="onLazyLoad"
+              />
             </div>
 
             <div class="col-6 col-md col-sm">
@@ -160,6 +146,7 @@ import { useUiStore } from 'stores/ui'
 
 import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
+import SelectTree from 'components/ui/SelectTree'
 
 import { appIcon, modelIcon } from 'composables/element'
 
@@ -167,6 +154,7 @@ export default {
   components: {
     ItemDetail,
     MigasLink,
+    SelectTree,
   },
   setup() {
     const uiStore = useUiStore()
@@ -214,22 +202,17 @@ export default {
       return projectStore.selected !== null && element.files !== null
     })
 
-    const nodeSelected = (value) => {
-      if (typeof value !== 'string') return
+    const nodeSelected = (node) => {
+      if (!node || !node.id) return
 
+      const value = String(node.id)
       const keys = value.split('|')
       if (keys.length != 2) return
 
-      const nodeProject = tree.value.getNodeByKey(parseInt(keys[0]))
-      const nodeStore = tree.value.getNodeByKey(value)
-
-      projectStore.selected = `${nodeProject.label} / ${nodeStore.label}`
       Object.assign(element, {
-        project: { id: nodeProject.id },
-        store: { id: nodeStore.store_id },
+        project: { id: parseInt(keys[0]) },
+        store: { id: node.store_id },
       })
-
-      menu.value.hide()
     }
 
     const onLazyLoad = async ({ key, done }) => {
