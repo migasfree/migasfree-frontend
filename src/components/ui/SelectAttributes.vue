@@ -1,174 +1,201 @@
 <template>
-  <FilteredMultiSelect
-    v-model="localValue"
-    clearable
-    :label="label"
-    :fetch-options="filterAttributes"
-  >
-    <template #option="{ scope }">
-      <q-item v-bind="scope.itemProps">
-        {{ attributeValue(scope.opt) }}
-      </q-item>
-    </template>
-
-    <template #selected-item="{ scope }">
-      <q-chip
-        removable
-        dense
-        :tabindex="scope.tabindex"
-        class="q-ma-md"
-        @remove="scope.removeAtIndex(scope.index)"
-      >
-        <MigasLink
-          :model="equivalentModel(scope.opt)"
-          :pk="equivalentKey(scope.opt)"
-          :value="attributeValue(scope.opt)"
-          :icon="elementIcon(scope.opt.status)"
-          :tooltip="scope.opt.summary"
-        />
-      </q-chip>
-    </template>
-  </FilteredMultiSelect>
-
-  <div v-if="hasPaste" class="row">
-    <q-btn
-      flat
-      :icon="appIcon('copy')"
-      color="primary"
-      @click.stop="copyList(model, localValue)"
-      ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
+  <div class="select-attributes-container">
+    <FilteredMultiSelect
+      v-model="localValue"
+      clearable
+      :label="label"
+      :fetch-options="filterAttributes"
+      class="attributes-select"
     >
+      <template #option="{ scope }">
+        <q-item v-bind="scope.itemProps" class="attribute-option">
+          <q-item-section avatar>
+            <q-icon
+              :name="elementIcon(scope.opt.status)"
+              size="sm"
+              color="primary"
+            />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="text-weight-bold">
+              {{ attributeValue(scope.opt) }}
+            </q-item-label>
+            <q-item-label v-if="scope.opt.summary" caption>
+              {{ scope.opt.summary }}
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+      </template>
 
-    <q-btn flat :icon="appIcon('paste')" color="primary" @click.stop="onPaste"
-      ><q-tooltip>{{ $gettext('Paste') }}</q-tooltip></q-btn
-    >
+      <template #selected-item="{ scope }">
+        <q-chip
+          removable
+          dense
+          :tabindex="scope.tabindex"
+          class="attribute-chip q-ma-xs"
+          @remove="scope.removeAtIndex(scope.index)"
+        >
+          <MigasLink
+            :model="equivalentModel(scope.opt)"
+            :pk="equivalentKey(scope.opt)"
+            :value="attributeValue(scope.opt)"
+            :icon="elementIcon(scope.opt.status)"
+            :tooltip="scope.opt.summary"
+          />
+        </q-chip>
+      </template>
+    </FilteredMultiSelect>
+
+    <div v-if="hasPaste" class="copy-paste-actions row q-mt-sm justify-end">
+      <MicroInteractionButton
+        :icon="appIcon('copy')"
+        :success-icon="appIcon('yes')"
+        :tooltip="$gettext('Copy')"
+        :success-tooltip="$gettext('Copied!')"
+        :action="handleCopyList"
+      />
+
+      <MicroInteractionButton
+        :icon="appIcon('paste')"
+        :success-icon="appIcon('yes')"
+        :tooltip="$gettext('Paste')"
+        :success-tooltip="$gettext('Pasted!')"
+        :action="handlePasteList"
+      />
+    </div>
   </div>
 </template>
 
-<script>
-import { ref, onMounted, watch } from 'vue'
-
+<script setup>
+import { ref, watch, onMounted } from 'vue'
 import { api } from 'boot/axios'
 
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import MigasLink from 'components/MigasLink'
+import MicroInteractionButton from 'components/ui/MicroInteractionButton.vue'
 
 import useCopyPaste from 'composables/copyPaste'
 import { appIcon, useElement } from 'composables/element'
 
-export default {
-  name: 'SelectAttributes',
-  components: { FilteredMultiSelect, MigasLink },
-  props: {
-    modelValue: {
-      type: Array,
-      required: true,
-    },
-    label: {
-      type: String,
-      required: true,
-    },
-  },
-  emits: ['update:model-value'],
-  setup(props, { emit }) {
-    const { copyList, pasteList, hasPaste } = useCopyPaste()
-    const { elementIcon, equivalentModel, equivalentKey, attributeValue } =
-      useElement()
+defineOptions({ name: 'SelectAttributes' })
 
-    const model = 'attributes'
-    const localValue = ref(props.modelValue)
+const props = defineProps({
+  modelValue: { type: Array, required: true },
+  label: { type: String, required: true },
+})
 
-    const addAttribute = (item) => {
-      if (!localValue.value.find((attr) => attr.id === item.id)) {
-        localValue.value.push(item)
-      }
-    }
+const emit = defineEmits(['update:model-value'])
 
-    const enrichAttribute = async (val) => {
-      if (val.status && val.summary) {
-        return val
-      }
+const { copyList, pasteList, hasPaste } = useCopyPaste()
+const { elementIcon, equivalentModel, equivalentKey, attributeValue } =
+  useElement()
 
-      if (
-        val.property_att?.prefix === 'CID' ||
-        val.property_att?.prefix === 'SET' ||
-        val.property_att?.prefix === 'DMN'
-      ) {
-        const { data } = await api.get(
-          `/api/v1/token/${model}/${val.id}/badge/`,
-        )
-        return {
-          ...val,
-          ...data,
-          description: data.text,
-        }
-      }
+const ENDPOINT = '/api/v1/token/attributes'
+const ENRICHABLE_PREFIXES = new Set(['CID', 'SET', 'DMN'])
 
-      if (val.property_att?.sort === 'server') {
-        return {
-          ...val,
-          status: 'tag',
-        }
-      }
+const localValue = ref(props.modelValue)
 
-      return val
-    }
+// --- Data fetching ---
 
-    const updateAttributes = async () => {
-      const updatedArray = await Promise.all(
-        localValue.value.map(enrichAttribute),
-      )
-      localValue.value = updatedArray
-      emit('update:model-value', [...updatedArray])
-    }
-
-    const filterAttributes = async (val) => {
-      const { data } = await api.get(`/api/v1/token/${model}/`, {
-        params: { search: val.toLowerCase() },
-      })
-
-      return data.results
-    }
-
-    const onPaste = async () => {
-      await pasteList(addAttribute)
-      await updateAttributes()
-    }
-
-    watch(
-      () => props.modelValue,
-      async (newVal, oldVal) => {
-        if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
-          localValue.value = [...newVal]
-          await updateAttributes()
-        }
-      },
-      { immediate: true },
-    )
-
-    watch(localValue, (newValue) => {
-      if (newValue === null) newValue = []
-      emit('update:model-value', newValue)
-    })
-
-    onMounted(async () => {
-      await updateAttributes()
-    })
-
-    return {
-      model,
-      localValue,
-      copyList,
-      onPaste,
-      hasPaste,
-      appIcon,
-      elementIcon,
-      equivalentModel,
-      equivalentKey,
-      attributeValue,
-      filterAttributes,
-      updateAttributes,
-    }
-  },
+const filterAttributes = async (val) => {
+  const { data } = await api.get(`${ENDPOINT}/`, {
+    params: { search: val.toLowerCase() },
+  })
+  return data.results
 }
+
+const enrichAttribute = async (attr) => {
+  if (attr.status && attr.summary) return attr
+
+  const prefix = attr.property_att?.prefix
+  if (ENRICHABLE_PREFIXES.has(prefix)) {
+    const { data } = await api.get(`${ENDPOINT}/${attr.id}/badge/`)
+    return { ...attr, ...data, description: data.text }
+  }
+
+  if (attr.property_att?.sort === 'server') {
+    return { ...attr, status: 'tag' }
+  }
+
+  return attr
+}
+
+const updateAttributes = async () => {
+  const enriched = await Promise.all(localValue.value.map(enrichAttribute))
+  localValue.value = enriched
+  emit('update:model-value', [...enriched])
+}
+
+// --- Copy/Paste ---
+
+const handleCopyList = () => copyList('attributes', localValue.value)
+
+const handlePasteList = async () => {
+  await pasteList((item) => {
+    if (!localValue.value.some((a) => a.id === item.id)) {
+      localValue.value.push(item)
+    }
+  })
+  await updateAttributes()
+}
+
+// --- Watchers ---
+
+watch(
+  () => props.modelValue,
+  async (newVal, oldVal) => {
+    if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
+      localValue.value = [...newVal]
+      await updateAttributes()
+    }
+  },
+  { immediate: true },
+)
+
+watch(localValue, (val) => {
+  emit('update:model-value', val ?? [])
+})
+
+onMounted(updateAttributes)
 </script>
+
+<style scoped>
+.select-attributes-container {
+  width: 100%;
+}
+
+:deep(.q-field__control) {
+  border-radius: var(--radius, 14px);
+  background: rgba(var(--brand-primary-rgb), 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme='dark'] :deep(.q-field__control) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.attribute-chip {
+  background: rgba(var(--brand-primary-rgb), 0.1);
+  border: 1px solid rgba(var(--brand-primary-rgb), 0.1);
+  color: var(--text-main);
+  padding: 4px 10px;
+  height: 28px;
+  transition: all 0.2s ease;
+}
+
+.attribute-chip:hover {
+  background: rgba(var(--brand-primary-rgb), 0.15);
+  transform: translateY(-1px);
+}
+
+[data-theme='dark'] .attribute-chip {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.attribute-option {
+  border-radius: var(--radius, 8px);
+  margin: 2px 8px;
+  transition: background 0.2s ease;
+}
+</style>
