@@ -16,6 +16,7 @@ Migasfree is free software, released under [GNU GPL v3](https://github.com/migas
 - **[Getting Started](docs/tutorials/getting-started.md)**: Setup and installation guide.
 - **[How to Contribute](docs/how-to/contributing.md)**: Guidelines for contributing code and running tests.
 - **[Script Reference](docs/reference/scripts.md)**: List of available yarn commands.
+- **[CSS Architecture](docs/explanation/css-architecture.md)**: Overview of the headless theming and styles hierarchy.
 
 ## Quick Start
 
