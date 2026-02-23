@@ -139,7 +139,7 @@ export function useTableHandlers(deps) {
   const onStatusInFilter = (params) => {
     updateParams({
       columnFilters: Object.assign(serverParams.columnFilters, {
-        status_in: params.id,
+        status_in: params ? params.id : '',
       }),
     })
     loadItems()
@@ -234,10 +234,11 @@ export function useTableHandlers(deps) {
   }
 
   const onMachineFilter = (params) => {
-    if (params.id === '' || params.id === 'P' || params.id === 'V') {
+    const id = params ? params.id : ''
+    if (id === '' || id === 'P' || id === 'V') {
       updateParams({
         columnFilters: Object.assign(serverParams.columnFilters, {
-          machine: params.id,
+          machine: id,
           product_system: '',
         }),
       })
@@ -245,7 +246,7 @@ export function useTableHandlers(deps) {
       updateParams({
         columnFilters: Object.assign(serverParams.columnFilters, {
           machine: '',
-          product_system: params.id,
+          product_system: id,
         }),
       })
     }
