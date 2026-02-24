@@ -113,6 +113,12 @@ describe('StackedBar.vue', () => {
             template:
               '<div class="q-item" @click="$emit(\'click\')"><slot /></div>',
           },
+          'q-item-section': {
+            template: '<div class="q-item-section"><slot /></div>',
+          },
+          'q-separator': {
+            template: '<div class="q-separator"></div>',
+          },
           'v-chart': {
             template: '<div class="v-chart"></div>',
             props: [
@@ -196,7 +202,7 @@ describe('StackedBar.vue', () => {
 
   it('shows banner when noData and not loading', () => {
     const wrapper = createWrapper({ title: 'Test' })
-    expect(wrapper.find('.banner-info').exists()).toBe(true)
+    expect(wrapper.text()).toContain('No data')
   })
 
   it('emits get-link on passData', () => {

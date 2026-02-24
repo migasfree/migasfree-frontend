@@ -32,7 +32,7 @@ vi.mock('src/composables/element', () => ({
 const QBtnStub = {
   name: 'QBtn',
   template:
-    '<button class="q-btn-stub" @click="$emit(\'click\')">{{ label }}</button>',
+    '<button class="q-btn-stub" @click="$emit(\'click\')"><slot>{{ label }}</slot></button>',
   props: ['label', 'icon', 'loading', 'disabled', 'aria-label'],
 }
 const BannerInfoStub = {
@@ -103,7 +103,12 @@ describe('ItemDetail.vue', () => {
           },
           'q-btn': QBtnStub,
           'q-spinner-dots': { template: '<div class="q-spinner-dots"></div>' },
-          'q-tooltip': { template: '<div></div>' },
+          'q-tooltip': { template: '<div><slot></slot></div>' },
+          'q-card-section': {
+            template: '<div class="q-card-section"><slot></slot></div>',
+          },
+          'q-separator': { template: '<hr class="q-separator" />' },
+          'q-space': { template: '<div class="q-space"></div>' },
         },
       },
       props: { ...defaultProps, ...props },

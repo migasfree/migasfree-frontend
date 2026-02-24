@@ -119,6 +119,12 @@ describe('HeatMap.vue', () => {
             template:
               '<div class="q-item" @click="$emit(\'click\')"><slot /></div>',
           },
+          'q-item-section': {
+            template: '<div class="q-item-section"><slot /></div>',
+          },
+          'q-separator': {
+            template: '<div class="q-separator"></div>',
+          },
           'v-chart': {
             template: '<div class="v-chart"></div>',
             props: [
@@ -134,6 +140,9 @@ describe('HeatMap.vue', () => {
             template: '<div class="banner-info">{{ message }}</div>',
             props: ['message'],
           },
+        },
+        directives: {
+          'close-popup': {},
         },
       },
     })
@@ -178,7 +187,7 @@ describe('HeatMap.vue', () => {
 
   it('shows banner when noData', () => {
     const wrapper = createWrapper({ title: 'Test', total: 0 })
-    expect(wrapper.find('.banner-info').exists()).toBe(true)
+    expect(wrapper.text()).toContain('No data')
   })
 
   it('emits get-date on passData', () => {

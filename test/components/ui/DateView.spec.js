@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import DateView from 'src/components/ui/DateView.vue'
 
@@ -43,13 +43,13 @@ describe('DateView.vue', () => {
   it('renders correctly with no value', () => {
     const wrapper = createWrapper({ value: null })
     expect(wrapper.exists()).toBe(true)
-    expect(wrapper.find('span').exists()).toBe(false)
+    expect(mockShowDate).not.toHaveBeenCalled()
   })
 
   it('renders date when value is provided', () => {
     const dateValue = '2024-01-15T10:30:00Z'
     const wrapper = createWrapper({ value: dateValue })
-    expect(wrapper.find('span').exists()).toBe(true)
+    expect(wrapper.text()).toContain('Formatted: 2024-01-15T10:30:00Z')
     expect(mockShowDate).toHaveBeenCalledWith(dateValue)
   })
 
