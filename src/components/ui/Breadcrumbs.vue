@@ -35,6 +35,8 @@ const resolveTo = (to) => {
   if (typeof to === 'string') return { name: to }
   return ''
 }
+
+defineExpose({ goTo: resolveTo })
 </script>
 
 <style scoped>
