@@ -45,6 +45,8 @@ export const MAP_MAX_ZOOM = 19
 export const MAP_DEFAULT_ZOOM = 12
 export const MAP_DETAIL_ZOOM = 16
 export const MAP_TILE_URL = 'https://{s}.tile.osm.org/{z}/{x}/{y}.png'
+export const MAP_SATELLITE_URL =
+  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
 export const MAP_ATTRIBUTION =
   '© <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
 export const MAP_ICON_SIZE = [32, 40]

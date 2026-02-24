@@ -4,6 +4,7 @@ import {
   MAP_DEFAULT_ZOOM,
   MAP_DETAIL_ZOOM,
   MAP_TILE_URL,
+  MAP_SATELLITE_URL,
   MAP_ATTRIBUTION,
   MAP_ICON_SIZE,
   MAP_ICON_ANCHOR,
@@ -22,6 +23,7 @@ export default function useMap() {
 
     // Tile layer configuration
     MAP_TILE_URL,
+    MAP_SATELLITE_URL,
     MAP_ATTRIBUTION,
 
     // Marker icon configuration
