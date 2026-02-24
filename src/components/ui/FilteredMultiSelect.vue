@@ -132,10 +132,18 @@ const onFilter = async (val, update, abort) => {
 
 const onFilterAbort = () => {}
 
+const updateValue = (val) => emit('update:modelValue', val)
+
 onMounted(() => {
   if (props.focus && primaryInput.value) {
     nextTick(() => primaryInput.value.focus())
   }
+})
+
+defineExpose({
+  onFilter,
+  filteredOptions,
+  updateValue,
 })
 </script>
 
