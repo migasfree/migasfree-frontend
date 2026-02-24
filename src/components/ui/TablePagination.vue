@@ -159,6 +159,19 @@ watch(
 watch(currentPageTable, (val) => {
   currentPage.value = val
 })
+
+defineExpose({
+  showAllOption,
+  pagesCount,
+  recordInfoNumbers,
+  perPageLabel,
+  showPagination,
+  customPageChange,
+  customPerPageChange,
+  currentPage,
+  currentPerPage,
+  rowsPerPageOptions,
+})
 </script>
 
 <style scoped>

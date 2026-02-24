@@ -45,6 +45,7 @@ describe('TablePagination.vue', () => {
       global: {
         mocks: {
           ...mockGettext,
+          $q: { screen: { gt: { xs: true } } },
         },
         stubs: {
           'q-toolbar': {
@@ -107,12 +108,12 @@ describe('TablePagination.vue', () => {
   describe('rendering', () => {
     it('renders pagination when total > perPage', () => {
       const wrapper = createWrapper({ total: 100 })
-      expect(wrapper.find('.q-toolbar').exists()).toBe(true)
+      expect(wrapper.find('.pagination-container').exists()).toBe(true)
     })
 
     it('does not render pagination when total <= perPage', () => {
       const wrapper = createWrapper({ total: 5 })
-      expect(wrapper.find('.q-toolbar').exists()).toBe(false)
+      expect(wrapper.find('.pagination-container').exists()).toBe(false)
     })
 
     it('renders "View All" button when total <= MAX_RESULTS_PER_PAGE', () => {
@@ -154,19 +155,19 @@ describe('TablePagination.vue', () => {
     it('formats recordInfo correctly', () => {
       const wrapper = createWrapper({ total: 100 })
       // Page 1: "1 - 10 / 100"
-      expect(wrapper.vm.recordInfo).toBe('1 - 10 / 100')
+      expect(wrapper.vm.recordInfoNumbers).toBe('1 - 10')
     })
 
     it('formats recordInfo correctly for last page', () => {
       const wrapper = createWrapper({ total: 95 })
       wrapper.vm.currentPage = 10
       // Page 10: "91 - 95 / 95"
-      expect(wrapper.vm.recordInfo).toBe('91 - 95 / 95')
+      expect(wrapper.vm.recordInfoNumbers).toBe('91 - 95')
     })
 
     it('formats perPageLabel correctly', () => {
       const wrapper = createWrapper()
-      expect(wrapper.vm.perPageLabel).toBe('Results per page (10)')
+      expect(wrapper.vm.perPageLabel).toBe('Results: 10')
     })
 
     it('showPagination returns true when total > currentPerPage', () => {
