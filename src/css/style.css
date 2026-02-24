@@ -80,12 +80,17 @@
   --border: rgba(255, 255, 255, 0.1);
   --bg-surface-variant: rgba(255, 255, 255, 0.05);
 
-  --neutral-100: #fefce8;
-  --neutral-100-rgb: 254, 252, 232;
+  /* Paleta Neutral Invertida para Modo Oscuro (UI Designer Expert Rule) */
+  --neutral-50: #1a1210;
+  --neutral-100: #251b19;
+  --neutral-100-rgb: 37, 27, 25;
+  --neutral-200: #3c2f2c;
+  --neutral-300: #6b554f;
+  --neutral-400: #a38c86;
   --neutral-500: #b5a4a0;
-  --neutral-700: #6b554f;
-  --neutral-800: #1a1210;
-  --neutral-900: #0d0807;
+  --neutral-700: #dfcfca;
+  --neutral-800: #eee4e1;
+  --neutral-900: #fefce8;
 
   --success-surface: rgba(74, 222, 128, 0.15);
   --warning-surface: rgba(251, 191, 36, 0.15);
@@ -298,8 +303,8 @@ h2 {
   border-color: rgba(255, 255, 255, 0.05);
 }
 
-/* FAB Buttons */
-.q-btn--fab.bg-primary {
+/* Theme Buttons */
+.q-btn.bg-primary {
   color: var(--brand-on-primary) !important;
 }
 
@@ -394,7 +399,7 @@ h2 {
 .tech-data-label {
   font-size: 0.7rem;
   font-weight: 700;
-  color: var(--neutral-400);
+  color: var(--neutral-700);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
