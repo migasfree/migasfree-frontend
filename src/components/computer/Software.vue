@@ -367,8 +367,9 @@
               <q-chip
                 removable
                 dense
+                color="transparent"
                 :tabindex="scope.tabindex"
-                class="q-ma-md"
+                class="q-ma-md q-pa-none"
                 @remove="scope.removeAtIndex(scope.index)"
               >
                 <MigasLink
