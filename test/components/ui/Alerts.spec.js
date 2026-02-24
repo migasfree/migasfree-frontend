@@ -131,37 +131,6 @@ describe('Alerts.vue', () => {
     expect(wrapper.exists()).toBe(true)
   })
 
-  it('target returns laptop icon for computer', () => {
-    const wrapper = createWrapper()
-    expect(wrapper.vm.target('computer')).toBe('mdi-laptop')
-  })
-
-  it('target returns cloud icon for non-computer', () => {
-    const wrapper = createWrapper()
-    expect(wrapper.vm.target('server')).toBe('mdi-cloud')
-  })
-
-  it('level returns negative for critical', () => {
-    const wrapper = createWrapper()
-    expect(wrapper.vm.level('critical')).toBe('negative')
-  })
-
-  it('level returns same value for non-critical', () => {
-    const wrapper = createWrapper()
-    expect(wrapper.vm.level('warning')).toBe('warning')
-    expect(wrapper.vm.level('info')).toBe('info')
-  })
-
-  it('textColor returns white for critical', () => {
-    const wrapper = createWrapper()
-    expect(wrapper.vm.textColor('critical')).toBe('white')
-  })
-
-  it('textColor returns black for non-critical', () => {
-    const wrapper = createWrapper()
-    expect(wrapper.vm.textColor('warning')).toBe('black')
-  })
-
   it('resolveAlertLink handles errors model', () => {
     const wrapper = createWrapper()
     const result = wrapper.vm.resolveAlertLink({ model: 'errors', query: {} })

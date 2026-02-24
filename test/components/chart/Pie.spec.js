@@ -50,21 +50,6 @@ vi.mock('composables/chart/export', () => ({
   useChartExport: () => mocks.chartExport,
 }))
 
-// Mock echarts
-vi.mock('echarts/core', () => ({
-  use: vi.fn(),
-}))
-vi.mock('echarts/charts', () => ({
-  PieChart: {},
-}))
-vi.mock('echarts/components', () => ({
-  TooltipComponent: {},
-  TitleComponent: {},
-}))
-vi.mock('echarts/renderers', () => ({
-  SVGRenderer: {},
-}))
-
 // Mock vue3-gettext
 const mockGettext = {
   $gettext: (msg) => msg,
