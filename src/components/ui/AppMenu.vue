@@ -71,7 +71,6 @@ defineProps({
 const { $gettext } = useGettext()
 const authStore = useAuthStore()
 
- 
 const items = computed(() => {
   let extraDevices = []
 
