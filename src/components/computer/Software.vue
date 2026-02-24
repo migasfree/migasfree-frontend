@@ -1,384 +1,421 @@
 <template>
-  <q-card class="software-card shadow-2 rounded-borders">
-    <q-card-section class="q-pb-none">
+  <q-card class="panel software-card overflow-hidden shadow-2 rounded-borders">
+    <q-card-section class="q-pa-lg">
       <!-- Header -->
       <div class="row items-center justify-between q-mb-md">
-        <div class="row items-center q-gutter-sm">
-          <div
-            class="text-h6 text-weight-bold"
-            :class="$q.dark.isActive ? 'text-white' : 'text-grey-8'"
-          >
-            {{ $gettext('Software') }}
+        <div class="text-h6 text-weight-bold text-primary">
+          {{ $gettext('Software') }}
+        </div>
+
+        <q-btn
+          unelevated
+          color="primary"
+          :icon="appIcon('compare')"
+          :label="`${$gettext('Compare')}...`"
+          @click="showingCompare = true"
+        />
+      </div>
+
+      <!-- Main Layout: 2 Columns -->
+      <div class="row q-col-gutter-xl">
+        <!-- INVENTORY COLUMN -->
+        <div class="col-12 col-xl-6">
+          <div class="software-column flex column q-gutter-y-sm">
+            <div class="row items-center justify-between q-mb-sm">
+              <div class="row items-center q-gutter-x-sm">
+                <span class="tech-data-label text-weight-bold">{{
+                  $gettext('Inventory')
+                }}</span>
+                <q-badge
+                  v-if="inventoryLoaded"
+                  color="primary"
+                  class="badge-counter"
+                >
+                  <span v-if="searchInventory" class="q-mr-xs opacity-70"
+                    >{{ filteredSoftwareInventory.length }} /</span
+                  >
+                  {{ softwareInventory.length }}
+                </q-badge>
+              </div>
+
+              <div class="row items-center q-gutter-x-xs">
+                <template v-if="inventoryLoaded">
+                  <q-btn
+                    flat
+                    round
+                    :color="showSearchInventory ? 'primary' : 'grey-7'"
+                    :icon="
+                      showSearchInventory ? 'mdi-close' : appIcon('search')
+                    "
+                    size="12px"
+                    class="opacity-80 hover-opacity-100"
+                    @click="toggleSearchInventory"
+                  >
+                    <q-tooltip>{{
+                      showSearchInventory
+                        ? $gettext('Hide search')
+                        : $gettext('Search')
+                    }}</q-tooltip>
+                  </q-btn>
+
+                  <q-btn
+                    flat
+                    round
+                    :icon="appIcon('copy')"
+                    size="12px"
+                    color="primary"
+                    class="opacity-80 hover-opacity-100"
+                    @click="copyInventory"
+                  >
+                    <q-tooltip>{{ $gettext('Copy') }}</q-tooltip>
+                  </q-btn>
+
+                  <q-btn
+                    v-if="isSuperUser"
+                    flat
+                    round
+                    :icon="appIcon('delete')"
+                    size="12px"
+                    color="negative"
+                    class="opacity-60 hover-opacity-100"
+                    @click="confirmRemoveInventory = true"
+                  >
+                    <q-tooltip>{{ $gettext('Delete') }}</q-tooltip>
+                  </q-btn>
+                </template>
+
+                <q-btn
+                  v-else
+                  flat
+                  color="primary"
+                  :label="$gettext('Load')"
+                  icon="mdi-cloud-download"
+                  size="md"
+                  :loading="loading.inventory"
+                  @click="loadSoftwareInventory"
+                />
+              </div>
+            </div>
+
+            <q-slide-transition>
+              <div v-show="showSearchInventory" class="q-pb-sm">
+                <q-input
+                  ref="searchInputInventory"
+                  v-model="searchInventory"
+                  dense
+                  outlined
+                  :placeholder="$gettext('Search')"
+                  clearable
+                >
+                  <template #prepend>
+                    <q-icon name="mdi-magnify" />
+                  </template>
+                </q-input>
+              </div>
+            </q-slide-transition>
+
+            <!-- Content Panel -->
+            <template v-if="inventoryLoaded">
+              <div
+                class="content-panel glass-panel panel-fixed-height flex column no-wrap overflow-hidden relative-position"
+              >
+                <div class="relative-position z-10 flex column col">
+                  <div class="col flex column pt-sm">
+                    <q-virtual-scroll
+                      class="col"
+                      :items="filteredSoftwareInventory"
+                      :items-size="filteredSoftwareInventory.length"
+                    >
+                      <template #default="{ item }">
+                        <div :key="item.id" class="pkg-wrapper">
+                          <MigasLink
+                            model="packages"
+                            :pk="item.id"
+                            :value="item.name"
+                            icon="mdi-package-variant-closed"
+                            class="pkg-card"
+                          />
+                        </div>
+                      </template>
+                    </q-virtual-scroll>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- HISTORY COLUMN -->
+        <div class="col-12 col-xl-6">
+          <div class="software-column flex column q-gutter-y-sm">
+            <div class="row items-center justify-between q-mb-sm">
+              <div class="row items-center q-gutter-x-sm">
+                <span class="tech-data-label text-weight-bold">{{
+                  $gettext('History')
+                }}</span>
+                <q-badge
+                  v-if="historyLoaded"
+                  color="secondary"
+                  class="badge-counter"
+                >
+                  <span v-if="searchHistory" class="q-mr-xs opacity-70"
+                    >{{ filteredSoftwareHistoryDates.length }} /</span
+                  >
+                  {{ softwareHistoryLength }}
+                </q-badge>
+              </div>
+
+              <div class="row items-center q-gutter-x-xs">
+                <template v-if="historyLoaded">
+                  <q-btn
+                    flat
+                    round
+                    :color="showSearchHistory ? 'secondary' : 'grey-7'"
+                    :icon="showSearchHistory ? 'mdi-close' : appIcon('search')"
+                    size="12px"
+                    class="opacity-80 hover-opacity-100"
+                    @click="toggleSearchHistory"
+                  >
+                    <q-tooltip>{{
+                      showSearchHistory
+                        ? $gettext('Hide search')
+                        : $gettext('Search')
+                    }}</q-tooltip>
+                  </q-btn>
+
+                  <q-btn
+                    flat
+                    round
+                    :icon="appIcon('copy')"
+                    size="12px"
+                    color="primary"
+                    class="opacity-80 hover-opacity-100"
+                    @click="copyHistory"
+                  >
+                    <q-tooltip>{{ $gettext('Copy') }}</q-tooltip>
+                  </q-btn>
+
+                  <q-btn
+                    v-if="isSuperUser"
+                    flat
+                    round
+                    icon="mdi-delete-clock-outline"
+                    size="12px"
+                    color="negative"
+                    class="opacity-60 hover-opacity-100"
+                    @click="confirmRemoveHistory = true"
+                  >
+                    <q-tooltip>{{ $gettext('Delete') }}</q-tooltip>
+                  </q-btn>
+                </template>
+
+                <q-btn
+                  v-else
+                  flat
+                  color="primary"
+                  :label="$gettext('Load')"
+                  icon="mdi-cloud-download"
+                  size="md"
+                  :loading="loading.history"
+                  @click="loadSoftwareHistory"
+                />
+              </div>
+            </div>
+
+            <q-slide-transition>
+              <div v-show="showSearchHistory" class="q-pb-sm">
+                <q-input
+                  ref="searchInputHistory"
+                  v-model="searchHistory"
+                  dense
+                  outlined
+                  :placeholder="$gettext('Search')"
+                  clearable
+                >
+                  <template #prepend>
+                    <q-icon name="mdi-magnify" />
+                  </template>
+                </q-input>
+              </div>
+            </q-slide-transition>
+
+            <!-- Content Panel -->
+            <template v-if="historyLoaded">
+              <div
+                class="content-panel glass-panel panel-fixed-height flex column no-wrap overflow-hidden relative-position"
+              >
+                <div class="relative-position z-10 flex column col">
+                  <div class="scroll-area q-pa-md col">
+                    <q-expansion-item
+                      v-for="(changes, date) in filteredSoftwareHistory"
+                      :key="date"
+                      class="history-card q-mb-md glass-panel overflow-hidden"
+                      header-class="history-header"
+                      :default-opened="false"
+                    >
+                      <template #header>
+                        <q-item-section avatar>
+                          <q-icon
+                            name="mdi-calendar-clock"
+                            color="grey-7"
+                            size="20px"
+                          />
+                        </q-item-section>
+                        <q-item-section>
+                          <DateView :value="date" class="text-bold text-sm" />
+                        </q-item-section>
+                        <q-item-section side>
+                          <div class="row q-gutter-x-xs items-center">
+                            <q-badge
+                              v-if="getAddCount(changes)"
+                              color="positive"
+                              class="badge-sm"
+                              >+{{ getAddCount(changes) }}</q-badge
+                            >
+                            <q-badge
+                              v-if="getRemoveCount(changes)"
+                              color="negative"
+                              class="badge-sm"
+                              >-{{ getRemoveCount(changes) }}</q-badge
+                            >
+                            <q-btn
+                              v-if="isSuperUser && !showSearchHistory"
+                              flat
+                              round
+                              dense
+                              size="sm"
+                              :icon="appIcon('delete')"
+                              color="negative"
+                              @click.stop="deleteHistory(date)"
+                            >
+                              <q-tooltip>{{ $gettext('Delete') }}</q-tooltip>
+                            </q-btn>
+                          </div>
+                        </q-item-section>
+                      </template>
+
+                      <q-virtual-scroll
+                        class="overflow-auto history-virtual-scroll"
+                        :class="$q.dark.isActive ? 'bg-grey-10' : 'bg-grey-1'"
+                        :items="changes"
+                        :items-size="changes.length"
+                      >
+                        <template #default="{ item: pkg }">
+                          <div
+                            :key="pkg.name"
+                            class="row items-center no-wrap gap-sm full-width overflow-hidden q-pb-sm"
+                          >
+                            <q-icon
+                              :name="
+                                pkg.mode === '+'
+                                  ? 'mdi-plus-circle'
+                                  : 'mdi-minus-circle'
+                              "
+                              :color="
+                                pkg.mode === '+' ? 'positive' : 'negative'
+                              "
+                              size="20px"
+                              class="opacity-80 flex-shrink-0"
+                            />
+                            <MigasLink
+                              model="packages"
+                              :pk="pkg.id || 0"
+                              :value="pkg.name"
+                              class="pkg-card"
+                              :class="
+                                pkg.mode === '+'
+                                  ? 'border-add'
+                                  : 'border-remove'
+                              "
+                            />
+                          </div>
+                        </template>
+                      </q-virtual-scroll>
+                    </q-expansion-item>
+                  </div>
+                </div>
+              </div>
+            </template>
           </div>
         </div>
       </div>
-
-      <q-list>
-        <q-expansion-item
-          :content-inset-level="0.5"
-          @show="loadSoftwareInventory"
-        >
-          <template #header>
-            <q-item-section avatar>
-              <q-icon :name="modelIcon('packages')" size="md" />
-            </q-item-section>
-
-            <q-item-section>
-              {{ $gettext('Inventory') }}
-            </q-item-section>
-
-            <q-item-section v-if="softwareInventory.length > 0">
-              <q-chip
-                :color="$q.dark.isActive ? 'info' : 'primary'"
-                text-color="white"
-              >
-                <q-avatar
-                  :color="$q.dark.isActive ? 'cyan-8' : 'primary-dark'"
-                  text-color="white"
-                  ><strong>{{
-                    abbreviateNumber(softwareInventory.length, 0)
-                  }}</strong>
-                  <q-tooltip>{{
-                    softwareInventory.length
-                  }}</q-tooltip></q-avatar
-                >
-                {{ $gettext('packages') }}
-              </q-chip>
-            </q-item-section>
-
-            <q-item-section side>
-              <div class="row items-center">
-                <q-btn
-                  v-if="softwareInventory.length > 0 && !showSearchInventory"
-                  flat
-                  :icon="appIcon('search')"
-                  color="primary"
-                  @click.stop="toggleSearchInventory"
-                  ><q-tooltip>{{ $gettext('Search') }}</q-tooltip></q-btn
-                >
-
-                <q-input
-                  v-if="showSearchInventory"
-                  ref="searchInputInventory"
-                  v-model="searchInventory"
-                  :label="$gettext('Search')"
-                  clearable
-                  @clear="showSearchInventory = false"
-                  @click.stop
-                  ><template #prepend
-                    ><q-icon :name="appIcon('search')" /></template
-                ></q-input>
-
-                <q-btn
-                  flat
-                  :icon="appIcon('copy')"
-                  color="primary"
-                  @click.stop="copyInventory"
-                  ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-                >
-
-                <q-btn
-                  v-if="isSuperUser"
-                  flat
-                  :icon="appIcon('delete')"
-                  :color="$q.dark.isActive ? 'white' : 'negative'"
-                  :class="{ 'reversed-delete': $q.dark.isActive }"
-                  @click.stop="confirmRemoveInventory = true"
-                  ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-                >
-              </div>
-            </q-item-section>
-          </template>
-
-          <q-list>
-            <q-item v-if="loading.inventory" class="justify-center">
-              <q-spinner-dots color="primary" size="3em" />
-            </q-item>
-
-            <q-virtual-scroll
-              class="overflow"
-              :items-size="filteredSoftwareInventory.length"
-              :items="filteredSoftwareInventory"
-            >
-              <template #default="{ item }">
-                <q-item>
-                  <MigasLink
-                    model="packages"
-                    :pk="item.id"
-                    :value="item.name"
-                  />
-                </q-item>
-              </template>
-            </q-virtual-scroll>
-          </q-list>
-        </q-expansion-item>
-
-        <q-separator />
-
-        <q-expansion-item
-          :content-inset-level="0.5"
-          @show="loadSoftwareHistory"
-        >
-          <template #header>
-            <q-item-section avatar>
-              <q-icon :name="modelIcon('packages-history')" size="md" />
-            </q-item-section>
-
-            <q-item-section>
-              {{ $gettext('History') }}
-            </q-item-section>
-
-            <q-item-section v-if="softwareHistoryLength > 0">
-              <q-chip
-                :color="$q.dark.isActive ? 'info' : 'primary'"
-                text-color="white"
-              >
-                <q-avatar
-                  :color="$q.dark.isActive ? 'cyan-8' : 'primary-dark'"
-                  text-color="white"
-                  ><strong>{{
-                    abbreviateNumber(softwareHistoryLength, 0)
-                  }}</strong
-                  ><q-tooltip>{{ softwareHistoryLength }}</q-tooltip></q-avatar
-                >
-                {{ $ngettext('date', 'dates', softwareHistoryLength) }}
-              </q-chip>
-            </q-item-section>
-
-            <q-item-section side>
-              <div class="row items-center">
-                <q-btn
-                  v-if="
-                    Object.keys(softwareHistory).length > 0 &&
-                    !showSearchHistory
-                  "
-                  flat
-                  :icon="appIcon('search')"
-                  color="primary"
-                  @click.stop="toggleSearchHistory"
-                  ><q-tooltip>{{ $gettext('Search') }}</q-tooltip></q-btn
-                >
-
-                <q-input
-                  v-if="showSearchHistory"
-                  ref="searchInputHistory"
-                  v-model="searchHistory"
-                  :label="$gettext('Search')"
-                  clearable
-                  @clear="showSearchHistory = false"
-                  @click.stop
-                  ><template #prepend
-                    ><q-icon :name="appIcon('search')" /></template
-                ></q-input>
-
-                <q-btn
-                  flat
-                  :icon="appIcon('copy')"
-                  color="primary"
-                  @click.stop="copyHistory"
-                  ><q-tooltip>{{ $gettext('Copy') }}</q-tooltip></q-btn
-                >
-
-                <q-btn
-                  v-if="isSuperUser"
-                  flat
-                  :icon="appIcon('delete')"
-                  :color="$q.dark.isActive ? 'white' : 'negative'"
-                  :class="{ 'reversed-delete': $q.dark.isActive }"
-                  @click.stop="confirmRemoveHistory = true"
-                  ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-                >
-              </div>
-            </q-item-section>
-          </template>
-
-          <q-list class="overflow">
-            <q-item v-if="loading.history" class="justify-center">
-              <q-spinner-dots color="primary" size="3em" />
-            </q-item>
-            <q-expansion-item
-              v-for="(value, key) in filteredSoftwareHistory"
-              :key="key"
-              expand-separator
-            >
-              <template #header>
-                <q-item-section avatar>
-                  <q-avatar icon="mdi-calendar-range" />
-                </q-item-section>
-
-                <q-item-section>
-                  <DateView :value="key" />
-                </q-item-section>
-
-                <q-item-section side>
-                  <div class="row items-center">
-                    <q-chip
-                      v-if="value.filter((item) => item.mode === '+').length"
-                      color="positive"
-                      text-color="white"
-                      ><strong>{{
-                        value.filter((item) => item.mode === '+').length
-                      }}</strong
-                      ><q-tooltip>{{
-                        $gettext('Installed Packages')
-                      }}</q-tooltip></q-chip
-                    >
-
-                    <q-chip
-                      v-if="value.filter((item) => item.mode === '-').length"
-                      color="negative"
-                      text-color="white"
-                      ><strong>{{
-                        value.filter((item) => item.mode === '-').length
-                      }}</strong
-                      ><q-tooltip>{{
-                        $gettext('Uninstalled Packages')
-                      }}</q-tooltip></q-chip
-                    >
-
-                    <q-btn
-                      v-if="isSuperUser && !showSearchHistory"
-                      flat
-                      :icon="appIcon('delete')"
-                      :color="$q.dark.isActive ? 'white' : 'negative'"
-                      :class="{ 'reversed-delete': $q.dark.isActive }"
-                      @click.stop="deleteHistory(key)"
-                      ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-                    >
-                  </div>
-                </q-item-section>
-              </template>
-              <q-card>
-                <q-card-section>
-                  <q-list>
-                    <q-virtual-scroll
-                      class="overflow"
-                      :items-size="value.length"
-                      :items="value"
-                    >
-                      <template #default="{ item }">
-                        <q-item>
-                          <q-item-section avatar>
-                            <q-avatar
-                              size="md"
-                              outline
-                              :color="
-                                item.mode === '+' ? 'positive' : 'negative'
-                              "
-                              text-color="white"
-                              :icon="
-                                item.mode === '+'
-                                  ? 'mdi-plus-thick'
-                                  : 'mdi-minus-thick'
-                              "
-                            />
-                          </q-item-section>
-
-                          <q-item-section side>
-                            <MigasLink
-                              model="packages"
-                              :pk="item.id"
-                              :value="item.name"
-                            />
-                          </q-item-section>
-                        </q-item>
-                      </template>
-                    </q-virtual-scroll>
-                  </q-list>
-                </q-card-section>
-              </q-card>
-            </q-expansion-item>
-          </q-list>
-        </q-expansion-item>
-      </q-list>
     </q-card-section>
 
-    <q-card-actions class="justify-around q-pa-md">
-      <q-btn
-        :icon="appIcon('compare')"
-        outline
-        color="primary"
-        no-caps
-        :label="`${$gettext('Compare')}...`"
-        @click="showingCompare = true"
-      />
-    </q-card-actions>
+    <q-dialog v-model="showingCompare" persistent>
+      <q-card>
+        <q-card-section class="row">
+          <div class="text-h5 q-mt-sm q-mb-xs">
+            {{ $gettext('Software Compare') }}
+          </div>
+        </q-card-section>
+
+        <q-card-section class="row items-center">
+          <FilteredMultiSelect
+            ref="primaryInput"
+            v-model="target"
+            :label="$gettext('Computer')"
+            :fetch-options="filterComputers"
+            :multiple="false"
+          >
+            <template #option="{ scope }">
+              <q-item v-bind="scope.itemProps">
+                {{ scope.opt.__str__ }}
+              </q-item>
+            </template>
+
+            <template #selected-item="{ scope }">
+              <q-chip
+                removable
+                dense
+                :tabindex="scope.tabindex"
+                class="q-ma-md"
+                @remove="scope.removeAtIndex(scope.index)"
+              >
+                <MigasLink
+                  model="computers"
+                  :pk="scope.opt.id"
+                  :value="scope.opt.__str__ || ''"
+                  :icon="elementIcon(scope.opt.status)"
+                  :tooltip="scope.opt.summary"
+                />
+              </q-chip>
+            </template>
+          </FilteredMultiSelect>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            v-close-popup
+            flat
+            color="primary"
+            :label="$gettext('Cancel')"
+            @click="showingCompare = false"
+          />
+
+          <q-btn
+            v-close-popup
+            :icon="appIcon('compare')"
+            color="primary"
+            :disabled="!isCompareEnabled"
+            :label="$gettext('Compare')"
+            @click="compare"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <RemoveDialog
+      v-model="confirmRemoveInventory"
+      @confirmed="deleteInventory"
+      @canceled="confirmRemoveInventory = !confirmRemoveInventory"
+    />
+
+    <RemoveDialog
+      v-model="confirmRemoveHistory"
+      @confirmed="deleteHistory"
+      @canceled="confirmRemoveHistory = !confirmRemoveHistory"
+    />
   </q-card>
-
-  <q-dialog v-model="showingCompare" persistent>
-    <q-card>
-      <q-card-section class="row">
-        <div class="text-h5 q-mt-sm q-mb-xs">
-          {{ $gettext('Software Compare') }}
-        </div>
-      </q-card-section>
-
-      <q-card-section class="row items-center">
-        <FilteredMultiSelect
-          ref="primaryInput"
-          v-model="target"
-          :label="$gettext('Computer')"
-          :fetch-options="filterComputers"
-          :multiple="false"
-        >
-          <template #option="{ scope }">
-            <q-item v-bind="scope.itemProps">
-              {{ scope.opt.__str__ }}
-            </q-item>
-          </template>
-
-          <template #selected-item="{ scope }">
-            <q-chip
-              removable
-              dense
-              :tabindex="scope.tabindex"
-              class="q-ma-md"
-              @remove="scope.removeAtIndex(scope.index)"
-            >
-              <MigasLink
-                model="computers"
-                :pk="scope.opt.id"
-                :value="scope.opt.__str__ || ''"
-                :icon="elementIcon(scope.opt.status)"
-                :tooltip="scope.opt.summary"
-              />
-            </q-chip>
-          </template>
-        </FilteredMultiSelect>
-      </q-card-section>
-
-      <q-card-actions align="right">
-        <q-btn
-          v-close-popup
-          flat
-          color="primary"
-          :label="$gettext('Cancel')"
-          @click="showingCompare = !showingCompare"
-        />
-
-        <q-btn
-          v-close-popup
-          :icon="appIcon('compare')"
-          color="primary"
-          :disabled="!isCompareEnabled"
-          :label="$gettext('Compare')"
-          @click="compare"
-        />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
-
-  <RemoveDialog
-    v-model="confirmRemoveInventory"
-    @confirmed="deleteInventory"
-    @canceled="confirmRemoveInventory = !confirmRemoveInventory"
-  />
-
-  <RemoveDialog
-    v-model="confirmRemoveHistory"
-    @confirmed="deleteHistory"
-    @canceled="confirmRemoveHistory = !confirmRemoveHistory"
-  />
 </template>
 
 <script>
@@ -436,8 +473,13 @@ export default {
     const confirmRemoveInventory = ref(false)
     const confirmRemoveHistory = ref(false)
 
+    const inventoryLoaded = computed(() => softwareInventory.value.length > 0)
+    const historyLoaded = computed(
+      () => Object.keys(softwareHistory).length > 0,
+    )
+
     const filteredSoftwareInventory = computed(() => {
-      if (searchInventory.value === '' || searchInventory.value === null) {
+      if (!searchInventory.value) {
         return softwareInventory.value
       } else {
         return softwareInventory.value.filter((item) => {
@@ -449,21 +491,27 @@ export default {
     })
 
     const filteredSoftwareHistory = computed(() => {
-      if (searchHistory.value === '' || searchHistory.value === null) {
-        return softwareHistory.value
+      if (!searchHistory.value) {
+        return softwareHistory
       } else {
-        const result = Object.keys(softwareHistory.value).reduce((acc, key) => {
-          const filter = softwareHistory.value[key].filter((item) =>
+        const result = Object.keys(softwareHistory).reduce((acc, key) => {
+          const filter = softwareHistory[key].filter((item) =>
             item.name.toLowerCase().includes(searchHistory.value.toLowerCase()),
           )
-          if (filter.length > 0) {
-            acc[key] = filter
+          if (
+            filter.length > 0 ||
+            key.toLowerCase().includes(searchHistory.value.toLowerCase())
+          ) {
+            acc[key] = filter.length > 0 ? filter : softwareHistory[key]
           }
           return acc
         }, {})
-
         return result
       }
+    })
+
+    const filteredSoftwareHistoryDates = computed(() => {
+      return Object.keys(filteredSoftwareHistory.value)
     })
 
     const isCompareEnabled = computed(() => {
@@ -471,9 +519,7 @@ export default {
     })
 
     const softwareHistoryLength = computed(() => {
-      return softwareHistory.value
-        ? Object.keys(softwareHistory.value).length
-        : 0
+      return Object.keys(softwareHistory).length
     })
 
     const toggleSearchInventory = async () => {
@@ -524,7 +570,7 @@ export default {
           const { data } = await api.get(
             `/api/v1/token/computers/${props.cid}/software/history/`,
           )
-          softwareHistory.value = data
+          Object.assign(softwareHistory, data)
         } catch (error) {
           uiStore.notifyError(error)
         } finally {
@@ -571,7 +617,6 @@ export default {
       const { data } = await api.get('/api/v1/token/computers/', {
         params: { search: val.toLowerCase() },
       })
-
       return data.results
     }
 
@@ -606,6 +651,9 @@ export default {
       }
     }
 
+    const getAddCount = (c) => c.filter((x) => x.mode === '+').length
+    const getRemoveCount = (c) => c.filter((x) => x.mode === '-').length
+
     return {
       loading,
       isSuperUser: authStore.user.is_superuser,
@@ -620,6 +668,9 @@ export default {
       showingCompare,
       filteredSoftwareInventory,
       filteredSoftwareHistory,
+      filteredSoftwareHistoryDates,
+      inventoryLoaded,
+      historyLoaded,
       target,
       isCompareEnabled,
       softwareHistoryLength,
@@ -640,6 +691,8 @@ export default {
       confirmRemoveHistory,
       deleteInventory,
       deleteHistory,
+      getAddCount,
+      getRemoveCount,
     }
   },
 }
@@ -649,5 +702,93 @@ export default {
 .software-card {
   max-width: 1000px;
   margin: auto;
+}
+
+.software-column {
+  width: 100%;
+}
+
+.content-panel {
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden;
+  min-width: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.02) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+.panel-fixed-height {
+  max-height: 500px;
+  height: fit-content;
+}
+
+[data-theme='dark'] .content-panel {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.scroll-area {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto !important;
+}
+
+.pkg-wrapper {
+  padding: 4px 16px;
+  width: 100%;
+  display: flex;
+  min-width: 0;
+}
+
+.pkg-card {
+  align-self: flex-start;
+  border: 1px solid rgba(var(--brand-primary-rgb), 0.2) !important;
+  background: rgba(var(--brand-primary-rgb), 0.05) !important;
+  border-radius: 10px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  min-width: 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02) !important;
+  overflow: hidden;
+}
+
+[data-theme='dark'] .pkg-card {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.pkg-card:hover {
+  border-color: var(--brand-primary) !important;
+  background: rgba(var(--brand-primary-rgb), 0.1) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme='dark'] .pkg-card:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: var(--brand-primary) !important;
+}
+
+.border-add.pkg-card {
+  border-left: 3px solid var(--q-positive) !important;
+}
+.border-remove.pkg-card {
+  border-left: 3px solid var(--q-negative) !important;
+}
+
+.history-card {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+[data-theme='dark'] .history-card {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.history-virtual-scroll {
+  max-height: 400px;
+  padding: 16px;
 }
 </style>
