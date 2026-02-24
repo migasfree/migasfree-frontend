@@ -611,6 +611,7 @@ const {
   updateStatusInFilter,
   updateItemsChecked,
   updateItemsEnabled,
+  loadItems,
 } = useDataGrid(props.columns, model, detailRoute, columnParams)
 
 // --- Model-based feature flags ---
@@ -740,6 +741,17 @@ onMounted(async () => {
       uiStore.notifyError(error)
     }
   }
+})
+
+defineExpose({
+  loadItems,
+  onSearch,
+  onSearchClear,
+  resetFilters,
+  exportAll,
+  exportData,
+  onSelectionChanged,
+  updateChecked,
 })
 </script>
 
