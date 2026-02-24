@@ -223,6 +223,11 @@ onUnmounted(() => socket.value?.close())
 watch(loggedIn, (val) => {
   if (val) loadAlerts()
 })
+
+defineExpose({
+  resolveAlertLink,
+  resolveAlertText,
+})
 </script>
 
 <style scoped>
