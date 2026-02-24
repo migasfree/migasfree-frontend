@@ -92,47 +92,50 @@ describe('SearchBox.vue', () => {
   it('includes Computers option', () => {
     const wrapper = createWrapper()
     const computersOption = wrapper.vm.options.find(
-      (o) => o.to === 'computers-list',
+      (o) => o.route === 'computers-list',
     )
     expect(computersOption).toBeDefined()
-    expect(computersOption.title).toBe('Computers')
+    expect(computersOption.label).toBe('Computers')
   })
 
   it('includes Attributes option', () => {
     const wrapper = createWrapper()
-    const option = wrapper.vm.options.find((o) => o.to === 'features-list')
+    const option = wrapper.vm.options.find((o) => o.route === 'features-list')
     expect(option).toBeDefined()
-    expect(option.title).toBe('Attributes')
+    expect(option.label).toBe('Attributes')
   })
 
   it('includes Tags option', () => {
     const wrapper = createWrapper()
-    const option = wrapper.vm.options.find((o) => o.to === 'tags-list')
+    const option = wrapper.vm.options.find((o) => o.route === 'tags-list')
     expect(option).toBeDefined()
   })
 
   it('includes Deployments option', () => {
     const wrapper = createWrapper()
-    const option = wrapper.vm.options.find((o) => o.to === 'deployments-list')
+    const option = wrapper.vm.options.find(
+      (o) => o.route === 'deployments-list',
+    )
     expect(option).toBeDefined()
   })
 
   it('includes Packages option', () => {
     const wrapper = createWrapper()
-    const option = wrapper.vm.options.find((o) => o.to === 'packages-list')
+    const option = wrapper.vm.options.find((o) => o.route === 'packages-list')
     expect(option).toBeDefined()
   })
 
   it('includes Devices option', () => {
     const wrapper = createWrapper()
-    const option = wrapper.vm.options.find((o) => o.to === 'devices-list')
+    const option = wrapper.vm.options.find((o) => o.route === 'devices-list')
     expect(option).toBeDefined()
   })
 
   it('search function navigates with query', () => {
     const wrapper = createWrapper()
     wrapper.vm.searchText = 'test query'
-    wrapper.vm.search({ to: 'computers-list', icon: 'mdi-laptop' })
+    wrapper.vm.selectedScope = { route: 'computers-list', icon: 'mdi-laptop' }
+    wrapper.vm.search()
     expect(mockPush).toHaveBeenCalledWith({
       name: 'computers-list',
       query: { search: 'test query' },
@@ -141,8 +144,8 @@ describe('SearchBox.vue', () => {
 
   it('updates selected icon and route on search', () => {
     const wrapper = createWrapper()
-    const option = { to: 'packages-list', icon: 'mdi-package' }
-    wrapper.vm.search(option)
+    wrapper.vm.selectedScope = { route: 'packages-list', icon: 'mdi-package' }
+    wrapper.vm.search()
     expect(wrapper.vm.selectedIcon).toBe('mdi-package')
     expect(wrapper.vm.selectedRoute).toBe('packages-list')
   })

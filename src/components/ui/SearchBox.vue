@@ -140,6 +140,19 @@ const handleSearch = () => {
     router.push({ name: selectedScope.value.route, query: { search: query } })
   }
 }
+
+defineExpose({
+  searchText,
+  selectedScope,
+  options: searchScopes, // for tests compatibility
+  search: handleSearch, // for tests compatibility
+  get selectedRoute() {
+    return selectedScope.value.route
+  },
+  get selectedIcon() {
+    return selectedScope.value.icon
+  },
+})
 </script>
 
 <style scoped>
