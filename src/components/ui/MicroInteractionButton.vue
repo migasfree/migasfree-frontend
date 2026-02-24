@@ -10,7 +10,7 @@
     @click.stop="handleClick"
   >
     <div class="icon-wrapper">
-      <q-transition
+      <transition
         enter-active-class="animated zoomIn"
         leave-active-class="animated zoomOut"
         mode="out-in"
@@ -21,7 +21,7 @@
           :color="currentColor"
           size="1.2em"
         />
-      </q-transition>
+      </transition>
     </div>
 
     <q-tooltip
