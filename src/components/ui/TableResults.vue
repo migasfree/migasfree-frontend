@@ -433,7 +433,23 @@
         <slot name="actions" :props="slotProps"></slot>
       </span>
 
-      <slot name="fields" :props="slotProps"></slot>
+      <slot
+        v-else
+        :name="`cell-${slotProps.column.field}`.replace('.', '_')"
+        :props="slotProps"
+      >
+        <span v-if="slotProps.column.field == 'name'">
+          <MigasLink
+            :model="model"
+            :pk="slotProps.row.id"
+            :value="slotProps.row.name"
+          />
+        </span>
+
+        <span v-else>
+          {{ slotProps.formattedRow[slotProps.column.field] }}
+        </span>
+      </slot>
     </template>
 
     <template v-if="!isLoading" #emptystate>
@@ -531,6 +547,7 @@ import SearchFilter from 'components/ui/SearchFilter'
 import TablePagination from 'components/ui/TablePagination'
 import SelectTree from 'components/ui/SelectTree'
 import DateRangeInput from 'components/ui/DateRangeInput'
+import MigasLink from 'components/MigasLink'
 
 import useDataGrid from 'composables/dataGrid'
 import { appIcon, modelIcon } from 'composables/element'
