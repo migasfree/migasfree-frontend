@@ -8,202 +8,155 @@
       :model="model"
       :more-filters="moreFilters"
     >
-      <template #fields="{ props }">
-        <span v-if="props.column.field == 'computer.__str__'">
-          <MigasLink
-            model="computers"
-            :pk="props.row.computer.id"
-            :value="props.row.computer.__str__"
-            :icon="elementIcon(props.row.computer.status)"
-            :tooltip="props.row.computer.summary"
-          />
-        </span>
+      <template #cell-computer___str__="{ props }">
+        <MigasLink
+          model="computers"
+          :pk="props.row.computer.id"
+          :value="props.row.computer.__str__"
+          :icon="elementIcon(props.row.computer.status)"
+          :tooltip="props.row.computer.summary"
+        />
+      </template>
 
-        <span v-else-if="props.column.field == 'package.fullname'">
-          <MigasLink
-            model="packages"
-            :pk="props.row.package.id"
-            :value="props.row.package.fullname"
-          />
-        </span>
+      <template #cell-package_fullname="{ props }">
+        <MigasLink
+          model="packages"
+          :pk="props.row.package.id"
+          :value="props.row.package.fullname"
+        />
+      </template>
 
-        <span v-else-if="props.column.field == 'package.project.name'">
-          <MigasLink
-            model="projects"
-            :pk="props.row.package.project.id"
-            :value="props.row.package.project.name"
-          />
-        </span>
+      <template #cell-package_project_name="{ props }">
+        <MigasLink
+          model="projects"
+          :pk="props.row.package.project.id"
+          :value="props.row.package.project.name"
+        />
+      </template>
 
-        <span v-else-if="props.column.field == 'install_date'">
-          <DateView :value="props.row.install_date" />
-        </span>
+      <template #cell-install_date="{ props }">
+        <DateView :value="props.row.install_date" />
+      </template>
 
-        <span v-else-if="props.column.field == 'uninstall_date'">
-          <DateView :value="props.row.uninstall_date" />
-        </span>
-
-        <span v-else>
-          {{ props.formattedRow[props.column.field] }}
-        </span>
+      <template #cell-uninstall_date="{ props }">
+        <DateView :value="props.row.uninstall_date" />
       </template>
     </TableResults>
   </q-page>
 </template>
 
-<script>
-import { ref, onMounted } from 'vue'
+<script setup>
+import { onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useMeta } from 'quasar'
+import { useListConfig } from 'composables/listConfig'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
-import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
+import DateView from 'components/ui/DateView'
 
-import { appIcon, modelIcon, useElement } from 'composables/element'
+import { appIcon, useElement } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'
 
-export default {
-  components: {
-    Breadcrumbs,
-    TableResults,
-    DateView,
-    MigasLink,
-  },
-  setup() {
-    const { $gettext } = useGettext()
-    const uiStore = useUiStore()
-    const { elementIcon } = useElement()
+const { $gettext } = useGettext()
+const uiStore = useUiStore()
+const { elementIcon } = useElement()
 
-    useMeta({ title: $gettext('Packages History List') })
+const model = 'packages-history'
+const moreFilters = ['installDateRange', 'uninstallDateRange', 'uninstallDate']
 
-    const model = 'packages-history'
-    const moreFilters = [
-      'installDateRange',
-      'uninstallDateRange',
-      'uninstallDate',
-    ]
+const { title, breadcrumbs, columns } = useListConfig(
+  model,
+  $gettext('Packages History'),
+  $gettext('Packages History List'),
+  [
+    {
+      text: $gettext('Data'),
+      icon: appIcon('data'),
+    },
+  ],
+  [
+    {
+      field: 'computer.id',
+      hidden: true,
+    },
+    {
+      field: 'computer.status',
+      hidden: true,
+    },
+    {
+      field: 'computer.summary',
+      hidden: true,
+    },
+    {
+      label: $gettext('Computer'),
+      field: 'computer.__str__',
+      filterOptions: {
+        enabled: true,
+        placeholder: $gettext('Filter'),
+        trigger: 'enter',
+      },
+    },
+    {
+      field: 'package.id',
+      hidden: true,
+    },
+    {
+      label: $gettext('Package'),
+      field: 'package.fullname',
+      filterOptions: {
+        enabled: true,
+        placeholder: $gettext('Filter'),
+        trigger: 'enter',
+      },
+    },
+    {
+      field: 'package.project.id',
+      hidden: true,
+    },
+    {
+      label: $gettext('Project'),
+      field: 'package.project.name',
+      html: true,
+      filterOptions: {
+        enabled: true,
+        placeholder: $gettext('All'),
+        trigger: 'enter',
+      },
+    },
+    {
+      label: $gettext('Install Date'),
+      field: 'install_date',
+    },
+    {
+      label: $gettext('Uninstall Date'),
+      field: 'uninstall_date',
+    },
+  ],
+)
 
-    const title = ref($gettext('Packages History'))
+const { setFilterItems } = useFilterHelper(columns)
 
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Data'),
-        icon: appIcon('data'),
-      },
-      {
-        text: title.value,
-        icon: modelIcon(model),
-        to: 'packages-history-dashboard',
-      },
-      {
-        text: $gettext('Results'),
-        icon: appIcon('results'),
-      },
-    ])
+const loadFilters = async () => {
+  try {
+    const response = await api.get('/api/v1/token/projects/')
 
-    const columns = ref([
-      {
-        field: 'id',
-        hidden: true,
-      },
-      {
-        field: 'computer.id',
-        hidden: true,
-      },
-      {
-        field: 'computer.status',
-        hidden: true,
-      },
-      {
-        field: 'computer.summary',
-        hidden: true,
-      },
-      {
-        label: $gettext('Computer'),
-        field: 'computer.__str__',
-        filterOptions: {
-          enabled: true,
-          placeholder: $gettext('Filter'),
-          trigger: 'enter',
-        },
-      },
-      {
-        field: 'package.id',
-        hidden: true,
-      },
-      {
-        label: $gettext('Package'),
-        field: 'package.fullname',
-        filterOptions: {
-          enabled: true,
-          placeholder: $gettext('Filter'),
-          trigger: 'enter',
-        },
-      },
-      {
-        field: 'package.project.id',
-        hidden: true,
-      },
-      {
-        label: $gettext('Project'),
-        field: 'package.project.name',
-        html: true,
-        filterOptions: {
-          enabled: true,
-          placeholder: $gettext('All'),
-          trigger: 'enter',
-        },
-      },
-      {
-        label: $gettext('Install Date'),
-        field: 'install_date',
-      },
-      {
-        label: $gettext('Uninstall Date'),
-        field: 'uninstall_date',
-      },
-    ])
-
-    const { setFilterItems } = useFilterHelper(columns)
-
-    const loadFilters = async () => {
-      try {
-        const response = await api.get('/api/v1/token/projects/')
-
-        setFilterItems(
-          'package.project.name',
-          response.data.results.map(({ id, name }) => ({
-            value: id,
-            text: name,
-          })),
-        )
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
-    onMounted(async () => {
-      await loadFilters()
-    })
-
-    return {
-      title,
-      breadcrumbs,
-      columns,
-      model,
-      moreFilters,
-      elementIcon,
-    }
-  },
+    setFilterItems(
+      'package.project.name',
+      response.data.results.map(({ id, name }) => ({
+        value: id,
+        text: name,
+      })),
+    )
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
 }
+
+onMounted(async () => {
+  await loadFilters()
+})
 </script>
