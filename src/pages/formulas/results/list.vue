@@ -26,41 +26,25 @@
         >
       </template>
 
-      <template #fields="{ props }">
-        <span v-if="props.column.field == 'name'">
-          <MigasLink
-            :model="model"
-            :pk="props.row.id"
-            :value="props.row.name"
-          />
-        </span>
+      <template #cell-enabled="{ props }">
+        <BooleanView :value="props.row.enabled" />
+      </template>
 
-        <span v-else-if="props.column.field == 'enabled'">
-          <BooleanView :value="props.row.enabled" />
-        </span>
+      <template #cell-kind="{ props }">
+        {{ kind[props.row.kind] }}
+      </template>
 
-        <span v-else-if="props.column.field == 'kind'">
-          {{ kind[props.row.kind] }}
-        </span>
-
-        <span
-          v-else-if="props.column.field == 'language' && languages.length > 0"
-        >
-          {{ languages[props.row.language].name }}
-        </span>
-
-        <span v-else>
-          {{ props.formattedRow[props.column.field] }}
-        </span>
+      <template #cell-language="{ props }">
+        {{ languages.find((l) => l.id === props.row.language)?.name }}
       </template>
     </TableResults>
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useMeta } from 'quasar'
+import { useListConfig } from 'composables/listConfig'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -68,175 +52,128 @@ import { useUiStore } from 'stores/ui'
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
 import BooleanView from 'components/ui/BooleanView'
-import MigasLink from 'components/MigasLink'
 
-import { appIcon, modelIcon } from 'composables/element'
+import { appIcon } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'
 
-export default {
-  components: {
-    Breadcrumbs,
-    TableResults,
-    BooleanView,
-    MigasLink,
-  },
-  setup() {
-    const uiStore = useUiStore()
-    const { $gettext } = useGettext()
+const uiStore = useUiStore()
+const { $gettext } = useGettext()
 
-    useMeta({ title: $gettext('Formulas List') })
+const kind = ref({})
+const languages = ref([])
 
-    const kind = ref({})
-    const languages = ref([])
+const routes = {
+  add: 'formula-add',
+  detail: 'formula-detail',
+}
+const model = 'formulas'
+const columnParams = reactive({ columnFilters: { sort: 'client' } })
 
-    const routes = {
-      add: 'formula-add',
-      detail: 'formula-detail',
-    }
-    const model = 'formulas'
-    const columnParams = reactive({ columnFilters: { sort: 'client' } })
-
-    const title = ref($gettext('Formulas'))
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
+const { modelIcon, title, breadcrumbs, columns } = useListConfig(
+  model,
+  $gettext('Formulas'),
+  $gettext('Formulas List'),
+  [
+    {
+      text: $gettext('Configuration'),
+      icon: appIcon('configuration'),
+    },
+  ],
+  [
+    {
+      label: $gettext('Name'),
+      field: 'name',
+      html: true,
+      filterOptions: {
+        enabled: true,
+        placeholder: $gettext('Filter'),
+        trigger: 'enter',
       },
-      {
-        text: $gettext('Configuration'),
-        icon: appIcon('configuration'),
+    },
+    {
+      label: $gettext('Prefix'),
+      field: 'prefix',
+      filterOptions: {
+        enabled: true,
+        placeholder: $gettext('Filter'),
+        trigger: 'enter',
       },
-      {
-        text: $gettext('Formulas'),
-        icon: modelIcon(model),
+    },
+    {
+      label: $gettext('Enabled'),
+      field: 'enabled',
+      filterOptions: {
+        enabled: true,
+        placeholder: $gettext('All'),
+        trigger: 'enter',
+        filterDropdownItems: [
+          { value: true, text: $gettext('Yes') },
+          { value: false, text: $gettext('No') },
+        ],
       },
-      {
-        text: $gettext('Results'),
-        icon: appIcon('results'),
+    },
+    {
+      label: $gettext('Kind'),
+      field: 'kind',
+      filterOptions: {
+        enabled: true,
+        placeholder: $gettext('All'),
+        trigger: 'enter',
       },
+    },
+    {
+      label: $gettext('Language'),
+      field: 'language',
+      filterOptions: {
+        enabled: true,
+        placeholder: $gettext('All'),
+        trigger: 'enter',
+      },
+    },
+  ],
+)
+
+const { setFilterItems } = useFilterHelper(columns)
+
+const loadFilters = async () => {
+  try {
+    const [kindResponse, languagesResponse] = await Promise.all([
+      api.get('/api/v1/token/properties/kind/'),
+      api.get('/api/v1/public/languages/'),
     ])
 
-    const columns = ref([
-      {
-        field: 'id',
-        hidden: true,
-      },
-      {
-        label: $gettext('Actions'),
-        field: 'actions',
-        html: true,
-        sortable: false,
-        globalSearchDisabled: true,
-      },
-      {
-        label: $gettext('Name'),
-        field: 'name',
-        html: true,
-        filterOptions: {
-          enabled: true,
-          placeholder: $gettext('Filter'),
-          trigger: 'enter',
-        },
-      },
-      {
-        label: $gettext('Prefix'),
-        field: 'prefix',
-        filterOptions: {
-          enabled: true,
-          placeholder: $gettext('Filter'),
-          trigger: 'enter',
-        },
-      },
-      {
-        label: $gettext('Enabled'),
-        field: 'enabled',
-        filterOptions: {
-          enabled: true,
-          placeholder: $gettext('All'),
-          trigger: 'enter',
-          filterDropdownItems: [
-            { value: true, text: $gettext('Yes') },
-            { value: false, text: $gettext('No') },
-          ],
-        },
-      },
-      {
-        label: $gettext('Kind'),
-        field: 'kind',
-        filterOptions: {
-          enabled: true,
-          placeholder: $gettext('All'),
-          trigger: 'enter',
-        },
-      },
-      {
-        label: $gettext('Language'),
-        field: 'language',
-        filterOptions: {
-          enabled: true,
-          placeholder: $gettext('All'),
-          trigger: 'enter',
-        },
-      },
-    ])
+    kind.value = kindResponse.data
 
-    const { setFilterItems } = useFilterHelper(columns)
+    setFilterItems(
+      'kind',
+      Object.entries(kindResponse.data).map(([key, val]) => ({
+        value: key,
+        text: val,
+      })),
+    )
 
-    const loadFilters = async () => {
-      try {
-        const [kindResponse, languagesResponse] = await Promise.all([
-          api.get('/api/v1/token/properties/kind/'),
-          api.get('/api/v1/public/languages/'),
-        ])
+    const entries = Object.entries(languagesResponse.data)
 
-        kind.value = kindResponse.data
-
-        setFilterItems(
-          'kind',
-          Object.entries(kindResponse.data).map(([key, val]) => ({
-            value: key,
-            text: val,
-          })),
-        )
-
-        const entries = Object.entries(languagesResponse.data)
-
-        entries.forEach(([key, val]) => {
-          languages.value.push({
-            id: parseInt(key),
-            name: val,
-          })
-        })
-
-        setFilterItems(
-          'language',
-          entries.map(([key, val]) => ({
-            value: parseInt(key),
-            text: val,
-          })),
-        )
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
-    onMounted(async () => {
-      await loadFilters()
+    entries.forEach(([key, val]) => {
+      languages.value.push({
+        id: parseInt(key),
+        name: val,
+      })
     })
 
-    return {
-      title,
-      breadcrumbs,
-      columns,
-      routes,
-      model,
-      columnParams,
-      kind,
-      languages,
-      modelIcon,
-    }
-  },
+    setFilterItems(
+      'language',
+      entries.map(([key, val]) => ({
+        value: parseInt(key),
+        text: val,
+      })),
+    )
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
 }
+
+onMounted(async () => {
+  await loadFilters()
+})
 </script>
