@@ -8,47 +8,41 @@
       :model="model"
       :routes="routes"
     >
-      <template #fields="{ props }">
-        <span v-if="props.column.field == 'name'">
-          {{ props.row.name.split('/').reverse()[0] }}
-        </span>
+      <template #cell-name="{ props }">
+        {{ props.row.name.split('/').reverse()[0] }}
+      </template>
 
-        <span v-else-if="props.column.field == 'model.name'">
-          <MigasLink
-            model="devices/models"
-            :pk="props.row.model.id"
-            :value="`${props.row.model.name} (${props.row.model.manufacturer.name})`"
-          />
-        </span>
+      <template #cell-model_name="{ props }">
+        <MigasLink
+          model="devices/models"
+          :pk="props.row.model.id"
+          :value="`${props.row.model.name} (${props.row.model.manufacturer.name})`"
+        />
+      </template>
 
-        <span v-else-if="props.column.field == 'project.name'">
-          <MigasLink
-            model="projects"
-            :pk="props.row.project.id"
-            :value="props.row.project.name"
-          />
-        </span>
+      <template #cell-project_name="{ props }">
+        <MigasLink
+          model="projects"
+          :pk="props.row.project.id"
+          :value="props.row.project.name"
+        />
+      </template>
 
-        <span v-else-if="props.column.field == 'capability.name'">
-          <MigasLink
-            model="devices/capabilities"
-            :pk="props.row.capability.id"
-            :value="props.row.capability.name"
-          />
-        </span>
-
-        <span v-else>
-          {{ props.formattedRow[props.column.field] }}
-        </span>
+      <template #cell-capability_name="{ props }">
+        <MigasLink
+          model="devices/capabilities"
+          :pk="props.row.capability.id"
+          :value="props.row.capability.name"
+        />
       </template>
     </TableResults>
   </q-page>
 </template>
 
-<script>
-import { ref, onMounted } from 'vue'
+<script setup>
+import { onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useMeta } from 'quasar'
+import { useListConfig } from 'composables/listConfig'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -57,159 +51,124 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
 import MigasLink from 'components/MigasLink'
 
-import { appIcon, modelIcon } from 'composables/element'
+import { appIcon } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'
 
-export default {
-  components: {
-    Breadcrumbs,
-    TableResults,
-    MigasLink,
-  },
-  setup() {
-    const { $gettext } = useGettext()
-    const uiStore = useUiStore()
+const { $gettext } = useGettext()
+const uiStore = useUiStore()
 
-    useMeta({ title: $gettext('Drivers List') })
-
-    const routes = {
-      add: 'driver-add',
-      detail: 'driver-detail',
-    }
-    const model = 'devices/drivers'
-
-    const title = ref($gettext('Drivers'))
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Devices'),
-        icon: appIcon('devices'),
-      },
-      {
-        text: title.value,
-        icon: modelIcon(model),
-      },
-      {
-        text: $gettext('Results'),
-        icon: appIcon('results'),
-      },
-    ])
-
-    const columns = ref([
-      {
-        field: 'id',
-        hidden: true,
-      },
-      {
-        label: $gettext('Actions'),
-        field: 'actions',
-        html: true,
-        sortable: false,
-        globalSearchDisabled: true,
-      },
-      {
-        label: $gettext('Driver'),
-        field: 'name',
-        html: true,
-        filterOptions: {
-          enabled: true,
-          placeholder: $gettext('Filter'),
-          trigger: 'enter',
-        },
-      },
-      {
-        field: 'model.id',
-        hidden: true,
-      },
-      {
-        label: $gettext('Model'),
-        field: 'model.name',
-        html: true,
-        filterOptions: {
-          enabled: true,
-          placeholder: $gettext('All'),
-          trigger: 'enter',
-        },
-      },
-      {
-        field: 'project.id',
-        hidden: true,
-      },
-      {
-        label: $gettext('Project'),
-        field: 'project.name',
-        html: true,
-        filterOptions: {
-          enabled: true,
-          placeholder: $gettext('All'),
-          trigger: 'enter',
-        },
-      },
-      {
-        field: 'capability.id',
-        hidden: true,
-      },
-      {
-        label: $gettext('Capability'),
-        field: 'capability.name',
-        html: true,
-        filterOptions: {
-          enabled: true,
-          placeholder: $gettext('All'),
-          trigger: 'enter',
-        },
-      },
-    ])
-
-    const { setFilterItems } = useFilterHelper(columns)
-
-    const loadFilters = async () => {
-      try {
-        const [modelsResponse, projectsResponse, capabilitiesResponse] =
-          await Promise.all([
-            api.get('/api/v1/token/devices/models/'),
-            api.get('/api/v1/token/projects/'),
-            api.get('/api/v1/token/devices/capabilities/'),
-          ])
-
-        setFilterItems(
-          'model.name',
-          modelsResponse.data.results.map(({ id, name }) => ({
-            value: id,
-            text: name,
-          })),
-        )
-
-        setFilterItems(
-          'project.name',
-          projectsResponse.data.results.map(({ id, name }) => ({
-            value: id,
-            text: name,
-          })),
-        )
-
-        setFilterItems(
-          'capability.name',
-          capabilitiesResponse.data.results.map(({ id, name }) => ({
-            value: id,
-            text: name,
-          })),
-        )
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
-    onMounted(async () => {
-      await loadFilters()
-    })
-
-    return { routes, model, title, breadcrumbs, columns }
-  },
+const routes = {
+  add: 'driver-add',
+  detail: 'driver-detail',
 }
+const model = 'devices/drivers'
+
+const { title, breadcrumbs, columns } = useListConfig(
+  model,
+  $gettext('Drivers'),
+  $gettext('Drivers List'),
+  [
+    {
+      text: $gettext('Devices'),
+      icon: appIcon('devices'),
+    },
+  ],
+  [
+    {
+      label: $gettext('Driver'),
+      field: 'name',
+      html: true,
+      filterOptions: {
+        enabled: true,
+        placeholder: $gettext('Filter'),
+        trigger: 'enter',
+      },
+    },
+    {
+      field: 'model.id',
+      hidden: true,
+    },
+    {
+      label: $gettext('Model'),
+      field: 'model.name',
+      html: true,
+      filterOptions: {
+        enabled: true,
+        placeholder: $gettext('All'),
+        trigger: 'enter',
+      },
+    },
+    {
+      field: 'project.id',
+      hidden: true,
+    },
+    {
+      label: $gettext('Project'),
+      field: 'project.name',
+      html: true,
+      filterOptions: {
+        enabled: true,
+        placeholder: $gettext('All'),
+        trigger: 'enter',
+      },
+    },
+    {
+      field: 'capability.id',
+      hidden: true,
+    },
+    {
+      label: $gettext('Capability'),
+      field: 'capability.name',
+      html: true,
+      filterOptions: {
+        enabled: true,
+        placeholder: $gettext('All'),
+        trigger: 'enter',
+      },
+    },
+  ],
+)
+
+const { setFilterItems } = useFilterHelper(columns)
+
+const loadFilters = async () => {
+  try {
+    const [modelsResponse, projectsResponse, capabilitiesResponse] =
+      await Promise.all([
+        api.get('/api/v1/token/devices/models/'),
+        api.get('/api/v1/token/projects/'),
+        api.get('/api/v1/token/devices/capabilities/'),
+      ])
+
+    setFilterItems(
+      'model.name',
+      modelsResponse.data.results.map(({ id, name }) => ({
+        value: id,
+        text: name,
+      })),
+    )
+
+    setFilterItems(
+      'project.name',
+      projectsResponse.data.results.map(({ id, name }) => ({
+        value: id,
+        text: name,
+      })),
+    )
+
+    setFilterItems(
+      'capability.name',
+      capabilitiesResponse.data.results.map(({ id, name }) => ({
+        value: id,
+        text: name,
+      })),
+    )
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
+
+onMounted(async () => {
+  await loadFilters()
+})
 </script>
