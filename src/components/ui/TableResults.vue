@@ -769,6 +769,7 @@ defineExpose({
   exportData,
   onSelectionChanged,
   updateChecked,
+  isLoading,
 })
 </script>
 

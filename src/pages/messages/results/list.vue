@@ -20,206 +20,150 @@
         />
       </template>
 
-      <template #fields="{ props }">
-        <span v-if="props.column.field == 'computer.__str__'">
-          <MigasLink
-            model="computers"
-            :pk="props.row.computer.id"
-            :value="props.row.computer.__str__"
-            :icon="elementIcon(props.row.computer.status)"
-            :tooltip="props.row.computer.summary"
-          />
-        </span>
+      <template #cell-computer___str__="{ props }">
+        <MigasLink
+          model="computers"
+          :pk="props.row.computer.id"
+          :value="props.row.computer.__str__"
+          :icon="elementIcon(props.row.computer.status)"
+          :tooltip="props.row.computer.summary"
+        />
+      </template>
 
-        <span v-else-if="props.column.field == 'project.name'">
-          <MigasLink
-            model="projects"
-            :pk="props.row.project.id"
-            :value="props.row.project.name || ''"
-          />
-        </span>
+      <template #cell-project_name="{ props }">
+        <MigasLink
+          model="projects"
+          :pk="props.row.project.id"
+          :value="props.row.project.name || ''"
+        />
+      </template>
 
-        <span v-else-if="props.column.field == 'user.name'">
-          <MigasLink
-            model="users"
-            :pk="props.row.user.id"
-            :value="props.row.user.name"
-          />
-        </span>
+      <template #cell-user_name="{ props }">
+        <MigasLink
+          model="users"
+          :pk="props.row.user.id"
+          :value="props.row.user.name"
+        />
+      </template>
 
-        <span v-else-if="props.column.field == 'created_at'">
-          <DateView :value="props.row.created_at" />
-        </span>
-
-        <span v-else>
-          {{ props.formattedRow[props.column.field] }}
-        </span>
+      <template #cell-created_at="{ props }">
+        <DateView :value="props.row.created_at" />
       </template>
     </TableResults>
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useMeta } from 'quasar'
+import { useListConfig } from 'composables/listConfig'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
-import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
+import DateView from 'components/ui/DateView'
 
-import { appIcon, modelIcon, useElement } from 'composables/element'
+import { appIcon, useElement } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'
 
-export default {
-  components: {
-    Breadcrumbs,
-    TableResults,
-    DateView,
-    MigasLink,
-  },
-  setup() {
-    const { $gettext } = useGettext()
-    const { elementIcon } = useElement()
-    const uiStore = useUiStore()
+const { $gettext } = useGettext()
+const { elementIcon } = useElement()
+const uiStore = useUiStore()
 
-    useMeta({ title: $gettext('Messages List') })
+const tableResults = ref(null)
 
-    const tableResults = ref(null)
+const model = 'messages'
+const moreFilters = ['statusIn', 'createdAtRange']
 
-    const model = 'messages'
-    const moreFilters = ['statusIn', 'createdAtRange']
+const { title, breadcrumbs, columns } = useListConfig(
+  model,
+  $gettext('Messages'),
+  $gettext('Messages List'),
+  [
+    {
+      text: $gettext('Data'),
+      icon: appIcon('data'),
+    },
+  ],
+  [
+    {
+      label: $gettext('Date'),
+      field: 'created_at',
+    },
+    {
+      field: 'computer.id',
+      hidden: true,
+    },
+    {
+      field: 'computer.status',
+      hidden: true,
+    },
+    {
+      field: 'computer.summary',
+      hidden: true,
+    },
+    {
+      label: $gettext('Computer'),
+      field: 'computer.__str__',
+    },
+    {
+      field: 'project.id',
+      hidden: true,
+    },
+    {
+      label: $gettext('Project'),
+      field: 'project.name',
+      filterOptions: {
+        enabled: true,
+        placeholder: $gettext('All'),
+        trigger: 'enter',
+      },
+    },
+    {
+      field: 'user.id',
+      hidden: true,
+    },
+    {
+      label: $gettext('User'),
+      field: 'user.name',
+    },
+    {
+      label: $gettext('Message'),
+      field: 'message',
+    },
+  ],
+)
 
-    const title = ref($gettext('Messages'))
+const loading = computed(() => {
+  return tableResults.value !== null ? tableResults.value.isLoading : false
+})
 
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Data'),
-        icon: appIcon('data'),
-      },
-      {
-        text: title.value,
-        icon: modelIcon(model),
-        to: 'messages-list',
-      },
-      {
-        text: $gettext('Results'),
-        icon: appIcon('results'),
-      },
-    ])
+const { setFilterItems } = useFilterHelper(columns)
 
-    const columns = ref([
-      {
-        field: 'id',
-        hidden: true,
-      },
-      {
-        label: $gettext('Actions'),
-        field: 'actions',
-        html: true,
-        sortable: false,
-        globalSearchDisabled: true,
-      },
-      {
-        label: $gettext('Date'),
-        field: 'created_at',
-      },
-      {
-        field: 'computer.id',
-        hidden: true,
-      },
-      {
-        field: 'computer.status',
-        hidden: true,
-      },
-      {
-        field: 'computer.summary',
-        hidden: true,
-      },
-      {
-        label: $gettext('Computer'),
-        field: 'computer.__str__',
-      },
-      {
-        field: 'project.id',
-        hidden: true,
-      },
-      {
-        label: $gettext('Project'),
-        field: 'project.name',
-        filterOptions: {
-          enabled: true,
-          placeholder: $gettext('All'),
-          trigger: 'enter',
-        },
-      },
-      {
-        field: 'user.id',
-        hidden: true,
-      },
-      {
-        label: $gettext('User'),
-        field: 'user.name',
-      },
-      {
-        label: $gettext('Message'),
-        field: 'message',
-      },
-    ])
+const loadFilters = async () => {
+  try {
+    const { data } = await api.get('/api/v1/token/projects/')
 
-    const loading = computed(() => {
-      return tableResults.value !== null
-        ? tableResults.value.isLoading.value
-        : false
-    })
-
-    const { setFilterItems } = useFilterHelper(columns)
-
-    const loadFilters = async () => {
-      try {
-        const { data } = await api.get('/api/v1/token/projects/')
-
-        setFilterItems(
-          'project.name',
-          data.results.map(({ id, name }) => ({
-            value: id,
-            text: name,
-          })),
-        )
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
-    const updateItems = async () => {
-      await tableResults.value.loadItems()
-    }
-
-    onMounted(async () => {
-      await loadFilters()
-    })
-
-    return {
-      model,
-      moreFilters,
-      title,
-      breadcrumbs,
-      columns,
-      appIcon,
-      elementIcon,
-      tableResults,
-      loading,
-      updateItems,
-    }
-  },
+    setFilterItems(
+      'project.name',
+      data.results.map(({ id, name }) => ({
+        value: id,
+        text: name,
+      })),
+    )
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
 }
+
+const updateItems = async () => {
+  await tableResults.value.loadItems()
+}
+
+onMounted(async () => {
+  await loadFilters()
+})
 </script>
