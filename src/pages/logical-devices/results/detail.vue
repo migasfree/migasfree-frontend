@@ -15,8 +15,10 @@
     >
       <template #fields>
         <q-card-section>
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md col-sm">
+          <div class="text-h5 q-mt-sm q-mb-md">{{ $gettext('General') }}</div>
+
+          <div class="row q-col-gutter-lg q-mb-md">
+            <div class="col-12 col-md-6">
               <FilteredMultiSelect
                 ref="primaryInput"
                 v-model="element.device"
@@ -34,8 +36,9 @@
                   <q-chip
                     removable
                     dense
+                    color="transparent"
                     :tabindex="scope.tabindex"
-                    class="q-ma-md"
+                    class="q-ma-md q-pa-none"
                     @remove="scope.removeAtIndex(scope.index)"
                   >
                     <MigasLink
@@ -48,16 +51,7 @@
               </FilteredMultiSelect>
             </div>
 
-            <div class="col-6 col-md col-sm">
-              <SelectAttributes
-                v-model="element.attributes"
-                :label="$gettext('Attributes')"
-              />
-            </div>
-          </div>
-
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md col-sm">
+            <div class="col-12 col-md-6">
               <EntitySelect
                 v-model="element.capability"
                 :options="capabilities"
@@ -70,11 +64,20 @@
                 :rules="[(val) => !!val || $gettext('* Required')]"
               />
             </div>
+          </div>
 
-            <div class="col-6 col-md col-sm">
+          <div class="row q-col-gutter-lg">
+            <div class="col-12 col-md-6">
               <q-input
                 v-model="element.alternative_capability_name"
                 :label="$gettext('Alternative Capability Name')"
+              />
+            </div>
+
+            <div class="col-12 col-md-6">
+              <SelectAttributes
+                v-model="element.attributes"
+                :label="$gettext('Attributes')"
               />
             </div>
           </div>
