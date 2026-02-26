@@ -8,7 +8,6 @@
       :model="model"
       :routes="routes"
     >
-
       <template #cell-description="{ props }">
         <Truncate
           v-if="props.row.description"

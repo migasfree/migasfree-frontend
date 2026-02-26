@@ -9,7 +9,6 @@
       :routes="routes"
       @post-remove="postRemove"
     >
-
       <template #cell-user_username="{ props }">
         <MigasLink
           model="user-profiles"
