@@ -8,20 +8,6 @@
       :model="model"
       :more-filters="moreFilters"
     >
-      <template #cell-computer___str__="{ props }">
-        <MigasLink
-          model="computers"
-          :pk="props.row.computer.id"
-          :value="props.row.computer.__str__"
-          :icon="elementIcon(props.row.computer.status)"
-          :tooltip="props.row.computer.summary"
-        />
-      </template>
-
-      <template #cell-created_at="{ props }">
-        <DateView :value="props.row.created_at" />
-      </template>
-
       <template #cell-status="{ props }">
         <q-icon
           :name="elementIcon(props.row.status)"
@@ -46,8 +32,6 @@ import { useUiStore } from 'stores/ui'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
-import MigasLink from 'components/MigasLink'
-import DateView from 'components/ui/DateView'
 
 import { appIcon, useElement } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'

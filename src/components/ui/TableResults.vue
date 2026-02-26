@@ -446,6 +446,48 @@
           />
         </span>
 
+        <span v-else-if="slotProps.column.field == 'computer.__str__'">
+          <MigasLink
+            model="computers"
+            :pk="slotProps.row.computer.id"
+            :value="slotProps.row.computer.__str__"
+            :icon="elementIcon(slotProps.row.computer.status)"
+            :tooltip="slotProps.row.computer.summary"
+          />
+        </span>
+
+        <span v-else-if="slotProps.column.field == 'project.name'">
+          <MigasLink
+            model="projects"
+            :pk="slotProps.row.project.id"
+            :value="slotProps.row.project.name || ''"
+          />
+        </span>
+
+        <span
+          v-else-if="
+            ['created_at', 'updated_at'].includes(slotProps.column.field)
+          "
+        >
+          <DateView :value="slotProps.row[slotProps.column.field]" />
+        </span>
+
+        <span
+          v-else-if="slotProps.column.field == 'synchronization.start_date'"
+        >
+          <DateView :value="slotProps.row.synchronization.start_date" />
+        </span>
+
+        <span v-else-if="slotProps.column.field == 'checked'">
+          <BooleanView :value="slotProps.row.checked" />
+        </span>
+
+        <span
+          v-else-if="['description', 'result'].includes(slotProps.column.field)"
+        >
+          <Truncate v-model="slotProps.row[slotProps.column.field]" />
+        </span>
+
         <span v-else>
           {{ slotProps.formattedRow[slotProps.column.field] }}
         </span>
@@ -548,9 +590,12 @@ import TablePagination from 'components/ui/TablePagination'
 import SelectTree from 'components/ui/SelectTree'
 import DateRangeInput from 'components/ui/DateRangeInput'
 import MigasLink from 'components/MigasLink'
+import DateView from 'components/ui/DateView'
+import BooleanView from 'components/ui/BooleanView'
+import Truncate from 'components/ui/Truncate'
 
 import useDataGrid from 'composables/dataGrid'
-import { appIcon, modelIcon } from 'composables/element'
+import { appIcon, modelIcon, useElement } from 'composables/element'
 
 defineOptions({ name: 'TableResults' })
 
@@ -567,6 +612,7 @@ defineEmits(['post-remove'])
 
 const uiStore = useUiStore()
 const route = useRoute()
+const { elementIcon } = useElement()
 
 const model = toRef(props, 'model')
 const columnParams = toRef(props, 'columnParams')

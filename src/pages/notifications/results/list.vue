@@ -7,15 +7,7 @@
       :columns="columns"
       :model="model"
       :more-filters="moreFilters"
-    >
-      <template #cell-created_at="{ props }">
-        <DateView :value="props.row.created_at" />
-      </template>
-
-      <template #cell-checked="{ props }">
-        <BooleanView :value="props.row.checked" />
-      </template>
-    </TableResults>
+    />
   </q-page>
 </template>
 
@@ -25,8 +17,6 @@ import { useListConfig } from 'composables/listConfig'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
-import DateView from 'components/ui/DateView'
-import BooleanView from 'components/ui/BooleanView'
 
 import { appIcon } from 'composables/element'
 

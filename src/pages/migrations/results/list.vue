@@ -7,29 +7,7 @@
       :columns="columns"
       :model="model"
       :more-filters="moreFilters"
-    >
-      <template #cell-computer___str__="{ props }">
-        <MigasLink
-          model="computers"
-          :pk="props.row.computer.id"
-          :value="props.row.computer.__str__"
-          :icon="elementIcon(props.row.computer.status)"
-          :tooltip="props.row.computer.summary"
-        />
-      </template>
-
-      <template #cell-project_name="{ props }">
-        <MigasLink
-          model="projects"
-          :pk="props.row.project.id"
-          :value="props.row.project.name || ''"
-        />
-      </template>
-
-      <template #cell-created_at="{ props }">
-        <DateView :value="props.row.created_at" />
-      </template>
-    </TableResults>
+    />
   </q-page>
 </template>
 
@@ -43,14 +21,11 @@ import { useUiStore } from 'stores/ui'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
-import MigasLink from 'components/MigasLink'
-import DateView from 'components/ui/DateView'
 
-import { appIcon, useElement } from 'composables/element'
+import { appIcon } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'
 
 const { $gettext } = useGettext()
-const { elementIcon } = useElement()
 const uiStore = useUiStore()
 
 const model = 'migrations'
