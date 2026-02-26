@@ -30,11 +30,13 @@
       <template #fields>
         <div class="row q-pb-md q-col-gutter-md">
           <div class="col-6 col-md col-sm-12">
-            <q-card>
+            <q-card class="panel">
               <q-card-section>
-                <div class="text-h5 q-pb-sm">{{ $gettext('General') }}</div>
+                <div class="text-h6 text-weight-bold text-primary">
+                  {{ $gettext('General') }}
+                </div>
 
-                <div class="row q-gutter-md">
+                <div class="row q-gutter-md q-py-md">
                   <div class="col-6 col-md col-sm">
                     <q-checkbox
                       ref="primaryInput"
@@ -100,13 +102,13 @@
           </div>
 
           <div class="col-6 col-md col-sm-12">
-            <q-card>
+            <q-card class="panel">
               <q-card-section>
-                <div class="text-h5 q-pb-sm">
+                <div class="text-h6 text-weight-bold text-primary">
                   {{ $gettext('To who (attributes)') }}
                 </div>
 
-                <div class="row q-pb-md">
+                <div class="row q-py-md">
                   <div class="col-12 col-md col-sm">
                     <SelectAttributes
                       v-model="element.included_attributes"
@@ -130,13 +132,13 @@
 
         <div class="row q-pb-md q-col-gutter-md">
           <div class="col-6 col-md col-sm-12">
-            <q-card>
+            <q-card class="panel">
               <q-card-section>
-                <div class="text-h5 q-pb-sm">
+                <div class="text-h6 text-weight-bold text-primary">
                   {{ $gettext('What (packages)') }}
                 </div>
 
-                <div v-if="element.id === 0" class="row">
+                <div v-if="element.id === 0" class="row q-py-md">
                   <div class="col-12 col-md col-sm">
                     <q-select
                       v-model="source"
@@ -171,8 +173,9 @@
                           <q-chip
                             removable
                             dense
+                            color="transparent"
                             :tabindex="scope.tabindex"
-                            class="q-ma-md"
+                            class="q-ma-md q-pa-none"
                             @remove="scope.removeAtIndex(scope.index)"
                           >
                             <MigasLink
@@ -205,8 +208,9 @@
                           <q-chip
                             removable
                             dense
+                            color="transparent"
                             :tabindex="scope.tabindex"
-                            class="q-ma-md"
+                            class="q-ma-md q-pa-none"
                             @remove="scope.removeAtIndex(scope.index)"
                           >
                             <MigasLink
@@ -291,11 +295,13 @@
           </div>
 
           <div class="col-6 col-md col-sm-12">
-            <q-card>
+            <q-card class="panel">
               <q-card-section>
-                <div class="text-h5 q-pb-sm">{{ $gettext('Actions') }}</div>
+                <div class="text-h6 text-weight-bold text-primary">
+                  {{ $gettext('Actions') }}
+                </div>
 
-                <div class="row q-pb-md q-col-gutter-sm">
+                <div class="row q-py-md q-col-gutter-sm">
                   <div class="col-6 col-md col-sm">
                     <OrderTextArea
                       v-model="element.packages_to_install"
@@ -369,13 +375,13 @@
 
         <div class="row q-pb-md q-col-gutter-md">
           <div class="col-12 col-md-12 col-sm-12">
-            <q-card>
+            <q-card class="panel">
               <q-card-section>
-                <div class="text-h5 q-pb-sm">
+                <div class="text-h6 text-weight-bold text-primary">
                   {{ $gettext('When (schedule)') }}
                 </div>
 
-                <div class="row q-col-gutter-sm">
+                <div class="row q-col-gutter-sm q-py-md">
                   <div
                     :class="
                       element.timeline
