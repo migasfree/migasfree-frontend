@@ -89,6 +89,7 @@
                   round
                   color="secondary"
                   icon="mdi-plus-box-multiple-outline"
+                  :aria-label="$gettext('Save and add other')"
                   :loading="loading"
                   :disabled="!isValid || loading"
                   @click="updateElement('add')"
@@ -102,6 +103,7 @@
                   round
                   color="secondary"
                   :icon="appIcon('save-edit')"
+                  :aria-label="$gettext('Save and continue editing')"
                   :loading="loading"
                   :disabled="!isValid || loading"
                   @click="updateElement"
@@ -118,6 +120,7 @@
                   color="primary"
                   size="lg"
                   :icon="appIcon('save')"
+                  :aria-label="$gettext('Save')"
                   :loading="loading"
                   :disabled="!isValid || loading"
                   @click="updateElement('return')"
