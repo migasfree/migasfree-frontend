@@ -52,6 +52,7 @@ import TableResults from 'components/ui/TableResults'
 import MigasLink from 'components/MigasLink'
 
 import { useFilterHelper } from 'composables/filterHelper'
+import { appIcon } from 'composables/element'
 
 const { $gettext } = useGettext()
 const uiStore = useUiStore()
@@ -66,7 +67,10 @@ const { title, breadcrumbs, columns } = useListConfig(
   model,
   $gettext('Devices'),
   $gettext('Devices List'),
-  [],
+  {
+    text: $gettext('Devices'),
+    icon: appIcon('devices'),
+  },
   [
     {
       label: $gettext('Name'),
@@ -131,6 +135,8 @@ const { title, breadcrumbs, columns } = useListConfig(
     },
   ],
 )
+
+breadcrumbs.value[breadcrumbs.value.length - 2].to = 'devices-dashboard'
 
 const { setFilterItems } = useFilterHelper(columns)
 
