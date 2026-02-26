@@ -23,7 +23,7 @@
           @click="goTo"
         >
           <span class="text-weight-bolder">{{ data.total }}</span>
-          <q-tooltip>{{ $gettext('View details') }}</q-tooltip>
+          <q-tooltip>{{ $gettext('View All') }}</q-tooltip>
         </q-btn>
       </div>
 
@@ -282,6 +282,7 @@ import {
   onMounted,
   shallowRef,
   shallowReactive,
+  getCurrentInstance,
 } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
@@ -329,6 +330,7 @@ const $q = useQuasar()
 const router = useRouter()
 const { $gettext } = useGettext()
 const uiStore = useUiStore()
+const instance = getCurrentInstance()
 
 const chart = ref(null)
 const data = reactive({})
@@ -559,7 +561,12 @@ const rowClick = (_evt, row) => {
 }
 
 const goTo = () => {
-  if (props.url) router.push(props.url)
+  if (props.url && Object.keys(props.url).length > 0) {
+    const currentRouter = router || instance?.proxy?.$router
+    if (currentRouter) {
+      currentRouter.push(props.url)
+    }
+  }
 }
 
 // --- Data View ---
