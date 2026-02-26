@@ -290,7 +290,11 @@ import VChart from 'vue-echarts'
 
 import * as echarts from 'echarts/core'
 import { PieChart } from 'echarts/charts'
-import { TooltipComponent, TitleComponent } from 'echarts/components'
+import {
+  TooltipComponent,
+  TitleComponent,
+  LegendComponent,
+} from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
 
 import { api } from 'boot/axios'
@@ -302,7 +306,13 @@ import { useChartUtils } from 'composables/chart/utils'
 
 import ExportMenu from 'components/chart/ExportMenu'
 
-echarts.use([PieChart, TooltipComponent, TitleComponent, SVGRenderer])
+echarts.use([
+  PieChart,
+  TooltipComponent,
+  TitleComponent,
+  LegendComponent,
+  SVGRenderer,
+])
 
 defineOptions({ name: 'PieChart' })
 
