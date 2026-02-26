@@ -17,17 +17,8 @@
         <q-card-section>
           <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
 
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md col-sm">
-              <q-checkbox
-                ref="primaryInput"
-                v-model="element.enabled"
-                left-label
-                :label="$gettext('Enabled?')"
-              />
-            </div>
-
-            <div class="col-6 col-md col-sm">
+          <div class="row q-col-gutter-lg q-pt-md">
+            <div class="col-12 col-md-8">
               <q-input
                 v-model="element.name"
                 :label="$gettext('Name')"
@@ -35,10 +26,19 @@
                 :rules="[(val) => !!val || $gettext('* Required')]"
               />
             </div>
+
+            <div class="col-12 col-md-4 flex items-center">
+              <q-checkbox
+                ref="primaryInput"
+                v-model="element.enabled"
+                left-label
+                :label="$gettext('Enabled?')"
+              />
+            </div>
           </div>
 
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col-12 col-md col-sm">
+          <div class="row q-col-gutter-lg q-pt-sm">
+            <div class="col-12">
               <q-input
                 v-model="element.description"
                 type="textarea"
@@ -51,8 +51,8 @@
         <q-card-section>
           <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('Code') }}</div>
 
-          <div class="row q-pa-md q-gutter-md justify-between">
-            <div class="col-md-3 col-sm-3">
+          <div class="row q-col-gutter-lg q-pt-md">
+            <div class="col-12 col-md-4">
               <q-select
                 v-model="element.language"
                 :label="$gettext('Language')"
@@ -63,8 +63,10 @@
                 :rules="[(val) => !!val || $gettext('* Required')]"
               />
             </div>
+          </div>
 
-            <div class="col-md-8 col-sm-8">
+          <div class="row q-col-gutter-lg q-pt-sm">
+            <div class="col-12 q-mb-xl">
               <CodeEditor v-model="element.code" :language="highlightLang" />
             </div>
           </div>
@@ -75,15 +77,15 @@
             {{ $gettext('Attributes') }}
           </div>
 
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md col-sm">
+          <div class="row q-col-gutter-lg q-pt-md">
+            <div class="col-12 col-md-6">
               <SelectAttributes
                 v-model="element.included_attributes"
                 :label="$gettext('Included')"
               />
             </div>
 
-            <div class="col-6 col-md col-sm">
+            <div class="col-12 col-md-6">
               <SelectAttributes
                 v-model="element.excluded_attributes"
                 :label="$gettext('Excluded')"
@@ -97,8 +99,8 @@
             {{ $gettext('User Profiles') }}
           </div>
 
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col-12 col-md col-sm">
+          <div class="row q-col-gutter-lg q-pt-md">
+            <div class="col-12">
               <EntitySelect
                 v-model="element.users"
                 :label="$gettext('User Profiles')"
