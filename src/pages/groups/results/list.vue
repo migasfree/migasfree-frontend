@@ -24,6 +24,10 @@
           ><q-tooltip>{{ $gettext('Add User Profile') }}</q-tooltip></q-btn
         >
       </template>
+
+      <template #cell-name="{ props }">
+        {{ props.row.name }}
+      </template>
     </TableResults>
   </q-page>
 </template>
