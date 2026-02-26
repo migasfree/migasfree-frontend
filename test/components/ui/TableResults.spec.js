@@ -48,6 +48,9 @@ vi.mock('stores/ui', () => ({
 vi.mock('composables/element', () => ({
   appIcon: (name) => `mdi-${name}`,
   modelIcon: (name) => `mdi-model-${name}`,
+  useElement: () => ({
+    elementIcon: (status) => `mdi-status-${status}`,
+  }),
 }))
 
 // Mock composables/dataGrid
