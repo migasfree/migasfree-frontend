@@ -36,31 +36,17 @@
         <q-card-section>
           <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
 
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md col-sm">
-              <q-checkbox
-                ref="primaryInput"
-                v-model="element.enabled"
-                left-label
-                :label="$gettext('Enabled?')"
-              />
-            </div>
-
-            <div class="col-6 col-md col-sm">
-              <q-select
-                v-model="element.kind"
-                :label="$gettext('Kind')"
-                :options="kind"
-                option-value="id"
-                option-label="name"
+          <div class="row q-col-gutter-lg q-pt-md">
+            <div class="col-12 col-md-8">
+              <q-input
+                v-model="element.name"
+                :label="$gettext('Name')"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
               />
             </div>
-          </div>
 
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md col-sm">
+            <div class="col-12 col-md-4">
               <q-input
                 v-model="element.prefix"
                 :label="$gettext('Prefix')"
@@ -85,13 +71,27 @@
                 "
               />
             </div>
+          </div>
 
-            <div class="col-6 col-md col-sm">
-              <q-input
-                v-model="element.name"
-                :label="$gettext('Name')"
+          <div class="row q-col-gutter-lg q-pt-sm">
+            <div class="col-12 col-md-8">
+              <q-select
+                v-model="element.kind"
+                :label="$gettext('Kind')"
+                :options="kind"
+                option-value="id"
+                option-label="name"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
+              />
+            </div>
+
+            <div class="col-12 col-md-4 flex items-center">
+              <q-checkbox
+                ref="primaryInput"
+                v-model="element.enabled"
+                left-label
+                :label="$gettext('Enabled?')"
               />
             </div>
           </div>
@@ -100,8 +100,8 @@
         <q-card-section>
           <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('Code') }}</div>
 
-          <div class="row q-pa-md q-gutter-md justify-between q-mb-xl">
-            <div class="col-md-3 col-sm-3 col-xs-3">
+          <div class="row q-col-gutter-lg q-pt-md">
+            <div class="col-12 col-md-4">
               <q-select
                 v-model="element.language"
                 :label="$gettext('Language')"
@@ -112,8 +112,10 @@
                 :rules="[(val) => !!val || $gettext('* Required')]"
               />
             </div>
+          </div>
 
-            <div class="col-md-8 col-sm-8 col-xs-8 q-mb-xl">
+          <div class="row q-col-gutter-lg q-pt-sm">
+            <div class="col-12 q-mb-xl">
               <CodeEditor v-model="element.code" :language="highlightLang" />
 
               <div class="text-caption opacity-80 q-mt-sm flex column gap-sm">
