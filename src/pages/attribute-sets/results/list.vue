@@ -8,9 +8,6 @@
       :model="model"
       :routes="routes"
     >
-      <template #cell-enabled="{ props }">
-        <BooleanView :value="props.row.enabled" />
-      </template>
 
       <template #cell-description="{ props }">
         <Truncate
@@ -29,7 +26,6 @@ import { useListConfig } from 'composables/listConfig'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
-import BooleanView from 'components/ui/BooleanView'
 import Truncate from 'components/ui/Truncate'
 
 import { appIcon } from 'composables/element'

@@ -9,14 +9,6 @@
       :routes="routes"
       @post-remove="postRemove"
     >
-      <template #cell-domain_name="{ props }">
-        <MigasLink
-          v-if="props.row.domain"
-          model="domains"
-          :pk="props.row.domain.id"
-          :value="props.row.domain.name"
-        />
-      </template>
 
       <template #cell-user_username="{ props }">
         <MigasLink

@@ -19,22 +19,6 @@
           :value="`${props.row.model.name} (${props.row.model.manufacturer.name})`"
         />
       </template>
-
-      <template #cell-project_name="{ props }">
-        <MigasLink
-          model="projects"
-          :pk="props.row.project.id"
-          :value="props.row.project.name"
-        />
-      </template>
-
-      <template #cell-capability_name="{ props }">
-        <MigasLink
-          model="devices/capabilities"
-          :pk="props.row.capability.id"
-          :value="props.row.capability.name"
-        />
-      </template>
     </TableResults>
   </q-page>
 </template>

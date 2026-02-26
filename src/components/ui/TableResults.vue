@@ -459,8 +459,50 @@
         <span v-else-if="slotProps.column.field == 'project.name'">
           <MigasLink
             model="projects"
-            :pk="slotProps.row.project.id"
-            :value="slotProps.row.project.name || ''"
+            :pk="slotProps.row.project?.id"
+            :value="slotProps.row.project?.name || ''"
+          />
+        </span>
+
+        <span v-else-if="slotProps.column.field == 'domain.name'">
+          <MigasLink
+            v-if="slotProps.row.domain"
+            model="domains"
+            :pk="slotProps.row.domain.id"
+            :value="slotProps.row.domain.name"
+          />
+        </span>
+
+        <span v-else-if="slotProps.column.field == 'property_att'">
+          <MigasLink
+            model="formulas"
+            :pk="slotProps.row.property_att?.id"
+            :value="slotProps.row.property_att?.name || ''"
+          />
+        </span>
+
+        <span v-else-if="slotProps.column.field == 'capability.name'">
+          <MigasLink
+            model="devices/capabilities"
+            :pk="slotProps.row.capability?.id"
+            :value="slotProps.row.capability?.name"
+          />
+        </span>
+
+        <span v-else-if="slotProps.column.field == 'device_type.name'">
+          <MigasLink
+            model="devices/types"
+            :pk="slotProps.row.device_type?.id"
+            :value="slotProps.row.device_type?.name"
+          />
+        </span>
+
+        <span v-else-if="slotProps.column.field == 'store.name'">
+          <MigasLink
+            v-if="slotProps.row.store && slotProps.row.store.id > 0"
+            model="stores"
+            :pk="slotProps.row.store.id"
+            :value="slotProps.row.store.name"
           />
         </span>
 
@@ -478,8 +520,10 @@
           <DateView :value="slotProps.row.synchronization.start_date" />
         </span>
 
-        <span v-else-if="slotProps.column.field == 'checked'">
-          <BooleanView :value="slotProps.row.checked" />
+        <span
+          v-else-if="['checked', 'enabled'].includes(slotProps.column.field)"
+        >
+          <BooleanView :value="slotProps.row[slotProps.column.field]" />
         </span>
 
         <span

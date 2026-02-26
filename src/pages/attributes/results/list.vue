@@ -17,14 +17,6 @@
           :tooltip="props.row.description"
         />
       </template>
-
-      <template #cell-property_att="{ props }">
-        <MigasLink
-          model="formulas"
-          :pk="props.row.property_att.id"
-          :value="props.row.property_att.name || ''"
-        />
-      </template>
     </TableResults>
   </q-page>
 </template>

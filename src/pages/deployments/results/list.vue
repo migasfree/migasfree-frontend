@@ -22,27 +22,6 @@
         >
       </template>
 
-      <template #cell-project_name="{ props }">
-        <MigasLink
-          model="projects"
-          :pk="props.row.project.id"
-          :value="props.row.project.name"
-        />
-      </template>
-
-      <template #cell-domain_name="{ props }">
-        <MigasLink
-          v-if="props.row.domain"
-          model="domains"
-          :pk="props.row.domain.id"
-          :value="props.row.domain.name"
-        />
-      </template>
-
-      <template #cell-enabled="{ props }">
-        <BooleanView :value="props.row.enabled" />
-      </template>
-
       <template #cell-start_date="{ props }">
         <DateView :value="props.row.start_date" />
         <q-icon v-if="props.row.auto_restart" name="mdi-repeat" size="sm">
@@ -73,8 +52,6 @@ import { useUiStore } from 'stores/ui'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
-import MigasLink from 'components/MigasLink'
-import BooleanView from 'components/ui/BooleanView'
 import DateView from 'components/ui/DateView'
 
 import { appIcon } from 'composables/element'

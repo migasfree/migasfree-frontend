@@ -29,10 +29,6 @@
         <MigasLink :model="model" :pk="props.row.id" :value="props.row.name" />
       </template>
 
-      <template #cell-enabled="{ props }">
-        <BooleanView :value="props.row.enabled" />
-      </template>
-
       <template #cell-kind="{ props }">
         {{ kind[props.row.kind] }}
       </template>
@@ -50,7 +46,6 @@ import { useUiStore } from 'stores/ui'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
-import BooleanView from 'components/ui/BooleanView'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon } from 'composables/element'

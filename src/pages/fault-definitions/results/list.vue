@@ -8,9 +8,6 @@
       :model="model"
       :routes="routes"
     >
-      <template #cell-enabled="{ props }">
-        <BooleanView :value="props.row.enabled" />
-      </template>
     </TableResults>
   </q-page>
 </template>
@@ -25,7 +22,6 @@ import { useUiStore } from 'stores/ui'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
-import BooleanView from 'components/ui/BooleanView'
 
 import { appIcon } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'

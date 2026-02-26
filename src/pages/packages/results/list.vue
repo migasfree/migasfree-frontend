@@ -46,23 +46,6 @@
           :value="props.row.fullname"
         />
       </template>
-
-      <template #cell-project_name="{ props }">
-        <MigasLink
-          model="projects"
-          :pk="props.row.project.id"
-          :value="props.row.project.name"
-        />
-      </template>
-
-      <template #cell-store_name="{ props }">
-        <MigasLink
-          v-if="props.row.store.id > 0"
-          model="stores"
-          :pk="props.row.store.id"
-          :value="props.row.store.name"
-        />
-      </template>
     </TableResults>
   </q-page>
 </template>

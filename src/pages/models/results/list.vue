@@ -16,14 +16,6 @@
           :value="props.row.manufacturer.name"
         />
       </template>
-
-      <template #cell-device_type_name="{ props }">
-        <MigasLink
-          model="devices/types"
-          :pk="props.row.device_type.id"
-          :value="props.row.device_type.name"
-        />
-      </template>
     </TableResults>
   </q-page>
 </template>

@@ -8,9 +8,6 @@
       :model="model"
       :routes="routes"
     >
-      <template #cell-enabled="{ props }">
-        <BooleanView :value="props.row.enabled" />
-      </template>
 
       <template #cell-exclusive="{ props }">
         <BooleanView :value="props.row.exclusive" />

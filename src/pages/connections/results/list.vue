@@ -24,14 +24,6 @@
           ><q-tooltip>{{ $gettext('Add Model') }}</q-tooltip></q-btn
         >
       </template>
-
-      <template #cell-device_type_name="{ props }">
-        <MigasLink
-          model="devices/types"
-          :pk="props.row.device_type.id"
-          :value="props.row.device_type.name"
-        />
-      </template>
     </TableResults>
   </q-page>
 </template>
@@ -46,7 +38,6 @@ import { useUiStore } from 'stores/ui'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
-import MigasLink from 'components/MigasLink'
 
 import { appIcon } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'

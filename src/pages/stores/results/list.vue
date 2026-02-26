@@ -8,13 +8,6 @@
       :model="model"
       :routes="routes"
     >
-      <template #cell-project_name="{ props }">
-        <MigasLink
-          model="projects"
-          :pk="props.row.project.id"
-          :value="props.row.project.name"
-        />
-      </template>
     </TableResults>
   </q-page>
 </template>
@@ -29,7 +22,6 @@ import { useUiStore } from 'stores/ui'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
-import MigasLink from 'components/MigasLink'
 
 import { appIcon } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'

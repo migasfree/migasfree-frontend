@@ -8,17 +8,6 @@
       :model="model"
       :routes="routes"
     >
-      <template #cell-enabled="{ props }">
-        <BooleanView :value="props.row.enabled" />
-      </template>
-
-      <template #cell-property_att="{ props }">
-        <MigasLink
-          model="formulas"
-          :pk="props.row.property_att.id"
-          :value="props.row.property_att.name || ''"
-        />
-      </template>
     </TableResults>
   </q-page>
 </template>
@@ -33,8 +22,6 @@ import { useUiStore } from 'stores/ui'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
-import BooleanView from 'components/ui/BooleanView'
-import MigasLink from 'components/MigasLink'
 
 import { appIcon } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'

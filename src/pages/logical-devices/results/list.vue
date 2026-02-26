@@ -24,14 +24,6 @@
           :value="props.row.device.name"
         />
       </template>
-
-      <template #cell-capability_name="{ props }">
-        <MigasLink
-          model="devices/capabilities"
-          :pk="props.row.capability.id"
-          :value="props.row.capability.name"
-        />
-      </template>
     </TableResults>
   </q-page>
 </template>
