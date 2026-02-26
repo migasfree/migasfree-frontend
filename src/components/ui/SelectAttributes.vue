@@ -31,8 +31,9 @@
         <q-chip
           removable
           dense
+          color="transparent"
           :tabindex="scope.tabindex"
-          class="attribute-chip q-ma-xs"
+          class="q-ma-sm q-pa-none"
           @remove="scope.removeAtIndex(scope.index)"
         >
           <MigasLink
@@ -172,20 +173,6 @@ onMounted(updateAttributes)
 
 [data-theme='dark'] :deep(.q-field__control) {
   background: rgba(255, 255, 255, 0.05);
-}
-
-.attribute-chip {
-  background: rgba(var(--brand-primary-rgb), 0.1);
-  border: 1px solid rgba(var(--brand-primary-rgb), 0.1);
-  color: var(--text-main);
-  padding: 4px 10px;
-  height: 28px;
-  transition: all 0.2s ease;
-}
-
-.attribute-chip:hover {
-  background: rgba(var(--brand-primary-rgb), 0.15);
-  transform: translateY(-1px);
 }
 
 [data-theme='dark'] .attribute-chip {

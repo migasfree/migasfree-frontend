@@ -18,17 +18,8 @@
         <q-card-section>
           <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
 
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md col-sm">
-              <q-checkbox
-                ref="primaryInput"
-                v-model="element.enabled"
-                left-label
-                :label="$gettext('Enabled?')"
-              />
-            </div>
-
-            <div class="col-6 col-md col-sm">
+          <div class="row q-col-gutter-lg q-pt-md">
+            <div class="col-12 col-md-8">
               <q-input
                 v-model="element.name"
                 :label="$gettext('Name')"
@@ -36,10 +27,19 @@
                 :rules="[(val) => !!val || $gettext('* Required')]"
               />
             </div>
+
+            <div class="col-12 col-md-4 flex items-center">
+              <q-checkbox
+                ref="primaryInput"
+                v-model="element.enabled"
+                left-label
+                :label="$gettext('Enabled?')"
+              />
+            </div>
           </div>
 
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col-12 col-md col-sm">
+          <div class="row q-col-gutter-lg q-pt-sm">
+            <div class="col-12">
               <q-input
                 v-model="element.description"
                 type="textarea"
@@ -54,15 +54,15 @@
             {{ $gettext('Attributes') }}
           </div>
 
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md col-sm">
+          <div class="row q-col-gutter-lg q-pt-md">
+            <div class="col-12 col-md-6">
               <SelectAttributes
                 v-model="element.included_attributes"
                 :label="$gettext('Included')"
               />
             </div>
 
-            <div class="col-6 col-md col-sm">
+            <div class="col-12 col-md-6">
               <SelectAttributes
                 v-model="element.excluded_attributes"
                 :label="$gettext('Excluded')"
@@ -88,8 +88,8 @@
 
           <q-slide-transition>
             <div v-if="viewMap">
-              <div class="row q-pa-md q-gutter-md">
-                <div class="col-6 col-md col-sm">
+              <div class="row q-col-gutter-lg q-pt-md">
+                <div class="col-12 col-md-6">
                   <q-input
                     v-model="element.latitude"
                     :label="$gettext('Latitude')"
@@ -97,7 +97,7 @@
                   />
                 </div>
 
-                <div class="col-6 col-md col-sm">
+                <div class="col-12 col-md-6">
                   <q-input
                     v-model="element.longitude"
                     :label="$gettext('Longitude')"
@@ -106,8 +106,8 @@
                 </div>
               </div>
 
-              <div class="row q-pa-md q-gutter-md">
-                <div class="col">
+              <div class="row q-col-gutter-lg q-pt-sm">
+                <div class="col-12 q-mb-md">
                   <AddLocation v-model="coords" @update-coords="updateCoords" />
                 </div>
               </div>
