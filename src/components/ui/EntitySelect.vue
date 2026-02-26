@@ -45,9 +45,9 @@
         v-if="chipMode"
         removable
         dense
-        outline
+        color="transparent"
         :tabindex="scope.tabindex"
-        class="q-ma-xs"
+        class="q-ma-sm q-pa-none"
         @remove="scope.removeAtIndex(scope.index)"
       >
         <MigasLink
@@ -55,7 +55,6 @@
           :model="linkModel"
           :pk="scope.opt[optionValue]"
           :value="scope.opt[optionLabel]"
-          class="chip-text"
           @click.stop
         />
 
@@ -162,15 +161,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.chip-text {
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  display: inline-block;
-  vertical-align: middle;
-}
-
 .add-btn-select {
   font-size: 14px !important;
   margin-left: 4px;
