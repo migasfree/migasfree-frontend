@@ -116,36 +116,40 @@
             <div class="col-md-8 col-sm-8 col-xs-8 q-mb-xl">
               <CodeEditor v-model="element.code" :language="highlightLang" />
 
-              <q-input borderless dense bottom-slots readonly>
-                <template #hint>
-                  <p>
+              <div class="text-caption opacity-80 q-mt-sm flex column gap-sm">
+                <p class="q-ma-none">
+                  {{
+                    $gettext(
+                      'This code will execute in the client computer, and it must put in the standard output the value of the attribute correspondent to this property.',
+                    )
+                  }}
+                </p>
+                <p class="q-ma-none">
+                  {{
+                    $gettext(
+                      "The format of this value is 'name~description', where 'description' is optional.",
+                    )
+                  }}
+                </p>
+                <p class="q-ma-none">
+                  <b class="text-weight-bold">{{
+                    $gettext('Example of code:')
+                  }}</b>
+                </p>
+                <div
+                  class="q-ma-none q-pa-sm rounded-borders text-body2 font-monospace"
+                  style="background-color: var(--bg-surface-variant)"
+                >
+                  <div class="opacity-60">
                     {{
                       $gettext(
-                        'This code will execute in the client computer, and it must put in the standard output the value of the attribute correspondent to this property.',
+                        '# Create an attribute with the name of computer from bash',
                       )
                     }}
-                  </p>
-                  <p>
-                    {{
-                      $gettext(
-                        "The format of this value is 'name~description', where 'description' is optional.",
-                      )
-                    }}
-                  </p>
-                  <p>
-                    <b>{{ $gettext('Example of code:') }}</b>
-                  </p>
-                  <p>
-                    <code>
-                      {{
-                        $gettext(
-                          '# Create an attribute with the name of computer from bash',
-                        )
-                      }}<br />echo $HOSTNAME
-                    </code>
-                  </p>
-                </template>
-              </q-input>
+                  </div>
+                  <div>echo $HOSTNAME</div>
+                </div>
+              </div>
             </div>
           </div>
         </q-card-section>

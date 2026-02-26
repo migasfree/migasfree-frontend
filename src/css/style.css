@@ -543,6 +543,24 @@ h2 {
   color: #fefce8;
 }
 
+/* --- Field Bottom / Hints --- */
+.q-field__bottom {
+  color: var(--text-main);
+  opacity: 0.7;
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.q-field--error .q-field__bottom {
+  color: var(--text-critical) !important;
+  opacity: 1;
+}
+
+.q-field--warning .q-field__bottom {
+  color: var(--text-warning) !important;
+  opacity: 1;
+}
+
 /* --- Input Decorations (Prefixes/Icons) --- */
 .filter-icon-box,
 .input-prefix-box {
