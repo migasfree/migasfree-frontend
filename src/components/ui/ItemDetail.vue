@@ -22,7 +22,6 @@
 
         <q-btn
           v-if="'add' in routes"
-          class="q-ma-sm"
           color="primary"
           text-color="white"
           :aria-label="$gettext('Add')"

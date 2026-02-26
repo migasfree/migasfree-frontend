@@ -4,18 +4,18 @@
       <q-icon v-if="icon" :name="icon" size="2rem" class="shrink-0" />
       <h1 class="ellipsis" :title="title">
         {{ title }}
-        <q-chip
-          v-if="results"
-          size="md"
-          color="warning-surface"
-          text-color="brand-primary"
-          class="q-ml-sm text-bold"
-        >
-          {{ results }}
-        </q-chip>
       </h1>
+      <q-chip
+        v-if="results !== null"
+        size="md"
+        color="warning-surface"
+        text-color="brand-primary"
+        class="text-bold q-ma-none"
+      >
+        {{ results }}
+      </q-chip>
 
-      <div v-if="$slots.append" class="flex items-center q-ml-sm gap-sm">
+      <div v-if="$slots.append" class="flex items-center gap-sm">
         <slot name="append"></slot>
       </div>
     </div>
@@ -45,7 +45,7 @@
         :disable="results === 0"
         @click="exportAction"
       >
-        <q-tooltip>{{ $gettext('Export results') }}</q-tooltip>
+        <q-tooltip>{{ $gettext('Export') }}</q-tooltip>
       </q-btn>
 
       <slot name="actions"></slot>
