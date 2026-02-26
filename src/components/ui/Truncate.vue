@@ -1,5 +1,9 @@
 <template>
-  <template v-if="modelValue.length <= len">
+  <template v-if="!modelValue">
+    <div v-if="formatted"></div>
+    <div v-else></div>
+  </template>
+  <template v-else-if="modelValue.length <= len">
     <pre v-if="formatted">{{ localValue }}</pre>
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div v-else v-html="localValue"></div>
@@ -27,7 +31,7 @@ export default {
   name: 'Truncate',
   props: {
     modelValue: {
-      type: String,
+      type: [String, null],
       required: true,
     },
     len: {
@@ -42,8 +46,17 @@ export default {
     },
   },
   setup(props) {
+    const safeModelValue = computed(() => {
+      // Ensure we always have a string
+      return props.modelValue !== null && props.modelValue !== undefined
+        ? String(props.modelValue)
+        : ''
+    })
+
     const truncatedValue = computed(() => {
-      const clipped = clip(props.modelValue, props.len, {
+      if (!safeModelValue.value) return ''
+
+      const clipped = clip(safeModelValue.value, props.len, {
         html: true,
         maxLines: 3,
       })
@@ -52,7 +65,9 @@ export default {
     })
 
     const localValue = computed(() => {
-      let content = props.modelValue
+      if (!safeModelValue.value) return ''
+
+      let content = safeModelValue.value
       if (!props.formatted) {
         content = content.replaceAll('\n', '<br />')
       }
