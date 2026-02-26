@@ -21,7 +21,7 @@
     </div>
 
     <!-- Actions -->
-    <div class="header-actions row no-wrap items-center q-gutter-md q-ml-md">
+    <div class="header-actions row no-wrap items-center gap-md q-ml-md">
       <q-btn
         v-if="addRoute"
         flat
