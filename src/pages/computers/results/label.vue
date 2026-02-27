@@ -166,7 +166,8 @@ const breadcrumbs = computed(() => [
     to: 'computers-list',
   },
   {
-    text: label.search || 'ID',
+    text: computer.__str__ || label.search || 'ID',
+    icon: elementIcon(computer.status),
     to: { name: 'computer-detail', params: { id: route.params.id } },
   },
   {
