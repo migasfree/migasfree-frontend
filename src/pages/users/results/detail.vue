@@ -16,8 +16,8 @@
     >
       <template #fields>
         <q-card-section>
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md col-sm">
+          <div class="row q-col-gutter-md">
+            <div class="col-12 col-sm-6">
               <q-input
                 v-model="element.name"
                 readonly
@@ -25,7 +25,7 @@
               />
             </div>
 
-            <div class="col-6 col-md col-sm">
+            <div class="col-12 col-sm-6">
               <q-input
                 v-model="element.fullname"
                 readonly
@@ -39,7 +39,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -48,61 +48,46 @@ import ItemDetail from 'components/ui/ItemDetail'
 
 import { appIcon, modelIcon } from 'composables/element'
 
-export default {
-  components: { ItemDetail },
-  setup() {
-    const { $gettext } = useGettext()
+const { $gettext } = useGettext()
 
-    const title = ref($gettext('User'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
+const title = ref($gettext('User'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
 
-    const routes = {
-      list: 'users-list',
-      detail: 'user-detail',
-    }
-    const model = 'users'
+const routes = {
+  list: 'users-list',
+  detail: 'user-detail',
+}
+const model = 'users'
 
-    let element = reactive({ id: 0 })
+const element = reactive({ id: 0 })
 
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Data'),
-        icon: appIcon('data'),
-      },
-      {
-        text: $gettext('Users'),
-        icon: modelIcon(model),
-        to: routes.list,
-      },
-    ])
-
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        name: undefined,
-        fullname: undefined,
-      })
-    }
-
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
-
-    return {
-      breadcrumbs,
-      title,
-      model,
-      routes,
-      element,
-      resetElement,
-      setTitle,
-    }
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
+  {
+    text: $gettext('Data'),
+    icon: appIcon('data'),
+  },
+  {
+    text: $gettext('Users'),
+    icon: modelIcon(model),
+    to: routes.list,
+  },
+])
+
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    name: undefined,
+    fullname: undefined,
+  })
+}
+
+const setTitle = (value) => {
+  windowTitle.value = value
 }
 </script>
