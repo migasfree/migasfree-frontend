@@ -7,11 +7,12 @@
     class="app-user-dropdown"
     content-class="app-user-menu"
     dropdown-icon="expand_more"
+    :aria-label="$gettext('User account menu')"
   >
     <template #label>
       <div class="user-pill">
         <q-avatar size="24px" text-color="white" class="user-avatar-icon">
-          <q-icon name="mdi-account" size="18px" />
+          <q-icon name="mdi-account" size="18px" aria-hidden="true" />
         </q-avatar>
         <span class="username-text gt-xs">{{ user.username }}</span>
       </div>
@@ -21,7 +22,7 @@
       <!-- User Header -->
       <div class="user-header">
         <q-avatar size="48px" class="user-avatar-large">
-          <q-icon :name="modelIcon('users')" size="32px" />
+          <q-icon :name="modelIcon('users')" size="32px" aria-hidden="true" />
         </q-avatar>
         <div class="user-info">
           <div class="user-name">{{ user.username }}</div>
@@ -49,6 +50,7 @@
               :name="appIcon('organization')"
               size="20px"
               class="opacity-70"
+              aria-hidden="true"
             />
           </q-item-section>
           <q-item-section>
@@ -75,7 +77,7 @@
       <q-item class="pref-item">
         <q-tooltip>{{ $gettext('Change App Language') }}</q-tooltip>
         <q-item-section avatar>
-          <q-icon :name="appIcon('language')" size="20px" />
+          <q-icon :name="appIcon('language')" size="20px" aria-hidden="true" />
         </q-item-section>
         <q-item-section>
           <q-select
@@ -95,7 +97,7 @@
       <q-item class="pref-item">
         <q-tooltip>{{ $gettext('Change Domain') }}</q-tooltip>
         <q-item-section avatar>
-          <q-icon :name="modelIcon('domains')" size="20px" />
+          <q-icon :name="modelIcon('domains')" size="20px" aria-hidden="true" />
         </q-item-section>
         <q-item-section>
           <q-select
@@ -113,7 +115,7 @@
       <q-item class="pref-item">
         <q-tooltip>{{ $gettext('Change Scope') }}</q-tooltip>
         <q-item-section avatar>
-          <q-icon :name="modelIcon('scopes')" size="20px" />
+          <q-icon :name="modelIcon('scopes')" size="20px" aria-hidden="true" />
         </q-item-section>
         <q-item-section>
           <q-select
@@ -137,14 +139,19 @@
         :to="{ name: 'user-profile-change-password', params: { id: user.id } }"
       >
         <q-item-section avatar>
-          <q-icon :name="appIcon('password')" size="20px" />
+          <q-icon :name="appIcon('password')" size="20px" aria-hidden="true" />
         </q-item-section>
         <q-item-section>{{ $gettext('Change Password') }}</q-item-section>
       </q-item>
 
       <q-item v-close-popup clickable class="logout-item" @click="logout">
         <q-item-section avatar>
-          <q-icon :name="appIcon('logout')" size="20px" color="negative" />
+          <q-icon
+            :name="appIcon('logout')"
+            size="20px"
+            color="negative"
+            aria-hidden="true"
+          />
         </q-item-section>
         <q-item-section class="text-negative text-weight-bold">
           {{ $gettext('Logout') }}

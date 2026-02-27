@@ -11,7 +11,7 @@
     <template #label>
       <div class="alerts-pill">
         <div class="alerts-pill-main">
-          <q-icon :name="appIcon('alert')" size="18px" />
+          <q-icon :name="appIcon('alert')" size="18px" aria-hidden="true" />
           <span class="alerts-count">{{ totalAlerts }}</span>
         </div>
       </div>
@@ -37,6 +37,7 @@
             <q-icon
               :name="TARGET_ICONS[item.target] || 'mdi-cloud'"
               size="22px"
+              aria-hidden="true"
             />
           </div>
         </q-item-section>

@@ -33,6 +33,7 @@
                 icon="mdi-pencil-outline"
                 size="sm"
                 class="edit-trigger opacity-40 q-ml-xs"
+                :aria-label="$gettext('Edit date')"
                 @click="startDateEdit"
               >
                 <q-tooltip>{{ $gettext('Edit date') }}</q-tooltip>
@@ -45,6 +46,7 @@
                 icon="mdi-delete-outline"
                 size="sm"
                 class="opacity-30 q-ml-xs"
+                :aria-label="$gettext('Clear date')"
                 @click="clearDate"
               >
                 <q-tooltip>{{ $gettext('Clear date') }}</q-tooltip>
@@ -72,6 +74,7 @@
                   size="18px"
                   color="brand-primary"
                   class="cursor-pointer"
+                  aria-hidden="true"
                 >
                   <q-popup-proxy
                     cover

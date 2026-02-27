@@ -93,6 +93,7 @@
                   icon="mdi-cloud-download"
                   size="md"
                   :loading="loading.inventory"
+                  :aria-label="$gettext('Load inventory')"
                   @click="loadSoftwareInventory"
                 />
               </div>
@@ -109,7 +110,7 @@
                   clearable
                 >
                   <template #prepend>
-                    <q-icon name="mdi-magnify" />
+                    <q-icon name="mdi-magnify" aria-hidden="true" />
                   </template>
                 </q-input>
               </div>
@@ -218,6 +219,7 @@
                   icon="mdi-cloud-download"
                   size="md"
                   :loading="loading.history"
+                  :aria-label="$gettext('Load history')"
                   @click="loadSoftwareHistory"
                 />
               </div>
@@ -234,7 +236,7 @@
                   clearable
                 >
                   <template #prepend>
-                    <q-icon name="mdi-magnify" />
+                    <q-icon name="mdi-magnify" aria-hidden="true" />
                   </template>
                 </q-input>
               </div>
@@ -260,6 +262,7 @@
                             name="mdi-calendar-clock"
                             color="grey-7"
                             size="20px"
+                            aria-hidden="true"
                           />
                         </q-item-section>
                         <q-item-section>
@@ -317,6 +320,7 @@
                               "
                               size="20px"
                               class="opacity-80 flex-shrink-0"
+                              aria-hidden="true"
                             />
                             <MigasLink
                               model="packages"

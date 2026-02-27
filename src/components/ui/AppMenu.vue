@@ -11,7 +11,7 @@
       >
         <template v-if="mini" #header>
           <q-item-section avatar>
-            <q-icon :name="item.icon" />
+            <q-icon :name="item.icon" aria-hidden="true" />
           </q-item-section>
           <q-tooltip
             anchor="center right"
@@ -35,7 +35,12 @@
               :data-test="`menu-item-${option.to}`"
             >
               <q-item-section v-if="option.icon" avatar>
-                <q-icon :name="option.icon" size="sm" color="inherit" />
+                <q-icon
+                  :name="option.icon"
+                  size="sm"
+                  color="inherit"
+                  aria-hidden="true"
+                />
               </q-item-section>
               <q-item-section>{{ option.title }}</q-item-section>
 

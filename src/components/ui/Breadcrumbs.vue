@@ -4,7 +4,12 @@
     active-color="brand-primary"
   >
     <template #separator>
-      <q-icon size="1.2em" name="chevron_right" class="breadcrumbs-separator" />
+      <q-icon
+        size="1.2em"
+        name="chevron_right"
+        class="breadcrumbs-separator"
+        aria-hidden="true"
+      />
     </template>
 
     <q-breadcrumbs-el

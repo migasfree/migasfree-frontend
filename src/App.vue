@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { defineComponent, watchEffect } from 'vue'
+import { defineComponent, watch } from 'vue'
 import { useQuasar } from 'quasar'
 import { gettext } from 'boot/gettext'
 
@@ -17,11 +17,15 @@ export default defineComponent({
       gettext.current = $q.cookies.get('language')
     }
 
-    watchEffect(() => {
-      if (gettext.current) {
-        document.documentElement.lang = gettext.current.replace('_', '-')
-      }
-    })
+    watch(
+      () => gettext.current,
+      (val) => {
+        if (val) {
+          document.documentElement.lang = val.replace('_', '-')
+        }
+      },
+      { immediate: true },
+    )
   },
 })
 </script>

@@ -1,7 +1,7 @@
 <template>
   <q-footer class="site-footer">
     <q-toolbar>
-      <q-icon :name="appIcon('copyright')" />
+      <q-icon :name="appIcon('copyright')" aria-hidden="true" />
       &nbsp; {{ MIGASFREE_MIN_YEAR }}-{{ new Date().getFullYear() }}
       <q-btn
         stretch
@@ -25,7 +25,7 @@
       >
       <q-btn-dropdown flat stretch>
         <template #label>
-          <q-icon :name="appIcon('source-code')" />
+          <q-icon :name="appIcon('source-code')" aria-hidden="true" />
 
           <q-tooltip>
             {{ $gettext('Source code') }}
@@ -59,7 +59,14 @@
 
       <q-space />
 
-      <q-btn stretch flat :icon="appIcon('api')" type="a" :href="apiLink">
+      <q-btn
+        stretch
+        flat
+        :icon="appIcon('api')"
+        type="a"
+        :href="apiLink"
+        :aria-label="$gettext('API Rest Info')"
+      >
         <q-tooltip>{{ $gettext('API Rest Info') }}</q-tooltip></q-btn
       >
 
@@ -69,6 +76,7 @@
         :icon="appIcon('doc')"
         type="a"
         href="http://fun-with-migasfree.readthedocs.io/"
+        :aria-label="$gettext('migasfree documentation')"
       >
         <q-tooltip anchor="top middle" self="bottom right">{{
           $gettext('migasfree documentation')

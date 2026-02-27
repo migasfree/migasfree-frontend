@@ -51,7 +51,14 @@
 
         <!-- Actions Toolbar -->
         <div class="row items-center q-gutter-x-xs no-wrap">
-          <q-btn flat round dense icon="mdi-magnify" class="lt-sm" />
+          <q-btn
+            flat
+            round
+            dense
+            icon="mdi-magnify"
+            class="lt-sm"
+            :aria-label="$gettext('Search')"
+          />
 
           <ToggleFullScreen class="gt-sm" />
           <ToggleDarkMode />
@@ -66,6 +73,7 @@
             text-color="white"
             icon="mdi-account-arrow-right"
             :to="{ name: 'login' }"
+            :aria-label="$gettext('Log In')"
           />
         </div>
       </q-toolbar>
@@ -102,7 +110,7 @@
           class="pref-banner glass-panel row items-center q-mx-lg q-mt-md"
         >
           <div class="pref-banner-icon-box flex-center">
-            <q-icon :name="appIcon('warning')" size="20px" />
+            <q-icon :name="appIcon('warning')" size="20px" aria-hidden="true" />
           </div>
 
           <div class="pref-banner-content col q-px-md">
@@ -154,7 +162,12 @@
         :offset="[18, 18]"
         class="fab-scroller"
       >
-        <q-btn fab icon="mdi-chevron-up" color="primary" />
+        <q-btn
+          fab
+          icon="mdi-chevron-up"
+          color="primary"
+          :aria-label="$gettext('Scroll to top')"
+        />
       </q-page-scroller>
 
       <q-page-scroller
@@ -169,6 +182,7 @@
           fab
           icon="mdi-chevron-down"
           color="primary"
+          :aria-label="$gettext('Scroll to bottom')"
         />
       </q-page-scroller>
     </q-page-container>
