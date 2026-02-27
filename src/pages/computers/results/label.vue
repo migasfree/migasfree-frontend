@@ -270,59 +270,72 @@ useMeta(() => ({
 .uppercase {
   text-transform: uppercase;
 }
+</style>
 
-/* Print Styles */
+<!-- Global print overrides (non-scoped to target layout elements) -->
+<style>
 @media print {
-  /* Configuración de página */
   @page {
-    margin: 10mm;
+    margin: 5mm;
     size: auto;
   }
 
-  /* Forzar colores de fondo y eliminar elementos de la UI */
   body {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     background: white !important;
   }
 
-  /* Ocultar TODO menos la etiqueta y su contenido */
-  body > *:not(#q-app),
+  /* Aggressively hide everything outside the printable content */
+  #q-app > .q-layout > .q-header,
+  #q-app > .q-layout > .q-footer,
+  #q-app > .q-layout > .q-drawer,
   .q-header,
   .q-footer,
   .q-drawer,
+  .q-drawer-container,
   .q-notifications,
-  .page-header,
+  .q-page-sticky,
+  .q-page-scroller,
+  .fab-scroller,
+  .site-footer,
   .breadcrumbs-container,
+  .page-header,
+  .pref-banner,
   .q-btn,
-  .opacity-60 {
+  .opacity-60,
+  aside,
+  header,
+  footer {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
   }
 
-  /* Resetear contenedores de Quasar para que no ocupen espacio o bloqueen el renderizado */
+  /* Reset Quasar containers */
   #q-app,
   .q-layout,
   .q-page-container,
-  .q-page,
-  .label-page,
-  .row {
+  .q-page {
     display: block !important;
     padding: 0 !important;
     margin: 0 !important;
-    background: none !important;
+    background: white !important;
     box-shadow: none !important;
     border: none !important;
     min-height: 0 !important;
     height: auto !important;
     width: auto !important;
+    overflow: visible !important;
   }
 
-  /* Estilo de la etiqueta en Impresión (Idéntico a la Web) */
+  /* Target the label specifically */
   #printable-label {
     visibility: visible !important;
     position: relative !important;
     display: block !important;
-    width: 320px !important;
+    width: 310px !important;
     height: auto !important;
     margin: 20px auto !important;
     border: 1px solid #e0e0e0 !important;
@@ -332,6 +345,8 @@ useMeta(() => ({
     overflow: hidden !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    box-sizing: border-box !important;
+    page-break-inside: avoid !important;
   }
 
   #printable-label * {
@@ -340,37 +355,39 @@ useMeta(() => ({
     font-family: 'Dosis', sans-serif !important;
   }
 
-  /* Forzar fondos semánticos */
+  #printable-label .text-h5 {
+    font-size: 1.25rem !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.5px !important;
+  }
+
+  #printable-label .text-body2 {
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+    letter-spacing: normal !important;
+  }
+
   #printable-label .bg-grey-1 {
     background-color: #f5f5f5 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  #printable-label .text-primary {
-    color: #431407 !important;
-  }
-
+  #printable-label .text-primary,
   #printable-label .brand-text {
     color: #431407 !important;
   }
 
-  /* Ajustar los grupos de datos para evitar desalineamiento */
-  .label-body {
-    padding: 24px !important;
+  #printable-label .label-body {
+    padding: 20px !important;
   }
 
-  .label-body .row {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    align-items: baseline !important;
+  #printable-label .data-group {
+    max-width: 100% !important;
+    overflow: hidden !important;
   }
 
-  .tracking-tighter {
-    letter-spacing: -1px !important;
-  }
-
-  .border-top {
+  #printable-label .border-top {
     border-top: 1px dashed #e0e0e0 !important;
   }
 }
