@@ -6,7 +6,7 @@
         {{ title }}
       </h1>
       <q-chip
-        v-if="results !== null"
+        v-if="results > 0"
         size="md"
         color="warning-surface"
         text-color="brand-primary"
