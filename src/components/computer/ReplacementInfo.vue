@@ -106,14 +106,18 @@
 </template>
 
 <script setup>
+import { ref, reactive, watch } from 'vue'
+import { api } from 'boot/axios'
+import { useUiStore } from 'stores/ui'
 import MigasLink from 'components/MigasLink'
 import { useElement } from 'composables/element'
 import { appIcon, modelIcon } from 'composables/element'
 
-defineProps({
+const props = defineProps({
   element: {
     type: Object,
-    required: true,
+    required: false,
+    default: null,
   },
   isLoading: {
     type: Boolean,
@@ -122,7 +126,27 @@ defineProps({
   },
 })
 
+const uiStore = useUiStore()
 const { attributeValue, computerStatus, elementIcon } = useElement()
+
+const mutableElement = ref(null)
+const loading = ref(false)
+
+const loadDevices = async () => {
+  if (!mutableElement.value) return
+
+  loading.value = true
+  try {
+    const { data } = await api.get(
+      `/api/v1/token/computers/${mutableElement.value.id}/devices/`,
+    )
+    mutableElement.value.devices = data
+  } catch (error) {
+    uiStore.notifyError(error)
+  } finally {
+    loading.value = false
+  }
+}
 
 const defaultDevice = (devices) => {
   const defaultLogicalDeviceId = devices.default_logical_device
@@ -138,6 +162,20 @@ const defaultDevice = (devices) => {
 
   return null
 }
+
+watch(
+  () => props.element,
+  (val) => {
+    if (val) {
+      mutableElement.value = reactive({ ...val })
+      loadDevices()
+    } else {
+      mutableElement.value = null
+      loading.value = false
+    }
+  },
+  { immediate: true, deep: true },
+)
 </script>
 
 <style scoped>
