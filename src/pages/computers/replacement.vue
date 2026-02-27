@@ -14,9 +14,9 @@
 
     <div class="row q-py-md justify-around items-center">
       <div class="col-4 col-md-4">
-        <q-card flat>
+        <q-card class="panel">
           <q-card-section>
-            <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('Source') }}</div>
+            <div class="text-h5 q-mt-sm q-mb-md">{{ $gettext('Source') }}</div>
 
             <FilteredMultiSelect
               v-model="source"
@@ -36,8 +36,9 @@
                 <q-chip
                   removable
                   dense
+                  color="transparent"
                   :tabindex="scope.tabindex"
-                  class="q-ma-md"
+                  class="q-ma-md q-pa-none"
                   @remove="scope.removeAtIndex(scope.index)"
                 >
                   <MigasLink
@@ -71,9 +72,9 @@
       </div>
 
       <div class="col-4 col-md-4">
-        <q-card flat>
+        <q-card class="panel">
           <q-card-section>
-            <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('Target') }}</div>
+            <div class="text-h5 q-mt-sm q-mb-md">{{ $gettext('Target') }}</div>
 
             <FilteredMultiSelect
               v-model="target"
@@ -92,8 +93,9 @@
                 <q-chip
                   removable
                   dense
+                  color="transparent"
                   :tabindex="scope.tabindex"
-                  class="q-ma-md"
+                  class="q-ma-md q-pa-none"
                   @remove="scope.removeAtIndex(scope.index)"
                 >
                   <MigasLink
