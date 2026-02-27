@@ -29,7 +29,8 @@
               v-ripple
               clickable
               :to="{ name: option.to }"
-              active-class="my-menu-link"
+              :active="isActiveRoute(option.to)"
+              active-class="menu-item-active"
               class="q-pl-lg menu-subitem"
               :data-test="`menu-item-${option.to}`"
             >
@@ -57,6 +58,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useAuthStore } from 'stores/auth'
 import { appIcon, modelIcon } from 'composables/element'
@@ -68,8 +70,53 @@ defineProps({
   },
 })
 
+const route = useRoute()
 const { $gettext } = useGettext()
 const authStore = useAuthStore()
+
+const isActiveRoute = (optionTo) => {
+  if (!route.name) return false
+
+  // Exact match
+  if (route.name === optionTo) return true
+
+  // Only the primary menu items (dashboard/list) should catch related resource routes
+  const isPrimary =
+    optionTo.endsWith('-list') || optionTo.endsWith('-dashboard')
+  if (!isPrimary) return false
+
+  const routeParts = route.name.split('-')
+  const routeAction = routeParts[routeParts.length - 1]
+
+  // Only highlight for generic resource actions.
+  // Special tools (like -replacement) should have their own menu entries or exact match.
+  const genericActions = [
+    'list',
+    'dashboard',
+    'detail',
+    'add',
+    'edit',
+    'events',
+    'hardware',
+    'simulate',
+    'information',
+    'change-password',
+    'label',
+    'password',
+  ]
+  if (!genericActions.includes(routeAction)) return false
+
+  // Resource base name matching
+  // 'schedules-list' -> 'schedule' / 'schedules'
+  const baseName = optionTo.split('-')[0]
+  const routeBaseName = routeParts[0]
+
+  return (
+    routeBaseName === baseName ||
+    routeBaseName + 's' === baseName ||
+    routeBaseName === baseName + 's'
+  )
+}
 
 const items = computed(() => {
   let extraDevices = []
@@ -328,13 +375,13 @@ const items = computed(() => {
 </script>
 
 <style scoped>
-.my-menu-link {
+.menu-item-active {
   color: var(--brand-primary);
   background: rgba(81, 45, 10, 0.1);
   font-weight: 600;
 }
 
-[data-theme='dark'] .my-menu-link {
+[data-theme='dark'] .menu-item-active {
   color: var(--brand-primary);
   background: rgba(254, 252, 232, 0.15);
 }
