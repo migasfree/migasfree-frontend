@@ -2,13 +2,10 @@
   <q-card class="locations-card panel shadow-2 rounded-borders">
     <q-card-section>
       <!-- Header -->
-      <div class="row items-center justify-between q-mb-md">
-        <div
-          class="text-h6 text-weight-bold"
-          :class="$q.dark.isActive ? 'text-white' : 'text-grey-8'"
-        >
+      <div class="panel-header row items-center justify-between">
+        <h2 class="panel-title">
           {{ $gettext('Locations') }}
-        </div>
+        </h2>
       </div>
 
       <!-- Map Area -->

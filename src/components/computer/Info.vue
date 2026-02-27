@@ -2,10 +2,10 @@
   <q-card class="panel info-card overflow-hidden">
     <q-card-section class="q-pa-md">
       <!-- Header with Title and Creation Date -->
-      <div class="row items-center justify-between q-mb-md">
-        <div class="text-h6 text-weight-bold text-primary">
-          {{ $gettext('General') }}
-        </div>
+      <div class="panel-header row items-center justify-between q-mb-xl">
+        <h2 class="panel-title">
+          {{ $gettext('Computer Information') }}
+        </h2>
         <div class="row items-center no-wrap">
           <DateView
             :value="createdAt"

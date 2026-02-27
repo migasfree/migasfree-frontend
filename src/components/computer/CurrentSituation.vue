@@ -3,10 +3,10 @@
     <q-card-section class="q-pa-lg">
       <!-- Header -->
       <div class="panel-header row items-center justify-between q-mb-xl">
-        <div class="row items-center q-gutter-md">
-          <div class="text-h6 text-weight-bold text-primary">
+        <div class="row items-center">
+          <h2 class="panel-title">
             {{ $gettext('Current Situation') }}
-          </div>
+          </h2>
         </div>
         <div class="flex items-center gap-md">
           <q-badge

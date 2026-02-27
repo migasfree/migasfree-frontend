@@ -2,18 +2,19 @@
   <q-card class="panel software-card overflow-hidden shadow-2 rounded-borders">
     <q-card-section class="q-pa-lg">
       <!-- Header -->
-      <div class="row items-center justify-between q-mb-md">
-        <div class="text-h6 text-weight-bold text-primary">
+      <div class="panel-header row items-center justify-between q-mb-xl">
+        <h2 class="panel-title">
           {{ $gettext('Software') }}
+        </h2>
+        <div class="actions-group row items-center q-gutter-x-md">
+          <q-btn
+            unelevated
+            color="primary"
+            :icon="appIcon('compare')"
+            :label="`${$gettext('Compare')}...`"
+            @click="showingCompare = true"
+          />
         </div>
-
-        <q-btn
-          unelevated
-          color="primary"
-          :icon="appIcon('compare')"
-          :label="`${$gettext('Compare')}...`"
-          @click="showingCompare = true"
-        />
       </div>
 
       <!-- Main Layout: 2 Columns -->
@@ -343,10 +344,10 @@
 
     <q-dialog v-model="showingCompare" persistent>
       <q-card>
-        <q-card-section class="row">
-          <div class="text-h5 q-mt-sm q-mb-xs">
+        <q-card-section class="q-pa-lg">
+          <h2 class="panel-title">
             {{ $gettext('Software Compare') }}
-          </div>
+          </h2>
         </q-card-section>
 
         <q-card-section class="row items-center">
