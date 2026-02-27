@@ -18,9 +18,11 @@
     >
       <template #fields>
         <q-card-section>
-          <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md col-sm">
+          <div class="text-h6 q-px-md q-pt-md text-primary">
+            {{ $gettext('General') }}
+          </div>
+          <div class="row q-pa-md q-col-gutter-md">
+            <div class="col-12 col-sm-6">
               <EntitySelect
                 v-model="element.property_att"
                 :options="stamps"
@@ -34,7 +36,7 @@
               />
             </div>
 
-            <div class="col-6 col-md col-sm">
+            <div class="col-12 col-sm-6">
               <q-input
                 v-model="element.value"
                 :label="$gettext('Value')"
@@ -44,18 +46,20 @@
             </div>
           </div>
 
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col">
+          <div class="row q-px-md q-pb-md">
+            <div class="col-12">
               <q-input
                 v-model="element.description"
                 type="textarea"
+                rows="2"
+                autogrow
                 :label="$gettext('Description')"
               />
             </div>
           </div>
 
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md col-sm">
+          <div class="row q-px-md q-pb-md q-col-gutter-md">
+            <div class="col-12">
               <FilteredMultiSelect
                 v-model="element.computers"
                 :label="$gettext('Computers')"
@@ -71,8 +75,9 @@
                   <q-chip
                     removable
                     dense
+                    color="transparent"
                     :tabindex="scope.tabindex"
-                    class="q-ma-md"
+                    class="q-ma-sm q-pa-none"
                     @remove="scope.removeAtIndex(scope.index)"
                   >
                     <MigasLink
@@ -89,7 +94,7 @@
 
             <div
               v-if="element.id && inflicted.length > 0"
-              class="col-6 col-md col-sm"
+              class="col-12 col-sm-6"
             >
               <OverflowList
                 model="computers"
@@ -101,43 +106,57 @@
         </q-card-section>
 
         <q-card-section>
-          <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('Location') }}</div>
+          <div class="text-h6 q-px-md q-pt-md text-primary">
+            {{ $gettext('Location') }}
+          </div>
 
-          <q-toggle
-            v-model="viewMap"
-            :label="
-              viewMap
-                ? $gettext('Remove Coordinates')
-                : $gettext('Add Coordinates')
-            "
-            :false-value="false"
-            :true-value="true"
-            @update:model-value="updateCoords"
-          />
+          <div class="row q-pa-md items-center">
+            <q-toggle
+              v-model="viewMap"
+              :label="
+                viewMap
+                  ? $gettext('Remove Coordinates')
+                  : $gettext('Add Coordinates')
+              "
+              color="primary"
+              @update:model-value="updateCoords"
+            />
+          </div>
 
           <q-slide-transition>
             <div v-if="viewMap">
-              <div class="row q-pa-md q-gutter-md">
-                <div class="col-6 col-md col-sm">
+              <div class="row q-px-md q-pb-md q-col-gutter-md">
+                <div class="col-12 col-sm-6">
                   <q-input
                     v-model="element.latitude"
+                    outlined
+                    dense
                     :label="$gettext('Latitude')"
                     @update:model-value="updateMapCoords"
                   />
                 </div>
 
-                <div class="col-6 col-md col-sm">
+                <div class="col-12 col-sm-6">
                   <q-input
                     v-model="element.longitude"
+                    outlined
+                    dense
                     :label="$gettext('Longitude')"
                     @update:model-value="updateMapCoords"
                   />
                 </div>
               </div>
 
-              <div class="row q-pa-md q-gutter-md">
-                <div class="col">
-                  <AddLocation v-model="coords" @update-coords="updateCoords" />
+              <div class="row q-px-md q-pb-md">
+                <div class="col-12">
+                  <div
+                    class="map-wrapper rounded-borders overflow-hidden shadow-1"
+                  >
+                    <AddLocation
+                      v-model="coords"
+                      @update-coords="updateCoords"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -148,7 +167,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
@@ -166,190 +185,162 @@ import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon, useElement } from 'composables/element'
 
-export default {
-  components: {
-    EntitySelect,
-    FilteredMultiSelect,
-    ItemDetail,
-    MigasLink,
-    OverflowList,
-    AddLocation,
+const { $gettext } = useGettext()
+const { elementIcon } = useElement()
+const uiStore = useUiStore()
+const route = useRoute()
+
+const title = ref($gettext('Tag'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'tags-list',
+  add: 'tag-add',
+  detail: 'tag-detail',
+}
+const model = 'tags'
+
+const element = reactive({ id: 0, computers: [] })
+
+const stamps = ref([])
+const inflicted = ref([])
+
+const viewMap = ref(false)
+const coords = ref([0, 0])
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const { $gettext } = useGettext()
-    const { elementIcon } = useElement()
-    const uiStore = useUiStore()
-    const route = useRoute()
+  {
+    text: $gettext('Data'),
+    icon: appIcon('data'),
+  },
+  {
+    text: $gettext('Tags'),
+    icon: modelIcon(model),
+    to: 'tags-dashboard',
+  },
+])
 
-    const title = ref($gettext('Tag'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
+const isValid = computed(() => {
+  return (
+    element.value !== undefined &&
+    element.value.trim() !== '' &&
+    Object.hasOwn(element, 'property_att')
+  )
+})
 
-    const routes = {
-      list: 'tags-list',
-      add: 'tag-add',
-      detail: 'tag-detail',
-    }
-    const model = 'tags'
-
-    let element = reactive({ id: 0, computers: [] })
-
-    const stamps = ref([])
-    const inflicted = ref([])
-
-    const viewMap = ref(false)
-    const coords = ref([0, 0])
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Data'),
-        icon: appIcon('data'),
-      },
-      {
-        text: $gettext('Tags'),
-        icon: modelIcon(model),
-        to: 'tags-dashboard',
-      },
+const loadRelated = async () => {
+  try {
+    const [stampsResponse, computersResponse] = await Promise.all([
+      api.get('/api/v1/token/stamps/'),
+      element.id
+        ? api.get(`/api/v1/token/tags/${element.id}/computers/`)
+        : Promise.resolve({ data: { computers: [], inflicted: [] } }),
     ])
 
-    const isValid = computed(() => {
-      return (
-        element.value !== undefined &&
-        element.value.trim() !== '' &&
-        Object.hasOwn(element, 'property_att')
-      )
+    stamps.value = stampsResponse.data.results
+
+    if (element.id) {
+      element.computers = computersResponse.data.computers
+      inflicted.value = computersResponse.data.inflicted
+    }
+
+    if (route.query.property_att)
+      element.property_att =
+        stamps.value.find(
+          (item) => item.id === Number(route.query.property_att),
+        ) || null
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
+
+const elementData = () => {
+  return {
+    property_att: element.property_att.id,
+    value: element.value,
+    description: element.description,
+    latitude: element.latitude,
+    longitude: element.longitude,
+  }
+}
+
+const setRelated = () => {
+  if (element.latitude !== null) {
+    coords.value = [element.latitude, element.longitude]
+    viewMap.value = true
+  } else if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      coords.value = [position.coords.latitude, position.coords.longitude]
     })
+  }
+}
 
-    const loadRelated = async () => {
-      try {
-        const [stampsResponse, computersResponse] = await Promise.all([
-          api.get('/api/v1/token/stamps/'),
-          element.id
-            ? api.get(`/api/v1/token/tags/${element.id}/computers/`)
-            : Promise.resolve({ data: { computers: [], inflicted: [] } }),
-        ])
+const updateRelated = async () => {
+  const computers = element.computers?.map((item) => item.id) ?? []
+  try {
+    await api.patch(`/api/v1/token/${model}/${element.id}/computers/`, {
+      computers,
+    })
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
 
-        stamps.value = stampsResponse.data.results
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    property_att: null,
+    value: undefined,
+    description: undefined,
+    computers: [],
+    latitude: null,
+    longitude: null,
+  })
+}
 
-        if (element.id) {
-          element.computers = computersResponse.data.computers
-          inflicted.value = computersResponse.data.inflicted
-        }
+const resetRelated = () => {
+  viewMap.value = false
+}
 
-        if (route.query.property_att)
-          element.property_att =
-            stamps.value.find(
-              (item) => item.id === Number(route.query.property_att),
-            ) || null
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
+const setTitle = (value) => {
+  windowTitle.value = value
+}
 
-    const elementData = () => {
-      return {
-        property_att: element.property_att.id,
-        value: element.value,
-        description: element.description,
-        latitude: element.latitude,
-        longitude: element.longitude,
-      }
-    }
+const updateCoords = (params) => {
+  if (viewMap.value) {
+    element.latitude = params[0]
+    element.longitude = params[1]
+  } else {
+    element.latitude = null
+    element.longitude = null
+  }
+}
 
-    const setRelated = () => {
-      if (element.latitude !== null) {
-        coords.value = [element.latitude, element.longitude]
-        viewMap.value = true
-      } else if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          coords.value = [position.coords.latitude, position.coords.longitude]
-        })
-      }
-    }
+const updateMapCoords = () => {
+  coords.value = [element.latitude, element.longitude]
+}
 
-    const updateRelated = async () => {
-      const computers = element.computers?.map((item) => item.id) ?? []
-      try {
-        await api.patch(`/api/v1/token/${model}/${element.id}/computers/`, {
-          computers,
-        })
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
+const filterComputers = async (val) => {
+  const { data } = await api.get('/api/v1/token/computers/', {
+    params: { search: val.toLowerCase() },
+  })
 
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        property_att: null,
-        value: undefined,
-        description: undefined,
-        computers: [],
-        latitude: null,
-        longitude: null,
-      })
-    }
-
-    const resetRelated = () => {
-      viewMap.value = false
-    }
-
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
-
-    const updateCoords = (params) => {
-      if (viewMap.value) {
-        element.latitude = params[0]
-        element.longitude = params[1]
-      } else {
-        element.latitude = null
-        element.longitude = null
-      }
-    }
-
-    const updateMapCoords = () => {
-      coords.value = [element.latitude, element.longitude]
-    }
-
-    const filterComputers = async (val) => {
-      const { data } = await api.get('/api/v1/token/computers/', {
-        params: { search: val.toLowerCase() },
-      })
-
-      return data.results
-    }
-
-    return {
-      breadcrumbs,
-      title,
-      model,
-      routes,
-      element,
-      stamps,
-      inflicted,
-      viewMap,
-      coords,
-      isValid,
-      elementData,
-      loadRelated,
-      setRelated,
-      updateRelated,
-      resetElement,
-      resetRelated,
-      setTitle,
-      updateCoords,
-      updateMapCoords,
-      filterComputers,
-      elementIcon,
-      appIcon,
-      modelIcon,
-    }
-  },
+  return data.results
 }
 </script>
+
+<style scoped>
+.map-wrapper {
+  height: 300px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+[data-theme='dark'] .map-wrapper {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+</style>
