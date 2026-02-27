@@ -2,10 +2,11 @@
   <q-card class="panel info-card overflow-hidden">
     <q-card-section class="q-pa-md">
       <!-- Header with Title and Creation Date -->
-      <div class="panel-header row items-center justify-between q-mb-xl">
+      <div class="panel-header row items-center justify-between q-mb-md">
         <h2 class="panel-title">
-          {{ $gettext('Computer Information') }}
+          {{ $gettext('General') }}
         </h2>
+
         <div class="row items-center no-wrap">
           <DateView
             :value="createdAt"
@@ -16,18 +17,8 @@
       </div>
 
       <!-- Hero Section: Name & FQDN -->
-      <div class="glass-panel q-pa-lg q-mb-lg">
+      <div class="glass-panel q-pa-md q-mb-md">
         <div class="row items-center no-wrap full-width">
-          <!-- Avatar Icon -->
-          <div class="hero-icon-section flex-center q-mr-md gt-xs">
-            <q-icon
-              name="mdi-laptop-account"
-              size="20px"
-              color="brand-primary"
-              aria-hidden="true"
-            />
-          </div>
-
           <div class="col overflow-hidden">
             <!-- Edit Mode -->
             <div
@@ -87,7 +78,7 @@
               </q-btn>
               <CopyToClipboard
                 :content="name"
-                size="sm"
+                size="md"
                 flat
                 class="opacity-40"
               />
@@ -104,13 +95,11 @@
               <TextTooltip
                 :text="fqdn"
                 text-class="text-subtitle1 opacity-70"
+                class="fqdn-text-tooltip"
               />
-              <q-tooltip>{{
-                $gettext('full qualified domain name')
-              }}</q-tooltip>
               <CopyToClipboard
                 :content="fqdn"
-                size="xs"
+                size="sm"
                 flat
                 class="q-ml-xs opacity-30"
               />
@@ -177,7 +166,6 @@
                   <div class="net-value-row q-mt-xs">
                     <q-icon
                       name="mdi-ip-network"
-                      color="info"
                       size="18px"
                       aria-hidden="true"
                     />
@@ -186,7 +174,7 @@
                     }}</span>
                     <CopyToClipboard
                       :content="ipAddress"
-                      size="xs"
+                      size="sm"
                       flat
                       class="opacity-40"
                     />
@@ -212,7 +200,7 @@
                     }}</span>
                     <CopyToClipboard
                       :content="forwardedIpAddress"
-                      size="xs"
+                      size="sm"
                       flat
                       class="opacity-40"
                     />
@@ -382,15 +370,6 @@ export default {
   margin: auto;
 }
 
-.hero-icon-section {
-  width: 44px;
-  height: 44px;
-  background: var(--warning-surface);
-  border-radius: 12px;
-  flex-shrink: 0;
-  display: flex;
-}
-
 .net-value-row {
   display: flex;
   align-items: center;
@@ -400,7 +379,6 @@ export default {
 /* Action buttons */
 .action-btn {
   background: rgba(var(--brand-primary-rgb), 0.05);
-  border-radius: 12px;
   padding: 8px 20px;
   font-weight: 600;
   transition: all 0.2s;
@@ -433,5 +411,9 @@ export default {
 
 [data-theme='dark'] .name-input :deep(.q-field__native) {
   color: var(--brand-tertiary);
+}
+
+.fqdn-text-tooltip {
+  flex: 0 1 auto;
 }
 </style>

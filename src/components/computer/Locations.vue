@@ -2,7 +2,7 @@
   <q-card class="locations-card panel shadow-2 rounded-borders">
     <q-card-section>
       <!-- Header -->
-      <div class="panel-header row items-center justify-between q-mb-xl">
+      <div class="panel-header row items-center justify-between q-mb-md">
         <h2 class="panel-title">
           {{ $gettext('Locations') }}
         </h2>

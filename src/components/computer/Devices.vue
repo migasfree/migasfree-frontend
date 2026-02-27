@@ -2,7 +2,7 @@
   <q-card class="panel devices-card overflow-hidden">
     <q-card-section class="q-pa-lg">
       <!-- Header -->
-      <div class="panel-header row items-center justify-between q-mb-xl">
+      <div class="panel-header row items-center justify-between q-mb-md">
         <h2 class="panel-title">
           {{ $gettext('Devices') }}
         </h2>

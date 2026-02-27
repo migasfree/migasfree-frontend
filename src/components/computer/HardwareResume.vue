@@ -2,7 +2,7 @@
   <q-card class="panel hardware-card overflow-hidden">
     <q-card-section class="q-pa-md">
       <!-- Header with Title and Capture Date -->
-      <div class="panel-header row items-center justify-between q-mb-xl">
+      <div class="panel-header row items-center justify-between q-mb-md">
         <h2 class="panel-title">
           {{ $gettext('Hardware') }}
         </h2>
@@ -128,10 +128,11 @@
           <div class="hero-icon-section flex-center q-mr-md gt-xs">
             <q-icon
               :name="productIcon(productSystem)"
-              size="28px"
+              size="64px"
               color="brand-primary"
-              aria-hidden="true"
-            />
+            >
+              <q-tooltip>{{ productSystem }}</q-tooltip>
+            </q-icon>
           </div>
 
           <div class="col overflow-hidden">
@@ -164,14 +165,8 @@
             <!-- Subtitle: productSystem + UUID -->
             <div class="row items-center no-wrap q-mt-xs q-gutter-x-md">
               <div
-                v-if="productSystem"
-                class="text-body2 opacity-50 text-weight-bold"
-              >
-                {{ productSystem }}
-              </div>
-              <div
                 v-if="uuid"
-                class="row items-center no-wrap text-mono opacity-40 uuid-metrics"
+                class="row items-center no-wrap text-mono uuid-metrics"
               >
                 <q-icon
                   name="mdi-identifier"
@@ -182,7 +177,7 @@
                 <span class="ellipsis uuid-text">{{ uuid }}</span>
                 <CopyToClipboard
                   :content="uuid"
-                  size="xs"
+                  size="sm"
                   flat
                   class="q-ml-xs"
                 />

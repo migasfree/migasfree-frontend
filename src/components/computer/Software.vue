@@ -2,7 +2,7 @@
   <q-card class="panel software-card overflow-hidden shadow-2 rounded-borders">
     <q-card-section class="q-pa-lg">
       <!-- Header -->
-      <div class="panel-header row items-center justify-between q-mb-xl">
+      <div class="panel-header row items-center justify-between q-mb-md">
         <h2 class="panel-title">
           {{ $gettext('Software') }}
         </h2>
