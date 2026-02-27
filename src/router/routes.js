@@ -610,6 +610,11 @@ const routes = [
         name: 'computers-software-compare',
         component: () => import('pages/computers/softwareCompare'),
       },
+      {
+        path: '/computers/results/:id/label',
+        name: 'computer-label',
+        component: () => import('pages/computers/results/label.vue'),
+      },
 
       {
         path: '/packages-history',
@@ -807,11 +812,6 @@ const routes = [
     component: () => import('layouts/Empty.vue'),
     children: [
       { path: '', name: 'login', component: () => import('pages/Login.vue') },
-      {
-        path: '/computers/results/:id/label',
-        name: 'computer-label',
-        component: () => import('pages/computers/results/label.vue'),
-      },
     ],
   },
 

@@ -240,7 +240,7 @@
       />
 
       <q-btn
-        icon="mdi-card-account-details-outline"
+        :icon="appIcon('identification')"
         flat
         no-caps
         class="action-btn"

@@ -65,6 +65,7 @@ const APP_ICON = {
   install: 'mdi-package-down',
   uninstall: 'mdi-package-up',
   logout: 'mdi-power-standby',
+  identification: 'mdi-card-account-details-outline',
 }
 
 const MODEL_ICON = {
