@@ -1,5 +1,6 @@
 <template>
   <q-input
+    v-bind="$attrs"
     v-model="monthPicked"
     readonly
     input-class="cursor-pointer"
@@ -31,63 +32,54 @@
   </q-input>
 </template>
 
-<script>
+<script setup>
 import { ref, computed } from 'vue'
-
 import { MIGASFREE_MIN_YEAR } from 'config/app.conf'
 import useDate from 'composables/date'
 
-export default {
+defineOptions({
   name: 'MonthInput',
-  props: {
-    modelValue: {
-      type: String,
-      required: false,
-      default: '',
-    },
-    label: {
-      type: String,
-      required: true,
-    },
+  inheritAttrs: false,
+})
+
+const props = defineProps({
+  modelValue: {
+    type: String,
+    required: false,
+    default: '',
   },
-  emits: ['update:model-value'],
-  setup(props, { emit }) {
-    const { localeDate } = useDate()
-
-    const monthPicker = ref(null)
-
-    const monthPicked = computed({
-      get: () => props.modelValue,
-      set: (val) => {
-        emit('update:model-value', val)
-      },
-    })
-
-    const minYearMonth = computed(() => {
-      const date = new Date(MIGASFREE_MIN_YEAR, 1)
-      return date.toISOString().slice(0, 7).replace('-', '/')
-    })
-
-    const maxYearMonth = computed(() => {
-      const date = new Date()
-      return date.toISOString().slice(0, 7).replace('-', '/')
-    })
-
-    const checkValue = (val, reason) => {
-      if (reason === 'month') {
-        monthPicker.value.hide()
-        emit('update:model-value', val)
-      }
-    }
-
-    return {
-      monthPicked,
-      monthPicker,
-      minYearMonth,
-      maxYearMonth,
-      localeDate,
-      checkValue,
-    }
+  label: {
+    type: String,
+    required: true,
   },
+})
+
+const emit = defineEmits(['update:model-value'])
+
+const { localeDate } = useDate()
+const monthPicker = ref(null)
+
+const monthPicked = computed({
+  get: () => props.modelValue,
+  set: (val) => {
+    emit('update:model-value', val)
+  },
+})
+
+const minYearMonth = computed(() => {
+  const date = new Date(MIGASFREE_MIN_YEAR, 1)
+  return date.toISOString().slice(0, 7).replace('-', '/')
+})
+
+const maxYearMonth = computed(() => {
+  const date = new Date()
+  return date.toISOString().slice(0, 7).replace('-', '/')
+})
+
+const checkValue = (val, reason) => {
+  if (reason === 'month') {
+    monthPicker.value.hide()
+    emit('update:model-value', val)
+  }
 }
 </script>

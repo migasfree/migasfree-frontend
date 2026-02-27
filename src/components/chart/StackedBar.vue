@@ -68,39 +68,48 @@
       <!-- Date Selectors -->
       <div
         v-if="monthSelector || daySelector"
-        class="row justify-center q-pa-sm"
+        class="row justify-center items-center q-pa-sm q-gutter-sm"
       >
         <MonthInput
           v-if="monthSelector"
           v-model="begin"
-          class="q-ma-sm"
+          outlined
+          dense
+          hide-bottom-space
           :label="$gettext('Initial Month')"
         />
 
         <MonthInput
           v-if="monthSelector"
           v-model="end"
-          class="q-ma-sm"
+          outlined
+          dense
+          hide-bottom-space
           :label="$gettext('Final Month')"
         />
 
         <DayInput
           v-if="daySelector"
           v-model="begin"
-          class="q-ma-sm"
+          outlined
+          dense
+          hide-bottom-space
           :label="$gettext('Initial Day')"
         />
 
         <DayInput
           v-if="daySelector"
           v-model="end"
-          class="q-ma-sm"
+          outlined
+          dense
+          hide-bottom-space
           :label="$gettext('Final Day')"
         />
 
         <q-btn
+          color="primary"
+          class="update-btn"
           :icon="appIcon('update')"
-          class="q-ma-sm"
           :disabled="loading"
           :loading="loading"
           :label="$gettext('Update')"
@@ -519,5 +528,9 @@ watch(isDark, (val) => {
 
 .data-dialog-card {
   min-width: 500px;
+}
+
+.update-btn {
+  height: 40px;
 }
 </style>

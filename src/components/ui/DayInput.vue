@@ -1,8 +1,8 @@
 <template>
   <q-input
+    v-bind="$attrs"
     v-model="dayPicked"
     :readonly="readonly"
-    :dense="dense"
     clearable
     input-class="cursor-pointer"
     :label="label"
@@ -34,62 +34,49 @@
   </q-input>
 </template>
 
-<script>
+<script setup>
 import { ref, computed } from 'vue'
-
 import useDate from 'composables/date'
 
-export default {
+defineOptions({
   name: 'DayInput',
-  props: {
-    modelValue: {
-      type: String,
-      required: false,
-      default: '',
-    },
-    label: {
-      type: String,
-      required: false,
-      default: undefined,
-    },
-    readonly: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-    dense: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
+  inheritAttrs: false,
+})
+
+const props = defineProps({
+  modelValue: {
+    type: String,
+    required: false,
+    default: '',
   },
-  emits: ['update:model-value'],
-  setup(props, { emit }) {
-    const { localeDate, diffForHumans } = useDate()
-
-    const dayPicker = ref(null)
-
-    const dayPicked = computed({
-      get: () => props.modelValue,
-      set: (val) => {
-        emit('update:model-value', val)
-      },
-    })
-
-    const updateValue = (val, reason) => {
-      if (reason === 'add-day') {
-        dayPicker.value.hide()
-        emit('update:model-value', val)
-      }
-    }
-
-    return {
-      dayPicked,
-      dayPicker,
-      localeDate,
-      diffForHumans,
-      updateValue,
-    }
+  label: {
+    type: String,
+    required: false,
+    default: undefined,
   },
+  readonly: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
+})
+
+const emit = defineEmits(['update:model-value'])
+
+const { localeDate, diffForHumans } = useDate()
+const dayPicker = ref(null)
+
+const dayPicked = computed({
+  get: () => props.modelValue,
+  set: (val) => {
+    emit('update:model-value', val)
+  },
+})
+
+const updateValue = (val, reason) => {
+  if (reason === 'add-day') {
+    dayPicker.value.hide()
+    emit('update:model-value', val)
+  }
 }
 </script>

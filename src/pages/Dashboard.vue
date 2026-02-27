@@ -68,13 +68,16 @@
               @get-link="goTo"
             >
               <template #selector>
-                <q-card-section class="row justify-center q-py-none">
+                <q-card-section
+                  class="row justify-center items-center q-py-sm q-gutter-sm"
+                >
                   <q-input
                     v-model.number="lastHours"
                     type="number"
-                    class="q-ma-sm"
                     outlined
                     dense
+                    hide-bottom-space
+                    class="hours-input"
                     :label="$gettext('Last Hours')"
                     min="1"
                     max="720"
@@ -84,11 +87,16 @@
                         val <= 720 || $gettext('Max 720 hours (30 days)'),
                     ]"
                     @keydown.enter="updateEventsHistory"
-                  />
+                  >
+                    <template #prepend>
+                      <q-icon name="mdi-clock-outline" />
+                    </template>
+                  </q-input>
 
                   <q-btn
+                    color="primary"
+                    class="update-btn"
                     :icon="appIcon('update')"
-                    class="q-ma-sm"
                     :disabled="loading"
                     :loading="loading"
                     :label="$gettext('Update')"
@@ -126,22 +134,29 @@
           @get-link="goTo"
         >
           <template #selector>
-            <q-card-section class="row justify-center q-py-none">
+            <q-card-section
+              class="row justify-center items-center q-py-none q-gutter-sm"
+            >
               <MonthInput
                 v-model="begin"
-                class="q-ma-sm"
+                outlined
+                dense
+                hide-bottom-space
                 :label="$gettext('Initial Month')"
               />
 
               <MonthInput
                 v-model="end"
-                class="q-ma-sm"
+                outlined
+                dense
+                hide-bottom-space
                 :label="$gettext('Final Month')"
               />
 
               <q-btn
+                color="primary"
+                class="update-btn"
                 :icon="appIcon('update')"
-                class="q-ma-sm"
                 :disabled="loadingMonthlySyncs"
                 :loading="loadingMonthlySyncs"
                 :label="$gettext('Update')"
@@ -442,3 +457,13 @@ export default defineComponent({
   },
 })
 </script>
+
+<style scoped>
+.hours-input {
+  width: 180px;
+}
+
+.update-btn {
+  height: 40px;
+}
+</style>
