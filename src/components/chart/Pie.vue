@@ -1,17 +1,12 @@
 <template>
   <div class="pie-chart-wrapper panel column">
     <!-- Header Section -->
-    <div
-      class="header-row row items-center justify-between q-gutter-x-sm q-gutter-y-xs q-mb-md"
-    >
+    <div class="panel-header row items-center justify-between no-wrap q-mb-md">
       <!-- Left side: Title + Total Badge -->
       <div class="title-group row items-center no-wrap col-grow">
-        <div
-          class="text-h6 text-primary text-weight-bold ellipsis"
-          :title="title"
-        >
+        <h2 class="panel-title ellipsis" :title="title">
           {{ title }}
-        </div>
+        </h2>
         <q-btn
           v-if="data.total > 0"
           unelevated

@@ -370,6 +370,8 @@ h2 {
 
 .panel-title {
   margin: 0;
+  padding: 0;
+  border: none;
   font-size: 1.1rem;
   font-weight: 700;
   white-space: nowrap;
