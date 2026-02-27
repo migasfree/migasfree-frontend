@@ -32,7 +32,12 @@
       </template>
 
       <template #cell-pms_status_ok="{ props }">
-        <BooleanView :value="props.row.pms_status_ok" />
+        <BooleanView
+          :value="props.row.pms_status_ok"
+          :label="
+            props.row.pms_status_ok ? $gettext('Ok') : $gettext('Incorrect')
+          "
+        />
       </template>
     </TableResults>
   </q-page>
