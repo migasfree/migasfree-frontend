@@ -9,15 +9,31 @@
       :model="model"
       :more-filters="moreFilters"
     >
-      <template #top>
-        <q-btn
-          :icon="appIcon('update')"
-          class="q-my-md"
-          :loading="loading"
-          :disable="loading"
-          :label="$gettext('Update')"
-          @click="updateItems"
-        />
+      <template #header-actions>
+        <div class="row no-wrap items-center gap-md">
+          <q-toggle
+            v-model="isAutoRefreshActive"
+            :icon="isAutoRefreshActive ? 'mdi-autorenew' : 'mdi-sync-off'"
+            color="primary"
+            class="text-weight-bold"
+            :label="isAutoRefreshActive ? '' : $gettext('Auto-refresh')"
+            @update:model-value="handleAutoRefreshChange"
+          >
+            <q-tooltip class="glass-tooltip">
+              {{ $gettext('Automatically refresh list') }}
+            </q-tooltip>
+          </q-toggle>
+
+          <q-badge
+            v-if="isAutoRefreshActive"
+            outline
+            color="primary"
+            class="q-pa-sm"
+          >
+            <q-icon name="mdi-timer-outline" class="q-mr-xs" />
+            {{ interpolate($gettext('Refresh in %{n}s'), { n: countdown }) }}
+          </q-badge>
+        </div>
       </template>
 
       <template #cell-user_name="{ props }">
@@ -32,7 +48,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useListConfig } from 'composables/listConfig'
 
@@ -46,7 +62,7 @@ import MigasLink from 'components/MigasLink'
 import { appIcon } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'
 
-const { $gettext } = useGettext()
+const { $gettext, interpolate } = useGettext()
 const uiStore = useUiStore()
 
 const tableResults = ref(null)
@@ -136,10 +152,51 @@ const loadFilters = async () => {
 }
 
 const updateItems = async () => {
-  await tableResults.value.loadItems()
+  if (tableResults.value) {
+    await tableResults.value.loadItems()
+  }
+}
+
+// Auto-refresh logic
+const isAutoRefreshActive = ref(false)
+const countdown = ref(10)
+let refreshInterval = null
+
+const startAutoRefresh = () => {
+  if (refreshInterval) return
+  countdown.value = 10
+  refreshInterval = setInterval(async () => {
+    countdown.value--
+    if (countdown.value <= 0) {
+      if (!loading.value) {
+        await updateItems()
+      }
+      countdown.value = 10
+    }
+  }, 1000)
+}
+
+const stopAutoRefresh = () => {
+  if (refreshInterval) {
+    clearInterval(refreshInterval)
+    refreshInterval = null
+  }
+}
+
+const handleAutoRefreshChange = (value) => {
+  if (value) {
+    startAutoRefresh()
+  } else {
+    stopAutoRefresh()
+    countdown.value = 10
+  }
 }
 
 onMounted(async () => {
   await loadFilters()
+})
+
+onBeforeUnmount(() => {
+  stopAutoRefresh()
 })
 </script>

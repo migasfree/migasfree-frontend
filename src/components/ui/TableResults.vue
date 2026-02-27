@@ -6,7 +6,11 @@
     :add-route="addRoute"
     :is-loading-export="isLoadingExport"
     @export-all="exportAll"
-  />
+  >
+    <template #actions>
+      <slot name="header-actions" />
+    </template>
+  </Header>
 
   <slot name="top" />
 
