@@ -465,45 +465,11 @@ export default {
   background: rgba(var(--brand-primary-rgb), 0.1);
 }
 
-.section-label {
-  font-size: 0.75rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  opacity: 0.5;
-  margin-bottom: 12px;
-}
-
-.data-field-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  opacity: 0.5;
-}
-
 .spec-value-row {
   display: flex;
   align-items: center;
   gap: 8px;
   min-width: 0;
-}
-
-.solid-panel {
-  background: rgba(var(--brand-primary-rgb), 0.04);
-  border: 1px solid rgba(var(--brand-primary-rgb), 0.08);
-  border-radius: 16px;
-  padding: 16px;
-}
-
-[data-theme='dark'] .solid-panel {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.06);
-}
-
-.text-mono {
-  font-family: 'Fira Code', 'JetBrains Mono', monospace;
-  font-size: 0.95rem;
 }
 
 /* Date edit micro-interaction */

@@ -2,7 +2,7 @@
   <q-card class="panel sync-card overflow-hidden shadow-2 rounded-borders">
     <q-card-section class="q-pa-lg">
       <!-- Header with User Context & Alert -->
-      <div class="panel-header row items-center justify-between q-mb-md">
+      <div class="panel-header row items-center justify-between q-mb-xl">
         <h2 class="panel-title">
           {{ $gettext('Synchronization') }}
         </h2>
@@ -39,11 +39,11 @@
 
       <template v-else>
         <!-- Flow Grid: Vertical Timeline -->
-        <div class="row q-col-gutter-lg q-mb-xl">
+        <div class="row q-col-gutter-lg q-mb-sm">
           <!-- Cycle Flow -->
           <div class="col-12">
             <div
-              class="glass-panel q-pa-xl rounded-xl h-full flex column justify-center"
+              class="glass-panel q-px-xl rounded-xl h-full flex column justify-center"
               :class="{ 'theme-warning-border': isEndBeforeStart }"
             >
               <div class="chrono-vertical">

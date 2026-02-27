@@ -130,7 +130,8 @@ h1,
   margin-bottom: 1rem;
 }
 
-h2 {
+.docs-content h2,
+.text-h2 {
   font-size: var(--text-xl);
   border-bottom: 2px solid var(--border);
   padding-bottom: 0.5rem;
@@ -153,6 +154,16 @@ h2 {
 
 [data-theme='dark'] ::-webkit-scrollbar-thumb {
   background: var(--neutral-700);
+}
+
+/* Focus Accessibility */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--brand-primary-rgb), 0.3) !important;
+}
+
+[data-theme='dark'] :focus-visible {
+  box-shadow: 0 0 0 3px rgba(var(--brand-tertiary-rgb, 254, 218, 0), 0.4) !important;
 }
 
 /* =========================================
@@ -310,8 +321,7 @@ h2 {
 
 /* Global Hover Effects */
 .q-card:not(.no-hover):hover,
-.panel:not(.no-hover):hover,
-.pie-chart-wrapper:not(.no-hover):hover {
+.panel:not(.no-hover):hover {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
   border-color: var(--brand-primary) !important;
 }
@@ -383,18 +393,41 @@ h2 {
 }
 
 /* Data Panels */
+.solid-panel,
+.data-panel.solid-panel {
+  background: rgba(var(--brand-primary-rgb), 0.04);
+  border: 1px solid rgba(var(--brand-primary-rgb), 0.08);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+[data-theme='dark'] .solid-panel,
+[data-theme='dark'] .data-panel.solid-panel {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
 .data-panel {
   padding: 1rem;
   border-radius: calc(var(--radius) - 4px);
   margin-bottom: 1rem;
 }
 
-.data-panel.solid-panel {
-  background: var(--neutral-100);
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+  margin-bottom: 12px;
 }
 
-[data-theme='dark'] .data-panel.solid-panel {
-  background: rgba(255, 255, 255, 0.03);
+.data-field-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.5;
 }
 
 /* Tech Data */
@@ -655,7 +688,7 @@ h2 {
 }
 
 .q-chip.bg-secondary {
-  color: #ffffff !important;
+  color: var(--brand-on-primary) !important;
 }
 
 .q-chip--outline.text-primary {
@@ -801,7 +834,6 @@ h2 {
   background: #ffffff !important;
   border-color: var(--brand-primary) !important;
   box-shadow: 0 4px 12px rgba(var(--brand-primary-rgb), 0.1) !important;
-  outline: none !important;
 }
 
 /* Checkboxes */
@@ -898,6 +930,15 @@ h2 {
    ========================================= */
 
 /* Semantic Text Colors */
+.text-mono,
+.font-mono {
+  font-family: var(--font-mono) !important;
+}
+
+.text-mono {
+  font-size: 0.95rem;
+}
+
 .text-success {
   color: var(--text-success) !important;
 }

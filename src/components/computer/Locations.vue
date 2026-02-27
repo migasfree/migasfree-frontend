@@ -2,7 +2,7 @@
   <q-card class="locations-card panel shadow-2 rounded-borders">
     <q-card-section>
       <!-- Header -->
-      <div class="panel-header row items-center justify-between">
+      <div class="panel-header row items-center justify-between q-mb-xl">
         <h2 class="panel-title">
           {{ $gettext('Locations') }}
         </h2>
@@ -340,10 +340,6 @@ export default {
 .map-action-btn:hover {
   transform: translateY(-2px);
   border-color: var(--brand-primary);
-}
-
-.font-mono {
-  font-family: 'Fira Code', 'JetBrains Mono', monospace;
 }
 
 .pointer-none {
