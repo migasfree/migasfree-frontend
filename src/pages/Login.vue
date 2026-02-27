@@ -31,6 +31,7 @@
                 :name="appIcon('organization')"
                 size="18px"
                 class="q-mr-xs"
+                aria-hidden="true"
               />
               <span>{{ organization }}</span>
             </div>
@@ -50,7 +51,7 @@
               :rules="[(val) => !!val || $gettext('* Required')]"
             >
               <template #prepend>
-                <q-icon :name="modelIcon('users')" />
+                <q-icon :name="modelIcon('users')" aria-hidden="true" />
               </template>
             </q-input>
           </div>
@@ -78,7 +79,7 @@
               ]"
             >
               <template #prepend>
-                <q-icon name="mdi-lock-outline" />
+                <q-icon name="mdi-lock-outline" aria-hidden="true" />
               </template>
               <template #append>
                 <q-icon
@@ -125,7 +126,7 @@
               class="opacity-80 q-px-sm"
             >
               <div class="row items-center no-wrap">
-                <q-icon :name="appIcon('language')" />
+                <q-icon :name="appIcon('language')" aria-hidden="true" />
                 <q-icon name="mdi-chevron-up" size="18px" class="q-ml-xs" />
               </div>
               <q-menu
@@ -146,7 +147,12 @@
                       >{{ language }}</q-item-section
                     >
                     <q-item-section v-if="key === $language.current" side>
-                      <q-icon name="mdi-check" color="primary" size="xs" />
+                      <q-icon
+                        name="mdi-check"
+                        color="primary"
+                        size="xs"
+                        aria-hidden="true"
+                      />
                     </q-item-section>
                   </q-item>
                 </q-list>
@@ -165,7 +171,7 @@
     <div
       class="absolute-bottom text-center q-pb-md footer-credits row items-center justify-center"
     >
-      <q-icon :name="appIcon('copyright')" size="16px" />
+      <q-icon :name="appIcon('copyright')" size="16px" aria-hidden="true" />
       <span class="text-weight-medium q-ml-xs q-mr-sm">
         {{ MIGASFREE_MIN_YEAR }}-{{ new Date().getFullYear() }}
       </span>

@@ -50,7 +50,7 @@
                 <!-- Start -->
                 <div class="chrono-step">
                   <div class="chrono-marker text-positive">
-                    <q-icon name="mdi-play-circle" />
+                    <q-icon name="mdi-play-circle" aria-hidden="true" />
                   </div>
                   <div class="chrono-content">
                     <div class="text-subtitle1 text-weight-bold">
@@ -62,7 +62,7 @@
                 <!-- Duration -->
                 <div class="chrono-step chrono-duration">
                   <div class="chrono-marker text-primary">
-                    <q-icon name="mdi-timer-outline" />
+                    <q-icon name="mdi-timer-outline" aria-hidden="true" />
                   </div>
                   <div
                     class="chrono-content text-subtitle1 text-weight-bold text-primary flex items-center"
@@ -88,7 +88,7 @@
                           : 'text-blue-grey-6'
                     "
                   >
-                    <q-icon name="mdi-stop-circle" />
+                    <q-icon name="mdi-stop-circle" aria-hidden="true" />
                   </div>
                   <div class="chrono-content">
                     <div class="text-subtitle1 text-weight-bold">

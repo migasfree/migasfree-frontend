@@ -73,7 +73,12 @@
           v-if="noData && !loading"
           class="text-center q-pa-xl opacity-50 absolute-center"
         >
-          <q-icon name="mdi-chart-arc" size="xl" class="q-mb-sm" />
+          <q-icon
+            name="mdi-chart-arc"
+            size="xl"
+            class="q-mb-sm"
+            aria-hidden="true"
+          />
           <div class="text-subtitle1">
             {{ $gettext('No data available.') }}
           </div>
@@ -200,7 +205,12 @@
       <q-card class="data-dialog-card">
         <q-card-section class="row items-center justify-between">
           <div class="text-h6">
-            <q-icon :name="appIcon('data')" size="lg" class="q-mr-sm" />
+            <q-icon
+              :name="appIcon('data')"
+              size="lg"
+              class="q-mr-sm"
+              aria-hidden="true"
+            />
             {{ title }}
           </div>
           <q-btn v-close-popup icon="close" flat round dense />

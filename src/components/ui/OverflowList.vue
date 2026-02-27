@@ -9,7 +9,11 @@
       <template #header>
         <q-item-section avatar>
           <div class="header-icon-container">
-            <q-icon :name="icon || 'mdi-format-list-bulleted'" size="22px" />
+            <q-icon
+              :name="icon || 'mdi-format-list-bulleted'"
+              size="22px"
+              aria-hidden="true"
+            />
           </div>
         </q-item-section>
 
@@ -39,7 +43,12 @@
               :tooltip="item.summary || ''"
             />
             <div v-else class="simple-item">
-              <q-icon name="mdi-circle-small" size="18px" color="neutral-300" />
+              <q-icon
+                name="mdi-circle-small"
+                size="18px"
+                color="neutral-300"
+                aria-hidden="true"
+              />
               <span>{{ item }}</span>
             </div>
           </div>

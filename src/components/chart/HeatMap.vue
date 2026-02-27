@@ -54,7 +54,12 @@
 
         <!-- No data fallback -->
         <div v-if="noData" class="text-center q-pa-xl opacity-50">
-          <q-icon name="mdi-calendar-blank-outline" size="xl" class="q-mb-sm" />
+          <q-icon
+            name="mdi-calendar-blank-outline"
+            size="xl"
+            class="q-mb-sm"
+            aria-hidden="true"
+          />
           <div class="text-subtitle1">
             {{ $gettext('No data available.') }}
           </div>

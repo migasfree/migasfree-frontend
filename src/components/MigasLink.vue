@@ -6,7 +6,12 @@
       :to="link || undefined"
       class="link-area"
     >
-      <q-icon v-if="resolvedIcon" :name="resolvedIcon" class="trigger-icon" />
+      <q-icon
+        v-if="resolvedIcon"
+        :name="resolvedIcon"
+        class="trigger-icon"
+        aria-hidden="true"
+      />
 
       <div class="trigger-label">
         <template v-if="prefix">
@@ -32,6 +37,7 @@
             :name="item.icon"
             size="xs"
             class="q-mr-sm"
+            aria-hidden="true"
           />
           <span>{{ item.text }}</span>
         </div>

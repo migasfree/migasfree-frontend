@@ -13,7 +13,12 @@
             :color="currentStatusColor"
             class="status-badge-premium q-px-md q-py-xs"
           >
-            <q-icon :name="currentStatusIcon" size="14px" class="q-mr-xs" />
+            <q-icon
+              :name="currentStatusIcon"
+              size="14px"
+              class="q-mr-xs"
+              aria-hidden="true"
+            />
             {{ currentStatusLabel }}
           </q-badge>
         </div>
@@ -33,6 +38,7 @@
                         :name="modelIcon('errors')"
                         size="24px"
                         class="text-critical q-mr-sm"
+                        aria-hidden="true"
                       />
                       <span class="text-subtitle1 text-bold">{{
                         $gettext('Errors')
@@ -94,6 +100,7 @@
                         :name="modelIcon('faults')"
                         size="24px"
                         class="text-warning q-mr-sm"
+                        aria-hidden="true"
                       />
                       <span class="text-subtitle1 text-bold">{{
                         $gettext('Faults')
@@ -191,6 +198,7 @@
                   <q-icon
                     :name="scope.opt.icon"
                     :color="getStatusColor(scope.opt.value)"
+                    aria-hidden="true"
                   />
                 </q-item-section>
                 <q-item-section>
@@ -207,6 +215,7 @@
                   <q-icon
                     :name="scope.opt.icon"
                     :color="getStatusColor(scope.opt.value)"
+                    aria-hidden="true"
                   />
                 </q-item-section>
                 <q-item-section>
