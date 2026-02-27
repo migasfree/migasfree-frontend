@@ -8,8 +8,7 @@
         :icon="titleIcon"
         :has-export-button="false"
       >
-        <template v-if="computer.id" #append
-          ><span class="vertical-middle">: </span>
+        <template v-if="computer.id" #append>
           <MigasLink
             model="computers"
             :pk="computer.id"
@@ -21,7 +20,7 @@
 
       <div class="row q-py-md q-gutter-md">
         <div class="col">
-          <q-card>
+          <q-card class="panel">
             <q-card-section>
               <div class="text-h5 q-pb-md">
                 {{ $gettext('Input (from computer)') }}
@@ -122,7 +121,7 @@
         </div>
 
         <div class="col">
-          <q-card>
+          <q-card class="panel">
             <q-card-section>
               <div class="text-h5 q-pb-md">
                 {{ $gettext('Output (from server)') }}
