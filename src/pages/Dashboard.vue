@@ -37,9 +37,9 @@
 
     <div class="row q-pb-md">
       <div class="col-12">
-        <q-card id="events-history">
+        <div id="events-history" class="panel glass-panel overflow-hidden">
           <q-expansion-item
-            header-class="q-card__section q-pb-none"
+            header-class="q-py-md q-px-lg"
             @show="loadEventsHistory"
           >
             <template #header>
@@ -61,8 +61,6 @@
 
             <StackedBarChart
               v-show="!loading"
-              :title="$gettext('Events History')"
-              :show-title="false"
               borderless
               :initial-data="eventsHistory"
               @get-link="goTo"
@@ -106,7 +104,7 @@
               </template>
             </StackedBarChart>
           </q-expansion-item>
-        </q-card>
+        </div>
       </div>
     </div>
 
@@ -465,5 +463,9 @@ export default defineComponent({
 
 .update-btn {
   height: 40px;
+}
+
+#events-history :deep(.chart-container) {
+  margin-bottom: 0;
 }
 </style>

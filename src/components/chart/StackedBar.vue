@@ -1,6 +1,11 @@
 <template>
   <div class="chart-container">
-    <div class="panel glass-panel overflow-hidden">
+    <div
+      :class="[
+        'overflow-hidden',
+        borderless ? 'no-hover' : 'panel glass-panel',
+      ]"
+    >
       <!-- Header -->
       <div
         v-if="title && showTitle"
@@ -263,12 +268,13 @@ echarts.use([
 defineOptions({ name: 'StackedBarChart' })
 
 const props = defineProps({
-  title: { type: String, required: true },
+  title: { type: String, default: '' },
   showTitle: { type: Boolean, default: true },
   endPoint: { type: String, default: '' },
   initialData: { type: Object, default: () => ({}) },
   monthSelector: { type: Boolean, default: false },
   daySelector: { type: Boolean, default: false },
+  borderless: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['get-link'])
