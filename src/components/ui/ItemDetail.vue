@@ -44,7 +44,7 @@
       <q-card
         :flat="borderless"
         :bordered="!borderless"
-        :class="[borderless ? 'transparent' : 'detail-card', 'col-12']"
+        :class="[borderless ? 'transparent no-hover' : 'detail-card', 'col-12']"
       >
         <!-- Content Sections -->
         <q-card-section class="q-pa-xs">
