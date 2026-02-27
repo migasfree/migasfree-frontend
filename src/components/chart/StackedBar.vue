@@ -28,6 +28,7 @@
             dense
             toggle-color="brand-primary"
             class="selection-toggle q-mr-sm"
+            :aria-label="$gettext('Selection mode')"
             :options="[
               { value: 'multiple', slot: 'multiple' },
               { value: 'single', slot: 'single' },
@@ -35,11 +36,15 @@
             @update:model-value="updateSelectedMode"
           >
             <template #multiple>
-              <q-icon name="mdi-image-multiple" size="18px" />
+              <q-icon
+                name="mdi-image-multiple"
+                size="18px"
+                aria-hidden="true"
+              />
               <q-tooltip>{{ $gettext('Multiple Selection') }}</q-tooltip>
             </template>
             <template #single>
-              <q-icon name="mdi-image" size="18px" />
+              <q-icon name="mdi-image" size="18px" aria-hidden="true" />
               <q-tooltip>{{ $gettext('Single Selection') }}</q-tooltip>
             </template>
           </q-btn-toggle>
@@ -53,6 +58,7 @@
             color="grey-7"
             :icon="appIcon('data')"
             class="action-btn q-pa-xs rounded-borders"
+            :aria-label="$gettext('Data View')"
             @click="dataView"
           >
             <q-tooltip>{{ $gettext('Data View') }}</q-tooltip>

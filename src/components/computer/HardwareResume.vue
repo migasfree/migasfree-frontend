@@ -127,6 +127,7 @@
               :name="productIcon(productSystem)"
               size="28px"
               color="brand-primary"
+              aria-hidden="true"
             />
           </div>
 
@@ -169,7 +170,12 @@
                 v-if="uuid"
                 class="row items-center no-wrap text-mono opacity-40 uuid-metrics"
               >
-                <q-icon name="mdi-identifier" size="14px" class="q-mr-xs" />
+                <q-icon
+                  name="mdi-identifier"
+                  size="14px"
+                  class="q-mr-xs"
+                  aria-hidden="true"
+                />
                 <span class="ellipsis uuid-text">{{ uuid }}</span>
                 <CopyToClipboard
                   :content="uuid"
@@ -199,6 +205,7 @@
                   :name="cpuIcon(architecture)"
                   color="brand-primary"
                   size="20px"
+                  aria-hidden="true"
                 />
                 <TextTooltip
                   :text="cpu"
@@ -213,7 +220,12 @@
             <div class="data-field">
               <span class="data-field-label">{{ $gettext('RAM') }}</span>
               <div class="spec-value-row q-mt-xs">
-                <q-icon name="mdi-memory" color="brand-primary" size="20px" />
+                <q-icon
+                  name="mdi-memory"
+                  color="brand-primary"
+                  size="20px"
+                  aria-hidden="true"
+                />
                 <span class="text-weight-bold">{{
                   humanStorageSize(ram)
                 }}</span>
@@ -226,7 +238,12 @@
             <div class="data-field">
               <span class="data-field-label">{{ $gettext('Storage') }}</span>
               <div class="spec-value-row q-mt-xs">
-                <q-icon name="mdi-harddisk" color="brand-primary" size="20px" />
+                <q-icon
+                  name="mdi-harddisk"
+                  color="brand-primary"
+                  size="20px"
+                  aria-hidden="true"
+                />
                 <span class="text-weight-bold">{{
                   humanStorageSize(storage)
                 }}</span>
@@ -244,7 +261,12 @@
                 $gettext('MAC Address')
               }}</span>
               <div class="spec-value-row q-mt-xs">
-                <q-icon name="mdi-ethernet" color="brand-primary" size="20px" />
+                <q-icon
+                  name="mdi-ethernet"
+                  color="brand-primary"
+                  size="20px"
+                  aria-hidden="true"
+                />
                 <TextTooltip
                   :text="humanMacAddress(macAddress)"
                   text-class="text-mono text-weight-medium"

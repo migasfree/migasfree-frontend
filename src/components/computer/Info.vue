@@ -24,6 +24,7 @@
               name="mdi-laptop-account"
               size="20px"
               color="brand-primary"
+              aria-hidden="true"
             />
           </div>
 
@@ -98,6 +99,7 @@
                 name="mdi-dns-outline"
                 size="16px"
                 class="q-mr-xs opacity-50"
+                aria-hidden="true"
               />
               <TextTooltip
                 :text="fqdn"
@@ -173,7 +175,12 @@
                     $gettext('IP Address')
                   }}</span>
                   <div class="net-value-row q-mt-xs">
-                    <q-icon name="mdi-ip-network" color="info" size="18px" />
+                    <q-icon
+                      name="mdi-ip-network"
+                      color="info"
+                      size="18px"
+                      aria-hidden="true"
+                    />
                     <span class="text-mono text-weight-medium">{{
                       ipAddress
                     }}</span>
@@ -194,7 +201,12 @@
                     $gettext('Forwarded IP')
                   }}</span>
                   <div class="net-value-row q-mt-xs">
-                    <q-icon name="mdi-ip" size="18px" class="opacity-50" />
+                    <q-icon
+                      name="mdi-ip"
+                      size="18px"
+                      class="opacity-50"
+                      aria-hidden="true"
+                    />
                     <span class="text-mono text-weight-medium">{{
                       forwardedIpAddress
                     }}</span>

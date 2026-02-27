@@ -29,7 +29,12 @@
             <template #option="{ scope }">
               <q-item v-bind="scope.itemProps">
                 <q-item-section avatar>
-                  <q-icon name="mdi-devices" size="sm" color="grey-6" />
+                  <q-icon
+                    name="mdi-devices"
+                    size="sm"
+                    color="grey-6"
+                    aria-hidden="true"
+                  />
                 </q-item-section>
                 <q-item-section>
                   {{ scope.opt.__str__ }}
@@ -63,7 +68,7 @@
               class="glass-panel q-pa-md"
             >
               <div class="section-label q-mb-sm text-primary">
-                <q-icon name="mdi-star" class="q-mr-xs" />
+                <q-icon name="mdi-star" class="q-mr-xs" aria-hidden="true" />
                 {{ $gettext('Primary Device') }}
               </div>
               <q-select
@@ -76,7 +81,11 @@
                 class="bg-surface rounded-borders overflow-hidden"
               >
                 <template #prepend>
-                  <q-icon name="mdi-check-circle-outline" size="xs" />
+                  <q-icon
+                    name="mdi-check-circle-outline"
+                    size="xs"
+                    aria-hidden="true"
+                  />
                 </template>
               </q-select>
               <div class="text-caption opacity-50 q-mt-sm q-ml-xs">

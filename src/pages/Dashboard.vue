@@ -44,14 +44,14 @@
           >
             <template #header>
               <q-item-section>
-                <h2 class="panel-title ellipsis">
+                <span class="panel-title ellipsis">
                   {{
                     $gettext(
                       'History of events in the last %{ number } hours',
                       { number: lastHours },
                     )
                   }}
-                </h2>
+                </span>
               </q-item-section>
             </template>
 
