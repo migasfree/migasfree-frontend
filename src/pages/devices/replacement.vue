@@ -83,7 +83,7 @@
                   color="grey-4"
                 />
                 <div class="text-muted q-mt-md">
-                  {{ $gettext('No computer selected') }}
+                  {{ $gettext('No device selected') }}
                 </div>
               </div>
             </div>
@@ -180,7 +180,7 @@
                   color="grey-4"
                 />
                 <div class="text-muted q-mt-md">
-                  {{ $gettext('No computer selected') }}
+                  {{ $gettext('No device selected') }}
                 </div>
               </div>
             </div>
