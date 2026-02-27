@@ -10,6 +10,7 @@ export const useUiStore = defineStore('ui', () => {
   const server = ref(process.env.MIGASFREE_SERVER || 'http://localhost')
 
   const scrollToElement = (element) => {
+    if (!element) return
     const target = scroll.getScrollTarget(element)
     const offset = element.offsetTop
     const duration = 1000
