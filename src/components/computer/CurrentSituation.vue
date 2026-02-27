@@ -540,14 +540,6 @@ const currentStatusLabel = computed(() => {
   opacity: 0.7;
 }
 
-.text-critical {
-  color: var(--q-negative) !important;
-}
-
-.text-warning {
-  color: var(--q-warning) !important;
-}
-
 .text-warning-dark {
   color: #c67900 !important;
 }
@@ -557,11 +549,11 @@ const currentStatusLabel = computed(() => {
 }
 
 .bg-neutral-100 {
-  background: #f5f5f5 !important;
+  background: var(--neutral-100) !important;
 }
 
 .bg-neutral-800 {
-  background: #262626 !important;
+  background: var(--neutral-800) !important;
 }
 
 .text-black {
@@ -573,9 +565,5 @@ const currentStatusLabel = computed(() => {
   font-weight: 700;
   border-radius: 6px;
   letter-spacing: 0.03em;
-}
-
-.text-decoration-none {
-  text-decoration: none;
 }
 </style>

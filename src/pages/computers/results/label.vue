@@ -75,7 +75,7 @@
               <div class="data-group q-mb-lg">
                 <div class="text-overline text-grey-6 line-height-1">UUID</div>
                 <div
-                  class="text-body2 text-weight-bold mono-font break-all opacity-80"
+                  class="text-body2 text-weight-bold text-mono break-all opacity-80"
                 >
                   {{ label.uuid }}
                 </div>
@@ -248,28 +248,12 @@ useMeta(() => ({
   letter-spacing: 1.5px;
 }
 
-.line-height-1 {
-  line-height: 1;
-}
-
 .tracking-tighter {
   letter-spacing: -2px;
 }
 
-.mono-font {
-  font-family: var(--font-mono);
-}
-
-.break-all {
-  word-break: break-all;
-}
-
 .border-top {
   border-top: 1px dashed #e0e0e0;
-}
-
-.uppercase {
-  text-transform: uppercase;
 }
 </style>
 

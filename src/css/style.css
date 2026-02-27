@@ -326,48 +326,13 @@ h1,
   border-color: var(--brand-primary) !important;
 }
 
-/* Buttons */
-.btn {
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: opacity 0.2s;
-}
-
-.btn-p {
-  background: var(--brand-primary);
-  color: var(--brand-on-primary);
-}
-
-/* Status Badge */
-.status-badge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: var(--text-xs);
-  font-weight: 700;
-}
-
 /* =========================================
    5. DASHBOARD & WIDGETS
    ========================================= */
-.stat-value {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin: 0.5rem 0;
-}
 
 .chart-container {
   width: 100%;
   margin-bottom: 1.5rem;
-}
-
-.no-pointer-events {
-  pointer-events: none !important;
 }
 
 .panel-header {
@@ -989,14 +954,19 @@ h1,
   gap: 1rem;
 }
 
-.no-pointer-events {
-  pointer-events: none !important;
-}
-
 .ellipsis {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.line-height-1,
+.lh-1 {
+  line-height: 1 !important;
+}
+
+.break-all {
+  word-break: break-all !important;
 }
 
 /* Opacity Helpers */
