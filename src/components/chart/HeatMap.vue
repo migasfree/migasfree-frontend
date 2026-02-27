@@ -20,7 +20,7 @@
             @click="$emit('total')"
           >
             <span class="text-weight-bolder">{{ total }}</span>
-            <q-tooltip>{{ $gettext('View details') }}</q-tooltip>
+            <q-tooltip>{{ $gettext('View All') }}</q-tooltip>
           </q-btn>
         </div>
 
