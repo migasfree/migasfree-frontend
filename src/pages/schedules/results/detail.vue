@@ -33,8 +33,8 @@
         <q-card-section>
           <div class="text-h5 q-mt-sm q-mb-xs">{{ $gettext('General') }}</div>
 
-          <div class="row q-pa-md q-gutter-md">
-            <div class="col-6 col-md col-sm">
+          <div class="row q-col-gutter-md q-pt-md">
+            <div class="col-12 col-md-6">
               <q-input
                 ref="primaryInput"
                 v-model="element.name"
@@ -44,7 +44,7 @@
               />
             </div>
 
-            <div class="col-6 col-md col-sm">
+            <div class="col-12 col-md-6">
               <q-input
                 v-model="element.description"
                 type="textarea"
@@ -72,8 +72,8 @@
               </q-item-section>
 
               <q-item-section>
-                <div class="row q-pa-md q-gutter-md">
-                  <div class="col-5 col-md col-sm">
+                <div class="row q-col-gutter-md q-pb-md">
+                  <div class="col-12 col-md-6">
                     <q-input
                       v-model="delay.delay"
                       type="number"
@@ -83,7 +83,7 @@
                     />
                   </div>
 
-                  <div class="col-5 col-md col-sm">
+                  <div class="col-12 col-md-6">
                     <q-input
                       v-model="delay.duration"
                       type="number"
@@ -94,8 +94,8 @@
                   </div>
                 </div>
 
-                <div class="row q-pa-md q-gutter-md">
-                  <div class="col-10 col-md col-sm">
+                <div class="row q-col-gutter-md">
+                  <div class="col-12">
                     <SelectAttributes
                       v-model="delay.attributes"
                       :label="$gettext('Attributes')"
@@ -119,7 +119,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -133,165 +133,133 @@ import SelectAttributes from 'components/ui/SelectAttributes'
 import { appIcon, modelIcon } from 'composables/element'
 import useAutoFocus from 'composables/autoFocus'
 
-export default {
-  components: {
-    ItemDetail,
-    SelectAttributes,
+const uiStore = useUiStore()
+const { $gettext } = useGettext()
+const { inputRef: primaryInput } = useAutoFocus()
+
+const title = ref($gettext('Schedule'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'schedules-list',
+  add: 'schedule-add',
+  detail: 'schedule-detail',
+}
+const model = 'schedules'
+
+let element = reactive({ id: 0 })
+
+const delays = ref([])
+const removedDelays = ref([])
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const uiStore = useUiStore()
-    const { $gettext } = useGettext()
-    const { inputRef: primaryInput } = useAutoFocus()
-
-    const title = ref($gettext('Schedule'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
-
-    const routes = {
-      list: 'schedules-list',
-      add: 'schedule-add',
-      detail: 'schedule-detail',
-    }
-    const model = 'schedules'
-
-    let element = reactive({ id: 0 })
-
-    const delays = ref([])
-    const removedDelays = ref([])
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Release'),
-        icon: appIcon('release'),
-      },
-      {
-        text: $gettext('Schedules'),
-        icon: modelIcon(model),
-        to: routes.list,
-      },
-    ])
-
-    const isValid = computed(() => {
-      return element.name !== undefined && element.name.trim() !== ''
-    })
-
-    const loadRelated = async () => {
-      if (!element.id) return
-
-      try {
-        const { data } = await api.get(
-          `/api/v1/token/schedule-delays/?schedule__id=${element.id}`,
-        )
-        delays.value = data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
-    const elementData = () => {
-      return {
-        name: element.name,
-        description: element.description,
-      }
-    }
-
-    const updateRelated = async () => {
-      const delayPromises = delays.value.map(async (delay) => {
-        if (delay.delay === undefined || delay.duration === undefined) {
-          return
-        }
-
-        const payload = {
-          schedule: element.id,
-          delay: delay.delay,
-          duration: delay.duration,
-          attributes: delay.attributes.map((item) => item.id),
-        }
-
-        try {
-          if (delay.id > 0) {
-            await api.patch(
-              `/api/v1/token/schedule-delays/${delay.id}/`,
-              payload,
-            )
-          } else {
-            await api.post('/api/v1/token/schedule-delays/', payload)
-          }
-        } catch (error) {
-          uiStore.notifyError(error)
-        }
-      })
-
-      const deletePromises = removedDelays.value.map(async (id) => {
-        try {
-          await api.delete(`/api/v1/token/schedule-delays/${id}/`)
-        } catch (error) {
-          uiStore.notifyError(error)
-        }
-      })
-
-      await Promise.all([...delayPromises, ...deletePromises])
-    }
-
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        auto_register_computers: false,
-        name: undefined,
-        platform: undefined,
-        pms: undefined,
-        architecture: undefined,
-      })
-      delays.value.splice(0)
-    }
-
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
-
-    const addInline = () => {
-      delays.value.push({
-        id: 0,
-        delay: delays.value.length
-          ? parseInt(delays.value[delays.value.length - 1].delay) + 1
-          : 0,
-        duration: 1,
-        attributes: [],
-      })
-    }
-
-    const removeInline = (index) => {
-      const removedItem = delays.value.splice(index, 1)[0]
-      if (removedItem.id > 0) {
-        removedDelays.value.push(removedItem.id)
-      }
-    }
-
-    return {
-      breadcrumbs,
-      title,
-      model,
-      routes,
-      element,
-      delays,
-      removedDelays,
-      isValid,
-      elementData,
-      loadRelated,
-      updateRelated,
-      resetElement,
-      setTitle,
-      addInline,
-      removeInline,
-      appIcon,
-      modelIcon,
-      primaryInput,
-    }
+  {
+    text: $gettext('Release'),
+    icon: appIcon('release'),
   },
+  {
+    text: $gettext('Schedules'),
+    icon: modelIcon(model),
+    to: routes.list,
+  },
+])
+
+const isValid = computed(() => {
+  return element.name !== undefined && element.name.trim() !== ''
+})
+
+const loadRelated = async () => {
+  if (!element.id) return
+
+  try {
+    const { data } = await api.get(
+      `/api/v1/token/schedule-delays/?schedule__id=${element.id}`,
+    )
+    delays.value = data.results
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
+
+const elementData = () => {
+  return {
+    name: element.name,
+    description: element.description,
+  }
+}
+
+const updateRelated = async () => {
+  const delayPromises = delays.value.map(async (delay) => {
+    if (delay.delay === undefined || delay.duration === undefined) {
+      return
+    }
+
+    const payload = {
+      schedule: element.id,
+      delay: delay.delay,
+      duration: delay.duration,
+      attributes: delay.attributes.map((item) => item.id),
+    }
+
+    try {
+      if (delay.id > 0) {
+        await api.patch(`/api/v1/token/schedule-delays/${delay.id}/`, payload)
+      } else {
+        await api.post('/api/v1/token/schedule-delays/', payload)
+      }
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
+  })
+
+  const deletePromises = removedDelays.value.map(async (id) => {
+    try {
+      await api.delete(`/api/v1/token/schedule-delays/${id}/`)
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
+  })
+
+  await Promise.all([...delayPromises, ...deletePromises])
+}
+
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    auto_register_computers: false,
+    name: undefined,
+    platform: undefined,
+    pms: undefined,
+    architecture: undefined,
+  })
+  delays.value.splice(0)
+}
+
+const setTitle = (value) => {
+  windowTitle.value = value
+}
+
+const addInline = () => {
+  delays.value.push({
+    id: 0,
+    delay: delays.value.length
+      ? parseInt(delays.value[delays.value.length - 1].delay) + 1
+      : 0,
+    duration: 1,
+    attributes: [],
+  })
+}
+
+const removeInline = (index) => {
+  const removedItem = delays.value.splice(index, 1)[0]
+  if (removedItem.id > 0) {
+    removedDelays.value.push(removedItem.id)
+  }
 }
 </script>
