@@ -325,7 +325,7 @@
 
   <vue-good-table
     ref="myTable"
-    :columns="columns"
+    :columns="filteredColumns"
     :rows="rows"
     mode="remote"
     compact-mode
@@ -621,7 +621,7 @@
 </template>
 
 <script setup>
-import { computed, toRef, onMounted } from 'vue'
+import { computed, toRef, onMounted, useSlots } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { api } from 'boot/axios'
@@ -656,6 +656,7 @@ defineEmits(['post-remove'])
 
 const uiStore = useUiStore()
 const route = useRoute()
+const slots = useSlots()
 const { elementIcon } = useElement()
 
 const model = toRef(props, 'model')
@@ -745,10 +746,25 @@ const ENABLEABLE_MODELS = new Set([
 ])
 
 const hasDeleteAction = computed(
-  () => detailRoute.value || DELETABLE_MODELS.has(props.model),
+  () => !!detailRoute.value || DELETABLE_MODELS.has(props.model),
 )
 const hasCheckActions = computed(() => CHECKABLE_MODELS.has(props.model))
 const hasEnableActions = computed(() => ENABLEABLE_MODELS.has(props.model))
+
+const showActionsColumn = computed(() => {
+  return (
+    hasCheckActions.value ||
+    hasEnableActions.value ||
+    hasDeleteAction.value ||
+    !!slots.actions
+  )
+})
+
+const filteredColumns = computed(() => {
+  if (showActionsColumn.value) return props.columns
+
+  return props.columns.filter((c) => c.field !== 'actions')
+})
 
 // --- Filter loading ---
 
