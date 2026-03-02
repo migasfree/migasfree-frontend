@@ -1,0 +1,346 @@
+{
+  "distros": [
+    {
+      "name": "debian_11",
+      "platform": "Linux",
+      "pms": "apt",
+      "architecture": "amd64"
+    },
+    {
+      "name": "debian_12",
+      "platform": "Linux",
+      "pms": "apt",
+      "architecture": "amd64"
+    },
+    {
+      "name": "ubuntu_22",
+      "platform": "Linux",
+      "pms": "apt",
+      "architecture": "amd64"
+    },
+    {
+      "name": "ubuntu_24",
+      "platform": "Linux",
+      "pms": "apt",
+      "architecture": "amd64"
+    }
+  ],
+  "deployments": {
+    "debian_11": [
+      {
+        "name": "BASE",
+        "enabled": true,
+        "base_url": "http://ftp.debian.org/debian/",
+        "suite": "bullseye",
+        "components": "main contrib non-free",
+        "options": "[ Signed-By=/usr/share/keyrings/debian-archive-keyring.gpg ]",
+        "frozen": true,
+        "included_attributes": [
+          1
+        ],
+        "source": "E"
+      },
+      {
+        "name": "UPDATE",
+        "enabled": true,
+        "base_url": "http://ftp.debian.org/debian/",
+        "suite": "bullseye-updates",
+        "components": "main contrib non-free",
+        "options": "[ Signed-By=/usr/share/keyrings/debian-archive-keyring.gpg ]",
+        "frozen": false,
+        "included_attributes": [
+          1
+        ],
+        "source": "E"
+      },
+      {
+        "name": "BACKPORTS",
+        "enabled": true,
+        "base_url": "http://ftp.debian.org/debian/",
+        "suite": "bullseye-backports",
+        "components": "main contrib non-free",
+        "options": "[ Signed-By=/usr/share/keyrings/debian-archive-keyring.gpg ]",
+        "frozen": false,
+        "included_attributes": [],
+        "source": "E"
+      },
+      {
+        "name": "SECURITY",
+        "enabled": true,
+        "base_url": "http://deb.debian.org/debian-security/",
+        "suite": "bullseye-security",
+        "components": "main contrib non-free",
+        "options": "[ Signed-By=/usr/share/keyrings/debian-archive-keyring.gpg ]",
+        "frozen": false,
+        "included_attributes": [
+          1
+        ],
+        "source": "E"
+      },
+      {
+        "name": "migasfree",
+        "enabled": true,
+        "comment": "INSTALL MIGASFREE-CLIENT\n\napt update\napt -y install wget gpg python3-distro\nwget -qO - https://{server}/get_key_repositories | gpg --output /usr/share/keyrings/{server}.gpg --dearmor --yes -\necho 'deb [signed-by=/usr/share/keyrings/{server}.gpg] http://{server}/public/{project_slug}/repos {deployment_slug} PKGS'>/etc/apt/sources.list.d/migasfree.list\napt update\napt install -y migasfree-client\nexport MIGASFREE_CLIENT_SERVER={server}\nexport MIGASFREE_CLIENT_PROJECT={project_name}\nmigasfree -u",
+        "available_packages": [],
+        "packages_to_install": [
+          "migasfree-client"
+        ],
+        "packages_to_remove": [],
+        "included_attributes": [
+          1
+        ],
+        "url_download": "https://migasfree.org/pub/debian.11/",
+        "store": "thirds",
+        "source": "I"
+      }
+    ],
+    "debian_12": [
+      {
+        "name": "BASE",
+        "enabled": true,
+        "base_url": "http://ftp.debian.org/debian/",
+        "suite": "bookworm",
+        "components": "main contrib non-free non-free-firmware",
+        "options": "[ Signed-By=/usr/share/keyrings/debian-archive-keyring.gpg ]",
+        "frozen": true,
+        "included_attributes": [
+          1
+        ],
+        "source": "E"
+      },
+      {
+        "name": "UPDATE",
+        "enabled": true,
+        "base_url": "http://ftp.debian.org/debian/",
+        "suite": "bookworm-updates",
+        "components": "main contrib non-free non-free-firmware",
+        "options": "[ Signed-By=/usr/share/keyrings/debian-archive-keyring.gpg ]",
+        "frozen": false,
+        "included_attributes": [
+          1
+        ],
+        "source": "E"
+      },
+      {
+        "name": "BACKPORTS",
+        "enabled": true,
+        "base_url": "http://ftp.debian.org/debian/",
+        "suite": "bookworm-backports",
+        "components": "main contrib non-free non-free-firmware",
+        "options": "[ Signed-By=/usr/share/keyrings/debian-archive-keyring.gpg ]",
+        "frozen": false,
+        "included_attributes": [],
+        "source": "E"
+      },
+      {
+        "name": "SECURITY",
+        "enabled": true,
+        "base_url": "http://deb.debian.org/debian-security/",
+        "suite": "bookworm-security",
+        "components": "main contrib non-free non-free-firmware",
+        "options": "[ Signed-By=/usr/share/keyrings/debian-archive-keyring.gpg ]",
+        "frozen": false,
+        "included_attributes": [
+          1
+        ],
+        "source": "E"
+      },
+      {
+        "name": "migasfree",
+        "enabled": true,
+        "comment": "INSTALL MIGASFREE-CLIENT\n\napt update\napt -y install wget gpg python3-distro\nwget -qO - https://{server}/get_key_repositories | gpg --output /usr/share/keyrings/{server}.gpg --dearmor --yes -\necho 'deb [signed-by=/usr/share/keyrings/{server}.gpg] http://{server}/public/{project_slug}/repos {deployment_slug} PKGS'>/etc/apt/sources.list.d/migasfree.list\napt update\napt install -y migasfree-client\nexport MIGASFREE_CLIENT_SERVER={server}\nexport MIGASFREE_CLIENT_PROJECT={project_name}\nmigasfree -u",
+        "available_packages": [],
+        "packages_to_install": [
+          "migasfree-client"
+        ],
+        "packages_to_remove": [],
+        "included_attributes": [
+          1
+        ],
+        "url_download": "https://migasfree.org/pub/debian.12/",
+        "store": "thirds",
+        "source": "I"
+      },
+      {
+        "ignored": true,
+        "name": "migasfree-org-sample",
+        "enabled": false,
+        "base_url": "https://migasfree.org/pub/debian.12/REPOSITORIES/",
+        "suite": "migasfree",
+        "components": "PKGS",
+        "options": "[ signed-by=/usr/share/keyrings/migasfree.org.gpg ]",
+        "frozen": false,
+        "included_attributes": [
+          1
+        ],
+        "source": "E"
+      }
+    ],
+    "ubuntu_22": [
+      {
+        "name": "BASE",
+        "enabled": true,
+        "base_url": "http://archive.ubuntu.com/ubuntu/",
+        "suite": "jammy",
+        "components": "main universe restricted multiverse",
+        "options": "[ Signed-By=/usr/share/keyrings/ubuntu-archive-keyring.gpg ]",
+        "frozen": true,
+        "included_attributes": [
+          1
+        ],
+        "source": "E"
+      },
+      {
+        "name": "UPDATE",
+        "enabled": true,
+        "base_url": "http://archive.ubuntu.com/ubuntu/",
+        "suite": "jammy-updates",
+        "components": "main universe restricted multiverse",
+        "options": "[ Signed-By=/usr/share/keyrings/ubuntu-archive-keyring.gpg ]",
+        "frozen": false,
+        "included_attributes": [
+          1
+        ],
+        "source": "E"
+      },
+      {
+        "name": "BACKPORTS",
+        "enabled": true,
+        "base_url": "http://archive.ubuntu.com/ubuntu/",
+        "suite": "jammy-backports",
+        "components": "main universe restricted multiverse",
+        "options": "[ Signed-By=/usr/share/keyrings/ubuntu-archive-keyring.gpg ]",
+        "frozen": false,
+        "included_attributes": [],
+        "source": "E"
+      },
+      {
+        "name": "SECURITY",
+        "enabled": true,
+        "base_url": "http://security.ubuntu.com/ubuntu/",
+        "suite": "jammy-security",
+        "components": "main universe restricted multiverse",
+        "options": "[ Signed-By=/usr/share/keyrings/ubuntu-archive-keyring.gpg ]",
+        "frozen": false,
+        "included_attributes": [
+          1
+        ],
+        "source": "E"
+      },
+      {
+        "name": "migasfree",
+        "enabled": true,
+        "comment": "INSTALL MIGASFREE-CLIENT\n\napt update\napt -y install wget gpg python3-distro\nwget -qO - https://{server}/get_key_repositories | gpg --output /usr/share/keyrings/{server}.gpg --dearmor --yes -\necho 'deb [signed-by=/usr/share/keyrings/{server}.gpg] http://{server}/public/{project_slug}/repos {deployment_slug} PKGS'>/etc/apt/sources.list.d/migasfree.list\napt update\napt install -y migasfree-client\nexport MIGASFREE_CLIENT_SERVER={server}\nexport MIGASFREE_CLIENT_PROJECT={project_name}\nmigasfree -u",
+        "available_packages": [],
+        "packages_to_install": [
+          "migasfree-client"
+        ],
+        "packages_to_remove": [],
+        "included_attributes": [
+          1
+        ],
+        "url_download": "https://migasfree.org/pub/ubuntu.22/",
+        "store": "thirds",
+        "source": "I"
+      }
+    ],
+    "ubuntu_24": [
+      {
+        "name": "BASE",
+        "enabled": true,
+        "base_url": "http://archive.ubuntu.com/ubuntu/",
+        "suite": "oracular",
+        "components": "main universe restricted multiverse",
+        "options": "[ Signed-By=/usr/share/keyrings/ubuntu-archive-keyring.gpg ]",
+        "frozen": true,
+        "included_attributes": [
+          1
+        ],
+        "source": "E"
+      },
+      {
+        "name": "UPDATE",
+        "enabled": true,
+        "base_url": "http://archive.ubuntu.com/ubuntu/",
+        "suite": "oracular-updates",
+        "components": "main universe restricted multiverse",
+        "options": "[ Signed-By=/usr/share/keyrings/ubuntu-archive-keyring.gpg ]",
+        "frozen": false,
+        "included_attributes": [
+          1
+        ],
+        "source": "E"
+      },
+      {
+        "name": "BACKPORTS",
+        "enabled": true,
+        "base_url": "http://archive.ubuntu.com/ubuntu/",
+        "suite": "oracular-backports",
+        "components": "main universe restricted multiverse",
+        "options": "[ Signed-By=/usr/share/keyrings/ubuntu-archive-keyring.gpg ]",
+        "frozen": false,
+        "included_attributes": [],
+        "source": "E"
+      },
+      {
+        "name": "SECURITY",
+        "enabled": true,
+        "base_url": "http://security.ubuntu.com/ubuntu/",
+        "suite": "oracular-security",
+        "components": "main universe restricted multiverse",
+        "options": "[ Signed-By=/usr/share/keyrings/ubuntu-archive-keyring.gpg ]",
+        "frozen": false,
+        "included_attributes": [
+          1
+        ],
+        "source": "E"
+      },
+      {
+        "name": "migasfree",
+        "enabled": true,
+        "comment": "INSTALL MIGASFREE-CLIENT\n\napt update\napt -y install wget gpg python3-distro\nwget -qO - https://{server}/get_key_repositories | gpg --output /usr/share/keyrings/{server}.gpg --dearmor --yes -\necho 'deb [signed-by=/usr/share/keyrings/{server}.gpg] http://{server}/public/{project_slug}/repos {deployment_slug} PKGS'>/etc/apt/sources.list.d/migasfree.list\napt update\napt install -y migasfree-client\nexport MIGASFREE_CLIENT_SERVER={server}\nexport MIGASFREE_CLIENT_PROJECT={project_name}\nmigasfree -u",
+        "available_packages": [],
+        "packages_to_install": [
+          "migasfree-client"
+        ],
+        "packages_to_remove": [],
+        "included_attributes": [
+          1
+        ],
+        "url_download": "https://migasfree.org/pub/ubuntu.24/",
+        "store": "thirds",
+        "source": "I"
+      }
+    ]
+  },
+  "applications": [
+    {
+      "name": "gimp",
+      "category": "Graphics",
+      "level": "U",
+      "available_for_attributes": [
+        1
+      ],
+      "score": 3,
+      "description": "**GIMP** (GNU Image Manipulation Program) is a free and open-source image editing software used for tasks such as photo retouching, image composition, and graphic design. It offers powerful tools and features similar to professional software, making it suitable for beginners and advanced users alike.",
+      "icon": "data:image/png;base64,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ynmLs1apsdY9+QvDeX1lmes0h5HAIpaQggQFNZRRgY0orTopFtK0H/fxD7n+FLkUcpXByLGAKjTIrh/8D353axWmJr2kcBzofnGcj1EgtAs0647zfew4zRMg+Axc6W1/tQHMfJJeb2uRI6B/G7i4bmvKHnC5Aww+GbIpu1KQplAoAO9n9E05YOAW6F3zemvt4/QByFBXyRvg4BAYK1L2us+7ezp7+/dMq78flkdyte36wtkAAA0aaVRYdFhNTDpjb20uYWRvYmUueG1wAAAAAAA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/Pgo8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJYTVAgQ29yZSA0LjQuMC1FeGl2MiI+CiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiCiAgICB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIKICAgIHhtbG5zOnN0RXZ0PSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VFdmVudCMiCiAgICB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iCiAgICB4bWxuczpHSU1QPSJodHRwOi8vd3d3LmdpbXAub3JnL3htcC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgeG1wTU06RG9jdW1lbnRJRD0iZ2ltcDpkb2NpZDpnaW1wOjA5ZGM3MmFlLTE2OGQtNGJhYS1iZjcxLTNlZmVlYzYzNDRhZCIKICAgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDphOTc4MTAyNy1hY2NkLTRiOWEtODRkYy0zODQxYTA3YTU0NTQiCiAgIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1NDQ0YzI1NC02ZGNhLTQ2Y2ItOTBhNy1hNGVkZGRiMmY3NzQiCiAgIGRjOkZvcm1hdD0iaW1hZ2UvcG5nIgogICBHSU1QOkFQST0iMi4wIgogICBHSU1QOlBsYXRmb3JtPSJMaW51eCIKICAgR0lNUDpUaW1lU3RhbXA9IjE3MzU1ODkwMzQzMjM5NTkiCiAgIEdJTVA6VmVyc2lvbj0iMi4xMC4zMCIKICAgdGlmZjpPcmllbnRhdGlvbj0iMSIKICAgeG1wOkNyZWF0b3JUb29sPSJHSU1QIDIuMTAiPgogICA8eG1wTU06SGlzdG9yeT4KICAgIDxyZGY6U2VxPgogICAgIDxyZGY6bGkKICAgICAgc3RFdnQ6YWN0aW9uPSJzYXZlZCIKICAgICAgc3RFdnQ6Y2hhbmdlZD0iLyIKICAgICAgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpmNzlkM2VhYi1jNWMyLTRkM2YtODZlNS0yMzgyMjQxN2NlYmIiCiAgICAgIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkdpbXAgMi4xMCAoTGludXgpIgogICAgICBzdEV2dDp3aGVuPSIyMDI0LTEyLTMwVDIxOjAzOjU0KzAxOjAwIi8+CiAgICA8L3JkZjpTZXE+CiAgIDwveG1wTU06SGlzdG9yeT4KICA8L3JkZjpEZXNjcmlwdGlvbj4KIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAKPD94cGFja2V0IGVuZD0idyI/PozJt98AAAAGYktHRAAAAAAAAPlDu38AAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfoDB4UAza8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",
+      "packages_to_install": [
+        "gimp"
+      ]
+    },
+    {
+      "name": "VSCodium",
+      "category": "Developers Tools",
+      "level": "A",
+      "available_for_attributes": [
+        1
+      ],
+      "score": 4,
+      "description": "**Codium** is a lightweight, open-source code editor based on Visual Studio Code, designed for developers seeking a streamlined experience. It offers robust support for extensions, multiple programming languages, and cross-platform functionality, without Microsoft's proprietary telemetry features.",
+      "icon": "data:image/png;base64,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",
+      "packages_to_install": [
+        "codium"
+      ]
+    }
+  ]
+}

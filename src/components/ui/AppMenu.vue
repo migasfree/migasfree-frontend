@@ -294,7 +294,18 @@ const items = computed(() => {
           to: 'policies-list',
           icon: modelIcon('catalog/policies'),
         },
-      ],
+      ].concat(
+        authStore.user?.is_superuser
+          ? [
+              {
+                title: $gettext('Import Configuration'),
+                to: 'imports',
+                icon: appIcon('import'),
+                separatorBefore: true,
+              },
+            ]
+          : [],
+      ),
     },
     {
       icon: appIcon('data'),

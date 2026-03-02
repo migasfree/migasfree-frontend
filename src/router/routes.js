@@ -571,6 +571,13 @@ const routes = [
       },
 
       {
+        path: '/imports',
+        name: 'imports',
+        component: () => import('pages/imports/index'),
+        meta: { requireSuperuser: true },
+      },
+
+      {
         path: '/computers',
         name: 'computers-dashboard',
         component: () => import('pages/computers/index'),
