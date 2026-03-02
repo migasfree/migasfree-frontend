@@ -157,12 +157,12 @@ h1,
 }
 
 /* Focus Accessibility */
-:focus-visible {
+:focus-visible:not(.q-field__native):not(.q-field__input) {
   outline: none;
   box-shadow: 0 0 0 3px rgba(var(--brand-primary-rgb), 0.3) !important;
 }
 
-[data-theme='dark'] :focus-visible {
+[data-theme='dark'] :focus-visible:not(.q-field__native):not(.q-field__input) {
   box-shadow: 0 0 0 3px rgba(var(--brand-tertiary-rgb, 254, 218, 0), 0.4) !important;
 }
 
