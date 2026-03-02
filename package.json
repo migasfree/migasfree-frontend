@@ -95,7 +95,7 @@
     "vitest": "4.0.18",
     "vitest-axe": "0.1.0",
     "vue-eslint-parser": "10.4.0",
-    "webpack": "5.105.2"
+    "webpack": "5.105.3"
   },
   "browserslist": [
     "last 10 Chrome versions",
