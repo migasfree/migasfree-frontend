@@ -4,6 +4,103 @@ import { api } from 'boot/axios'
 const TEMPLATE_URL = '/data/imports/template.json'
 const API_PREFIX = '/api/v1/token'
 
+const REQUIRED_DISTRO_FIELDS = ['name', 'platform', 'pms', 'architecture']
+const REQUIRED_DEPLOYMENT_FIELDS = ['name', 'source', 'enabled']
+const EXTERNAL_DEPLOYMENT_FIELDS = ['base_url', 'suite', 'components']
+const INTERNAL_DEPLOYMENT_FIELDS = ['store', 'packages_to_install']
+const REQUIRED_APP_FIELDS = ['name', 'category', 'level']
+const VALID_SOURCES = ['E', 'I']
+const BASE64_ICON_REGEX = /^data:image\/[a-zA-Z0-9.+-]+;base64,.+/
+
+/**
+ * Validate template structure. Returns { valid, errors }.
+ */
+export const validateTemplate = (data) => {
+  const errors = []
+
+  if (!data || typeof data !== 'object') {
+    return { valid: false, errors: ['Template must be a JSON object'] }
+  }
+
+  // --- distros ---
+  if (!Array.isArray(data.distros) || data.distros.length === 0) {
+    errors.push('"distros" must be a non-empty array')
+  } else {
+    data.distros.forEach((d, i) => {
+      const missing = REQUIRED_DISTRO_FIELDS.filter((f) => !d[f])
+      if (missing.length) {
+        errors.push(`distros[${i}]: missing fields: ${missing.join(', ')}`)
+      }
+    })
+  }
+
+  // --- deployments ---
+  if (!data.deployments || typeof data.deployments !== 'object') {
+    errors.push('"deployments" must be an object')
+  } else {
+    const distroNames = (data.distros || []).map((d) => d.name)
+
+    Object.entries(data.deployments).forEach(([key, list]) => {
+      if (!distroNames.includes(key)) {
+        errors.push(`deployments["${key}"]: no matching distro`)
+      }
+
+      if (!Array.isArray(list)) {
+        errors.push(`deployments["${key}"] must be an array`)
+        return
+      }
+
+      list.forEach((dep, i) => {
+        const label = `deployments["${key}"][${i}]`
+        const missing = REQUIRED_DEPLOYMENT_FIELDS.filter((f) => !(f in dep))
+        if (missing.length) {
+          errors.push(`${label}: missing fields: ${missing.join(', ')}`)
+        }
+
+        if (dep.source && !VALID_SOURCES.includes(dep.source)) {
+          errors.push(`${label}: invalid source "${dep.source}" (E or I)`)
+        }
+
+        if (dep.source === 'E') {
+          const ext = EXTERNAL_DEPLOYMENT_FIELDS.filter((f) => !dep[f])
+          if (ext.length) {
+            errors.push(`${label} (external): missing: ${ext.join(', ')}`)
+          }
+        }
+
+        if (dep.source === 'I') {
+          const int = INTERNAL_DEPLOYMENT_FIELDS.filter((f) => !dep[f])
+          if (int.length) {
+            errors.push(`${label} (internal): missing: ${int.join(', ')}`)
+          }
+        }
+      })
+    })
+  }
+
+  // --- applications (optional) ---
+  if ('applications' in data) {
+    if (!Array.isArray(data.applications)) {
+      errors.push('"applications" must be an array')
+    } else {
+      data.applications.forEach((app, i) => {
+        const missing = REQUIRED_APP_FIELDS.filter((f) => !app[f])
+        if (missing.length) {
+          errors.push(`applications[${i}]: missing: ${missing.join(', ')}`)
+        }
+
+        if (app.icon && !BASE64_ICON_REGEX.test(app.icon)) {
+          errors.push(
+            `applications[${i}].icon: invalid format (expected data:image/...;base64,...)`,
+          )
+        }
+      })
+    }
+  }
+
+  return { valid: errors.length === 0, errors }
+}
+
 /**
  * Composable for importing configuration from template.
  * Translates migasfree-imports Python logic to browser-based JS.

@@ -32,7 +32,7 @@
           ref="logScroll"
           :items="logs"
           separator
-          style="max-height: 300px"
+          class="log-scroll"
         >
           <template #default="{ item, index }">
             <q-item :key="index" dense>
@@ -102,5 +102,9 @@ const formatTime = (timestamp) => {
 <style scoped>
 .log-container {
   font-family: monospace;
+}
+
+.log-scroll {
+  max-height: 300px;
 }
 </style>

@@ -228,7 +228,7 @@ import StepExecution from 'components/imports/StepExecution.vue'
 import StepResults from 'components/imports/StepResults.vue'
 
 import { appIcon } from 'composables/element'
-import { useImporter } from 'composables/importer'
+import { useImporter, validateTemplate } from 'composables/importer'
 
 const { $gettext } = useGettext()
 
@@ -314,11 +314,12 @@ const onCustomTemplateSelected = async (file) => {
   try {
     const text = await file.text()
     const parsed = JSON.parse(text)
+    const { valid, errors } = validateTemplate(parsed)
 
-    if (!parsed.distros || !parsed.deployments) {
-      throw new Error(
-        'Invalid template: missing "distros" or "deployments" keys',
-      )
+    if (!valid) {
+      templateError.value = `${$gettext('Invalid template')}:\n${errors.join('\n')}`
+      template.value = null
+      return
     }
 
     template.value = parsed

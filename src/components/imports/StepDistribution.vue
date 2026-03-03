@@ -52,7 +52,7 @@
         <template #avatar>
           <q-icon name="mdi-alert-circle" />
         </template>
-        {{ templateError }}
+        <div class="template-error">{{ templateError }}</div>
       </q-banner>
     </div>
 
@@ -152,5 +152,10 @@ defineEmits([
 
 [data-theme='dark'] .distro-card--selected {
   background: rgba(254, 252, 232, 0.08);
+}
+
+.template-error {
+  white-space: pre-line;
+  font-size: 0.85rem;
 }
 </style>
