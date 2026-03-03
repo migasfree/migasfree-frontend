@@ -139,8 +139,7 @@
                   }}</b>
                 </p>
                 <div
-                  class="q-ma-none q-pa-sm rounded-borders text-body2 font-monospace"
-                  style="background-color: var(--bg-surface-variant)"
+                  class="code-example q-ma-none q-pa-sm rounded-borders text-body2 font-monospace"
                 >
                   <div class="opacity-60">
                     {{
