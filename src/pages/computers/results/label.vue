@@ -56,7 +56,7 @@
               </div>
             </div>
 
-            <q-separator color="grey-3" />
+            <q-separator class="opacity-10" />
 
             <div class="label-body q-pa-lg">
               <div class="data-group q-mb-md">
@@ -231,6 +231,14 @@ useMeta(() => ({
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.1);
   font-family: var(--font-ui);
+  transition: all 0.3s ease;
+}
+
+.body--dark .physical-label {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .label-logo {
@@ -244,6 +252,10 @@ useMeta(() => ({
   letter-spacing: -1px;
 }
 
+.body--dark .brand-text {
+  color: var(--brand-primary-light, #ffab91);
+}
+
 .letter-spacing-1 {
   letter-spacing: 1.5px;
 }
@@ -254,6 +266,20 @@ useMeta(() => ({
 
 .border-top {
   border-top: 1px dashed #e0e0e0;
+}
+
+.body--dark .border-top {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.body--dark .label-footer {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.body--dark .text-grey-6,
+.body--dark .text-grey-7,
+.body--dark .text-grey-8 {
+  color: rgba(255, 255, 255, 0.6) !important;
 }
 </style>
 
