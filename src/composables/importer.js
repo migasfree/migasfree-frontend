@@ -323,8 +323,12 @@ export function useImporter() {
         createdResources.categories.push(category[0])
       }
 
-      // Decode icon
-      const icon = decodeIcon(app.icon)
+      // Decode icon if present
+      let iconFiles = null
+      if (app.icon && app.icon.startsWith('data:')) {
+        const icon = decodeIcon(app.icon)
+        iconFiles = { icon: [icon.blob, icon.filename] }
+      }
 
       // App
       const appResult = await getOrPost(
@@ -338,9 +342,7 @@ export function useImporter() {
           description: app.description,
           available_for_attributes: app.available_for_attributes,
         },
-        {
-          icon: [icon.blob, icon.filename],
-        },
+        iconFiles,
       )
 
       // Project-Packages
