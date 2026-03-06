@@ -2,9 +2,9 @@
   <q-btn-dropdown
     flat
     dense
-    size="sm"
+    size="md"
     class="q-pa-xs rounded-borders"
-    color="grey-7"
+    color="brand-secondary"
     :icon="appIcon('download')"
     :aria-label="$gettext('Export menu')"
   >

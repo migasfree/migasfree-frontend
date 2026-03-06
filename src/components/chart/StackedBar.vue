@@ -57,10 +57,10 @@ import { appIcon } from 'composables/element'
             v-show="isChartVisible"
             flat
             dense
-            size="sm"
-            color="grey-7"
+            size="md"
+            color="brand-secondary"
             :icon="appIcon('data')"
-            class="action-btn q-pa-xs rounded-borders"
+            class="action-btn q-pa-xs q-mr-xs rounded-borders"
             :aria-label="$gettext('Data View')"
             @click="dataView"
           >

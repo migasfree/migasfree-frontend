@@ -5,22 +5,21 @@
       <!-- Left side: Title + Total Badge -->
       <div class="title-group row items-center no-wrap col-grow">
         <!-- eslint-disable-next-line vuejs-accessibility/heading-has-content -->
-        <h2 class="panel-title">
+        <h2 class="panel-title row items-center no-wrap q-mb-none">
           <TextTooltip :text="title" />
+          <q-btn
+            v-if="data.total > 0"
+            unelevated
+            no-caps
+            class="total-badge q-ml-md"
+            :color="critical && data.total > 0 ? 'negative' : 'secondary'"
+            text-color="white"
+            @click="goTo"
+          >
+            <span class="text-body2 text-weight-bolder">{{ data.total }}</span>
+            <q-tooltip>{{ $gettext('View All') }}</q-tooltip>
+          </q-btn>
         </h2>
-        <q-btn
-          v-if="data.total > 0"
-          unelevated
-          dense
-          no-caps
-          class="total-badge q-ml-sm"
-          :color="critical && data.total > 0 ? 'negative' : 'warning-surface'"
-          :text-color="critical && data.total > 0 ? 'white' : 'brand-primary'"
-          @click="goTo"
-        >
-          <span class="text-weight-bolder">{{ data.total }}</span>
-          <q-tooltip>{{ $gettext('View All') }}</q-tooltip>
-        </q-btn>
       </div>
 
       <!-- Right side: Actions -->
@@ -31,9 +30,9 @@
         <q-btn
           flat
           dense
-          size="sm"
-          class="q-pa-xs rounded-borders"
-          color="grey-7"
+          size="md"
+          class="q-pa-xs rounded-borders q-mr-xs"
+          color="brand-secondary"
           :icon="appIcon('data')"
           @click="dataView"
         >
@@ -680,6 +679,20 @@ watch(isDark, (val) => {
   container-name: pie-chart;
   width: 100%;
   padding: 1.25rem 1.5rem;
+}
+
+.panel-title {
+  flex: 0 1 auto;
+  max-width: 100%;
+
+  & > :first-child {
+    flex: 0 1 auto;
+  }
+
+  & > .total-badge {
+    flex: 0 0 auto;
+    padding: 2px 8px;
+  }
 }
 
 .chart-area {
