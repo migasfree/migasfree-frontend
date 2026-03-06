@@ -7,7 +7,9 @@ RUN yarn build
 
 # runtime stage
 FROM node:iron-alpine
-COPY --from=builder /app/dist/spa ./dist
+WORKDIR /app
+COPY --from=builder --chown=node:node /app/dist/spa ./dist
 RUN yarn global add http-server
+USER node
 EXPOSE 3000
 CMD ["http-server", "dist", "--port", "3000"]
