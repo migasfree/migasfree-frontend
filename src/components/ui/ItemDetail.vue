@@ -220,8 +220,6 @@ const headerIcon = computed(() => {
 </script>
 
 <style scoped>
-
-
 .detail-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
