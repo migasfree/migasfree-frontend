@@ -99,61 +99,67 @@
     <q-page-container class="bg-body">
       <q-scroll-observer @scroll="onScroll" />
 
-      <!-- Preferences Banner (Glassmorphism Redesign) -->
-      <transition
-        appear
-        enter-active-class="animated fadeInDown"
-        leave-active-class="animated fadeOutUp"
-      >
-        <div
-          v-if="hasPreference"
-          class="pref-banner glass-panel row items-center q-mx-lg q-mt-md"
+      <div class="main-container">
+        <!-- Preferences Banner (Glassmorphism Redesign) -->
+        <transition
+          appear
+          enter-active-class="animated fadeInDown"
+          leave-active-class="animated fadeOutUp"
         >
-          <div class="pref-banner-icon-box flex-center">
-            <q-icon :name="appIcon('warning')" size="20px" aria-hidden="true" />
+          <div
+            v-if="hasPreference"
+            class="pref-banner glass-panel row items-center q-mt-md"
+          >
+            <div class="pref-banner-icon-box flex-center">
+              <q-icon
+                :name="appIcon('warning')"
+                size="20px"
+                aria-hidden="true"
+              />
+            </div>
+
+            <div class="pref-banner-content col q-px-md">
+              {{
+                $gettext(
+                  'You have established a domain or a scope in the preferences',
+                )
+              }}
+            </div>
+
+            <div class="pref-banner-actions row q-gutter-x-sm q-px-md">
+              <q-chip
+                v-if="domainPreference"
+                outline
+                dense
+                color="warning"
+                class="pref-chip"
+                :icon="modelIcon('domains')"
+                removable
+                @remove="removePreference('domain_preference')"
+              >
+                <q-tooltip>{{ $gettext('Domain') }}</q-tooltip>
+                <span class="text-weight-bold">{{ domainPreference }}</span>
+              </q-chip>
+
+              <q-chip
+                v-if="scopePreference"
+                outline
+                dense
+                color="warning"
+                class="pref-chip"
+                :icon="modelIcon('scopes')"
+                removable
+                @remove="removePreference('scope_preference')"
+              >
+                <q-tooltip>{{ $gettext('Scope') }}</q-tooltip>
+                <span class="text-weight-bold">{{ scopePreference }}</span>
+              </q-chip>
+            </div>
           </div>
+        </transition>
 
-          <div class="pref-banner-content col q-px-md">
-            {{
-              $gettext(
-                'You have established a domain or a scope in the preferences',
-              )
-            }}
-          </div>
-
-          <div class="pref-banner-actions row q-gutter-x-sm q-px-md">
-            <q-chip
-              v-if="domainPreference"
-              outline
-              dense
-              color="warning"
-              class="pref-chip"
-              :icon="modelIcon('domains')"
-              removable
-              @remove="removePreference('domain_preference')"
-            >
-              <q-tooltip>{{ $gettext('Domain') }}</q-tooltip>
-              <span class="text-weight-bold">{{ domainPreference }}</span>
-            </q-chip>
-
-            <q-chip
-              v-if="scopePreference"
-              outline
-              dense
-              color="warning"
-              class="pref-chip"
-              :icon="modelIcon('scopes')"
-              removable
-              @remove="removePreference('scope_preference')"
-            >
-              <q-tooltip>{{ $gettext('Scope') }}</q-tooltip>
-              <span class="text-weight-bold">{{ scopePreference }}</span>
-            </q-chip>
-          </div>
-        </div>
-      </transition>
-
-      <router-view />
+        <router-view />
+      </div>
 
       <!-- SCROLLERS -->
       <q-page-scroller

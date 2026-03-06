@@ -69,6 +69,12 @@
   --q-accent: var(--brand-tertiary);
 }
 
+.main-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
 /* --- DARK MODE TOKENS --- */
 [data-theme='dark'] {
   --bg-body: #0d0807;

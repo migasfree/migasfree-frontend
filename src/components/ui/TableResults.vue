@@ -21,7 +21,7 @@
     >
       <SearchFilter
         v-model="tableFilters.search"
-        class="q-pa-md"
+        class="q-pa-sm"
         @search="onSearch"
         @clear="onSearchClear"
       />
@@ -309,12 +309,12 @@
   <template v-else>
     <SearchFilter
       v-model="tableFilters.search"
-      class="q-pb-md"
+      class="q-pb-sm"
       @search="onSearch"
       @clear="onSearchClear"
     />
 
-    <div class="row q-py-md">
+    <div class="row q-py-sm">
       <div class="col-12">
         <q-btn
           :icon="appIcon('filter-remove')"

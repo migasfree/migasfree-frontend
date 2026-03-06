@@ -1,5 +1,5 @@
 <template>
-  <div class="item-detail-layout">
+  <div>
     <Breadcrumbs :items="breadcrumbs" />
 
     <Header :title="originalTitle" :icon="titleIcon" :has-export-button="false">
@@ -220,10 +220,7 @@ const headerIcon = computed(() => {
 </script>
 
 <style scoped>
-.item-detail-layout {
-  max-width: 1400px;
-  margin: 0 auto;
-}
+
 
 .detail-card {
   background: var(--bg-card);
