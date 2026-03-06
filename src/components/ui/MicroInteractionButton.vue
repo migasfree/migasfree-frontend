@@ -29,7 +29,6 @@
       anchor="top middle"
       self="bottom middle"
       :offset="[0, 8]"
-     
     >
       {{ currentTooltip }}
     </q-tooltip>
