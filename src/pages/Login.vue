@@ -1,24 +1,24 @@
 <template>
-  <q-page class="login-redesign flex flex-center" :data-theme="theme">
+  <q-page class="auth-page flex flex-center" :data-theme="theme">
     <!-- Earthy Background Elements -->
-    <div class="background-decor">
-      <div class="blob blob-1"></div>
-      <div class="blob blob-2"></div>
-      <div class="blob blob-3"></div>
+    <div class="decor-background">
+      <div class="decor-blob decor-blob-1"></div>
+      <div class="decor-blob decor-blob-2"></div>
+      <div class="decor-blob decor-blob-3"></div>
     </div>
 
     <!-- Main Login Card -->
-    <q-card class="panel glass-panel shadow-24 animate-in login-card">
+    <q-card class="panel glass-panel shadow-24 animate-in auth-card">
       <q-card-section class="q-px-xl q-py-lg">
         <div class="text-center q-mb-lg">
-          <div class="logo-container q-mb-sm">
+          <div class="brand-logo-container q-mb-sm">
             <img
               src="../assets/migasfree-logo.svg"
-              class="main-logo"
+              class="brand-logo"
               alt="migasfree logo"
             />
           </div>
-          <div class="slogan-text q-mb-md">We ❤️ Change</div>
+          <div class="brand-slogan q-mb-md">We ❤️ Change</div>
 
           <h1 class="text-h5 text-weight-regular text-main m-0">
             {{ $gettext('Log in') }} <span class="opacity-50">@</span> migasfree
@@ -26,7 +26,7 @@
 
           <!-- Subtle Organization Badge -->
           <div v-if="organization" class="q-mt-md">
-            <div class="org-badge">
+            <div class="badge-info">
               <q-icon
                 :name="appIcon('organization')"
                 size="18px"
@@ -39,7 +39,7 @@
         </div>
 
         <q-form class="q-gutter-y-lg q-mt-md" @submit.prevent="login">
-          <div class="input-wrapper">
+          <div class="form-field">
             <q-input
               ref="primaryInput"
               v-model="model.username"
@@ -56,7 +56,7 @@
             </q-input>
           </div>
 
-          <div class="input-wrapper">
+          <div class="form-field">
             <q-input
               id="password"
               v-model="model.password"
@@ -105,7 +105,7 @@
             :aria-disabled="!isValid"
             type="submit"
             unelevated
-            class="full-width premium-btn q-py-md text-weight-bold"
+            class="full-width btn-hero q-py-md text-weight-bold"
             :loading="loading"
             :disabled="!isValid"
           >
@@ -134,7 +134,7 @@
                 self="bottom middle"
                 content-class="glass-menu"
               >
-                <q-list class="lang-list">
+                <q-list class="menu-list-dense">
                   <q-item
                     v-for="(language, key) in $language.available"
                     :key="key"
@@ -169,7 +169,7 @@
 
     <!-- Footer Credits -->
     <div
-      class="absolute-bottom text-center q-pb-md footer-credits row items-center justify-center"
+      class="absolute-bottom text-center q-pb-md auth-footer row items-center justify-center"
     >
       <q-icon :name="appIcon('copyright')" size="16px" aria-hidden="true" />
       <span class="text-weight-medium q-ml-xs q-mr-sm">
@@ -183,7 +183,7 @@
         href="https://migasfree.org/"
         no-caps
         size="15px"
-        class="footer-link-btn"
+        class="auth-footer-link"
       >
         <q-tooltip>{{ $gettext('Website') }}</q-tooltip>
       </q-btn>
@@ -270,7 +270,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.login-redesign {
+.auth-page {
   background: var(--bg-body);
   position: relative;
   overflow: hidden;
@@ -278,13 +278,13 @@ onMounted(async () => {
   width: 100%;
 }
 
-.login-card {
+.auth-card {
   max-width: 440px;
   width: 100%;
   z-index: 1;
 }
 
-.slogan-text {
+.brand-slogan {
   font-size: 0.95rem;
   color: var(--neutral-500);
   letter-spacing: 0.5px;
@@ -292,7 +292,7 @@ onMounted(async () => {
   text-transform: uppercase;
 }
 
-.org-badge {
+.badge-info {
   display: inline-flex;
   align-items: center;
   padding: 6px 16px;
@@ -304,7 +304,7 @@ onMounted(async () => {
 }
 
 /* Background Decorations */
-.background-decor {
+.decor-background {
   position: absolute;
   top: 0;
   left: 0;
@@ -314,7 +314,7 @@ onMounted(async () => {
   z-index: 0;
 }
 
-.blob {
+.decor-blob {
   position: absolute;
   border-radius: 50%;
   filter: blur(100px);
@@ -322,7 +322,7 @@ onMounted(async () => {
   animation: float 25s infinite alternate;
 }
 
-.blob-1 {
+.decor-blob-1 {
   width: 600px;
   height: 600px;
   background: var(--brand-primary);
@@ -330,7 +330,7 @@ onMounted(async () => {
   left: -150px;
 }
 
-.blob-2 {
+.decor-blob-2 {
   width: 500px;
   height: 500px;
   background: var(--brand-tertiary);
@@ -339,7 +339,7 @@ onMounted(async () => {
   animation-delay: -7s;
 }
 
-.blob-3 {
+.decor-blob-3 {
   width: 400px;
   height: 400px;
   background: var(--brand-secondary);
@@ -360,7 +360,7 @@ onMounted(async () => {
   }
 }
 
-.main-logo {
+.brand-logo {
   height: 92px;
   width: auto;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
@@ -381,31 +381,29 @@ onMounted(async () => {
   }
 }
 
-.premium-btn {
+.btn-hero {
   background: var(--brand-primary) !important;
   color: var(--brand-on-primary) !important;
-  border-radius: var(--radius);
   font-size: 1.05rem;
   transition: all 0.3s ease;
 }
 
-.premium-btn:hover {
-  transform: translateY(-2px);
+.btn-hero:hover {
   filter: brightness(1.1);
 }
 
-.footer-credits {
+.auth-footer {
   color: var(--text-main);
   opacity: 0.8;
   font-size: 0.9rem;
   z-index: 1;
 }
 
-.footer-link-btn {
+.auth-footer-link {
   padding: 0 4px;
 }
 
-.lang-list {
+.menu-list-dense {
   padding: 0;
   min-width: 140px;
 }
@@ -415,7 +413,7 @@ onMounted(async () => {
    ======================================= */
 
 /* Text & Headings */
-:global(.body--dark) .slogan-text {
+:global(.body--dark) .brand-slogan {
   color: var(--brand-secondary);
 }
 
@@ -429,7 +427,7 @@ onMounted(async () => {
 }
 
 /* Button */
-:global(.body--dark) .premium-btn {
+:global(.body--dark) .btn-hero {
   background: var(--brand-tertiary) !important;
   color: #000 !important;
 }
