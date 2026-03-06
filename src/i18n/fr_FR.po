@@ -43,9 +43,8 @@ msgstr ""
 "Impossible de se connecter au serveur. Veuillez vérifier votre connexion."
 
 #: src/components/chart/ExportMenu.vue:9
-#, fuzzy
 msgid "Export menu"
-msgstr "Exporter"
+msgstr "Menu d'exportation"
 
 #: src/components/chart/ExportMenu.vue:11 src/components/chart/Pie.vue:256
 #: src/components/chart/StackedBar.vue:191 src/components/ui/Header.vue:48
@@ -162,9 +161,8 @@ msgid "Name"
 msgstr "Nom"
 
 #: src/components/chart/StackedBar.vue:31
-#, fuzzy
 msgid "Selection mode"
-msgstr "Sélectionner un fichier"
+msgstr "Mode de sélection"
 
 #: src/components/chart/StackedBar.vue:44
 msgid "Multiple Selection"
@@ -333,14 +331,12 @@ msgid "Assigned"
 msgstr "Assignés"
 
 #: src/components/computer/Devices.vue:72
-#, fuzzy
 msgid "Primary Device"
-msgstr "Périphérique logique"
+msgstr "Périphérique primaire"
 
 #: src/components/computer/Devices.vue:80
-#, fuzzy
 msgid "Set as default"
-msgstr "Par défaut"
+msgstr "Définir par défaut"
 
 #: src/components/computer/Devices.vue:93
 msgid "Select which of the assigned devices is the primary for this computer."
@@ -365,20 +361,17 @@ msgstr "Date de dernière capture matérielle"
 
 #: src/components/computer/HardwareResume.vue:36
 #: src/components/computer/HardwareResume.vue:39
-#, fuzzy
 msgid "Edit date"
-msgstr "avec date"
+msgstr "Modifier la date"
 
 #: src/components/computer/HardwareResume.vue:49
 #: src/components/computer/HardwareResume.vue:52
-#, fuzzy
 msgid "Clear date"
-msgstr "Effacer"
+msgstr "Effacer la date"
 
 #: src/components/computer/HardwareResume.vue:67
-#, fuzzy
 msgid "No date"
-msgstr "date"
+msgstr "Pas de date"
 
 #: src/components/computer/HardwareResume.vue:107
 #: src/components/computer/Info.vue:48 src/components/ui/ItemDetail.vue:122
@@ -401,9 +394,8 @@ msgid "Hardware Information"
 msgstr "Informations matérielles"
 
 #: src/components/computer/HardwareResume.vue:193
-#, fuzzy
 msgid "Key Specifications"
-msgstr "Notifications"
+msgstr "Spécifications clés"
 
 #: src/components/computer/HardwareResume.vue:200
 msgid "Processor"
@@ -463,14 +455,12 @@ msgid "Date of entry into the migasfree system"
 msgstr "Date d'entrée dans le système migasfree"
 
 #: src/components/computer/Info.vue:34
-#, fuzzy
 msgid "Computer Name"
-msgstr "Ordinateur"
+msgstr "Nom de l'ordinateur"
 
 #: src/components/computer/Info.vue:77
-#, fuzzy
 msgid "Edit name"
-msgstr "Modifier"
+msgstr "Modifier le nom"
 
 #: src/components/computer/Info.vue:116
 msgid "Environment"
@@ -520,14 +510,12 @@ msgid "Project"
 msgstr "Projet"
 
 #: src/components/computer/Info.vue:157
-#, fuzzy
 msgid "Network"
-msgstr "Erreur réseau"
+msgstr "Réseau"
 
 #: src/components/computer/Info.vue:164
-#, fuzzy
 msgid "IP Address"
-msgstr "Adresse MAC"
+msgstr "Adresse IP"
 
 #: src/components/computer/Info.vue:189
 msgid "Forwarded IP"
@@ -564,9 +552,8 @@ msgid "Locations"
 msgstr "Emplacements"
 
 #: src/components/computer/Locations.vue:84
-#, fuzzy
 msgid "Map"
-msgstr "Mai"
+msgstr "Carte"
 
 #: src/components/computer/Locations.vue:86
 msgid "Satellite"
@@ -585,9 +572,8 @@ msgid "Center Markers"
 msgstr "Centrer les marqueurs"
 
 #: src/components/computer/Locations.vue:161
-#, fuzzy
 msgid "Copy coordinates"
-msgstr "Ajouter des coordonnées"
+msgstr "Copier les coordonnées"
 
 #: src/components/computer/Locations.vue:162
 #: src/components/ui/CopyToClipboard.vue:6
@@ -648,9 +634,8 @@ msgstr "Inventaire"
 
 #: src/components/computer/Software.vue:57
 #: src/components/computer/Software.vue:183
-#, fuzzy
 msgid "Hide search"
-msgstr "Tapez pour rechercher"
+msgstr "Masquer la recherche"
 
 #: src/components/computer/Software.vue:58
 #: src/components/computer/Software.vue:109
@@ -688,18 +673,16 @@ msgid "Load"
 msgstr ""
 
 #: src/components/computer/Software.vue:96
-#, fuzzy
 msgid "Load inventory"
-msgstr "avec inventaire"
+msgstr "Charger l'inventaire"
 
 #: src/components/computer/Software.vue:156
 msgid "History"
 msgstr "Historique"
 
 #: src/components/computer/Software.vue:222
-#, fuzzy
 msgid "Load history"
-msgstr "Historique"
+msgstr "Charger l'historique"
 
 #: src/components/computer/Software.vue:353 src/components/ui/AppMenu.vue:325
 #: src/pages/computers/softwareCompare.vue:164
@@ -773,9 +756,8 @@ msgid "View assigned Computers"
 msgstr "Voir les ordinateurs assignés"
 
 #: src/components/deployment/Timeline.vue:105
-#, fuzzy
 msgid "Computers Status"
-msgstr "Liste des ordinateurs"
+msgstr "État des ordinateurs"
 
 #: src/components/deployment/Timeline.vue:110
 msgid "OK Computers"
@@ -815,9 +797,8 @@ msgid "Computers in Logical Devices (by Capability)"
 msgstr "Ordinateurs dans les périphériques logiques (par capacité)"
 
 #: src/components/device/ReplacementInfo.vue:81
-#, fuzzy
 msgid "No computers found"
-msgstr "Nouveaux ordinateurs / Mois"
+msgstr "Aucun ordinateur trouvé"
 
 #: src/components/imports/ApplicationEditor.vue:6
 #: src/components/imports/StepResults.vue:94 src/components/ui/AppMenu.vue:283
@@ -836,9 +817,8 @@ msgid "Finish editing"
 msgstr "Terminer l'édition"
 
 #: src/components/imports/ApplicationEditor.vue:20
-#, fuzzy
 msgid "Edit applications"
-msgstr "Applications"
+msgstr "Modifier les applications"
 
 #: src/components/imports/ApplicationEditor.vue:76
 #: src/pages/applications/results/detail.vue:39
@@ -890,9 +870,8 @@ msgid "Deployments"
 msgstr "Déploiements"
 
 #: src/components/imports/DeploymentEditor.vue:20
-#, fuzzy
 msgid "Edit deployments"
-msgstr "Déploiements activés"
+msgstr "Modifier les déploiements"
 
 #: src/components/imports/DeploymentEditor.vue:40
 #: src/components/imports/DeploymentEditor.vue:66
@@ -935,9 +914,8 @@ msgid "Enabled"
 msgstr "Activé"
 
 #: src/components/imports/DeploymentEditor.vue:53
-#, fuzzy
 msgid "Disabled"
-msgstr "Désactiver"
+msgstr "Désactivé"
 
 #: src/components/imports/DeploymentEditor.vue:86
 #: src/pages/computers/replacement.vue:36
@@ -991,14 +969,12 @@ msgid "Upload Custom Template"
 msgstr "Télécharger un modèle personnalisé"
 
 #: src/components/imports/StepDistribution.vue:30
-#, fuzzy
 msgid "Select a template.json file"
-msgstr "Sélectionner un fichier"
+msgstr "Sélectionner un fichier template.json"
 
 #: src/components/imports/StepDistribution.vue:69
-#, fuzzy
 msgid "Loading template..."
-msgstr "Chargement des données..."
+msgstr "Chargement du modèle..."
 
 #: src/components/imports/StepDistribution.vue:107
 #: src/pages/imports/index.vue:55 src/pages/imports/index.vue:100
@@ -1006,9 +982,8 @@ msgid "Continue"
 msgstr "Continuer"
 
 #: src/components/imports/StepExecution.vue:26
-#, fuzzy
 msgid "Waiting..."
-msgstr "Mise à jour..."
+msgstr "En attente..."
 
 #: src/components/imports/StepPackages.vue:8
 msgid ""
@@ -1017,38 +992,33 @@ msgid ""
 msgstr ""
 
 #: src/components/imports/StepPackages.vue:26
-#, fuzzy
 msgid "Download URL"
-msgstr "Télécharger"
+msgstr "URL de téléchargement"
 
 #: src/components/imports/StepPackages.vue:33
 msgid "Upload packages (.deb, .rpm)"
 msgstr "Télécharger des paquets (.deb, .rpm)"
 
 #: src/components/imports/StepProject.vue:11
-#, fuzzy
 msgid "Existing Project"
-msgstr "Migrations / Projet"
+msgstr "Projet existant"
 
 #: src/components/imports/StepProject.vue:25
 msgid "Or enter a new project name"
 msgstr "Ou entrez un nouveau nom de projet"
 
 #: src/components/imports/StepProject.vue:42
-#, fuzzy
 msgid "Project Configuration"
-msgstr "Configuration"
+msgstr "Configuration du projet"
 
 #: src/components/imports/StepProject.vue:55
-#, fuzzy
 msgid "Edit configuration"
-msgstr "Configuration"
+msgstr "Modifier la configuration"
 
 #: src/components/imports/StepProject.vue:78
 #: src/components/imports/StepProject.vue:118
-#, fuzzy
 msgid "Package Manager"
-msgstr "Système de gestion de paquets"
+msgstr "Gestionnaire de paquets"
 
 #: src/components/imports/StepProject.vue:87
 #: src/components/imports/StepProject.vue:136
@@ -1059,9 +1029,8 @@ msgid "Architecture"
 msgstr "Architecture"
 
 #: src/components/imports/StepResults.vue:13
-#, fuzzy
 msgid "Import completed with errors"
-msgstr "Ordinateurs avec erreurs"
+msgstr "Importation terminée avec des erreurs"
 
 #: src/components/imports/StepResults.vue:14
 msgid "Import completed successfully!"
@@ -1288,9 +1257,8 @@ msgid "Policies"
 msgstr "Politiques"
 
 #: src/components/ui/AppMenu.vue:301 src/pages/imports/index.vue:235
-#, fuzzy
 msgid "Import Configuration"
-msgstr "Configuration"
+msgstr "Configuration d'importation"
 
 #: src/components/ui/AppMenu.vue:312 src/pages/attributes/index.vue:59
 #: src/pages/attributes/results/detail.vue:176
@@ -1364,9 +1332,8 @@ msgid "Clear"
 msgstr "Effacer"
 
 #: src/components/ui/DateRangeInput.vue:63
-#, fuzzy
 msgid "Select range"
-msgstr "Sélectionner un fichier"
+msgstr "Sélectionner une plage"
 
 #: src/components/ui/EntitySelect.vue:28
 #: src/components/ui/FilteredMultiSelect.vue:30
@@ -1392,14 +1359,12 @@ msgid "Add"
 msgstr "Ajouter"
 
 #: src/components/ui/Header.vue:83
-#, fuzzy
 msgid "Confirm Export"
-msgstr "Confirmer"
+msgstr "Confirmer l'exportation"
 
 #: src/components/ui/Header.vue:84
-#, fuzzy
 msgid "Do you want to export so many results? This might take a while."
-msgstr "Voulez-vous exporter autant de résultats ?"
+msgstr "Voulez-vous exporter autant de résultats ? Cela peut prendre un certain temps."
 
 #: src/components/ui/ItemDetail.vue:91 src/components/ui/ItemDetail.vue:96
 msgid "Save and add other"
@@ -1425,9 +1390,8 @@ msgid "Paste"
 msgstr "Coller"
 
 #: src/components/ui/SelectAttributes.vue:63
-#, fuzzy
 msgid "Pasted!"
-msgstr "Coller"
+msgstr "Collé !"
 
 #: src/components/ui/TablePagination.vue:127 src/composables/detail.js:83
 #: src/composables/listConfig.js:47 src/pages/computers/results/events.vue:346
@@ -1578,14 +1542,12 @@ msgid "Switch to Full Screen view"
 msgstr "Passer en vue plein écran"
 
 #: src/components/ui/UserAccount.vue:10
-#, fuzzy
 msgid "User account menu"
-msgstr "Compte utilisateur"
+msgstr "Menu du compte utilisateur"
 
 #: src/components/ui/UserAccount.vue:39
-#, fuzzy
 msgid "Profile"
-msgstr "Profil utilisateur"
+msgstr "Profil"
 
 #: src/components/ui/UserAccount.vue:58
 msgid "Organization"
@@ -2437,9 +2399,8 @@ msgstr ""
 
 #: src/pages/computers/replacement.vue:91
 #: src/pages/computers/replacement.vue:193
-#, fuzzy
 msgid "No computer selected"
-msgstr "lignes sélectionnées"
+msgstr "Aucun ordinateur sélectionné"
 
 #: src/pages/computers/replacement.vue:124
 #: src/pages/devices/replacement.vue:119
@@ -2585,9 +2546,8 @@ msgid "Print Label"
 msgstr ""
 
 #: src/pages/computers/results/label.vue:66
-#, fuzzy
 msgid "ID"
-msgstr "UUID"
+msgstr "ID"
 
 #: src/pages/computers/results/label.vue:109
 msgid "Label size optimized for 80x50mm thermal printers."
@@ -2625,19 +2585,16 @@ msgid "Operations: Install"
 msgstr ""
 
 #: src/pages/computers/results/simulate.vue:211
-#, fuzzy
 msgid "Direct Packages"
-msgstr "Paquets"
+msgstr "Paquets directs"
 
 #: src/pages/computers/results/simulate.vue:249
-#, fuzzy
 msgid "From Policies"
-msgstr "Politiques"
+msgstr "À partir des politiques"
 
 #: src/pages/computers/results/simulate.vue:295
-#, fuzzy
 msgid "Operations: Uninstall"
-msgstr "Paquets à désinstaller"
+msgstr "Opérations : Désinstaller"
 
 #: src/pages/computers/results/simulate.vue:386
 msgid "Capture Hardware"
@@ -2877,9 +2834,8 @@ msgstr ""
 "Cette procédure échange les ordinateurs assignés entre deux périphériques."
 
 #: src/pages/devices/replacement.vue:86 src/pages/devices/replacement.vue:183
-#, fuzzy
 msgid "No device selected"
-msgstr "lignes sélectionnées"
+msgstr "Aucun périphérique sélectionné"
 
 #: src/pages/devices/results/detail.vue:46
 #: src/pages/devices/results/list.vue:94
@@ -2971,9 +2927,8 @@ msgid "Go Home"
 msgstr "Aller à l'accueil"
 
 #: src/pages/ErrorNotFound.vue:43
-#, fuzzy
 msgid "Return to Dashboard"
-msgstr "Tableau de bord"
+msgstr "Retour au tableau de bord"
 
 #: src/pages/errors/index.vue:12
 msgid "Errors / Month"
@@ -3099,18 +3054,16 @@ msgid "Groups List"
 msgstr "Liste des groupes"
 
 #: src/pages/imports/index.vue:17
-#, fuzzy
 msgid "Distribution"
-msgstr "Description"
+msgstr "Distribution"
 
 #: src/pages/imports/index.vue:18
 msgid "Select the base distribution"
 msgstr "Sélectionnez la distribution de base"
 
 #: src/pages/imports/index.vue:38
-#, fuzzy
 msgid "Select or create a project"
-msgstr "Dépôts / Projet"
+msgstr "Sélectionner ou créer un projet"
 
 #: src/pages/imports/index.vue:62 src/pages/imports/index.vue:109
 #: src/pages/imports/index.vue:140
@@ -3126,27 +3079,24 @@ msgid "Review, edit and select items to import"
 msgstr "Révisez, modifiez et sélectionnez les éléments à importer"
 
 #: src/pages/imports/index.vue:101 src/pages/imports/index.vue:134
-#, fuzzy
 msgid "Start Import"
-msgstr "Date de début"
+msgstr "Démarrer l'importation"
 
 #: src/pages/imports/index.vue:121
 msgid "Upload packages for internal deployments"
 msgstr "Télécharger des paquets pour les déploiements internes"
 
 #: src/pages/imports/index.vue:150
-#, fuzzy
 msgid "Execution"
-msgstr "Connexion"
+msgstr "Exécution"
 
 #: src/pages/imports/index.vue:151
 msgid "Import in progress"
 msgstr "Importation en cours"
 
 #: src/pages/imports/index.vue:166
-#, fuzzy
 msgid "View Results"
-msgstr "Résultats"
+msgstr "Voir les résultats"
 
 #: src/pages/imports/index.vue:176
 msgid "Import completed"
@@ -3157,24 +3107,20 @@ msgid "New Import"
 msgstr "Nouvelle importation"
 
 #: src/pages/imports/index.vue:195
-#, fuzzy
 msgid "Download Recipe"
-msgstr "Télécharger"
+msgstr "Télécharger la recette"
 
 #: src/pages/imports/index.vue:203
-#, fuzzy
 msgid "Go to Deployments"
-msgstr "Déploiements"
+msgstr "Aller aux déploiements"
 
 #: src/pages/imports/index.vue:320
-#, fuzzy
 msgid "Invalid template"
-msgstr "Courriel invalide"
+msgstr "Modèle invalide"
 
 #: src/pages/imports/index.vue:328
-#, fuzzy
 msgid "Invalid template file"
-msgstr "Courriel invalide"
+msgstr "Fichier de modèle invalide"
 
 #: src/pages/imports/index.vue:530
 msgid "Could not load the import template. Please check that the file exists."
@@ -3549,9 +3495,8 @@ msgid "Incorrect"
 msgstr ""
 
 #: src/pages/syncs/results/list.vue:72
-#, fuzzy
 msgid "Syncs"
-msgstr "Liste des synchronisations"
+msgstr "Synchronisations"
 
 #: src/pages/syncs/results/list.vue:73
 msgid "Syncs List"

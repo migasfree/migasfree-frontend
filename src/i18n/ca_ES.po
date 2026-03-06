@@ -45,9 +45,8 @@ msgid "Unable to connect to the server. Please check your connection."
 msgstr "No es pot connectar amb el servidor. Verifiqueu la connexió."
 
 #: src/components/chart/ExportMenu.vue:9
-#, fuzzy
 msgid "Export menu"
-msgstr "Exportar"
+msgstr "Menú d'exportació"
 
 #: src/components/chart/ExportMenu.vue:11 src/components/chart/Pie.vue:256
 #: src/components/chart/StackedBar.vue:191 src/components/ui/Header.vue:48
@@ -164,9 +163,8 @@ msgid "Name"
 msgstr "Nom"
 
 #: src/components/chart/StackedBar.vue:31
-#, fuzzy
 msgid "Selection mode"
-msgstr "Seleccioneu un fitxer"
+msgstr "Mode de selecció"
 
 #: src/components/chart/StackedBar.vue:44
 msgid "Multiple Selection"
@@ -335,14 +333,12 @@ msgid "Assigned"
 msgstr "Assignat"
 
 #: src/components/computer/Devices.vue:72
-#, fuzzy
 msgid "Primary Device"
-msgstr "Dispositiu lògic"
+msgstr "Dispositiu primari"
 
 #: src/components/computer/Devices.vue:80
-#, fuzzy
 msgid "Set as default"
-msgstr "Per defecte"
+msgstr "Establir com a predeterminat"
 
 #: src/components/computer/Devices.vue:93
 msgid "Select which of the assigned devices is the primary for this computer."
@@ -367,20 +363,17 @@ msgstr "Data de l'última actualització del maquinari"
 
 #: src/components/computer/HardwareResume.vue:36
 #: src/components/computer/HardwareResume.vue:39
-#, fuzzy
 msgid "Edit date"
-msgstr "amb data"
+msgstr "Editar data"
 
 #: src/components/computer/HardwareResume.vue:49
 #: src/components/computer/HardwareResume.vue:52
-#, fuzzy
 msgid "Clear date"
-msgstr "Netejar"
+msgstr "Esborrar data"
 
 #: src/components/computer/HardwareResume.vue:67
-#, fuzzy
 msgid "No date"
-msgstr "data"
+msgstr "Sense data"
 
 #: src/components/computer/HardwareResume.vue:107
 #: src/components/computer/Info.vue:48 src/components/ui/ItemDetail.vue:122
@@ -403,9 +396,8 @@ msgid "Hardware Information"
 msgstr "Informació del maquinari"
 
 #: src/components/computer/HardwareResume.vue:193
-#, fuzzy
 msgid "Key Specifications"
-msgstr "Notificacions"
+msgstr "Especificacions clau"
 
 #: src/components/computer/HardwareResume.vue:200
 msgid "Processor"
@@ -465,14 +457,12 @@ msgid "Date of entry into the migasfree system"
 msgstr "Data d'entrada de l'ordinador en migasfree"
 
 #: src/components/computer/Info.vue:34
-#, fuzzy
 msgid "Computer Name"
-msgstr "Ordinador"
+msgstr "Nom de l'ordinador"
 
 #: src/components/computer/Info.vue:77
-#, fuzzy
 msgid "Edit name"
-msgstr "Edita"
+msgstr "Editar nom"
 
 #: src/components/computer/Info.vue:116
 msgid "Environment"
@@ -522,14 +512,12 @@ msgid "Project"
 msgstr "Projecte"
 
 #: src/components/computer/Info.vue:157
-#, fuzzy
 msgid "Network"
-msgstr "Error de xarxa"
+msgstr "Xarxa"
 
 #: src/components/computer/Info.vue:164
-#, fuzzy
 msgid "IP Address"
-msgstr "Adreça MAC"
+msgstr "Adreça IP"
 
 #: src/components/computer/Info.vue:189
 msgid "Forwarded IP"
@@ -566,9 +554,8 @@ msgid "Locations"
 msgstr "Ubicacions"
 
 #: src/components/computer/Locations.vue:84
-#, fuzzy
 msgid "Map"
-msgstr "maig"
+msgstr "Mapa"
 
 #: src/components/computer/Locations.vue:86
 msgid "Satellite"
@@ -587,9 +574,8 @@ msgid "Center Markers"
 msgstr "Centrar marcadors"
 
 #: src/components/computer/Locations.vue:161
-#, fuzzy
 msgid "Copy coordinates"
-msgstr "Afegeix coordenades"
+msgstr "Copiar coordenades"
 
 #: src/components/computer/Locations.vue:162
 #: src/components/ui/CopyToClipboard.vue:6
@@ -650,9 +636,8 @@ msgstr "Inventari"
 
 #: src/components/computer/Software.vue:57
 #: src/components/computer/Software.vue:183
-#, fuzzy
 msgid "Hide search"
-msgstr "Escriu per cercar"
+msgstr "Amagar cerca"
 
 #: src/components/computer/Software.vue:58
 #: src/components/computer/Software.vue:109
@@ -690,18 +675,16 @@ msgid "Load"
 msgstr ""
 
 #: src/components/computer/Software.vue:96
-#, fuzzy
 msgid "Load inventory"
-msgstr "amb inventari"
+msgstr "Carregar inventari"
 
 #: src/components/computer/Software.vue:156
 msgid "History"
 msgstr "Història"
 
 #: src/components/computer/Software.vue:222
-#, fuzzy
 msgid "Load history"
-msgstr "Història"
+msgstr "Carregar històric"
 
 #: src/components/computer/Software.vue:353 src/components/ui/AppMenu.vue:325
 #: src/pages/computers/softwareCompare.vue:164
@@ -775,9 +758,8 @@ msgid "View assigned Computers"
 msgstr "Veure els ordinadors assignats"
 
 #: src/components/deployment/Timeline.vue:105
-#, fuzzy
 msgid "Computers Status"
-msgstr "Llista de ordinadors"
+msgstr "Estat dels ordinadors"
 
 #: src/components/deployment/Timeline.vue:110
 msgid "OK Computers"
@@ -817,9 +799,8 @@ msgid "Computers in Logical Devices (by Capability)"
 msgstr "Ordinadors en dispositius lògics (per capacitat)"
 
 #: src/components/device/ReplacementInfo.vue:81
-#, fuzzy
 msgid "No computers found"
-msgstr "Nous ordinadors / Mes"
+msgstr "No s'han trobat ordinadors"
 
 #: src/components/imports/ApplicationEditor.vue:6
 #: src/components/imports/StepResults.vue:94 src/components/ui/AppMenu.vue:283
@@ -838,9 +819,8 @@ msgid "Finish editing"
 msgstr "Finalitzar edició"
 
 #: src/components/imports/ApplicationEditor.vue:20
-#, fuzzy
 msgid "Edit applications"
-msgstr "Aplicacions"
+msgstr "Editar aplicacions"
 
 #: src/components/imports/ApplicationEditor.vue:76
 #: src/pages/applications/results/detail.vue:39
@@ -892,9 +872,8 @@ msgid "Deployments"
 msgstr "Desplegaments"
 
 #: src/components/imports/DeploymentEditor.vue:20
-#, fuzzy
 msgid "Edit deployments"
-msgstr "Desplegaments habilitats"
+msgstr "Editar desplegaments"
 
 #: src/components/imports/DeploymentEditor.vue:40
 #: src/components/imports/DeploymentEditor.vue:66
@@ -937,9 +916,8 @@ msgid "Enabled"
 msgstr "Habilitat"
 
 #: src/components/imports/DeploymentEditor.vue:53
-#, fuzzy
 msgid "Disabled"
-msgstr "Deshabilitar"
+msgstr "Deshabilitat"
 
 #: src/components/imports/DeploymentEditor.vue:86
 #: src/pages/computers/replacement.vue:36
@@ -993,14 +971,12 @@ msgid "Upload Custom Template"
 msgstr "Subir plantilla personalitzada"
 
 #: src/components/imports/StepDistribution.vue:30
-#, fuzzy
 msgid "Select a template.json file"
-msgstr "Seleccioneu un fitxer"
+msgstr "Selecciona un fitxer template.json"
 
 #: src/components/imports/StepDistribution.vue:69
-#, fuzzy
 msgid "Loading template..."
-msgstr "Carregant dades..."
+msgstr "Carregant plantilla..."
 
 #: src/components/imports/StepDistribution.vue:107
 #: src/pages/imports/index.vue:55 src/pages/imports/index.vue:100
@@ -1008,9 +984,8 @@ msgid "Continue"
 msgstr "Continuar"
 
 #: src/components/imports/StepExecution.vue:26
-#, fuzzy
 msgid "Waiting..."
-msgstr "Actualitzant..."
+msgstr "Esperant..."
 
 #: src/components/imports/StepPackages.vue:8
 msgid ""
@@ -1019,38 +994,33 @@ msgid ""
 msgstr ""
 
 #: src/components/imports/StepPackages.vue:26
-#, fuzzy
 msgid "Download URL"
-msgstr "Descarregar"
+msgstr "URL de descàrrega"
 
 #: src/components/imports/StepPackages.vue:33
 msgid "Upload packages (.deb, .rpm)"
 msgstr "Subir paquets (.deb, .rpm)"
 
 #: src/components/imports/StepProject.vue:11
-#, fuzzy
 msgid "Existing Project"
-msgstr "Migracions / Projecte"
+msgstr "Projecte existent"
 
 #: src/components/imports/StepProject.vue:25
 msgid "Or enter a new project name"
 msgstr "O introdueixi un nou nom de projecte"
 
 #: src/components/imports/StepProject.vue:42
-#, fuzzy
 msgid "Project Configuration"
-msgstr "Configuració"
+msgstr "Configuració del projecte"
 
 #: src/components/imports/StepProject.vue:55
-#, fuzzy
 msgid "Edit configuration"
-msgstr "Configuració"
+msgstr "Editar configuració"
 
 #: src/components/imports/StepProject.vue:78
 #: src/components/imports/StepProject.vue:118
-#, fuzzy
 msgid "Package Manager"
-msgstr "Sistema de gestió de paquets"
+msgstr "Gestor de paquets"
 
 #: src/components/imports/StepProject.vue:87
 #: src/components/imports/StepProject.vue:136
@@ -1061,9 +1031,8 @@ msgid "Architecture"
 msgstr "Arquitectura"
 
 #: src/components/imports/StepResults.vue:13
-#, fuzzy
 msgid "Import completed with errors"
-msgstr "Ordinadors amb qualsevol error"
+msgstr "Importació completada amb errors"
 
 #: src/components/imports/StepResults.vue:14
 msgid "Import completed successfully!"
@@ -1290,9 +1259,8 @@ msgid "Policies"
 msgstr "Polítiques"
 
 #: src/components/ui/AppMenu.vue:301 src/pages/imports/index.vue:235
-#, fuzzy
 msgid "Import Configuration"
-msgstr "Configuració"
+msgstr "Configuració d'importació"
 
 #: src/components/ui/AppMenu.vue:312 src/pages/attributes/index.vue:59
 #: src/pages/attributes/results/detail.vue:176
@@ -1366,9 +1334,8 @@ msgid "Clear"
 msgstr "Netejar"
 
 #: src/components/ui/DateRangeInput.vue:63
-#, fuzzy
 msgid "Select range"
-msgstr "Seleccioneu un fitxer"
+msgstr "Seleccionar rang"
 
 #: src/components/ui/EntitySelect.vue:28
 #: src/components/ui/FilteredMultiSelect.vue:30
@@ -1394,14 +1361,12 @@ msgid "Add"
 msgstr "Afegir"
 
 #: src/components/ui/Header.vue:83
-#, fuzzy
 msgid "Confirm Export"
-msgstr "Confirmar"
+msgstr "Confirmar exportació"
 
 #: src/components/ui/Header.vue:84
-#, fuzzy
 msgid "Do you want to export so many results? This might take a while."
-msgstr "¿Vols exportar tants resultats?"
+msgstr "Voleu exportar tants resultats? Això pot trigar una estona."
 
 #: src/components/ui/ItemDetail.vue:91 src/components/ui/ItemDetail.vue:96
 msgid "Save and add other"
@@ -1427,9 +1392,8 @@ msgid "Paste"
 msgstr "Enganxa"
 
 #: src/components/ui/SelectAttributes.vue:63
-#, fuzzy
 msgid "Pasted!"
-msgstr "Enganxa"
+msgstr "Enganxat!"
 
 #: src/components/ui/TablePagination.vue:127 src/composables/detail.js:83
 #: src/composables/listConfig.js:47 src/pages/computers/results/events.vue:346
@@ -1580,14 +1544,12 @@ msgid "Switch to Full Screen view"
 msgstr "Canvia a la visualització de pantalla completa"
 
 #: src/components/ui/UserAccount.vue:10
-#, fuzzy
 msgid "User account menu"
-msgstr "Compte d'usuari/a"
+msgstr "Menú del compte d'usuari"
 
 #: src/components/ui/UserAccount.vue:39
-#, fuzzy
 msgid "Profile"
-msgstr "Perfil d'usuari/a"
+msgstr "Perfil"
 
 #: src/components/ui/UserAccount.vue:58
 msgid "Organization"
@@ -2439,9 +2401,8 @@ msgstr ""
 
 #: src/pages/computers/replacement.vue:91
 #: src/pages/computers/replacement.vue:193
-#, fuzzy
 msgid "No computer selected"
-msgstr "files seleccionades"
+msgstr "Cap ordinador seleccionat"
 
 #: src/pages/computers/replacement.vue:124
 #: src/pages/devices/replacement.vue:119
@@ -2587,9 +2548,8 @@ msgid "Print Label"
 msgstr "Imprimir etiqueta"
 
 #: src/pages/computers/results/label.vue:66
-#, fuzzy
 msgid "ID"
-msgstr "UUID"
+msgstr "ID"
 
 #: src/pages/computers/results/label.vue:109
 msgid "Label size optimized for 80x50mm thermal printers."
@@ -2627,19 +2587,16 @@ msgid "Operations: Install"
 msgstr ""
 
 #: src/pages/computers/results/simulate.vue:211
-#, fuzzy
 msgid "Direct Packages"
-msgstr "Paquets"
+msgstr "Paquets directes"
 
 #: src/pages/computers/results/simulate.vue:249
-#, fuzzy
 msgid "From Policies"
-msgstr "Polítiques"
+msgstr "Des de polítiques"
 
 #: src/pages/computers/results/simulate.vue:295
-#, fuzzy
 msgid "Operations: Uninstall"
-msgstr "Paquets per desinstal·lar"
+msgstr "Operacions: Desinstal·lar"
 
 #: src/pages/computers/results/simulate.vue:386
 msgid "Capture Hardware"
@@ -2879,9 +2836,8 @@ msgstr ""
 "Aquest procediment canvia els ordinadors assignats entre dos dispositius."
 
 #: src/pages/devices/replacement.vue:86 src/pages/devices/replacement.vue:183
-#, fuzzy
 msgid "No device selected"
-msgstr "files seleccionades"
+msgstr "Cap dispositiu seleccionat"
 
 #: src/pages/devices/results/detail.vue:46
 #: src/pages/devices/results/list.vue:94
@@ -2973,9 +2929,8 @@ msgid "Go Home"
 msgstr "Anar a casa"
 
 #: src/pages/ErrorNotFound.vue:43
-#, fuzzy
 msgid "Return to Dashboard"
-msgstr "Consola"
+msgstr "Tornar al quadre de comandament"
 
 #: src/pages/errors/index.vue:12
 msgid "Errors / Month"
@@ -3101,18 +3056,16 @@ msgid "Groups List"
 msgstr "Llista de grups"
 
 #: src/pages/imports/index.vue:17
-#, fuzzy
 msgid "Distribution"
-msgstr "Descripció"
+msgstr "Distribució"
 
 #: src/pages/imports/index.vue:18
 msgid "Select the base distribution"
 msgstr "Seleccioni la distribució base"
 
 #: src/pages/imports/index.vue:38
-#, fuzzy
 msgid "Select or create a project"
-msgstr "Magatzem / Projecte"
+msgstr "Selecciona o crea un projecte"
 
 #: src/pages/imports/index.vue:62 src/pages/imports/index.vue:109
 #: src/pages/imports/index.vue:140
@@ -3128,27 +3081,24 @@ msgid "Review, edit and select items to import"
 msgstr "Revisa, edita i selecciona els elements a importar"
 
 #: src/pages/imports/index.vue:101 src/pages/imports/index.vue:134
-#, fuzzy
 msgid "Start Import"
-msgstr "Data d'inici"
+msgstr "Iniciar importació"
 
 #: src/pages/imports/index.vue:121
 msgid "Upload packages for internal deployments"
 msgstr "Pujar paquets per a desplegaments interns"
 
 #: src/pages/imports/index.vue:150
-#, fuzzy
 msgid "Execution"
-msgstr "Connexió"
+msgstr "Execució"
 
 #: src/pages/imports/index.vue:151
 msgid "Import in progress"
 msgstr "Importació en curs"
 
 #: src/pages/imports/index.vue:166
-#, fuzzy
 msgid "View Results"
-msgstr "Resultats"
+msgstr "Veure resultats"
 
 #: src/pages/imports/index.vue:176
 msgid "Import completed"
@@ -3159,22 +3109,18 @@ msgid "New Import"
 msgstr "Nova importació"
 
 #: src/pages/imports/index.vue:195
-#, fuzzy
 msgid "Download Recipe"
-msgstr "Descarregar"
+msgstr "Descarregar recepta"
 
 #: src/pages/imports/index.vue:203
-#, fuzzy
 msgid "Go to Deployments"
-msgstr "Desplegaments"
+msgstr "Anar a Desplegaments"
 
 #: src/pages/imports/index.vue:320
-#, fuzzy
 msgid "Invalid template"
 msgstr "Plantilla no vàlida"
 
 #: src/pages/imports/index.vue:328
-#, fuzzy
 msgid "Invalid template file"
 msgstr "Fitxer de plantilla no vàlid"
 
@@ -3551,9 +3497,8 @@ msgid "Incorrect"
 msgstr ""
 
 #: src/pages/syncs/results/list.vue:72
-#, fuzzy
 msgid "Syncs"
-msgstr "Llista de sincronitzacions"
+msgstr "Sincronitzacions"
 
 #: src/pages/syncs/results/list.vue:73
 msgid "Syncs List"
