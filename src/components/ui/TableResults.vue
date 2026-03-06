@@ -628,7 +628,6 @@
 import { computed, toRef, onMounted, useSlots } from 'vue'
 import { useRoute } from 'vue-router'
 
-import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
 import FilterSelect from 'components/ui/FilterSelect'
@@ -644,6 +643,7 @@ import Truncate from 'components/ui/Truncate'
 
 import useDataGrid from 'composables/dataGrid'
 import { appIcon, modelIcon, useElement } from 'composables/element'
+import { useSmartRequest } from 'composables/smartRequest'
 
 defineOptions({ name: 'TableResults' })
 
@@ -662,6 +662,7 @@ const uiStore = useUiStore()
 const route = useRoute()
 const slots = useSlots()
 const { elementIcon } = useElement()
+const { smartRequest } = useSmartRequest()
 
 const model = toRef(props, 'model')
 const columnParams = toRef(props, 'columnParams')
@@ -798,7 +799,7 @@ const loadFilter = async (endpoint, filterKey, queryParam) => {
   }
 
   try {
-    const { data } = await api.get(endpoint)
+    const { data } = await smartRequest(endpoint)
     tableFilters[filterKey].items.push(...data.results)
 
     if (
@@ -824,7 +825,7 @@ onMounted(async () => {
 
   if (props.moreFilters.includes('project')) {
     try {
-      const { data } = await api.get('/api/v1/token/projects/')
+      const { data } = await smartRequest('/api/v1/token/projects/')
       tableFilters.project.items.push(...data.results)
 
       const projectQuery =
@@ -842,7 +843,7 @@ onMounted(async () => {
 
   if (props.moreFilters.includes('statusIn')) {
     try {
-      const { data } = await api.get('/api/v1/token/computers/status/')
+      const { data } = await smartRequest('/api/v1/token/computers/status/')
       updateStatusInFilter(data)
     } catch (error) {
       uiStore.notifyError(error)
@@ -855,7 +856,7 @@ onMounted(async () => {
 
   if (props.moreFilters.includes('user')) {
     try {
-      const { data } = await api.get('/api/v1/token/faults/user/')
+      const { data } = await smartRequest('/api/v1/token/faults/user/')
       Object.entries(data.choices).forEach(([key, val]) => {
         tableFilters.user.items.push({ id: key, name: val })
       })
