@@ -163,18 +163,15 @@
             </q-btn>
 
             <!-- Subtitle: productSystem + UUID -->
-            <div class="row items-center no-wrap q-mt-xs q-gutter-x-md">
-              <div
-                v-if="uuid"
-                class="row items-center no-wrap text-mono uuid-metrics"
-              >
+            <div class="row items-center no-wrap q-mt-xs">
+              <div v-if="uuid" class="row items-center no-wrap text-mono">
                 <q-icon
                   name="mdi-identifier"
                   size="14px"
                   class="q-mr-xs"
                   aria-hidden="true"
                 />
-                <span class="ellipsis uuid-text">{{ uuid }}</span>
+                <TextTooltip :text="uuid" />
                 <CopyToClipboard
                   :content="uuid"
                   size="sm"
@@ -271,7 +268,7 @@
                 />
                 <CopyToClipboard
                   :content="humanMacAddress(macAddress)"
-                  size="xs"
+                  size="sm"
                   flat
                   class="opacity-40"
                 />
@@ -520,12 +517,5 @@ export default {
   font-size: 0.85rem;
   font-weight: 700;
   padding: 0;
-}
-.uuid-metrics {
-  font-size: 0.7rem;
-}
-
-.uuid-text {
-  max-width: 200px;
 }
 </style>
