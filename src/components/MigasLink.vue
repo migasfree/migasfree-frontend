@@ -91,7 +91,6 @@
                     abbreviateNumber(item.count, 0).toString() !==
                     item.count.toString()
                   "
-                 
                 >
                   {{ item.count }}
                 </q-tooltip>
