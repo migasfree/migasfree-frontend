@@ -379,9 +379,7 @@ export default {
 /* Action buttons */
 .action-btn {
   background: rgba(var(--brand-primary-rgb), 0.05);
-  padding: 8px 20px;
   font-weight: 600;
-  transition: all 0.2s;
 }
 
 .action-btn:hover {
