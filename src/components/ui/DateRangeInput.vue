@@ -59,9 +59,7 @@
               </div>
             </q-date>
           </q-popup-proxy>
-          <q-tooltip>{{
-            $gettext('Select range')
-          }}</q-tooltip>
+          <q-tooltip>{{ $gettext('Select range') }}</q-tooltip>
         </q-icon>
       </div>
     </template>
