@@ -1,3 +1,4 @@
+import { appIcon } from '../../composables/element'
 import Breadcrumbs from './Breadcrumbs.vue'
 
 export default {
@@ -17,7 +18,7 @@ export const Default = {
     items: [
       { text: 'Home', to: 'home', icon: 'mdi-home' },
       { text: 'Products', to: 'products', icon: 'mdi-package' },
-      { text: 'Detail', icon: 'mdi-information' },
+      { text: 'Detail', icon: appIcon('info') },
     ],
   },
 }

@@ -13,7 +13,9 @@
         <div class="row no-wrap items-center gap-md">
           <q-toggle
             v-model="isAutoRefreshActive"
-            :icon="isAutoRefreshActive ? 'mdi-autorenew' : 'mdi-sync-off'"
+            :icon="
+              isAutoRefreshActive ? appIcon('regenerate') : appIcon('sync')
+            "
             color="primary"
             class="text-weight-bold"
             :label="isAutoRefreshActive ? '' : $gettext('Auto-refresh')"

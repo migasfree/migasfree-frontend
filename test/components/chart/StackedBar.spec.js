@@ -1,3 +1,4 @@
+import { appIcon } from 'composables/element'
 import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import StackedBar from 'src/components/chart/StackedBar.vue'

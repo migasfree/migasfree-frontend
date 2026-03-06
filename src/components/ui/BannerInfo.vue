@@ -18,6 +18,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { appIcon } from 'composables/element'
 
 defineOptions({ name: 'BannerInfo' })
 
@@ -35,14 +36,14 @@ const props = defineProps({
 defineEmits(['close'])
 
 const DEFAULT_ICONS = {
-  info: 'mdi-information',
-  success: 'mdi-check-circle',
-  warning: 'mdi-alert',
-  critical: 'mdi-alert-octagon',
+  info: appIcon('info'),
+  success: appIcon('success'),
+  warning: appIcon('warning'),
+  critical: appIcon('error'),
 }
 
 const resolvedIcon = computed(
-  () => props.icon || DEFAULT_ICONS[props.type] || 'mdi-information',
+  () => props.icon || DEFAULT_ICONS[props.type] || appIcon('info'),
 )
 </script>
 

@@ -5,8 +5,8 @@ import { createTestingPinia } from '@pinia/testing'
 
 // Mock dependencies
 const mocks = vi.hoisted(() => ({
-  router: { push: vi.fn() },
   api: { get: vi.fn() },
+  smartRequest: { smartRequest: vi.fn() },
   chartOptions: {
     initOptions: { some: 'option' },
     loadingOptions: { text: 'Loading...' },
@@ -48,6 +48,10 @@ vi.mock('composables/chart/utils', () => ({
 
 vi.mock('composables/chart/export', () => ({
   useChartExport: () => mocks.chartExport,
+}))
+
+vi.mock('composables/smartRequest', () => ({
+  useSmartRequest: () => mocks.smartRequest,
 }))
 
 // Mock vue3-gettext
@@ -100,6 +104,10 @@ describe('Pie.vue', () => {
           'q-dialog': true,
           'q-table': true,
           BannerInfo: true,
+          TextTooltip: {
+            template: '<span>{{ text }}</span>',
+            props: ['text'],
+          },
         },
         directives: {
           'close-popup': {},
@@ -115,7 +123,7 @@ describe('Pie.vue', () => {
   })
 
   it('fetches data on mount', async () => {
-    mocks.api.get.mockResolvedValue({
+    mocks.smartRequest.smartRequest.mockResolvedValue({
       data: {
         total: 10,
         data: [
@@ -130,14 +138,16 @@ describe('Pie.vue', () => {
 
     await flushPromises()
 
-    expect(mocks.api.get).toHaveBeenCalledWith('/api/charts/pie')
+    expect(mocks.smartRequest.smartRequest).toHaveBeenCalledWith(
+      '/api/charts/pie',
+    )
     expect(wrapper.vm.loading).toBe(false)
     expect(wrapper.vm.data.total).toBe(10)
   })
 
   it('handles API error correctly', async () => {
     const error = new Error('API Error')
-    mocks.api.get.mockRejectedValue(error)
+    mocks.smartRequest.smartRequest.mockRejectedValue(error)
 
     wrapper = createWrapper()
     await flushPromises()
@@ -148,7 +158,7 @@ describe('Pie.vue', () => {
   })
 
   it('shows no data message when total is 0', async () => {
-    mocks.api.get.mockResolvedValue({
+    mocks.smartRequest.smartRequest.mockResolvedValue({
       data: {
         total: 0,
         data: [],

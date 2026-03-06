@@ -1,3 +1,4 @@
+import { appIcon, techIcon } from 'composables/element'
 <template>
   <div>
     <!-- Template source toggle -->
@@ -12,12 +13,12 @@
         {
           label: $gettext('Bundled Templates'),
           value: 'bundled',
-          icon: 'mdi-package-variant-closed',
+          icon: appIcon('packages'),
         },
         {
           label: $gettext('Upload Custom Template'),
           value: 'upload',
-          icon: 'mdi-upload',
+          icon: appIcon('upload'),
         },
       ]"
       @update:model-value="$emit('update:templateSource', $event)"

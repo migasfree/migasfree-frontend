@@ -1,3 +1,4 @@
+import { appIcon } from 'composables/element'
 <template>
   <div class="q-py-md">
     <q-linear-progress
@@ -75,10 +76,10 @@ defineProps({
 
 const logIcon = (type) => {
   const icons = {
-    info: 'mdi-information-outline',
-    success: 'mdi-check-circle-outline',
+    info: appIcon('info'),
+    success: appIcon('success'),
     warning: 'mdi-alert-outline',
-    error: 'mdi-close-circle-outline',
+    error: appIcon('cancel'),
   }
   return icons[type] || icons.info
 }

@@ -1,3 +1,4 @@
+import { appIcon } from 'composables/element'
 <template>
   <div class="q-pa-md row q-col-gutter-lg items-center justify-center">
     <!-- Schedule Circle -->

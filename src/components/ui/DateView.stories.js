@@ -1,3 +1,4 @@
+import { appIcon } from '../../composables/element'
 import DateView from './DateView.vue'
 
 export default {
@@ -29,14 +30,14 @@ export const Default = {
 export const WithIcon = {
   args: {
     value: '2024-12-19T14:30:00Z',
-    icon: 'mdi-calendar',
+    icon: appIcon('calendar'),
   },
 }
 
 export const WithTooltip = {
   args: {
     value: '2024-12-19T14:30:00Z',
-    icon: 'mdi-calendar-plus',
+    icon: appIcon('calendar'),
     tooltipText: 'Created date',
   },
 }
@@ -44,6 +45,6 @@ export const WithTooltip = {
 export const DateOnly = {
   args: {
     value: '2024-12-19',
-    icon: 'mdi-calendar-today',
+    icon: appIcon('calendar'),
   },
 }

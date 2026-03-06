@@ -82,7 +82,7 @@
               >
                 <template #prepend>
                   <q-icon
-                    name="mdi-check-circle-outline"
+                    :name="appIcon('success')"
                     size="xs"
                     aria-hidden="true"
                   />

@@ -1,3 +1,4 @@
+import { appIcon } from 'composables/element'
 <template>
   <q-card class="panel detail-card overflow-hidden">
     <q-card-section class="q-pa-md">

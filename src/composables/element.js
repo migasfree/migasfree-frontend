@@ -67,6 +67,45 @@ const APP_ICON = {
   logout: 'mdi-power-standby',
   identification: 'mdi-card-account-details-outline',
   import: 'mdi-database-import',
+
+  // UI Structural & Navigation
+  menu: 'mdi-menu',
+  close: 'mdi-close',
+  collapse: 'mdi-chevron-up',
+  expand: 'mdi-chevron-down',
+  back: 'mdi-chevron-left',
+  forward: 'mdi-chevron-right',
+
+  // Common Actions / Interaction
+  upload: 'mdi-upload',
+  sync: 'mdi-sync',
+  cancel: 'mdi-close-circle-outline',
+  calendar: 'mdi-calendar',
+  clock: 'mdi-clock-outline',
+  link: 'mdi-link-variant',
+  play: 'mdi-play-circle',
+  stop: 'mdi-stop-circle',
+
+  // Visual Status Indicators
+  loading: 'mdi-loading',
+  success: 'mdi-check-circle-outline',
+  info: 'mdi-information',
+
+  // File Types / Formats
+  json: 'mdi-code-json',
+  image: 'mdi-image-multiple',
+  script: 'mdi-file-code',
+}
+
+const TECH_ICON = {
+  // Hardware & Infra
+  network: 'mdi-server-network',
+  storage: 'mdi-harddisk',
+  ram: 'mdi-memory',
+  linux: 'mdi-linux',
+  database: 'mdi-database',
+  dns: 'mdi-dns-outline',
+  ip: 'mdi-ip-network',
 }
 
 const MODEL_ICON = {
@@ -147,6 +186,21 @@ export const appIcon = (item) => {
  */
 export const modelIcon = (model) => {
   if (model in MODEL_ICON) return MODEL_ICON[model]
+
+  return ''
+}
+
+/**
+ * Get icon for a technology/hardware concept.
+ *
+ * @param {string} concept - Tech concept (e.g., 'network', 'storage')
+ * @returns {string} Material Design Icon class name
+ *
+ * @example
+ * techIcon('linux') // "mdi-linux"
+ */
+export const techIcon = (concept) => {
+  if (concept in TECH_ICON) return TECH_ICON[concept]
 
   return ''
 }
@@ -267,5 +321,6 @@ export const useElement = () => {
     attributeValue,
     equivalentModel,
     equivalentKey,
+    techIcon,
   }
 }

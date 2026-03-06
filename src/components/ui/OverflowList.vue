@@ -1,3 +1,4 @@
+import { appIcon } from 'composables/element'
 <template>
   <div v-if="items.length" class="overflow-list-wrapper">
     <q-expansion-item
@@ -36,9 +37,7 @@
               v-if="model || item.model"
               :model="item.model || model"
               :pk="item.id"
-              :icon="
-                item.icon || elementIcon(item.status) || 'mdi-link-variant'
-              "
+              :icon="item.icon || elementIcon(item.status) || appIcon('link')"
               :value="itemLabel(item)"
               :tooltip="item.summary || ''"
             />

@@ -1,3 +1,4 @@
+import { appIcon } from 'composables/element'
 <template>
   <div class="schedule-progress-wrapper">
     <q-linear-progress

@@ -149,7 +149,7 @@
         :name="5"
         :title="$gettext('Execution')"
         :caption="$gettext('Import in progress')"
-        :icon="isRunning ? 'mdi-loading' : 'mdi-play-circle'"
+        :icon="isRunning ? appIcon('loading') : appIcon('play')"
         :done="step > 5"
         :header-nav="false"
       >

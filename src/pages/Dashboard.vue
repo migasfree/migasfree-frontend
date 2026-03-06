@@ -87,7 +87,7 @@
                     @keydown.enter="updateEventsHistory"
                   >
                     <template #prepend>
-                      <q-icon name="mdi-clock-outline" aria-hidden="true" />
+                      <q-icon :name="appIcon('clock')" aria-hidden="true" />
                     </template>
                   </q-input>
 

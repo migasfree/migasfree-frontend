@@ -1,3 +1,4 @@
+import { appIcon } from 'composables/element'
 <template>
   <q-input
     :model-value="dateView"

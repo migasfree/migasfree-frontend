@@ -1,3 +1,4 @@
+import { appIcon } from 'composables/element'
 <template>
   <div class="chart-container">
     <div class="panel glass-panel overflow-hidden">
