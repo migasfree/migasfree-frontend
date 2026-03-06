@@ -6,8 +6,9 @@
         class="panel-header q-px-lg q-py-md row items-center justify-between no-wrap"
       >
         <div class="title-group row items-center no-wrap col-grow">
-          <h2 class="panel-title ellipsis q-ma-none" :title="title">
-            {{ title }}
+          <!-- eslint-disable-next-line vuejs-accessibility/heading-has-content -->
+          <h2 class="panel-title q-ma-none">
+            <TextTooltip :text="title" />
           </h2>
           <q-btn
             v-if="total"
@@ -93,6 +94,7 @@ import { useChartOptions } from 'composables/chart/options'
 import { useChartUtils } from 'composables/chart/utils'
 
 import ExportMenu from 'components/chart/ExportMenu'
+import TextTooltip from 'components/ui/TextTooltip'
 
 echarts.use([
   HeatmapChart,
@@ -389,13 +391,6 @@ watch(isDark, (val) => {
 .echarts {
   width: 100%;
   height: 100%;
-}
-
-.panel-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--brand-primary);
-  border-bottom: none;
 }
 
 .total-badge {

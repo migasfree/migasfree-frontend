@@ -4,8 +4,9 @@
     <div class="panel-header row items-center justify-between no-wrap q-mb-md">
       <!-- Left side: Title + Total Badge -->
       <div class="title-group row items-center no-wrap col-grow">
-        <h2 class="panel-title ellipsis" :title="title">
-          {{ title }}
+        <!-- eslint-disable-next-line vuejs-accessibility/heading-has-content -->
+        <h2 class="panel-title">
+          <TextTooltip :text="title" />
         </h2>
         <q-btn
           v-if="data.total > 0"
@@ -311,6 +312,7 @@ import { useChartOptions } from 'composables/chart/options'
 import { useChartUtils } from 'composables/chart/utils'
 
 import ExportMenu from 'components/chart/ExportMenu'
+import TextTooltip from 'components/ui/TextTooltip'
 
 echarts.use([
   PieChart,

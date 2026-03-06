@@ -1,12 +1,12 @@
 <template>
-  <div class="text-tooltip-container">
-    <div ref="textRef" class="text-content" :class="textClass">
+  <span class="text-tooltip-container">
+    <span ref="textRef" class="text-content" :class="textClass">
       {{ text }}
-    </div>
+    </span>
     <q-tooltip v-if="isOverflowing" :class="tooltipClass" :offset="[0, 4]">
       {{ text }}
     </q-tooltip>
-  </div>
+  </span>
 </template>
 
 <script setup>
@@ -65,6 +65,7 @@ onBeforeUnmount(() => {
 }
 
 .text-content {
+  display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
