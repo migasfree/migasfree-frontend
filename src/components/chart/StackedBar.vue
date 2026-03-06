@@ -8,14 +8,15 @@
     >
       <!-- Header -->
       <div
-        v-if="title && showTitle"
+        v-if="showTitle"
         class="panel-header q-px-lg q-py-md row items-center justify-between no-wrap"
       >
-        <div class="title-group row items-center no-wrap col-grow">
+        <div v-if="title" class="title-group row items-center no-wrap col-grow">
           <h2 class="panel-title ellipsis" :title="title">
             {{ title }}
           </h2>
         </div>
+        <div v-else class="col-grow"></div>
 
         <div
           class="actions-group row items-center no-wrap q-gutter-x-xs q-ml-sm"
