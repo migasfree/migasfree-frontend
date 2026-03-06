@@ -304,12 +304,12 @@ import {
 } from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
 
-import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { appIcon } from 'composables/element'
 import { useChartExport } from 'composables/chart/export'
 import { useChartOptions } from 'composables/chart/options'
 import { useChartUtils } from 'composables/chart/utils'
+import { useSmartRequest } from 'composables/smartRequest'
 
 import ExportMenu from 'components/chart/ExportMenu'
 import TextTooltip from 'components/ui/TextTooltip'
@@ -337,6 +337,7 @@ const $q = useQuasar()
 const router = useRouter()
 const { $gettext } = useGettext()
 const uiStore = useUiStore()
+const { smartRequest } = useSmartRequest()
 const instance = getCurrentInstance()
 
 const chart = ref(null)
@@ -629,7 +630,7 @@ const savePng = () => savePngImage(chart.value, props.title)
 onMounted(async () => {
   loading.value = true
   try {
-    const { data: response } = await api.get(props.endPoint)
+    const { data: response } = await smartRequest(props.endPoint)
     const nested = 'inner' in response
 
     if (nested && response.inner.length > 0) {

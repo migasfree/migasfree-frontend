@@ -250,12 +250,12 @@ import {
 } from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
 
-import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { appIcon } from 'composables/element'
 import { useChartExport } from 'composables/chart/export'
 import { useChartOptions } from 'composables/chart/options'
 import { useChartUtils } from 'composables/chart/utils'
+import { useSmartRequest } from 'composables/smartRequest'
 
 import DayInput from 'components/ui/DayInput'
 import MonthInput from 'components/ui/MonthInput'
@@ -291,6 +291,7 @@ const emit = defineEmits(['get-link'])
 const $q = useQuasar()
 const { $gettext } = useGettext()
 const uiStore = useUiStore()
+const { smartRequest } = useSmartRequest()
 
 const chart = ref(null)
 const data = reactive(props.initialData)
@@ -429,8 +430,9 @@ const loadData = async () => {
 
   loading.value = true
   try {
-    const { data: resp } = await api.get(props.endPoint, {
-      params: { begin: begin.value, end: end.value },
+    const { data: resp } = await smartRequest(props.endPoint, {
+      begin: begin.value,
+      end: end.value,
     })
 
     const series = Object.entries(resp.data).map(([name, values]) => ({

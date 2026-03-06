@@ -176,8 +176,8 @@ import { useMeta } from 'quasar'
 import pluralize from 'pluralize-esm'
 
 import { useUiStore } from 'stores/ui'
-import { api } from 'boot/axios'
 import { EVENTS_HISTORY_HOURS } from 'config/app.conf'
+import { useSmartRequest } from 'composables/smartRequest'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
@@ -196,6 +196,7 @@ export default defineComponent({
     const { $gettext } = useGettext()
     const router = useRouter()
     const uiStore = useUiStore()
+    const { smartRequest } = useSmartRequest()
 
     const titleIcon = appIcon('home')
     const title = $gettext('Dashboard')
@@ -247,7 +248,7 @@ export default defineComponent({
     // Fetches the list of all available projects and triggers monthly syncs load
     const loadProjects = async () => {
       try {
-        const response = await api.get('/api/v1/token/projects')
+        const response = await smartRequest('/api/v1/token/projects')
         projects.value = response.data.results
         loadMonthlySyncs()
       } catch (error) {
@@ -265,11 +266,9 @@ export default defineComponent({
         const baseParams = { begin: begin.value, end: end.value }
 
         // Fetch global total first to set x-axis labels
-        const baseResponse = await api.get(
+        const baseResponse = await smartRequest(
           '/api/v1/token/stats/syncs/monthly/',
-          {
-            params: baseParams,
-          },
+          baseParams,
         )
         monthlySyncs.xData = baseResponse.data.x_labels
         for (const [, val] of Object.entries(baseResponse.data.data)) {
@@ -283,11 +282,10 @@ export default defineComponent({
 
         // Run detailed project requests in parallel
         const projectPromises = projects.value.map((item) =>
-          api
-            .get('/api/v1/token/stats/syncs/monthly/', {
-              params: { ...baseParams, project_id: item.id },
-            })
-            .then((resp) => ({ item, data: resp.data.data })),
+          smartRequest('/api/v1/token/stats/syncs/monthly/', {
+            ...baseParams,
+            project_id: item.id,
+          }).then((resp) => ({ item, data: resp.data.data })),
         )
         const projectResults = await Promise.all(projectPromises)
 
@@ -337,7 +335,7 @@ export default defineComponent({
       const results = await Promise.all(
         endpoints.map(async ({ url, key }) => {
           try {
-            const resp = await api.get(url, { params: { begin } })
+            const resp = await smartRequest(url, { begin })
             return { key, data: resp.data }
           } catch (error) {
             uiStore.notifyError(error)
