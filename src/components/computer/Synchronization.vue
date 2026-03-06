@@ -163,10 +163,6 @@ const isEndBeforeStart = computed(() => {
   margin: auto;
 }
 
-.text-decoration-none {
-  text-decoration: none;
-}
-
 /* Vertical Timeline Engine */
 .chrono-vertical {
   display: flex;

@@ -994,6 +994,10 @@ h1,
   opacity: 1 !important;
 }
 
+.text-decoration-none {
+  text-decoration: none !important;
+}
+
 .code-example {
   background-color: var(--bg-surface-variant);
 }

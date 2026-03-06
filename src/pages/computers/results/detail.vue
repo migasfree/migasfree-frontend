@@ -410,7 +410,4 @@ export default {
 .counter-row--alert:hover {
   background-color: rgba(var(--q-negative-rgb, 198, 40, 40), 0.2);
 }
-.text-decoration-none {
-  text-decoration: none;
-}
 </style>
