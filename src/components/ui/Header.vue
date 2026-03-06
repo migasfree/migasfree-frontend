@@ -24,9 +24,6 @@
     <div class="header-actions row no-wrap items-center gap-md q-ml-md">
       <q-btn
         v-if="addRoute"
-        flat
-        round
-        size="1.1rem"
         color="primary"
         :icon="appIcon('add')"
         @click="$router.push({ name: addRoute })"
@@ -36,9 +33,6 @@
 
       <q-btn
         v-if="hasExportButton && results > 0"
-        flat
-        round
-        size="1.1rem"
         color="primary"
         :icon="appIcon('export')"
         :loading="isLoadingExport"
