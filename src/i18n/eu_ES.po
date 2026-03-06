@@ -414,8 +414,8 @@ msgstr "Biltegiratzea"
 #: src/components/computer/HardwareResume.vue:249
 msgid "Disk"
 msgid_plural "Disks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Diskoa"
+msgstr[1] "Diskoak"
 
 #: src/components/computer/HardwareResume.vue:259
 msgid "MAC Address"
@@ -1351,8 +1351,8 @@ msgstr[1] "Idatzi bilatzeko (%{num} karaktere gutxienez)"
 #: src/components/ui/FilterSelect.vue:28
 msgid "%{ count } element"
 msgid_plural "%{ count } elements"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Elementu %{ count }"
+msgstr[1] "%{ count } elementu"
 
 #: src/components/ui/Header.vue:34 src/components/ui/ItemDetail.vue:27
 #: src/components/ui/ItemDetail.vue:31 src/composables/detail.js:101
@@ -1379,8 +1379,8 @@ msgstr "Ordena alfabetikoki"
 #: src/components/ui/OrderTextArea.vue:39
 msgid "%{ number } line detected"
 msgid_plural "%{ number } lines detected"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Lauki %{ number } detektatuta"
+msgstr[1] "%{ number } lerro detektatuta"
 
 #: src/components/ui/RemoveDialog.vue:56
 #: src/composables/dataGrid/dataOperations.js:67

@@ -414,8 +414,8 @@ msgstr "Almacenamento"
 #: src/components/computer/HardwareResume.vue:249
 msgid "Disk"
 msgid_plural "Disks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Disco"
+msgstr[1] "Discos"
 
 #: src/components/computer/HardwareResume.vue:259
 msgid "MAC Address"
@@ -1351,8 +1351,8 @@ msgstr[1] "Escriba para buscar (mínimo %{num} caracteres)"
 #: src/components/ui/FilterSelect.vue:28
 msgid "%{ count } element"
 msgid_plural "%{ count } elements"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{ count } elemento"
+msgstr[1] "%{ count } elementos"
 
 #: src/components/ui/Header.vue:34 src/components/ui/ItemDetail.vue:27
 #: src/components/ui/ItemDetail.vue:31 src/composables/detail.js:101
@@ -1379,8 +1379,8 @@ msgstr "Orde alfabeticamente"
 #: src/components/ui/OrderTextArea.vue:39
 msgid "%{ number } line detected"
 msgid_plural "%{ number } lines detected"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{ number } liña detectada"
+msgstr[1] "%{ number } liñas detectadas"
 
 #: src/components/ui/RemoveDialog.vue:56
 #: src/composables/dataGrid/dataOperations.js:67
