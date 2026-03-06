@@ -29,7 +29,7 @@
       anchor="top middle"
       self="bottom middle"
       :offset="[0, 8]"
-      class="glass-tooltip"
+     
     >
       {{ currentTooltip }}
     </q-tooltip>

@@ -26,7 +26,7 @@
       </div>
 
       <!-- Tooltip -->
-      <q-tooltip v-if="tooltip" class="glass-tooltip">
+      <q-tooltip v-if="tooltip">
         <div
           v-for="(item, index) in tooltipItems"
           :key="index"
@@ -91,7 +91,7 @@
                     abbreviateNumber(item.count, 0).toString() !==
                     item.count.toString()
                   "
-                  class="glass-tooltip"
+                 
                 >
                   {{ item.count }}
                 </q-tooltip>
@@ -112,7 +112,7 @@
                   @click.stop
                 >
                   {{ action.title }}
-                  <q-tooltip v-if="action.description" class="glass-tooltip">
+                  <q-tooltip v-if="action.description">
                     {{ action.description }}
                   </q-tooltip>
                 </q-btn>

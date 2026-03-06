@@ -188,7 +188,7 @@
                 :label="items.length"
                 @click="goToItems(itemsDate)"
               >
-                <q-tooltip class="glass-tooltip">
+                <q-tooltip>
                   {{ $gettext('View All') }}
                 </q-tooltip>
               </q-btn>

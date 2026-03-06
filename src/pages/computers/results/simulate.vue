@@ -63,7 +63,7 @@
                         <span class="text-weight-medium text-body2">{{
                           computer.uuid
                         }}</span>
-                        <q-tooltip class="glass-tooltip">{{
+                        <q-tooltip>{{
                           $gettext('UUID')
                         }}</q-tooltip>
                       </div>

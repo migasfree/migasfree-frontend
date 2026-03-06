@@ -24,7 +24,7 @@
           class="clear-btn q-mr-xs"
           @click.stop="reset"
         >
-          <q-tooltip class="glass-tooltip">{{ $gettext('Clear') }}</q-tooltip>
+          <q-tooltip>{{ $gettext('Clear') }}</q-tooltip>
         </q-btn>
 
         <q-icon
@@ -59,7 +59,7 @@
               </div>
             </q-date>
           </q-popup-proxy>
-          <q-tooltip class="glass-tooltip">{{
+          <q-tooltip>{{
             $gettext('Select range')
           }}</q-tooltip>
         </q-icon>

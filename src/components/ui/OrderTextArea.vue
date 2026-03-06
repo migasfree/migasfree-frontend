@@ -23,7 +23,7 @@
             class="action-btn sort-btn"
             @click.stop="orderAlpha"
           >
-            <q-tooltip class="glass-tooltip" :offset="[0, 8]">
+            <q-tooltip :offset="[0, 8]">
               {{ $gettext('Order Alphabetically') }}
             </q-tooltip>
           </q-btn>

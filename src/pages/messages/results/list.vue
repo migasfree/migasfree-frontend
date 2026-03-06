@@ -19,7 +19,7 @@
             :label="isAutoRefreshActive ? '' : $gettext('Auto-refresh')"
             @update:model-value="handleAutoRefreshChange"
           >
-            <q-tooltip class="glass-tooltip">
+            <q-tooltip>
               {{ $gettext('Automatically refresh list') }}
             </q-tooltip>
           </q-toggle>

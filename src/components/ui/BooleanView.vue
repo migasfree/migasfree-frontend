@@ -12,7 +12,7 @@
     <div class="boolean-label">
       {{ label || tooltipText }}
     </div>
-    <q-tooltip v-if="tooltip" class="glass-tooltip">
+    <q-tooltip v-if="tooltip">
       {{ tooltip }}
     </q-tooltip>
   </div>

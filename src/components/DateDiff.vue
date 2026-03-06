@@ -1,6 +1,6 @@
 <template>
   <q-chip v-if="diff" :icon="icon" :class="['date-diff', appearance]">
-    <q-tooltip v-if="tooltip" class="glass-tooltip">{{ tooltip }}</q-tooltip>
+    <q-tooltip v-if="tooltip">{{ tooltip }}</q-tooltip>
     {{ diff }}
   </q-chip>
 </template>

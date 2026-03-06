@@ -294,7 +294,7 @@ h1,
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-.glass-tooltip {
+.q-tooltip {
   background: rgba(var(--brand-primary-rgb), 0.95) !important;
   color: #fff !important;
   backdrop-filter: blur(8px);
@@ -308,7 +308,7 @@ h1,
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
-[data-theme='dark'] .glass-tooltip {
+[data-theme='dark'] .q-tooltip {
   background: rgba(15, 23, 42, 0.9) !important;
   color: var(--brand-tertiary) !important;
   border-color: rgba(255, 255, 255, 0.05);

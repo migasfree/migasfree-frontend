@@ -27,7 +27,7 @@
           class="action-btn-search opacity-70 hover-opacity-100 cursor-pointer"
           @click="emit('search', searchText)"
         >
-          <q-tooltip class="glass-tooltip">{{ $gettext('Search') }}</q-tooltip>
+          <q-tooltip>{{ $gettext('Search') }}</q-tooltip>
         </q-btn>
       </template>
     </q-input>
