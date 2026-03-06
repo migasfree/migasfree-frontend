@@ -1,5 +1,5 @@
 <template>
-  <q-card class="panel sync-card overflow-hidden shadow-2 rounded-borders">
+  <q-card class="panel detail-card overflow-hidden shadow-2 rounded-borders">
     <q-card-section class="q-pa-lg">
       <!-- Header with User Context & Alert -->
       <div class="panel-header row items-center justify-between q-mb-md">
@@ -158,11 +158,6 @@ const isEndBeforeStart = computed(() => {
 </script>
 
 <style scoped>
-.sync-card {
-  max-width: 1000px;
-  margin: auto;
-}
-
 /* Vertical Timeline Engine */
 .chrono-vertical {
   display: flex;

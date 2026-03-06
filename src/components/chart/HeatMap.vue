@@ -387,24 +387,4 @@ watch(isDark, (val) => {
   position: relative;
   overflow: auto;
 }
-
-.echarts {
-  width: 100%;
-  height: 100%;
-}
-
-.total-badge {
-  border-radius: 8px;
-  min-width: 32px;
-  min-height: 0;
-  padding: 2px 8px;
-  font-size: 0.85rem;
-  line-height: 1;
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.total-badge:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  filter: brightness(0.95);
-}
 </style>

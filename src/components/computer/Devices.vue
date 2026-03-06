@@ -1,5 +1,5 @@
 <template>
-  <q-card class="panel devices-card overflow-hidden">
+  <q-card class="panel detail-card overflow-hidden">
     <q-card-section class="q-pa-lg">
       <!-- Header -->
       <div class="panel-header row items-center justify-between q-mb-md">
@@ -197,11 +197,6 @@ onMounted(loadDevices)
 </script>
 
 <style scoped>
-.devices-card {
-  max-width: 1000px;
-  margin: auto;
-}
-
 .bg-surface {
   background: rgba(var(--brand-primary-rgb), 0.02);
 }

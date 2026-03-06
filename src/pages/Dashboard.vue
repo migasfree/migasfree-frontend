@@ -461,10 +461,6 @@ export default defineComponent({
   width: 180px;
 }
 
-.update-btn {
-  height: 40px;
-}
-
 #events-history :deep(.chart-container) {
   margin-bottom: 0;
 }

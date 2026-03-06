@@ -1,5 +1,5 @@
 <template>
-  <q-card class="panel hardware-card overflow-hidden">
+  <q-card class="panel detail-card overflow-hidden">
     <q-card-section class="q-pa-md">
       <!-- Header with Title and Capture Date -->
       <div class="panel-header row items-center justify-between q-mb-md">
@@ -449,11 +449,6 @@ export default {
 </script>
 
 <style scoped>
-.hardware-card {
-  max-width: 1000px;
-  margin: auto;
-}
-
 .capture-badge {
   font-weight: 500;
 }

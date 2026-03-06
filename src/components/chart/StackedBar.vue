@@ -519,11 +519,6 @@ watch(isDark, (val) => {
   position: relative;
 }
 
-.echarts {
-  width: 100%;
-  height: 100%;
-}
-
 .selection-toggle {
   background: rgba(0, 0, 0, 0.05);
   border-radius: 8px;
@@ -532,10 +527,6 @@ watch(isDark, (val) => {
 
 [data-theme='dark'] .selection-toggle {
   background: rgba(255, 255, 255, 0.05);
-}
-
-.data-dialog-card {
-  min-width: 500px;
 }
 
 .update-btn {

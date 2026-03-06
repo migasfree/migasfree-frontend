@@ -1,5 +1,5 @@
 <template>
-  <q-card class="panel software-card overflow-hidden shadow-2 rounded-borders">
+  <q-card class="panel detail-card overflow-hidden shadow-2 rounded-borders">
     <q-card-section class="q-pa-lg">
       <!-- Header -->
       <div class="panel-header row items-center justify-between q-mb-md">
@@ -705,11 +705,6 @@ export default {
 </script>
 
 <style scoped>
-.software-card {
-  max-width: 1000px;
-  margin: auto;
-}
-
 .software-column {
   width: 100%;
 }

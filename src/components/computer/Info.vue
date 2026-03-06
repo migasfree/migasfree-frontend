@@ -1,5 +1,5 @@
 <template>
-  <q-card class="panel info-card overflow-hidden">
+  <q-card class="panel detail-card overflow-hidden">
     <q-card-section class="q-pa-md">
       <!-- Header with Title and Creation Date -->
       <div class="panel-header row items-center justify-between q-mb-md">
@@ -365,11 +365,6 @@ export default {
 </script>
 
 <style scoped>
-.info-card {
-  max-width: 1000px;
-  margin: auto;
-}
-
 .net-value-row {
   display: flex;
   align-items: center;

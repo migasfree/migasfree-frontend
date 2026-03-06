@@ -55,7 +55,7 @@
           <v-chart
             v-show="isChartVisible"
             ref="chart"
-            class="chart"
+            class="echarts"
             :init-options="initOptions"
             :option="options"
             :loading="loading"
@@ -692,11 +692,6 @@ watch(isDark, (val) => {
   position: relative;
 }
 
-.chart {
-  width: 100%;
-  height: 100%;
-}
-
 .color-dot {
   width: 12px;
   height: 12px;
@@ -741,28 +736,9 @@ watch(isDark, (val) => {
   padding-right: 8px;
 }
 
-.data-dialog-card {
-  min-width: 500px;
-}
-
 .legend-scroll {
   height: 300px;
   width: 100%;
-}
-
-.total-badge {
-  border-radius: 8px;
-  min-width: 32px;
-  min-height: 0;
-  padding: 2px 8px;
-  font-size: 0.85rem;
-  line-height: 1;
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.total-badge:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  filter: brightness(0.95);
 }
 
 /*
