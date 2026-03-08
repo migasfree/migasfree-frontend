@@ -14,8 +14,10 @@
   </q-btn>
 </template>
 
-<script>
-export default {
-  name: 'ToggleFullScreen',
-}
+<script setup>
+import { useQuasar } from 'quasar'
+import { useGettext } from 'vue3-gettext'
+
+const $q = useQuasar()
+const { $gettext } = useGettext()
 </script>

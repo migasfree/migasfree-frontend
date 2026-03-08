@@ -26,46 +26,40 @@
   </q-dialog>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
-
 import { appIcon } from 'composables/element'
 
-export default {
-  name: 'RemoveDialog',
-  props: {
-    message: {
-      type: String,
-      required: false,
-      default: '',
-    },
-    modelValue: {
-      type: Boolean,
-      required: true,
-    },
+const props = defineProps({
+  message: {
+    type: String,
+    required: false,
+    default: '',
   },
-  emits: ['canceled', 'confirmed'],
-  setup(props) {
-    const { $gettext } = useGettext()
-
-    const showing = ref(props.modelValue)
-
-    const text = computed(() => {
-      if (props.message === '')
-        return $gettext('Are you sure you want to remove this item?')
-
-      return props.message
-    })
-
-    watch(
-      () => props.modelValue,
-      (newValue) => {
-        showing.value = newValue
-      },
-    )
-
-    return { showing, text, appIcon }
+  modelValue: {
+    type: Boolean,
+    required: true,
   },
-}
+})
+
+defineEmits(['canceled', 'confirmed'])
+
+const { $gettext } = useGettext()
+
+const showing = ref(props.modelValue)
+
+const text = computed(() => {
+  if (props.message === '')
+    return $gettext('Are you sure you want to remove this item?')
+
+  return props.message
+})
+
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    showing.value = newValue
+  },
+)
 </script>

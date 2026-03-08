@@ -1,4 +1,3 @@
-import { appIcon } from 'composables/element'
 <template>
   <q-card class="panel detail-card overflow-hidden">
     <q-card-section class="q-pa-md">
@@ -282,170 +281,146 @@ import { appIcon } from 'composables/element'
   </q-card>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { format } from 'quasar'
-
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
-
 import CopyToClipboard from 'components/ui/CopyToClipboard'
 import DateDiff from 'components/DateDiff'
 import DateView from 'components/ui/DateView'
 import TextTooltip from 'components/ui/TextTooltip'
-
-import { appIcon, useElement } from 'composables/element'
+import { useElement } from 'composables/element'
 import useDate from 'composables/date'
 
-export default {
-  name: 'ComputerHardwareResume',
-  components: { CopyToClipboard, DateDiff, DateView, TextTooltip },
-  props: {
-    cid: {
-      type: Number,
-      required: true,
-    },
-    lastHardwareCapture: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    product: {
-      type: String,
-      required: false,
-      default: '',
-    },
-    productSystem: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    architecture: {
-      type: Number,
-      required: false,
-      default: 64,
-    },
-    uuid: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    cpu: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    ram: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-    storage: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-    disks: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-    macAddress: {
-      type: String,
-      required: false,
-      default: '',
-    },
-    readonly: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
+const props = defineProps({
+  cid: {
+    type: Number,
+    required: true,
   },
-  setup(props) {
-    const { $gettext } = useGettext()
-    const uiStore = useUiStore()
-    const { productIcon, cpuIcon, humanMacAddress } = useElement()
-    const { diffForHumans, localeDate } = useDate()
-
-    const loading = ref(false)
-    const hardwareDate = ref(props.lastHardwareCapture)
-    const editingDate = ref(false)
-    const savedDate = ref(props.lastHardwareCapture)
-
-    const startDateEdit = () => {
-      savedDate.value = hardwareDate.value
-      editingDate.value = true
-    }
-
-    const cancelDateEdit = () => {
-      hardwareDate.value = savedDate.value
-      editingDate.value = false
-    }
-
-    const saveDate = async () => {
-      loading.value = true
-
-      if (hardwareDate.value === '') hardwareDate.value = null
-
-      try {
-        await api.patch(`/api/v1/token/computers/${props.cid}/`, {
-          last_hardware_capture: hardwareDate.value,
-        })
-        uiStore.notifySuccess(
-          $gettext('Last hardware capture date has been changed!'),
-        )
-        savedDate.value = hardwareDate.value
-        editingDate.value = false
-      } catch (error) {
-        const msg =
-          error?.response?.data?.last_hardware_capture?.[0] ??
-          $gettext('Failed to update hardware capture date.')
-        uiStore.notifyError(msg)
-      } finally {
-        loading.value = false
-      }
-    }
-
-    const clearDate = async () => {
-      hardwareDate.value = null
-      loading.value = true
-      try {
-        await api.patch(`/api/v1/token/computers/${props.cid}/`, {
-          last_hardware_capture: null,
-        })
-        uiStore.notifySuccess(
-          $gettext('Last hardware capture date has been changed!'),
-        )
-        savedDate.value = null
-      } catch (error) {
-        const msg =
-          error?.response?.data?.last_hardware_capture?.[0] ??
-          $gettext('Failed to update hardware capture date.')
-        uiStore.notifyError(msg)
-        hardwareDate.value = savedDate.value
-      } finally {
-        loading.value = false
-      }
-    }
-
-    return {
-      loading,
-      hardwareDate,
-      editingDate,
-      startDateEdit,
-      cancelDateEdit,
-      saveDate,
-      clearDate,
-      humanStorageSize: format.humanStorageSize,
-      appIcon,
-      productIcon,
-      cpuIcon,
-      humanMacAddress,
-      diffForHumans,
-      localeDate,
-    }
+  lastHardwareCapture: {
+    type: String,
+    required: false,
+    default: null,
   },
+  product: {
+    type: String,
+    required: false,
+    default: '',
+  },
+  productSystem: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  architecture: {
+    type: Number,
+    required: false,
+    default: 64,
+  },
+  uuid: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  cpu: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  ram: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
+  storage: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
+  disks: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
+  macAddress: {
+    type: String,
+    required: false,
+    default: '',
+  },
+  readonly: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+})
+
+const { $gettext } = useGettext()
+const uiStore = useUiStore()
+const { productIcon, cpuIcon, humanMacAddress } = useElement()
+const { localeDate } = useDate()
+const { humanStorageSize } = format
+
+const loading = ref(false)
+const hardwareDate = ref(props.lastHardwareCapture)
+const editingDate = ref(false)
+const savedDate = ref(props.lastHardwareCapture)
+
+const startDateEdit = () => {
+  savedDate.value = hardwareDate.value
+  editingDate.value = true
+}
+
+const cancelDateEdit = () => {
+  hardwareDate.value = savedDate.value
+  editingDate.value = false
+}
+
+const saveDate = async () => {
+  loading.value = true
+
+  if (hardwareDate.value === '') hardwareDate.value = null
+
+  try {
+    await api.patch(`/api/v1/token/computers/${props.cid}/`, {
+      last_hardware_capture: hardwareDate.value,
+    })
+    uiStore.notifySuccess(
+      $gettext('Last hardware capture date has been changed!'),
+    )
+    savedDate.value = hardwareDate.value
+    editingDate.value = false
+  } catch (error) {
+    const msg =
+      error?.response?.data?.last_hardware_capture?.[0] ??
+      $gettext('Failed to update hardware capture date.')
+    uiStore.notifyError(msg)
+  } finally {
+    loading.value = false
+  }
+}
+
+const clearDate = async () => {
+  hardwareDate.value = null
+  loading.value = true
+  try {
+    await api.patch(`/api/v1/token/computers/${props.cid}/`, {
+      last_hardware_capture: null,
+    })
+    uiStore.notifySuccess(
+      $gettext('Last hardware capture date has been changed!'),
+    )
+    savedDate.value = null
+  } catch (error) {
+    const msg =
+      error?.response?.data?.last_hardware_capture?.[0] ??
+      $gettext('Failed to update hardware capture date.')
+    uiStore.notifyError(msg)
+    hardwareDate.value = savedDate.value
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 

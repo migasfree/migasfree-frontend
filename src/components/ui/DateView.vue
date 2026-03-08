@@ -13,34 +13,26 @@
   </span>
 </template>
 
-<script>
+<script setup>
 import useDate from 'composables/date'
 
-export default {
-  name: 'DateView',
-
-  props: {
-    value: {
-      type: [String],
-      required: false,
-      default: null,
-    },
-    icon: {
-      type: String,
-      required: false,
-      default: '',
-    },
-    tooltipText: {
-      type: String,
-      required: false,
-      default: '',
-    },
+defineProps({
+  value: {
+    type: String,
+    required: false,
+    default: null,
   },
-
-  setup() {
-    const { showDate, diffForHumans } = useDate()
-
-    return { showDate, diffForHumans }
+  icon: {
+    type: String,
+    required: false,
+    default: '',
   },
-}
+  tooltipText: {
+    type: String,
+    required: false,
+    default: '',
+  },
+})
+
+const { showDate, diffForHumans } = useDate()
 </script>

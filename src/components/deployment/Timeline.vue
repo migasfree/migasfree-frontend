@@ -1,4 +1,3 @@
-import { appIcon } from 'composables/element'
 <template>
   <div class="q-pa-md row q-col-gutter-lg items-center justify-center">
     <!-- Schedule Circle -->
@@ -139,64 +138,56 @@ import { appIcon } from 'composables/element'
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
-
 import { modelIcon } from 'composables/element'
 
-export default {
-  name: 'Timeline',
-  props: {
-    modelValue: {
-      type: Object,
-      required: true,
-    },
-    id: {
-      type: Number,
-      required: true,
-    },
+const props = defineProps({
+  modelValue: {
+    type: Object,
+    required: true,
   },
-  setup(props) {
-    const router = useRouter()
-    const uiStore = useUiStore()
+  id: {
+    type: Number,
+    required: true,
+  },
+})
 
-    const loading = ref(false)
-    const showing = ref(props.modelValue)
+const router = useRouter()
+const uiStore = useUiStore()
 
-    const goToComputers = async () => {
-      if (props.id <= 0) return
+const loading = ref(false)
+const showing = ref(props.modelValue)
 
-      loading.value = true
-      try {
-        const { data } = await api.get(
-          `/api/v1/token/stats/deployments/${props.id}/computers/assigned/`,
-        )
-        router.push({
-          name: 'computers-list',
-          query: { id_in: data.join(',') },
-        })
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        loading.value = false
-      }
-    }
+const goToComputers = async () => {
+  if (props.id <= 0) return
 
-    watch(
-      () => props.modelValue,
-      (newValue) => {
-        showing.value = newValue
-      },
-      { deep: true },
+  loading.value = true
+  try {
+    const { data } = await api.get(
+      `/api/v1/token/stats/deployments/${props.id}/computers/assigned/`,
     )
-
-    return { loading, showing, modelIcon, goToComputers }
-  },
+    router.push({
+      name: 'computers-list',
+      query: { id_in: data.join(',') },
+    })
+  } catch (error) {
+    uiStore.notifyError(error)
+  } finally {
+    loading.value = false
+  }
 }
+
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    showing.value = newValue
+  },
+  { deep: true },
+)
 </script>
 
 <style scoped>

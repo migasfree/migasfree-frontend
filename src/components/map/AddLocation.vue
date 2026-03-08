@@ -19,7 +19,7 @@
   </l-map>
 </template>
 
-<script>
+<script setup>
 import { ref, watch } from 'vue'
 import {
   LMap,
@@ -29,66 +29,42 @@ import {
   LIcon,
 } from '@vue-leaflet/vue-leaflet'
 import 'leaflet/dist/leaflet.css'
-
 import useMap from 'composables/map'
 
-export default {
-  name: 'AddLocation',
-  components: {
-    LMap,
-    LTileLayer,
-    LControlScale,
-    LMarker,
-    LIcon,
+const props = defineProps({
+  modelValue: {
+    type: Array,
+    required: true,
   },
-  props: {
-    modelValue: {
-      type: Array,
-      required: true,
-    },
-  },
-  emits: ['update-coords'],
-  setup(props, { emit }) {
-    const {
-      MAP_MIN_ZOOM,
-      MAP_MAX_ZOOM,
-      MAP_DETAIL_ZOOM,
-      MAP_TILE_URL,
-      MAP_ATTRIBUTION,
-      iconUrl,
-      iconSize,
-      iconAnchor,
-    } = useMap()
+})
 
-    const coords = ref(props.modelValue || [0, 0])
+const emit = defineEmits(['update-coords'])
 
-    const updateMarker = ($evt) => {
-      if ($evt.latlng === undefined) return
-      coords.value = [$evt.latlng.lat, $evt.latlng.lng]
-      emit('update-coords', coords.value)
-    }
+const {
+  MAP_MIN_ZOOM,
+  MAP_MAX_ZOOM,
+  MAP_DETAIL_ZOOM,
+  MAP_TILE_URL,
+  MAP_ATTRIBUTION,
+  iconUrl,
+  iconSize,
+  iconAnchor,
+} = useMap()
 
-    watch(
-      () => props.modelValue,
-      (val) => {
-        coords.value = val
-      },
-    )
+const coords = ref(props.modelValue || [0, 0])
 
-    return {
-      MAP_MIN_ZOOM,
-      MAP_MAX_ZOOM,
-      MAP_DETAIL_ZOOM,
-      MAP_TILE_URL,
-      MAP_ATTRIBUTION,
-      coords,
-      iconUrl,
-      iconSize,
-      iconAnchor,
-      updateMarker,
-    }
-  },
+const updateMarker = ($evt) => {
+  if ($evt.latlng === undefined) return
+  coords.value = [$evt.latlng.lat, $evt.latlng.lng]
+  emit('update-coords', coords.value)
 }
+
+watch(
+  () => props.modelValue,
+  (val) => {
+    coords.value = val
+  },
+)
 </script>
 
 <style scoped>

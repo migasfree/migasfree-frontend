@@ -1,4 +1,3 @@
-import { appIcon } from 'composables/element'
 <template>
   <q-card class="panel detail-card overflow-hidden">
     <q-card-section class="q-pa-md">
@@ -255,113 +254,91 @@ import { appIcon } from 'composables/element'
   </q-card>
 </template>
 
-<script>
-import { ref, nextTick } from 'vue'
+<script setup>
+import { ref, nextTick, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
-
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { useAuthStore } from 'stores/auth'
-
 import CopyToClipboard from 'components/ui/CopyToClipboard'
 import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 import TextTooltip from 'components/ui/TextTooltip'
-
 import { appIcon } from 'composables/element'
 
-export default {
-  name: 'ComputerInfo',
-  components: {
-    CopyToClipboard,
-    DateView,
-    MigasLink,
-    TextTooltip,
+const props = defineProps({
+  cid: {
+    type: Number,
+    required: true,
   },
-  props: {
-    cid: {
-      type: Number,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    fqdn: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    project: {
-      type: Object,
-      required: true,
-    },
-    createdAt: {
-      type: String,
-      required: true,
-    },
-    ipAddress: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    forwardedIpAddress: {
-      type: String,
-      required: false,
-      default: null,
-    },
+  name: {
+    type: String,
+    required: true,
   },
-  emits: ['update:name'],
-  setup(props, { emit }) {
-    const { $gettext } = useGettext()
-    const uiStore = useUiStore()
-    const authStore = useAuthStore()
-
-    const loading = ref(false)
-    const value = ref(props.name)
-    const editing = ref(false)
-    const nameInput = ref(null)
-
-    const startEdit = () => {
-      value.value = props.name
-      editing.value = true
-      nextTick(() => {
-        if (nameInput.value) nameInput.value.focus()
-      })
-    }
-
-    const cancelEdit = () => {
-      editing.value = false
-    }
-
-    const saveName = async () => {
-      loading.value = true
-      try {
-        await api.patch(`/api/v1/token/computers/${props.cid}/`, {
-          name: value.value,
-        })
-        uiStore.notifySuccess($gettext('Name has been changed!'))
-        emit('update:name', value.value)
-        editing.value = false
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        loading.value = false
-      }
-    }
-
-    return {
-      loading,
-      value,
-      editing,
-      nameInput,
-      isSuperUser: authStore.user.is_superuser,
-      startEdit,
-      cancelEdit,
-      saveName,
-      appIcon,
-    }
+  fqdn: {
+    type: String,
+    required: false,
+    default: null,
   },
+  project: {
+    type: Object,
+    required: true,
+  },
+  createdAt: {
+    type: String,
+    required: true,
+  },
+  ipAddress: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  forwardedIpAddress: {
+    type: String,
+    required: false,
+    default: null,
+  },
+})
+
+const emit = defineEmits(['update:name'])
+
+const { $gettext } = useGettext()
+const uiStore = useUiStore()
+const authStore = useAuthStore()
+
+const loading = ref(false)
+const value = ref(props.name)
+const editing = ref(false)
+const nameInput = ref(null)
+
+const isSuperUser = computed(() => authStore.user.is_superuser)
+
+const startEdit = () => {
+  value.value = props.name
+  editing.value = true
+  nextTick(() => {
+    if (nameInput.value) nameInput.value.focus()
+  })
+}
+
+const cancelEdit = () => {
+  editing.value = false
+}
+
+const saveName = async () => {
+  loading.value = true
+  try {
+    await api.patch(`/api/v1/token/computers/${props.cid}/`, {
+      name: value.value,
+    })
+    uiStore.notifySuccess($gettext('Name has been changed!'))
+    emit('update:name', value.value)
+    editing.value = false
+  } catch (error) {
+    uiStore.notifyError(error)
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 

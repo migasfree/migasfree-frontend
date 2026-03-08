@@ -22,59 +22,53 @@
   </q-list>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
 import clip from 'text-clipper'
 import DOMPurify from 'dompurify'
 
-export default {
-  name: 'Truncate',
-  props: {
-    modelValue: {
-      type: [String, null],
-      required: true,
-    },
-    len: {
-      type: Number,
-      required: false,
-      default: 250,
-    },
-    formatted: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
+const props = defineProps({
+  modelValue: {
+    type: [String, null],
+    required: true,
   },
-  setup(props) {
-    const safeModelValue = computed(() => {
-      // Ensure we always have a string
-      return props.modelValue !== null && props.modelValue !== undefined
-        ? String(props.modelValue)
-        : ''
-    })
-
-    const truncatedValue = computed(() => {
-      if (!safeModelValue.value) return ''
-
-      const clipped = clip(safeModelValue.value, props.len, {
-        html: true,
-        maxLines: 3,
-      })
-      // Sanitize the clipped value as well, just in case
-      return DOMPurify.sanitize(clipped)
-    })
-
-    const localValue = computed(() => {
-      if (!safeModelValue.value) return ''
-
-      let content = safeModelValue.value
-      if (!props.formatted) {
-        content = content.replaceAll('\n', '<br />')
-      }
-      return DOMPurify.sanitize(content)
-    })
-
-    return { truncatedValue, localValue }
+  len: {
+    type: Number,
+    required: false,
+    default: 250,
   },
-}
+  formatted: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
+})
+
+const safeModelValue = computed(() => {
+  // Ensure we always have a string
+  return props.modelValue !== null && props.modelValue !== undefined
+    ? String(props.modelValue)
+    : ''
+})
+
+const truncatedValue = computed(() => {
+  if (!safeModelValue.value) return ''
+
+  const clipped = clip(safeModelValue.value, props.len, {
+    html: true,
+    maxLines: 3,
+  })
+  // Sanitize the clipped value as well, just in case
+  return DOMPurify.sanitize(clipped)
+})
+
+const localValue = computed(() => {
+  if (!safeModelValue.value) return ''
+
+  let content = safeModelValue.value
+  if (!props.formatted) {
+    content = content.replaceAll('\n', '<br />')
+  }
+  return DOMPurify.sanitize(content)
+})
 </script>

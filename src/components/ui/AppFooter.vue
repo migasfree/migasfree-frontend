@@ -86,33 +86,22 @@
   </q-footer>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
-
+import { useGettext } from 'vue3-gettext'
 import { api } from 'boot/axios'
 import { useAuthStore } from 'stores/auth'
 import { MIGASFREE_MIN_YEAR } from 'config/app.conf'
-
 import { appIcon } from 'composables/element'
+import app from '../../../package.json'
 
-const app = require('../../../package.json')
+const { $gettext } = useGettext()
+const authStore = useAuthStore()
+const apiLink = `${api.defaults.baseURL}/docs/`
 
-export default {
-  setup() {
-    const authStore = useAuthStore()
-    const apiLink = `${api.defaults.baseURL}/docs/`
+const serverVersion = computed(() => {
+  return authStore.server.version
+})
 
-    const serverVersion = computed(() => {
-      return authStore.server.version
-    })
-
-    return {
-      apiLink,
-      serverVersion,
-      appVersion: app.version,
-      MIGASFREE_MIN_YEAR,
-      appIcon,
-    }
-  },
-}
+const appVersion = app.version
 </script>
