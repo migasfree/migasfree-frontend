@@ -1,4 +1,3 @@
-import { appIcon } from 'composables/element'
 <template>
   <q-card class="panel detail-card overflow-hidden shadow-2 rounded-borders">
     <q-card-section class="q-pa-lg">
@@ -425,284 +424,235 @@ import { appIcon } from 'composables/element'
   </q-card>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed, nextTick, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
-import { abbreviateNumber } from 'js-abbreviation-number'
-
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 import { useAuthStore } from 'stores/auth'
-
 import DateView from 'components/ui/DateView'
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import MigasLink from 'components/MigasLink'
 import RemoveDialog from 'components/ui/RemoveDialog'
-
-import { appIcon, modelIcon, useElement } from 'composables/element'
+import { appIcon, useElement } from 'composables/element'
 import useDate from 'composables/date'
 import useCopyPaste from 'composables/copyPaste'
 
-export default {
-  name: 'ComputerSoftware',
-  components: { DateView, FilteredMultiSelect, MigasLink, RemoveDialog },
-  props: {
-    cid: {
-      type: Number,
-      required: true,
-    },
+defineOptions({ name: 'ComputerSoftware' })
+
+const props = defineProps({
+  cid: {
+    type: Number,
+    required: true,
   },
-  setup(props) {
-    const router = useRouter()
-    const uiStore = useUiStore()
-    const authStore = useAuthStore()
-    const { elementIcon } = useElement()
-    const { showDate } = useDate()
-    const { contentToClipboard } = useCopyPaste()
+})
 
-    const loading = reactive({
-      inventory: false,
-      history: false,
+const router = useRouter()
+const uiStore = useUiStore()
+const authStore = useAuthStore()
+const { elementIcon } = useElement()
+const { showDate } = useDate()
+const { contentToClipboard } = useCopyPaste()
+
+const loading = reactive({
+  inventory: false,
+  history: false,
+})
+const softwareInventory = ref([])
+const softwareHistory = reactive({})
+const showingCompare = ref(false)
+const target = ref(null)
+
+const searchInventory = ref('')
+const showSearchInventory = ref(false)
+const searchInputInventory = useTemplateRef('searchInputInventory')
+
+const searchHistory = ref('')
+const showSearchHistory = ref(false)
+const searchInputHistory = useTemplateRef('searchInputHistory')
+
+const confirmRemoveInventory = ref(false)
+const confirmRemoveHistory = ref(false)
+
+const isSuperUser = computed(() => authStore.user.is_superuser)
+const inventoryLoaded = computed(() => softwareInventory.value.length > 0)
+const historyLoaded = computed(() => Object.keys(softwareHistory).length > 0)
+
+const filteredSoftwareInventory = computed(() => {
+  if (!searchInventory.value) {
+    return softwareInventory.value
+  } else {
+    return softwareInventory.value.filter((item) => {
+      return item.name
+        .toLowerCase()
+        .includes(searchInventory.value.toLowerCase())
     })
-    const softwareInventory = ref([])
-    const softwareHistory = reactive({})
-    const showingCompare = ref(false)
-    const target = ref(null)
+  }
+})
 
-    const searchInventory = ref('')
-    const showSearchInventory = ref(false)
-    const searchInputInventory = useTemplateRef('searchInputInventory')
-
-    const searchHistory = ref('')
-    const showSearchHistory = ref(false)
-    const searchInputHistory = useTemplateRef('searchInputHistory')
-
-    const confirmRemoveInventory = ref(false)
-    const confirmRemoveHistory = ref(false)
-
-    const inventoryLoaded = computed(() => softwareInventory.value.length > 0)
-    const historyLoaded = computed(
-      () => Object.keys(softwareHistory).length > 0,
-    )
-
-    const filteredSoftwareInventory = computed(() => {
-      if (!searchInventory.value) {
-        return softwareInventory.value
-      } else {
-        return softwareInventory.value.filter((item) => {
-          return item.name
-            .toLowerCase()
-            .includes(searchInventory.value.toLowerCase())
-        })
+const filteredSoftwareHistory = computed(() => {
+  if (!searchHistory.value) {
+    return softwareHistory
+  } else {
+    const result = Object.keys(softwareHistory).reduce((acc, key) => {
+      const filter = softwareHistory[key].filter((item) =>
+        item.name.toLowerCase().includes(searchHistory.value.toLowerCase()),
+      )
+      if (
+        filter.length > 0 ||
+        key.toLowerCase().includes(searchHistory.value.toLowerCase())
+      ) {
+        acc[key] = filter.length > 0 ? filter : softwareHistory[key]
       }
-    })
+      return acc
+    }, {})
+    return result
+  }
+})
 
-    const filteredSoftwareHistory = computed(() => {
-      if (!searchHistory.value) {
-        return softwareHistory
-      } else {
-        const result = Object.keys(softwareHistory).reduce((acc, key) => {
-          const filter = softwareHistory[key].filter((item) =>
-            item.name.toLowerCase().includes(searchHistory.value.toLowerCase()),
-          )
-          if (
-            filter.length > 0 ||
-            key.toLowerCase().includes(searchHistory.value.toLowerCase())
-          ) {
-            acc[key] = filter.length > 0 ? filter : softwareHistory[key]
-          }
-          return acc
-        }, {})
-        return result
-      }
-    })
+const filteredSoftwareHistoryDates = computed(() => {
+  return Object.keys(filteredSoftwareHistory.value)
+})
 
-    const filteredSoftwareHistoryDates = computed(() => {
-      return Object.keys(filteredSoftwareHistory.value)
-    })
+const isCompareEnabled = computed(() => {
+  return target.value !== null
+})
 
-    const isCompareEnabled = computed(() => {
-      return target.value !== null
-    })
+const softwareHistoryLength = computed(() => {
+  return Object.keys(softwareHistory).length
+})
 
-    const softwareHistoryLength = computed(() => {
-      return Object.keys(softwareHistory).length
-    })
-
-    const toggleSearchInventory = async () => {
-      showSearchInventory.value = !showSearchInventory.value
-      if (showSearchInventory.value) {
-        await nextTick()
-        if (searchInputInventory.value) {
-          searchInputInventory.value.focus()
-        }
-      }
+const toggleSearchInventory = async () => {
+  showSearchInventory.value = !showSearchInventory.value
+  if (showSearchInventory.value) {
+    await nextTick()
+    if (searchInputInventory.value) {
+      searchInputInventory.value.focus()
     }
-
-    const toggleSearchHistory = async () => {
-      showSearchHistory.value = !showSearchHistory.value
-      if (showSearchHistory.value) {
-        await nextTick()
-        if (searchInputHistory.value) {
-          searchInputHistory.value.focus()
-        }
-      }
-    }
-
-    const sortArray = (array) => {
-      const originalCopy = array.slice()
-      return originalCopy.sort()
-    }
-
-    const loadSoftwareInventory = async () => {
-      if (softwareInventory.value.length === 0) {
-        loading.inventory = true
-        try {
-          const { data } = await api.get(
-            `/api/v1/token/computers/${props.cid}/software/inventory/`,
-          )
-          softwareInventory.value = data
-        } catch (error) {
-          uiStore.notifyError(error)
-        } finally {
-          loading.inventory = false
-        }
-      }
-    }
-
-    const loadSoftwareHistory = async () => {
-      if (Object.keys(softwareHistory).length === 0) {
-        loading.history = true
-        try {
-          const { data } = await api.get(
-            `/api/v1/token/computers/${props.cid}/software/history/`,
-          )
-          Object.assign(softwareHistory, data)
-        } catch (error) {
-          uiStore.notifyError(error)
-        } finally {
-          loading.history = false
-        }
-      }
-    }
-
-    const copyInventory = async () => {
-      if (softwareInventory.value.length === 0) {
-        await loadSoftwareInventory()
-      }
-
-      const inventory = filteredSoftwareInventory.value.map((item) => item.name)
-
-      contentToClipboard(sortArray(inventory).join('\n'))
-    }
-
-    const copyHistory = async () => {
-      if (Object.keys(softwareHistory).length === 0) {
-        await loadSoftwareHistory()
-      }
-
-      let history = []
-      Object.entries(filteredSoftwareHistory.value).map(([key, val]) => {
-        history.push(showDate(key))
-        sortArray(val).forEach((item) => {
-          history.push(`${item.mode}${item.name}`)
-        })
-        history.push('')
-      })
-
-      contentToClipboard(history.join('\n'))
-    }
-
-    const compare = () => {
-      router.push({
-        name: 'computers-software-compare',
-        query: { source: props.cid, target: target.value.id },
-      })
-    }
-
-    const filterComputers = async (val) => {
-      const { data } = await api.get('/api/v1/token/computers/', {
-        params: { search: val.toLowerCase() },
-      })
-      return data.results
-    }
-
-    const deleteInventory = async () => {
-      loading.inventory = true
-      try {
-        const { data } = await api.delete(
-          `/api/v1/token/computers/${props.cid}/software/inventory/`,
-        )
-        softwareInventory.value = data
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        loading.inventory = false
-      }
-    }
-
-    const deleteHistory = async (key = null) => {
-      loading.history = true
-
-      try {
-        const url =
-          `/api/v1/token/computers/${props.cid}/software/history/` +
-          (key ? `?key=${key}` : '')
-        const { data } = await api.delete(url)
-        Object.keys(softwareHistory).forEach((k) => delete softwareHistory[k])
-        Object.assign(softwareHistory, data)
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        loading.history = false
-      }
-    }
-
-    const getAddCount = (c) => c.filter((x) => x.mode === '+').length
-    const getRemoveCount = (c) => c.filter((x) => x.mode === '-').length
-
-    return {
-      loading,
-      isSuperUser: authStore.user.is_superuser,
-      softwareInventory,
-      softwareHistory,
-      searchInventory,
-      searchInputInventory,
-      showSearchInventory,
-      searchHistory,
-      searchInputHistory,
-      showSearchHistory,
-      showingCompare,
-      filteredSoftwareInventory,
-      filteredSoftwareHistory,
-      filteredSoftwareHistoryDates,
-      inventoryLoaded,
-      historyLoaded,
-      target,
-      isCompareEnabled,
-      softwareHistoryLength,
-      toggleSearchInventory,
-      toggleSearchHistory,
-      sortArray,
-      loadSoftwareInventory,
-      loadSoftwareHistory,
-      copyInventory,
-      copyHistory,
-      compare,
-      filterComputers,
-      appIcon,
-      modelIcon,
-      elementIcon,
-      abbreviateNumber,
-      confirmRemoveInventory,
-      confirmRemoveHistory,
-      deleteInventory,
-      deleteHistory,
-      getAddCount,
-      getRemoveCount,
-    }
-  },
+  }
 }
+
+const toggleSearchHistory = async () => {
+  showSearchHistory.value = !showSearchHistory.value
+  if (showSearchHistory.value) {
+    await nextTick()
+    if (searchInputHistory.value) {
+      searchInputHistory.value.focus()
+    }
+  }
+}
+
+const sortArray = (array) => {
+  const originalCopy = array.slice()
+  return originalCopy.sort()
+}
+
+const loadSoftwareInventory = async () => {
+  if (softwareInventory.value.length === 0) {
+    loading.inventory = true
+    try {
+      const { data } = await api.get(
+        `/api/v1/token/computers/${props.cid}/software/inventory/`,
+      )
+      softwareInventory.value = data
+    } catch (error) {
+      uiStore.notifyError(error)
+    } finally {
+      loading.inventory = false
+    }
+  }
+}
+
+const loadSoftwareHistory = async () => {
+  if (Object.keys(softwareHistory).length === 0) {
+    loading.history = true
+    try {
+      const { data } = await api.get(
+        `/api/v1/token/computers/${props.cid}/software/history/`,
+      )
+      Object.assign(softwareHistory, data)
+    } catch (error) {
+      uiStore.notifyError(error)
+    } finally {
+      loading.history = false
+    }
+  }
+}
+
+const copyInventory = async () => {
+  if (softwareInventory.value.length === 0) {
+    await loadSoftwareInventory()
+  }
+
+  const inventory = filteredSoftwareInventory.value.map((item) => item.name)
+
+  contentToClipboard(sortArray(inventory).join('\n'))
+}
+
+const copyHistory = async () => {
+  if (Object.keys(softwareHistory).length === 0) {
+    await loadSoftwareHistory()
+  }
+
+  let history = []
+  Object.entries(filteredSoftwareHistory.value).map(([key, val]) => {
+    history.push(showDate(key))
+    sortArray(val).forEach((item) => {
+      history.push(`${item.mode}${item.name}`)
+    })
+    history.push('')
+  })
+
+  contentToClipboard(history.join('\n'))
+}
+
+const compare = () => {
+  router.push({
+    name: 'computers-software-compare',
+    query: { source: props.cid, target: target.value.id },
+  })
+}
+
+const filterComputers = async (val) => {
+  const { data } = await api.get('/api/v1/token/computers/', {
+    params: { search: val.toLowerCase() },
+  })
+  return data.results
+}
+
+const deleteInventory = async () => {
+  loading.inventory = true
+  try {
+    const { data } = await api.delete(
+      `/api/v1/token/computers/${props.cid}/software/inventory/`,
+    )
+    softwareInventory.value = data
+  } catch (error) {
+    uiStore.notifyError(error)
+  } finally {
+    loading.inventory = false
+  }
+}
+
+const deleteHistory = async (key = null) => {
+  loading.history = true
+
+  try {
+    const url =
+      `/api/v1/token/computers/${props.cid}/software/history/` +
+      (key ? `?key=${key}` : '')
+    const { data } = await api.delete(url)
+    Object.keys(softwareHistory).forEach((k) => delete softwareHistory[k])
+    Object.assign(softwareHistory, data)
+  } catch (error) {
+    uiStore.notifyError(error)
+  } finally {
+    loading.history = false
+  }
+}
+
+const getAddCount = (c) => c.filter((x) => x.mode === '+').length
+const getRemoveCount = (c) => c.filter((x) => x.mode === '-').length
 </script>
 
 <style scoped>

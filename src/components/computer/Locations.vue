@@ -183,7 +183,7 @@
   </q-card>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, nextTick, watch } from 'vue'
 import {
   LMap,
@@ -195,104 +195,67 @@ import {
 } from '@vue-leaflet/vue-leaflet'
 import 'leaflet/dist/leaflet.css'
 import pluralize from 'pluralize-esm'
-
 import useMap from 'composables/map'
 import useCopyPaste from 'composables/copyPaste'
 import MicroInteractionButton from 'components/ui/MicroInteractionButton'
 
-export default {
-  name: 'ComputerLocations',
-  components: {
-    LMap,
-    LTileLayer,
-    LControlScale,
-    LMarker,
-    LIcon,
-    LTooltip,
-    MicroInteractionButton,
+const props = defineProps({
+  markers: {
+    type: Array,
+    default: () => [],
   },
-  props: {
-    markers: {
-      type: Array,
-      default: () => [],
-    },
-  },
-  setup(props) {
-    const map = ref(null)
-    const { contentToClipboard } = useCopyPaste()
-    const zoom = ref(15)
-    const mapLayer = ref('street')
+})
 
-    const {
-      MAP_MIN_ZOOM,
-      MAP_MAX_ZOOM,
-      MAP_DEFAULT_ZOOM,
-      MAP_TILE_URL,
-      MAP_SATELLITE_URL,
-      MAP_ATTRIBUTION,
-      iconUrl,
-      iconSize,
-      iconAnchor,
-    } = useMap()
+const map = ref(null)
+const { contentToClipboard } = useCopyPaste()
+const zoom = ref(15)
+const mapLayer = ref('street')
 
-    const center = computed(() => {
-      if (props.markers.length > 0) {
-        return [props.markers[0].lat, props.markers[0].lng]
-      }
-      return [0, 0] // Default, though v-if in parent prevents this
+const {
+  MAP_MIN_ZOOM,
+  MAP_MAX_ZOOM,
+  MAP_DEFAULT_ZOOM,
+  MAP_TILE_URL,
+  MAP_SATELLITE_URL,
+  MAP_ATTRIBUTION,
+  iconUrl,
+  iconSize,
+  iconAnchor,
+} = useMap()
+
+const center = computed(() => {
+  if (props.markers.length > 0) {
+    return [props.markers[0].lat, props.markers[0].lng]
+  }
+  return [0, 0] // Default, though v-if in parent prevents this
+})
+
+const centerMarkers = () => {
+  zoom.value = MAP_DEFAULT_ZOOM
+  if (map.value !== null && props.markers.length) {
+    nextTick(() => {
+      map.value.leafletObject.panTo([props.markers[0].lat, props.markers[0].lng])
     })
+  }
+}
 
-    const centerMarkers = () => {
-      zoom.value = MAP_DEFAULT_ZOOM
-      if (map.value !== null && props.markers.length) {
-        nextTick(() => {
-          map.value.leafletObject.panTo([
-            props.markers[0].lat,
-            props.markers[0].lng,
-          ])
-        })
-      }
-    }
-
-    watch(
-      () => props.markers,
-      () => {
-        centerMarkers()
-      },
-      { deep: true },
-    )
-
-    const copyCoordinates = async () => {
-      await contentToClipboard(`${center.value[0]}, ${center.value[1]}`)
-    }
-
-    const openGoogleMaps = () => {
-      window.open(
-        `https://www.google.com/maps/search/?api=1&query=${center.value[0]},${center.value[1]}`,
-        '_blank',
-      )
-    }
-
-    return {
-      map,
-      zoom,
-      mapLayer,
-      center,
-      MAP_MIN_ZOOM,
-      MAP_MAX_ZOOM,
-      MAP_DEFAULT_ZOOM,
-      MAP_TILE_URL,
-      MAP_SATELLITE_URL,
-      MAP_ATTRIBUTION,
-      iconUrl,
-      iconSize,
-      iconAnchor,
-      pluralize,
-      centerMarkers,
-      copyCoordinates,
-      openGoogleMaps,
-    }
+watch(
+  () => props.markers,
+  () => {
+    centerMarkers()
   },
+  { deep: true },
+)
+
+const copyCoordinates = async () => {
+  await contentToClipboard(`${center.value[0]}, ${center.value[1]}`)
+}
+
+const openGoogleMaps = () => {
+  window.open(
+    `https://www.google.com/maps/search/?api=1&query=${center.value[0]},${center.value[1]}`,
+    '_blank',
+  )
 }
 </script>
 
