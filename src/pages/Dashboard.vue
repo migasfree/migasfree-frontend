@@ -168,8 +168,8 @@
   </q-page>
 </template>
 
-<script>
-import { defineComponent, ref, reactive, computed, onMounted } from 'vue'
+<script setup>
+import { ref, reactive, computed, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useRouter } from 'vue-router'
 import { useMeta } from 'quasar'
@@ -187,270 +187,236 @@ import MonthInput from 'components/ui/MonthInput'
 
 import { appIcon } from 'composables/element'
 
-export default defineComponent({
-  name: 'Dashboard',
+const { $gettext } = useGettext()
+const router = useRouter()
+const uiStore = useUiStore()
+const { smartRequest } = useSmartRequest()
 
-  components: { Breadcrumbs, Header, PieChart, StackedBarChart, MonthInput },
+const titleIcon = appIcon('home')
+const title = $gettext('Dashboard')
+useMeta({ title })
 
-  setup() {
-    const { $gettext } = useGettext()
-    const router = useRouter()
-    const uiStore = useUiStore()
-    const { smartRequest } = useSmartRequest()
+const breadcrumbs = [
+  {
+    text: title,
+    icon: titleIcon,
+  },
+]
 
-    const titleIcon = appIcon('home')
-    const title = $gettext('Dashboard')
-    useMeta({ title })
+const productiveComputersTitle = $gettext('Productive Computers')
+const uncheckedErrorsTitle = $gettext('Unchecked Errors')
+const uncheckedFaultsTitle = $gettext('Unchecked Faults')
+const dailySyncsTitle = $gettext('Synchronized single computers / day')
+const monthlySyncs = reactive({})
+const monthlySyncsTitle = $gettext('Synchronized single computers / month')
+const projects = ref([])
+const loading = ref(false)
+const loadingMonthlySyncs = ref(false)
+const eventsHistory = reactive({})
 
-    const breadcrumbs = [
-      {
-        text: title,
-        icon: titleIcon,
-      },
-    ]
+const lastHours = ref(EVENTS_HISTORY_HOURS)
+const begin = ref('')
+const end = ref('')
 
-    const productiveComputersTitle = $gettext('Productive Computers')
-    const uncheckedErrorsTitle = $gettext('Unchecked Errors')
-    const uncheckedFaultsTitle = $gettext('Unchecked Faults')
-    const dailySyncsTitle = $gettext('Synchronized single computers / day')
-    const monthlySyncs = reactive({})
-    const monthlySyncsTitle = $gettext('Synchronized single computers / month')
-    const projects = ref([])
-    const loading = ref(false)
-    const loadingMonthlySyncs = ref(false)
-    const eventsHistory = reactive({})
+const productiveUrl = computed(() => {
+  return {
+    name: 'computers-list',
+    query: { status_in: 'intended,reserved,unknown' },
+  }
+})
 
-    const lastHours = ref(EVENTS_HISTORY_HOURS)
-    const begin = ref('')
-    const end = ref('')
+const uncheckedErrorsUrl = computed(() => {
+  return {
+    name: 'errors-list',
+    query: { checked: false },
+  }
+})
 
-    const productiveUrl = computed(() => {
-      return {
-        name: 'computers-list',
-        query: { status_in: 'intended,reserved,unknown' },
-      }
-    })
+const uncheckedFaultsUrl = computed(() => {
+  return {
+    name: 'faults-list',
+    query: { checked: false },
+  }
+})
 
-    const uncheckedErrorsUrl = computed(() => {
-      return {
-        name: 'errors-list',
-        query: { checked: false },
-      }
-    })
+// Fetches the list of all available projects and triggers monthly syncs load
+const loadProjects = async () => {
+  try {
+    const response = await smartRequest('/api/v1/token/projects')
+    projects.value = response.data.results
+    loadMonthlySyncs()
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
 
-    const uncheckedFaultsUrl = computed(() => {
-      return {
-        name: 'faults-list',
-        query: { checked: false },
-      }
-    })
+// Loads monthly synchronization statistics for all projects.
+// Executes requests in parallel for better performance.
+const loadMonthlySyncs = async () => {
+  monthlySyncs.series = []
+  loadingMonthlySyncs.value = true
 
-    // Fetches the list of all available projects and triggers monthly syncs load
-    const loadProjects = async () => {
-      try {
-        const response = await smartRequest('/api/v1/token/projects')
-        projects.value = response.data.results
-        loadMonthlySyncs()
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
+  try {
+    const baseParams = { begin: begin.value, end: end.value }
 
-    // Loads monthly synchronization statistics for all projects.
-    // Executes requests in parallel for better performance.
-    const loadMonthlySyncs = async () => {
-      monthlySyncs.series = []
-      loadingMonthlySyncs.value = true
-
-      try {
-        const baseParams = { begin: begin.value, end: end.value }
-
-        // Fetch global total first to set x-axis labels
-        const baseResponse = await smartRequest(
-          '/api/v1/token/stats/syncs/monthly/',
-          baseParams,
-        )
-        monthlySyncs.xData = baseResponse.data.x_labels
-        for (const [, val] of Object.entries(baseResponse.data.data)) {
-          monthlySyncs.series.push({
-            type: 'line',
-            smooth: true,
-            name: 'Total',
-            data: val,
-          })
-        }
-
-        // Run detailed project requests in parallel
-        const projectPromises = projects.value.map((item) =>
-          smartRequest('/api/v1/token/stats/syncs/monthly/', {
-            ...baseParams,
-            project_id: item.id,
-          }).then((resp) => ({ item, data: resp.data.data })),
-        )
-        const projectResults = await Promise.all(projectPromises)
-
-        for (const { item, data } of projectResults) {
-          for (const [, val] of Object.entries(data)) {
-            monthlySyncs.series.push({
-              type: 'line',
-              smooth: true,
-              name: item.name,
-              data: val,
-            })
-          }
-        }
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        loadingMonthlySyncs.value = false
-      }
-    }
-
-    const calculateBeginDate = () => {
-      if (lastHours.value <= 0) return ''
-
-      let date = new Date()
-      date.setHours(date.getHours() - lastHours.value)
-
-      return `${date.getFullYear()}-${
-        date.getMonth() + 1
-      }-${date.getDate()}T${date.getHours()}`
-    }
-
-    // Aggregates history data from multiple endpoints (syncs, errors, faults, etc.)
-    // Transforms the data into a series format compatible with StackedBarChart.
-    const loadEventsHistory = async () => {
-      const begin = calculateBeginDate()
-      loading.value = true
-
-      const endpoints = [
-        { url: '/api/v1/token/stats/syncs/history/', key: 'syncs' },
-        { url: '/api/v1/token/stats/errors/history/', key: 'errors' },
-        { url: '/api/v1/token/stats/faults/history/', key: 'faults' },
-        { url: '/api/v1/token/stats/migrations/history/', key: 'migrations' },
-        { url: '/api/v1/token/stats/status-logs/history/', key: 'statusLogs' },
-      ]
-
-      // Run all requests in parallel
-      const results = await Promise.all(
-        endpoints.map(async ({ url, key }) => {
-          try {
-            const resp = await smartRequest(url, { begin })
-            return { key, data: resp.data }
-          } catch (error) {
-            uiStore.notifyError(error)
-            return { key, data: null }
-          }
-        }),
-      )
-
-      // Extract the x‑axis labels from the first successful response
-      const firstSuccess = results.find((r) => r.data?.x_labels)
-      eventsHistory.xData = firstSuccess?.data?.x_labels ?? []
-
-      // Build the series array dynamically
-      eventsHistory.series = results.map((r) => ({
+    // Fetch global total first to set x-axis labels
+    const baseResponse = await smartRequest(
+      '/api/v1/token/stats/syncs/monthly/',
+      baseParams,
+    )
+    monthlySyncs.xData = baseResponse.data.x_labels
+    for (const [, val] of Object.entries(baseResponse.data.data)) {
+      monthlySyncs.series.push({
         type: 'line',
         smooth: true,
-        name: r.data ? Object.keys(r.data.data)[0] : '',
-        data: r.data ? Object.values(r.data.data)[0] : [],
-      }))
-
-      loading.value = false
-      uiStore.scrollToElement(document.getElementById('events-history'))
+        name: 'Total',
+        data: val,
+      })
     }
 
-    const updateEventsHistory = () => {
-      if (!lastHours.value || lastHours.value < 1) lastHours.value = 1
-      if (lastHours.value > 720) lastHours.value = 720
+    // Run detailed project requests in parallel
+    const projectPromises = projects.value.map((item) =>
+      smartRequest('/api/v1/token/stats/syncs/monthly/', {
+        ...baseParams,
+        project_id: item.id,
+      }).then((resp) => ({ item, data: resp.data.data })),
+    )
+    const projectResults = await Promise.all(projectPromises)
 
-      Object.assign(eventsHistory, { series: [], xData: [] })
-      loadEventsHistory()
-    }
-
-    const updateMonthlySyncs = () => {
-      loadMonthlySyncs()
-      uiStore.scrollToElement(document.getElementById('monthly-syncs'))
-    }
-
-    // Handles chart click navigation.
-    // Resolves destination routes and builds query parameters based on chart data context.
-    const goTo = (params) => {
-      let query = {}
-
-      if (params.data.project_id) {
-        query = Object.assign(query, {
-          project_id: params.data.project_id,
-        })
-      }
-
-      if (params.data.platform_id) {
-        query = Object.assign(query, {
-          platform_id: params.data.platform_id,
-        })
-      }
-
-      if (params.data.created_at__lt) {
-        Object.assign(query, {
-          created_at__gte: params.data.created_at__gte,
-          created_at__lt: params.data.created_at__lt,
-        })
-      }
-
-      if ('url' in params) {
-        router.push({
-          name: params.url.name,
-          query: Object.assign(params.url.query || {}, query),
-        })
-      }
-
-      if ('model' in params.data) {
-        router.push({
-          name: resolveRoute(pluralize.plural(params.data.model)),
-          query,
+    for (const { item, data } of projectResults) {
+      for (const [, val] of Object.entries(data)) {
+        monthlySyncs.series.push({
+          type: 'line',
+          smooth: true,
+          name: item.name,
+          data: val,
         })
       }
     }
+  } catch (error) {
+    uiStore.notifyError(error)
+  } finally {
+    loadingMonthlySyncs.value = false
+  }
+}
 
-    const resolveRoute = (model) => {
-      const specialRoutes = {
-        synchronizations: 'syncs-list',
-        statuslogs: 'status-logs-list',
+const calculateBeginDate = () => {
+  if (lastHours.value <= 0) return ''
+
+  const date = new Date()
+  date.setHours(date.getHours() - lastHours.value)
+
+  return `${date.getFullYear()}-${
+    date.getMonth() + 1
+  }-${date.getDate()}T${date.getHours()}`
+}
+
+// Aggregates history data from multiple endpoints (syncs, errors, faults, etc.)
+// Transforms the data into a series format compatible with StackedBarChart.
+const loadEventsHistory = async () => {
+  const beginDate = calculateBeginDate()
+  loading.value = true
+
+  const endpoints = [
+    { url: '/api/v1/token/stats/syncs/history/', key: 'syncs' },
+    { url: '/api/v1/token/stats/errors/history/', key: 'errors' },
+    { url: '/api/v1/token/stats/faults/history/', key: 'faults' },
+    { url: '/api/v1/token/stats/migrations/history/', key: 'migrations' },
+    { url: '/api/v1/token/stats/status-logs/history/', key: 'statusLogs' },
+  ]
+
+  // Run all requests in parallel
+  const results = await Promise.all(
+    endpoints.map(async ({ url, key }) => {
+      try {
+        const resp = await smartRequest(url, { begin: beginDate })
+        return { key, data: resp.data }
+      } catch (error) {
+        uiStore.notifyError(error)
+        return { key, data: null }
       }
+    }),
+  )
 
-      return specialRoutes[model] ?? `${model}-list`
-    }
+  // Extract the x‑axis labels from the first successful response
+  const firstSuccess = results.find((r) => r.data?.x_labels)
+  eventsHistory.xData = firstSuccess?.data?.x_labels ?? []
 
-    onMounted(async () => {
-      await loadProjects()
+  // Build the series array dynamically
+  eventsHistory.series = results.map((r) => ({
+    type: 'line',
+    smooth: true,
+    name: r.data ? Object.keys(r.data.data)[0] : '',
+    data: r.data ? Object.values(r.data.data)[0] : [],
+  }))
+
+  loading.value = false
+  uiStore.scrollToElement(document.getElementById('events-history'))
+}
+
+const updateEventsHistory = () => {
+  if (!lastHours.value || lastHours.value < 1) lastHours.value = 1
+  if (lastHours.value > 720) lastHours.value = 720
+
+  Object.assign(eventsHistory, { series: [], xData: [] })
+  loadEventsHistory()
+}
+
+const updateMonthlySyncs = () => {
+  loadMonthlySyncs()
+  uiStore.scrollToElement(document.getElementById('monthly-syncs'))
+}
+
+const resolveRoute = (model) => {
+  const specialRoutes = {
+    synchronizations: 'syncs-list',
+    statuslogs: 'status-logs-list',
+  }
+
+  return specialRoutes[model] ?? `${model}-list`
+}
+
+// Handles chart click navigation.
+// Resolves destination routes and builds query parameters based on chart data context.
+const goTo = (params) => {
+  let query = {}
+
+  if (params.data.project_id) {
+    query = Object.assign(query, {
+      project_id: params.data.project_id,
     })
+  }
 
-    return {
-      title,
-      titleIcon,
-      breadcrumbs,
-      productiveComputersTitle,
-      uncheckedErrorsTitle,
-      uncheckedFaultsTitle,
-      dailySyncsTitle,
-      monthlySyncs,
-      monthlySyncsTitle,
-      loading,
-      loadingMonthlySyncs,
-      lastHours,
-      begin,
-      end,
-      eventsHistory,
-      productiveUrl,
-      uncheckedErrorsUrl,
-      uncheckedFaultsUrl,
-      updateMonthlySyncs,
-      updateEventsHistory,
-      loadEventsHistory,
-      goTo,
-      appIcon,
-    }
-  },
+  if (params.data.platform_id) {
+    query = Object.assign(query, {
+      platform_id: params.data.platform_id,
+    })
+  }
+
+  if (params.data.created_at__lt) {
+    Object.assign(query, {
+      created_at__gte: params.data.created_at__gte,
+      created_at__lt: params.data.created_at__lt,
+    })
+  }
+
+  if ('url' in params) {
+    router.push({
+      name: params.url.name,
+      query: Object.assign(params.url.query || {}, query),
+    })
+  }
+
+  if ('model' in params.data) {
+    router.push({
+      name: resolveRoute(pluralize.plural(params.data.model)),
+      query,
+    })
+  }
+}
+
+onMounted(async () => {
+  await loadProjects()
 })
 </script>
 

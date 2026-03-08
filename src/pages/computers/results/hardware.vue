@@ -249,7 +249,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
@@ -265,180 +265,146 @@ import BooleanView from 'components/ui/BooleanView'
 import ComputerHardwareResume from 'components/computer/HardwareResume'
 import ItemDetail from 'components/ui/ItemDetail'
 
-import { appIcon, modelIcon, useElement } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 
-export default {
-  components: {
-    BannerInfo,
-    BooleanView,
-    ComputerHardwareResume,
-    ItemDetail,
+const { $gettext } = useGettext()
+const route = useRoute()
+const uiStore = useUiStore()
+
+const titleIcon = appIcon('hardware')
+const title = $gettext('Hardware Information')
+const windowTitle = ref(title)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'computers-list',
+}
+const model = 'computers'
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const { $gettext } = useGettext()
-    const route = useRoute()
-    const { elementIcon, productIcon, cpuIcon } = useElement()
-    const uiStore = useUiStore()
+  {
+    text: $gettext('Data'),
+    icon: appIcon('data'),
+  },
+  {
+    text: $gettext('Computers'),
+    icon: modelIcon(model),
+    to: 'computers-dashboard',
+  },
+  {
+    text: $gettext('Results'),
+    icon: appIcon('results'),
+    to: routes.list,
+  },
+  {
+    text: 'Id',
+    to: { name: 'computer-detail', params: { id: 0 } },
+  },
+  {
+    text: title,
+    icon: titleIcon,
+  },
+])
 
-    const titleIcon = appIcon('hardware')
-    const title = $gettext('Hardware Information')
-    const windowTitle = ref(title)
-    useMeta(() => ({ title: windowTitle.value }))
+const element = reactive({})
+const loading = ref(false)
+const hardwareInfo = ref([])
+const details = ref(false)
+const detailInfo = reactive({
+  capability: [],
+  logical_name: [],
+  configuration: [],
+})
 
-    const routes = {
-      list: 'computers-list',
-    }
-    const model = 'computers'
+const columnsCapability = [
+  {
+    name: 'name',
+    field: 'name',
+    label: $gettext('Name'),
+    align: 'left',
+  },
+  {
+    name: 'description',
+    field: 'description',
+    label: $gettext('Description'),
+    align: 'left',
+  },
+]
+const columnsLogicalName = [
+  {
+    name: 'name',
+    field: 'name',
+    label: $gettext('Name'),
+    align: 'left',
+  },
+]
+const columnsConfiguration = [
+  {
+    name: 'name',
+    field: 'name',
+    label: $gettext('Name'),
+    align: 'left',
+  },
+  {
+    name: 'value',
+    field: 'value',
+    label: $gettext('Value'),
+  },
+]
 
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Data'),
-        icon: appIcon('data'),
-      },
-      {
-        text: $gettext('Computers'),
-        icon: modelIcon(model),
-        to: 'computers-dashboard',
-      },
-      {
-        text: $gettext('Results'),
-        icon: appIcon('results'),
-        to: routes.list,
-      },
-      {
-        text: 'Id',
-        to: { name: 'computer-detail', params: { id: 0 } },
-      },
-      {
-        text: title,
-        icon: titleIcon,
-      },
-    ])
-
-    let element = reactive({})
-    const loading = ref(false)
-    const hardwareInfo = ref([])
-    const details = ref(false)
-    const detailInfo = reactive({
-      capability: [],
-      logical_name: [],
-      configuration: [],
+const setRelated = async () => {
+  loading.value = true
+  try {
+    const response = await api.get(
+      `/api/v1/token/${model}/${route.params.id}/hardware/`,
+    )
+    hardwareInfo.value = arrayToTree(response.data, {
+      dataField: null,
+      parentId: 'parent',
     })
+  } catch (error) {
+    uiStore.notifyError(error)
+  } finally {
+    loading.value = false
+  }
+}
 
-    const columnsCapability = [
-      {
-        name: 'name',
-        field: 'name',
-        label: $gettext('Name'),
-        align: 'left',
-      },
-      {
-        name: 'description',
-        field: 'description',
-        label: $gettext('Description'),
-        align: 'left',
-      },
-    ]
-    const columnsLogicalName = [
-      {
-        name: 'name',
-        field: 'name',
-        label: $gettext('Name'),
-        align: 'left',
-      },
-    ]
-    const columnsConfiguration = [
-      {
-        name: 'name',
-        field: 'name',
-        label: $gettext('Name'),
-        align: 'left',
-      },
-      {
-        name: 'value',
-        field: 'value',
-        label: $gettext('Value'),
-      },
-    ]
+const header = (row) => {
+  if (row.description !== null && row.description !== 'NULL') {
+    return row.description
+  }
 
-    const setRelated = async () => {
-      loading.value = true
-      try {
-        const response = await api.get(
-          `/api/v1/token/${model}/${route.params.id}/hardware/`,
-        )
-        hardwareInfo.value = arrayToTree(response.data, {
-          dataField: null,
-          parentId: 'parent',
-        })
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        loading.value = false
-      }
-    }
+  return row.product
+}
 
-    const header = (row) => {
-      if (row.description !== null && row.description !== 'NULL')
-        return row.description
+const showDetails = async (id) => {
+  try {
+    const { data } = await api.get(`/api/v1/token/hardware/${id}/info/`)
+    Object.assign(detailInfo, data)
+    details.value = true
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
 
-      return row.product
-    }
+const setTitle = (value) => {
+  windowTitle.value = value
+}
 
-    const showDetails = async (id) => {
-      try {
-        const { data } = await api.get(`/api/v1/token/hardware/${id}/info/`)
-        Object.assign(detailInfo, data)
-        details.value = true
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
-
-    const correctUnit = (className, number) => {
-      switch (className) {
-        case 'processor':
-        case 'clock':
-          return abbreviateNumber(number, 1, {
-            symbols: ['Hz', 'KHz', 'MHz', 'GHz', 'THz'],
-          })
-        default:
-          return format.humanStorageSize(number)
-      }
-    }
-
-    return {
-      title,
-      titleIcon,
-      breadcrumbs,
-      routes,
-      model,
-      element,
-      loading,
-      hardwareInfo,
-      details,
-      detailInfo,
-      columnsCapability,
-      columnsLogicalName,
-      columnsConfiguration,
-      elementIcon,
-      productIcon,
-      cpuIcon,
-      correctUnit,
-      header,
-      showDetails,
-      setRelated,
-      setTitle,
-    }
-  },
+const correctUnit = (className, number) => {
+  switch (className) {
+    case 'processor':
+    case 'clock':
+      return abbreviateNumber(number, 1, {
+        symbols: ['Hz', 'KHz', 'MHz', 'GHz', 'THz'],
+      })
+    default:
+      return format.humanStorageSize(number)
+  }
 }
 </script>

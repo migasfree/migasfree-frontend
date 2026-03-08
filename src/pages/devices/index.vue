@@ -42,7 +42,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -55,82 +55,61 @@ import PieChart from 'components/chart/Pie'
 
 import { appIcon, modelIcon } from 'composables/element'
 
-export default {
-  components: {
-    Breadcrumbs,
-    Header,
-    SearchFilter,
-    PieChart,
+const router = useRouter()
+const { $gettext } = useGettext()
+
+const titleIcon = modelIcon('devices/devices')
+const title = $gettext('Devices')
+useMeta({ title })
+
+const searchText = ref('')
+const addRoute = 'device-add'
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const router = useRouter()
-    const { $gettext } = useGettext()
-
-    const titleIcon = modelIcon('devices/devices')
-    const title = $gettext('Devices')
-    useMeta({ title })
-
-    const searchText = ref('')
-    const addRoute = 'device-add'
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Devices'),
-        icon: appIcon('devices'),
-      },
-      {
-        text: title,
-        icon: titleIcon,
-      },
-    ])
-
-    const url = { name: 'devices-list' }
-
-    const goTo = (params) => {
-      if (params.data.connection_id) {
-        router.push(
-          Object.assign(url, {
-            query: { connection_id: params.data.connection_id },
-          }),
-        )
-      }
-
-      if (params.data.model_id) {
-        router.push(
-          Object.assign(url, {
-            query: { model_id: params.data.model_id },
-          }),
-        )
-      }
-
-      if (params.data.manufacturer_id) {
-        router.push(
-          Object.assign(url, {
-            query: { manufacturer_id: params.data.manufacturer_id },
-          }),
-        )
-      }
-    }
-
-    const search = (value) => {
-      router.push(Object.assign(url, { query: { search: value } }))
-    }
-
-    return {
-      title,
-      titleIcon,
-      searchText,
-      addRoute,
-      breadcrumbs,
-      url,
-      goTo,
-      search,
-    }
+  {
+    text: $gettext('Devices'),
+    icon: appIcon('devices'),
   },
+  {
+    text: title,
+    icon: titleIcon,
+  },
+])
+
+const url = { name: 'devices-list' }
+
+const goTo = (params) => {
+  if (params.data.connection_id) {
+    router.push(
+      Object.assign(url, {
+        query: { connection_id: params.data.connection_id },
+      }),
+    )
+  }
+
+  if (params.data.model_id) {
+    router.push(
+      Object.assign(url, {
+        query: { model_id: params.data.model_id },
+      }),
+    )
+  }
+
+  if (params.data.manufacturer_id) {
+    router.push(
+      Object.assign(url, {
+        query: { manufacturer_id: params.data.manufacturer_id },
+      }),
+    )
+  }
+}
+
+const search = (value) => {
+  router.push(Object.assign(url, { query: { search: value } }))
 }
 </script>

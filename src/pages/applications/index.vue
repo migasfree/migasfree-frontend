@@ -43,7 +43,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta, useQuasar } from 'quasar'
@@ -60,122 +60,99 @@ import StackedBarChart from 'components/chart/StackedBar'
 
 import { appIcon, modelIcon } from 'composables/element'
 
-export default {
-  components: {
-    Breadcrumbs,
-    SearchFilter,
-    Header,
-    PieChart,
-    StackedBarChart,
+const router = useRouter()
+const { $gettext } = useGettext()
+const $q = useQuasar()
+const uiStore = useUiStore()
+
+const titleIcon = modelIcon('catalog/apps')
+const title = $gettext('Applications')
+useMeta({ title })
+
+const searchText = ref('')
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const router = useRouter()
-    const { $gettext } = useGettext()
-    const $q = useQuasar()
-    const uiStore = useUiStore()
-
-    const titleIcon = modelIcon('catalog/apps')
-    const title = $gettext('Applications')
-    useMeta({ title })
-
-    const searchText = ref('')
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Release'),
-        icon: appIcon('release'),
-      },
-      {
-        text: title,
-        icon: titleIcon,
-      },
-    ])
-
-    const addRoute = 'app-add'
-    const url = { name: 'apps-list' }
-    const byProject = reactive({})
-
-    const goTo = (params) => {
-      if (params.data.category) {
-        router.push(
-          Object.assign(url, {
-            query: { category: params.data.category },
-          }),
-        )
-      }
-
-      if (params.data.level) {
-        router.push(
-          Object.assign(url, {
-            query: { level: params.data.level },
-          }),
-        )
-      }
-
-      if (params.data.packages_by_project__project__id) {
-        router.push(
-          Object.assign(url, {
-            query: {
-              packages_by_project_project_id:
-                params.data.packages_by_project__project__id,
-            },
-          }),
-        )
-      }
-    }
-
-    const search = (value) => {
-      router.push(Object.assign(url, { query: { search: value } }))
-    }
-
-    onMounted(async () => {
-      try {
-        const {
-          data: { x_labels, data, total },
-        } = await api.get('/api/v1/token/stats/applications/project/')
-
-        byProject.xData = x_labels
-        byProject.series = [
-          {
-            type: 'bar',
-            data,
-            name: $gettext('Applications'),
-            markLine: {
-              label: {
-                show: true,
-                formatter: '{b}: {c}',
-                color: $q.dark.isActive ? '#fff' : '#333',
-              },
-              data: [
-                {
-                  name: $gettext('Total'),
-                  yAxis: total,
-                },
-              ],
-            },
-          },
-        ]
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    })
-
-    return {
-      title,
-      titleIcon,
-      searchText,
-      byProject,
-      breadcrumbs,
-      addRoute,
-      url,
-      goTo,
-      search,
-    }
+  {
+    text: $gettext('Release'),
+    icon: appIcon('release'),
   },
+  {
+    text: title,
+    icon: titleIcon,
+  },
+])
+
+const addRoute = 'app-add'
+const url = { name: 'apps-list' }
+const byProject = reactive({})
+
+const goTo = (params) => {
+  if (params.data.category) {
+    router.push(
+      Object.assign(url, {
+        query: { category: params.data.category },
+      }),
+    )
+  }
+
+  if (params.data.level) {
+    router.push(
+      Object.assign(url, {
+        query: { level: params.data.level },
+      }),
+    )
+  }
+
+  if (params.data.packages_by_project__project__id) {
+    router.push(
+      Object.assign(url, {
+        query: {
+          packages_by_project_project_id:
+            params.data.packages_by_project__project__id,
+        },
+      }),
+    )
+  }
 }
+
+const search = (value) => {
+  router.push(Object.assign(url, { query: { search: value } }))
+}
+
+onMounted(async () => {
+  try {
+    const {
+      data: { x_labels, data, total },
+    } = await api.get('/api/v1/token/stats/applications/project/')
+
+    byProject.xData = x_labels
+    byProject.series = [
+      {
+        type: 'bar',
+        data,
+        name: $gettext('Applications'),
+        markLine: {
+          label: {
+            show: true,
+            formatter: '{b}: {c}',
+            color: $q.dark.isActive ? '#fff' : '#333',
+          },
+          data: [
+            {
+              name: $gettext('Total'),
+              yAxis: total,
+            },
+          ],
+        },
+      },
+    ]
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+})
 </script>

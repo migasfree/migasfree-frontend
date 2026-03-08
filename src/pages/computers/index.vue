@@ -58,7 +58,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -72,127 +72,104 @@ import StackedBarChart from 'components/chart/StackedBar'
 
 import { appIcon, modelIcon } from 'composables/element'
 
-export default {
-  components: {
-    Breadcrumbs,
-    Header,
-    SearchFilter,
-    PieChart,
-    StackedBarChart,
+const router = useRouter()
+const { $gettext } = useGettext()
+
+const titleIcon = modelIcon('computers')
+const title = ref($gettext('Computers'))
+useMeta({ title: title.value })
+
+const searchText = ref('')
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const router = useRouter()
-    const { $gettext } = useGettext()
-
-    const titleIcon = modelIcon('computers')
-    const title = ref($gettext('Computers'))
-    useMeta({ title: title.value })
-
-    const searchText = ref('')
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Data'),
-        icon: appIcon('data'),
-      },
-      {
-        text: title.value,
-        icon: titleIcon,
-      },
-    ])
-
-    const url = { name: 'computers-list' }
-
-    const statusUrl = computed(() => {
-      return Object.assign({}, url, {
-        query: { status_in: 'intended,reserved,unknown,in repair,available' },
-      })
-    })
-
-    const productiveUrl = computed(() => {
-      return Object.assign({}, url, {
-        query: { status_in: 'intended,reserved,unknown' },
-      })
-    })
-
-    const goTo = (params) => {
-      let query = {}
-
-      if ('url' in params && 'query' in params.url) query = params.url.query
-
-      if (params.data.machine) {
-        router.push({
-          name: url.name,
-          query: Object.assign(query, {
-            machine: params.data.machine,
-          }),
-        })
-      }
-
-      if (params.data.status_in) {
-        router.push({
-          name: url.name,
-          query: Object.assign(query, {
-            status_in: params.data.status_in,
-          }),
-        })
-      }
-
-      if (params.data.project_id) {
-        router.push({
-          name: url.name,
-          query: Object.assign(query, {
-            project_id: params.data.project_id,
-          }),
-        })
-      }
-
-      if (params.data.platform_id) {
-        router.push({
-          name: url.name,
-          query: Object.assign(query, {
-            platform_id: params.data.platform_id,
-          }),
-        })
-      }
-
-      if (params.data.created_at__lt) {
-        let query = {
-          created_at__gte: params.data.created_at__gte,
-          created_at__lt: params.data.created_at__lt,
-        }
-
-        if (params.data.project__id__exact) {
-          Object.assign(query, { project_id: params.data.project__id__exact })
-        }
-        if (params.data.machine) {
-          Object.assign(query, { machine: params.data.machine })
-        }
-
-        router.push(Object.assign(url, { query }))
-      }
-    }
-
-    const search = (value) => {
-      router.push(Object.assign(url, { query: { search: value } }))
-    }
-
-    return {
-      title,
-      titleIcon,
-      searchText,
-      breadcrumbs,
-      url,
-      statusUrl,
-      productiveUrl,
-      goTo,
-      search,
-    }
+  {
+    text: $gettext('Data'),
+    icon: appIcon('data'),
   },
+  {
+    text: title.value,
+    icon: titleIcon,
+  },
+])
+
+const url = { name: 'computers-list' }
+
+const statusUrl = computed(() => {
+  return Object.assign({}, url, {
+    query: { status_in: 'intended,reserved,unknown,in repair,available' },
+  })
+})
+
+const productiveUrl = computed(() => {
+  return Object.assign({}, url, {
+    query: { status_in: 'intended,reserved,unknown' },
+  })
+})
+
+const goTo = (params) => {
+  let query = {}
+
+  if ('url' in params && 'query' in params.url) query = params.url.query
+
+  if (params.data.machine) {
+    router.push({
+      name: url.name,
+      query: Object.assign(query, {
+        machine: params.data.machine,
+      }),
+    })
+  }
+
+  if (params.data.status_in) {
+    router.push({
+      name: url.name,
+      query: Object.assign(query, {
+        status_in: params.data.status_in,
+      }),
+    })
+  }
+
+  if (params.data.project_id) {
+    router.push({
+      name: url.name,
+      query: Object.assign(query, {
+        project_id: params.data.project_id,
+      }),
+    })
+  }
+
+  if (params.data.platform_id) {
+    router.push({
+      name: url.name,
+      query: Object.assign(query, {
+        platform_id: params.data.platform_id,
+      }),
+    })
+  }
+
+  if (params.data.created_at__lt) {
+    const query = {
+      created_at__gte: params.data.created_at__gte,
+      created_at__lt: params.data.created_at__lt,
+    }
+
+    if (params.data.project__id__exact) {
+      Object.assign(query, { project_id: params.data.project__id__exact })
+    }
+    if (params.data.machine) {
+      Object.assign(query, { machine: params.data.machine })
+    }
+
+    router.push(Object.assign(url, { query }))
+  }
+}
+
+const search = (value) => {
+  router.push(Object.assign(url, { query: { search: value } }))
 }
 </script>

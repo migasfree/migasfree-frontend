@@ -51,7 +51,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -65,109 +65,87 @@ import StackedBarChart from 'components/chart/StackedBar'
 
 import { appIcon, modelIcon } from 'composables/element'
 
-export default {
-  components: {
-    Breadcrumbs,
-    Header,
-    SearchFilter,
-    StackedBarChart,
-    PieChart,
+const router = useRouter()
+const { $gettext } = useGettext()
+
+const titleIcon = modelIcon('errors')
+const title = $gettext('Errors')
+useMeta({ title })
+
+const searchText = ref('')
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const router = useRouter()
-    const { $gettext } = useGettext()
-
-    const titleIcon = modelIcon('errors')
-    const title = $gettext('Errors')
-    useMeta({ title })
-
-    const searchText = ref('')
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Data'),
-        icon: appIcon('data'),
-      },
-      {
-        text: title,
-        icon: titleIcon,
-      },
-    ])
-
-    const url = { name: 'errors-list' }
-
-    const uncheckedErrorsUrl = computed(() => {
-      return Object.assign({}, url, { query: { checked: false } })
-    })
-
-    const goTo = (params) => {
-      if ('url' in params) {
-        let query = params.url.query || {}
-
-        if (params.data.project_id) {
-          Object.assign(query, {
-            project_id: params.data.project_id,
-          })
-        }
-
-        if (params.data.platform_id) {
-          Object.assign(query, {
-            platform_id: params.data.platform_id,
-          })
-        }
-
-        if (params.data.status) {
-          Object.assign(query, {
-            status_in: params.data.status,
-          })
-        }
-
-        if (
-          !('query' in params.url) &&
-          params.data.name &&
-          !('status' in params.data)
-        ) {
-          Object.assign(query, {
-            status_in: params.data.name,
-          })
-        }
-
-        router.push({ name: params.url.name, query })
-      }
-
-      if (params.data.created_at__lt) {
-        let query = {
-          created_at__gte: params.data.created_at__gte,
-          created_at__lt: params.data.created_at__lt,
-        }
-
-        if (params.data.project__id__exact) {
-          Object.assign(query, { project_id: params.data.project__id__exact })
-        }
-
-        router.push(Object.assign({}, url, { query }))
-      }
-    }
-
-    const search = (value) => {
-      router.push(Object.assign(url, { query: { search: value } }))
-    }
-
-    return {
-      title,
-      titleIcon,
-      searchText,
-      breadcrumbs,
-      url,
-      uncheckedErrorsUrl,
-      goTo,
-      search,
-    }
+  {
+    text: $gettext('Data'),
+    icon: appIcon('data'),
   },
+  {
+    text: title,
+    icon: titleIcon,
+  },
+])
+
+const url = { name: 'errors-list' }
+
+const uncheckedErrorsUrl = computed(() => {
+  return Object.assign({}, url, { query: { checked: false } })
+})
+
+const goTo = (params) => {
+  if ('url' in params) {
+    const query = params.url.query || {}
+
+    if (params.data.project_id) {
+      Object.assign(query, {
+        project_id: params.data.project_id,
+      })
+    }
+
+    if (params.data.platform_id) {
+      Object.assign(query, {
+        platform_id: params.data.platform_id,
+      })
+    }
+
+    if (params.data.status) {
+      Object.assign(query, {
+        status_in: params.data.status,
+      })
+    }
+
+    if (
+      !('query' in params.url) &&
+      params.data.name &&
+      !('status' in params.data)
+    ) {
+      Object.assign(query, {
+        status_in: params.data.name,
+      })
+    }
+
+    router.push({ name: params.url.name, query })
+  }
+
+  if (params.data.created_at__lt) {
+    const query = {
+      created_at__gte: params.data.created_at__gte,
+      created_at__lt: params.data.created_at__lt,
+    }
+
+    if (params.data.project__id__exact) {
+      Object.assign(query, { project_id: params.data.project__id__exact })
+    }
+
+    router.push(Object.assign({}, url, { query }))
+  }
+}
+
+const search = (value) => {
+  router.push(Object.assign(url, { query: { search: value } }))
 }
 </script>

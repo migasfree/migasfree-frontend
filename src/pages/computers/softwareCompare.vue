@@ -127,7 +127,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
@@ -145,116 +145,92 @@ import { CodeDiff } from 'v-code-diff'
 
 import { appIcon, useElement } from 'composables/element'
 
-export default {
-  components: {
-    Breadcrumbs,
-    FilteredMultiSelect,
-    Header,
-    DateView,
-    MigasLink,
-    CodeDiff,
+const { $gettext } = useGettext()
+const route = useRoute()
+const { elementIcon } = useElement()
+const uiStore = useUiStore()
+
+const titleIcon = appIcon('compare')
+const title = $gettext('Software Compare')
+useMeta({ title })
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const { $gettext } = useGettext()
-    const route = useRoute()
-    const { elementIcon } = useElement()
-    const uiStore = useUiStore()
-
-    const titleIcon = appIcon('compare')
-    const title = $gettext('Software Compare')
-    useMeta({ title })
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Data'),
-        icon: appIcon('data'),
-      },
-      {
-        text: title,
-        icon: titleIcon,
-      },
-    ])
-
-    const source = ref(null)
-    const target = ref(null)
-
-    const url = '/api/v1/token/computers/'
-
-    const isEnabled = computed(() => {
-      return (
-        source.value !== null &&
-        target.value !== null &&
-        'inventory' in source.value &&
-        'inventory' in target.value
-      )
-    })
-
-    const isLoading = computed(() => {
-      return source.value !== null && target.value !== null
-    })
-
-    const filterComputers = async (val) => {
-      const { data } = await api.get('/api/v1/token/computers/', {
-        params: { search: val.toLowerCase() },
-      })
-
-      return data.results
-    }
-
-    const sortArray = (array) => {
-      const originalCopy = array.slice()
-      return originalCopy.sort()
-    }
-
-    const loadSoftware = async (obj) => {
-      if (!obj) return
-
-      try {
-        const { data } = await api.get(
-          `/api/v1/token/computers/${obj.id}/software/inventory/`,
-        )
-        obj.inventory = sortArray(data.map((item) => item.name)).join('\n')
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
-    const fetchAndLoad = async (key, setter) => {
-      if (route.query[key]) {
-        return await api.get(`${url}${route.query[key]}/`).then((response) => {
-          setter.value = response.data
-          loadSoftware(setter.value)
-        })
-      }
-      return Promise.resolve()
-    }
-
-    // created
-    Promise.all([
-      fetchAndLoad('source', source),
-      fetchAndLoad('target', target),
-    ]).catch((error) => {
-      uiStore.notifyError(error)
-    })
-    // end created
-
-    return {
-      title,
-      titleIcon,
-      breadcrumbs,
-      source,
-      target,
-      isEnabled,
-      isLoading,
-      loadSoftware,
-      filterComputers,
-      elementIcon,
-    }
+  {
+    text: $gettext('Data'),
+    icon: appIcon('data'),
   },
+  {
+    text: title,
+    icon: titleIcon,
+  },
+])
+
+const source = ref(null)
+const target = ref(null)
+
+const url = '/api/v1/token/computers/'
+
+const isEnabled = computed(() => {
+  return (
+    source.value !== null &&
+    target.value !== null &&
+    'inventory' in source.value &&
+    'inventory' in target.value
+  )
+})
+
+const isLoading = computed(() => {
+  return source.value !== null && target.value !== null
+})
+
+const filterComputers = async (val) => {
+  const { data } = await api.get('/api/v1/token/computers/', {
+    params: { search: val.toLowerCase() },
+  })
+
+  return data.results
 }
+
+const sortArray = (array) => {
+  const originalCopy = array.slice()
+  return originalCopy.sort()
+}
+
+const loadSoftware = async (obj) => {
+  if (!obj) return
+
+  try {
+    const { data } = await api.get(
+      `/api/v1/token/computers/${obj.id}/software/inventory/`,
+    )
+    obj.inventory = sortArray(data.map((item) => item.name)).join('\n')
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
+
+const fetchAndLoad = async (key, setter) => {
+  if (route.query[key]) {
+    try {
+      const response = await api.get(`${url}${route.query[key]}/`)
+      setter.value = response.data
+      await loadSoftware(setter.value)
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
+  }
+}
+
+// created
+Promise.all([
+  fetchAndLoad('source', source),
+  fetchAndLoad('target', target),
+]).catch((error) => {
+  uiStore.notifyError(error)
+})
 </script>

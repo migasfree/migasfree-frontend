@@ -24,7 +24,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -37,76 +37,55 @@ import PieChart from 'components/chart/Pie'
 
 import { appIcon, modelIcon } from 'composables/element'
 
-export default {
-  components: {
-    Breadcrumbs,
-    Header,
-    SearchFilter,
-    PieChart,
+const router = useRouter()
+const { $gettext } = useGettext()
+
+const titleIcon = modelIcon('packages')
+const title = $gettext('Packages')
+useMeta({ title })
+
+const searchText = ref('')
+const addRoute = 'package-add'
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const router = useRouter()
-    const { $gettext } = useGettext()
-
-    const titleIcon = modelIcon('packages')
-    const title = $gettext('Packages')
-    useMeta({ title })
-
-    const searchText = ref('')
-    const addRoute = 'package-add'
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Release'),
-        icon: appIcon('release'),
-      },
-      {
-        text: title,
-        icon: titleIcon,
-      },
-    ])
-
-    const url = { name: 'packages-list' }
-
-    const goTo = (params) => {
-      if ('url' in params) {
-        let query = params.url.query || {}
-
-        if (params.data.project_id) {
-          Object.assign(query, {
-            project_id: params.data.project_id,
-          })
-        }
-
-        if (params.data.store_id) {
-          Object.assign(query, {
-            store_id: params.data.store_id,
-          })
-        }
-
-        router.push({ name: params.url.name, query })
-      }
-    }
-
-    const search = (value) => {
-      router.push(Object.assign(url, { query: { search: value } }))
-    }
-
-    return {
-      title,
-      titleIcon,
-      searchText,
-      addRoute,
-      breadcrumbs,
-      url,
-      goTo,
-      search,
-    }
+  {
+    text: $gettext('Release'),
+    icon: appIcon('release'),
   },
+  {
+    text: title,
+    icon: titleIcon,
+  },
+])
+
+const url = { name: 'packages-list' }
+
+const goTo = (params) => {
+  if ('url' in params) {
+    const query = params.url.query || {}
+
+    if (params.data.project_id) {
+      Object.assign(query, {
+        project_id: params.data.project_id,
+      })
+    }
+
+    if (params.data.store_id) {
+      Object.assign(query, {
+        store_id: params.data.store_id,
+      })
+    }
+
+    router.push({ name: params.url.name, query })
+  }
+}
+
+const search = (value) => {
+  router.push(Object.assign(url, { query: { search: value } }))
 }
 </script>

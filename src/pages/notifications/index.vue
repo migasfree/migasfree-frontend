@@ -19,7 +19,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -32,71 +32,51 @@ import StackedBarChart from 'components/chart/StackedBar'
 
 import { appIcon, modelIcon } from 'composables/element'
 
-export default {
-  components: {
-    Breadcrumbs,
-    Header,
-    SearchFilter,
-    StackedBarChart,
+const router = useRouter()
+const { $gettext } = useGettext()
+
+const titleIcon = modelIcon('notifications')
+const title = $gettext('Notifications')
+useMeta({ title })
+
+const searchText = ref('')
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const router = useRouter()
-    const { $gettext } = useGettext()
-
-    const titleIcon = modelIcon('notifications')
-    const title = $gettext('Notifications')
-    useMeta({ title })
-
-    const searchText = ref('')
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Data'),
-        icon: appIcon('data'),
-      },
-      {
-        text: title,
-        icon: titleIcon,
-      },
-    ])
-
-    const url = { name: 'notifications-list' }
-
-    const goTo = (params) => {
-      if (params.data.created_at__lt) {
-        let query = {
-          created_at__gte: params.data.created_at__gte,
-          created_at__lt: params.data.created_at__lt,
-        }
-
-        if ('checked__exact' in params.data) {
-          Object.assign(query, {
-            checked: params.data.checked__exact === 1 ? 'true' : 'false',
-          })
-        }
-
-        router.push(Object.assign({}, url, { query }))
-      }
-    }
-
-    const search = (value) => {
-      router.push(Object.assign(url, { query: { search: value } }))
-    }
-
-    return {
-      title,
-      titleIcon,
-      searchText,
-      breadcrumbs,
-      url,
-      goTo,
-      search,
-    }
+  {
+    text: $gettext('Data'),
+    icon: appIcon('data'),
   },
+  {
+    text: title,
+    icon: titleIcon,
+  },
+])
+
+const url = { name: 'notifications-list' }
+
+const goTo = (params) => {
+  if (params.data.created_at__lt) {
+    const query = {
+      created_at__gte: params.data.created_at__gte,
+      created_at__lt: params.data.created_at__lt,
+    }
+
+    if ('checked__exact' in params.data) {
+      Object.assign(query, {
+        checked: params.data.checked__exact === 1 ? 'true' : 'false',
+      })
+    }
+
+    router.push(Object.assign({}, url, { query }))
+  }
+}
+
+const search = (value) => {
+  router.push(Object.assign(url, { query: { search: value } }))
 }
 </script>

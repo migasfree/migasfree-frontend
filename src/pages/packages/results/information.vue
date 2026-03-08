@@ -47,8 +47,8 @@
   </q-page>
 </template>
 
-<script>
-import { ref, reactive } from 'vue'
+<script setup>
+import { ref, reactive, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -59,90 +59,70 @@ import ItemDetail from 'components/ui/ItemDetail'
 
 import { appIcon, modelIcon } from 'composables/element'
 
-export default {
-  components: {
-    ItemDetail,
+const uiStore = useUiStore()
+const { $gettext } = useGettext()
+
+const titleIcon = appIcon('information')
+const title = $gettext('Package Information')
+const windowTitle = ref(title)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'packages-list',
+}
+const model = 'packages'
+
+const element = reactive({ id: 0 })
+const information = ref(null)
+const loading = ref(false)
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const uiStore = useUiStore()
-    const { $gettext } = useGettext()
-
-    const titleIcon = appIcon('information')
-    const title = $gettext('Package Information')
-    const windowTitle = ref(title)
-    useMeta(() => ({ title: windowTitle.value }))
-
-    const routes = {
-      list: 'packages-list',
-    }
-    const model = 'packages'
-
-    const element = reactive({ id: 0 })
-    const information = ref(null)
-    const loading = ref(false)
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Release'),
-        icon: appIcon('release'),
-      },
-      {
-        text: $gettext('Packages'),
-        icon: modelIcon(model),
-        to: 'packages-dashboard',
-      },
-      {
-        text: $gettext('Results'),
-        icon: appIcon('results'),
-        to: routes.list,
-      },
-      {
-        text: 'Id',
-        to: { name: 'package-detail', params: { id: 0 } },
-      },
-      {
-        text: title,
-        icon: titleIcon,
-      },
-    ])
-
-    const setRelated = async () => {
-      loading.value = true
-      try {
-        const { data } = await api.get(
-          `/api/v1/token/${model}/${element.id}/info/`,
-        )
-        information.value = data.data
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        loading.value = false
-      }
-    }
-
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
-
-    return {
-      server: uiStore.server,
-      title,
-      titleIcon,
-      routes,
-      model,
-      breadcrumbs,
-      element,
-      information,
-      loading,
-      setTitle,
-      appIcon,
-      setRelated,
-    }
+  {
+    text: $gettext('Release'),
+    icon: appIcon('release'),
   },
+  {
+    text: $gettext('Packages'),
+    icon: modelIcon(model),
+    to: 'packages-dashboard',
+  },
+  {
+    text: $gettext('Results'),
+    icon: appIcon('results'),
+    to: routes.list,
+  },
+  {
+    text: 'Id',
+    to: { name: 'package-detail', params: { id: 0 } },
+  },
+  {
+    text: title,
+    icon: titleIcon,
+  },
+])
+
+const server = computed(() => uiStore.server)
+
+const setRelated = async () => {
+  loading.value = true
+  try {
+    const { data } = await api.get(
+      `/api/v1/token/${model}/${element.id}/info/`,
+    )
+    information.value = data.data
+  } catch (error) {
+    uiStore.notifyError(error)
+  } finally {
+    loading.value = false
+  }
+}
+
+const setTitle = (value) => {
+  windowTitle.value = value
 }
 </script>

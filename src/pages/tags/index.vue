@@ -24,7 +24,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -37,66 +37,45 @@ import PieChart from 'components/chart/Pie'
 
 import { appIcon, modelIcon } from 'composables/element'
 
-export default {
-  components: {
-    Breadcrumbs,
-    SearchFilter,
-    Header,
-    PieChart,
+const router = useRouter()
+const { $gettext } = useGettext()
+
+const titleIcon = modelIcon('tags')
+const title = $gettext('Tags')
+useMeta({ title })
+
+const searchText = ref('')
+const addRoute = 'tag-add'
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const router = useRouter()
-    const { $gettext } = useGettext()
-
-    const titleIcon = modelIcon('tags')
-    const title = $gettext('Tags')
-    useMeta({ title })
-
-    const searchText = ref('')
-    const addRoute = 'tag-add'
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Data'),
-        icon: appIcon('data'),
-      },
-      {
-        text: title,
-        icon: titleIcon,
-      },
-    ])
-
-    const url = { name: 'tags-list' }
-
-    const goTo = (params) => {
-      if (params.data.property_att_id) {
-        router.push(
-          Object.assign(url, {
-            query: { property_id: params.data.property_att_id },
-          }),
-        )
-      }
-    }
-
-    const search = (value) => {
-      router.push(Object.assign(url, { query: { search: value } }))
-    }
-
-    return {
-      title,
-      titleIcon,
-      searchText,
-      addRoute,
-      breadcrumbs,
-      url,
-      goTo,
-      search,
-    }
+  {
+    text: $gettext('Data'),
+    icon: appIcon('data'),
   },
+  {
+    text: title,
+    icon: titleIcon,
+  },
+])
+
+const url = { name: 'tags-list' }
+
+const goTo = (params) => {
+  if (params.data.property_att_id) {
+    router.push(
+      Object.assign(url, {
+        query: { property_id: params.data.property_att_id },
+      }),
+    )
+  }
+}
+
+const search = (value) => {
+  router.push(Object.assign(url, { query: { search: value } }))
 }
 </script>

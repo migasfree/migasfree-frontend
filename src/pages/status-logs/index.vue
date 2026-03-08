@@ -30,7 +30,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -44,89 +44,68 @@ import StackedBarChart from 'components/chart/StackedBar'
 
 import { appIcon, modelIcon } from 'composables/element'
 
-export default {
-  components: {
-    Breadcrumbs,
-    Header,
-    SearchFilter,
-    StackedBarChart,
-    PieChart,
+const router = useRouter()
+const { $gettext } = useGettext()
+
+const titleIcon = modelIcon('status-logs')
+const title = $gettext('Status Logs')
+useMeta({ title })
+
+const searchText = ref('')
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const router = useRouter()
-    const { $gettext } = useGettext()
-
-    const titleIcon = modelIcon('status-logs')
-    const title = $gettext('Status Logs')
-    useMeta({ title })
-
-    const searchText = ref('')
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Data'),
-        icon: appIcon('data'),
-      },
-      {
-        text: title,
-        icon: titleIcon,
-      },
-    ])
-
-    const url = { name: 'status-logs-list' }
-
-    const goTo = (params) => {
-      if ('url' in params) {
-        let query = params.url.query || {}
-
-        if (params.data.status) {
-          Object.assign(query, {
-            status_in: params.data.status,
-          })
-        }
-
-        if (
-          !('query' in params.url) &&
-          params.data.status_in &&
-          !('status' in params.data)
-        ) {
-          Object.assign(query, {
-            status_in: params.data.status_in,
-          })
-        }
-
-        router.push({ name: params.url.name, query })
-      }
-
-      if (params.data.created_at__lt) {
-        let query = {
-          created_at__gte: params.data.created_at__gte,
-          created_at__lt: params.data.created_at__lt,
-          status_in: params.data.status__in,
-        }
-
-        router.push(Object.assign({}, url, { query }))
-      }
-    }
-
-    const search = (value) => {
-      router.push(Object.assign(url, { query: { search: value } }))
-    }
-
-    return {
-      title,
-      titleIcon,
-      searchText,
-      breadcrumbs,
-      url,
-      goTo,
-      search,
-    }
+  {
+    text: $gettext('Data'),
+    icon: appIcon('data'),
   },
+  {
+    text: title,
+    icon: titleIcon,
+  },
+])
+
+const url = { name: 'status-logs-list' }
+
+const goTo = (params) => {
+  if ('url' in params) {
+    const query = params.url.query || {}
+
+    if (params.data.status) {
+      Object.assign(query, {
+        status_in: params.data.status,
+      })
+    }
+
+    if (
+      !('query' in params.url) &&
+      params.data.status_in &&
+      !('status' in params.data)
+    ) {
+      Object.assign(query, {
+        status_in: params.data.status_in,
+      })
+    }
+
+    router.push({ name: params.url.name, query })
+  }
+
+  if (params.data.created_at__lt) {
+    const query = {
+      created_at__gte: params.data.created_at__gte,
+      created_at__lt: params.data.created_at__lt,
+      status_in: params.data.status__in,
+    }
+
+    router.push(Object.assign({}, url, { query }))
+  }
+}
+
+const search = (value) => {
+  router.push(Object.assign(url, { query: { search: value } }))
 }
 </script>

@@ -42,7 +42,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -56,84 +56,62 @@ import PieChart from 'components/chart/Pie'
 
 import { appIcon, modelIcon } from 'composables/element'
 
-export default {
-  components: {
-    Breadcrumbs,
-    Header,
-    SearchFilter,
-    PieChart,
+const router = useRouter()
+const { $gettext } = useGettext()
+
+const titleIcon = modelIcon('deployments')
+const title = $gettext('Deployments')
+useMeta({ title })
+
+const searchText = ref('')
+const addRoute = 'deployment-add'
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const router = useRouter()
-    const { $gettext } = useGettext()
-
-    const titleIcon = modelIcon('deployments')
-    const title = $gettext('Deployments')
-    useMeta({ title })
-
-    const searchText = ref('')
-    const addRoute = 'deployment-add'
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Release'),
-        icon: appIcon('release'),
-      },
-      {
-        text: title,
-        icon: titleIcon,
-      },
-    ])
-
-    const url = { name: 'deployments-list' }
-
-    const enabledUrl = computed(() => {
-      return Object.assign({}, url, {
-        query: { enabled: true },
-      })
-    })
-
-    const goTo = (params) => {
-      let query = params.url.query || {}
-
-      if (params.data.project_id) {
-        query = _merge(query, { project_id: params.data.project_id })
-      }
-
-      if ('schedule' in params.data) {
-        query = _merge(query, { schedule: params.data.schedule })
-      }
-
-      if (params.data.enabled) {
-        query = _merge(query, { enabled: params.data.enabled })
-      }
-
-      router.push({
-        name: url.name,
-        query,
-      })
-    }
-
-    const search = (value) => {
-      router.push(Object.assign(url, { query: { search: value } }))
-    }
-
-    return {
-      title,
-      titleIcon,
-      searchText,
-      addRoute,
-      breadcrumbs,
-      url,
-      enabledUrl,
-      goTo,
-      search,
-    }
+  {
+    text: $gettext('Release'),
+    icon: appIcon('release'),
   },
+  {
+    text: title,
+    icon: titleIcon,
+  },
+])
+
+const url = { name: 'deployments-list' }
+
+const enabledUrl = computed(() => {
+  return Object.assign({}, url, {
+    query: { enabled: true },
+  })
+})
+
+const goTo = (params) => {
+  let query = params.url.query || {}
+
+  if (params.data.project_id) {
+    query = _merge(query, { project_id: params.data.project_id })
+  }
+
+  if ('schedule' in params.data) {
+    query = _merge(query, { schedule: params.data.schedule })
+  }
+
+  if (params.data.enabled) {
+    query = _merge(query, { enabled: params.data.enabled })
+  }
+
+  router.push({
+    name: url.name,
+    query,
+  })
+}
+
+const search = (value) => {
+  router.push(Object.assign(url, { query: { search: value } }))
 }
 </script>

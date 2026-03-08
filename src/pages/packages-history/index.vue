@@ -19,7 +19,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -32,68 +32,48 @@ import PieChart from 'components/chart/Pie'
 
 import { appIcon, modelIcon } from 'composables/element'
 
-export default {
-  components: {
-    Breadcrumbs,
-    Header,
-    SearchFilter,
-    PieChart,
+const router = useRouter()
+const { $gettext } = useGettext()
+
+const titleIcon = modelIcon('packages-history')
+const title = $gettext('Packages History')
+useMeta({ title })
+
+const searchText = ref('')
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const router = useRouter()
-    const { $gettext } = useGettext()
-
-    const titleIcon = modelIcon('packages-history')
-    const title = $gettext('Packages History')
-    useMeta({ title })
-
-    const searchText = ref('')
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Data'),
-        icon: appIcon('data'),
-      },
-      {
-        text: title,
-        icon: titleIcon,
-      },
-    ])
-
-    const url = { name: 'packages-history-list' }
-
-    const goTo = (params) => {
-      if ('url' in params) {
-        let query = params.url.query || {}
-
-        if (params.data.package_project_id) {
-          Object.assign(query, {
-            package_project_id: params.data.package_project_id,
-          })
-        }
-
-        router.push({ name: params.url.name, query })
-      }
-    }
-
-    const search = (value) => {
-      router.push(Object.assign(url, { query: { search: value } }))
-    }
-
-    return {
-      title,
-      titleIcon,
-      searchText,
-      breadcrumbs,
-      url,
-      goTo,
-      search,
-    }
+  {
+    text: $gettext('Data'),
+    icon: appIcon('data'),
   },
+  {
+    text: title,
+    icon: titleIcon,
+  },
+])
+
+const url = { name: 'packages-history-list' }
+
+const goTo = (params) => {
+  if ('url' in params) {
+    const query = params.url.query || {}
+
+    if (params.data.package_project_id) {
+      Object.assign(query, {
+        package_project_id: params.data.package_project_id,
+      })
+    }
+
+    router.push({ name: params.url.name, query })
+  }
+}
+
+const search = (value) => {
+  router.push(Object.assign(url, { query: { search: value } }))
 }
 </script>
