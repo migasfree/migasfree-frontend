@@ -1,4 +1,3 @@
-import { appIcon } from 'composables/element'
 <template>
   <div class="q-py-md">
     <q-linear-progress
@@ -63,6 +62,7 @@ import { appIcon } from 'composables/element'
 </template>
 
 <script setup>
+import { appIcon } from 'composables/element'
 import { useGettext } from 'vue3-gettext'
 
 const { $gettext } = useGettext()
@@ -78,7 +78,7 @@ const logIcon = (type) => {
   const icons = {
     info: appIcon('info'),
     success: appIcon('success'),
-    warning: 'mdi-alert-outline',
+    warning: appIcon('warning'),
     error: appIcon('cancel'),
   }
   return icons[type] || icons.info
