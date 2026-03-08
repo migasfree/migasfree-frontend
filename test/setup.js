@@ -19,13 +19,16 @@ config.global.stubs = {
   'q-item-label': { template: '<div class="q-item-label"><slot /></div>' },
   'q-dialog': { template: '<div class="q-dialog"><slot /></div>' },
   'q-toolbar': { template: '<div class="q-toolbar"><slot /></div>' },
-  'q-toolbar-title': { template: '<div class="q-toolbar-title"><slot /></div>' },
+  'q-toolbar-title': {
+    template: '<div class="q-toolbar-title"><slot /></div>',
+  },
   'q-list': { template: '<div class="q-list"><slot /></div>' },
   'q-item': { template: '<div class="q-item"><slot /></div>' },
   'q-item-section': { template: '<div class="q-item-section"><slot /></div>' },
   'q-space': { template: '<div class="q-space" />' },
   'q-btn': {
-    template: '<button class="q-btn" @click="$emit(\'click\')"><slot /></button>',
+    template:
+      '<button class="q-btn" @click="$emit(\'click\')"><slot /></button>',
   },
   'q-btn-dropdown': {
     template: '<div class="q-btn-dropdown"><slot /></div>',
@@ -43,7 +46,9 @@ config.global.stubs = {
   'q-select': { template: '<div class="q-select" />' },
   'q-toggle': { template: '<div class="q-toggle" />' },
   'q-scroll-area': { template: '<div class="q-scroll-area"><slot /></div>' },
-  'q-inner-loading': { template: '<div class="q-inner-loading"><slot /></div>' },
+  'q-inner-loading': {
+    template: '<div class="q-inner-loading"><slot /></div>',
+  },
 }
 
 // Global directives

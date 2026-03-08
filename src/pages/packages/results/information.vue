@@ -111,9 +111,7 @@ const server = computed(() => uiStore.server)
 const setRelated = async () => {
   loading.value = true
   try {
-    const { data } = await api.get(
-      `/api/v1/token/${model}/${element.id}/info/`,
-    )
+    const { data } = await api.get(`/api/v1/token/${model}/${element.id}/info/`)
     information.value = data.data
   } catch (error) {
     uiStore.notifyError(error)
