@@ -45,12 +45,12 @@ describe('RemoveDialog.vue', () => {
       global: {
         mocks: globalMocks,
         stubs: {
-          QDialog: QDialogStub,
-          QCard: QCardStub,
-          QCardSection: QCardSectionStub,
-          QAvatar: QAvatarStub,
-          QCardActions: QCardActionsStub,
-          QBtn: QBtnStub,
+          'q-dialog': QDialogStub,
+          'q-card': QCardStub,
+          'q-card-section': QCardSectionStub,
+          'q-avatar': QAvatarStub,
+          'q-card-actions': QCardActionsStub,
+          'q-btn': QBtnStub,
         },
         directives: {
           'close-popup': {},

@@ -11,7 +11,7 @@ vi.mock('vue3-gettext', () => ({
 describe('element.js', () => {
   describe('appIcon', () => {
     it('returns correct icon for known item', () => {
-      expect(appIcon('home')).toBe('mdi-home')
+      expect(appIcon('home')).toBe('mdi-home-outline')
       expect(appIcon('add')).toBe('mdi-plus')
     })
 
@@ -22,8 +22,8 @@ describe('element.js', () => {
 
   describe('modelIcon', () => {
     it('returns correct icon for known model', () => {
-      expect(modelIcon('computers')).toBe('mdi-desktop-classic')
-      expect(modelIcon('deployments')).toBe('mdi-rocket-launch')
+      expect(modelIcon('computers')).toBe('mdi-monitor-dashboard')
+      expect(modelIcon('deployments')).toBe('mdi-rocket-launch-outline')
     })
 
     it('returns empty string for unknown model', () => {
@@ -38,7 +38,7 @@ describe('element.js', () => {
     describe('elementIcon', () => {
       it('returns mapped icon for known status', () => {
         expect(elementIcon('available')).toBe('mdi-cart')
-        expect(elementIcon('reserved')).toBe('mdi-lock-alert')
+        expect(elementIcon('reserved')).toBe('mdi-lock-clock')
       })
 
       it('returns default icon for unknown status', () => {
