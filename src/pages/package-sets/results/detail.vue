@@ -129,7 +129,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -144,213 +144,174 @@ import MigasLink from 'components/MigasLink'
 import { appIcon, modelIcon } from 'composables/element'
 import useAutoFocus from 'composables/autoFocus'
 
-export default {
-  components: {
-    EntitySelect,
-    ItemDetail,
-    MigasLink,
+const uiStore = useUiStore()
+const { $gettext } = useGettext()
+const { inputRef: primaryInput } = useAutoFocus()
+
+const title = ref($gettext('Package Set'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'package-sets-list',
+  add: 'package-set-add',
+  detail: 'package-set-detail',
+}
+const model = 'package-sets'
+
+const element = reactive({
+  id: 0,
+  project: null,
+  description: '',
+  files: null,
+})
+
+const projectStore = reactive({ items: [], selected: null })
+const packages = ref([])
+
+const menu = ref(null)
+const tree = ref(null)
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const uiStore = useUiStore()
-    const { $gettext } = useGettext()
-    const { inputRef: primaryInput } = useAutoFocus()
+  {
+    text: $gettext('Release'),
+    icon: appIcon('release'),
+  },
+  {
+    text: $gettext('Package Sets'),
+    icon: modelIcon(model),
+    to: routes.list,
+  },
+])
 
-    const title = ref($gettext('Package Set'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
+const isValid = computed(() => {
+  return element.project !== null && element.name !== null
+})
 
-    const routes = {
-      list: 'package-sets-list',
-      add: 'package-set-add',
-      detail: 'package-set-detail',
-    }
-    const model = 'package-sets'
+const nodeSelected = (value) => {
+  if (typeof value !== 'string') return
 
-    const element = reactive({
-      id: 0,
-      project: null,
-      description: '',
-      files: null,
+  const keys = value.split('|')
+  if (keys.length !== 2) return
+
+  const nodeProject = tree.value.getNodeByKey(parseInt(keys[0]))
+  const nodeStore = tree.value.getNodeByKey(value)
+
+  projectStore.selected = `${nodeProject.label} / ${nodeStore.label}`
+  Object.assign(element, {
+    project: { id: nodeProject.id },
+    store: { id: nodeStore.store_id },
+  })
+
+  loadPackages()
+
+  menu.value.hide()
+}
+
+const onLazyLoad = async ({ key, done }) => {
+  try {
+    const { data } = await api.get('/api/v1/token/stores/', {
+      params: { project__id: key },
     })
 
-    const projectStore = reactive({ items: [], selected: null })
-    const packages = ref([])
+    const items = Object.values(data.results).map((item) => ({
+      id: `${key}|${item.id}`,
+      label: item.name,
+      icon: modelIcon('stores'),
+      store_id: item.id,
+    }))
 
-    const menu = ref(null)
-    const tree = ref(null)
+    done(items)
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
 
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Release'),
-        icon: appIcon('release'),
-      },
-      {
-        text: $gettext('Package Sets'),
-        icon: modelIcon(model),
-        to: routes.list,
-      },
-    ])
-
-    const isValid = computed(() => {
-      return element.project !== null && element.name !== null
-      /* return (
-        element.project !== null &&
-        element.name !== null &&
-        Array.isArray(element.packages) &&
-        element.packages.length > 0
-      ) */
+const loadPackages = async () => {
+  try {
+    const { data } = await api.get('/api/v1/token/packages/', {
+      params: { store__id: element.store.id },
     })
 
-    const nodeSelected = (value) => {
-      if (typeof value !== 'string') return
+    packages.value = Object.values(data.results).map(({ id, fullname }) => ({
+      id,
+      fullname,
+    }))
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
 
-      const keys = value.split('|')
-      if (keys.length != 2) return
+const loadRelated = async () => {
+  try {
+    const { data } = await api.get('/api/v1/token/projects/')
+    const projects = data.results
 
-      const nodeProject = tree.value.getNodeByKey(parseInt(keys[0]))
-      const nodeStore = tree.value.getNodeByKey(value)
+    projectStore.items = Object.values(projects).map(({ id, name }) => ({
+      id,
+      label: name,
+      icon: modelIcon('projects'),
+      lazy: true,
+    }))
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
 
-      projectStore.selected = `${nodeProject.label} / ${nodeStore.label}`
-      Object.assign(element, {
-        project: { id: nodeProject.id },
-        store: { id: nodeStore.store_id },
-      })
+  if (element.id) {
+    await loadPackages()
+  }
+}
 
-      loadPackages()
+const elementData = () => {
+  const data = new FormData()
 
-      menu.value.hide()
+  data.append('name', element.name)
+  data.append('description', element.description ?? '')
+
+  if (element.packages) {
+    for (let i = 0; i < element.packages.length; i++) {
+      data.append('packages', element.packages[i].id)
     }
+  } else {
+    data.append('packages', [])
+  }
 
-    const onLazyLoad = async ({ key, done }) => {
-      try {
-        const { data } = await api.get('/api/v1/token/stores/', {
-          params: { project__id: key },
-        })
-
-        const items = Object.values(data.results).map((item) => ({
-          id: `${key}|${item.id}`,
-          label: item.name,
-          icon: modelIcon('stores'),
-          store_id: item.id,
-        }))
-
-        done(items)
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
+  if (element.files) {
+    for (let i = 0; i < element.files.length; i++) {
+      data.append('files', element.files[i])
     }
+  }
 
-    const loadPackages = async () => {
-      try {
-        const { data } = await api.get('/api/v1/token/packages/', {
-          params: { store__id: element.store.id },
-        })
+  if (!element.id) {
+    data.append('project', element.project.id)
+    data.append('store', element.store.id)
+  }
 
-        packages.value = Object.values(data.results).map(
-          ({ id, fullname }) => ({
-            id,
-            fullname,
-          }),
-        )
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
+  return data
+}
 
-    const loadRelated = async () => {
-      try {
-        const { data } = await api.get('/api/v1/token/projects/')
-        const projects = data.results
+const resetRelated = () => {
+  projectStore.selected = null
+}
 
-        projectStore.items = Object.values(projects).map(({ id, name }) => ({
-          id,
-          label: name,
-          icon: modelIcon('projects'),
-          lazy: true,
-        }))
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    name: undefined,
+    description: undefined,
+    project: null,
+    store: null,
+    packages: [],
+    files: [],
+  })
+}
 
-      if (element.id) {
-        await loadPackages()
-      }
-    }
-
-    const elementData = () => {
-      let data = new FormData()
-
-      data.append('name', element.name)
-      data.append('description', element.description ?? '')
-
-      if (element.packages) {
-        for (let i = 0; i < element.packages.length; i++) {
-          data.append('packages', element.packages[i].id)
-        }
-      } else {
-        data.append('packages', [])
-      }
-
-      if (element.files) {
-        for (let i = 0; i < element.files.length; i++) {
-          data.append('files', element.files[i])
-        }
-      }
-
-      if (!element.id) {
-        data.append('project', element.project.id)
-        data.append('store', element.store.id)
-      }
-
-      return data
-    }
-
-    const resetRelated = () => {
-      projectStore.selected = null
-    }
-
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        name: undefined,
-        description: undefined,
-        project: null,
-        store: null,
-        packages: [],
-        files: [],
-      })
-    }
-
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
-
-    return {
-      breadcrumbs,
-      title,
-      model,
-      routes,
-      element,
-      packages,
-      projectStore,
-      menu,
-      tree,
-      isValid,
-      nodeSelected,
-      onLazyLoad,
-      elementData,
-      loadRelated,
-      resetElement,
-      resetRelated,
-      setTitle,
-      modelIcon,
-      primaryInput,
-    }
-  },
+const setTitle = (value) => {
+  windowTitle.value = value
 }
 </script>

@@ -186,257 +186,215 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
-
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
-
 import EntitySelect from 'components/ui/EntitySelect'
 import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
 import SelectAttributes from 'components/ui/SelectAttributes'
-
 import { appIcon, modelIcon } from 'composables/element'
 import useAutoFocus from 'composables/autoFocus'
 
-export default {
-  components: {
-    EntitySelect,
-    FilteredMultiSelect,
-    ItemDetail,
-    MigasLink,
-    SelectAttributes,
+const { $gettext } = useGettext()
+const { inputRef: primaryInput } = useAutoFocus()
+const uiStore = useUiStore()
+
+const title = ref($gettext('Device'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'devices-list',
+  add: 'device-add',
+  detail: 'device-detail',
+}
+const model = 'devices/devices'
+
+const element = reactive({ id: 0, available_for_attributes: [], model: null })
+
+const logicalDevices = ref([])
+const removedLogicalDevices = ref([])
+const capabilities = ref([])
+const isLoadingLogical = ref(false)
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const { $gettext } = useGettext()
-    const { inputRef: primaryInput } = useAutoFocus()
-    const uiStore = useUiStore()
+  {
+    text: $gettext('Devices'),
+    icon: appIcon('devices'),
+  },
+  {
+    text: $gettext('Devices'),
+    icon: modelIcon(model),
+    to: 'devices-dashboard',
+  },
+])
 
-    const title = ref($gettext('Device'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
+const isValid = computed(() => {
+  return (
+    element.name !== undefined &&
+    element.name.trim() !== '' &&
+    element.model !== undefined &&
+    element.model !== null &&
+    element.connection !== null
+  )
+})
 
-    const routes = {
-      list: 'devices-list',
-      add: 'device-add',
-      detail: 'device-detail',
-    }
-    const model = 'devices/devices'
+const localConnectionFields = async () => {
+  if (!element.connection?.id) return
 
-    let element = reactive({ id: 0, available_for_attributes: [], model: null })
+  try {
+    const { data } = await api.get(
+      `/api/v1/token/devices/connections/${element.connection.id}/`,
+    )
+    // `data.fields` is a string separated by commas
+    element.connection.fields = data.fields.split(',').map((item) => {
+      const [id, hint] = item.trim().split(':')
 
-    const logicalDevices = ref([])
-    const removedLogicalDevices = ref([])
-    const capabilities = ref([])
-    const isLoadingLogical = ref(false)
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Devices'),
-        icon: appIcon('devices'),
-      },
-      {
-        text: $gettext('Devices'),
-        icon: modelIcon(model),
-        to: 'devices-dashboard',
-      },
-    ])
-
-    const isValid = computed(() => {
-      return (
-        element.name !== undefined &&
-        element.name.trim() !== '' &&
-        element.model !== undefined &&
-        element.model !== null &&
-        element.connection !== null
-      )
-    })
-
-    const localConnectionFields = async () => {
-      if (!element.connection?.id) return
-
-      try {
-        const { data } = await api.get(
-          `/api/v1/token/devices/connections/${element.connection.id}/`,
-        )
-        // `data.fields` is a string separated by commas
-        element.connection.fields = data.fields.split(',').map((item) => {
-          const [id, hint] = item.trim().split(':')
-
-          return {
-            id,
-            value: element.data?.[id] ?? null,
-            hint: hint ?? null,
-          }
-        })
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
-    const loadRelated = async () => {
-      try {
-        const { data } = await api.get('/api/v1/token/devices/capabilities/')
-        capabilities.value = data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-
-      if (element.id) {
-        isLoadingLogical.value = true
-        try {
-          const { data } = await api.get(
-            `/api/v1/token/devices/logical/?device__id=${element.id}`,
-          )
-          logicalDevices.value = data.results
-        } catch (error) {
-          uiStore.notifyError(error)
-        } finally {
-          isLoadingLogical.value = false
-        }
-
-        localConnectionFields()
-      }
-    }
-
-    const elementData = () => {
       return {
-        name: element.name,
-        model: element.model.id,
-        connection: element.connection.id,
-        available_for_attributes: element.available_for_attributes
-          ? element.available_for_attributes.map((item) => item.id)
-          : [],
-        data: element.connection.fields.reduce((obj, v) => {
-          if (v.value) obj[v.id] = v.value
-          return obj
-        }, {}),
+        id,
+        value: element.data?.[id] ?? null,
+        hint: hint ?? null,
       }
+    })
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
+
+const loadRelated = async () => {
+  try {
+    const { data } = await api.get('/api/v1/token/devices/capabilities/')
+    capabilities.value = data.results
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+
+  if (element.id) {
+    isLoadingLogical.value = true
+    try {
+      const { data } = await api.get(
+        `/api/v1/token/devices/logical/?device__id=${element.id}`,
+      )
+      logicalDevices.value = data.results
+    } catch (error) {
+      uiStore.notifyError(error)
+    } finally {
+      isLoadingLogical.value = false
     }
 
-    const updateRelated = async () => {
-      for (const logical of logicalDevices.value) {
-        if (!logical.capability) return
+    localConnectionFields()
+  }
+}
 
-        const payload = {
-          device: element.id,
-          capability: logical.capability.id,
-          alternative_capability_name: logical.alternative_capability_name,
-          attributes: logical.attributes?.map((item) => item.id) ?? [],
-        }
+const elementData = () => {
+  return {
+    name: element.name,
+    model: element.model.id,
+    connection: element.connection.id,
+    available_for_attributes: element.available_for_attributes
+      ? element.available_for_attributes.map((item) => item.id)
+      : [],
+    data: element.connection.fields.reduce((obj, v) => {
+      if (v.value) obj[v.id] = v.value
+      return obj
+    }, {}),
+  }
+}
 
-        const isExisting = logical.id > 0
-        const method = isExisting ? 'patch' : 'post'
-        const url = isExisting
-          ? `/api/v1/token/devices/logical/${logical.id}/`
-          : '/api/v1/token/devices/logical/'
+const updateRelated = async () => {
+  for (const logical of logicalDevices.value) {
+    if (!logical.capability) return
 
-        if (isExisting) payload.id = logical.id
-
-        try {
-          await api[method](url, payload)
-        } catch (error) {
-          uiStore.notifyError(error)
-        }
-      }
-
-      for (const id of removedLogicalDevices.value) {
-        try {
-          await api.delete(`/api/v1/token/devices/logical/${id}/`)
-        } catch (error) {
-          uiStore.notifyError(error)
-        }
-      }
+    const payload = {
+      device: element.id,
+      capability: logical.capability.id,
+      alternative_capability_name: logical.alternative_capability_name,
+      attributes: logical.attributes?.map((item) => item.id) ?? [],
     }
 
-    const setRelated = async () => {
-      await localConnectionFields()
-    }
+    const isExisting = logical.id > 0
+    const method = isExisting ? 'patch' : 'post'
+    const url = isExisting
+      ? `/api/v1/token/devices/logical/${logical.id}/`
+      : '/api/v1/token/devices/logical/'
 
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        name: undefined,
-        model: null,
-        connection: null,
-        available_for_attributes: [],
-        data: {},
-      })
-    }
+    if (isExisting) payload.id = logical.id
 
-    const resetRelated = () => {
-      logicalDevices.value = []
-      removedLogicalDevices.value = []
+    try {
+      await api[method](url, payload)
+    } catch (error) {
+      uiStore.notifyError(error)
     }
+  }
 
-    const setTitle = (value) => {
-      windowTitle.value = value
+  for (const id of removedLogicalDevices.value) {
+    try {
+      await api.delete(`/api/v1/token/devices/logical/${id}/`)
+    } catch (error) {
+      uiStore.notifyError(error)
     }
+  }
+}
 
-    const resetConnections = () => {
-      element.connection = null
-    }
+const setRelated = async () => {
+  await localConnectionFields()
+}
 
-    const addInline = () => {
-      logicalDevices.value.push({
-        id: 0,
-        capability: null,
-        alternative_capability_name: null,
-        attributes: [],
-      })
-    }
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    name: undefined,
+    model: null,
+    connection: null,
+    available_for_attributes: [],
+    data: {},
+  })
+}
 
-    const removeInline = (index) => {
-      const removedItem = logicalDevices.value.splice(index, 1)[0]
-      if (removedItem.id > 0) {
-        removedLogicalDevices.value.push(removedItem.id)
-      }
-    }
+const resetRelated = () => {
+  logicalDevices.value = []
+  removedLogicalDevices.value = []
+}
 
-    const filterModels = async (val) => {
-      const { data } = await api.get('/api/v1/token/devices/models/', {
-        params: { search: val.toLowerCase() },
-      })
+const setTitle = (value) => {
+  windowTitle.value = value
+}
 
-      return data.results
-    }
+const resetConnections = () => {
+  element.connection = null
+}
 
-    return {
-      breadcrumbs,
-      title,
-      model,
-      routes,
-      element,
-      logicalDevices,
-      removedLogicalDevices,
-      capabilities,
-      isLoadingLogical,
-      isValid,
-      elementData,
-      loadRelated,
-      localConnectionFields,
-      updateRelated,
-      setRelated,
-      resetElement,
-      resetRelated,
-      setTitle,
-      resetConnections,
-      addInline,
-      removeInline,
-      filterModels,
-      appIcon,
-      modelIcon,
-      primaryInput,
-    }
-  },
+const addInline = () => {
+  logicalDevices.value.push({
+    id: 0,
+    capability: null,
+    alternative_capability_name: null,
+    attributes: [],
+  })
+}
+
+const removeInline = (index) => {
+  const removedItem = logicalDevices.value.splice(index, 1)[0]
+  if (removedItem.id > 0) {
+    removedLogicalDevices.value.push(removedItem.id)
+  }
+}
+
+const filterModels = async (val) => {
+  const { data } = await api.get('/api/v1/token/devices/models/', {
+    params: { search: val.toLowerCase() },
+  })
+
+  return data.results
 }
 </script>

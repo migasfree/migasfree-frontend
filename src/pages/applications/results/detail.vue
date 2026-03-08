@@ -198,7 +198,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
@@ -215,252 +215,210 @@ import SelectAttributes from 'components/ui/SelectAttributes'
 import { appIcon, modelIcon } from 'composables/element'
 import useAutoFocus from 'composables/autoFocus'
 
-export default {
-  components: {
-    EntitySelect,
-    ItemDetail,
-    OrderTextArea,
-    SelectAttributes,
+const uiStore = useUiStore()
+const route = useRoute()
+const { $gettext, interpolate } = useGettext()
+const { inputRef: primaryInput } = useAutoFocus()
+
+const title = ref($gettext('Application'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'apps-list',
+  add: 'app-add',
+  detail: 'app-detail',
+}
+const model = 'catalog/apps'
+
+const element = reactive({
+  id: 0,
+  score: 0,
+  available_for_attributes: [],
+  description: '',
+})
+
+const categories = ref([])
+const levels = ref([])
+const projects = ref([])
+const packagesByProject = ref([])
+const removedProjects = ref([])
+const iconFile = ref(null)
+const rand = ref(1)
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const uiStore = useUiStore()
-    const route = useRoute()
-    const { $gettext, interpolate } = useGettext()
-    const { inputRef: primaryInput } = useAutoFocus()
+  {
+    text: $gettext('Release'),
+    icon: appIcon('release'),
+  },
+  {
+    text: $gettext('Applications'),
+    icon: modelIcon(model),
+    to: 'apps-dashboard',
+  },
+])
 
-    const title = ref($gettext('Application'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
+const isValid = computed(() => {
+  return (
+    element.name !== undefined &&
+    element.name.trim() !== '' &&
+    element.category !== undefined &&
+    element.level !== undefined &&
+    element.score !== undefined &&
+    element.score > 0
+  )
+})
 
-    const routes = {
-      list: 'apps-list',
-      add: 'app-add',
-      detail: 'app-detail',
-    }
-    const model = 'catalog/apps'
+const iconPath = computed(() => `${element.icon}?rand=${rand.value}`)
 
-    let element = reactive({
-      id: 0,
-      score: 0,
-      available_for_attributes: [],
-      description: '',
-    })
-
-    const categories = ref([])
-    const levels = ref([])
-    const projects = ref([])
-    const packagesByProject = ref([])
-    const removedProjects = ref([])
-    const iconFile = ref(null)
-    const rand = ref(1)
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Release'),
-        icon: appIcon('release'),
-      },
-      {
-        text: $gettext('Applications'),
-        icon: modelIcon(model),
-        to: 'apps-dashboard',
-      },
+const loadRelated = async () => {
+  try {
+    const [
+      { data: levelsData },
+      { data: categoriesData },
+      { data: projectsData },
+    ] = await Promise.all([
+      api.get('/api/v1/token/catalog/apps/levels/'),
+      api.get('/api/v1/token/catalog/categories/'),
+      api.get('/api/v1/token/projects/'),
     ])
 
-    const isValid = computed(() => {
-      return (
-        element.name !== undefined &&
-        element.name.trim() !== '' &&
-        element.category !== undefined &&
-        element.level !== undefined &&
-        element.score !== undefined &&
-        element.score > 0
-      )
+    levels.value = Object.entries(levelsData).map(([id, name]) => ({
+      id,
+      name,
+    }))
+    categories.value = categoriesData.results
+    projects.value = projectsData.results
+
+    if (route.query.category)
+      element.category =
+        categories.value.find(
+          (item) => item.id === Number(route.query.category),
+        ) || null
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+
+  if (element.id) {
+    packagesByProject.value = element.packages_by_project
+    packagesByProject.value.forEach((item) => {
+      item.packages_to_install = item.packages_to_install.join('\n')
     })
+  }
+}
 
-    const iconPath = computed(() => `${element.icon}?rand=${rand.value}`)
+const elementData = () => {
+  const data = new FormData()
 
-    const loadRelated = async () => {
-      try {
-        const [
-          { data: levelsData },
-          { data: categoriesData },
-          { data: projectsData },
-        ] = await Promise.all([
-          api.get('/api/v1/token/catalog/apps/levels/'),
-          api.get('/api/v1/token/catalog/categories/'),
-          api.get('/api/v1/token/projects/'),
-        ])
+  data.append('name', element.name)
+  data.append('level', element.level.id)
+  data.append('category', element.category.id)
+  data.append('score', element.score)
+  data.append('description', element.description)
+  data.append(
+    'available_for_attributes',
+    element.available_for_attributes.length > 0
+      ? element.available_for_attributes.map((item) => item.id)
+      : [],
+  )
+  if (iconFile.value) {
+    data.append('icon', iconFile.value)
+  }
 
-        levels.value = Object.entries(levelsData).map(([id, name]) => ({
-          id,
-          name,
-        }))
-        categories.value = categoriesData.results
-        projects.value = projectsData.results
+  return data
+}
 
-        if (route.query.category)
-          element.category =
-            categories.value.find(
-              (item) => item.id === Number(route.query.category),
-            ) || null
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
+const saveProjectPackage = async (project) => {
+  const { id, project: proj, packages_to_install } = project
+  const payload = {
+    application: element.id,
+    project: proj.id,
+    packages_to_install:
+      packages_to_install !== null ? packages_to_install.split('\n') : [],
+  }
 
-      if (element.id) {
-        packagesByProject.value = element.packages_by_project
-        packagesByProject.value.forEach((item) => {
-          item.packages_to_install = item.packages_to_install.join('\n')
-        })
-      }
-    }
-
-    const elementData = () => {
-      let data = new FormData()
-
-      data.append('name', element.name)
-      data.append('level', element.level.id)
-      data.append('category', element.category.id)
-      data.append('score', element.score)
-      data.append('description', element.description)
-      data.append(
-        'available_for_attributes',
-        element.available_for_attributes.length > 0
-          ? element.available_for_attributes.map((item) => item.id)
-          : [],
-      )
-      if (iconFile.value) {
-        data.append('icon', iconFile.value)
-      }
-
-      return data
-    }
-
-    const saveProjectPackage = async (project) => {
-      const { id, project: proj, packages_to_install } = project
-      const payload = {
-        application: element.id,
-        project: proj.id,
-        packages_to_install:
-          packages_to_install !== null ? packages_to_install.split('\n') : [],
-      }
-
-      try {
-        if (id > 0) {
-          await api.patch(`/api/v1/token/catalog/project-packages/${id}/`, {
-            ...payload,
-            id,
-          })
-        } else {
-          await api.post('/api/v1/token/catalog/project-packages/', payload)
-        }
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
-    const updateRelated = async () => {
-      const savePromises = packagesByProject.value
-        .filter(
-          (p) => p.project !== undefined && p.packages_to_install !== undefined,
-        )
-        .map((project) => saveProjectPackage(project))
-
-      const deletePromises = removedProjects.value.map((id) =>
-        api
-          .delete(`/api/v1/token/catalog/project-packages/${id}/`)
-          .catch((error) => {
-            uiStore.notifyError(error)
-          }),
-      )
-
-      await Promise.all([...savePromises, ...deletePromises])
-
-      rand.value = Date.now()
-    }
-
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        name: undefined,
-        description: '',
-        level: null,
-        category: null,
-        score: 0,
-        available_for_attributes: [],
-        icon: undefined,
+  try {
+    if (id > 0) {
+      await api.patch(`/api/v1/token/catalog/project-packages/${id}/`, {
+        ...payload,
+        id,
       })
+    } else {
+      await api.post('/api/v1/token/catalog/project-packages/', payload)
     }
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
 
-    const resetRelated = () => {
-      packagesByProject.value = []
-      removedProjects.value = []
-    }
+const updateRelated = async () => {
+  const savePromises = packagesByProject.value
+    .filter(
+      (p) => p.project !== undefined && p.packages_to_install !== undefined,
+    )
+    .map((project) => saveProjectPackage(project))
 
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
+  const deletePromises = removedProjects.value.map((id) =>
+    api
+      .delete(`/api/v1/token/catalog/project-packages/${id}/`)
+      .catch((error) => {
+        uiStore.notifyError(error)
+      }),
+  )
 
-    const addInline = () => {
-      packagesByProject.value.push({
-        id: 0,
-        project: null,
-        packages_to_install: null,
-      })
-    }
+  await Promise.all([...savePromises, ...deletePromises])
 
-    const removeInline = (index) => {
-      const removedItem = packagesByProject.value.splice(index, 1)[0]
-      if (removedItem.id > 0) {
-        removedProjects.value.push(removedItem.id)
-      }
-    }
+  rand.value = Date.now()
+}
 
-    const onRejected = (rejectedEntries) => {
-      uiStore.notifyError(
-        interpolate(
-          $gettext('%{n} file(s) did not pass validation constraints'),
-          {
-            n: rejectedEntries.length,
-          },
-        ),
-      )
-    }
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    name: undefined,
+    description: '',
+    level: null,
+    category: null,
+    score: 0,
+    available_for_attributes: [],
+    icon: undefined,
+  })
+}
 
-    return {
-      breadcrumbs,
-      title,
-      model,
-      routes,
-      element,
-      categories,
-      levels,
-      projects,
-      packagesByProject,
-      removedProjects,
-      iconFile,
-      appIcon,
-      modelIcon,
-      primaryInput,
-      rand,
-      isValid,
-      iconPath,
-      elementData,
-      loadRelated,
-      updateRelated,
-      resetElement,
-      resetRelated,
-      setTitle,
-      addInline,
-      removeInline,
-      onRejected,
-    }
-  },
+const resetRelated = () => {
+  packagesByProject.value = []
+  removedProjects.value = []
+}
+
+const setTitle = (value) => {
+  windowTitle.value = value
+}
+
+const addInline = () => {
+  packagesByProject.value.push({
+    id: 0,
+    project: null,
+    packages_to_install: null,
+  })
+}
+
+const removeInline = (index) => {
+  const removedItem = packagesByProject.value.splice(index, 1)[0]
+  if (removedItem.id > 0) {
+    removedProjects.value.push(removedItem.id)
+  }
+}
+
+const onRejected = (rejectedEntries) => {
+  uiStore.notifyError(
+    interpolate($gettext('%{n} file(s) did not pass validation constraints'), {
+      n: rejectedEntries.length,
+    }),
+  )
 }
 </script>
 

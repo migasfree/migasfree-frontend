@@ -136,205 +136,164 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
-
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
-
 import ItemDetail from 'components/ui/ItemDetail'
 import MigasLink from 'components/MigasLink'
 import SelectTree from 'components/ui/SelectTree'
-
 import { appIcon, modelIcon } from 'composables/element'
 
-export default {
-  components: {
-    ItemDetail,
-    MigasLink,
-    SelectTree,
+const uiStore = useUiStore()
+const { $gettext } = useGettext()
+
+const title = ref($gettext('Package'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'packages-list',
+  add: 'package-add',
+  detail: 'package-detail',
+}
+const model = 'packages'
+const element = reactive({ id: 0, files: null })
+const projectStore = reactive({ items: [], selected: null })
+const infoNodes = ref([])
+const expandedNodes = ref([])
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const uiStore = useUiStore()
-    const { $gettext } = useGettext()
+  {
+    text: $gettext('Release'),
+    icon: appIcon('release'),
+  },
+  {
+    text: $gettext('Packages'),
+    icon: modelIcon(model),
+    to: 'packages-dashboard',
+  },
+])
 
-    const title = ref($gettext('Package'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
+const server = computed(() => uiStore.server)
 
-    const routes = {
-      list: 'packages-list',
-      add: 'package-add',
-      detail: 'package-detail',
-    }
-    const model = 'packages'
+const isValid = computed(() => {
+  return projectStore.selected !== null && element.files !== null
+})
 
-    const element = reactive({ id: 0, files: null })
+const nodeSelected = (node) => {
+  if (!node || !node.id) return
 
-    const projectStore = reactive({ items: [], selected: null })
+  const value = String(node.id)
+  const keys = value.split('|')
+  if (keys.length !== 2) return
 
-    const menu = ref(null)
-    const tree = ref(null)
+  Object.assign(element, {
+    project: { id: parseInt(keys[0]) },
+    store: { id: node.store_id },
+  })
+}
 
-    let infoNodes = ref([])
-    let expandedNodes = ref([])
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Release'),
-        icon: appIcon('release'),
-      },
-      {
-        text: $gettext('Packages'),
-        icon: modelIcon(model),
-        to: 'packages-dashboard',
-      },
-    ])
-
-    const isValid = computed(() => {
-      return projectStore.selected !== null && element.files !== null
+const onLazyLoad = async ({ key, done }) => {
+  try {
+    const {
+      data: { results },
+    } = await api.get('/api/v1/token/stores/', {
+      params: { project__id: key },
     })
 
-    const nodeSelected = (node) => {
-      if (!node || !node.id) return
+    const items = Object.values(results).map((item) => ({
+      id: `${key}|${item.id}`,
+      label: item.name,
+      icon: modelIcon('stores'),
+      store_id: item.id,
+    }))
 
-      const value = String(node.id)
-      const keys = value.split('|')
-      if (keys.length != 2) return
+    done(items)
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
 
-      Object.assign(element, {
-        project: { id: parseInt(keys[0]) },
-        store: { id: node.store_id },
-      })
-    }
-
-    const onLazyLoad = async ({ key, done }) => {
-      try {
-        const {
-          data: { results },
-        } = await api.get('/api/v1/token/stores/', {
-          params: { project__id: key },
-        })
-
-        const items = Object.values(results).map((item) => ({
-          id: `${key}|${item.id}`,
-          label: item.name,
-          icon: modelIcon('stores'),
-          store_id: item.id,
-        }))
-
-        done(items)
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
-    const setRelated = () => {
-      infoNodes.value = [
+const setRelated = () => {
+  infoNodes.value = [
+    {
+      value: element.fullname,
+      avatar: modelIcon('packages'),
+      children: [
         {
-          value: element.fullname,
-          avatar: modelIcon('packages'),
-          children: [
-            {
-              value: element.name,
-              label: $gettext('Name'),
-            },
-            {
-              value: element.version,
-              label: $gettext('Version'),
-            },
-            {
-              value: element.architecture,
-              label: $gettext('Architecture'),
-            },
-          ],
+          value: element.name,
+          label: $gettext('Name'),
         },
-      ]
+        {
+          value: element.version,
+          label: $gettext('Version'),
+        },
+        {
+          value: element.architecture,
+          label: $gettext('Architecture'),
+        },
+      ],
+    },
+  ]
 
-      expandedNodes.value = [element.fullname]
-    }
+  expandedNodes.value = [element.fullname]
+}
 
-    const loadRelated = async () => {
-      try {
-        const { data } = await api.get('/api/v1/token/projects/')
-        const projects = data.results
+const loadRelated = async () => {
+  try {
+    const { data } = await api.get('/api/v1/token/projects/')
+    const projects = data.results
 
-        projectStore.items = Object.values(projects).map((item) => ({
-          id: item.id,
-          label: item.name,
-          icon: modelIcon('projects'),
-          lazy: true,
-        }))
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
+    projectStore.items = Object.values(projects).map((item) => ({
+      id: item.id,
+      label: item.name,
+      icon: modelIcon('projects'),
+      lazy: true,
+    }))
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
 
-    const elementData = () => {
-      if (element.id) {
-        return {
-          property_att: element.property_att.id,
-          value: element.value,
-          description: element.description,
-        }
-      }
-
-      let data = new FormData()
-      data.append('project', element.project.id)
-      data.append('store', element.store.id)
-      data.append('files', element.files)
-
-      return data
-    }
-
-    const resetRelated = () => {
-      projectStore.selected = null
-    }
-
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        value: undefined,
-        description: undefined,
-        files: undefined,
-      })
-    }
-
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
-
+const elementData = () => {
+  if (element.id) {
     return {
-      server: uiStore.server,
-      breadcrumbs,
-      title,
-      model,
-      routes,
-      element,
-      projectStore,
-      menu,
-      tree,
-      infoNodes,
-      expandedNodes,
-      isValid,
-      nodeSelected,
-      onLazyLoad,
-      elementData,
-      setRelated,
-      loadRelated,
-      resetElement,
-      resetRelated,
-      setTitle,
-      appIcon,
-      modelIcon,
+      property_att: element.property_att.id,
+      value: element.value,
+      description: element.description,
     }
-  },
+  }
+
+  const data = new FormData()
+  data.append('project', element.project.id)
+  data.append('store', element.store.id)
+  data.append('files', element.files)
+
+  return data
+}
+
+const resetRelated = () => {
+  projectStore.selected = null
+}
+
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    value: undefined,
+    description: undefined,
+    files: undefined,
+  })
+}
+
+const setTitle = (value) => {
+  windowTitle.value = value
 }
 </script>

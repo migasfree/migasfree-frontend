@@ -462,7 +462,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
@@ -485,382 +485,337 @@ import useDate from 'composables/date'
 import { appIcon, modelIcon } from 'composables/element'
 import useAutoFocus from 'composables/autoFocus'
 
-export default {
-  components: {
-    EntitySelect,
-    FilteredMultiSelect,
-    ItemDetail,
-    MigasLink,
-    StackedBarChart,
-    Timeline,
-    SelectAttributes,
-    OrderTextArea,
-    DayInput,
+const { $gettext } = useGettext()
+const { inputRef: primaryInput } = useAutoFocus()
+const { showDate } = useDate()
+const route = useRoute()
+const uiStore = useUiStore()
+
+const title = ref($gettext('Deployment'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'deployments-list',
+  add: 'deployment-add',
+  detail: 'deployment-detail',
+}
+const model = 'deployments'
+
+const element = reactive({
+  id: 0,
+  enabled: true,
+  included_attributes: [],
+  excluded_attributes: [],
+  packages_to_install: null,
+  packages_to_remove: null,
+  default_preincluded_packages: null,
+  default_included_packages: null,
+  default_excluded_packages: null,
+  auto_restart: false,
+  expire: 1440,
+  frozen: false,
+  start_date: showDate(new Date(), 'YYYY-MM-DD'),
+})
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const { $gettext } = useGettext()
-    const { inputRef: primaryInput } = useAutoFocus()
-    const { showDate } = useDate()
-    const route = useRoute()
-    const uiStore = useUiStore()
+  {
+    text: $gettext('Release'),
+    icon: appIcon('release'),
+  },
+  {
+    text: $gettext('Deployments'),
+    icon: modelIcon(model),
+    to: 'deployments-dashboard',
+  },
+])
 
-    const title = ref($gettext('Deployment'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
+const projects = ref([])
+const domains = ref([])
+const schedules = ref([])
+const source = ref(null)
 
-    const routes = {
-      list: 'deployments-list',
-      add: 'deployment-add',
-      detail: 'deployment-detail',
-    }
-    const model = 'deployments'
+const sources = reactive([
+  {
+    id: 'I',
+    name: $gettext('Internal'),
+  },
+  {
+    id: 'E',
+    name: $gettext('External'),
+  },
+])
 
-    let element = reactive({
-      id: 0,
-      enabled: true,
-      included_attributes: [],
-      excluded_attributes: [],
-      packages_to_install: null,
-      packages_to_remove: null,
-      default_preincluded_packages: null,
-      default_included_packages: null,
-      default_excluded_packages: null,
-      auto_restart: false,
-      expire: 1440,
-      frozen: false,
-      start_date: showDate(new Date(), 'YYYY-MM-DD'),
-    })
+const isValid = computed(() => {
+  return (
+    element.name !== undefined &&
+    element.name.trim() !== '' &&
+    element.project !== undefined &&
+    element.start_date !== undefined
+  )
+})
 
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Release'),
-        icon: appIcon('release'),
-      },
-      {
-        text: $gettext('Deployments'),
-        icon: modelIcon(model),
-        to: 'deployments-dashboard',
-      },
-    ])
+const updateSchedule = async () => {
+  if (!element.id) return
 
-    const projects = ref([])
-    const domains = ref([])
-    const schedules = ref([])
-    const source = ref(null)
+  try {
+    const timelineReponse = await api.get(
+      `/api/v1/token/stats/deployments/${element.id}/timeline/`,
+    )
 
-    const sources = reactive([
-      {
-        id: 'I',
-        name: $gettext('Internal'),
-      },
-      {
-        id: 'E',
-        name: $gettext('External'),
-      },
-    ])
+    element.timeline = timelineReponse.data
 
-    const isValid = computed(() => {
-      return (
-        element.name !== undefined &&
-        element.name.trim() !== '' &&
-        element.project !== undefined &&
-        element.start_date !== undefined
-      )
-    })
+    if (!element.schedule) return
 
-    const updateSchedule = async () => {
-      if (!element.id) return
+    const delaysResponse = await api.get(
+      `/api/v1/token/stats/deployments/${element.id}/computers/delay/`,
+    )
 
-      try {
-        const timelineReponse = await api.get(
-          `/api/v1/token/stats/deployments/${element.id}/timeline/`,
-        )
-
-        element.timeline = timelineReponse.data
-
-        if (!element.schedule) return
-
-        const delaysResponse = await api.get(
-          `/api/v1/token/stats/deployments/${element.id}/computers/delay/`,
-        )
-
-        const buildSeries = (data) => {
-          const series = []
-          Object.entries(data).forEach(([key, val]) => {
-            series.push({
-              type: 'line',
-              smooth: true,
-              name: key,
-              data: val,
-            })
-          })
-          return series
-        }
-
-        const series = buildSeries(delaysResponse.data.data)
-
-        const today = showDate(new Date(), 'YYYY-MM-DD')
-        const madeValue =
-          element.timeline.computers.error + element.timeline.computers.ok
-
+    const buildSeries = (data) => {
+      const series = []
+      Object.entries(data).forEach(([key, val]) => {
         series.push({
           type: 'line',
-          name: $gettext('Made'),
-          markPoint: {
-            data: [
-              {
-                coord: [today, madeValue],
-                label: { show: true },
-                value: madeValue,
-              },
-            ],
-          },
+          smooth: true,
+          name: key,
+          data: val,
         })
-
-        element.stats = {
-          xData: delaysResponse.data.x_labels,
-          series,
-        }
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
-    const loadRelated = async () => {
-      try {
-        const [projectsResponse, domainsResponse, schedulesResponse] =
-          await Promise.all([
-            api.get('/api/v1/token/projects/'),
-            api.get('/api/v1/token/domains/'),
-            api.get('/api/v1/token/schedules/'),
-          ])
-
-        projects.value = projectsResponse.data.results
-
-        domains.value = Object.values(domainsResponse.data.results).map(
-          (item) => ({
-            id: item.id,
-            name: item.name,
-          }),
-        )
-
-        schedules.value = Object.values(schedulesResponse.data.results).map(
-          (item) => ({
-            id: item.id,
-            name: item.name,
-          }),
-        )
-
-        if (route.query.project)
-          element.project =
-            projects.value.find(
-              (item) => item.id === Number(route.query.project),
-            ) || null
-
-        if (route.query.domain)
-          element.domain =
-            domains.value.find(
-              (item) => item.id === Number(route.query.domain),
-            ) || null
-
-        if (route.query.schedule)
-          element.schedule =
-            schedules.value.find(
-              (item) => item.id === Number(route.query.schedule),
-            ) || null
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-
-      if (element.id) {
-        element.packages_to_install = element.packages_to_install.join('\n')
-        element.packages_to_remove = element.packages_to_remove.join('\n')
-        element.default_preincluded_packages =
-          element.default_preincluded_packages.join('\n')
-        element.default_included_packages =
-          element.default_included_packages.join('\n')
-        element.default_excluded_packages =
-          element.default_excluded_packages.join('\n')
-
-        element.available_packages.sort((a, b) =>
-          a.fullname > b.fullname ? 1 : b.fullname > a.fullname ? -1 : 0,
-        )
-        element.available_package_sets.sort((a, b) =>
-          a.name > b.name ? 1 : b.name > a.name ? -1 : 0,
-        )
-      }
-
-      updateSchedule()
-    }
-
-    const elementData = () => {
-      let data = {
-        enabled: element.enabled,
-        name: element.name,
-        project: element.project ? element.project.id : null,
-        domain: element.domain ? element.domain.id : null,
-        comment: element.comment,
-        source: element.source,
-        included_attributes: element.included_attributes.map((item) => item.id),
-        excluded_attributes: element.excluded_attributes.map((item) => item.id),
-        packages_to_install:
-          element.packages_to_install !== null
-            ? element.packages_to_install.split('\n')
-            : [],
-        packages_to_remove:
-          element.packages_to_remove !== null
-            ? element.packages_to_remove.split('\n')
-            : [],
-        default_preincluded_packages:
-          element.default_preincluded_packages !== null
-            ? element.default_preincluded_packages.split('\n')
-            : [],
-        default_included_packages:
-          element.default_included_packages !== null
-            ? element.default_included_packages.split('\n')
-            : [],
-        default_excluded_packages:
-          element.default_excluded_packages !== null
-            ? element.default_excluded_packages.split('\n')
-            : [],
-        start_date: showDate(element.start_date, 'YYYY-MM-DD'),
-        schedule: element.schedule ? element.schedule.id : null,
-        auto_restart: element.auto_restart,
-      }
-
-      if (element.source === 'I') {
-        data.available_packages = element.available_packages
-          ? element.available_packages.map((item) => item.id)
-          : []
-        data.available_package_sets = element.available_package_sets
-          ? element.available_package_sets.map((item) => item.id)
-          : []
-      }
-
-      if (element.source === 'E') {
-        data.base_url = element.base_url
-        data.suite = element.suite
-        data.components = element.components
-        data.options = element.options
-        data.expire = element.expire
-        data.frozen = element.frozen
-      }
-
-      return data
-    }
-
-    const updateRelated = async () => {
-      await updateSchedule()
-    }
-
-    const updateStats = () => {
-      if (element.schedule === null) element.stats = {}
-    }
-
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        name: undefined,
-        enabled: true,
-        project: null,
-        domain: null,
-        comment: '',
-        source: undefined,
-        included_attributes: [],
-        excluded_attributes: [],
-        packages_to_install: null,
-        packages_to_remove: null,
-        default_preincluded_packages: null,
-        default_included_packages: null,
-        default_excluded_packages: null,
-        start_date: showDate(new Date(), 'YYYY-MM-DD'),
-        schedule: null,
-        auto_restart: false,
-        available_packages: [],
-        available_package_sets: [],
-        base_url: undefined,
-        suite: undefined,
-        components: undefined,
-        options: undefined,
-        expire: undefined,
-        frozen: false,
-        timeline: { computers: {}, schedule: null },
       })
+      return series
     }
 
-    const setTitle = (value) => {
-      windowTitle.value = value
+    const series = buildSeries(delaysResponse.data.data)
+
+    const today = showDate(new Date(), 'YYYY-MM-DD')
+    const madeValue =
+      element.timeline.computers.error + element.timeline.computers.ok
+
+    series.push({
+      type: 'line',
+      name: $gettext('Made'),
+      markPoint: {
+        data: [
+          {
+            coord: [today, madeValue],
+            label: { show: true },
+            value: madeValue,
+          },
+        ],
+      },
+    })
+
+    element.stats = {
+      xData: delaysResponse.data.x_labels,
+      series,
     }
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
 
-    const regenerateMetadata = async (id) => {
-      try {
-        const { data } = await api.get(
-          `/api/v1/token/${model}/internal-sources/${id}/metadata/`,
-        )
-        uiStore.notifySuccess(data.detail)
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
+const loadRelated = async () => {
+  try {
+    const [projectsResponse, domainsResponse, schedulesResponse] =
+      await Promise.all([
+        api.get('/api/v1/token/projects/'),
+        api.get('/api/v1/token/domains/'),
+        api.get('/api/v1/token/schedules/'),
+      ])
 
-    const filterPackages = async (val) => {
-      if (!element.project) return
+    projects.value = projectsResponse.data.results
 
-      const { data } = await api.get('/api/v1/token/packages/', {
-        params: {
-          search: val.toLowerCase(),
-          project__id: element.project.id,
-          store__isnull: false,
-        },
-      })
+    domains.value = Object.values(domainsResponse.data.results).map((item) => ({
+      id: item.id,
+      name: item.name,
+    }))
 
-      return data.results
-    }
+    schedules.value = Object.values(schedulesResponse.data.results).map(
+      (item) => ({
+        id: item.id,
+        name: item.name,
+      }),
+    )
 
-    const filterPackageSets = async (val) => {
-      if (!element.project) return
+    if (route.query.project)
+      element.project =
+        projects.value.find(
+          (item) => item.id === Number(route.query.project),
+        ) || null
 
-      const { data } = await api.get('/api/v1/token/package-sets/', {
-        params: {
-          search: val.toLowerCase(),
-          project__id: element.project.id,
-        },
-      })
+    if (route.query.domain)
+      element.domain =
+        domains.value.find((item) => item.id === Number(route.query.domain)) ||
+        null
 
-      return data.results
-    }
+    if (route.query.schedule)
+      element.schedule =
+        schedules.value.find(
+          (item) => item.id === Number(route.query.schedule),
+        ) || null
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
 
-    return {
-      breadcrumbs,
-      title,
-      model,
-      modelIcon,
-      primaryInput,
-      routes,
-      element,
-      projects,
-      domains,
-      schedules,
-      source,
-      sources,
-      showDate,
-      isValid,
-      loadRelated,
-      elementData,
-      updateRelated,
-      updateStats,
-      resetElement,
-      setTitle,
-      regenerateMetadata,
-      filterPackages,
-      filterPackageSets,
-      appIcon,
-    }
-  },
+  if (element.id) {
+    element.packages_to_install = element.packages_to_install.join('\n')
+    element.packages_to_remove = element.packages_to_remove.join('\n')
+    element.default_preincluded_packages =
+      element.default_preincluded_packages.join('\n')
+    element.default_included_packages =
+      element.default_included_packages.join('\n')
+    element.default_excluded_packages =
+      element.default_excluded_packages.join('\n')
+
+    element.available_packages.sort((a, b) =>
+      a.fullname > b.fullname ? 1 : b.fullname > a.fullname ? -1 : 0,
+    )
+    element.available_package_sets.sort((a, b) =>
+      a.name > b.name ? 1 : b.name > a.name ? -1 : 0,
+    )
+  }
+
+  updateSchedule()
+}
+
+const elementData = () => {
+  const data = {
+    enabled: element.enabled,
+    name: element.name,
+    project: element.project ? element.project.id : null,
+    domain: element.domain ? element.domain.id : null,
+    comment: element.comment,
+    source: element.source,
+    included_attributes: element.included_attributes.map((item) => item.id),
+    excluded_attributes: element.excluded_attributes.map((item) => item.id),
+    packages_to_install:
+      element.packages_to_install !== null
+        ? element.packages_to_install.split('\n')
+        : [],
+    packages_to_remove:
+      element.packages_to_remove !== null
+        ? element.packages_to_remove.split('\n')
+        : [],
+    default_preincluded_packages:
+      element.default_preincluded_packages !== null
+        ? element.default_preincluded_packages.split('\n')
+        : [],
+    default_included_packages:
+      element.default_included_packages !== null
+        ? element.default_included_packages.split('\n')
+        : [],
+    default_excluded_packages:
+      element.default_excluded_packages !== null
+        ? element.default_excluded_packages.split('\n')
+        : [],
+    start_date: showDate(element.start_date, 'YYYY-MM-DD'),
+    schedule: element.schedule ? element.schedule.id : null,
+    auto_restart: element.auto_restart,
+  }
+
+  if (element.source === 'I') {
+    data.available_packages = element.available_packages
+      ? element.available_packages.map((item) => item.id)
+      : []
+    data.available_package_sets = element.available_package_sets
+      ? element.available_package_sets.map((item) => item.id)
+      : []
+  }
+
+  if (element.source === 'E') {
+    data.base_url = element.base_url
+    data.suite = element.suite
+    data.components = element.components
+    data.options = element.options
+    data.expire = element.expire
+    data.frozen = element.frozen
+  }
+
+  return data
+}
+
+const updateRelated = async () => {
+  await updateSchedule()
+}
+
+const updateStats = () => {
+  if (element.schedule === null) element.stats = {}
+}
+
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    name: undefined,
+    enabled: true,
+    project: null,
+    domain: null,
+    comment: '',
+    source: undefined,
+    included_attributes: [],
+    excluded_attributes: [],
+    packages_to_install: null,
+    packages_to_remove: null,
+    default_preincluded_packages: null,
+    default_included_packages: null,
+    default_excluded_packages: null,
+    start_date: showDate(new Date(), 'YYYY-MM-DD'),
+    schedule: null,
+    auto_restart: false,
+    available_packages: [],
+    available_package_sets: [],
+    base_url: undefined,
+    suite: undefined,
+    components: undefined,
+    options: undefined,
+    expire: undefined,
+    frozen: false,
+    timeline: { computers: {}, schedule: null },
+  })
+}
+
+const setTitle = (value) => {
+  windowTitle.value = value
+}
+
+const regenerateMetadata = async (id) => {
+  try {
+    const { data } = await api.get(
+      `/api/v1/token/${model}/internal-sources/${id}/metadata/`,
+    )
+    uiStore.notifySuccess(data.detail)
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
+
+const filterPackages = async (val) => {
+  if (!element.project) return
+
+  const { data } = await api.get('/api/v1/token/packages/', {
+    params: {
+      search: val.toLowerCase(),
+      project__id: element.project.id,
+      store__isnull: false,
+    },
+  })
+
+  return data.results
+}
+
+const filterPackageSets = async (val) => {
+  if (!element.project) return
+
+  const { data } = await api.get('/api/v1/token/package-sets/', {
+    params: {
+      search: val.toLowerCase(),
+      project__id: element.project.id,
+    },
+  })
+
+  return data.results
 }
 </script>

@@ -77,7 +77,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -90,94 +90,70 @@ import ItemDetail from 'components/ui/ItemDetail'
 import { appIcon, modelIcon } from 'composables/element'
 import useAutoFocus from 'composables/autoFocus'
 
-export default {
-  components: {
-    FilteredMultiSelect,
-    ItemDetail,
+const { $gettext } = useGettext()
+const { inputRef: primaryInput } = useAutoFocus()
+
+const title = ref($gettext('Group'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'groups-list',
+  add: 'group-add',
+  detail: 'group-detail',
+}
+const model = 'accounts/groups'
+
+const element = reactive({
+  id: 0,
+  permissions: [],
+})
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const { $gettext } = useGettext()
-    const { inputRef: primaryInput } = useAutoFocus()
-
-    const title = ref($gettext('Group'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
-
-    const routes = {
-      list: 'groups-list',
-      add: 'group-add',
-      detail: 'group-detail',
-    }
-    const model = 'accounts/groups'
-
-    let element = reactive({
-      id: 0,
-      permissions: [],
-    })
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Configuration'),
-        icon: appIcon('configuration'),
-      },
-      {
-        text: $gettext('Groups'),
-        icon: modelIcon(model),
-        to: routes.list,
-      },
-    ])
-
-    const isValid = computed(() => {
-      return element.name !== undefined && element.name.trim() !== ''
-    })
-
-    const elementData = () => {
-      return {
-        name: element.name,
-        permissions: element.permissions.map((item) => item.id),
-      }
-    }
-
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        name: undefined,
-        permissions: [],
-      })
-    }
-
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
-
-    const filterPermissions = async (val) => {
-      const { data } = await api.get('/api/v1/token/accounts/permissions/', {
-        params: { search: val.toLowerCase() },
-      })
-
-      return data.results
-    }
-
-    return {
-      breadcrumbs,
-      title,
-      model,
-      routes,
-      element,
-      isValid,
-      elementData,
-      resetElement,
-      setTitle,
-      filterPermissions,
-      appIcon,
-      modelIcon,
-      primaryInput,
-    }
+  {
+    text: $gettext('Configuration'),
+    icon: appIcon('configuration'),
   },
+  {
+    text: $gettext('Groups'),
+    icon: modelIcon(model),
+    to: routes.list,
+  },
+])
+
+const isValid = computed(() => {
+  return element.name !== undefined && element.name.trim() !== ''
+})
+
+const elementData = () => {
+  return {
+    name: element.name,
+    permissions: element.permissions.map((item) => item.id),
+  }
+}
+
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    name: undefined,
+    permissions: [],
+  })
+}
+
+const setTitle = (value) => {
+  windowTitle.value = value
+}
+
+const filterPermissions = async (val) => {
+  const { data } = await api.get('/api/v1/token/accounts/permissions/', {
+    params: { search: val.toLowerCase() },
+  })
+
+  return data.results
 }
 </script>

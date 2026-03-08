@@ -148,7 +148,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
@@ -165,155 +165,124 @@ import CodeEditor from 'components/ui/CodeEditor'
 import { appIcon, modelIcon } from 'composables/element'
 import useAutoFocus from 'composables/autoFocus'
 
-export default {
-  components: {
-    EntitySelect,
-    ItemDetail,
-    SelectAttributes,
-    CodeEditor,
+const { $gettext } = useGettext()
+const { inputRef: primaryInput } = useAutoFocus()
+const route = useRoute()
+const uiStore = useUiStore()
+
+const title = ref($gettext('Singularity'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'singularities-list',
+  add: 'singularity-add',
+  detail: 'singularity-detail',
+}
+const model = 'singularities'
+
+const element = reactive({
+  id: 0,
+  enabled: false,
+  included_attributes: [],
+  excluded_attributes: [],
+  code: '',
+})
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const { $gettext } = useGettext()
-    const { inputRef: primaryInput } = useAutoFocus()
-    const route = useRoute()
-    const uiStore = useUiStore()
+  {
+    text: $gettext('Configuration'),
+    icon: appIcon('configuration'),
+  },
+  {
+    text: $gettext('Singularities'),
+    icon: modelIcon(model),
+    to: routes.list,
+  },
+])
 
-    const title = ref($gettext('Singularity'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
+const formulas = ref([])
+const languages = ref([])
 
-    const routes = {
-      list: 'singularities-list',
-      add: 'singularity-add',
-      detail: 'singularity-detail',
-    }
-    const model = 'singularities'
+const isValid = computed(() => {
+  return (
+    element.name !== undefined &&
+    element.name.trim() !== '' &&
+    element.property_att !== undefined &&
+    element.language !== undefined &&
+    element.code !== undefined &&
+    element.code.trim() !== ''
+  )
+})
 
-    const element = reactive({
-      id: 0,
-      enabled: false,
-      included_attributes: [],
-      excluded_attributes: [],
-      code: '',
-    })
+const highlightLang = computed(() => {
+  if ('language' in element && typeof element.language === 'object')
+    return element.language.name
+  return 'python'
+})
 
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Configuration'),
-        icon: appIcon('configuration'),
-      },
-      {
-        text: $gettext('Singularities'),
-        icon: modelIcon(model),
-        to: routes.list,
-      },
+const loadRelated = async () => {
+  try {
+    const [formulasResponse, languagesResponse] = await Promise.all([
+      api.get('/api/v1/token/formulas/?sort=client'),
+      api.get('/api/v1/public/languages/'),
     ])
 
-    const formulas = ref([])
-    const languages = ref([])
+    formulas.value = formulasResponse.data.results
 
-    const isValid = computed(() => {
-      return (
-        element.name !== undefined &&
-        element.name.trim() !== '' &&
-        element.property_att !== undefined &&
-        element.language !== undefined &&
-        element.code !== undefined &&
-        element.code.trim() !== ''
-      )
-    })
+    languages.value = Object.entries(languagesResponse.data).map(
+      ([id, name]) => ({
+        id: parseInt(id),
+        name,
+      }),
+    )
 
-    const highlightLang = computed(() => {
-      if ('language' in element && typeof element.language === 'object')
-        return element.language.name
-      return 'python'
-    })
-
-    const loadRelated = async () => {
-      try {
-        const [formulasResponse, languagesResponse] = await Promise.all([
-          api.get('/api/v1/token/formulas/?sort=client'),
-          api.get('/api/v1/public/languages/'),
-        ])
-
-        formulas.value = formulasResponse.data.results
-
-        languages.value = Object.entries(languagesResponse.data).map(
-          ([id, name]) => ({
-            id: parseInt(id),
-            name,
-          }),
-        )
-
-        if (element.id && typeof element.language === 'number') {
-          element.language = languages.value.find(
-            (x) => x.id === element.language,
-          )
-        }
-
-        if (route.query.property_att)
-          element.property_att =
-            formulas.value.find(
-              (item) => item.id === Number(route.query.property_att),
-            ) || null
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
+    if (element.id && typeof element.language === 'number') {
+      element.language = languages.value.find((x) => x.id === element.language)
     }
 
-    const elementData = () => {
-      return {
-        enabled: element.enabled,
-        name: element.name,
-        priority: element.priority,
-        property_att: element.property_att.id,
-        included_attributes: element.included_attributes.map((item) => item.id),
-        excluded_attributes: element.excluded_attributes.map((item) => item.id),
-        language: element.language.id,
-        code: element.code,
-      }
-    }
+    if (route.query.property_att)
+      element.property_att =
+        formulas.value.find(
+          (item) => item.id === Number(route.query.property_att),
+        ) || null
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
 
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        name: undefined,
-        property_att: undefined,
-        priority: 0,
-        included_attributes: [],
-        excluded_attributes: [],
-        language: undefined,
-        code: '',
-      })
-    }
+const elementData = () => {
+  return {
+    enabled: element.enabled,
+    name: element.name,
+    priority: element.priority,
+    property_att: element.property_att.id,
+    included_attributes: element.included_attributes.map((item) => item.id),
+    excluded_attributes: element.excluded_attributes.map((item) => item.id),
+    language: element.language.id,
+    code: element.code,
+  }
+}
 
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    name: undefined,
+    property_att: undefined,
+    priority: 0,
+    included_attributes: [],
+    excluded_attributes: [],
+    language: undefined,
+    code: '',
+  })
+}
 
-    return {
-      breadcrumbs,
-      title,
-      model,
-      routes,
-      element,
-      formulas,
-      languages,
-      isValid,
-      highlightLang,
-      loadRelated,
-      elementData,
-      resetElement,
-      setTitle,
-      appIcon,
-      modelIcon,
-      primaryInput,
-    }
-  },
+const setTitle = (value) => {
+  windowTitle.value = value
 }
 </script>

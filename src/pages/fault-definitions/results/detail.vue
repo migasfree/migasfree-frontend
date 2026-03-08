@@ -130,7 +130,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -146,162 +146,125 @@ import CodeEditor from 'components/ui/CodeEditor'
 import { appIcon, modelIcon } from 'composables/element'
 import useAutoFocus from 'composables/autoFocus'
 
-export default {
-  components: {
-    EntitySelect,
-    ItemDetail,
-    SelectAttributes,
-    CodeEditor,
-  },
-  setup() {
-    const { $gettext } = useGettext()
-    const { inputRef: primaryInput } = useAutoFocus()
-    const uiStore = useUiStore()
+const { $gettext } = useGettext()
+const { inputRef: primaryInput } = useAutoFocus()
+const uiStore = useUiStore()
 
-    const title = ref($gettext('Fault Definition'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
+const title = ref($gettext('Fault Definition'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
 
-    const routes = {
-      list: 'fault-definitions-list',
-      add: 'fault-definition-add',
-      detail: 'fault-definition-detail',
-    }
-    const model = 'fault-definitions'
-
-    const languages = ref([])
-    const userProfiles = ref([])
-
-    let element = reactive({
-      id: 0,
-      enabled: false,
-      included_attributes: [],
-      excluded_attributes: [],
-      users: [],
-      code: '',
-    })
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Configuration'),
-        icon: appIcon('configuration'),
-      },
-      {
-        text: $gettext('Fault Definitions'),
-        icon: modelIcon(model),
-        to: routes.list,
-      },
-    ])
-
-    const isValid = computed(() => {
-      return (
-        element.name !== undefined &&
-        element.name.trim() !== '' &&
-        element.language !== undefined &&
-        element.code !== undefined &&
-        element.code.trim() !== ''
-      )
-    })
-
-    const highlightLang = computed(() => {
-      if ('language' in element && typeof element.language === 'object')
-        return element.language.name
-      return 'python'
-    })
-
-    const loadRelated = async () => {
-      try {
-        const { data } = await api.get('/api/v1/public/languages/')
-        languages.value = Object.entries(data).map(([key, val]) => ({
-          id: Number(key),
-          name: val,
-        }))
-
-        if (element.id && typeof element.language === 'number') {
-          element.language = languages.value.find(
-            (x) => x.id === element.language,
-          )
-        }
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
-    const elementData = () => {
-      return {
-        name: element.name,
-        enabled: element.enabled,
-        description: element.description,
-        language: element.language.id,
-        code: element.code,
-        included_attributes: element.included_attributes.map((item) => item.id),
-        excluded_attributes: element.excluded_attributes.map((item) => item.id),
-        users: element.users.map((item) => item.id),
-      }
-    }
-
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        name: undefined,
-        enabled: false,
-        description: undefined,
-        language: undefined,
-        code: '',
-        included_attributes: [],
-        excluded_attributes: [],
-        users: [],
-      })
-    }
-
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
-
-    const filterUserProfiles = async (val, update /*, abort */) => {
-      // call abort() at any time if you can't retrieve data somehow
-      /* if (val.length < MIN_CHARS_SEARCH) {
-        abort()
-        return
-      } */
-
-      try {
-        const { data } = await api.get('/api/v1/token/user-profiles/', {
-          params: { search: val.toLowerCase() },
-        })
-        userProfiles.value = data.results
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        update(() => {})
-      }
-    }
-
-    const abortFilterUserProfiles = () => {}
-
-    return {
-      breadcrumbs,
-      title,
-      model,
-      routes,
-      element,
-      languages,
-      userProfiles,
-      isValid,
-      highlightLang,
-      loadRelated,
-      elementData,
-      resetElement,
-      setTitle,
-      filterUserProfiles,
-      abortFilterUserProfiles,
-      primaryInput,
-    }
-  },
+const routes = {
+  list: 'fault-definitions-list',
+  add: 'fault-definition-add',
+  detail: 'fault-definition-detail',
 }
+const model = 'fault-definitions'
+
+const languages = ref([])
+const userProfiles = ref([])
+
+const element = reactive({
+  id: 0,
+  enabled: false,
+  included_attributes: [],
+  excluded_attributes: [],
+  users: [],
+  code: '',
+})
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
+  },
+  {
+    text: $gettext('Configuration'),
+    icon: appIcon('configuration'),
+  },
+  {
+    text: $gettext('Fault Definitions'),
+    icon: modelIcon(model),
+    to: routes.list,
+  },
+])
+
+const isValid = computed(() => {
+  return (
+    element.name !== undefined &&
+    element.name.trim() !== '' &&
+    element.language !== undefined &&
+    element.code !== undefined &&
+    element.code.trim() !== ''
+  )
+})
+
+const highlightLang = computed(() => {
+  if ('language' in element && typeof element.language === 'object')
+    return element.language.name
+  return 'python'
+})
+
+const loadRelated = async () => {
+  try {
+    const { data } = await api.get('/api/v1/public/languages/')
+    languages.value = Object.entries(data).map(([key, val]) => ({
+      id: Number(key),
+      name: val,
+    }))
+
+    if (element.id && typeof element.language === 'number') {
+      element.language = languages.value.find((x) => x.id === element.language)
+    }
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
+
+const elementData = () => {
+  return {
+    name: element.name,
+    enabled: element.enabled,
+    description: element.description,
+    language: element.language.id,
+    code: element.code,
+    included_attributes: element.included_attributes.map((item) => item.id),
+    excluded_attributes: element.excluded_attributes.map((item) => item.id),
+    users: element.users.map((item) => item.id),
+  }
+}
+
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    name: undefined,
+    enabled: false,
+    description: undefined,
+    language: undefined,
+    code: '',
+    included_attributes: [],
+    excluded_attributes: [],
+    users: [],
+  })
+}
+
+const setTitle = (value) => {
+  windowTitle.value = value
+}
+
+const filterUserProfiles = async (val, update /*, abort */) => {
+  try {
+    const { data } = await api.get('/api/v1/token/user-profiles/', {
+      params: { search: val.toLowerCase() },
+    })
+    userProfiles.value = data.results
+  } catch (error) {
+    uiStore.notifyError(error)
+  } finally {
+    update(() => {})
+  }
+}
+
+const abortFilterUserProfiles = () => {}
 </script>

@@ -234,7 +234,10 @@ const centerMarkers = () => {
   zoom.value = MAP_DEFAULT_ZOOM
   if (map.value !== null && props.markers.length) {
     nextTick(() => {
-      map.value.leafletObject.panTo([props.markers[0].lat, props.markers[0].lng])
+      map.value.leafletObject.panTo([
+        props.markers[0].lat,
+        props.markers[0].lng,
+      ])
     })
   }
 }

@@ -159,7 +159,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -174,152 +174,121 @@ import { appIcon, modelIcon } from 'composables/element'
 import useAutoFocus from 'composables/autoFocus'
 import { MAX_PREFIX_LEN } from 'config/app.conf'
 
-export default {
-  components: {
-    ItemDetail,
-    CodeEditor,
+const uiStore = useUiStore()
+const { $gettext } = useGettext()
+const { inputRef: primaryInput } = useAutoFocus()
+
+const title = ref($gettext('Formula'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'formulas-list',
+  add: 'formula-add',
+  detail: 'formula-detail',
+}
+const model = 'formulas'
+
+const element = reactive({ id: 0, enabled: false, code: '' })
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const uiStore = useUiStore()
-    const { $gettext } = useGettext()
-    const { inputRef: primaryInput } = useAutoFocus()
+  {
+    text: $gettext('Configuration'),
+    icon: appIcon('configuration'),
+  },
+  {
+    text: $gettext('Formulas'),
+    icon: modelIcon(model),
+    to: routes.list,
+  },
+])
 
-    const title = ref($gettext('Formula'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
+const languages = ref([])
+const kind = ref([])
 
-    const routes = {
-      list: 'formulas-list',
-      add: 'formula-add',
-      detail: 'formula-detail',
-    }
-    const model = 'formulas'
+const isValid = computed(() => {
+  return (
+    element.name !== undefined &&
+    element.name.trim() !== '' &&
+    element.language !== undefined &&
+    element.kind !== undefined &&
+    element.prefix !== undefined &&
+    element.prefix.length <= MAX_PREFIX_LEN &&
+    element.code !== undefined &&
+    element.code.trim() !== ''
+  )
+})
 
-    let element = reactive({ id: 0, enabled: false, code: '' })
+const isBasic = computed(() => {
+  return Boolean(element.id && element.sort === 'basic')
+})
 
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Configuration'),
-        icon: appIcon('configuration'),
-      },
-      {
-        text: $gettext('Formulas'),
-        icon: modelIcon(model),
-        to: routes.list,
-      },
+const highlightLang = computed(() => {
+  if ('language' in element && typeof element.language === 'object')
+    return element.language.name
+  return 'python'
+})
+
+const loadRelated = async () => {
+  try {
+    const [kindResponse, languagesResponse] = await Promise.all([
+      api.get(`/api/v1/token/properties/kind/`),
+      api.get(`/api/v1/public/languages/`),
     ])
 
-    const languages = ref([])
-    const kind = ref([])
+    kind.value = Object.entries(kindResponse.data).map(([key, val]) => ({
+      id: key,
+      name: val,
+    }))
 
-    const isValid = computed(() => {
-      return (
-        element.name !== undefined &&
-        element.name.trim() !== '' &&
-        element.language !== undefined &&
-        element.kind !== undefined &&
-        element.prefix !== undefined &&
-        element.prefix.length <= MAX_PREFIX_LEN &&
-        element.code !== undefined &&
-        element.code.trim() !== ''
-      )
-    })
-
-    const isBasic = computed(() => {
-      return Boolean(element.id && element.sort === 'basic')
-    })
-
-    const highlightLang = computed(() => {
-      if ('language' in element && typeof element.language === 'object')
-        return element.language.name
-      return 'python'
-    })
-
-    const loadRelated = async () => {
-      try {
-        const [kindResponse, languagesResponse] = await Promise.all([
-          api.get(`/api/v1/token/properties/kind/`),
-          api.get(`/api/v1/public/languages/`),
-        ])
-
-        kind.value = Object.entries(kindResponse.data).map(([key, val]) => ({
-          id: key,
-          name: val,
-        }))
-
-        if (element.id && typeof element.kind === 'string') {
-          element.kind = kind.value.find((x) => x.id == element.kind)
-        }
-
-        languages.value = Object.entries(languagesResponse.data).map(
-          ([key, val]) => ({
-            id: Number(key),
-            name: val,
-          }),
-        )
-
-        if (element.id && typeof element.language === 'number') {
-          element.language = languages.value.find(
-            (x) => x.id === element.language,
-          )
-        }
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
+    if (element.id && typeof element.kind === 'string') {
+      element.kind = kind.value.find((x) => x.id == element.kind)
     }
 
-    const elementData = () => {
-      return {
-        name: element.name,
-        prefix: element.prefix,
-        enabled: element.enabled,
-        kind: element.kind.id,
-        language: element.language.id,
-        code: element.code,
-      }
-    }
+    languages.value = Object.entries(languagesResponse.data).map(
+      ([key, val]) => ({
+        id: Number(key),
+        name: val,
+      }),
+    )
 
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        name: undefined,
-        prefix: undefined,
-        enabled: false,
-        kind: undefined,
-        language: undefined,
-        code: '',
-      })
+    if (element.id && typeof element.language === 'number') {
+      element.language = languages.value.find((x) => x.id === element.language)
     }
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
 
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
+const elementData = () => {
+  return {
+    name: element.name,
+    prefix: element.prefix,
+    enabled: element.enabled,
+    kind: element.kind.id,
+    language: element.language.id,
+    code: element.code,
+  }
+}
 
-    return {
-      breadcrumbs,
-      title,
-      model,
-      routes,
-      element,
-      kind,
-      languages,
-      isBasic,
-      isValid,
-      highlightLang,
-      elementData,
-      loadRelated,
-      resetElement,
-      setTitle,
-      appIcon,
-      modelIcon,
-      primaryInput,
-      MAX_PREFIX_LEN,
-    }
-  },
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    name: undefined,
+    prefix: undefined,
+    enabled: false,
+    kind: undefined,
+    language: undefined,
+    code: '',
+  })
+}
+
+const setTitle = (value) => {
+  windowTitle.value = value
 }
 </script>

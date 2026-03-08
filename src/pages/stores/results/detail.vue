@@ -46,7 +46,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
@@ -59,109 +59,83 @@ import EntitySelect from 'components/ui/EntitySelect'
 import ItemDetail from 'components/ui/ItemDetail'
 
 import { appIcon, modelIcon } from 'composables/element'
-import useAutoFocus from 'composables/autoFocus'
 
-export default {
-  components: {
-    EntitySelect,
-    ItemDetail,
+const { $gettext } = useGettext()
+const route = useRoute()
+const uiStore = useUiStore()
+
+const title = ref($gettext('Store'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'stores-list',
+  add: 'store-add',
+  detail: 'store-detail',
+}
+const model = 'stores'
+
+const projects = ref([])
+
+const element = reactive({ id: 0 })
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const { $gettext } = useGettext()
-    const { inputRef: primaryInput } = useAutoFocus()
-    const route = useRoute()
-    const uiStore = useUiStore()
-
-    const title = ref($gettext('Store'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
-
-    const routes = {
-      list: 'stores-list',
-      add: 'store-add',
-      detail: 'store-detail',
-    }
-    const model = 'stores'
-
-    const projects = ref([])
-
-    const element = reactive({ id: 0 })
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Release'),
-        icon: appIcon('release'),
-      },
-      {
-        text: $gettext('Stores'),
-        icon: modelIcon(model),
-        to: 'stores-dashboard',
-      },
-    ])
-
-    const isValid = computed(() => {
-      return (
-        element.name !== undefined &&
-        element.name.trim() !== '' &&
-        Object.hasOwn(element, 'project')
-      )
-    })
-
-    const loadRelated = async () => {
-      try {
-        const { data } = await api.get('/api/v1/token/projects/')
-        projects.value = data.results
-
-        if (route.query.project)
-          element.project =
-            projects.value.find(
-              (item) => item.id === Number(route.query.project),
-            ) || null
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
-    const elementData = () => {
-      return {
-        project: element.project.id,
-        name: element.name,
-      }
-    }
-
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        project: null,
-        name: undefined,
-      })
-    }
-
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
-
-    return {
-      breadcrumbs,
-      title,
-      model,
-      routes,
-      element,
-      projects,
-      isValid,
-      loadRelated,
-      elementData,
-      resetElement,
-      setTitle,
-      appIcon,
-      modelIcon,
-      primaryInput,
-    }
+  {
+    text: $gettext('Release'),
+    icon: appIcon('release'),
   },
+  {
+    text: $gettext('Stores'),
+    icon: modelIcon(model),
+    to: 'stores-dashboard',
+  },
+])
+
+const isValid = computed(() => {
+  return (
+    element.name !== undefined &&
+    element.name.trim() !== '' &&
+    Object.hasOwn(element, 'project') &&
+    element.project !== null
+  )
+})
+
+const loadRelated = async () => {
+  try {
+    const { data } = await api.get('/api/v1/token/projects/')
+    projects.value = data.results
+
+    if (route.query.project)
+      element.project =
+        projects.value.find(
+          (item) => item.id === Number(route.query.project),
+        ) || null
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
+
+const elementData = () => {
+  return {
+    project: element.project.id,
+    name: element.name,
+  }
+}
+
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    project: null,
+    name: undefined,
+  })
+}
+
+const setTitle = (value) => {
+  windowTitle.value = value
 }
 </script>

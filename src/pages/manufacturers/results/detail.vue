@@ -47,7 +47,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -57,79 +57,57 @@ import ItemDetail from 'components/ui/ItemDetail'
 import { appIcon, modelIcon } from 'composables/element'
 import useAutoFocus from 'composables/autoFocus'
 
-export default {
-  components: {
-    ItemDetail,
+const { $gettext } = useGettext()
+const { inputRef: primaryInput } = useAutoFocus()
+
+const title = ref($gettext('Manufacturer'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'manufacturers-list',
+  add: 'manufacturer-add',
+  detail: 'manufacturer-detail',
+}
+const model = 'devices/manufacturers'
+
+const element = reactive({ id: 0 })
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const { $gettext } = useGettext()
-    const { inputRef: primaryInput } = useAutoFocus()
-
-    const title = ref($gettext('Manufacturer'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
-
-    const routes = {
-      list: 'manufacturers-list',
-      add: 'manufacturer-add',
-      detail: 'manufacturer-detail',
-    }
-    const model = 'devices/manufacturers'
-
-    let element = reactive({ id: 0 })
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Devices'),
-        icon: appIcon('devices'),
-      },
-      {
-        text: $gettext('Manufacturers'),
-        icon: modelIcon(model),
-        to: routes.list,
-      },
-    ])
-
-    const isValid = computed(() => {
-      return element.name !== undefined && element.name.trim() !== ''
-    })
-
-    const elementData = () => {
-      return {
-        name: element.name,
-      }
-    }
-
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        name: undefined,
-      })
-    }
-
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
-
-    return {
-      breadcrumbs,
-      title,
-      model,
-      routes,
-      element,
-      isValid,
-      elementData,
-      resetElement,
-      setTitle,
-      appIcon,
-      modelIcon,
-      primaryInput,
-    }
+  {
+    text: $gettext('Devices'),
+    icon: appIcon('devices'),
   },
+  {
+    text: $gettext('Manufacturers'),
+    icon: modelIcon(model),
+    to: routes.list,
+  },
+])
+
+const isValid = computed(() => {
+  return element.name !== undefined && element.name.trim() !== ''
+})
+
+const elementData = () => {
+  return {
+    name: element.name,
+  }
+}
+
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    name: undefined,
+  })
+}
+
+const setTitle = (value) => {
+  windowTitle.value = value
 }
 </script>

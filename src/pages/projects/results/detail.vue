@@ -177,7 +177,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
@@ -190,242 +190,204 @@ import EntitySelect from 'components/ui/EntitySelect'
 import ItemDetail from 'components/ui/ItemDetail'
 
 import { appIcon, modelIcon } from 'composables/element'
-import useAutoFocus from 'composables/autoFocus'
 
-export default {
-  components: {
-    EntitySelect,
-    ItemDetail,
+const uiStore = useUiStore()
+const route = useRoute()
+const { $gettext } = useGettext()
+
+const title = ref($gettext('Project'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'projects-list',
+  add: 'project-add',
+  detail: 'project-detail',
+}
+const model = 'projects'
+
+const element = reactive({ id: 0, auto_register_computers: false })
+const storeCount = ref(0)
+const deploymentCount = ref(0)
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const uiStore = useUiStore()
-    const route = useRoute()
-    const { $gettext } = useGettext()
-    const { inputRef: primaryInput } = useAutoFocus()
+  {
+    text: $gettext('Configuration'),
+    icon: appIcon('configuration'),
+  },
+  {
+    text: $gettext('Projects'),
+    icon: modelIcon(model),
+    to: routes.list,
+  },
+])
 
-    const title = ref($gettext('Project'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
+const platforms = ref([])
+const pms = ref([])
 
-    const routes = {
-      list: 'projects-list',
-      add: 'project-add',
-      detail: 'project-detail',
-    }
-    const model = 'projects'
+const architectures = computed(() => {
+  if (!element.pms) return []
 
-    let element = reactive({ id: 0, auto_register_computers: false })
-    const storeCount = ref(0)
-    const deploymentCount = ref(0)
+  return pms.value
+    .filter((pms) => pms.id === element.pms.id)
+    .flatMap((pms) => pms.architectures)
+})
 
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Configuration'),
-        icon: appIcon('configuration'),
-      },
-      {
-        text: $gettext('Projects'),
-        icon: modelIcon(model),
-        to: routes.list,
-      },
-    ])
+const hasStores = computed(() => {
+  if (!element.id) return false
 
-    const platforms = ref([])
-    const pms = ref([])
+  return storeCount.value > 0
+})
 
-    const architectures = computed(() => {
-      if (!element.pms) return []
+const hasDeployments = computed(() => {
+  if (!element.id) return false
 
-      return pms.value
-        .filter((pms) => pms.id === element.pms.id)
-        .flatMap((pms) => pms.architectures)
-    })
+  return deploymentCount.value > 0
+})
 
-    const hasStores = computed(() => {
-      if (!element.id) return false
+const updateArchitectures = () => {
+  element.architecture = []
+}
 
-      return storeCount.value > 0
-    })
+const isValid = computed(() => {
+  return (
+    element.name !== undefined &&
+    element.name.trim() !== '' &&
+    !element.name.includes(' ') &&
+    (element.base_os === undefined ||
+      element.base_os === null ||
+      element.base_os.trim() === '' ||
+      !element.base_os.includes(' ')) &&
+    element.platform !== undefined &&
+    element.pms !== undefined &&
+    element.architecture !== undefined &&
+    Object.keys(element.architecture || {}).length > 0
+  )
+})
 
-    const hasDeployments = computed(() => {
-      if (!element.id) return false
+const elementData = () => {
+  return {
+    name: element.name,
+    base_os: element.base_os,
+    architecture: Array.isArray(element.architecture)
+      ? element.architecture.join(' ')
+      : '',
+    platform: element.platform.id,
+    auto_register_computers: element.auto_register_computers,
+    pms: element.pms.id,
+  }
+}
 
-      return deploymentCount.value > 0
-    })
+const loadRelated = async () => {
+  try {
+    const [platformResponse, pmsResponse, storeReponse, deploymentResponse] =
+      await Promise.all([
+        api.get('/api/v1/token/platforms/'),
+        api.get('/api/v1/public/pms/'),
+        api.get('/api/v1/token/stores/', {
+          params: { project__id: element.id },
+        }),
+        api.get('/api/v1/token/deployments/', {
+          params: { project__id: element.id },
+        }),
+      ])
 
-    const updateArchitectures = () => {
-      element.architecture = []
-    }
+    platforms.value = platformResponse.data.results
+    storeCount.value = storeReponse.data.count
+    deploymentCount.value = deploymentResponse.data.count
 
-    const isValid = computed(() => {
-      return (
-        element.name !== undefined &&
-        element.name.trim() !== '' &&
-        !element.name.includes(' ') &&
-        (element.base_os === undefined ||
-          element.base_os === null ||
-          element.base_os.trim() === '' ||
-          !element.base_os.includes(' ')) &&
-        element.platform !== undefined &&
-        element.pms !== undefined &&
-        element.architecture !== undefined &&
-        Object.keys(element.architecture || {}).length > 0
-      )
-    })
-
-    const elementData = () => {
-      return {
-        name: element.name,
-        base_os: element.base_os,
-        architecture: Array.isArray(element.architecture)
-          ? element.architecture.join(' ')
-          : '',
-        platform: element.platform.id,
-        auto_register_computers: element.auto_register_computers,
-        pms: element.pms.id,
-      }
-    }
-
-    const loadRelated = async () => {
-      try {
-        const [
-          platformResponse,
-          pmsResponse,
-          storeReponse,
-          deploymentResponse,
-        ] = await Promise.all([
-          api.get('/api/v1/token/platforms/'),
-          api.get('/api/v1/public/pms/'),
-          api.get('/api/v1/token/stores/', {
-            params: { project__id: element.id },
-          }),
-          api.get('/api/v1/token/deployments/', {
-            params: { project__id: element.id },
-          }),
-        ])
-
-        platforms.value = platformResponse.data.results
-        storeCount.value = storeReponse.data.count
-        deploymentCount.value = deploymentResponse.data.count
-
-        for (const [key, val] of Object.entries(pmsResponse.data)) {
-          pms.value.push({
-            id: key,
-            name: val.module,
-            architectures: val.architectures,
-          })
-        }
-
-        if (route.query.platform)
-          element.platform =
-            platforms.value.find(
-              (item) => item.id === Number(route.query.platform),
-            ) || null
-      } catch (error) {
-        storeCount.value = 0
-        deploymentCount.value = 0
-        uiStore.notifyError(error)
-      }
-
-      if (typeof element.pms === 'string')
-        element.pms = pms.value.find((x) => x.id === element.pms)
-
-      if (typeof element.architecture === 'string')
-        element.architecture = element.architecture
-          ? element.architecture.split(' ')
-          : []
-    }
-
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        auto_register_computers: false,
-        name: undefined,
-        base_os: undefined,
-        platform: undefined,
-        pms: undefined,
-        architecture: undefined,
+    for (const [key, val] of Object.entries(pmsResponse.data)) {
+      pms.value.push({
+        id: key,
+        name: val.module,
+        architectures: val.architectures,
       })
     }
 
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
+    if (route.query.platform)
+      element.platform =
+        platforms.value.find(
+          (item) => item.id === Number(route.query.platform),
+        ) || null
+  } catch (error) {
+    storeCount.value = 0
+    deploymentCount.value = 0
+    uiStore.notifyError(error)
+  }
 
-    const createDefaultStores = async () => {
-      const url = '/api/v1/token/stores/'
+  if (typeof element.pms === 'string')
+    element.pms = pms.value.find((x) => x.id === element.pms)
 
-      try {
-        await api.post(url, {
-          name: 'org',
-          project: element.id,
-        })
+  if (typeof element.architecture === 'string')
+    element.architecture = element.architecture
+      ? element.architecture.split(' ')
+      : []
+}
 
-        await api.post(url, {
-          name: 'thirds',
-          project: element.id,
-        })
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    auto_register_computers: false,
+    name: undefined,
+    base_os: undefined,
+    platform: undefined,
+    pms: undefined,
+    architecture: undefined,
+  })
+}
 
-        storeCount.value = 2
-        uiStore.notifySuccess($gettext('Data has been added!'))
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
+const setTitle = (value) => {
+  windowTitle.value = value
+}
 
-    const createDefaultDeployments = async () => {
-      const url = '/api/v1/token/deployments/'
+const createDefaultStores = async () => {
+  const url = '/api/v1/token/stores/'
 
-      try {
-        await api.post(url, {
-          enabled: true,
-          name: 'org',
-          project: element.id,
-          included_attributes: [1],
-        })
+  try {
+    await api.post(url, {
+      name: 'org',
+      project: element.id,
+    })
 
-        await api.post(url, {
-          enabled: true,
-          name: 'thirds',
-          project: element.id,
-          included_attributes: [1],
-        })
+    await api.post(url, {
+      name: 'thirds',
+      project: element.id,
+    })
 
-        deploymentCount.value = 2
-        uiStore.notifySuccess($gettext('Data has been added!'))
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
+    storeCount.value = 2
+    uiStore.notifySuccess($gettext('Data has been added!'))
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
 
-    return {
-      breadcrumbs,
-      title,
-      model,
-      routes,
-      element,
-      platforms,
-      pms,
-      architectures,
-      updateArchitectures,
-      isValid,
-      hasStores,
-      hasDeployments,
-      elementData,
-      loadRelated,
-      resetElement,
-      setTitle,
-      appIcon,
-      modelIcon,
-      primaryInput,
-      createDefaultStores,
-      createDefaultDeployments,
-    }
-  },
+const createDefaultDeployments = async () => {
+  const url = '/api/v1/token/deployments/'
+
+  try {
+    await api.post(url, {
+      enabled: true,
+      name: 'org',
+      project: element.id,
+      included_attributes: [1],
+    })
+
+    await api.post(url, {
+      enabled: true,
+      name: 'thirds',
+      project: element.id,
+      included_attributes: [1],
+    })
+
+    deploymentCount.value = 2
+    uiStore.notifySuccess($gettext('Data has been added!'))
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
 }
 </script>

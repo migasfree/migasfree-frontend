@@ -151,7 +151,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
@@ -162,233 +162,193 @@ import { useUiStore } from 'stores/ui'
 
 import EntitySelect from 'components/ui/EntitySelect'
 import ItemDetail from 'components/ui/ItemDetail'
-import OrderTextArea from 'components/ui/OrderTextArea'
-
 import { appIcon, modelIcon } from 'composables/element'
-import useAutoFocus from 'composables/autoFocus'
 
-export default {
-  components: {
-    EntitySelect,
-    ItemDetail,
-    OrderTextArea,
+const { $gettext } = useGettext()
+const route = useRoute()
+const uiStore = useUiStore()
+
+const title = ref($gettext('Model'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'models-list',
+  add: 'model-add',
+  detail: 'model-detail',
+}
+const model = 'devices/models'
+
+const element = reactive({ id: 0, connections: [] })
+
+const deviceTypes = ref([])
+const manufacturers = ref([])
+const connections = ref([])
+const drivers = ref([])
+const removedDrivers = ref([])
+const projects = ref([])
+const capabilities = ref([])
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const { $gettext } = useGettext()
-    const { inputRef: primaryInput } = useAutoFocus()
-    const route = useRoute()
-    const uiStore = useUiStore()
+  {
+    text: $gettext('Devices'),
+    icon: appIcon('devices'),
+  },
+  {
+    text: $gettext('Models'),
+    icon: modelIcon(model),
+    to: 'models-dashboard',
+  },
+])
 
-    const title = ref($gettext('Model'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
+const isValid = computed(() => {
+  return (
+    element.device_type !== undefined &&
+    element.manufacturer !== undefined &&
+    element.name !== undefined &&
+    element.name.trim() !== ''
+  )
+})
 
-    const routes = {
-      list: 'models-list',
-      add: 'model-add',
-      detail: 'model-detail',
+const loadRelated = async () => {
+  const fetchAndAssign = async (url, target) => {
+    try {
+      const { data } = await api.get(url)
+      target.value = data.results
+    } catch (error) {
+      uiStore.notifyError(error)
     }
-    const model = 'devices/models'
+  }
 
-    let element = reactive({ id: 0, connections: [] })
+  await Promise.all([
+    fetchAndAssign('/api/v1/token/devices/types/', deviceTypes),
+    fetchAndAssign('/api/v1/token/devices/manufacturers/', manufacturers),
+    fetchAndAssign('/api/v1/token/devices/connections/', connections),
+    fetchAndAssign('/api/v1/token/projects/', projects),
+    fetchAndAssign('/api/v1/token/devices/capabilities/', capabilities),
+  ])
 
-    const deviceTypes = ref([])
-    const manufacturers = ref([])
-    const connections = ref([])
-    const drivers = ref([])
-    const removedDrivers = ref([])
-    const projects = ref([])
-    const capabilities = ref([])
+  if (route.query.device_type)
+    element.device_type =
+      deviceTypes.value.find(
+        (item) => item.id === Number(route.query.device_type),
+      ) || null
 
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Devices'),
-        icon: appIcon('devices'),
-      },
-      {
-        text: $gettext('Models'),
-        icon: modelIcon(model),
-        to: 'models-dashboard',
-      },
-    ])
+  if (route.query.manufacturer)
+    element.manufacturer =
+      manufacturers.value.find(
+        (item) => item.id === Number(route.query.manufacturer),
+      ) || null
 
-    const isValid = computed(() => {
-      return (
-        element.device_type !== undefined &&
-        element.manufacturer !== undefined &&
-        element.name !== undefined &&
-        element.name.trim() !== ''
+  if (route.query.connections) {
+    const ids = route.query.connections.split(',').map((v) => Number(v))
+
+    element.connections = connections.value.filter((item) =>
+      ids.includes(item.id),
+    )
+  }
+
+  if (element.id) {
+    try {
+      const { data } = await api.get(
+        `/api/v1/token/devices/drivers/?model__id=${element.id}`,
       )
+      drivers.value = data.results.map((item) => ({
+        ...item,
+        packages_to_install: item.packages_to_install.join('\n'),
+      }))
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
+  }
+}
+
+const elementData = () => {
+  return {
+    device_type: element.device_type.id,
+    manufacturer: element.manufacturer.id,
+    name: element.name,
+    connections: element.connections.map((item) => item.id),
+  }
+}
+
+const updateRelated = async () => {
+  const buildPayload = (driver) => ({
+    model: element.id,
+    project: driver.project.id,
+    capability: driver.capability.id,
+    name: driver.name,
+    packages_to_install:
+      driver.packages_to_install !== null
+        ? driver.packages_to_install.split('\n')
+        : [],
+  })
+
+  const driverPromises = drivers.value
+    .filter((d) => d.project && d.capability) // skip invalid entries
+    .map(async (driver) => {
+      const payload = buildPayload(driver)
+      try {
+        if (driver.id > 0) {
+          await api.patch(
+            `/api/v1/token/devices/drivers/${driver.id}/`,
+            payload,
+          )
+        } else {
+          await api.post('/api/v1/token/devices/drivers/', payload)
+        }
+      } catch (error) {
+        uiStore.notifyError(error)
+      }
     })
 
-    const loadRelated = async () => {
-      const fetchAndAssign = async (url, target) => {
-        try {
-          const { data } = await api.get(url)
-          target.value = data.results
-        } catch (error) {
-          uiStore.notifyError(error)
-        }
-      }
+  const removePromises = removedDrivers.value.map((id) =>
+    api
+      .delete(`/api/v1/token/devices/drivers/${id}/`)
+      .catch((error) => uiStore.notifyError(error)),
+  )
 
-      await Promise.all([
-        fetchAndAssign('/api/v1/token/devices/types/', deviceTypes),
-        fetchAndAssign('/api/v1/token/devices/manufacturers/', manufacturers),
-        fetchAndAssign('/api/v1/token/devices/connections/', connections),
-        fetchAndAssign('/api/v1/token/projects/', projects),
-        fetchAndAssign('/api/v1/token/devices/capabilities/', capabilities),
-      ])
+  await Promise.all([...driverPromises, ...removePromises])
+}
 
-      if (route.query.device_type)
-        element.device_type =
-          deviceTypes.value.find(
-            (item) => item.id === Number(route.query.device_type),
-          ) || null
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    name: undefined,
+    device_type: null,
+    manufacturer: null,
+    connections: [],
+  })
+}
 
-      if (route.query.manufacturer)
-        element.manufacturer =
-          manufacturers.value.find(
-            (item) => item.id === Number(route.query.manufacturer),
-          ) || null
+const resetRelated = () => {
+  drivers.value = []
+  removedDrivers.value = []
+}
 
-      if (route.query.connections) {
-        const ids = route.query.connections.split(',').map((v) => Number(v))
+const setTitle = (value) => {
+  windowTitle.value = value
+}
 
-        element.connections = connections.value.filter((item) =>
-          ids.includes(item.id),
-        )
-      }
+const addInline = () => {
+  drivers.value.push({
+    id: 0,
+    project: null,
+    capability: null,
+    name: null,
+    packages_to_install: null,
+  })
+}
 
-      if (element.id) {
-        try {
-          const { data } = await api.get(
-            `/api/v1/token/devices/drivers/?model__id=${element.id}`,
-          )
-          drivers.value = data.results.map((item) => ({
-            ...item,
-            packages_to_install: item.packages_to_install.join('\n'),
-          }))
-        } catch (error) {
-          uiStore.notifyError(error)
-        }
-      }
-    }
-
-    const elementData = () => {
-      return {
-        device_type: element.device_type.id,
-        manufacturer: element.manufacturer.id,
-        name: element.name,
-        connections: element.connections.map((item) => item.id),
-      }
-    }
-
-    const updateRelated = async () => {
-      const buildPayload = (driver) => ({
-        model: element.id,
-        project: driver.project.id,
-        capability: driver.capability.id,
-        name: driver.name,
-        packages_to_install:
-          driver.packages_to_install !== null
-            ? driver.packages_to_install.split('\n')
-            : [],
-      })
-
-      const driverPromises = drivers.value
-        .filter((d) => d.project && d.capability) // skip invalid entries
-        .map(async (driver) => {
-          const payload = buildPayload(driver)
-          try {
-            if (driver.id > 0) {
-              await api.patch(
-                `/api/v1/token/devices/drivers/${driver.id}/`,
-                payload,
-              )
-            } else {
-              await api.post('/api/v1/token/devices/drivers/', payload)
-            }
-          } catch (error) {
-            uiStore.notifyError(error)
-          }
-        })
-
-      const removePromises = removedDrivers.value.map((id) =>
-        api
-          .delete(`/api/v1/token/devices/drivers/${id}/`)
-          .catch((error) => uiStore.notifyError(error)),
-      )
-
-      await Promise.all([...driverPromises, ...removePromises])
-    }
-
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        name: undefined,
-        device_type: null,
-        manufacturer: null,
-        connections: [],
-      })
-    }
-
-    const resetRelated = () => {
-      drivers.value = []
-      removedDrivers.value = []
-    }
-
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
-
-    const addInline = () => {
-      drivers.value.push({
-        id: 0,
-        project: null,
-        capability: null,
-        name: null,
-        packages_to_install: null,
-      })
-    }
-
-    const removeInline = (index) => {
-      const removedItem = drivers.value.splice(index, 1)[0]
-      if (removedItem.id > 0) {
-        removedDrivers.value.push(removedItem.id)
-      }
-    }
-
-    return {
-      breadcrumbs,
-      title,
-      model,
-      routes,
-      element,
-      deviceTypes,
-      manufacturers,
-      connections,
-      drivers,
-      removedDrivers,
-      projects,
-      capabilities,
-      isValid,
-      elementData,
-      loadRelated,
-      updateRelated,
-      resetElement,
-      resetRelated,
-      setTitle,
-      addInline,
-      removeInline,
-      appIcon,
-      modelIcon,
-      primaryInput,
-    }
-  },
+const removeInline = (index) => {
+  const removedItem = drivers.value.splice(index, 1)[0]
+  if (removedItem.id > 0) {
+    removedDrivers.value.push(removedItem.id)
+  }
 }
 </script>

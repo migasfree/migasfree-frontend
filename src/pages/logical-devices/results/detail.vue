@@ -87,7 +87,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
@@ -105,119 +105,90 @@ import SelectAttributes from 'components/ui/SelectAttributes'
 import { appIcon, modelIcon } from 'composables/element'
 import useAutoFocus from 'composables/autoFocus'
 
-export default {
-  components: {
-    EntitySelect,
-    FilteredMultiSelect,
-    ItemDetail,
-    MigasLink,
-    SelectAttributes,
+const { $gettext } = useGettext()
+const { inputRef: primaryInput } = useAutoFocus()
+const route = useRoute()
+const uiStore = useUiStore()
+
+const title = ref($gettext('Logical Device'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'logical-devices-list',
+  add: 'logical-device-add',
+  detail: 'logical-device-detail',
+}
+const model = 'devices/logical'
+
+const element = reactive({ id: 0, attributes: [], device: null })
+
+const capabilities = ref([])
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const { $gettext } = useGettext()
-    const { inputRef: primaryInput } = useAutoFocus()
-    const route = useRoute()
-    const uiStore = useUiStore()
-
-    const title = ref($gettext('Logical Device'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
-
-    const routes = {
-      list: 'logical-devices-list',
-      add: 'logical-device-add',
-      detail: 'logical-device-detail',
-    }
-    const model = 'devices/logical'
-
-    const element = reactive({ id: 0, attributes: [], device: null })
-
-    const capabilities = ref([])
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Devices'),
-        icon: appIcon('devices'),
-      },
-      {
-        text: $gettext('Logical Devices'),
-        icon: modelIcon(model),
-        to: routes.list,
-      },
-    ])
-
-    const isValid = computed(() => {
-      return element.device !== undefined && element.capability !== undefined
-    })
-
-    const loadRelated = async () => {
-      try {
-        const { data } = await api.get('/api/v1/token/devices/capabilities/')
-        capabilities.value = data.results
-
-        if (route.query.capability)
-          element.capability =
-            capabilities.value.find(
-              (item) => item.id === Number(route.query.capability),
-            ) || null
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
-    const elementData = () => {
-      return {
-        device: element.device.id,
-        capability: element.capability.id,
-        attributes: element.attributes.map((item) => item.id),
-        alternative_capability_name: element.alternative_capability_name,
-      }
-    }
-
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        device: null,
-        capability: null,
-        attributes: [],
-        alternative_capability_name: undefined,
-      })
-    }
-
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
-
-    const filterDevices = async (val) => {
-      const { data } = await api.get('/api/v1/token/devices/devices/', {
-        params: { search: val.toLowerCase() },
-      })
-
-      return data.results
-    }
-
-    return {
-      breadcrumbs,
-      title,
-      model,
-      routes,
-      element,
-      capabilities,
-      isValid,
-      loadRelated,
-      elementData,
-      resetElement,
-      setTitle,
-      appIcon,
-      modelIcon,
-      primaryInput,
-      filterDevices,
-    }
+  {
+    text: $gettext('Devices'),
+    icon: appIcon('devices'),
   },
+  {
+    text: $gettext('Logical Devices'),
+    icon: modelIcon(model),
+    to: routes.list,
+  },
+])
+
+const isValid = computed(() => {
+  return element.device !== undefined && element.capability !== undefined
+})
+
+const loadRelated = async () => {
+  try {
+    const { data } = await api.get('/api/v1/token/devices/capabilities/')
+    capabilities.value = data.results
+
+    if (route.query.capability)
+      element.capability =
+        capabilities.value.find(
+          (item) => item.id === Number(route.query.capability),
+        ) || null
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
+
+const elementData = () => {
+  return {
+    device: element.device.id,
+    capability: element.capability.id,
+    attributes: element.attributes.map((item) => item.id),
+    alternative_capability_name: element.alternative_capability_name,
+  }
+}
+
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    device: null,
+    capability: null,
+    attributes: [],
+    alternative_capability_name: undefined,
+  })
+}
+
+const setTitle = (value) => {
+  windowTitle.value = value
+}
+
+const filterDevices = async (val) => {
+  const { data } = await api.get('/api/v1/token/devices/devices/', {
+    params: { search: val.toLowerCase() },
+  })
+
+  return data.results
 }
 </script>

@@ -195,7 +195,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
@@ -211,193 +211,159 @@ import SelectAttributes from 'components/ui/SelectAttributes'
 import { appIcon, modelIcon } from 'composables/element'
 import useAutoFocus from 'composables/autoFocus'
 
-export default {
-  components: {
-    FilteredMultiSelect,
-    ItemDetail,
-    MigasLink,
-    SelectAttributes,
+const uiStore = useUiStore()
+const { $gettext } = useGettext()
+const { inputRef: primaryInput } = useAutoFocus()
+
+const title = ref($gettext('Policy'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
+
+const routes = {
+  list: 'policies-list',
+  add: 'policy-add',
+  detail: 'policy-detail',
+}
+const model = 'catalog/policies'
+
+const element = reactive({
+  id: 0,
+  enabled: false,
+  exclusive: false,
+  included_attributes: [],
+  excluded_attributes: [],
+})
+
+const policyGroups = ref([])
+const removedPolicyGroups = ref([])
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const uiStore = useUiStore()
-    const { $gettext } = useGettext()
-    const { inputRef: primaryInput } = useAutoFocus()
+  {
+    text: $gettext('Release'),
+    icon: appIcon('release'),
+  },
+  {
+    text: $gettext('Policies'),
+    icon: modelIcon(model),
+    to: routes.list,
+  },
+])
 
-    const title = ref($gettext('Policy'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
+const isValid = computed(() => {
+  return element.name !== undefined && element.name.trim() !== ''
+})
 
-    const routes = {
-      list: 'policies-list',
-      add: 'policy-add',
-      detail: 'policy-detail',
+const loadRelated = async () => {
+  if (!element.id) return
+
+  try {
+    const { data } = await api.get(
+      `/api/v1/token/catalog/policy-groups/?policy__id=${element.id}`,
+    )
+    policyGroups.value = data.results
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
+
+const elementData = () => {
+  return {
+    name: element.name,
+    comment: element.comment,
+    enabled: element.enabled,
+    exclusive: element.exclusive,
+    included_attributes: element.included_attributes.map((item) => item.id),
+    excluded_attributes: element.excluded_attributes.map((item) => item.id),
+  }
+}
+
+const updateRelated = async () => {
+  const policyPromises = policyGroups.value.map(async (line) => {
+    if (line.priority === undefined) return
+
+    const payload = {
+      policy: element.id,
+      priority: line.priority,
+      included_attributes: line.included_attributes.map((item) => item.id),
+      excluded_attributes: line.excluded_attributes.map((item) => item.id),
+      applications: line.applications.map((item) => item.id),
     }
-    const model = 'catalog/policies'
 
-    let element = reactive({
-      id: 0,
-      enabled: false,
-      exclusive: false,
-      included_attributes: [],
-      excluded_attributes: [],
-    })
-
-    const policyGroups = ref([])
-    const removedPolicyGroups = ref([])
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Release'),
-        icon: appIcon('release'),
-      },
-      {
-        text: $gettext('Policies'),
-        icon: modelIcon(model),
-        to: routes.list,
-      },
-    ])
-
-    const isValid = computed(() => {
-      return element.name !== undefined && element.name.trim() !== ''
-    })
-
-    const loadRelated = async () => {
-      if (!element.id) return
-
-      try {
-        const { data } = await api.get(
-          `/api/v1/token/catalog/policy-groups/?policy__id=${element.id}`,
+    try {
+      if (line.id > 0) {
+        await api.patch(
+          `/api/v1/token/catalog/policy-groups/${line.id}/`,
+          payload,
         )
-        policyGroups.value = data.results
-      } catch (error) {
-        uiStore.notifyError(error)
+      } else {
+        await api.post('/api/v1/token/catalog/policy-groups/', payload)
       }
+    } catch (error) {
+      uiStore.notifyError(error)
     }
+  })
 
-    const elementData = () => {
-      return {
-        name: element.name,
-        comment: element.comment,
-        enabled: element.enabled,
-        exclusive: element.exclusive,
-        included_attributes: element.included_attributes.map((item) => item.id),
-        excluded_attributes: element.excluded_attributes.map((item) => item.id),
-      }
+  const deletePromises = removedPolicyGroups.value.map(async (id) => {
+    try {
+      await api.delete(`/api/v1/token/catalog/policy-groups/${id}/`)
+    } catch (error) {
+      uiStore.notifyError(error)
     }
+  })
 
-    const updateRelated = async () => {
-      const policyPromises = policyGroups.value.map(async (line) => {
-        if (line.priority === undefined) return
+  await Promise.all([...policyPromises, ...deletePromises])
+}
 
-        const payload = {
-          policy: element.id,
-          priority: line.priority,
-          included_attributes: line.included_attributes.map((item) => item.id),
-          excluded_attributes: line.excluded_attributes.map((item) => item.id),
-          applications: line.applications.map((item) => item.id),
-        }
+const resetElement = () => {
+  Object.assign(element, {
+    id: 0,
+    name: undefined,
+    comment: undefined,
+    enabled: false,
+    exclusive: false,
+    included_attributes: [],
+    excluded_attributes: [],
+  })
+}
 
-        try {
-          if (line.id > 0) {
-            await api.patch(
-              `/api/v1/token/catalog/policy-groups/${line.id}/`,
-              payload,
-            )
-          } else {
-            await api.post('/api/v1/token/catalog/policy-groups/', payload)
-          }
-        } catch (error) {
-          uiStore.notifyError(error)
-        }
-      })
+const resetRelated = () => {
+  policyGroups.value = []
+  removedPolicyGroups.value = []
+}
 
-      const deletePromises = removedPolicyGroups.value.map(async (id) => {
-        try {
-          await api.delete(`/api/v1/token/catalog/policy-groups/${id}/`)
-        } catch (error) {
-          uiStore.notifyError(error)
-        }
-      })
+const setTitle = (value) => {
+  windowTitle.value = value
+}
 
-      await Promise.all([...policyPromises, ...deletePromises])
-    }
+const addInline = () => {
+  policyGroups.value.push({
+    id: 0,
+    priority: policyGroups.value.length
+      ? parseInt(policyGroups.value[policyGroups.value.length - 1].priority) + 1
+      : 1,
+    included_attributes: [],
+    excluded_attributes: [],
+    applications: [],
+  })
+}
 
-    const resetElement = () => {
-      Object.assign(element, {
-        id: 0,
-        name: undefined,
-        comment: undefined,
-        enabled: false,
-        exclusive: false,
-        included_attributes: [],
-        excluded_attributes: [],
-      })
-    }
+const removeInline = (index) => {
+  const removedItem = policyGroups.value.splice(index, 1)[0]
+  if (removedItem.id > 0) {
+    removedPolicyGroups.value.push(removedItem.id)
+  }
+}
 
-    const resetRelated = () => {
-      policyGroups.value = []
-      removedPolicyGroups.value = []
-    }
+const filterApplications = async (val) => {
+  const { data } = await api.get('/api/v1/token/catalog/apps/', {
+    params: { search: val.toLowerCase() },
+  })
 
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
-
-    const addInline = () => {
-      policyGroups.value.push({
-        id: 0,
-        priority: policyGroups.value.length
-          ? parseInt(
-              policyGroups.value[policyGroups.value.length - 1].priority,
-            ) + 1
-          : 1,
-        included_attributes: [],
-        excluded_attributes: [],
-        applications: [],
-      })
-    }
-
-    const removeInline = (index) => {
-      const removedItem = policyGroups.value.splice(index, 1)[0]
-      if (removedItem.id > 0) {
-        removedPolicyGroups.value.push(removedItem.id)
-      }
-    }
-
-    const filterApplications = async (val) => {
-      const { data } = await api.get('/api/v1/token/catalog/apps/', {
-        params: { search: val.toLowerCase() },
-      })
-
-      return data.results
-    }
-
-    return {
-      breadcrumbs,
-      title,
-      model,
-      routes,
-      element,
-      policyGroups,
-      removedPolicyGroups,
-      isValid,
-      elementData,
-      loadRelated,
-      updateRelated,
-      resetElement,
-      resetRelated,
-      setTitle,
-      addInline,
-      removeInline,
-      filterApplications,
-      appIcon,
-      primaryInput,
-    }
-  },
+  return data.results
 }
 </script>

@@ -94,12 +94,11 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useRoute } from 'vue-router'
 import { useMeta } from 'quasar'
-import pluralize from 'pluralize-esm'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -117,267 +116,195 @@ import ComputerLocations from 'components/computer/Locations'
 import { appIcon, modelIcon, useElement } from 'composables/element'
 import useDate from 'composables/date'
 
-export default {
-  components: {
-    ItemDetail,
-    ComputerInfo,
-    ComputerHardwareResume,
-    ComputerSoftware,
-    ComputerDevices,
-    ComputerCurrentSituation,
-    ComputerSynchronization,
-    ComputerLocations,
+const { $gettext } = useGettext()
+const route = useRoute()
+const uiStore = useUiStore()
+const { elementIcon, attributeValue } = useElement()
+const { showDate } = useDate()
+
+const routes = {
+  list: 'computers-list',
+}
+const model = 'computers'
+
+const element = reactive({
+  id: 0,
+})
+
+const title = ref($gettext('Computer'))
+const windowTitle = ref(title.value)
+useMeta(() => ({ title: windowTitle.value }))
+
+const loadingSync = ref(false)
+
+const status = ref([])
+const syncInfo = reactive({})
+const onlyAttributes = ref([])
+const onlyAttributeSets = ref([])
+const onlyDomains = ref([])
+const errors = reactive({})
+const faults = reactive({})
+
+const markers = ref([])
+
+const breadcrumbs = ref([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
   },
-  setup() {
-    const { $gettext } = useGettext()
-    const route = useRoute()
-    const uiStore = useUiStore()
-    const { elementIcon, attributeValue } = useElement()
-    const { showDate } = useDate()
+  {
+    text: $gettext('Data'),
+    icon: appIcon('data'),
+  },
+  {
+    text: $gettext('Computers'),
+    icon: modelIcon(model),
+    to: 'computers-dashboard',
+  },
+])
 
-    const routes = {
-      list: 'computers-list',
+const loadSyncInfo = async () => {
+  loadingSync.value = true
+  try {
+    const response = await api.get(
+      `/api/v1/token/${model}/${route.params.id}/sync/`,
+    )
+    Object.assign(syncInfo, response.data)
+
+    const fetchBadge = async (val, type) => {
+      const { data } = await api.get(
+        `/api/v1/token/attributes/${val.id}/badge/`,
+      )
+      const icon = modelIcon(type)
+      const modelName =
+        type === 'attribute-sets'
+          ? data.pk === 1
+            ? 'features'
+            : 'attribute-sets'
+          : 'domains'
+      return {
+        id: data.pk,
+        icon,
+        model: modelName,
+        value: attributeValue(val),
+        summary: data.summary,
+      }
     }
-    const model = 'computers'
 
-    let element = reactive({
-      id: 0,
+    const badgePromises = []
+    for (const [, val] of Object.entries(response.data.sync_attributes)) {
+      if (val.property_att.prefix === 'SET') {
+        badgePromises.push(
+          fetchBadge(val, 'attribute-sets').then((obj) =>
+            onlyAttributeSets.value.push(obj),
+          ),
+        )
+      } else if (val.property_att.prefix === 'DMN') {
+        badgePromises.push(
+          fetchBadge(val, 'domains').then((obj) => onlyDomains.value.push(obj)),
+        )
+      } else {
+        onlyAttributes.value.push({
+          id: val.id,
+          value: attributeValue(val),
+          model: val.property_att.sort === 'server' ? 'tags' : 'features',
+          icon:
+            val.property_att.sort === 'server'
+              ? modelIcon('tags')
+              : modelIcon('attributes'),
+          summary: val.description,
+        })
+      }
+
+      if (val.latitude !== null) {
+        markers.value.push({
+          id: val.id,
+          model: val.property_att.sort === 'server' ? 'tags' : 'features',
+          lat: val.latitude,
+          lng: val.longitude,
+          tooltip: attributeValue(val),
+          description: val.description ? val.description : null,
+        })
+      }
+    }
+
+    await Promise.all(badgePromises)
+  } catch (error) {
+    uiStore.notifyError(error)
+  } finally {
+    loadingSync.value = false
+  }
+}
+
+const loadErrors = async () => {
+  try {
+    const { data } = await api.get(
+      `/api/v1/token/${model}/${route.params.id}/errors/`,
+    )
+    Object.assign(errors, data)
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
+
+const loadFaults = async () => {
+  try {
+    const { data } = await api.get(
+      `/api/v1/token/${model}/${route.params.id}/faults/`,
+    )
+    Object.assign(faults, data)
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
+
+const getComputerStatus = async () => {
+  try {
+    const response = await api.get(`/api/v1/token/${model}/status/`)
+    const { choices } = response.data
+
+    Object.entries(choices).forEach(([key, val]) => {
+      status.value.push({
+        label: val,
+        value: key,
+        icon: elementIcon(key),
+      })
     })
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
 
-    const title = ref($gettext('Computer'))
-    const windowTitle = ref(title.value)
-    useMeta(() => ({ title: windowTitle.value }))
+const setRelated = () => {
+  loadSyncInfo()
+  loadErrors()
+  loadFaults()
 
-    const loading = ref(false)
-    const loadingSync = ref(false)
-    const map = ref(null)
+  getComputerStatus()
 
-    const status = ref([])
-    const syncInfo = reactive({})
-    const onlyAttributes = ref([])
-    const onlyAttributeSets = ref([])
-    const onlyDomains = ref([])
-    const errors = reactive({})
-    const faults = reactive({})
-
-    const markers = ref([])
-
-    const breadcrumbs = ref([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Data'),
-        icon: appIcon('data'),
-      },
-      {
-        text: $gettext('Computers'),
-        icon: modelIcon(model),
-        to: 'computers-dashboard',
-      },
-    ])
-
-    const loadSyncInfo = async () => {
-      loadingSync.value = true
-      try {
-        const response = await api.get(
-          `/api/v1/token/${model}/${route.params.id}/sync/`,
-        )
-        Object.assign(syncInfo, response.data)
-
-        const fetchBadge = async (val, type) => {
-          const { data } = await api.get(
-            `/api/v1/token/attributes/${val.id}/badge/`,
-          )
-          const icon = modelIcon(type)
-          const model =
-            type === 'attribute-sets'
-              ? data.pk === 1
-                ? 'features'
-                : 'attribute-sets'
-              : 'domains'
-          return {
-            id: data.pk,
-            icon,
-            model,
-            value: attributeValue(val),
-            summary: data.summary,
-          }
-        }
-
-        const badgePromises = []
-        for (const [, val] of Object.entries(response.data.sync_attributes)) {
-          if (val.property_att.prefix === 'SET') {
-            badgePromises.push(
-              fetchBadge(val, 'attribute-sets').then((obj) =>
-                onlyAttributeSets.value.push(obj),
-              ),
-            )
-          } else if (val.property_att.prefix === 'DMN') {
-            badgePromises.push(
-              fetchBadge(val, 'domains').then((obj) =>
-                onlyDomains.value.push(obj),
-              ),
-            )
-          } else {
-            onlyAttributes.value.push({
-              id: val.id,
-              value: attributeValue(val),
-              model: val.property_att.sort === 'server' ? 'tags' : 'features',
-              icon:
-                val.property_att.sort === 'server'
-                  ? modelIcon('tags')
-                  : modelIcon('attributes'),
-              summary: val.description,
-            })
-          }
-
-          if (val.latitude !== null) {
-            markers.value.push({
-              id: val.id,
-              model: val.property_att.sort === 'server' ? 'tags' : 'features',
-              lat: val.latitude,
-              lng: val.longitude,
-              tooltip: attributeValue(val),
-              description: val.description ? val.description : null,
-            })
-          }
-        }
-
-        await Promise.all(badgePromises)
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        loadingSync.value = false
-      }
-    }
-
-    const loadErrors = async () => {
-      try {
-        const { data } = await api.get(
-          `/api/v1/token/${model}/${route.params.id}/errors/`,
-        )
-        Object.assign(errors, data)
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
-    const loadFaults = async () => {
-      try {
-        const { data } = await api.get(
-          `/api/v1/token/${model}/${route.params.id}/faults/`,
-        )
-        Object.assign(faults, data)
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
-    const updateCurrentSituation = async () => {
-      loading.value = true
-      try {
-        await api.patch(`/api/v1/token/${model}/${element.id}/`, {
-          status: element.status,
-          comment: element.comment,
-          tags: element.tags.map((item) => item.id),
-        })
-        uiStore.notifySuccess($gettext('Current Situation has been changed!'))
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        loading.value = false
-      }
-    }
-
-    const filterTags = async (val) => {
-      const { data } = await api.get('/api/v1/token/tags/', {
-        params: { search: val.toLowerCase() },
-      })
-
-      return data.results
-    }
-
-    const getComputerStatus = async () => {
-      try {
-        const response = await api.get(`/api/v1/token/${model}/status/`)
-        const { choices } = response.data
-
-        Object.entries(choices).forEach(([key, val]) => {
-          status.value.push({
-            label: val,
-            value: key,
-            icon: elementIcon(key),
-          })
-        })
-      } catch (error) {
-        uiStore.notifyError(error)
-      }
-    }
-
-    const setRelated = () => {
-      loadSyncInfo()
-      loadErrors()
-      loadFaults()
-
-      getComputerStatus()
-
-      Object.entries(element.tags).map(([, val]) => {
-        if (val.latitude !== null) {
-          markers.value.push({
-            id: val.id,
-            model: 'tags',
-            lat: val.latitude,
-            lng: val.longitude,
-            tooltip: attributeValue(val),
-            description: val.description ? val.description : null,
-          })
-        }
+  Object.entries(element.tags).map(([, val]) => {
+    if (val.latitude !== null) {
+      markers.value.push({
+        id: val.id,
+        model: 'tags',
+        lat: val.latitude,
+        lng: val.longitude,
+        tooltip: attributeValue(val),
+        description: val.description ? val.description : null,
       })
     }
+  })
+}
 
-    const setTitle = (value) => {
-      windowTitle.value = value
-    }
+const setTitle = (value) => {
+  windowTitle.value = value
+}
 
-    const onCurrentSituationUpdated = (data) => {
-      element.status = data.status
-      element.comment = data.comment
-      element.tags = data.tags
-    }
-
-    return {
-      title,
-      breadcrumbs,
-      loading,
-      loadingSync,
-      map,
-      routes,
-      model,
-      element,
-      status,
-      syncInfo,
-      onlyAttributes,
-      onlyAttributeSets,
-      onlyDomains,
-      errors,
-      faults,
-      markers,
-      elementIcon,
-      attributeValue,
-      showDate,
-      updateCurrentSituation,
-      filterTags,
-      pluralize,
-      setRelated,
-      setTitle,
-      appIcon,
-      modelIcon,
-      onCurrentSituationUpdated,
-    }
-  },
+const onCurrentSituationUpdated = (data) => {
+  element.status = data.status
+  element.comment = data.comment
+  element.tags = data.tags
 }
 </script>
 
