@@ -917,7 +917,6 @@ h1,
   border-color: var(--brand-primary);
 }
 
-
 /* --- VGT Legacy Fixes --- */
 .vgt-loading__content {
   background-color: var(--neutral-100) !important;
@@ -946,7 +945,7 @@ h1,
 
 .vgt-selection-info-row a:before {
   transition: box-shadow 0.2s ease;
-  content: "";
+  content: '';
   display: block;
   position: absolute;
   left: 0;
@@ -1112,7 +1111,11 @@ h2 {
 /* === Sidebar / Drawer Navigation === */
 .q-drawer .q-item--active {
   position: relative;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--brand-primary), transparent 85%) 0%, transparent 100%);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--brand-primary), transparent 85%) 0%,
+    transparent 100%
+  );
 }
 
 .q-drawer .q-item--active::before {

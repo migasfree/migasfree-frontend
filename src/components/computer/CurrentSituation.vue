@@ -59,12 +59,14 @@
                               : 'bg-grey-2 text-critical'
                           "
                         >
-                          <span class="text-h5 text-weight-bolder line-height-1 q-mb-xs">{{
-                            errors.unchecked
-                          }}</span>
-                          <span class="text-caption text-weight-bold uppercase opacity-70">{{
-                            $gettext('Unchecked')
-                          }}</span>
+                          <span
+                            class="text-h5 text-weight-bolder line-height-1 q-mb-xs"
+                            >{{ errors.unchecked }}</span
+                          >
+                          <span
+                            class="text-caption text-weight-bold uppercase opacity-70"
+                            >{{ $gettext('Unchecked') }}</span
+                          >
                         </router-link>
                       </div>
                       <div :class="errors.unchecked > 0 ? 'col-6' : 'col-12'">
@@ -80,10 +82,14 @@
                               : 'bg-grey-2 text-dark'
                           "
                         >
-                          <span class="text-h5 text-weight-bolder line-height-1 q-mb-xs">{{
-                            errors.total
-                          }}</span>
-                          <span class="text-caption text-weight-bold uppercase opacity-70">{{ $gettext('Total') }}</span>
+                          <span
+                            class="text-h5 text-weight-bolder line-height-1 q-mb-xs"
+                            >{{ errors.total }}</span
+                          >
+                          <span
+                            class="text-caption text-weight-bold uppercase opacity-70"
+                            >{{ $gettext('Total') }}</span
+                          >
                         </router-link>
                       </div>
                     </div>
@@ -121,12 +127,14 @@
                               : 'bg-grey-2 text-orange-9'
                           "
                         >
-                          <span class="text-h5 text-weight-bolder line-height-1 q-mb-xs">{{
-                            faults.unchecked
-                          }}</span>
-                          <span class="text-caption text-weight-bold uppercase opacity-70">{{
-                            $gettext('Unchecked')
-                          }}</span>
+                          <span
+                            class="text-h5 text-weight-bolder line-height-1 q-mb-xs"
+                            >{{ faults.unchecked }}</span
+                          >
+                          <span
+                            class="text-caption text-weight-bold uppercase opacity-70"
+                            >{{ $gettext('Unchecked') }}</span
+                          >
                         </router-link>
                       </div>
                       <div :class="faults.unchecked > 0 ? 'col-6' : 'col-12'">
@@ -142,10 +150,14 @@
                               : 'bg-grey-2 text-dark'
                           "
                         >
-                          <span class="text-h5 text-weight-bolder line-height-1 q-mb-xs">{{
-                            faults.total
-                          }}</span>
-                          <span class="text-caption text-weight-bold uppercase opacity-70">{{ $gettext('Total') }}</span>
+                          <span
+                            class="text-h5 text-weight-bolder line-height-1 q-mb-xs"
+                            >{{ faults.total }}</span
+                          >
+                          <span
+                            class="text-caption text-weight-bold uppercase opacity-70"
+                            >{{ $gettext('Total') }}</span
+                          >
                         </router-link>
                       </div>
                     </div>
