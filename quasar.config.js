@@ -1,5 +1,3 @@
-/* eslint-env node */
-
 /*
  * This file runs in a Node context (it's NOT transpiled by Babel), so use only
  * the ES6 features that are supported by your Node version. https://node.green/
@@ -14,16 +12,12 @@ import { fileURLToPath } from 'node:url'
 import fs from 'fs'
 
 function getEnvVar(name) {
-  // eslint-disable-next-line security/detect-object-injection
   if (process.env[name]) return process.env[name]
   try {
     const envPath = fileURLToPath(new URL('./.env', import.meta.url))
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
     if (fs.existsSync(envPath)) {
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
       const content = fs.readFileSync(envPath, 'utf-8')
       // Simple parse for KEY="VALUE" or KEY=VALUE
-      // eslint-disable-next-line security/detect-non-literal-regexp
       const match = content.match(new RegExp(`^${name}="?([^"\\n]+)"?`, 'm'))
       if (match) return match[1]
     }
@@ -49,7 +43,7 @@ export default defineConfig((ctx) => {
     boot: ['axios', 'fonts', 'gettext', 'vue-good-table-next', 'ui-defaults'],
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#css
-    css: ['app.sass', 'style.css'],
+    css: ['style.css'],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
