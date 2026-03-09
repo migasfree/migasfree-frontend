@@ -77,7 +77,7 @@
     "autoprefixer": "10.4.27",
     "css-loader": "7.1.4",
     "cypress": "15.11.0",
-    "eslint": "10.0.2",
+    "eslint": "10.0.3",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.5",
     "eslint-plugin-security": "4.0.0",
