@@ -1,15 +1,6 @@
-// Redefinimos las variables de Sass para que apunten a las Custom Properties de CSS
-// definidas en style.css. Esto asegura una única fuente de verdad.
-
-// === Colors ===
-$primary:   var(--brand-primary)
-$secondary: var(--brand-secondary)
-$accent:    var(--brand-tertiary)
-
-$positive:  var(--success)
-$negative:  var(--error)
-$info:      var(--info)
-$warning:   var(--warning)
+// SASS tokens consumed by app.sass.
+// Color variables ($primary, etc.) live exclusively in quasar.variables.sass
+// to avoid duplication. Layout values use CSS custom properties directly.
 
 // === Spacing ===
 $space-xs:  4px
@@ -17,15 +8,3 @@ $space-sm:  8px
 $space-md:  16px
 $space-lg:  24px
 $space-xl:  32px
-
-// === Typography ===
-// Usamos las variables CSS para mantener consistencia
-$font-ui:   var(--font-ui)
-$text-xs:   var(--text-xs)
-$text-sm:   var(--text-sm)
-$text-base: var(--text-base)
-$text-xl:   var(--text-xl)
-
-// === Borders & Radius ===
-$radius:    var(--radius)
-$border:    var(--border)

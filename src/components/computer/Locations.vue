@@ -145,7 +145,7 @@
                 size="16px"
               />
               <span
-                class="text-caption font-mono text-weight-bold"
+                class="text-caption text-mono text-weight-bold"
                 :class="$q.dark.isActive ? 'text-grey-3' : 'text-grey-8'"
               >
                 {{ center[0].toFixed(4) }} / {{ center[1].toFixed(4) }}

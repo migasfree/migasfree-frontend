@@ -3,7 +3,7 @@
     <!-- Animated background effect -->
     <div class="bg-glow"></div>
 
-    <div class="error-container glass-card q-pa-xl text-center">
+    <div class="error-container glass-panel q-pa-xl text-center">
       <div class="error-content column items-center">
         <!-- Visual Icon with Glow -->
         <div class="icon-wrapper q-mb-lg">

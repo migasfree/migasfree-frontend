@@ -136,14 +136,6 @@ h1,
   margin-bottom: 1rem;
 }
 
-.docs-content h2,
-.text-h2 {
-  font-size: var(--text-xl);
-  border-bottom: 2px solid var(--border);
-  padding-bottom: 0.5rem;
-  margin-top: 2rem;
-}
-
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
@@ -177,8 +169,7 @@ h1,
    ========================================= */
 
 /* Toolbar & Page Headers */
-.q-header,
-.app-header {
+.q-header {
   background-color: var(--app-bar-bg) !important;
   color: var(--app-bar-on-bg) !important;
 }
@@ -242,7 +233,6 @@ h1,
 }
 
 /* Glassmorphism Components */
-.glass-card,
 .glass-panel {
   background: rgba(255, 255, 255, 0.7) !important;
   backdrop-filter: blur(12px);
@@ -251,7 +241,6 @@ h1,
   border-radius: 20px !important;
 }
 
-[data-theme='dark'] .glass-card,
 [data-theme='dark'] .glass-panel {
   background: rgba(var(--brand-primary-rgb), 0.05) !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
@@ -443,12 +432,6 @@ h1,
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-
-.tech-data-value {
-  font-weight: 600;
-  color: var(--text-main);
-}
-
 /* =========================================
    6. QUASAR OVERRIDES
    ========================================= */
@@ -602,8 +585,7 @@ h1,
 }
 
 /* --- Input Decorations (Prefixes/Icons) --- */
-.filter-icon-box,
-.input-prefix-box {
+.filter-icon-box {
   width: 28px;
   height: 28px;
   background: rgba(var(--brand-primary-rgb), 0.1);
@@ -616,20 +598,17 @@ h1,
   transition: all 0.3s ease;
 }
 
-[data-theme='dark'] .filter-icon-box,
-[data-theme='dark'] .input-prefix-box {
+[data-theme='dark'] .filter-icon-box {
   background: rgba(var(--brand-tertiary-rgb, 251, 191, 36), 0.1);
   color: var(--brand-tertiary);
 }
 
-.q-field--focused .filter-icon-box,
-.q-field--focused .input-prefix-box {
+.q-field--focused .filter-icon-box {
   background: var(--brand-primary);
   color: var(--brand-on-primary);
 }
 
-[data-theme='dark'] .q-field--focused .filter-icon-box,
-[data-theme='dark'] .q-field--focused .input-prefix-box {
+[data-theme='dark'] .q-field--focused .filter-icon-box {
   background: var(--brand-tertiary);
   color: var(--brand-on-primary);
 }
@@ -935,17 +914,9 @@ h1,
    ========================================= */
 
 /* Semantic Text Colors */
-.text-mono,
-.font-mono {
-  font-family: var(--font-mono) !important;
-}
-
 .text-mono {
+  font-family: var(--font-mono) !important;
   font-size: 0.95rem;
-}
-
-.text-success {
-  color: var(--text-success) !important;
 }
 
 .text-warning {
@@ -953,7 +924,6 @@ h1,
 }
 
 .text-critical,
-.text-error,
 .text-negative {
   color: var(--text-critical) !important;
 }
@@ -963,17 +933,6 @@ h1,
 }
 
 /* Semantic Surface Colors */
-.bg-success-surface {
-  background: var(--success-surface) !important;
-}
-
-.bg-warning-surface {
-  background: var(--warning-surface) !important;
-}
-
-.bg-critical-surface {
-  background: var(--error-surface) !important;
-}
 
 .bg-info-surface {
   background: var(--info-surface) !important;
@@ -994,14 +953,7 @@ h1,
   gap: 1rem;
 }
 
-.ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.line-height-1,
-.lh-1 {
+.line-height-1 {
   line-height: 1 !important;
 }
 

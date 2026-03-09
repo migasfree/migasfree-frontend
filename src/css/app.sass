@@ -9,7 +9,6 @@ h2
   max-height: 25em
   overflow: auto
 
-
 .reversed-delete
   background: var(--error)
   color: white
@@ -40,7 +39,7 @@ h2
   position: relative
 
 .vgt-selection-info-row a:before
-  transition: box-shadow var(--transition-normal)
+  transition: box-shadow 0.2s ease
   content: ""
   display: block
   position: absolute
@@ -49,7 +48,7 @@ h2
   top: 0
   bottom: 0
   border-radius: inherit
-  box-shadow: var(--shadow-sm)
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
 
 .vgt-wrap__footer .footer__navigation__page-btn span
   font-size: var(--text-sm) !important
@@ -60,29 +59,11 @@ h2
 .vgt-wrap__footer .footer__navigation__page-btn .chevron.left::after
   border-right: 6px solid black !important
 
-
 .q-table th,
 .q-table tbody td
   font-size: inherit
 
-.d2h-diff-table
-  font-size: 11px !important
-
-.d2h-cntx
-  background-color: #fff
-
-// Global Body Styles
-body
-  background-color: var(--bg-body)
-  color: var(--text-main)
-
 // Utility Classes
-
-.bg-background
-  background-color: var(--bg-body) !important
-
-.text-text
-  color: var(--text-main) !important
 
 .site-footer
   background: var(--bg-card) !important
@@ -138,28 +119,6 @@ body
   .vgt-selection-info-row a
     color: var(--brand-primary)
 
-.animated-background
-  position: relative
-  overflow: hidden
-  background: var(--bg-body)
-
-  &::before
-    content: ''
-    position: absolute
-    width: 200%
-    height: 200%
-    top: -50%
-    left: -50%
-    background: unquote('radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--brand-primary), transparent 85%) 0%, transparent 50%), radial-gradient(circle at 80% 80%, color-mix(in srgb, var(--brand-tertiary), transparent 90%) 0%, transparent 50%)')
-    animation: float 20s ease-in-out infinite
-    z-index: 0
-
-@keyframes float
-  0%, 100%
-    transform: translate(0, 0) rotate(0deg)
-  50%
-    transform: translate(20px, -20px) rotate(2deg)
-
 // === Sidebar / Drawer Navigation ===
 .q-drawer
   .q-item--active
@@ -180,15 +139,7 @@ body
     color: var(--brand-primary)
     font-weight: 600
 
-
 .uppercase
   text-transform: uppercase
   letter-spacing: 1px
   font-weight: 700
-
-
-// MigasLink elevated style for dark containers (depth cues only)
-.migaslink-elevated .q-btn-dropdown
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35)
-  border: 1px solid rgba(255, 255, 255, 0.15)
-  border-radius: 4px
