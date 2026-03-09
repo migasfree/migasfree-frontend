@@ -11,7 +11,7 @@
         <div class="flex items-center gap-md">
           <q-badge
             :color="currentStatusColor"
-            class="status-badge-premium q-px-md q-py-xs"
+            class="badge-status q-px-md q-py-xs"
           >
             <q-icon
               :name="currentStatusIcon"
@@ -32,8 +32,8 @@
               <!-- Errors Diagnostic Card -->
               <div class="col-12 col-sm-6">
                 <div class="diagnostic-card theme-critical">
-                  <div class="card-content">
-                    <div class="card-top row items-center q-mb-md">
+                  <div class="column full-height relative-position z-top">
+                    <div class="row items-center q-mb-md">
                       <q-icon
                         :name="modelIcon('errors')"
                         size="24px"
@@ -55,14 +55,14 @@
                           class="action-stat-btn full-width column items-center text-center text-decoration-none"
                           :class="
                             $q.dark.isActive
-                              ? 'bg-neutral-800 text-critical'
-                              : 'bg-neutral-100 text-critical'
+                              ? 'bg-grey-9 text-critical'
+                              : 'bg-grey-2 text-critical'
                           "
                         >
-                          <span class="stat-value text-bold">{{
+                          <span class="text-h5 text-weight-bolder line-height-1 q-mb-xs">{{
                             errors.unchecked
                           }}</span>
-                          <span class="stat-desc">{{
+                          <span class="text-caption text-weight-bold uppercase opacity-70">{{
                             $gettext('Unchecked')
                           }}</span>
                         </router-link>
@@ -76,14 +76,14 @@
                           class="action-stat-btn full-width column items-center text-center text-decoration-none"
                           :class="
                             $q.dark.isActive
-                              ? 'bg-neutral-800 text-white'
-                              : 'bg-neutral-100 text-black'
+                              ? 'bg-grey-9 text-white'
+                              : 'bg-grey-2 text-dark'
                           "
                         >
-                          <span class="stat-value text-bold">{{
+                          <span class="text-h5 text-weight-bolder line-height-1 q-mb-xs">{{
                             errors.total
                           }}</span>
-                          <span class="stat-desc">{{ $gettext('Total') }}</span>
+                          <span class="text-caption text-weight-bold uppercase opacity-70">{{ $gettext('Total') }}</span>
                         </router-link>
                       </div>
                     </div>
@@ -94,8 +94,8 @@
               <!-- Faults Diagnostic Card -->
               <div class="col-12 col-sm-6">
                 <div class="diagnostic-card theme-warning">
-                  <div class="card-content">
-                    <div class="card-top row items-center q-mb-md">
+                  <div class="column full-height relative-position z-top">
+                    <div class="row items-center q-mb-md">
                       <q-icon
                         :name="modelIcon('faults')"
                         size="24px"
@@ -117,14 +117,14 @@
                           class="action-stat-btn full-width column items-center text-center text-decoration-none"
                           :class="
                             $q.dark.isActive
-                              ? 'bg-neutral-800 text-warning-dark'
-                              : 'bg-neutral-100 text-warning-dark'
+                              ? 'bg-grey-9 text-warning'
+                              : 'bg-grey-2 text-orange-9'
                           "
                         >
-                          <span class="stat-value text-bold">{{
+                          <span class="text-h5 text-weight-bolder line-height-1 q-mb-xs">{{
                             faults.unchecked
                           }}</span>
-                          <span class="stat-desc">{{
+                          <span class="text-caption text-weight-bold uppercase opacity-70">{{
                             $gettext('Unchecked')
                           }}</span>
                         </router-link>
@@ -138,14 +138,14 @@
                           class="action-stat-btn full-width column items-center text-center text-decoration-none"
                           :class="
                             $q.dark.isActive
-                              ? 'bg-neutral-800 text-white'
-                              : 'bg-neutral-100 text-black'
+                              ? 'bg-grey-9 text-white'
+                              : 'bg-grey-2 text-dark'
                           "
                         >
-                          <span class="stat-value text-bold">{{
+                          <span class="text-h5 text-weight-bolder line-height-1 q-mb-xs">{{
                             faults.total
                           }}</span>
-                          <span class="stat-desc">{{ $gettext('Total') }}</span>
+                          <span class="text-caption text-weight-bold uppercase opacity-70">{{ $gettext('Total') }}</span>
                         </router-link>
                       </div>
                     </div>
@@ -183,7 +183,7 @@
 
           <!-- Status Select -->
           <q-select
-            v-model="localStatus"
+            v-model="status"
             class="q-mb-md"
             emit-value
             map-options
@@ -229,7 +229,7 @@
 
           <!-- Comments -->
           <q-input
-            v-model="localComment"
+            v-model="comment"
             type="textarea"
             rows="3"
             :label="$gettext('Comment')"
@@ -241,7 +241,7 @@
           <!-- Tags using FilteredMultiSelect -->
           <div class="field-container q-mb-xl col">
             <FilteredMultiSelect
-              v-model="localTags"
+              v-model="tags"
               :label="$gettext('Tags')"
               :fetch-options="filterTags"
             >
@@ -345,27 +345,27 @@ const statusOptions = ref([])
 const errors = reactive({ unchecked: 0, total: 0 })
 const faults = reactive({ unchecked: 0, total: 0 })
 
-const localStatus = ref(props.status)
-const localComment = ref(props.comment)
-const localTags = ref([...props.tags])
+const status = ref(props.status)
+const comment = ref(props.comment)
+const tags = ref([...props.tags])
 
 // Sync props to local state
 watch(
   () => props.status,
   (val) => {
-    localStatus.value = val
+    status.value = val
   },
 )
 watch(
   () => props.comment,
   (val) => {
-    localComment.value = val
+    comment.value = val
   },
 )
 watch(
   () => props.tags,
   (val) => {
-    localTags.value = [...val]
+    tags.value = [...val]
   },
 )
 
@@ -420,15 +420,15 @@ const save = async () => {
   loading.value = true
   try {
     await api.patch(`/api/v1/token/computers/${props.cid}/`, {
-      status: localStatus.value,
-      comment: localComment.value,
-      tags: localTags.value.map((item) => item.id),
+      status: status.value,
+      comment: comment.value,
+      tags: tags.value.map((item) => item.id),
     })
     uiStore.notifySuccess($gettext('Current Situation has been changed!'))
     emit('updated', {
-      status: localStatus.value,
-      comment: localComment.value,
-      tags: localTags.value,
+      status: status.value,
+      comment: comment.value,
+      tags: tags.value,
     })
   } catch (error) {
     uiStore.notifyError(error)
@@ -455,17 +455,17 @@ const getStatusColor = (status) => {
 }
 
 const currentStatusColor = computed(() => {
-  return getStatusColor(localStatus.value)
+  return getStatusColor(status.value)
 })
 
 const currentStatusIcon = computed(() => {
-  const opt = statusOptions.value.find((o) => o.value === localStatus.value)
+  const opt = statusOptions.value.find((o) => o.value === status.value)
   return opt ? opt.icon : 'mdi-help-circle'
 })
 
 const currentStatusLabel = computed(() => {
-  const opt = statusOptions.value.find((o) => o.value === localStatus.value)
-  return opt ? opt.label : localStatus.value
+  const opt = statusOptions.value.find((o) => o.value === status.value)
+  return opt ? opt.label : status.value
 })
 </script>
 
@@ -501,14 +501,6 @@ const currentStatusLabel = computed(() => {
   border-top: 4px solid var(--q-warning);
 }
 
-.card-content {
-  position: relative;
-  z-index: 2;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
 .action-stat-btn {
   border-radius: 10px;
   padding: 0.8rem 0.2rem;
@@ -525,42 +517,7 @@ const currentStatusLabel = computed(() => {
   filter: brightness(1.2);
 }
 
-.stat-value {
-  font-size: 1.5rem;
-  font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 4px;
-}
-
-.stat-desc {
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  opacity: 0.7;
-}
-
-.text-warning-dark {
-  color: #c67900 !important;
-}
-
-[data-theme='dark'] .text-warning-dark {
-  color: var(--q-warning) !important;
-}
-
-.bg-neutral-100 {
-  background: var(--neutral-100) !important;
-}
-
-.bg-neutral-800 {
-  background: var(--neutral-800) !important;
-}
-
-.text-black {
-  color: #1c1c1c !important;
-}
-
-.status-badge-premium {
+.badge-status {
   font-size: 0.8rem;
   font-weight: 700;
   border-radius: 6px;
