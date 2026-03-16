@@ -16,14 +16,16 @@
           size="sm"
           :icon="appIcon('events')"
           color="secondary"
+          :aria-label="$gettext('Events')"
           @click="
             $router.push({
               name: 'computer-events',
               params: { id: props.row.id },
             })
           "
-          ><q-tooltip>{{ $gettext('Events') }}</q-tooltip></q-btn
         >
+          <q-tooltip>{{ $gettext('Events') }}</q-tooltip>
+        </q-btn>
 
         <q-btn
           class="q-ma-xs"
@@ -31,16 +33,16 @@
           size="sm"
           :icon="appIcon('simulate')"
           color="secondary"
+          :aria-label="$gettext('Simulate synchronization')"
           @click="
             $router.push({
               name: 'computer-simulate',
               params: { id: props.row.id },
             })
           "
-          ><q-tooltip>{{
-            $gettext('Simulate synchronization')
-          }}</q-tooltip></q-btn
         >
+          <q-tooltip>{{ $gettext('Simulate synchronization') }}</q-tooltip>
+        </q-btn>
 
         <q-btn
           class="q-ma-xs"
@@ -48,14 +50,16 @@
           size="sm"
           icon="mdi-card-account-details-outline"
           color="secondary"
+          :aria-label="$gettext('Identification')"
           @click="
             $router.push({
               name: 'computer-label',
               params: { id: props.row.id },
             })
           "
-          ><q-tooltip>{{ $gettext('Identification') }}</q-tooltip></q-btn
         >
+          <q-tooltip>{{ $gettext('Identification') }}</q-tooltip>
+        </q-btn>
       </template>
 
       <template #cell-name="{ props }">
@@ -92,6 +96,7 @@
           color="secondary"
           :icon="productIcon(props.row.product_system)"
           :label="props.row.product || ''"
+          :aria-label="props.row.product || $gettext('Hardware Information')"
           @click="
             $router.push({
               name: 'computer-hardware',

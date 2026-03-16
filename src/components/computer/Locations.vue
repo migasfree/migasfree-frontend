@@ -80,6 +80,8 @@
             toggle-color="primary"
             toggle-text-color="white"
             class="pointer-all shadow-1"
+            role="radiogroup"
+            :aria-label="$gettext('Map Layer')"
             :options="[
               { label: $gettext('Map'), value: 'street', icon: 'mdi-map' },
               {
@@ -101,6 +103,7 @@
             :text-color="$q.dark.isActive ? 'grey-3' : 'grey-8'"
             icon="mdi-plus"
             class="map-action-btn pointer-all shadow-1"
+            :aria-label="$gettext('Zoom In')"
             @click="zoom++"
           >
             <q-tooltip anchor="center left" self="center right">{{
@@ -113,6 +116,7 @@
             :text-color="$q.dark.isActive ? 'grey-3' : 'grey-8'"
             icon="mdi-minus"
             class="map-action-btn pointer-all shadow-1"
+            :aria-label="$gettext('Zoom Out')"
             @click="zoom--"
           >
             <q-tooltip anchor="center left" self="center right">{{
@@ -125,6 +129,7 @@
             :text-color="$q.dark.isActive ? 'grey-3' : 'grey-8'"
             icon="mdi-crosshairs-gps"
             class="map-action-btn pointer-all shadow-1 q-mt-md"
+            :aria-label="$gettext('Center Markers')"
             @click="centerMarkers"
           >
             <q-tooltip anchor="center left" self="center right">{{

@@ -4,6 +4,11 @@
     round
     flat
     :icon="$q.fullscreen.isActive ? 'fullscreen_exit' : 'fullscreen'"
+    :aria-label="
+      $q.fullscreen.isActive
+        ? $gettext('Switch to Regular Screen view')
+        : $gettext('Switch to Full Screen view')
+    "
     @click="$q.fullscreen.toggle()"
   >
     <q-tooltip>{{

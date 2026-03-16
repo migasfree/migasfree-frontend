@@ -23,7 +23,7 @@
         size="16px"
         ><q-tooltip>{{ $gettext('License') }}</q-tooltip></q-btn
       >
-      <q-btn-dropdown flat stretch>
+      <q-btn-dropdown flat stretch :aria-label="$gettext('Source code')">
         <template #label>
           <q-icon :name="appIcon('source-code')" aria-hidden="true" />
 

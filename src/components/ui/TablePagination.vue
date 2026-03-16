@@ -11,6 +11,7 @@
           icon="mdi-table-eye"
           color="primary"
           class="opacity-70 hover-opacity-100"
+          :aria-label="$gettext('View All')"
           @click.prevent.stop="customPerPageChange(total)"
         >
           <q-tooltip>{{ $gettext('View All') }}</q-tooltip>
@@ -25,6 +26,7 @@
           class="per-page-dropdown opacity-80 hover-opacity-100 text-caption text-weight-medium"
           content-class="per-page-menu"
           :label="perPageLabel"
+          :aria-label="$gettext('Results per page')"
         >
           <q-list dense>
             <q-item

@@ -9,6 +9,8 @@ import { appIcon, techIcon } from 'composables/element'
       rounded
       toggle-color="primary"
       class="q-mb-md"
+      role="radiogroup"
+      :aria-label="$gettext('Template source')"
       :options="[
         {
           label: $gettext('Bundled Templates'),

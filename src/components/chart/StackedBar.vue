@@ -31,10 +31,19 @@ import { appIcon } from 'composables/element'
             dense
             toggle-color="brand-primary"
             class="selection-toggle q-mr-sm"
+            role="group"
             :aria-label="$gettext('Selection mode')"
             :options="[
-              { value: 'multiple', slot: 'multiple' },
-              { value: 'single', slot: 'single' },
+              {
+                value: 'multiple',
+                slot: 'multiple',
+                attrs: { 'aria-label': $gettext('Multiple Selection') },
+              },
+              {
+                value: 'single',
+                slot: 'single',
+                attrs: { 'aria-label': $gettext('Single Selection') },
+              },
             ]"
             @update:model-value="updateSelectedMode"
           >
@@ -147,8 +156,8 @@ import { appIcon } from 'composables/element'
 
         <!-- No data fallback -->
         <div v-if="noData && !loading" class="text-center q-pa-xl opacity-50">
-          <q-icon name="mdi-chart-bar" size="xl" class="q-mb-sm" />
-          <div class="text-subtitle1">
+          <q-icon name="mdi-chart-bar" size="xl" class="q-mb-sm" aria-hidden="true" />
+          <div class="text-subtitle1 text-grey-9">
             {{ $gettext('No data available.') }}
           </div>
         </div>

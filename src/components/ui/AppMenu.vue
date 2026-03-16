@@ -1,62 +1,66 @@
 <template>
-  <q-list class="menu-list">
+  <q-list class="menu-list" tag="ul">
     <template v-for="(item, index) in items" :key="index">
-      <!-- Group Item (First Level) -->
-      <q-expansion-item
-        :icon="item.icon"
-        :label="item.title"
-        group="first-level"
-        class="menu-group"
-        header-class="text-weight-medium menu-group-header"
-      >
-        <template v-if="mini" #header>
-          <q-item-section avatar>
-            <q-icon :name="item.icon" aria-hidden="true" />
-          </q-item-section>
-          <q-tooltip
-            anchor="center right"
-            self="center left"
-            :offset="[10, 10]"
-          >
-            {{ item.title }}
-          </q-tooltip>
-        </template>
-
-        <q-list class="menu-sublist">
-          <template v-for="option in item.options" :key="option.to">
-            <q-separator v-if="option.separatorBefore" class="q-my-xs" />
-            <q-item
-              v-ripple
-              clickable
-              :to="{ name: option.to }"
-              :active="isActiveRoute(option.to)"
-              active-class="menu-item-active"
-              class="q-pl-lg menu-subitem"
-              :data-test="`menu-item-${option.to}`"
+      <li class="menu-group-li">
+        <!-- Group Item (First Level) -->
+        <q-expansion-item
+          :icon="item.icon"
+          :label="item.title"
+          group="first-level"
+          class="menu-group"
+          header-class="text-weight-medium menu-group-header"
+        >
+          <template v-if="mini" #header>
+            <q-item-section avatar>
+              <q-icon :name="item.icon" aria-hidden="true" />
+            </q-item-section>
+            <q-tooltip
+              anchor="center right"
+              self="center left"
+              :offset="[10, 10]"
             >
-              <q-item-section v-if="option.icon" avatar>
-                <q-icon
-                  :name="option.icon"
-                  size="sm"
-                  color="inherit"
-                  aria-hidden="true"
-                />
-              </q-item-section>
-              <q-item-section>{{ option.title }}</q-item-section>
-
-              <q-tooltip
-                v-if="mini"
-                anchor="center right"
-                self="center left"
-                :offset="[10, 10]"
-              >
-                {{ option.title }}
-              </q-tooltip>
-            </q-item>
-            <q-separator v-if="option.separatorAfter" class="q-my-xs" />
+              {{ item.title }}
+            </q-tooltip>
           </template>
-        </q-list>
-      </q-expansion-item>
+
+          <q-list class="menu-sublist" tag="ul">
+            <template v-for="option in item.options" :key="option.to">
+              <q-separator v-if="option.separatorBefore" class="q-my-xs" />
+              <li class="menu-subitem-li">
+                <q-item
+                  v-ripple
+                  clickable
+                  :to="{ name: option.to }"
+                  :active="isActiveRoute(option.to)"
+                  active-class="menu-item-active"
+                  class="q-pl-lg menu-subitem"
+                  :data-test="`menu-item-${option.to}`"
+                >
+                  <q-item-section v-if="option.icon" avatar>
+                    <q-icon
+                      :name="option.icon"
+                      size="sm"
+                      color="inherit"
+                      aria-hidden="true"
+                    />
+                  </q-item-section>
+                  <q-item-section>{{ option.title }}</q-item-section>
+
+                  <q-tooltip
+                    v-if="mini"
+                    anchor="center right"
+                    self="center left"
+                    :offset="[10, 10]"
+                  >
+                    {{ option.title }}
+                  </q-tooltip>
+                </q-item>
+              </li>
+              <q-separator v-if="option.separatorAfter" class="q-my-xs" />
+            </template>
+          </q-list>
+        </q-expansion-item>
+      </li>
     </template>
   </q-list>
 </template>

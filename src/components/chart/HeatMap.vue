@@ -19,6 +19,7 @@ import { appIcon } from 'composables/element'
             class="total-badge q-ml-sm"
             color="warning-surface"
             text-color="brand-primary"
+            :aria-label="$gettext('View All')"
             @click="$emit('total')"
           >
             <span class="text-weight-bolder">{{ total }}</span>

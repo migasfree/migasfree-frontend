@@ -14,6 +14,7 @@
             class="total-badge q-ml-md"
             :color="critical && data.total > 0 ? 'negative' : 'secondary'"
             text-color="white"
+            :aria-label="$gettext('View All')"
             @click="goTo"
           >
             <span class="text-body2 text-weight-bolder">{{ data.total }}</span>
@@ -34,6 +35,7 @@
           class="q-pa-xs rounded-borders q-mr-xs"
           color="brand-secondary"
           :icon="appIcon('data')"
+          :aria-label="$gettext('Data View')"
           @click="dataView"
         >
           <q-tooltip>{{ $gettext('Data View') }}</q-tooltip>
@@ -71,7 +73,7 @@
         <!-- No data fallback inside chart area -->
         <div
           v-if="noData && !loading"
-          class="text-center q-pa-xl opacity-50 absolute-center"
+          class="text-center q-pa-xl absolute-center text-grey-8"
         >
           <q-icon
             name="mdi-chart-arc"
@@ -135,8 +137,8 @@
                     <span class="text-weight-bold">{{ group.value }}</span>
                     <q-badge
                       v-if="data.total > 0"
-                      color="grey-3"
-                      text-color="grey-9"
+                      color="grey-4"
+                      text-color="grey-10"
                     >
                       {{ getPercentage(group.value) }}%
                     </q-badge>
@@ -175,19 +177,21 @@
                   ></div>
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label class="text-caption text-weight-medium">
+                  <q-item-label
+                    class="text-caption text-weight-bold text-grey-9"
+                  >
                     {{ child.name }}
                   </q-item-label>
                 </q-item-section>
                 <q-item-section side>
                   <div class="row items-center q-gutter-x-sm">
-                    <span class="text-caption text-weight-bold">{{
+                    <span class="text-caption text-weight-bold text-grey-9">{{
                       child.value
                     }}</span>
                     <q-badge
                       v-if="data.total > 0"
-                      color="grey-2"
-                      text-color="grey-7"
+                      color="grey-4"
+                      text-color="grey-10"
                     >
                       {{ getPercentage(child.value) }}%
                     </q-badge>

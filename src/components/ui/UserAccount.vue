@@ -54,7 +54,7 @@
             />
           </q-item-section>
           <q-item-section>
-            <q-item-label class="text-caption text-uppercase ls-1 opacity-50">
+            <q-item-label class="text-caption text-uppercase ls-1 text-grey-7">
               {{ $gettext('Organization') }}
             </q-item-label>
             <q-item-label
@@ -69,7 +69,7 @@
       </template>
 
       <!-- Preferences -->
-      <div class="section-title text-weight-bold opacity-50">
+      <div class="section-title text-weight-bold text-grey-8">
         {{ $gettext('Preferences') }}
       </div>
 
@@ -342,7 +342,7 @@ watch(
 
 .user-role {
   font-size: 0.8rem;
-  opacity: 0.6;
+  color: var(--neutral-500);
 }
 
 .menu-separator {

@@ -24,6 +24,8 @@
           dense
           color="primary"
           :icon="appIcon('search')"
+          :aria-label="$gettext('Search')"
+          :title="$gettext('Search')"
           class="action-btn-search opacity-70 hover-opacity-100 cursor-pointer"
           @click="emit('search', searchText)"
         >

@@ -18,6 +18,7 @@
     <q-expansion-item
       :icon="appIcon('filter')"
       :label="$gettext('More Filters')"
+      role="listitem"
     >
       <SearchFilter
         v-model="tableFilters.search"
@@ -366,6 +367,7 @@
           size="sm"
           :icon="appIcon('check')"
           color="positive"
+          :aria-label="$gettext('Check item')"
           @click="updateChecked(slotProps.row.id, true)"
           ><q-tooltip>{{ $gettext('Check') }}</q-tooltip></q-btn
         >
@@ -377,6 +379,7 @@
           size="sm"
           :icon="appIcon('uncheck')"
           color="negative"
+          :aria-label="$gettext('Uncheck item')"
           @click="updateChecked(slotProps.row.id, false)"
           ><q-tooltip>{{ $gettext('Not Check') }}</q-tooltip></q-btn
         >
@@ -392,6 +395,7 @@
           size="sm"
           :icon="appIcon('yes')"
           color="positive"
+          :aria-label="$gettext('Enable')"
           @click="updateEnabled(slotProps.row.id, true)"
           ><q-tooltip>{{ $gettext('Enable') }}</q-tooltip></q-btn
         >
@@ -408,6 +412,7 @@
           size="sm"
           :icon="appIcon('no')"
           color="negative"
+          :aria-label="$gettext('Disable')"
           @click="updateEnabled(slotProps.row.id, false)"
           ><q-tooltip>{{ $gettext('Disable') }}</q-tooltip></q-btn
         >
@@ -419,6 +424,7 @@
           size="sm"
           :icon="appIcon('edit')"
           color="primary"
+          :aria-label="$gettext('Edit')"
           @click="edit(slotProps.row.id)"
           ><q-tooltip>{{ $gettext('Edit') }}</q-tooltip></q-btn
         >
@@ -430,6 +436,7 @@
           size="sm"
           :icon="appIcon('delete')"
           color="negative"
+          :aria-label="$gettext('Delete')"
           @click="confirmRemove(slotProps.row.id)"
           ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
         >
@@ -558,8 +565,9 @@
           size="sm"
           :icon="appIcon('check')"
           color="positive"
+          :aria-label="$gettext('Check selected items')"
           @click="updateItemsChecked(true)"
-          ><q-tooltip>{{ $gettext('Check') }}</q-tooltip></q-btn
+          ><q-tooltip>{{ $gettext('Check selected items') }}</q-tooltip></q-btn
         >
 
         <q-btn
@@ -567,8 +575,11 @@
           size="sm"
           :icon="appIcon('uncheck')"
           color="negative"
+          :aria-label="$gettext('Not Check selected items')"
           @click="updateItemsChecked(false)"
-          ><q-tooltip>{{ $gettext('Not Check') }}</q-tooltip></q-btn
+          ><q-tooltip>{{
+            $gettext('Not Check selected items')
+          }}</q-tooltip></q-btn
         >
       </template>
 
@@ -578,8 +589,9 @@
           size="sm"
           :icon="appIcon('yes')"
           color="positive"
+          :aria-label="$gettext('Enable selected items')"
           @click="updateItemsEnabled(true)"
-          ><q-tooltip>{{ $gettext('Enable') }}</q-tooltip></q-btn
+          ><q-tooltip>{{ $gettext('Enable selected items') }}</q-tooltip></q-btn
         >
 
         <q-btn
@@ -587,8 +599,11 @@
           size="sm"
           :icon="appIcon('no')"
           color="negative"
+          :aria-label="$gettext('Disable selected items')"
           @click="updateItemsEnabled(false)"
-          ><q-tooltip>{{ $gettext('Disable') }}</q-tooltip></q-btn
+          ><q-tooltip>{{
+            $gettext('Disable selected items')
+          }}</q-tooltip></q-btn
         >
       </template>
 
@@ -599,8 +614,9 @@
         text-color="white"
         :icon="appIcon('export')"
         :loading="isLoadingExport"
+        :aria-label="$gettext('Export selected items')"
         @click="exportData"
-        ><q-tooltip>{{ $gettext('Export') }}</q-tooltip></q-btn
+        ><q-tooltip>{{ $gettext('Export selected items') }}</q-tooltip></q-btn
       >
 
       <q-btn
@@ -608,8 +624,9 @@
         size="sm"
         color="negative"
         :icon="appIcon('delete')"
+        :aria-label="$gettext('Delete selected items')"
         @click="confirmRemove"
-        ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
+        ><q-tooltip>{{ $gettext('Delete selected items') }}</q-tooltip></q-btn
       >
     </template>
 
@@ -625,7 +642,8 @@
 </template>
 
 <script setup>
-import { computed, toRef, onMounted, useSlots } from 'vue'
+import { computed, toRef, onMounted, onUpdated, useSlots, nextTick } from 'vue'
+import { useGettext } from 'vue3-gettext'
 import { useRoute } from 'vue-router'
 
 import { useUiStore } from 'stores/ui'
@@ -726,6 +744,52 @@ const {
   updateItemsEnabled,
   loadItems,
 } = useDataGrid(props.columns, model, detailRoute, columnParams)
+
+const { $gettext } = useGettext()
+
+const fixAccessibility = () => {
+  const runFix = () => {
+    // Fix checkboxes
+    const checkboxes = document.querySelectorAll(
+      '.vgt-checkbox-col input[type="checkbox"]',
+    )
+    checkboxes.forEach((cb, i) => {
+      if (!cb.hasAttribute('aria-label') || !cb.getAttribute('aria-label')) {
+        cb.setAttribute(
+          'aria-label',
+          i === 0 ? $gettext('Select All') : $gettext('Select Row'),
+        )
+      }
+    })
+    // Fix filter selects
+    const selects = document.querySelectorAll('.vgt-select')
+    selects.forEach((select) => {
+      if (
+        !select.hasAttribute('aria-label') ||
+        !select.getAttribute('aria-label')
+      ) {
+        const name = select.getAttribute('name') || ''
+        select.setAttribute(
+          'aria-label',
+          `${$gettext('Filter by')} ${name.replace('vgt-', '')}`,
+        )
+      }
+    })
+  }
+
+  nextTick(runFix)
+  // Run again after a delay to catch dynamically loaded content
+  setTimeout(runFix, 500)
+  setTimeout(runFix, 1500)
+  setTimeout(runFix, 3000)
+}
+
+onMounted(() => {
+  fixAccessibility()
+})
+onUpdated(() => {
+  fixAccessibility()
+})
 
 // --- Model-based feature flags ---
 

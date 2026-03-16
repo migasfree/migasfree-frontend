@@ -26,6 +26,7 @@
         v-if="addRoute"
         color="primary"
         :icon="appIcon('add')"
+        :aria-label="addButtonTitle || $gettext('Add')"
         @click="$router.push({ name: addRoute })"
       >
         <q-tooltip>{{ addButtonTitle || $gettext('Add') }}</q-tooltip>
@@ -37,6 +38,7 @@
         :icon="appIcon('export')"
         :loading="isLoadingExport"
         :disable="results === 0"
+        :aria-label="$gettext('Export')"
         @click="exportAction"
       >
         <q-tooltip>{{ $gettext('Export') }}</q-tooltip>

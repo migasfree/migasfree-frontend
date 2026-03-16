@@ -63,6 +63,7 @@
                 { slot: 'statusLogs', value: 'statusLogs' },
                 { slot: 'migrations', value: 'migrations' },
               ]"
+              :aria-label="$gettext('Change event type')"
               @update:model-value="updateEvent"
             >
               <template #syncs>

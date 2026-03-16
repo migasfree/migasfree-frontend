@@ -62,8 +62,8 @@ defineExpose({ goTo: resolveTo })
   font-size: 0.95rem;
   font-weight: 600;
   transition: all 0.3s ease;
-  color: var(--text-main);
-  opacity: 0.6;
+  color: var(--brand-secondary);
+  opacity: 1; /* Removed opacity for better contrast compliance */
 }
 
 .breadcrumbs-item:hover {

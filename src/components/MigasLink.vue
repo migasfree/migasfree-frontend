@@ -52,6 +52,7 @@
       icon="more_vert"
       class="context-trigger-btn"
       :color="light ? 'white' : undefined"
+      :aria-label="$gettext('Relations')"
       @click.stop
     >
       <q-menu
