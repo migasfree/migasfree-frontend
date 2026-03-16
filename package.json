@@ -88,7 +88,7 @@
     "jsdom": "28.1.0",
     "postcss": "8.5.8",
     "prettier": "3.8.1",
-    "sass": "1.97.3",
+    "sass": "1.98.0",
     "sass-loader": "16.0.7",
     "storybook": "10.2.16",
     "style-loader": "4.0.0",
