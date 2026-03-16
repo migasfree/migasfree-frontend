@@ -1106,7 +1106,7 @@ msgstr "Ordinadors sincronitzant-se"
 msgid "Delayed Computers"
 msgstr "Ordinadors retardats"
 
-#: src/components/ui/AppFooter.vue:14 src/pages/Login.vue:188
+#: src/components/ui/AppFooter.vue:14 src/pages/Login.vue:189
 msgid "Website"
 msgstr "Lloc web"
 
@@ -1408,7 +1408,7 @@ msgid "Pasted!"
 msgstr "Enganxat!"
 
 #: src/components/ui/TablePagination.vue:127 src/composables/detail.js:83
-#: src/composables/listConfig.js:47 src/pages/computers/results/events.vue:346
+#: src/composables/listConfig.js:50 src/pages/computers/results/events.vue:346
 #: src/pages/computers/results/hardware.vue:300
 #: src/pages/computers/results/label.vue:164
 #: src/pages/computers/results/simulate.vue:460 src/pages/imports/index.vue:175
@@ -1572,7 +1572,8 @@ msgstr "Organització"
 msgid "Preferences"
 msgstr "Preferències"
 
-#: src/components/ui/UserAccount.vue:78 src/pages/Login.vue:160
+#: src/components/ui/UserAccount.vue:78 src/pages/Login.vue:127
+#: src/pages/Login.vue:161
 msgid "Change App Language"
 msgstr "Canvia l'idioma de l'aplicació"
 
@@ -1950,7 +1951,7 @@ msgstr "Desconegut"
 msgid "Unsubscribed"
 msgstr "De baixa"
 
-#: src/composables/listConfig.js:37 src/layouts/MainLayout.vue:40
+#: src/composables/listConfig.js:39 src/layouts/MainLayout.vue:40
 #: src/pages/applications/index.vue:76
 #: src/pages/applications/results/detail.vue:251
 #: src/pages/attribute-sets/results/detail.vue:162
@@ -2002,7 +2003,7 @@ msgstr "De baixa"
 msgid "Dashboard"
 msgstr "Consola"
 
-#: src/composables/listConfig.js:58
+#: src/composables/listConfig.js:61
 #: src/pages/deployments/results/detail.vue:301
 msgid "Actions"
 msgstr "Accions"
@@ -2016,7 +2017,7 @@ msgid "Toggle Menu"
 msgstr "Alternar menú"
 
 #: src/layouts/MainLayout.vue:76 src/pages/Login.vue:97 src/pages/Login.vue:102
-#: src/pages/Login.vue:218
+#: src/pages/Login.vue:219
 msgid "Log In"
 msgstr "Iniciar sessió"
 

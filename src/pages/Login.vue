@@ -124,6 +124,7 @@
               no-caps
               color="primary"
               class="opacity-80 q-px-sm"
+              :aria-label="$gettext('Change App Language')"
             >
               <div class="row items-center no-wrap">
                 <q-icon :name="appIcon('language')" aria-hidden="true" />
@@ -286,7 +287,7 @@ onMounted(async () => {
 
 .brand-slogan {
   font-size: 0.95rem;
-  color: var(--neutral-500);
+  color: var(--neutral-600);
   letter-spacing: 0.5px;
   font-weight: 500;
   text-transform: uppercase;

@@ -1176,7 +1176,7 @@ msgid "Delayed Computers"
 msgstr ""
 
 #: src/components/ui/AppFooter.vue:14
-#: src/pages/Login.vue:188
+#: src/pages/Login.vue:189
 msgid "Website"
 msgstr ""
 
@@ -1530,7 +1530,7 @@ msgstr ""
 
 #: src/components/ui/TablePagination.vue:127
 #: src/composables/detail.js:83
-#: src/composables/listConfig.js:47
+#: src/composables/listConfig.js:50
 #: src/pages/computers/results/events.vue:346
 #: src/pages/computers/results/hardware.vue:300
 #: src/pages/computers/results/label.vue:164
@@ -1698,7 +1698,8 @@ msgid "Preferences"
 msgstr ""
 
 #: src/components/ui/UserAccount.vue:78
-#: src/pages/Login.vue:160
+#: src/pages/Login.vue:127
+#: src/pages/Login.vue:161
 msgid "Change App Language"
 msgstr ""
 
@@ -2092,7 +2093,7 @@ msgstr ""
 msgid "Unsubscribed"
 msgstr ""
 
-#: src/composables/listConfig.js:37
+#: src/composables/listConfig.js:39
 #: src/layouts/MainLayout.vue:40
 #: src/pages/applications/index.vue:76
 #: src/pages/applications/results/detail.vue:251
@@ -2157,7 +2158,7 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: src/composables/listConfig.js:58
+#: src/composables/listConfig.js:61
 #: src/pages/deployments/results/detail.vue:301
 msgid "Actions"
 msgstr ""
@@ -2173,7 +2174,7 @@ msgstr ""
 #: src/layouts/MainLayout.vue:76
 #: src/pages/Login.vue:97
 #: src/pages/Login.vue:102
-#: src/pages/Login.vue:218
+#: src/pages/Login.vue:219
 msgid "Log In"
 msgstr ""
 
