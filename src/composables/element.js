@@ -42,6 +42,7 @@ const APP_ICON = {
   edit: 'mdi-pencil-outline',
   delete: 'mdi-delete-outline',
   download: 'mdi-download',
+  load: 'mdi-cloud-download',
   filter: 'mdi-filter',
   'filter-remove': 'mdi-filter-remove',
   search: 'mdi-magnify',

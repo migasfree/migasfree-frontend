@@ -90,7 +90,7 @@
                   flat
                   color="primary"
                   :label="$gettext('Load')"
-                  icon="mdi-cloud-download"
+                  :icon="appIcon('load')"
                   size="md"
                   :loading="loading.inventory"
                   :aria-label="$gettext('Load inventory')"
@@ -216,7 +216,7 @@
                   flat
                   color="primary"
                   :label="$gettext('Load')"
-                  icon="mdi-cloud-download"
+                  :icon="appIcon('load')"
                   size="md"
                   :loading="loading.history"
                   :aria-label="$gettext('Load history')"

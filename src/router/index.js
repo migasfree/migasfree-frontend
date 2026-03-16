@@ -56,5 +56,16 @@ export default route(function (/* { store, ssrContext } */) {
     }
   })
 
+  // Catch chunk load errors (e.g. when there has been a deployment and hashes change)
+  Router.onError((error) => {
+    const isChunkLoadFailed = /Loading chunk .* failed./i.test(error.message)
+    const isDynamicImportFailed =
+      /Failed to fetch dynamically imported module/i.test(error.message)
+
+    if (isChunkLoadFailed || isDynamicImportFailed) {
+      window.location.reload()
+    }
+  })
+
   return Router
 })
