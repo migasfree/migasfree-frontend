@@ -1110,13 +1110,15 @@ h2 {
 }
 
 /* === Sidebar / Drawer Navigation === */
-.menu-list, .menu-sublist {
+.menu-list,
+.menu-sublist {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.menu-group-li, .menu-subitem-li {
+.menu-group-li,
+.menu-subitem-li {
   list-style: none;
 }
 

@@ -44,7 +44,10 @@ export function useListConfig(
     {
       text: titleString,
       icon: modelIcon(model),
-      to: route && route.path ? { path: `/${route.path.split('/')[1]}` } : undefined,
+      to:
+        route && route.path
+          ? { path: `/${route.path.split('/')[1]}` }
+          : undefined,
     },
     {
       text: $gettext('Results'),

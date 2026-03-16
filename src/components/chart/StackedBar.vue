@@ -156,7 +156,12 @@ import { appIcon } from 'composables/element'
 
         <!-- No data fallback -->
         <div v-if="noData && !loading" class="text-center q-pa-xl opacity-50">
-          <q-icon name="mdi-chart-bar" size="xl" class="q-mb-sm" aria-hidden="true" />
+          <q-icon
+            name="mdi-chart-bar"
+            size="xl"
+            class="q-mb-sm"
+            aria-hidden="true"
+          />
           <div class="text-subtitle1 text-grey-9">
             {{ $gettext('No data available.') }}
           </div>
