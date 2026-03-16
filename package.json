@@ -92,7 +92,7 @@
     "sass-loader": "16.0.7",
     "storybook": "10.2.16",
     "style-loader": "4.0.0",
-    "vitest": "4.0.18",
+    "vitest": "4.1.0",
     "vitest-axe": "0.1.0",
     "vue-eslint-parser": "10.4.0",
     "webpack": "5.105.4"
