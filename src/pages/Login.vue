@@ -41,6 +41,7 @@
         <q-form class="q-gutter-y-lg q-mt-md" @submit.prevent="login">
           <div class="form-field">
             <q-input
+              id="username"
               ref="primaryInput"
               v-model="model.username"
               autocomplete="username"
@@ -92,6 +93,7 @@
           </div>
 
           <q-btn
+            id="login-btn"
             :label="
               isValid
                 ? $gettext('Log In')

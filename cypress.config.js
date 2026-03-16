@@ -12,6 +12,14 @@ export default defineConfig({
     viewportHeight: 720,
     video: false,
     screenshotOnRunFailure: true,
+    setupNodeEvents(on) {
+      on('task', {
+        log(message) {
+          console.log(message)
+          return null
+        },
+      })
+    },
   },
   component: {
     devServer: {
@@ -19,6 +27,6 @@ export default defineConfig({
       bundler: 'webpack',
     },
     specPattern: 'cypress/component/**/*.cy.{js,jsx,ts,tsx}',
-    supportFile: 'cypress/support/component.js',
+    supportFile: 'cypress/component.js',
   },
 })
