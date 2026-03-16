@@ -71,7 +71,7 @@
     "@storybook/vue3": "10.2.16",
     "@storybook/vue3-webpack5": "8.6.18",
     "@vitejs/plugin-vue": "6.0.4",
-    "@vitest/coverage-v8": "4.0.18",
+    "@vitest/coverage-v8": "4.1.0",
     "@vue/eslint-config-prettier": "10.2.0",
     "@vue/test-utils": "2.4.6",
     "autoprefixer": "10.4.27",
