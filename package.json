@@ -70,7 +70,7 @@
     "@storybook/addon-links": "10.2.16",
     "@storybook/vue3": "10.2.16",
     "@storybook/vue3-webpack5": "8.6.18",
-    "@vitejs/plugin-vue": "6.0.4",
+    "@vitejs/plugin-vue": "6.0.5",
     "@vitest/coverage-v8": "4.0.18",
     "@vue/eslint-config-prettier": "10.2.0",
     "@vue/test-utils": "2.4.6",
