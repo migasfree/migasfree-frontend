@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
+import { useRoute } from 'vue-router'
 import { appIcon, modelIcon } from 'composables/element'
 
 /**
@@ -22,6 +23,7 @@ export function useListConfig(
   modelColumns,
 ) {
   const { $gettext } = useGettext()
+  const route = useRoute()
 
   useMeta({ title: metaTitle })
 
@@ -42,6 +44,7 @@ export function useListConfig(
     {
       text: titleString,
       icon: modelIcon(model),
+      to: route && route.path ? { path: `/${route.path.split('/')[1]}` } : undefined,
     },
     {
       text: $gettext('Results'),
