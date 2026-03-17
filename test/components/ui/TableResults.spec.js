@@ -192,6 +192,19 @@ describe('TableResults.vue', () => {
       template: '<div class="date-range-input-stub"></div>',
       props: ['modelValue', 'prependIcon', 'label'],
     },
+    TableFiltersPanel: {
+      name: 'TableFiltersPanel',
+      template: '<div class="table-filters-panel-stub"></div>',
+      props: ['moreFilters', 'tableFilters', 'model'],
+    },
+    TableRowActions: {
+      name: 'TableRowActions',
+      template: '<div class="table-row-actions-stub"></div>',
+    },
+    TableBulkActions: {
+      name: 'TableBulkActions',
+      template: '<div class="table-bulk-actions-stub"></div>',
+    },
     TablePagination: {
       name: 'TablePagination',
       template: '<div class="table-pagination-stub"></div>',
@@ -286,9 +299,9 @@ describe('TableResults.vue', () => {
       expect(header.props('title')).toBe('My Custom Title')
     })
 
-    it('renders SearchFilter component', () => {
+    it('renders TableFiltersPanel component', () => {
       const wrapper = createWrapper()
-      expect(wrapper.findComponent({ name: 'SearchFilter' }).exists()).toBe(
+      expect(wrapper.findComponent({ name: 'TableFiltersPanel' }).exists()).toBe(
         true,
       )
     })
@@ -301,19 +314,13 @@ describe('TableResults.vue', () => {
     })
   })
 
-  describe('more filters panel', () => {
-    it('renders expansion panel when moreFilters has items', () => {
+  describe('more filters panel delegation', () => {
+    it('passes moreFilters down to TableFiltersPanel', () => {
       const wrapper = createWrapper({
         moreFilters: ['platform', 'project'],
       })
-      expect(wrapper.findComponent({ name: 'q-list' }).exists()).toBe(true)
-    })
-
-    it('does not render q-list when moreFilters is empty', () => {
-      const wrapper = createWrapper({
-        moreFilters: [],
-      })
-      expect(wrapper.findComponent({ name: 'q-list' }).exists()).toBe(false)
+      const panel = wrapper.findComponent({ name: 'TableFiltersPanel' })
+      expect(panel.props('moreFilters')).toEqual(['platform', 'project'])
     })
   })
 

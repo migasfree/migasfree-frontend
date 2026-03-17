@@ -14,319 +14,16 @@
 
   <slot name="top" />
 
-  <q-list v-if="moreFilters.length > 0" class="more-filters" bordered>
-    <q-expansion-item
-      :icon="appIcon('filter')"
-      :label="$gettext('More Filters')"
-      role="listitem"
-    >
-      <SearchFilter
-        v-model="tableFilters.search"
-        class="q-pa-sm"
-        @search="onSearch"
-        @clear="onSearchClear"
-      />
-
-      <div class="row q-pa-md q-col-gutter-lg">
-        <div
-          v-if="moreFilters.includes('platform')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <FilterSelect
-            v-model="tableFilters.platform.selected"
-            :options="tableFilters.platform.items"
-            :label="$gettext('By Platform')"
-            @update:model-value="onPlatformFilter"
-          />
-        </div>
-
-        <div
-          v-if="moreFilters.includes('project')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <FilterSelect
-            v-model="tableFilters.project.selected"
-            :options="tableFilters.project.items"
-            :label="$gettext('By Project')"
-            @update:model-value="onProjectFilter"
-          />
-        </div>
-
-        <div
-          v-if="moreFilters.includes('architecture')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <FilterSelect
-            v-model="tableFilters.architecture.selected"
-            :options="tableFilters.architecture.items"
-            :label="$gettext('By Architecture')"
-            @update:model-value="onArchitectureFilter"
-          />
-        </div>
-
-        <div
-          v-if="moreFilters.includes('serial')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <q-input
-            v-model="tableFilters.serial"
-            clearable
-            :label="$gettext('By Serial Number')"
-            @blur="onSerialFilter"
-            @keydown.enter="$event.target.blur()"
-            @clear="onSerialFilter"
-          >
-            <template #prepend>
-              <div class="filter-icon-box">
-                <q-icon :name="appIcon('filter')" size="18px" />
-              </div>
-            </template>
-          </q-input>
-        </div>
-
-        <div
-          v-if="moreFilters.includes('mac')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <q-input
-            v-model="tableFilters.mac"
-            clearable
-            :label="$gettext('By MAC Address')"
-            @blur="onMacFilter"
-            @keydown.enter="$event.target.blur()"
-            @clear="onMacFilter"
-          >
-            <template #prepend>
-              <div class="filter-icon-box">
-                <q-icon :name="appIcon('filter')" size="18px" />
-              </div>
-            </template>
-          </q-input>
-        </div>
-
-        <div
-          v-if="moreFilters.includes('uuid')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <q-input
-            v-model="tableFilters.uuid"
-            clearable
-            :label="$gettext('By UUID')"
-            @blur="onUuidFilter"
-            @keydown.enter="$event.target.blur()"
-            @clear="onUuidFilter"
-          >
-            <template #prepend>
-              <div class="filter-icon-box">
-                <q-icon :name="appIcon('filter')" size="18px" />
-              </div>
-            </template>
-          </q-input>
-        </div>
-
-        <div
-          v-if="moreFilters.includes('softwareInventory')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <FilterSelect
-            v-model="tableFilters.softwareInventory.selected"
-            :options="tableFilters.softwareInventory.items"
-            :label="$gettext('By Software Inventory')"
-            @update:model-value="onSoftwareInventoryFilter"
-          />
-        </div>
-
-        <div
-          v-if="moreFilters.includes('statusIn')"
-          class="col-12 col-md-4 col-sm-6"
-        >
-          <SelectTree
-            ref="statusTree"
-            v-model="tableFilters.statusIn.selected"
-            :placeholder="$gettext('By Status')"
-            :prepend-icon="appIcon('filter')"
-            :options="tableFilters.statusIn.items"
-            @select="onStatusInFilter"
-          />
-        </div>
-
-        <div
-          v-if="moreFilters.includes('machine')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <SelectTree
-            ref="machineTree"
-            v-model="tableFilters.machine.selected"
-            :placeholder="$gettext('By Machine')"
-            :prepend-icon="appIcon('filter')"
-            :options="tableFilters.machine.items"
-            @select="onMachineFilter"
-          />
-        </div>
-
-        <div
-          v-if="moreFilters.includes('user')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <FilterSelect
-            v-model="tableFilters.user.selected"
-            :options="tableFilters.user.items"
-            :label="$gettext('By Assignment')"
-            @update:model-value="onUserFilter"
-          />
-        </div>
-
-        <div
-          v-if="moreFilters.includes('startDateRange')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <DateRangeInput
-            ref="startDateRange"
-            v-model="tableFilters.startDateRange.selected"
-            :prepend-icon="appIcon('filter')"
-            :label="$gettext('By Start Date (range)')"
-            @select="onStartDateRangeFilter"
-          />
-        </div>
-
-        <div
-          v-if="moreFilters.includes('createdAtRange')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <DateRangeInput
-            ref="createdAtRange"
-            v-model="tableFilters.createdAtRange.selected"
-            :prepend-icon="appIcon('filter')"
-            :label="
-              model === 'syncs'
-                ? $gettext('By End Date (range)')
-                : $gettext('By Subscribed Date (range)')
-            "
-            @select="onCreatedAtRangeFilter"
-          />
-        </div>
-
-        <div
-          v-if="moreFilters.includes('schedule')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <FilterSelect
-            v-model="tableFilters.schedule.selected"
-            :options="tableFilters.schedule.items"
-            :label="$gettext('By Schedule')"
-            @update:model-value="onScheduleFilter"
-          />
-        </div>
-
-        <div
-          v-if="moreFilters.includes('model')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <FilterSelect
-            v-model="tableFilters.model.selected"
-            :options="tableFilters.model.items"
-            :label="$gettext('By Model')"
-            @update:model-value="onModelFilter"
-          />
-        </div>
-
-        <div
-          v-if="moreFilters.includes('installDateRange')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <DateRangeInput
-            ref="installDateRange"
-            v-model="tableFilters.installDateRange.selected"
-            :prepend-icon="appIcon('filter')"
-            :label="$gettext('By Install Date (range)')"
-            @select="onInstallDateRangeFilter"
-          />
-        </div>
-
-        <div
-          v-if="moreFilters.includes('uninstallDateRange')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <DateRangeInput
-            ref="uninstallDateRange"
-            v-model="tableFilters.uninstallDateRange.selected"
-            :prepend-icon="appIcon('filter')"
-            :label="$gettext('By Uninstall Date (range)')"
-            @select="onUninstallDateRangeFilter"
-          />
-        </div>
-
-        <div
-          v-if="moreFilters.includes('uninstallDate')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <FilterSelect
-            v-model="tableFilters.uninstallDate.selected"
-            :options="tableFilters.uninstallDate.items"
-            :label="$gettext('By Uninstall Date')"
-            @update:model-value="onUninstallDateFilter"
-          />
-        </div>
-
-        <div
-          v-if="moreFilters.includes('syncEndDateRange')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <DateRangeInput
-            ref="syncEndDateRange"
-            v-model="tableFilters.syncEndDateRange.selected"
-            :prepend-icon="appIcon('filter')"
-            :label="$gettext('By Last Sync Date (range)')"
-            @select="onSyncEndDateRangeFilter"
-          />
-        </div>
-
-        <div
-          v-if="moreFilters.includes('syncEndDate')"
-          class="col-12 col-sm-6 col-md-4"
-        >
-          <FilterSelect
-            v-model="tableFilters.syncEndDate.selected"
-            :options="tableFilters.syncEndDate.items"
-            :label="$gettext('By last sync date')"
-            @update:model-value="onSyncEndDateFilter"
-          />
-        </div>
-      </div>
-
-      <div class="row q-pa-md">
-        <div class="col-12">
-          <q-btn
-            :icon="appIcon('filter-remove')"
-            outline
-            color="primary"
-            :label="$gettext('Reset all filters')"
-            @click="resetFilters"
-          />
-        </div>
-      </div>
-    </q-expansion-item>
-  </q-list>
-  <template v-else>
-    <SearchFilter
-      v-model="tableFilters.search"
-      class="q-pb-sm"
-      @search="onSearch"
-      @clear="onSearchClear"
-    />
-
-    <div class="row q-py-sm">
-      <div class="col-12">
-        <q-btn
-          :icon="appIcon('filter-remove')"
-          outline
-          color="primary"
-          :label="$gettext('Reset all filters')"
-          @click="resetFilters"
-        />
-      </div>
-    </div>
-  </template>
+  <TableFiltersPanel
+    ref="filtersPanel"
+    :table-filters="tableFilters"
+    :more-filters="moreFilters"
+    :model="model"
+    @search="onSearch"
+    @search-clear="onSearchClear"
+    @filter-change="handleFilterChange"
+    @reset-filters="resetFilters"
+  />
 
   <vue-good-table
     ref="myTable"
@@ -359,87 +56,19 @@
 
     <template #table-row="slotProps">
       <span v-if="slotProps.column.field == 'actions'">
-        <q-btn
-          v-if="hasCheckActions && !slotProps.row.checked"
-          class="q-ma-xs action-btn-row"
-          round
-          flat
-          size="sm"
-          :icon="appIcon('check')"
-          color="positive"
-          :aria-label="$gettext('Check item')"
-          @click="updateChecked(slotProps.row.id, true)"
-          ><q-tooltip>{{ $gettext('Check') }}</q-tooltip></q-btn
-        >
-        <q-btn
-          v-if="hasCheckActions && slotProps.row.checked"
-          class="q-ma-xs action-btn-row"
-          round
-          flat
-          size="sm"
-          :icon="appIcon('uncheck')"
-          color="negative"
-          :aria-label="$gettext('Uncheck item')"
-          @click="updateChecked(slotProps.row.id, false)"
-          ><q-tooltip>{{ $gettext('Not Check') }}</q-tooltip></q-btn
-        >
-        <q-btn
-          v-if="
-            hasEnableActions &&
-            !('enabled' in slotProps.row && slotProps.row.enabled) &&
-            !('is_active' in slotProps.row && slotProps.row.is_active)
-          "
-          class="q-ma-xs action-btn-row"
-          round
-          flat
-          size="sm"
-          :icon="appIcon('yes')"
-          color="positive"
-          :aria-label="$gettext('Enable')"
-          @click="updateEnabled(slotProps.row.id, true)"
-          ><q-tooltip>{{ $gettext('Enable') }}</q-tooltip></q-btn
-        >
-        <q-btn
-          v-if="
-            (hasEnableActions &&
-              'enabled' in slotProps.row &&
-              slotProps.row.enabled) ||
-            ('is_active' in slotProps.row && slotProps.row.is_active)
-          "
-          class="q-ma-xs action-btn-row"
-          round
-          flat
-          size="sm"
-          :icon="appIcon('no')"
-          color="negative"
-          :aria-label="$gettext('Disable')"
-          @click="updateEnabled(slotProps.row.id, false)"
-          ><q-tooltip>{{ $gettext('Disable') }}</q-tooltip></q-btn
-        >
-        <q-btn
-          v-if="detailRoute"
-          class="q-ma-xs action-btn-row"
-          round
-          flat
-          size="sm"
-          :icon="appIcon('edit')"
-          color="primary"
-          :aria-label="$gettext('Edit')"
-          @click="edit(slotProps.row.id)"
-          ><q-tooltip>{{ $gettext('Edit') }}</q-tooltip></q-btn
-        >
-        <q-btn
-          v-if="hasDeleteAction"
-          class="q-ma-xs action-btn-row"
-          round
-          flat
-          size="sm"
-          :icon="appIcon('delete')"
-          color="negative"
-          :aria-label="$gettext('Delete')"
-          @click="confirmRemove(slotProps.row.id)"
-          ><q-tooltip>{{ $gettext('Delete') }}</q-tooltip></q-btn
-        >
+        <TableRowActions
+          :row="slotProps.row"
+          :has-check-actions="hasCheckActions"
+          :has-enable-actions="hasEnableActions"
+          :has-delete-action="hasDeleteAction"
+          :detail-route="detailRoute"
+          @check="updateChecked($event, true)"
+          @uncheck="updateChecked($event, false)"
+          @enable="updateEnabled($event, true)"
+          @disable="updateEnabled($event, false)"
+          @edit="edit"
+          @delete="confirmRemove"
+        />
 
         <slot name="actions" :props="slotProps"></slot>
       </span>
@@ -557,77 +186,22 @@
     </template>
 
     <template #selected-row-actions="slotProps">
-      <slot name="selected-actions" :props="slotProps"></slot>
-
-      <template v-if="hasCheckActions">
-        <q-btn
-          class="q-ma-xs"
-          size="sm"
-          :icon="appIcon('check')"
-          color="positive"
-          :aria-label="$gettext('Check selected items')"
-          @click="updateItemsChecked(true)"
-          ><q-tooltip>{{ $gettext('Check selected items') }}</q-tooltip></q-btn
-        >
-
-        <q-btn
-          class="q-ma-xs"
-          size="sm"
-          :icon="appIcon('uncheck')"
-          color="negative"
-          :aria-label="$gettext('Not Check selected items')"
-          @click="updateItemsChecked(false)"
-          ><q-tooltip>{{
-            $gettext('Not Check selected items')
-          }}</q-tooltip></q-btn
-        >
-      </template>
-
-      <template v-if="hasEnableActions">
-        <q-btn
-          class="q-ma-xs"
-          size="sm"
-          :icon="appIcon('yes')"
-          color="positive"
-          :aria-label="$gettext('Enable selected items')"
-          @click="updateItemsEnabled(true)"
-          ><q-tooltip>{{ $gettext('Enable selected items') }}</q-tooltip></q-btn
-        >
-
-        <q-btn
-          class="q-ma-xs"
-          size="sm"
-          :icon="appIcon('no')"
-          color="negative"
-          :aria-label="$gettext('Disable selected items')"
-          @click="updateItemsEnabled(false)"
-          ><q-tooltip>{{
-            $gettext('Disable selected items')
-          }}</q-tooltip></q-btn
-        >
-      </template>
-
-      <q-btn
-        class="q-ma-xs"
-        size="sm"
-        color="primary"
-        text-color="white"
-        :icon="appIcon('export')"
-        :loading="isLoadingExport"
-        :aria-label="$gettext('Export selected items')"
-        @click="exportData"
-        ><q-tooltip>{{ $gettext('Export selected items') }}</q-tooltip></q-btn
+      <TableBulkActions
+        :has-check-actions="hasCheckActions"
+        :has-enable-actions="hasEnableActions"
+        :has-delete-action="hasDeleteAction"
+        :is-loading-export="isLoadingExport"
+        @check-items="updateItemsChecked(true)"
+        @uncheck-items="updateItemsChecked(false)"
+        @enable-items="updateItemsEnabled(true)"
+        @disable-items="updateItemsEnabled(false)"
+        @export="exportData"
+        @delete="confirmRemove"
       >
-
-      <q-btn
-        v-if="hasDeleteAction"
-        size="sm"
-        color="negative"
-        :icon="appIcon('delete')"
-        :aria-label="$gettext('Delete selected items')"
-        @click="confirmRemove"
-        ><q-tooltip>{{ $gettext('Delete selected items') }}</q-tooltip></q-btn
-      >
+        <template #selected-actions>
+          <slot name="selected-actions" :props="slotProps"></slot>
+        </template>
+      </TableBulkActions>
     </template>
 
     <template #pagination-bottom="paginationProps">
@@ -642,26 +216,25 @@
 </template>
 
 <script setup>
-import { computed, toRef, onMounted, onUpdated, useSlots, nextTick } from 'vue'
-import { useGettext } from 'vue3-gettext'
+import { computed, toRef, onMounted, useSlots } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { useUiStore } from 'stores/ui'
 
-import FilterSelect from 'components/ui/FilterSelect'
 import Header from 'components/ui/Header'
-import SearchFilter from 'components/ui/SearchFilter'
 import TablePagination from 'components/ui/TablePagination'
-import SelectTree from 'components/ui/SelectTree'
-import DateRangeInput from 'components/ui/DateRangeInput'
+import TableFiltersPanel from 'components/ui/TableFiltersPanel'
+import TableRowActions from 'components/ui/TableRowActions'
+import TableBulkActions from 'components/ui/TableBulkActions'
 import MigasLink from 'components/MigasLink'
 import DateView from 'components/ui/DateView'
 import BooleanView from 'components/ui/BooleanView'
 import Truncate from 'components/ui/Truncate'
 
 import useDataGrid from 'composables/dataGrid'
-import { appIcon, modelIcon, useElement } from 'composables/element'
+import { modelIcon, useElement } from 'composables/element'
 import { useSmartRequest } from 'composables/smartRequest'
+import { useTableAccessibility } from 'composables/dataGrid/useTableAccessibility'
 
 defineOptions({ name: 'TableResults' })
 
@@ -716,13 +289,6 @@ const {
   onSerialFilter,
   onMacFilter,
   onUuidFilter,
-  statusTree,
-  machineTree,
-  installDateRange,
-  uninstallDateRange,
-  createdAtRange,
-  startDateRange,
-  syncEndDateRange,
   totalRecords,
   isLoading,
   selectOptions,
@@ -745,58 +311,37 @@ const {
   loadItems,
 } = useDataGrid(props.columns, model, detailRoute, columnParams)
 
-const { $gettext } = useGettext()
+// Accessibility patching
+useTableAccessibility(myTable)
 
-const fixAccessibility = () => {
-  const runFix = () => {
-    // Only run if the table is mounted and rendered
-    if (!myTable.value || !myTable.value.$el) return
+// --- Filter change dispatcher ---
 
-    // Limit scope to the table component's element root ($el)
-    const tableRoot = myTable.value.$el
-
-    // Fix checkboxes
-    const checkboxes = tableRoot.querySelectorAll(
-      '.vgt-checkbox-col input[type="checkbox"]',
-    )
-    checkboxes.forEach((cb, i) => {
-      if (!cb.hasAttribute('aria-label') || !cb.getAttribute('aria-label')) {
-        cb.setAttribute(
-          'aria-label',
-          i === 0 ? $gettext('Select All') : $gettext('Select Row'),
-        )
-      }
-    })
-
-    // Fix filter selects
-    const selects = tableRoot.querySelectorAll('.vgt-select')
-    selects.forEach((select) => {
-      if (
-        !select.hasAttribute('aria-label') ||
-        !select.getAttribute('aria-label')
-      ) {
-        const name = select.getAttribute('name') || ''
-        select.setAttribute(
-          'aria-label',
-          `${$gettext('Filter by')} ${name.replace('vgt-', '')}`,
-        )
-      }
-    })
-  }
-
-  nextTick(runFix)
-  // Run again after a delay to catch dynamically loaded content
-  setTimeout(runFix, 500)
-  setTimeout(runFix, 1500)
-  setTimeout(runFix, 3000)
+const filterHandlers = {
+  platform: onPlatformFilter,
+  project: onProjectFilter,
+  architecture: onArchitectureFilter,
+  serial: onSerialFilter,
+  mac: onMacFilter,
+  uuid: onUuidFilter,
+  softwareInventory: onSoftwareInventoryFilter,
+  statusIn: onStatusInFilter,
+  machine: onMachineFilter,
+  user: onUserFilter,
+  startDateRange: onStartDateRangeFilter,
+  createdAtRange: onCreatedAtRangeFilter,
+  schedule: onScheduleFilter,
+  model: onModelFilter,
+  installDateRange: onInstallDateRangeFilter,
+  uninstallDateRange: onUninstallDateRangeFilter,
+  uninstallDate: onUninstallDateFilter,
+  syncEndDateRange: onSyncEndDateRangeFilter,
+  syncEndDate: onSyncEndDateFilter,
 }
 
-onMounted(() => {
-  fixAccessibility()
-})
-onUpdated(() => {
-  fixAccessibility()
-})
+const handleFilterChange = (filterName, value) => {
+  const handler = filterHandlers[filterName]
+  if (handler) handler(value)
+}
 
 // --- Model-based feature flags ---
 
