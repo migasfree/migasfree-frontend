@@ -23,10 +23,11 @@
           unelevated
           color="primary"
           icon="mdi-printer"
-          :label="$gettext('Print Label')"
-          class="text-weight-bold"
+          :aria-label="$gettext('Print Label')"
           @click="printLabel"
-        />
+        >
+          <q-tooltip>{{ $gettext('Print Label') }}</q-tooltip>
+        </q-btn>
       </template>
     </Header>
 
@@ -73,7 +74,9 @@
               </div>
 
               <div class="data-group q-mb-lg">
-                <div class="text-overline text-grey-6 line-height-1">UUID</div>
+                <div class="text-overline text-grey-6 line-height-1">
+                  {{ $gettext('UUID') }}
+                </div>
                 <div
                   class="text-body2 text-weight-bold text-mono break-all opacity-80"
                 >
