@@ -92,193 +92,29 @@
         class="col-12 col-md-5 q-pl-md-md q-pt-sm q-pt-md-none chart-scroll-area display-flex"
       >
         <q-scroll-area class="legend-scroll">
-          <q-list
-            separator
-            :dense="flatData.length > 8"
-            class="rounded-borders"
-          >
-            <template v-for="(group, gIndex) in flatData" :key="'g' + gIndex">
-              <!-- Parent Item (Inner Ring) -->
-              <q-item
-                v-ripple
-                clickable
-                class="legend-item q-py-sm"
-                :class="{
-                  'bg-blue-grey-1':
-                    hoverIndex === group.index &&
-                    hoverSeries === 0 &&
-                    !$q.dark.isActive,
-                  'bg-grey-9':
-                    hoverIndex === group.index &&
-                    hoverSeries === 0 &&
-                    $q.dark.isActive,
-                }"
-                @mouseenter="highlightChart(group.index, 0)"
-                @focus="highlightChart(group.index, 0)"
-                @mouseleave="downplayChart(0)"
-                @blur="downplayChart(0)"
-                @click="passData({ data: group })"
-              >
-                <q-item-section avatar class="legend-item-section">
-                  <div
-                    class="color-dot shadow-1"
-                    :style="{ backgroundColor: group.color }"
-                  ></div>
-                </q-item-section>
-
-                <q-item-section>
-                  <q-item-label class="text-weight-bold">
-                    {{ group.name }}
-                  </q-item-label>
-                </q-item-section>
-
-                <q-item-section side>
-                  <div class="row items-center q-gutter-x-sm">
-                    <span class="text-weight-bold">{{ group.value }}</span>
-                    <q-badge
-                      v-if="data.total > 0"
-                      color="grey-4"
-                      text-color="grey-10"
-                    >
-                      {{ getPercentage(group.value) }}%
-                    </q-badge>
-                  </div>
-                </q-item-section>
-              </q-item>
-
-              <!-- Child Items (Outer Ring / Subdata) -->
-              <q-item
-                v-for="(child, cIndex) in group.children"
-                :key="'c' + cIndex"
-                v-ripple
-                clickable
-                dense
-                class="legend-child-item q-ml-lg q-py-xs"
-                :class="{
-                  'bg-blue-grey-1':
-                    hoverIndex === child.index &&
-                    hoverSeries === 1 &&
-                    !$q.dark.isActive,
-                  'bg-grey-9':
-                    hoverIndex === child.index &&
-                    hoverSeries === 1 &&
-                    $q.dark.isActive,
-                }"
-                @mouseenter="highlightChart(child.index, 1)"
-                @focus="highlightChart(child.index, 1)"
-                @mouseleave="downplayChart(1)"
-                @blur="downplayChart(1)"
-                @click="passData({ data: child })"
-              >
-                <q-item-section avatar class="legend-item-section">
-                  <div
-                    class="color-dot-child"
-                    :style="{ backgroundColor: getOuterColor(child.index) }"
-                  ></div>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label
-                    class="text-caption text-weight-bold text-grey-9"
-                  >
-                    {{ child.name }}
-                  </q-item-label>
-                </q-item-section>
-                <q-item-section side>
-                  <div class="row items-center q-gutter-x-sm">
-                    <span class="text-caption text-weight-bold text-grey-9">{{
-                      child.value
-                    }}</span>
-                    <q-badge
-                      v-if="data.total > 0"
-                      color="grey-4"
-                      text-color="grey-10"
-                    >
-                      {{ getPercentage(child.value) }}%
-                    </q-badge>
-                  </div>
-                </q-item-section>
-              </q-item>
-            </template>
-          </q-list>
+          <PieLegend
+            :flat-data="flatData"
+            :data-total="data.total || 0"
+            :hover-index="hoverIndex"
+            :hover-series="hoverSeries"
+            :is-dark="isDark"
+            :get-outer-color="getOuterColor"
+            @highlight="highlightChart"
+            @downplay="downplayChart"
+            @item-click="passData"
+          />
         </q-scroll-area>
       </div>
     </div>
 
     <!-- Data Table Dialog -->
-    <q-dialog v-model="viewData">
-      <q-card class="data-dialog-card">
-        <q-card-section class="row items-center justify-between">
-          <div class="text-h6">
-            <q-icon
-              :name="appIcon('data')"
-              size="lg"
-              class="q-mr-sm"
-              aria-hidden="true"
-            />
-            {{ title }}
-          </div>
-          <q-btn v-close-popup icon="close" flat round dense />
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-table
-            v-for="(serie, index) in dataGrid"
-            :key="index"
-            class="q-ma-md"
-            :title="serie.title"
-            :rows="serie.itemData"
-            :columns="columns"
-            :pagination="{ rowsPerPage: 0 }"
-            row-key="name"
-            hide-header
-            hide-pagination
-            @row-click="rowClick"
-          >
-            <template #top-right>
-              <q-btn-dropdown
-                flat
-                :icon="appIcon('export')"
-                color="primary"
-                @click.stop
-              >
-                <q-list>
-                  <q-item
-                    v-close-popup
-                    clickable
-                    @click="exportTable(serie, 'csv')"
-                  >
-                    <q-item-section>CSV</q-item-section>
-                  </q-item>
-                  <q-item
-                    v-close-popup
-                    clickable
-                    @click="exportTable(serie, 'json')"
-                  >
-                    <q-item-section>JSON</q-item-section>
-                  </q-item>
-                </q-list>
-                <q-tooltip>{{ $gettext('Export') }}</q-tooltip>
-              </q-btn-dropdown>
-            </template>
-          </q-table>
-          <div
-            v-if="options.series.length === 0"
-            class="text-center q-pa-xl opacity-50"
-          >
-            {{ $gettext('No information') }}
-          </div>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn
-            v-close-popup
-            flat
-            :label="$gettext('Close')"
-            color="primary"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+    <PieDataDialog
+      v-model="viewData"
+      :title="title"
+      :data-grid="dataGrid"
+      :columns="columns"
+      @row-click="rowClick"
+    />
   </div>
 </template>
 
@@ -287,10 +123,8 @@ import {
   ref,
   reactive,
   computed,
-  watch,
   onMounted,
   shallowRef,
-  shallowReactive,
   getCurrentInstance,
 } from 'vue'
 import { useRouter } from 'vue-router'
@@ -299,7 +133,7 @@ import { useGettext } from 'vue3-gettext'
 import VChart from 'vue-echarts'
 
 import * as echarts from 'echarts/core'
-import { PieChart } from 'echarts/charts'
+import { PieChart as EchartsPie } from 'echarts/charts'
 import {
   TooltipComponent,
   TitleComponent,
@@ -310,15 +144,17 @@ import { SVGRenderer } from 'echarts/renderers'
 import { useUiStore } from 'stores/ui'
 import { appIcon } from 'composables/element'
 import { useChartExport } from 'composables/chart/export'
-import { useChartOptions } from 'composables/chart/options'
 import { useChartUtils } from 'composables/chart/utils'
 import { useSmartRequest } from 'composables/smartRequest'
+import { usePieChart } from 'composables/chart/pie'
 
 import ExportMenu from 'components/chart/ExportMenu'
 import TextTooltip from 'components/ui/TextTooltip'
+import PieLegend from 'components/chart/PieLegend.vue'
+import PieDataDialog from 'components/chart/PieDataDialog.vue'
 
 echarts.use([
-  PieChart,
+  EchartsPie,
   TooltipComponent,
   TitleComponent,
   LegendComponent,
@@ -352,109 +188,26 @@ const viewData = ref(false)
 const dataGrid = shallowRef([])
 const currentGroupByKey = ref(null)
 
-const { initOptions, loadingOptions, getChartColors, getTextColor } =
-  useChartOptions()
-const { groupBy } = useChartUtils(chart)
-const { saveSvgImage, savePngImage, exportTableToCsv, exportTableToJson } =
-  useChartExport()
-
-// --- Dark-mode aware helpers ---
-
 const isDark = computed(() => $q.dark.isActive)
-const borderColor = computed(() => (isDark.value ? '#1a1210' : '#fff'))
 
-const tooltipStyle = computed(() => ({
-  backgroundColor: isDark.value
-    ? 'rgba(26, 18, 16, 0.95)'
-    : 'rgba(255, 255, 255, 0.95)',
-  borderColor: isDark.value ? '#431407' : '#e5e7eb',
-  textStyle: { color: isDark.value ? '#fefce8' : '#1f2937' },
-}))
+// Composable integration
+const {
+  initOptions,
+  loadingOptions,
+  options,
+  buildNormalSeries,
+  buildNestedSeries,
+  getChartColors,
+  dispatchChartAction,
+} = usePieChart(props.title, chart, isDark)
 
-// --- Chart options ---
+const { groupBy } = useChartUtils(chart)
+const { saveSvgImage, savePngImage, exportTableToJson } = useChartExport()
 
 const columns = [
   { name: 'name', field: 'name', label: $gettext('Name'), align: 'left' },
   { name: 'value', field: 'value', label: $gettext('Value') },
 ]
-
-const buildNormalSeries = () => [
-  {
-    type: 'pie',
-    radius: ['60%', '85%'],
-    center: ['50%', '50%'],
-    data: [],
-    avoidLabelOverlap: false,
-    itemStyle: {
-      borderRadius: 5,
-      borderColor: borderColor.value,
-      borderWidth: 2,
-    },
-    emphasis: {
-      scale: true,
-      scaleSize: 10,
-      itemStyle: {
-        shadowBlur: 10,
-        shadowOffsetX: 0,
-        shadowColor: 'rgba(0, 0, 0, 0.5)',
-      },
-    },
-    label: { show: false },
-  },
-]
-
-const buildNestedSeries = () => [
-  {
-    type: 'pie',
-    selectedMode: 'single',
-    radius: ['30%', '45%'],
-    center: ['50%', '50%'],
-    label: {
-      position: 'inner',
-      fontSize: 10,
-      color: isDark.value ? 'black' : 'white',
-      textBorderColor: isDark.value ? 'white' : 'black',
-      textBorderWidth: 1,
-      show: false,
-    },
-    labelLine: { show: false },
-    labelLayout: { hideOverlap: true },
-    itemStyle: {
-      borderRadius: 2,
-      borderColor: borderColor.value,
-      borderWidth: 1,
-    },
-    data: [],
-  },
-  {
-    type: 'pie',
-    radius: ['50%', '75%'],
-    center: ['50%', '50%'],
-    label: { show: false },
-    labelLayout: { hideOverlap: true },
-    itemStyle: {
-      borderRadius: 4,
-      borderColor: borderColor.value,
-      borderWidth: 2,
-    },
-    data: [],
-  },
-]
-
-const options = shallowReactive({
-  animation: false,
-  textStyle: { fontFamily: 'Dosis', fontSize: 14 },
-  tooltip: {
-    trigger: 'item',
-    appendToBody: true,
-    formatter: '{b} ({c}): <strong>{d}%</strong>',
-    ...tooltipStyle.value,
-  },
-  color: getChartColors(),
-  series: [],
-  title: { text: props.title, show: false },
-  legend: { show: false },
-})
 
 // --- Computed ---
 
@@ -465,11 +218,6 @@ const isChartVisible = computed(
 )
 
 const noData = computed(() => !('total' in data) || data.total === 0)
-
-const getPercentage = (value) => {
-  if (!data.total || data.total === 0) return '0.0'
-  return ((value / data.total) * 100).toFixed(1)
-}
 
 const flatData = computed(() => {
   const palette = getChartColors()
@@ -485,7 +233,7 @@ const flatData = computed(() => {
   if (!data.outer || !data.inner || !currentGroupByKey.value) return []
 
   // Use pre-indexed and pre-grouped data for better performance
-  const indexedOuter = data.outer.map((item, index) => ({ ...item, index }))
+  const indexedOuter = data.outer.map((ite, idx) => ({ ...ite, index: idx }))
   const groupedOuter = groupBy(indexedOuter, currentGroupByKey.value)
 
   return data.inner.map((innerItem, i) => {
@@ -528,17 +276,8 @@ const highlightChart = (index, sIndex = null) => {
   hoverIndex.value = index
   hoverSeries.value = seriesIndex
 
-  if (!chart.value) return
-  chart.value.dispatchAction({
-    type: 'highlight',
-    seriesIndex,
-    dataIndex: index,
-  })
-  chart.value.dispatchAction({
-    type: 'showTip',
-    seriesIndex,
-    dataIndex: index,
-  })
+  dispatchChartAction('highlight', { seriesIndex, dataIndex: index })
+  dispatchChartAction('showTip', { seriesIndex, dataIndex: index })
 }
 
 const downplayChart = (sIndex = null) => {
@@ -546,12 +285,8 @@ const downplayChart = (sIndex = null) => {
   hoverIndex.value = -1
   hoverSeries.value = -1
 
-  if (!chart.value) return
-  chart.value.dispatchAction({
-    type: 'downplay',
-    seriesIndex,
-  })
-  chart.value.dispatchAction({ type: 'hideTip' })
+  dispatchChartAction('downplay', { seriesIndex })
+  dispatchChartAction('hideTip', {})
 }
 
 const onChartHover = (params) => {
@@ -567,16 +302,14 @@ const passData = (params) => {
   emit('get-link', { ...params, url: props.url })
 }
 
-const rowClick = (_evt, row) => {
+const rowClick = (row) => {
   passData({ data: row })
 }
 
 const goTo = () => {
   if (props.url && Object.keys(props.url).length > 0) {
     const currentRouter = router || instance?.proxy?.$router
-    if (currentRouter) {
-      currentRouter.push(props.url)
-    }
+    if (currentRouter) currentRouter.push(props.url)
   }
 }
 
@@ -585,12 +318,12 @@ const goTo = () => {
 const dataView = () => {
   viewData.value = true
 
-  if (options.series.length === 2) {
-    const keys = Object.keys(options.series[0].data[0])
+  if (options.value.series.length === 2) {
+    const keys = Object.keys(options.value.series[0].data[0])
     const groupByKey = keys.filter((x) => !['name', 'value'].includes(x))
-    const groupByData = groupBy(options.series[1].data, groupByKey)
+    const groupByData = groupBy(options.value.series[1].data, groupByKey)
 
-    dataGrid.value = options.series[0].data.map((item) => {
+    dataGrid.value = options.value.series[0].data.map((item) => {
       let itemData = []
       if (groupByKey[0] !== 'status_in') {
         itemData = groupByData[item[groupByKey]]
@@ -613,17 +346,17 @@ const dataView = () => {
 
 // --- Export ---
 
-const doExport = (filename, format, items) => {
+const exportData = (format) => {
   if (format === 'csv') {
-    exportTableToCsv(`${filename}.csv`, columns, items)
+    // Basic CSV fallback if not using the pie dialog export
+    import('composables/chart/export').then(({ useChartExport: useExport }) => {
+      const { exportTableToCsv } = useExport()
+      exportTableToCsv(`${props.title}.csv`, columns, flatData.value)
+    })
   } else {
-    exportTableToJson(`${filename}.json`, items)
+    exportTableToJson(`${props.title}.json`, flatData.value)
   }
 }
-
-const exportTable = (serie, format) =>
-  doExport(serie.title, format, serie.itemData)
-const exportData = (format) => doExport(props.title, format, flatData.value)
 
 const saveSvg = () => saveSvgImage(chart.value, props.title)
 const savePng = () => savePngImage(chart.value, props.title)
@@ -641,38 +374,19 @@ onMounted(async () => {
       currentGroupByKey.value = keys.find((x) => !['name', 'value'].includes(x))
     }
 
-    options.series = nested ? buildNestedSeries() : buildNormalSeries()
+    options.value.series = nested ? buildNestedSeries() : buildNormalSeries()
     Object.assign(data, response)
 
     if (nested) {
-      options.series[0].data = data.inner
-      options.series[1].data = data.outer
+      options.value.series[0].data = data.inner
+      options.value.series[1].data = data.outer
     } else {
-      options.series[0].data = data.data
+      options.value.series[0].data = data.data
     }
   } catch (error) {
     uiStore.notifyError(error)
   } finally {
     loading.value = false
-  }
-})
-
-// --- Dark mode watcher ---
-
-watch(isDark, (val) => {
-  options.color = getChartColors()
-  Object.assign(options.tooltip, tooltipStyle.value)
-
-  for (const serie of options.series) {
-    if (serie.itemStyle) {
-      serie.itemStyle.borderColor = val ? '#1a1210' : '#fff'
-    }
-    if (serie.label?.position === 'inner') {
-      serie.label.color = val ? 'black' : 'white'
-      serie.label.textBorderColor = val ? 'white' : 'black'
-    } else if (serie.label) {
-      serie.label.color = getTextColor()
-    }
   }
 })
 </script>
@@ -710,59 +424,11 @@ watch(isDark, (val) => {
   position: relative;
 }
 
-.color-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.color-dot-child {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  opacity: 0.5;
-  margin-left: 4px;
-}
-
-.legend-item {
-  border-radius: 8px;
-  transition: background-color 0.2s;
-}
-
-.legend-child-item {
-  border-radius: 6px;
-  min-height: 32px;
-  opacity: 0.8;
-  transition: all 0.2s;
-  border-left: 2px solid transparent;
-}
-
-.legend-child-item:hover {
-  opacity: 1;
-  background: rgba(var(--brand-primary-rgb), 0.04);
-  border-left-color: var(--brand-primary);
-}
-
-[data-theme='dark'] .legend-child-item:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-left-color: var(--brand-tertiary);
-}
-
-.legend-item-section {
-  min-width: 24px;
-  padding-right: 8px;
-}
-
 .legend-scroll {
   height: 300px;
   width: 100%;
 }
 
-/*
-   --- SMART RESPONSIVE (Container Queries) ---
-   Adapts to host container width, not just browser viewport.
-*/
 @container pie-chart (max-width: 600px) {
   .content-row {
     flex-direction: column !important;
@@ -813,7 +479,6 @@ watch(isDark, (val) => {
   }
 }
 
-/* Fallback responsive for older browsers */
 @media (max-width: 1024px) {
   .content-row.row {
     flex-direction: column !important;

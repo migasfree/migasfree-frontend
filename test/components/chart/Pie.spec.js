@@ -104,6 +104,8 @@ describe('Pie.vue', () => {
           'q-dialog': true,
           'q-table': true,
           BannerInfo: true,
+          PieLegend: true,
+          PieDataDialog: true,
           TextTooltip: {
             template: '<span>{{ text }}</span>',
             props: ['text'],
@@ -111,6 +113,7 @@ describe('Pie.vue', () => {
         },
         directives: {
           'close-popup': {},
+          ripple: {},
         },
         ...options,
       },
