@@ -6,8 +6,6 @@
   </q-layout>
 </template>
 
-<script>
-export default {
-  name: 'Empty',
-}
+<script setup>
+defineOptions({ name: 'Empty' })
 </script>
