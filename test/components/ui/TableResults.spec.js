@@ -301,9 +301,9 @@ describe('TableResults.vue', () => {
 
     it('renders TableFiltersPanel component', () => {
       const wrapper = createWrapper()
-      expect(wrapper.findComponent({ name: 'TableFiltersPanel' }).exists()).toBe(
-        true,
-      )
+      expect(
+        wrapper.findComponent({ name: 'TableFiltersPanel' }).exists(),
+      ).toBe(true)
     })
 
     it('renders vue-good-table component', () => {
