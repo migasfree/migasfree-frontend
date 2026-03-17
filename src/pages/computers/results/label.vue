@@ -20,7 +20,6 @@
 
       <template #actions>
         <q-btn
-          unelevated
           color="primary"
           icon="mdi-printer"
           :aria-label="$gettext('Print Label')"
