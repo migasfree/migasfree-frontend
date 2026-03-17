@@ -101,7 +101,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
@@ -119,190 +119,167 @@ import MigasLink from 'components/MigasLink'
 import useDetail from 'composables/detail'
 import { appIcon, modelIcon } from 'composables/element'
 
-export default {
-  components: {
-    Breadcrumbs,
-    Header,
-    MigasLink,
-  },
-  setup() {
-    const { $gettext, interpolate } = useGettext()
-    const route = useRoute()
-    const router = useRouter()
-    const uiStore = useUiStore()
-    const authStore = useAuthStore()
+defineOptions({ name: 'ChangePassword' })
 
-    const titleIcon = appIcon('password')
-    const title = $gettext('Change Password')
-    const windowTitle = ref(title)
-    useMeta(() => ({ title: windowTitle.value }))
+const { $gettext, interpolate } = useGettext()
+const route = useRoute()
+const router = useRouter()
+const uiStore = useUiStore()
+const authStore = useAuthStore()
 
-    const routes = {
-      list: 'user-profiles-list',
-      detail: 'user-profile-detail',
-    }
-    const model = 'user-profiles'
+const titleIcon = appIcon('password')
+const title = $gettext('Change Password')
+const windowTitle = ref(title)
+useMeta(() => ({ title: windowTitle.value }))
 
-    const breadcrumbs = reactive([
-      {
-        text: $gettext('Dashboard'),
-        icon: appIcon('home'),
-        to: 'home',
-      },
-      {
-        text: $gettext('Configuration'),
-        icon: appIcon('configuration'),
-      },
-      {
-        text: $gettext('User Profiles'),
-        icon: modelIcon(model),
-        to: routes.list,
-      },
-    ])
-
-    const showPassword = ref(false)
-
-    const oldPassword = ref(null)
-    const password = ref(null)
-    const passwordConfirm = ref(null)
-
-    const fldPasswordChange = ref(null)
-
-    let element = reactive({ id: 0 })
-
-    const isValid = computed(() => {
-      const hasNewPasswords =
-        password.value &&
-        password.value.length >= MIN_PASSWORD_RECOMMENDED_LEN &&
-        passwordConfirm.value &&
-        passwordConfirm.value.length >= MIN_PASSWORD_RECOMMENDED_LEN &&
-        password.value === passwordConfirm.value
-
-      return element.id === authStore.user.id
-        ? hasNewPasswords &&
-            oldPassword.value &&
-            oldPassword.value.length >= MIN_PASSWORD_LEN
-        : hasNewPasswords
-    })
-
-    const confirmPassword = computed(() => {
-      return [
-        (v) => !!v || $gettext('* Required'),
-        (v) =>
-          (typeof v === 'string' && v.length >= MIN_PASSWORD_RECOMMENDED_LEN) ||
-          interpolate($gettext('Please use minimum %{n} characters'), {
-            n: MIN_PASSWORD_RECOMMENDED_LEN,
-          }),
-        (v) =>
-          v == (fldPasswordChange.value?.modelValue ?? '') ||
-          $gettext('The passwords are different'),
-      ]
-    })
-
-    const required = computed(() => {
-      return [
-        (v) => !!v || $gettext('* Required'),
-        (v) =>
-          (typeof v === 'string' && v.length >= MIN_PASSWORD_RECOMMENDED_LEN) ||
-          interpolate($gettext('Please use minimum %{n} characters'), {
-            n: MIN_PASSWORD_RECOMMENDED_LEN,
-          }),
-      ]
-    })
-
-    const requiredOldPassword = computed(() => {
-      return [
-        (v) => !!v || $gettext('* Required'),
-        (v) =>
-          (typeof v === 'string' && v.length >= MIN_PASSWORD_LEN) ||
-          interpolate($gettext('Please use minimum %{n} characters'), {
-            n: MIN_PASSWORD_LEN,
-          }),
-      ]
-    })
-
-    const elementData = () => {
-      if (element.id === authStore.user.id) {
-        return {
-          old_password: oldPassword.value,
-          new_password1: password.value,
-          new_password2: passwordConfirm.value,
-        }
-      }
-
-      return {
-        password: password.value,
-        password2: passwordConfirm.value,
-      }
-    }
-
-    const { loading, elementText } = useDetail(
-      title,
-      model,
-      routes,
-      breadcrumbs,
-      element,
-      elementData,
-    )
-
-    const changePassword = async () => {
-      if (!element.id) return
-
-      loading.value = true
-      const endpoint =
-        element.id === authStore.user.id
-          ? '/rest-auth/password/change/'
-          : `/api/v1/token/user-profiles/${element.id}/change-password/`
-      const method = element.id === authStore.user.id ? 'post' : 'put'
-
-      try {
-        await api[method](endpoint, elementData())
-        uiStore.notifySuccess($gettext('Password changed!'))
-        router.push({ name: routes.detail, params: { id: element.id } })
-      } catch (error) {
-        uiStore.notifyError(error)
-      } finally {
-        loading.value = false
-      }
-    }
-
-    // created
-    if (route.params.id) {
-      breadcrumbs.push({
-        text: windowTitle.value,
-        icon: titleIcon,
-      })
-    }
-
-    watch(element, (val) => {
-      if (val.id !== 0) {
-        breadcrumbs.find((x) => x.text === val.username).to = {
-          name: routes.detail,
-          params: { id: val.id },
-        }
-      }
-    })
-
-    return {
-      title,
-      titleIcon,
-      breadcrumbs,
-      loading,
-      showPassword,
-      oldPassword,
-      password,
-      passwordConfirm,
-      fldPasswordChange,
-      element,
-      isValid,
-      elementText,
-      currentUser: authStore.user,
-      confirmPassword,
-      required,
-      requiredOldPassword,
-      changePassword,
-      appIcon,
-    }
-  },
+const routes = {
+  list: 'user-profiles-list',
+  detail: 'user-profile-detail',
 }
+const model = 'user-profiles'
+
+const breadcrumbs = reactive([
+  {
+    text: $gettext('Dashboard'),
+    icon: appIcon('home'),
+    to: 'home',
+  },
+  {
+    text: $gettext('Configuration'),
+    icon: appIcon('configuration'),
+  },
+  {
+    text: $gettext('User Profiles'),
+    icon: modelIcon(model),
+    to: routes.list,
+  },
+])
+
+const showPassword = ref(false)
+
+const oldPassword = ref(null)
+const password = ref(null)
+const passwordConfirm = ref(null)
+
+const fldPasswordChange = ref(null)
+
+let element = reactive({ id: 0 })
+
+const currentUser = authStore.user
+
+const isValid = computed(() => {
+  const hasNewPasswords =
+    password.value &&
+    password.value.length >= MIN_PASSWORD_RECOMMENDED_LEN &&
+    passwordConfirm.value &&
+    passwordConfirm.value.length >= MIN_PASSWORD_RECOMMENDED_LEN &&
+    password.value === passwordConfirm.value
+
+  return element.id === currentUser.id
+    ? hasNewPasswords &&
+        oldPassword.value &&
+        oldPassword.value.length >= MIN_PASSWORD_LEN
+    : hasNewPasswords
+})
+
+const confirmPassword = computed(() => {
+  return [
+    (v) => !!v || $gettext('* Required'),
+    (v) =>
+      (typeof v === 'string' && v.length >= MIN_PASSWORD_RECOMMENDED_LEN) ||
+      interpolate($gettext('Please use minimum %{n} characters'), {
+        n: MIN_PASSWORD_RECOMMENDED_LEN,
+      }),
+    (v) =>
+      v === (fldPasswordChange.value?.modelValue ?? '') ||
+      $gettext('The passwords are different'),
+  ]
+})
+
+const required = computed(() => {
+  return [
+    (v) => !!v || $gettext('* Required'),
+    (v) =>
+      (typeof v === 'string' && v.length >= MIN_PASSWORD_RECOMMENDED_LEN) ||
+      interpolate($gettext('Please use minimum %{n} characters'), {
+        n: MIN_PASSWORD_RECOMMENDED_LEN,
+      }),
+  ]
+})
+
+const requiredOldPassword = computed(() => {
+  return [
+    (v) => !!v || $gettext('* Required'),
+    (v) =>
+      (typeof v === 'string' && v.length >= MIN_PASSWORD_LEN) ||
+      interpolate($gettext('Please use minimum %{n} characters'), {
+        n: MIN_PASSWORD_LEN,
+      }),
+  ]
+})
+
+const elementData = () => {
+  if (element.id === currentUser.id) {
+    return {
+      old_password: oldPassword.value,
+      new_password1: password.value,
+      new_password2: passwordConfirm.value,
+    }
+  }
+
+  return {
+    password: password.value,
+    password2: passwordConfirm.value,
+  }
+}
+
+const { loading, elementText } = useDetail(
+  title,
+  model,
+  routes,
+  breadcrumbs,
+  element,
+  elementData,
+)
+
+const changePassword = async () => {
+  if (!element.id) return
+
+  loading.value = true
+  const endpoint =
+    element.id === currentUser.id
+      ? '/rest-auth/password/change/'
+      : `/api/v1/token/user-profiles/${element.id}/change-password/`
+  const method = element.id === currentUser.id ? 'post' : 'put'
+
+  try {
+    await api[method](endpoint, elementData())
+    uiStore.notifySuccess($gettext('Password changed!'))
+    router.push({ name: routes.detail, params: { id: element.id } })
+  } catch (error) {
+    uiStore.notifyError(error)
+  } finally {
+    loading.value = false
+  }
+}
+
+// created
+if (route.params.id) {
+  breadcrumbs.push({
+    text: windowTitle.value,
+    icon: titleIcon,
+  })
+}
+
+watch(element, (val) => {
+  if (val.id !== 0) {
+    const item = breadcrumbs.find((x) => x.text === val.username)
+    if (item) {
+      item.to = {
+        name: routes.detail,
+        params: { id: val.id },
+      }
+    }
+  }
+})
 </script>
