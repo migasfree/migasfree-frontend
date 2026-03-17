@@ -157,7 +157,12 @@
       </template>
 
       <!-- Results Table -->
-      <div v-if="items.length > 0" id="events" class="q-pt-xl">
+      <div
+        v-if="items.length > 0"
+        id="events"
+        ref="eventsContainer"
+        class="q-pt-xl"
+      >
         <q-table
           :title="`${events[event].title} (${itemsDate}: ${items.length})`"
           :rows="items"
@@ -290,7 +295,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { date, useMeta } from 'quasar'
@@ -367,6 +372,7 @@ const current = reactive({
 const items = ref([])
 const itemsDate = ref(null)
 const loading = ref(false)
+const eventsContainer = ref(null)
 
 const events = reactive({
   syncs: {
@@ -642,8 +648,10 @@ const showItems = async (params) => {
     const { data } = await api.get(url, { params: queryString })
     items.value = data.results
 
-    setTimeout(() => {
-      const el = document.getElementById('events')
+    setTimeout(async () => {
+      await nextTick()
+      const el = eventsContainer.value
+      // We assume user added ref="eventsContainer" to "events" div
       if (el) uiStore.scrollToElement(el)
     }, 250)
   } catch (error) {

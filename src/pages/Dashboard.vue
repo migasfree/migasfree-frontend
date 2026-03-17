@@ -37,7 +37,11 @@
 
     <div class="row q-pb-md">
       <div class="col-12">
-        <div id="events-history" class="panel glass-panel overflow-hidden">
+        <div
+          id="events-history"
+          ref="eventsHistoryContainer"
+          class="panel glass-panel overflow-hidden"
+        >
           <q-expansion-item
             header-class="q-py-md q-px-lg"
             @show="loadEventsHistory"
@@ -127,6 +131,7 @@
         <StackedBarChart
           v-show="!loadingMonthlySyncs"
           id="monthly-syncs"
+          ref="monthlySyncsContainer"
           :title="monthlySyncsTitle"
           :initial-data="monthlySyncs"
           @get-link="goTo"
@@ -169,7 +174,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useRouter } from 'vue-router'
 import { useMeta } from 'quasar'
@@ -217,6 +222,8 @@ const eventsHistory = reactive({})
 const lastHours = ref(EVENTS_HISTORY_HOURS)
 const begin = ref('')
 const end = ref('')
+const eventsHistoryContainer = ref(null)
+const monthlySyncsContainer = ref(null)
 
 const productiveUrl = computed(() => {
   return {
@@ -351,7 +358,10 @@ const loadEventsHistory = async () => {
   }))
 
   loading.value = false
-  uiStore.scrollToElement(document.getElementById('events-history'))
+  await nextTick()
+  if (eventsHistoryContainer.value) {
+    uiStore.scrollToElement(eventsHistoryContainer.value)
+  }
 }
 
 const updateEventsHistory = () => {
@@ -362,9 +372,12 @@ const updateEventsHistory = () => {
   loadEventsHistory()
 }
 
-const updateMonthlySyncs = () => {
+const updateMonthlySyncs = async () => {
   loadMonthlySyncs()
-  uiStore.scrollToElement(document.getElementById('monthly-syncs'))
+  await nextTick()
+  if (monthlySyncsContainer.value?.$el) {
+    uiStore.scrollToElement(monthlySyncsContainer.value.$el)
+  }
 }
 
 const resolveRoute = (model) => {

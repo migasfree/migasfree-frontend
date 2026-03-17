@@ -43,3 +43,4 @@ yarn.lock
 /coverage
 /debug-storybook.log
 /storybook-static/
+forensic_audit_report.md

@@ -749,8 +749,14 @@ const { $gettext } = useGettext()
 
 const fixAccessibility = () => {
   const runFix = () => {
+    // Only run if the table is mounted and rendered
+    if (!myTable.value || !myTable.value.$el) return
+
+    // Limit scope to the table component's element root ($el)
+    const tableRoot = myTable.value.$el
+
     // Fix checkboxes
-    const checkboxes = document.querySelectorAll(
+    const checkboxes = tableRoot.querySelectorAll(
       '.vgt-checkbox-col input[type="checkbox"]',
     )
     checkboxes.forEach((cb, i) => {
@@ -761,8 +767,9 @@ const fixAccessibility = () => {
         )
       }
     })
+
     // Fix filter selects
-    const selects = document.querySelectorAll('.vgt-select')
+    const selects = tableRoot.querySelectorAll('.vgt-select')
     selects.forEach((select) => {
       if (
         !select.hasAttribute('aria-label') ||
