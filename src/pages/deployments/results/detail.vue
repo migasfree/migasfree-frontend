@@ -30,431 +30,46 @@
       <template #fields>
         <div class="row q-pb-md q-col-gutter-md">
           <div class="col-6 col-md col-sm-12">
-            <q-card class="panel">
-              <q-card-section>
-                <div class="text-h6 text-weight-bold text-primary">
-                  {{ $gettext('General') }}
-                </div>
-
-                <div class="row q-gutter-md q-py-md">
-                  <div class="col-6 col-md col-sm">
-                    <q-checkbox
-                      ref="primaryInput"
-                      v-model="element.enabled"
-                      left-label
-                      :label="$gettext('Enabled?')"
-                      :aria-label="$gettext('Enabled?')"
-                    />
-                  </div>
-                  <div class="col-6 col-md col-sm">
-                    <q-input
-                      v-model="element.name"
-                      :label="$gettext('Name')"
-                      :aria-label="$gettext('Name')"
-                      lazy-rules
-                      :rules="[(val) => !!val || $gettext('* Required')]"
-                    />
-                  </div>
-                </div>
-
-                <div class="row q-gutter-sm">
-                  <div class="col-6 col-md col-sm">
-                    <EntitySelect
-                      v-model="element.project"
-                      :options="projects"
-                      :label="$gettext('Project')"
-                      :aria-label="$gettext('Project')"
-                      detail-route="project-detail"
-                      add-route="project-add"
-                      :add-tooltip="$gettext('Add Project')"
-                      :prepend-icon="modelIcon('projects')"
-                      lazy-rules
-                      :rules="[(val) => !!val || $gettext('* Required')]"
-                    />
-                  </div>
-
-                  <div class="col-6 col-md col-sm">
-                    <EntitySelect
-                      v-model="element.domain"
-                      clearable
-                      :label="$gettext('Editable by Domain Administrators')"
-                      :options="domains"
-                      detail-route="domain-detail"
-                      add-route="domain-add"
-                      :add-tooltip="$gettext('Add Domain')"
-                      :prepend-icon="modelIcon('domains')"
-                    />
-                  </div>
-                </div>
-
-                <div class="row q-gutter-sm">
-                  <div class="col-12 col-md col-sm">
-                    <q-input
-                      v-model="element.comment"
-                      type="textarea"
-                      :label="$gettext('Comment')"
-                      :aria-label="$gettext('Comment')"
-                    />
-                  </div>
-                </div>
-              </q-card-section>
-            </q-card>
+            <DeploymentInfo
+              :element="element"
+              :projects="projects"
+              :domains="domains"
+              @update-element="updateElement"
+            />
           </div>
 
           <div class="col-6 col-md col-sm-12">
-            <q-card class="panel">
-              <q-card-section>
-                <div class="text-h6 text-weight-bold text-primary">
-                  {{ $gettext('To who (attributes)') }}
-                </div>
-
-                <div class="row q-py-md">
-                  <div class="col-12 col-md col-sm">
-                    <SelectAttributes
-                      v-model="element.included_attributes"
-                      :label="$gettext('Included Attributes')"
-                    />
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-12 col-md col-sm">
-                    <SelectAttributes
-                      v-model="element.excluded_attributes"
-                      :label="$gettext('Excluded Attributes')"
-                    />
-                  </div>
-                </div>
-              </q-card-section>
-            </q-card>
+            <DeploymentAttributes
+              :element="element"
+              @update-element="updateElement"
+            />
           </div>
         </div>
 
         <div class="row q-pb-md q-col-gutter-md">
           <div class="col-6 col-md col-sm-12">
-            <q-card class="panel">
-              <q-card-section>
-                <div class="text-h6 text-weight-bold text-primary">
-                  {{ $gettext('What (packages)') }}
-                </div>
-
-                <div v-if="element.id === 0" class="row q-py-md">
-                  <div class="col-12 col-md col-sm">
-                    <q-select
-                      v-model="source"
-                      class="q-my-md"
-                      :label="$gettext('Source')"
-                      :aria-label="$gettext('Source')"
-                      :options="sources"
-                      option-value="id"
-                      option-label="name"
-                      @update:model-value="element.source = source.id"
-                    />
-                  </div>
-                </div>
-
-                <template v-if="element.source === 'I'">
-                  <div class="row q-pb-md">
-                    <div class="col-12 col-md col-sm">
-                      <FilteredMultiSelect
-                        v-model="element.available_packages"
-                        clearable
-                        :label="$gettext('Available Packages')"
-                        :aria-label="$gettext('Available Packages')"
-                        :fetch-options="filterPackages"
-                      >
-                        <template #option="{ scope }">
-                          <q-item v-bind="scope.itemProps">
-                            {{ scope.opt.fullname }}
-                          </q-item>
-                        </template>
-
-                        <template #selected-item="{ scope }">
-                          <q-chip
-                            removable
-                            dense
-                            color="transparent"
-                            :tabindex="scope.tabindex"
-                            class="q-ma-md q-pa-none"
-                            @remove="scope.removeAtIndex(scope.index)"
-                          >
-                            <MigasLink
-                              model="packages"
-                              :pk="scope.opt.id"
-                              :value="scope.opt.fullname"
-                            />
-                          </q-chip>
-                        </template>
-                      </FilteredMultiSelect>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-12 col-md col-sm">
-                      <FilteredMultiSelect
-                        v-model="element.available_package_sets"
-                        clearable
-                        :label="$gettext('Available Package Sets')"
-                        :aria-label="$gettext('Available Package Sets')"
-                        :fetch-options="filterPackageSets"
-                      >
-                        <template #option="{ scope }">
-                          <q-item v-bind="scope.itemProps">
-                            {{ scope.opt.name }}
-                          </q-item>
-                        </template>
-
-                        <template #selected-item="{ scope }">
-                          <q-chip
-                            removable
-                            dense
-                            color="transparent"
-                            :tabindex="scope.tabindex"
-                            class="q-ma-md q-pa-none"
-                            @remove="scope.removeAtIndex(scope.index)"
-                          >
-                            <MigasLink
-                              model="package-sets"
-                              :pk="scope.opt.id"
-                              :value="scope.opt.name"
-                            />
-                          </q-chip>
-                        </template>
-                      </FilteredMultiSelect>
-                    </div>
-                  </div>
-                </template>
-
-                <template v-if="element.source === 'E'">
-                  <div class="row">
-                    <div class="col-12 col-md col-sm">
-                      <q-input
-                        v-model="element.base_url"
-                        class="q-my-md"
-                        :label="$gettext('Base URL')"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-12 col-md col-sm">
-                      <q-input
-                        v-model="element.suite"
-                        class="q-my-md"
-                        :label="$gettext('Suite')"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-12 col-md col-sm">
-                      <q-input
-                        v-model="element.components"
-                        class="q-my-md"
-                        :label="$gettext('Components')"
-                        :aria-label="$gettext('Components')"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-12 col-md col-sm">
-                      <q-input
-                        v-model="element.options"
-                        class="q-my-md"
-                        :label="$gettext('Options')"
-                        :aria-label="$gettext('Options')"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="row q-col-gutter-sm">
-                    <div class="col-6 col-md col-sm">
-                      <q-input
-                        v-model="element.expire"
-                        class="q-my-md"
-                        type="number"
-                        :label="$gettext('Expire (minutes)')"
-                        :aria-label="$gettext('Expire (minutes)')"
-                      />
-                    </div>
-
-                    <div class="col-6 col-md col-sm">
-                      <q-checkbox
-                        v-model="element.frozen"
-                        class="q-my-md"
-                        left-label
-                        :label="$gettext('Frozen?')"
-                        :aria-label="$gettext('Frozen?')"
-                      />
-                    </div>
-                  </div>
-                </template>
-              </q-card-section>
-            </q-card>
+            <DeploymentPackages
+              :element="element"
+              @update-element="updateElement"
+            />
           </div>
 
           <div class="col-6 col-md col-sm-12">
-            <q-card class="panel">
-              <q-card-section>
-                <div class="text-h6 text-weight-bold text-primary">
-                  {{ $gettext('Actions') }}
-                </div>
-
-                <div class="row q-py-md q-col-gutter-sm">
-                  <div class="col-6 col-md col-sm">
-                    <OrderTextArea
-                      v-model="element.packages_to_install"
-                      :label="$gettext('Packages to Install')"
-                      :aria-label="$gettext('Packages to Install')"
-                    >
-                      <template #prepend>
-                        <q-icon :name="appIcon('install')" />
-                      </template>
-                    </OrderTextArea>
-                  </div>
-
-                  <div class="col-6 col-md col-sm">
-                    <OrderTextArea
-                      v-model="element.packages_to_remove"
-                      :label="$gettext('Packages to Remove')"
-                      :aria-label="$gettext('Packages to Remove')"
-                    >
-                      <template #prepend>
-                        <q-icon :name="appIcon('uninstall')" />
-                      </template>
-                    </OrderTextArea>
-                  </div>
-                </div>
-
-                <div class="row q-pb-md">
-                  <div class="col">
-                    <OrderTextArea
-                      v-model="element.default_preincluded_packages"
-                      :label="$gettext('Default Preincluded Packages')"
-                      :aria-label="$gettext('Default Preincluded Packages')"
-                    >
-                      <template #prepend>
-                        <q-icon :name="appIcon('install')" />
-                      </template>
-                    </OrderTextArea>
-                  </div>
-                </div>
-
-                <div class="row q-pb-md">
-                  <div class="col">
-                    <OrderTextArea
-                      v-model="element.default_included_packages"
-                      :label="$gettext('Default Included Packages')"
-                      :aria-label="$gettext('Default Included Packages')"
-                    >
-                      <template #prepend>
-                        <q-icon :name="appIcon('install')" />
-                      </template>
-                    </OrderTextArea>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col">
-                    <OrderTextArea
-                      v-model="element.default_excluded_packages"
-                      :label="$gettext('Default Excluded Packages')"
-                      :aria-label="$gettext('Default Excluded Packages')"
-                    >
-                      <template #prepend>
-                        <q-icon :name="appIcon('uninstall')" />
-                      </template>
-                    </OrderTextArea>
-                  </div>
-                </div>
-              </q-card-section>
-            </q-card>
+            <DeploymentActions
+              :element="element"
+              @update-element="updateElement"
+            />
           </div>
         </div>
 
         <div class="row q-pb-md q-col-gutter-md">
           <div class="col-12 col-md-12 col-sm-12">
-            <q-card class="panel">
-              <q-card-section>
-                <div class="text-h6 text-weight-bold text-primary">
-                  {{ $gettext('When (schedule)') }}
-                </div>
-
-                <div class="row q-col-gutter-sm q-py-md">
-                  <div
-                    :class="
-                      element.timeline
-                        ? 'col-md-3 col-sm-3'
-                        : 'col-md-4 col-sm-4 text-right'
-                    "
-                  >
-                    <DayInput
-                      v-model="element.start_date"
-                      :readonly="false"
-                      :label="$gettext('Start Date')"
-                      :dense="false"
-                    />
-                  </div>
-
-                  <div
-                    :class="
-                      element.timeline
-                        ? 'col-md-3 col-sm-3'
-                        : 'col-md-4 col-sm-4'
-                    "
-                  >
-                    <EntitySelect
-                      v-model="element.schedule"
-                      :options="schedules"
-                      :label="$gettext('Schedule')"
-                      clearable
-                      detail-route="schedule-detail"
-                      add-route="schedule-add"
-                      :add-tooltip="$gettext('Add Schedule')"
-                      :prepend-icon="modelIcon('schedules')"
-                      @clear="updateStats"
-                    />
-                  </div>
-
-                  <div
-                    :class="
-                      element.timeline
-                        ? 'col-md-3 col-sm-3'
-                        : 'col-md-4 col-sm-4 text-right'
-                    "
-                  >
-                    <q-checkbox
-                      v-model="element.auto_restart"
-                      left-label
-                      :label="$gettext('Auto Restart?')"
-                      :aria-label="$gettext('Auto Restart?')"
-                    />
-                  </div>
-
-                  <div
-                    v-if="element.id && element.timeline"
-                    class="col-md-3 col-sm-3"
-                  >
-                    <q-field outlined :label="$gettext('Timeline')" stack-label>
-                      <template #control>
-                        <Timeline :id="element.id" v-model="element.timeline" />
-                      </template>
-                    </q-field>
-                  </div>
-                </div>
-
-                <div v-if="element.id && element.schedule" class="row">
-                  <div v-if="element.stats" class="col-12 col-md col-sm">
-                    <StackedBarChart
-                      :title="$gettext('Provided Computers / Delay')"
-                      :initial-data="element.stats"
-                      borderless
-                    />
-                  </div>
-                </div>
-              </q-card-section>
-            </q-card>
+            <DeploymentSchedule
+              :element="element"
+              :schedules="schedules"
+              @update-element="updateElement"
+              @update-schedule="updateSchedule"
+            />
           </div>
         </div>
       </template>
@@ -471,22 +86,16 @@ import { useMeta } from 'quasar'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
-import EntitySelect from 'components/ui/EntitySelect'
-import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import ItemDetail from 'components/ui/ItemDetail'
-import MigasLink from 'components/MigasLink'
-import StackedBarChart from 'components/chart/StackedBar'
-import Timeline from 'components/deployment/Timeline'
-import SelectAttributes from 'components/ui/SelectAttributes'
-import OrderTextArea from 'components/ui/OrderTextArea'
-import DayInput from 'components/ui/DayInput'
+
+import DeploymentInfo from 'components/deployment/Info'
+import DeploymentAttributes from 'components/deployment/Attributes'
+import DeploymentPackages from 'components/deployment/Packages'
+import DeploymentActions from 'components/deployment/Actions'
+import DeploymentSchedule from 'components/deployment/Schedule'
 
 import useDate from 'composables/date'
-import { appIcon, modelIcon } from 'composables/element'
-import useAutoFocus from 'composables/autoFocus'
-
 const { $gettext } = useGettext()
-const { inputRef: primaryInput } = useAutoFocus()
 const { showDate } = useDate()
 const route = useRoute()
 const uiStore = useUiStore()
@@ -521,16 +130,16 @@ const element = reactive({
 const breadcrumbs = ref([
   {
     text: $gettext('Dashboard'),
-    icon: appIcon('home'),
+    icon: 'mdi-home',
     to: 'home',
   },
   {
     text: $gettext('Release'),
-    icon: appIcon('release'),
+    icon: 'mdi-rocket-launch',
   },
   {
     text: $gettext('Deployments'),
-    icon: modelIcon(model),
+    icon: 'mdi-rocket-launch',
     to: 'deployments-dashboard',
   },
 ])
@@ -538,18 +147,10 @@ const breadcrumbs = ref([
 const projects = ref([])
 const domains = ref([])
 const schedules = ref([])
-const source = ref(null)
 
-const sources = reactive([
-  {
-    id: 'I',
-    name: $gettext('Internal'),
-  },
-  {
-    id: 'E',
-    name: $gettext('External'),
-  },
-])
+const updateElement = (key, value) => {
+  element[key] = value
+}
 
 const isValid = computed(() => {
   return (
@@ -671,12 +272,16 @@ const loadRelated = async () => {
     element.default_excluded_packages =
       element.default_excluded_packages.join('\n')
 
-    element.available_packages.sort((a, b) =>
-      a.fullname > b.fullname ? 1 : b.fullname > a.fullname ? -1 : 0,
-    )
-    element.available_package_sets.sort((a, b) =>
-      a.name > b.name ? 1 : b.name > a.name ? -1 : 0,
-    )
+    if (element.available_packages) {
+      element.available_packages.sort((a, b) =>
+        a.fullname > b.fullname ? 1 : b.fullname > a.fullname ? -1 : 0,
+      )
+    }
+    if (element.available_package_sets) {
+      element.available_package_sets.sort((a, b) =>
+        a.name > b.name ? 1 : b.name > a.name ? -1 : 0,
+      )
+    }
   }
 
   updateSchedule()
@@ -742,10 +347,6 @@ const updateRelated = async () => {
   await updateSchedule()
 }
 
-const updateStats = () => {
-  if (element.schedule === null) element.stats = {}
-}
-
 const resetElement = () => {
   Object.assign(element, {
     id: 0,
@@ -792,30 +393,4 @@ const regenerateMetadata = async (id) => {
   }
 }
 
-const filterPackages = async (val) => {
-  if (!element.project) return
-
-  const { data } = await api.get('/api/v1/token/packages/', {
-    params: {
-      search: val.toLowerCase(),
-      project__id: element.project.id,
-      store__isnull: false,
-    },
-  })
-
-  return data.results
-}
-
-const filterPackageSets = async (val) => {
-  if (!element.project) return
-
-  const { data } = await api.get('/api/v1/token/package-sets/', {
-    params: {
-      search: val.toLowerCase(),
-      project__id: element.project.id,
-    },
-  })
-
-  return data.results
-}
 </script>
