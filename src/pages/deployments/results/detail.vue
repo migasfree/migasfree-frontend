@@ -392,5 +392,4 @@ const regenerateMetadata = async (id) => {
     uiStore.notifyError(error)
   }
 }
-
 </script>

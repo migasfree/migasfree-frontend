@@ -65,7 +65,9 @@
               :label="$gettext('Available Package Sets')"
               :aria-label="$gettext('Available Package Sets')"
               :fetch-options="filterPackageSets"
-              @update:model-value="updateElement('available_package_sets', $event)"
+              @update:model-value="
+                updateElement('available_package_sets', $event)
+              "
             >
               <template #option="{ scope }">
                 <q-item v-bind="scope.itemProps">

@@ -23,9 +23,7 @@
         </div>
 
         <div
-          :class="
-            element.timeline ? 'col-md-3 col-sm-3' : 'col-md-4 col-sm-4'
-          "
+          :class="element.timeline ? 'col-md-3 col-sm-3' : 'col-md-4 col-sm-4'"
         >
           <EntitySelect
             :model-value="element.schedule"
@@ -57,13 +55,14 @@
           />
         </div>
 
-        <div
-          v-if="element.id && element.timeline"
-          class="col-md-3 col-sm-3"
-        >
+        <div v-if="element.id && element.timeline" class="col-md-3 col-sm-3">
           <q-field outlined :label="$gettext('Timeline')" stack-label>
             <template #control>
-              <Timeline :id="element.id" :model-value="element.timeline" @update:model-value="updateElement('timeline', $event)" />
+              <Timeline
+                :id="element.id"
+                :model-value="element.timeline"
+                @update:model-value="updateElement('timeline', $event)"
+              />
             </template>
           </q-field>
         </div>
