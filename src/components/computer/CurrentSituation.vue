@@ -314,6 +314,7 @@ import FilteredMultiSelect from 'components/ui/FilteredMultiSelect'
 import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon, useElement } from 'composables/element'
+import { useSmartRequest } from 'composables/smartRequest'
 
 defineOptions({
   name: 'ComputerCurrentSituation',
@@ -351,6 +352,7 @@ const emit = defineEmits(['updated'])
 const { $gettext } = useGettext()
 const uiStore = useUiStore()
 const { elementIcon, attributeValue } = useElement()
+const { smartRequest } = useSmartRequest()
 
 const loading = ref(false)
 const statusOptions = ref([])
@@ -383,7 +385,7 @@ watch(
 
 const getComputerStatus = async () => {
   try {
-    const response = await api.get('/api/v1/token/computers/status/')
+    const response = await smartRequest('/api/v1/token/computers/status/')
     const { choices } = response.data
 
     Object.entries(choices).forEach(([key, val]) => {
@@ -400,7 +402,7 @@ const getComputerStatus = async () => {
 
 const loadErrors = async () => {
   try {
-    const { data } = await api.get(
+    const { data } = await smartRequest(
       `/api/v1/token/computers/${props.cid}/errors/`,
     )
     Object.assign(errors, data)
@@ -411,7 +413,7 @@ const loadErrors = async () => {
 
 const loadFaults = async () => {
   try {
-    const { data } = await api.get(
+    const { data } = await smartRequest(
       `/api/v1/token/computers/${props.cid}/faults/`,
     )
     Object.assign(faults, data)
@@ -421,7 +423,7 @@ const loadFaults = async () => {
 }
 
 const filterTags = async (val) => {
-  const { data } = await api.get('/api/v1/token/tags/', {
+  const { data } = await smartRequest('/api/v1/token/tags/', {
     params: { search: val.toLowerCase() },
   })
 
