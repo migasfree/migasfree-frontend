@@ -12,38 +12,40 @@ describe('WCAG AA Accessibility Audit', () => {
     cy.visit(path)
     cy.injectAxe()
 
-    // Wait for Quasar/Vue components to stabilize and ECharts to animate
-    cy.wait(cy.env('A11Y_WAIT_TIME') || 2500)
+    cy.env(['A11Y_WAIT_TIME', 'FAIL_ON_A11Y_VIOLATIONS']).then((envVars) => {
+      // Wait for Quasar/Vue components to stabilize and ECharts to animate
+      cy.wait(envVars.A11Y_WAIT_TIME || 2500)
 
-    cy.checkA11y(
-      null,
-      {
-        runOnly: {
-          type: 'tag',
-          values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'],
+      cy.checkA11y(
+        null,
+        {
+          runOnly: {
+            type: 'tag',
+            values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'],
+          },
         },
-      },
-      (violations) => {
-        // 1. Report to JSON for artifact collection
-        cy.readFile('cypress/wcag-violations.json').then((data) => {
-          const current = data || {}
-          current[path] = violations
-          cy.writeFile('cypress/wcag-violations.json', current)
-        })
-
-        // 2. Report to console for CI visibility
-        if (violations.length > 0) {
-          cy.task(
-            'log',
-            `🚨 Found ${violations.length} accessibility violations on ${path}`,
-          )
-          violations.forEach((v) => {
-            cy.task('log', `Violation: [${v.id}] ${v.help} (${v.impact})`)
+        (violations) => {
+          // 1. Report to JSON for artifact collection
+          cy.readFile('cypress/wcag-violations.json').then((data) => {
+            const current = data || {}
+            current[path] = violations
+            cy.writeFile('cypress/wcag-violations.json', current)
           })
-        }
-      },
-      !(cy.env('FAIL_ON_A11Y_VIOLATIONS') === 'true'),
-    )
+
+          // 2. Report to console for CI visibility
+          if (violations.length > 0) {
+            cy.task(
+              'log',
+              `🚨 Found ${violations.length} accessibility violations on ${path}`,
+            )
+            violations.forEach((v) => {
+              cy.task('log', `Violation: [${v.id}] ${v.help} (${v.impact})`)
+            })
+          }
+        },
+        !(envVars.FAIL_ON_A11Y_VIOLATIONS === 'true'),
+      )
+    })
   }
 
   describe('Unauthenticated Pages', () => {
@@ -57,15 +59,17 @@ describe('WCAG AA Accessibility Audit', () => {
 
   describe('Authenticated Modules', () => {
     beforeEach(() => {
-      const user = cy.env('AUTH_USER') || 'admin'
-      const password = cy.env('AUTH_PASS') || 'admin'
-
       // Perform real login once for all authenticated tests in this block
       cy.visit('/login')
-      // Use more robust selectors in case ID isn't matching the native input
-      cy.get('input[autocomplete="username"]').type(user, { force: true })
-      cy.get('input[type="password"]').type(password, { force: true })
-      cy.get('button[type="submit"]').click()
+
+      cy.env(['AUTH_USER', 'AUTH_PASS']).then((envVars) => {
+        const user = envVars.AUTH_USER || 'admin'
+        const password = envVars.AUTH_PASS || 'admin'
+        // Use more robust selectors in case ID isn't matching the native input
+        cy.get('input[autocomplete="username"]').type(user, { force: true })
+        cy.get('input[type="password"]').type(password, { force: true })
+        cy.get('button[type="submit"]').click()
+      })
 
       // Wait for redirect to dashboard
       cy.url().should('not.include', '/login')
