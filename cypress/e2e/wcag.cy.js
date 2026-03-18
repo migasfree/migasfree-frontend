@@ -67,7 +67,7 @@ describe('WCAG AA Accessibility Audit', () => {
   })
 
   describe('Authenticated Modules', () => {
-    before(() => {
+    beforeEach(() => {
       // Perform real login once for all authenticated tests in this block
       cy.visit('/login')
       // Use more robust selectors in case ID isn't matching the native input
