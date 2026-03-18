@@ -1,8 +1,4 @@
 describe('WCAG AA Accessibility Audit', () => {
-  const user = Cypress.env('AUTH_USER') || 'admin'
-  const password = Cypress.env('AUTH_PASS') || 'admin'
-  const shouldFail = Cypress.env('FAIL_ON_A11Y_VIOLATIONS') === 'true'
-
   before(() => {
     // Reset violations file if running locally
     cy.writeFile('cypress/wcag-violations.json', {})
@@ -17,7 +13,7 @@ describe('WCAG AA Accessibility Audit', () => {
     cy.injectAxe()
 
     // Wait for Quasar/Vue components to stabilize and ECharts to animate
-    cy.wait(Cypress.env('A11Y_WAIT_TIME') || 2500)
+    cy.wait(cy.env('A11Y_WAIT_TIME') || 2500)
 
     cy.checkA11y(
       null,
@@ -46,7 +42,7 @@ describe('WCAG AA Accessibility Audit', () => {
           })
         }
       },
-      !shouldFail,
+      !(cy.env('FAIL_ON_A11Y_VIOLATIONS') === 'true'),
     )
   }
 
@@ -55,19 +51,15 @@ describe('WCAG AA Accessibility Audit', () => {
       // Create a separate session or just logout to audit login
       cy.clearCookies()
       cy.clearLocalStorage()
-      cy.visit('/login')
-      cy.injectAxe()
-      cy.checkA11y(null, {
-        runOnly: {
-          type: 'tag',
-          values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'],
-        },
-      })
+      checkAccessibility('/login')
     })
   })
 
   describe('Authenticated Modules', () => {
     beforeEach(() => {
+      const user = cy.env('AUTH_USER') || 'admin'
+      const password = cy.env('AUTH_PASS') || 'admin'
+
       // Perform real login once for all authenticated tests in this block
       cy.visit('/login')
       // Use more robust selectors in case ID isn't matching the native input
