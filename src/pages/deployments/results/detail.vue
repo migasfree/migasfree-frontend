@@ -95,6 +95,8 @@ import DeploymentActions from 'components/deployment/Actions'
 import DeploymentSchedule from 'components/deployment/Schedule'
 
 import useDate from 'composables/date'
+import { appIcon } from 'composables/element'
+
 const { $gettext } = useGettext()
 const { showDate } = useDate()
 const route = useRoute()
