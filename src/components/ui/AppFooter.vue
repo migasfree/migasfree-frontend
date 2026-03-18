@@ -39,7 +39,7 @@
             href="https://github.com/migasfree/migasfree-frontend"
           >
             <q-item-section>
-              <q-item-label>Frontend</q-item-label>
+              <q-item-label>{{ $gettext('Frontend') }}</q-item-label>
               <q-item-label caption>{{ appVersion }}</q-item-label>
             </q-item-section>
           </q-item>
@@ -50,7 +50,7 @@
             href="https://github.com/migasfree/migasfree-backend"
           >
             <q-item-section>
-              <q-item-label>Backend</q-item-label>
+              <q-item-label>{{ $gettext('Backend') }}</q-item-label>
               <q-item-label caption>{{ serverVersion }}</q-item-label>
             </q-item-section>
           </q-item>
