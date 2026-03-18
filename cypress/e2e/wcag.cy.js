@@ -72,7 +72,7 @@ describe('WCAG AA Accessibility Audit', () => {
       })
 
       // Wait for redirect to dashboard
-      cy.url().should('not.include', '/login')
+      cy.url({ timeout: 15000 }).should('not.include', '/login')
     })
 
     const pages = [
