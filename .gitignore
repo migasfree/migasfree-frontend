@@ -44,3 +44,5 @@ yarn.lock
 /debug-storybook.log
 /storybook-static/
 forensic_audit_report.md
+/cypress/wcag-violations.json
+/cypress/screenshots
