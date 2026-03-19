@@ -59,20 +59,17 @@ describe('WCAG AA Accessibility Audit', () => {
 
   describe('Authenticated Modules', () => {
     beforeEach(() => {
-      // Perform real login once for all authenticated tests in this block
-      cy.visit('/login')
-
       cy.env(['AUTH_USER', 'AUTH_PASS']).then((envVars) => {
         const user = envVars.AUTH_USER || 'admin'
         const password = envVars.AUTH_PASS || 'admin'
-        // Use more robust selectors in case ID isn't matching the native input
-        cy.get('input[autocomplete="username"]').type(user, { force: true })
-        cy.get('input[type="password"]').type(password, { force: true })
-        cy.get('button[type="submit"]').click()
+        // Uses the custom session-based login with mocks (no real backend needed)
+        cy.login(user, password)
       })
 
-      // Wait for redirect to dashboard
-      cy.url({ timeout: 15000 }).should('not.include', '/login')
+      // Intercept general API calls to prevent UI crashes in CI where backend is absent
+      cy.intercept('GET', '**/api/v1/token/**', { count: 0, results: [] })
+      cy.intercept('GET', '**/api/v1/public/**', { count: 0, results: [] })
+      cy.intercept('GET', '**/api/v1/stats/**', {})
     })
 
     const pages = [
