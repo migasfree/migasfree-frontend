@@ -19,12 +19,13 @@ msgstr "Hay una nueva versión de la aplicación disponible."
 #: src/App.vue:52
 msgid ""
 "Please refresh the page to apply the updates and ensure optimal performance."
-msgstr "Por favor, actualiza la página para aplicar los cambios y asegurar un rendimiento óptimo."
+msgstr ""
+"Por favor, actualiza la página para aplicar los cambios y asegurar un "
+"rendimiento óptimo."
 
 #: src/App.vue:64
-#, fuzzy
 msgid "Refresh"
-msgstr "Auto-refresco"
+msgstr "Actualizar"
 
 #: src/boot/axios.js:92
 msgid "Session Expired"
@@ -359,7 +360,9 @@ msgstr "Establecer como predeterminado"
 
 #: src/components/computer/Devices.vue:93
 msgid "Select which of the assigned devices is the primary for this computer."
-msgstr "Selecciona cuál de los dispositivos asignados es el principal para este ordenador."
+msgstr ""
+"Selecciona cuál de los dispositivos asignados es el principal para este "
+"ordenador."
 
 #: src/components/computer/Devices.vue:181
 msgid "Devices have been changed!"
@@ -927,39 +930,39 @@ msgstr "Paquetes disponibles"
 msgid "Available Package Sets"
 msgstr "Conjuntos de paquetes disponibles"
 
-#: src/components/deployment/Packages.vue:103
+#: src/components/deployment/Packages.vue:105
 #: src/components/imports/DeploymentEditor.vue:104
 msgid "Base URL"
 msgstr "URL base"
 
-#: src/components/deployment/Packages.vue:114
+#: src/components/deployment/Packages.vue:116
 #: src/components/imports/DeploymentEditor.vue:112
 msgid "Suite"
 msgstr "Suite"
 
-#: src/components/deployment/Packages.vue:125
-#: src/components/deployment/Packages.vue:126
+#: src/components/deployment/Packages.vue:127
+#: src/components/deployment/Packages.vue:128
 #: src/components/imports/DeploymentEditor.vue:120
 msgid "Components"
 msgstr "Componentes"
 
-#: src/components/deployment/Packages.vue:137
-#: src/components/deployment/Packages.vue:138
+#: src/components/deployment/Packages.vue:139
+#: src/components/deployment/Packages.vue:140
 #: src/components/imports/DeploymentEditor.vue:128
 msgid "Options"
 msgstr "Opciones"
 
-#: src/components/deployment/Packages.vue:150
-#: src/components/deployment/Packages.vue:151
+#: src/components/deployment/Packages.vue:152
+#: src/components/deployment/Packages.vue:153
 msgid "Expire (minutes)"
 msgstr "Expiración (minutos)"
 
-#: src/components/deployment/Packages.vue:161
-#: src/components/deployment/Packages.vue:162
+#: src/components/deployment/Packages.vue:163
+#: src/components/deployment/Packages.vue:164
 msgid "Frozen?"
 msgstr "¿Congelado?"
 
-#: src/components/deployment/Packages.vue:194
+#: src/components/deployment/Packages.vue:196
 #: src/components/imports/DeploymentEditor.vue:40
 #: src/components/imports/DeploymentEditor.vue:66
 #: src/pages/deployments/results/list.vue:125
@@ -967,7 +970,7 @@ msgstr "¿Congelado?"
 msgid "Internal"
 msgstr "Interno"
 
-#: src/components/deployment/Packages.vue:198
+#: src/components/deployment/Packages.vue:200
 #: src/components/imports/DeploymentEditor.vue:40
 #: src/components/imports/DeploymentEditor.vue:66
 #: src/pages/deployments/results/list.vue:126
@@ -986,7 +989,7 @@ msgstr "Cuándo (calendario)"
 msgid "Start Date"
 msgstr "Fecha de inicio"
 
-#: src/components/deployment/Schedule.vue:33
+#: src/components/deployment/Schedule.vue:31
 #: src/components/deployment/Timeline.vue:28
 #: src/components/deployment/Timeline.vue:46
 #: src/pages/deployments/results/list.vue:152
@@ -994,20 +997,20 @@ msgstr "Fecha de inicio"
 msgid "Schedule"
 msgstr "Calendario"
 
-#: src/components/deployment/Schedule.vue:37
+#: src/components/deployment/Schedule.vue:35
 msgid "Add Schedule"
 msgstr "Añadir calendario"
 
-#: src/components/deployment/Schedule.vue:54
-#: src/components/deployment/Schedule.vue:55
+#: src/components/deployment/Schedule.vue:52
+#: src/components/deployment/Schedule.vue:53
 msgid "Auto Restart?"
 msgstr "¿Autoreinicio?"
 
-#: src/components/deployment/Schedule.vue:64
+#: src/components/deployment/Schedule.vue:59
 msgid "Timeline"
 msgstr "Línea temporal"
 
-#: src/components/deployment/Schedule.vue:75
+#: src/components/deployment/Schedule.vue:74
 msgid "Provided Computers / Delay"
 msgstr "Ordenadores previstos / Demora"
 
@@ -1124,7 +1127,7 @@ msgstr "Eliminar"
 #: src/components/ui/SearchBox.vue:111
 #: src/pages/computers/results/simulate.vue:172
 #: src/pages/deployments/index.vue:63
-#: src/pages/deployments/results/detail.vue:141
+#: src/pages/deployments/results/detail.vue:143
 #: src/pages/deployments/results/list.vue:72
 msgid "Deployments"
 msgstr "Despliegues"
@@ -1205,7 +1208,9 @@ msgstr "Esperando..."
 msgid ""
 "Internal deployments require packages to be uploaded. Download them from the "
 "URLs below and upload the .deb/.rpm files."
-msgstr "Los despliegues internos requieren que se suban paquetes. Descárgalos de las URLs a continuación y sube los archivos .deb/.rpm."
+msgstr ""
+"Los despliegues internos requieren que se suban paquetes. Descárgalos de las "
+"URLs a continuación y sube los archivos .deb/.rpm."
 
 #: src/components/imports/StepPackages.vue:26
 msgid "Download URL"
@@ -1263,9 +1268,8 @@ msgid "Stores"
 msgstr "Almacenes"
 
 #: src/components/MigasLink.vue:55
-#, fuzzy
 msgid "Relations"
-msgstr "Ubicaciones"
+msgstr "Relaciones"
 
 #: src/components/MigasLink.vue:125
 msgid "No relations found"
@@ -1324,6 +1328,14 @@ msgstr "Licencia"
 #: src/components/ui/AppFooter.vue:26 src/components/ui/AppFooter.vue:31
 msgid "Source code"
 msgstr "Código fuente"
+
+#: src/components/ui/AppFooter.vue:42
+msgid "Frontend"
+msgstr "Frontend"
+
+#: src/components/ui/AppFooter.vue:53
+msgid "Backend"
+msgstr "Backend"
 
 #: src/components/ui/AppFooter.vue:68 src/components/ui/AppFooter.vue:70
 msgid "API Rest Info"
@@ -1434,7 +1446,7 @@ msgstr "Reemplazo de dispositivos"
 #: src/pages/applications/results/list.vue:63
 #: src/pages/categories/results/detail.vue:80
 #: src/pages/categories/results/list.vue:55 src/pages/deployments/index.vue:76
-#: src/pages/deployments/results/detail.vue:137
+#: src/pages/deployments/results/detail.vue:139
 #: src/pages/deployments/results/list.vue:76 src/pages/imports/index.vue:246
 #: src/pages/package-sets/results/detail.vue:182
 #: src/pages/package-sets/results/list.vue:46 src/pages/packages/index.vue:57
@@ -1621,15 +1633,13 @@ msgstr "Comprobar elementos seleccionados"
 
 #: src/components/ui/TableBulkActions.vue:20
 #: src/components/ui/TableBulkActions.vue:22
-#, fuzzy
 msgid "Not Check selected items"
-msgstr "Ningún dispositivo seleccionado"
+msgstr "Desmarcar elementos seleccionados"
 
 #: src/components/ui/TableBulkActions.vue:32
 #: src/components/ui/TableBulkActions.vue:34
-#, fuzzy
 msgid "Enable selected items"
-msgstr "Despliegues habilitados"
+msgstr "Habilitar elementos seleccionados"
 
 #: src/components/ui/TableBulkActions.vue:42
 #: src/components/ui/TableBulkActions.vue:44
@@ -1638,9 +1648,8 @@ msgstr "Deshabilitar elementos seleccionados"
 
 #: src/components/ui/TableBulkActions.vue:55
 #: src/components/ui/TableBulkActions.vue:57
-#, fuzzy
 msgid "Export selected items"
-msgstr "Importación completada con errores"
+msgstr "Exportar elementos seleccionados"
 
 #: src/components/ui/TableBulkActions.vue:65
 #: src/components/ui/TableBulkActions.vue:67
@@ -1758,18 +1767,16 @@ msgid "There are no results"
 msgstr "No hay resultados"
 
 #: src/components/ui/TableRowActions.vue:10
-#, fuzzy
 msgid "Check item"
-msgstr "Comprobado"
+msgstr "Marcar elemento"
 
 #: src/components/ui/TableRowActions.vue:12
 msgid "Check"
 msgstr "Comprobar"
 
 #: src/components/ui/TableRowActions.vue:22
-#, fuzzy
 msgid "Uncheck item"
-msgstr "Sin comprobar"
+msgstr "Desmarcar elemento"
 
 #: src/components/ui/TableRowActions.vue:24
 msgid "Not Check"
@@ -2018,14 +2025,12 @@ msgid "unsubscribed"
 msgstr "de baja"
 
 #: src/composables/dataGrid/useTableAccessibility.js:25
-#, fuzzy
 msgid "Select All"
-msgstr "Selecciona un fichero"
+msgstr "Seleccionar todo"
 
 #: src/composables/dataGrid/useTableAccessibility.js:25
-#, fuzzy
 msgid "Select Row"
-msgstr "Modo de selección"
+msgstr "Seleccionar fila"
 
 #: src/composables/date.js:44
 msgid "Sunday"
@@ -2233,7 +2238,7 @@ msgstr "De baja"
 #: src/pages/computers/softwareCompare.vue:159
 #: src/pages/connections/results/detail.vue:112 src/pages/Dashboard.vue:201
 #: src/pages/deployments/index.vue:71
-#: src/pages/deployments/results/detail.vue:132
+#: src/pages/deployments/results/detail.vue:134
 #: src/pages/device-types/results/detail.vue:60 src/pages/devices/index.vue:70
 #: src/pages/devices/replacement.vue:219
 #: src/pages/devices/results/detail.vue:227
@@ -2592,9 +2597,10 @@ msgstr "Ordenadores físicos que entran al sistema por año"
 
 #: src/pages/computers/replacement.vue:15
 msgid "This procedure changes status, tags and devices between two computers."
-msgstr "Este procedimiento intercambia estados, etiquetas y dispositivos entre dos ordenadores."
-"Este procedimiento intercambia el estado, las etiquetas y los dispositivos "
-"entre dos ordenadores."
+msgstr ""
+"Este procedimiento intercambia estados, etiquetas y dispositivos entre dos "
+"ordenadores.Este procedimiento intercambia el estado, las etiquetas y los "
+"dispositivos entre dos ordenadores."
 
 #: src/pages/computers/replacement.vue:91
 #: src/pages/computers/replacement.vue:193
@@ -2623,9 +2629,8 @@ msgid "Replacement done!"
 msgstr "¡Reemplazo realizado!"
 
 #: src/pages/computers/results/events.vue:66
-#, fuzzy
 msgid "Change event type"
-msgstr "Cambiar ámbito"
+msgstr "Cambiar tipo de suceso"
 
 #: src/pages/computers/results/events.vue:221
 #: src/pages/schedules/results/detail.vue:90
@@ -2885,11 +2890,11 @@ msgstr "Despliegues / Calendario"
 msgid "Regenerate Metadata"
 msgstr "Regenerar metadatos"
 
-#: src/pages/deployments/results/detail.vue:103
+#: src/pages/deployments/results/detail.vue:105
 msgid "Deployment"
 msgstr "Despliegue"
 
-#: src/pages/deployments/results/detail.vue:201
+#: src/pages/deployments/results/detail.vue:203
 msgid "Made"
 msgstr "Realizados"
 
@@ -2929,9 +2934,10 @@ msgstr "Dispositivos / Fabricante"
 
 #: src/pages/devices/replacement.vue:15
 msgid "This procedure switches assigned computers between two devices."
-msgstr "Este procedimiento intercambia los ordenadores asignados entre dos dispositivos."
+msgstr ""
 "Este procedimiento intercambia los ordenadores asignados entre dos "
-"dispositivos."
+"dispositivos.Este procedimiento intercambia los ordenadores asignados entre "
+"dos dispositivos."
 
 #: src/pages/devices/replacement.vue:86 src/pages/devices/replacement.vue:183
 msgid "No device selected"
@@ -3114,18 +3120,21 @@ msgstr "Clase"
 msgid ""
 "This code will execute in the client computer, and it must put in the "
 "standard output the value of the attribute correspondent to this property."
-msgstr "Este código se ejecutará en el ordenador cliente, y debe mostrar en la salida estándar el valor del atributo correspondiente a esta propiedad."
-"Este código será ejecutado en el ordenador cliente y se debe poner en la "
-"salida estándar el valor del atributo correspondiente a esta propiedad."
+msgstr ""
+"Este código se ejecutará en el ordenador cliente, y debe mostrar en la "
+"salida estándar el valor del atributo correspondiente a esta propiedad.Este "
+"código será ejecutado en el ordenador cliente y se debe poner en la salida "
+"estándar el valor del atributo correspondiente a esta propiedad."
 
 #: src/pages/formulas/results/detail.vue:131
 #: src/pages/singularities/results/detail.vue:120
 msgid ""
 "The format of this value is 'name~description', where 'description' is "
 "optional."
-msgstr "El formato de este valor es 'nombre~descripción', donde 'descripción' es opcional."
+msgstr ""
 "El formato de este valor es 'nombre~descripción', donde 'descripción' es "
-"opcional."
+"opcional.El formato de este valor es 'nombre~descripción', donde "
+"'descripción' es opcional."
 
 #: src/pages/formulas/results/detail.vue:138
 #: src/pages/singularities/results/detail.vue:127
@@ -3224,9 +3233,10 @@ msgstr "Archivo de plantilla no válido"
 
 #: src/pages/imports/index.vue:530
 msgid "Could not load the import template. Please check that the file exists."
-msgstr "No se pudo cargar la plantilla de importación. Por favor, comprueba que el archivo existe."
+msgstr ""
 "No se pudo cargar la plantilla de importación. Por favor, comprueba que el "
-"archivo existe."
+"archivo existe.No se pudo cargar la plantilla de importación. Por favor, "
+"comprueba que el archivo existe."
 
 #: src/pages/logical-devices/results/detail.vue:113
 #: src/pages/logical-devices/results/list.vue:68
@@ -3402,9 +3412,10 @@ msgstr "Listado de plataformas"
 
 #: src/pages/policies/results/detail.vue:43
 msgid "If you uncheck this field, the policy is disabled for all computers."
-msgstr "Si desmarcas esta casilla, la política se deshabilitará para todos los ordenadores."
-"Si desmarca este campo, la política está deshabilitada para todos los "
-"ordenadores."
+msgstr ""
+"Si desmarcas esta casilla, la política se deshabilitará para todos los "
+"ordenadores.Si desmarca este campo, la política está deshabilitada para "
+"todos los ordenadores."
 
 #: src/pages/policies/results/detail.vue:54
 msgid "Exclusive?"
@@ -3414,9 +3425,11 @@ msgstr "¿Exclusivo?"
 msgid ""
 "If you check this field, it orders to uninstall the Applications assigned in "
 "the priorities that have not been met."
-msgstr "Si marcas esta casilla, se ordenará desinstalar las Aplicaciones asignadas en las prioridades que no se hayan alcanzado."
-"Si marca este campo, ordena desinstalar las aplicaciones asignadas en las "
-"prioridades que no se han cumplido."
+msgstr ""
+"Si marcas esta casilla, se ordenará desinstalar las Aplicaciones asignadas "
+"en las prioridades que no se hayan alcanzado.Si marca este campo, ordena "
+"desinstalar las aplicaciones asignadas en las prioridades que no se han "
+"cumplido."
 
 #: src/pages/policies/results/detail.vue:79
 msgid "Application Area"
@@ -3692,9 +3705,10 @@ msgstr "Autorizaciones"
 msgid ""
 "Indicates whether the user should be treated as active. Uncheck this option "
 "instead of deleting the account."
-msgstr "Indica si el usuario debe ser tratado como activo. Desmarca esta opción en lugar de borrar la cuenta."
-"Indica si el usuario debe ser tratado como activo. Desmarque esta opción en "
-"lugar de borrar la cuenta."
+msgstr ""
+"Indica si el usuario debe ser tratado como activo. Desmarca esta opción en "
+"lugar de borrar la cuenta.Indica si el usuario debe ser tratado como activo. "
+"Desmarque esta opción en lugar de borrar la cuenta."
 
 #: src/pages/user-profiles/results/detail.vue:172
 msgid "Is Super User?"
@@ -3704,9 +3718,10 @@ msgstr "¿Es superusuario?"
 msgid ""
 "Indicates that this user has all permissions without explicitly assigning "
 "them."
-msgstr "Indica que este usuario tiene todos los permisos sin asignárselos explícitamente."
+msgstr ""
 "Indica que este usuario tiene todos los permisos sin asignárselos "
-"explícitamente."
+"explícitamente.Indica que este usuario tiene todos los permisos sin "
+"asignárselos explícitamente."
 
 #: src/pages/user-profiles/results/detail.vue:189
 msgid "Is Staff?"

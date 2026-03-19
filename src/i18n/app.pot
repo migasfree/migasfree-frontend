@@ -991,39 +991,39 @@ msgstr ""
 msgid "Available Package Sets"
 msgstr ""
 
-#: src/components/deployment/Packages.vue:103
+#: src/components/deployment/Packages.vue:105
 #: src/components/imports/DeploymentEditor.vue:104
 msgid "Base URL"
 msgstr ""
 
-#: src/components/deployment/Packages.vue:114
+#: src/components/deployment/Packages.vue:116
 #: src/components/imports/DeploymentEditor.vue:112
 msgid "Suite"
 msgstr ""
 
-#: src/components/deployment/Packages.vue:125
-#: src/components/deployment/Packages.vue:126
+#: src/components/deployment/Packages.vue:127
+#: src/components/deployment/Packages.vue:128
 #: src/components/imports/DeploymentEditor.vue:120
 msgid "Components"
 msgstr ""
 
-#: src/components/deployment/Packages.vue:137
-#: src/components/deployment/Packages.vue:138
+#: src/components/deployment/Packages.vue:139
+#: src/components/deployment/Packages.vue:140
 #: src/components/imports/DeploymentEditor.vue:128
 msgid "Options"
 msgstr ""
 
-#: src/components/deployment/Packages.vue:150
-#: src/components/deployment/Packages.vue:151
+#: src/components/deployment/Packages.vue:152
+#: src/components/deployment/Packages.vue:153
 msgid "Expire (minutes)"
 msgstr ""
 
-#: src/components/deployment/Packages.vue:161
-#: src/components/deployment/Packages.vue:162
+#: src/components/deployment/Packages.vue:163
+#: src/components/deployment/Packages.vue:164
 msgid "Frozen?"
 msgstr ""
 
-#: src/components/deployment/Packages.vue:194
+#: src/components/deployment/Packages.vue:196
 #: src/components/imports/DeploymentEditor.vue:40
 #: src/components/imports/DeploymentEditor.vue:66
 #: src/pages/deployments/results/list.vue:125
@@ -1031,7 +1031,7 @@ msgstr ""
 msgid "Internal"
 msgstr ""
 
-#: src/components/deployment/Packages.vue:198
+#: src/components/deployment/Packages.vue:200
 #: src/components/imports/DeploymentEditor.vue:40
 #: src/components/imports/DeploymentEditor.vue:66
 #: src/pages/deployments/results/list.vue:126
@@ -1050,7 +1050,7 @@ msgstr ""
 msgid "Start Date"
 msgstr ""
 
-#: src/components/deployment/Schedule.vue:33
+#: src/components/deployment/Schedule.vue:31
 #: src/components/deployment/Timeline.vue:28
 #: src/components/deployment/Timeline.vue:46
 #: src/pages/deployments/results/list.vue:152
@@ -1058,20 +1058,20 @@ msgstr ""
 msgid "Schedule"
 msgstr ""
 
-#: src/components/deployment/Schedule.vue:37
+#: src/components/deployment/Schedule.vue:35
 msgid "Add Schedule"
 msgstr ""
 
-#: src/components/deployment/Schedule.vue:54
-#: src/components/deployment/Schedule.vue:55
+#: src/components/deployment/Schedule.vue:52
+#: src/components/deployment/Schedule.vue:53
 msgid "Auto Restart?"
 msgstr ""
 
-#: src/components/deployment/Schedule.vue:64
+#: src/components/deployment/Schedule.vue:59
 msgid "Timeline"
 msgstr ""
 
-#: src/components/deployment/Schedule.vue:75
+#: src/components/deployment/Schedule.vue:74
 msgid "Provided Computers / Delay"
 msgstr ""
 
@@ -1198,7 +1198,7 @@ msgstr ""
 #: src/components/ui/SearchBox.vue:111
 #: src/pages/computers/results/simulate.vue:172
 #: src/pages/deployments/index.vue:63
-#: src/pages/deployments/results/detail.vue:141
+#: src/pages/deployments/results/detail.vue:143
 #: src/pages/deployments/results/list.vue:72
 msgid "Deployments"
 msgstr ""
@@ -1403,6 +1403,14 @@ msgstr ""
 msgid "Source code"
 msgstr ""
 
+#: src/components/ui/AppFooter.vue:42
+msgid "Frontend"
+msgstr ""
+
+#: src/components/ui/AppFooter.vue:53
+msgid "Backend"
+msgstr ""
+
 #: src/components/ui/AppFooter.vue:68
 #: src/components/ui/AppFooter.vue:70
 msgid "API Rest Info"
@@ -1526,7 +1534,7 @@ msgstr ""
 #: src/pages/categories/results/detail.vue:80
 #: src/pages/categories/results/list.vue:55
 #: src/pages/deployments/index.vue:76
-#: src/pages/deployments/results/detail.vue:137
+#: src/pages/deployments/results/detail.vue:139
 #: src/pages/deployments/results/list.vue:76
 #: src/pages/imports/index.vue:246
 #: src/pages/package-sets/results/detail.vue:182
@@ -2380,7 +2388,7 @@ msgstr ""
 #: src/pages/connections/results/detail.vue:112
 #: src/pages/Dashboard.vue:201
 #: src/pages/deployments/index.vue:71
-#: src/pages/deployments/results/detail.vue:132
+#: src/pages/deployments/results/detail.vue:134
 #: src/pages/device-types/results/detail.vue:60
 #: src/pages/devices/index.vue:70
 #: src/pages/devices/replacement.vue:219
@@ -3061,11 +3069,11 @@ msgstr ""
 msgid "Regenerate Metadata"
 msgstr ""
 
-#: src/pages/deployments/results/detail.vue:103
+#: src/pages/deployments/results/detail.vue:105
 msgid "Deployment"
 msgstr ""
 
-#: src/pages/deployments/results/detail.vue:201
+#: src/pages/deployments/results/detail.vue:203
 msgid "Made"
 msgstr ""
 

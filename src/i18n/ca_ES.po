@@ -19,7 +19,9 @@ msgstr "Hi ha una nova versió de l'aplicació disponible."
 #: src/App.vue:52
 msgid ""
 "Please refresh the page to apply the updates and ensure optimal performance."
-msgstr "Si us plau, actualitza la pàgina per aplicar els canvis i assegurar un rendiment òptim."
+msgstr ""
+"Si us plau, actualitza la pàgina per aplicar els canvis i assegurar un "
+"rendiment òptim."
 
 #: src/App.vue:64
 msgid "Refresh"
@@ -358,7 +360,9 @@ msgstr "Establir com a predeterminat"
 
 #: src/components/computer/Devices.vue:93
 msgid "Select which of the assigned devices is the primary for this computer."
-msgstr "Selecciona quin dels dispositius assignats és el principal per a aquest ordinador."
+msgstr ""
+"Selecciona quin dels dispositius assignats és el principal per a aquest "
+"ordinador."
 
 #: src/components/computer/Devices.vue:181
 msgid "Devices have been changed!"
@@ -926,39 +930,39 @@ msgstr "Paquets disponibles"
 msgid "Available Package Sets"
 msgstr "Conjunts de paquets disponibles"
 
-#: src/components/deployment/Packages.vue:103
+#: src/components/deployment/Packages.vue:105
 #: src/components/imports/DeploymentEditor.vue:104
 msgid "Base URL"
 msgstr "URL base"
 
-#: src/components/deployment/Packages.vue:114
+#: src/components/deployment/Packages.vue:116
 #: src/components/imports/DeploymentEditor.vue:112
 msgid "Suite"
 msgstr "Suite"
 
-#: src/components/deployment/Packages.vue:125
-#: src/components/deployment/Packages.vue:126
+#: src/components/deployment/Packages.vue:127
+#: src/components/deployment/Packages.vue:128
 #: src/components/imports/DeploymentEditor.vue:120
 msgid "Components"
 msgstr "Components"
 
-#: src/components/deployment/Packages.vue:137
-#: src/components/deployment/Packages.vue:138
+#: src/components/deployment/Packages.vue:139
+#: src/components/deployment/Packages.vue:140
 #: src/components/imports/DeploymentEditor.vue:128
 msgid "Options"
 msgstr "Opcions"
 
-#: src/components/deployment/Packages.vue:150
-#: src/components/deployment/Packages.vue:151
+#: src/components/deployment/Packages.vue:152
+#: src/components/deployment/Packages.vue:153
 msgid "Expire (minutes)"
 msgstr "Caduca (minuts)"
 
-#: src/components/deployment/Packages.vue:161
-#: src/components/deployment/Packages.vue:162
+#: src/components/deployment/Packages.vue:163
+#: src/components/deployment/Packages.vue:164
 msgid "Frozen?"
 msgstr "¿Congelat?"
 
-#: src/components/deployment/Packages.vue:194
+#: src/components/deployment/Packages.vue:196
 #: src/components/imports/DeploymentEditor.vue:40
 #: src/components/imports/DeploymentEditor.vue:66
 #: src/pages/deployments/results/list.vue:125
@@ -966,7 +970,7 @@ msgstr "¿Congelat?"
 msgid "Internal"
 msgstr "Intern"
 
-#: src/components/deployment/Packages.vue:198
+#: src/components/deployment/Packages.vue:200
 #: src/components/imports/DeploymentEditor.vue:40
 #: src/components/imports/DeploymentEditor.vue:66
 #: src/pages/deployments/results/list.vue:126
@@ -985,7 +989,7 @@ msgstr "Quan (Calendari)"
 msgid "Start Date"
 msgstr "Data d'inici"
 
-#: src/components/deployment/Schedule.vue:33
+#: src/components/deployment/Schedule.vue:31
 #: src/components/deployment/Timeline.vue:28
 #: src/components/deployment/Timeline.vue:46
 #: src/pages/deployments/results/list.vue:152
@@ -993,20 +997,20 @@ msgstr "Data d'inici"
 msgid "Schedule"
 msgstr "Calendari"
 
-#: src/components/deployment/Schedule.vue:37
+#: src/components/deployment/Schedule.vue:35
 msgid "Add Schedule"
 msgstr "Afegeix calendari"
 
-#: src/components/deployment/Schedule.vue:54
-#: src/components/deployment/Schedule.vue:55
+#: src/components/deployment/Schedule.vue:52
+#: src/components/deployment/Schedule.vue:53
 msgid "Auto Restart?"
 msgstr "¿Autoreinici?"
 
-#: src/components/deployment/Schedule.vue:64
+#: src/components/deployment/Schedule.vue:59
 msgid "Timeline"
 msgstr "Línia de temps"
 
-#: src/components/deployment/Schedule.vue:75
+#: src/components/deployment/Schedule.vue:74
 msgid "Provided Computers / Delay"
 msgstr "Ordinadors previstos / Retard"
 
@@ -1123,7 +1127,7 @@ msgstr "Eliminar"
 #: src/components/ui/SearchBox.vue:111
 #: src/pages/computers/results/simulate.vue:172
 #: src/pages/deployments/index.vue:63
-#: src/pages/deployments/results/detail.vue:141
+#: src/pages/deployments/results/detail.vue:143
 #: src/pages/deployments/results/list.vue:72
 msgid "Deployments"
 msgstr "Desplegaments"
@@ -1204,7 +1208,9 @@ msgstr "Esperant..."
 msgid ""
 "Internal deployments require packages to be uploaded. Download them from the "
 "URLs below and upload the .deb/.rpm files."
-msgstr "Els desplegaments interns requereixen que es pugin els paquets. Descarrega'ls des de les URLs d'abaix i puja els arxius .deb/.rpm."
+msgstr ""
+"Els desplegaments interns requereixen que es pugin els paquets. "
+"Descarrega'ls des de les URLs d'abaix i puja els arxius .deb/.rpm."
 
 #: src/components/imports/StepPackages.vue:26
 msgid "Download URL"
@@ -1262,9 +1268,8 @@ msgid "Stores"
 msgstr "Magatzems"
 
 #: src/components/MigasLink.vue:55
-#, fuzzy
 msgid "Relations"
-msgstr "Ubicacions"
+msgstr "Relacions"
 
 #: src/components/MigasLink.vue:125
 msgid "No relations found"
@@ -1323,6 +1328,14 @@ msgstr "Llicència"
 #: src/components/ui/AppFooter.vue:26 src/components/ui/AppFooter.vue:31
 msgid "Source code"
 msgstr "Codi font"
+
+#: src/components/ui/AppFooter.vue:42
+msgid "Frontend"
+msgstr "Frontend"
+
+#: src/components/ui/AppFooter.vue:53
+msgid "Backend"
+msgstr "Backend"
 
 #: src/components/ui/AppFooter.vue:68 src/components/ui/AppFooter.vue:70
 msgid "API Rest Info"
@@ -1433,7 +1446,7 @@ msgstr "Reemplaçament de dispositius"
 #: src/pages/applications/results/list.vue:63
 #: src/pages/categories/results/detail.vue:80
 #: src/pages/categories/results/list.vue:55 src/pages/deployments/index.vue:76
-#: src/pages/deployments/results/detail.vue:137
+#: src/pages/deployments/results/detail.vue:139
 #: src/pages/deployments/results/list.vue:76 src/pages/imports/index.vue:246
 #: src/pages/package-sets/results/detail.vue:182
 #: src/pages/package-sets/results/list.vue:46 src/pages/packages/index.vue:57
@@ -1620,15 +1633,13 @@ msgstr "Seleccionar elements marcats"
 
 #: src/components/ui/TableBulkActions.vue:20
 #: src/components/ui/TableBulkActions.vue:22
-#, fuzzy
 msgid "Not Check selected items"
-msgstr "Cap dispositiu seleccionat"
+msgstr "Desmarcar els elements seleccionats"
 
 #: src/components/ui/TableBulkActions.vue:32
 #: src/components/ui/TableBulkActions.vue:34
-#, fuzzy
 msgid "Enable selected items"
-msgstr "Desplegaments habilitats"
+msgstr "Habilitar els elements seleccionats"
 
 #: src/components/ui/TableBulkActions.vue:42
 #: src/components/ui/TableBulkActions.vue:44
@@ -1637,9 +1648,8 @@ msgstr "Inhabilitar elements seleccionats"
 
 #: src/components/ui/TableBulkActions.vue:55
 #: src/components/ui/TableBulkActions.vue:57
-#, fuzzy
 msgid "Export selected items"
-msgstr "Importació completada amb errors"
+msgstr "Exportar els elements seleccionats"
 
 #: src/components/ui/TableBulkActions.vue:65
 #: src/components/ui/TableBulkActions.vue:67
@@ -1757,18 +1767,16 @@ msgid "There are no results"
 msgstr "No hi ha resultats"
 
 #: src/components/ui/TableRowActions.vue:10
-#, fuzzy
 msgid "Check item"
-msgstr "Comprovat"
+msgstr "Marcar element"
 
 #: src/components/ui/TableRowActions.vue:12
 msgid "Check"
 msgstr "Comproveu"
 
 #: src/components/ui/TableRowActions.vue:22
-#, fuzzy
 msgid "Uncheck item"
-msgstr "Sense comprovar"
+msgstr "Desmarcar element"
 
 #: src/components/ui/TableRowActions.vue:24
 msgid "Not Check"
@@ -2017,14 +2025,12 @@ msgid "unsubscribed"
 msgstr "de baixa"
 
 #: src/composables/dataGrid/useTableAccessibility.js:25
-#, fuzzy
 msgid "Select All"
-msgstr "Seleccioneu un fitxer"
+msgstr "Seleccionar-ho tot"
 
 #: src/composables/dataGrid/useTableAccessibility.js:25
-#, fuzzy
 msgid "Select Row"
-msgstr "Mode de selecció"
+msgstr "Seleccionar fila"
 
 #: src/composables/date.js:44
 msgid "Sunday"
@@ -2232,7 +2238,7 @@ msgstr "De baixa"
 #: src/pages/computers/softwareCompare.vue:159
 #: src/pages/connections/results/detail.vue:112 src/pages/Dashboard.vue:201
 #: src/pages/deployments/index.vue:71
-#: src/pages/deployments/results/detail.vue:132
+#: src/pages/deployments/results/detail.vue:134
 #: src/pages/device-types/results/detail.vue:60 src/pages/devices/index.vue:70
 #: src/pages/devices/replacement.vue:219
 #: src/pages/devices/results/detail.vue:227
@@ -2591,9 +2597,10 @@ msgstr "Els ordinadors físics que entren al sistema per any"
 
 #: src/pages/computers/replacement.vue:15
 msgid "This procedure changes status, tags and devices between two computers."
-msgstr "Aquest procediment intercanvia estat, alertes i dispositius entre dos ordinadors."
-"Aquest procediment canvia l'estat, etiquetes i dispositius entre dos "
-"ordinadors."
+msgstr ""
+"Aquest procediment intercanvia estat, alertes i dispositius entre dos "
+"ordinadors.Aquest procediment canvia l'estat, etiquetes i dispositius entre "
+"dos ordinadors."
 
 #: src/pages/computers/replacement.vue:91
 #: src/pages/computers/replacement.vue:193
@@ -2622,9 +2629,8 @@ msgid "Replacement done!"
 msgstr "¡Reemplaçament realitzat!"
 
 #: src/pages/computers/results/events.vue:66
-#, fuzzy
 msgid "Change event type"
-msgstr "Canviar àmbit"
+msgstr "Canviar tipus d'esdeveniment"
 
 #: src/pages/computers/results/events.vue:221
 #: src/pages/schedules/results/detail.vue:90
@@ -2884,11 +2890,11 @@ msgstr "Desplegaments / Calendari"
 msgid "Regenerate Metadata"
 msgstr "Regenerar metadades"
 
-#: src/pages/deployments/results/detail.vue:103
+#: src/pages/deployments/results/detail.vue:105
 msgid "Deployment"
 msgstr "Desplegament"
 
-#: src/pages/deployments/results/detail.vue:201
+#: src/pages/deployments/results/detail.vue:203
 msgid "Made"
 msgstr "Fet"
 
@@ -2928,8 +2934,10 @@ msgstr "Dispositius / Fabricant"
 
 #: src/pages/devices/replacement.vue:15
 msgid "This procedure switches assigned computers between two devices."
-msgstr "Aquest procediment intercanvia els ordinadors assignats entre dos dispositius."
-"Aquest procediment canvia els ordinadors assignats entre dos dispositius."
+msgstr ""
+"Aquest procediment intercanvia els ordinadors assignats entre dos "
+"dispositius.Aquest procediment canvia els ordinadors assignats entre dos "
+"dispositius."
 
 #: src/pages/devices/replacement.vue:86 src/pages/devices/replacement.vue:183
 msgid "No device selected"
@@ -3112,18 +3120,20 @@ msgstr "Classe"
 msgid ""
 "This code will execute in the client computer, and it must put in the "
 "standard output the value of the attribute correspondent to this property."
-msgstr "Aquest codi s'executarà a l'ordinador del client, i ha de posar en la sortida estàndard el valor de l'atribut corresponent a aquesta propietat."
-"Aquest codi s'executarà a l'ordinador client, i ha de posar a la sortida "
-"estàndard el valor de l'atribut corresponent a aquesta propietat."
+msgstr ""
+"Aquest codi s'executarà a l'ordinador del client, i ha de posar en la "
+"sortida estàndard el valor de l'atribut corresponent a aquesta "
+"propietat.Aquest codi s'executarà a l'ordinador client, i ha de posar a la "
+"sortida estàndard el valor de l'atribut corresponent a aquesta propietat."
 
 #: src/pages/formulas/results/detail.vue:131
 #: src/pages/singularities/results/detail.vue:120
 msgid ""
 "The format of this value is 'name~description', where 'description' is "
 "optional."
-msgstr "El format d'aquest valor és 'nom~descripció', on 'descripció' és opcional."
-"El format d'aquest valor és \"nom~descripció\", on \"descripció\" és "
-"opcional."
+msgstr ""
+"El format d'aquest valor és 'nom~descripció', on 'descripció' és opcional.El "
+"format d'aquest valor és \"nom~descripció\", on \"descripció\" és opcional."
 
 #: src/pages/formulas/results/detail.vue:138
 #: src/pages/singularities/results/detail.vue:127
@@ -3222,9 +3232,10 @@ msgstr "Fitxer de plantilla no vàlid"
 
 #: src/pages/imports/index.vue:530
 msgid "Could not load the import template. Please check that the file exists."
-msgstr "No s'ha pogut carregar la plantilla d'importació. Si us plau, comprova que el fitxer existeix."
-"No s'ha pogut carregar la plantilla d'importació. Comproveu que el fitxer "
-"existeix."
+msgstr ""
+"No s'ha pogut carregar la plantilla d'importació. Si us plau, comprova que "
+"el fitxer existeix.No s'ha pogut carregar la plantilla d'importació. "
+"Comproveu que el fitxer existeix."
 
 #: src/pages/logical-devices/results/detail.vue:113
 #: src/pages/logical-devices/results/list.vue:68
@@ -3400,9 +3411,10 @@ msgstr "Llista de plataformes"
 
 #: src/pages/policies/results/detail.vue:43
 msgid "If you uncheck this field, the policy is disabled for all computers."
-msgstr "Si desmarqueu aquesta casella, la política es desactivarà per a tots els ordinadors."
-"Si desmarca aquest camp, la política està deshabilitada per a tots els "
-"ordinadors."
+msgstr ""
+"Si desmarqueu aquesta casella, la política es desactivarà per a tots els "
+"ordinadors.Si desmarca aquest camp, la política està deshabilitada per a "
+"tots els ordinadors."
 
 #: src/pages/policies/results/detail.vue:54
 msgid "Exclusive?"
@@ -3412,9 +3424,11 @@ msgstr "¿Exclusiu?"
 msgid ""
 "If you check this field, it orders to uninstall the Applications assigned in "
 "the priorities that have not been met."
-msgstr "Si marqueu aquesta casella, s'ordenarà desinstal·lar les aplicacions assignades a les prioritats que no s'han acomplert."
-"Si marqueu aquest camp, ordena desinstal·lar les Aplicacions assignades a "
-"les prioritats que no s'han complert."
+msgstr ""
+"Si marqueu aquesta casella, s'ordenarà desinstal·lar les aplicacions "
+"assignades a les prioritats que no s'han acomplert.Si marqueu aquest camp, "
+"ordena desinstal·lar les Aplicacions assignades a les prioritats que no "
+"s'han complert."
 
 #: src/pages/policies/results/detail.vue:79
 msgid "Application Area"
@@ -3690,9 +3704,10 @@ msgstr "Autoritzacions"
 msgid ""
 "Indicates whether the user should be treated as active. Uncheck this option "
 "instead of deleting the account."
-msgstr "Indica si l'usuari s'ha de tractar com a actiu. Desmarqueu aquesta opció en lloc d'eliminar el compte."
-"Indica si l'usuari ha de ser tractat com a actiu. Desmarqueu aquesta opció "
-"en lloc de suprimir el compte."
+msgstr ""
+"Indica si l'usuari s'ha de tractar com a actiu. Desmarqueu aquesta opció en "
+"lloc d'eliminar el compte.Indica si l'usuari ha de ser tractat com a actiu. "
+"Desmarqueu aquesta opció en lloc de suprimir el compte."
 
 #: src/pages/user-profiles/results/detail.vue:172
 msgid "Is Super User?"
@@ -3702,9 +3717,10 @@ msgstr "¿És superusuari?"
 msgid ""
 "Indicates that this user has all permissions without explicitly assigning "
 "them."
-msgstr "Indica que aquest usuari té tots els permisos sense assignar-los explícitament."
+msgstr ""
 "Indica que aquest usuari té tots els permisos sense assignar-los "
-"explícitament."
+"explícitament.Indica que aquest usuari té tots els permisos sense assignar-"
+"los explícitament."
 
 #: src/pages/user-profiles/results/detail.vue:189
 msgid "Is Staff?"
