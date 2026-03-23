@@ -122,9 +122,21 @@ const enrichAttribute = async (attr) => {
 }
 
 const updateAttributes = async () => {
-  const enriched = await Promise.all(localValue.value.map(enrichAttribute))
-  localValue.value = enriched
-  emit('update:model-value', [...enriched])
+  if (!Array.isArray(localValue.value)) {
+    localValue.value = []
+  }
+  
+  try {
+    const enriched = await Promise.all(localValue.value.map(enrichAttribute))
+    localValue.value = enriched
+    emit('update:model-value', [...enriched])
+  } catch (error) {
+    if (error.code === 'ERR_CANCELED' || error.name === 'CanceledError') {
+      console.debug('updateAttributes request cancelled by router')
+    } else {
+      console.error('Error in updateAttributes:', error)
+    }
+  }
 }
 
 // --- Copy/Paste ---
@@ -146,8 +158,12 @@ watch(
   () => props.modelValue,
   async (newVal, oldVal) => {
     if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
-      localValue.value = [...newVal]
-      await updateAttributes()
+      localValue.value = Array.isArray(newVal) ? [...newVal] : []
+      try {
+        await updateAttributes()
+      } catch (error) {
+        console.error('Watcher attribute update failed:', error)
+      }
     }
   },
   { immediate: true },
@@ -155,9 +171,15 @@ watch(
 
 watch(localValue, (val) => {
   emit('update:model-value', val ?? [])
-})
+}, { deep: true })
 
-onMounted(updateAttributes)
+onMounted(async () => {
+  try {
+    await updateAttributes()
+  } catch (e) {
+    console.error('onMounted updateAttributes failed:', e)
+  }
+})
 </script>
 
 <style scoped>
