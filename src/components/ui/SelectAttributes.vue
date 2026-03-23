@@ -50,6 +50,7 @@
     <div v-if="hasPaste" class="copy-paste-actions row q-mt-sm justify-end">
       <MicroInteractionButton
         :icon="appIcon('copy')"
+        size="md"
         :success-icon="appIcon('yes')"
         :tooltip="$gettext('Copy')"
         :success-tooltip="$gettext('Copied!')"
@@ -58,6 +59,7 @@
 
       <MicroInteractionButton
         :icon="appIcon('paste')"
+        size="md"
         :success-icon="appIcon('yes')"
         :tooltip="$gettext('Paste')"
         :success-tooltip="$gettext('Pasted!')"
