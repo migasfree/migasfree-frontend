@@ -16,6 +16,9 @@ vi.mock('quasar', () => ({
   useQuasar: () => ({
     dark: mockDark,
   }),
+  format: {
+    capitalize: (val) => (val ? val.charAt(0).toUpperCase() + val.slice(1) : ''),
+  },
 }))
 
 vi.mock('vue-router', () => ({
