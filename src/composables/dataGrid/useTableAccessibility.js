@@ -7,7 +7,7 @@ import { useGettext } from 'vue3-gettext'
  * @param {import('vue').Ref} tableRef - ref to the vue-good-table component
  */
 export function useTableAccessibility(tableRef) {
-  const { $gettext } = useGettext()
+  const { $gettext, interpolate } = useGettext()
 
   const runFix = () => {
     if (!tableRef.value?.$el) return
@@ -35,9 +35,10 @@ export function useTableAccessibility(tableRef) {
         !select.getAttribute('aria-label')
       ) {
         const name = select.getAttribute('name') || ''
+        const fieldName = name.replace('vgt-', '')
         select.setAttribute(
           'aria-label',
-          `${$gettext('Filter by')} ${name.replace('vgt-', '')}`,
+          interpolate($gettext('Filter by %s'), [fieldName]),
         )
       }
     })

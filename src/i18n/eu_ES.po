@@ -27,35 +27,35 @@ msgstr ""
 msgid "Refresh"
 msgstr "Eguneratu"
 
-#: src/boot/axios.js:92
+#: src/boot/axios.js:90
 msgid "Session Expired"
 msgstr "Saioa iraungi da"
 
-#: src/boot/axios.js:93
+#: src/boot/axios.js:91
 msgid "Please login again"
 msgstr "Mesedez, hasi saioa berriro"
 
-#: src/boot/axios.js:107
+#: src/boot/axios.js:105
 msgid "Internal Server Error"
 msgstr "Zerbitzariaren barne-errorea"
 
-#: src/boot/axios.js:108
+#: src/boot/axios.js:106
 msgid "Please try again later"
 msgstr "Mesedez, saiatu berriro geroago"
 
-#: src/boot/axios.js:122
+#: src/boot/axios.js:120
 msgid "Error ${error.response.status}"
 msgstr "Errorea ${error.response.status}"
 
-#: src/boot/axios.js:125
+#: src/boot/axios.js:123
 msgid "An unexpected error occurred"
 msgstr "Ustekabeko errore bat gertatu da"
 
-#: src/boot/axios.js:133
+#: src/boot/axios.js:131
 msgid "Network Error"
 msgstr "Sare-errorea"
 
-#: src/boot/axios.js:134
+#: src/boot/axios.js:132
 msgid "Unable to connect to the server. Please check your connection."
 msgstr "Ezin da zerbitzarira konektatu. Egiaztatu konexioa."
 
@@ -216,7 +216,7 @@ msgstr "Azken eguna"
 msgid "Update"
 msgstr "Eguneraketa"
 
-#: src/components/chart/StackedBar.vue:486 src/composables/chart/export.js:81
+#: src/components/chart/StackedBar.vue:488 src/composables/chart/export.js:81
 #: src/composables/chart/export.js:92
 msgid "Browser denied file download..."
 msgstr "Arakatzaileak ukatu egin du fitxategia deskargatzea..."
@@ -336,13 +336,13 @@ msgstr "Egungo egoera aldatu da!"
 #: src/pages/devices/results/detail.vue:232
 #: src/pages/devices/results/detail.vue:236
 #: src/pages/devices/results/list.vue:68 src/pages/devices/results/list.vue:71
-#: src/pages/drivers/results/detail.vue:159
+#: src/pages/drivers/results/detail.vue:160
 #: src/pages/drivers/results/list.vue:56
 #: src/pages/logical-devices/results/detail.vue:135
 #: src/pages/logical-devices/results/list.vue:62
 #: src/pages/manufacturers/results/detail.vue:51
 #: src/pages/manufacturers/results/list.vue:54 src/pages/models/index.vue:72
-#: src/pages/models/results/detail.vue:199 src/pages/models/results/list.vue:54
+#: src/pages/models/results/detail.vue:201 src/pages/models/results/list.vue:54
 msgid "Devices"
 msgstr "Gailuak"
 
@@ -511,7 +511,7 @@ msgstr "Plataforma"
 #: src/pages/computers/results/list.vue:189
 #: src/pages/computers/results/simulate.vue:86
 #: src/pages/deployments/results/list.vue:96
-#: src/pages/drivers/results/detail.vue:67
+#: src/pages/drivers/results/detail.vue:68
 #: src/pages/drivers/results/list.vue:90 src/pages/errors/results/detail.vue:68
 #: src/pages/errors/results/list.vue:83 src/pages/faults/results/detail.vue:83
 #: src/pages/faults/results/list.vue:92 src/pages/imports/index.vue:37
@@ -774,7 +774,7 @@ msgstr "Ekintzak"
 #: src/components/imports/ApplicationEditor.vue:92
 #: src/components/imports/DeploymentEditor.vue:145
 #: src/pages/applications/results/detail.vue:180
-#: src/pages/drivers/results/detail.vue:96
+#: src/pages/drivers/results/detail.vue:97
 #: src/pages/models/results/detail.vue:133
 msgid "Packages to Install"
 msgstr "Instalatzeko paketeak"
@@ -842,8 +842,8 @@ msgstr "Gaituta?"
 #: src/pages/devices/results/detail.vue:147
 #: src/pages/domains/results/detail.vue:74
 #: src/pages/drivers/results/detail.vue:26
-#: src/pages/drivers/results/detail.vue:73
-#: src/pages/drivers/results/detail.vue:87
+#: src/pages/drivers/results/detail.vue:74
+#: src/pages/drivers/results/detail.vue:88
 #: src/pages/fault-definitions/results/detail.vue:26
 #: src/pages/fault-definitions/results/detail.vue:63
 #: src/pages/formulas/results/detail.vue:45
@@ -888,7 +888,7 @@ msgid "* Required"
 msgstr "* Beharrezkoa"
 
 #: src/components/deployment/Info.vue:40
-#: src/pages/drivers/results/detail.vue:70
+#: src/pages/drivers/results/detail.vue:71
 #: src/pages/platforms/results/detail.vue:26
 #: src/pages/platforms/results/list.vue:24
 #: src/pages/stores/results/detail.vue:27
@@ -1357,7 +1357,7 @@ msgstr "Loturak"
 msgid "Device Types"
 msgstr "Gailu motak"
 
-#: src/components/ui/AppMenu.vue:152 src/pages/drivers/results/detail.vue:163
+#: src/components/ui/AppMenu.vue:152 src/pages/drivers/results/detail.vue:164
 #: src/pages/drivers/results/list.vue:52 src/pages/models/results/detail.vue:82
 msgid "Drivers"
 msgstr "Gidariak"
@@ -1424,7 +1424,7 @@ msgid "Manufacturers"
 msgstr "Fabrikatzaileak"
 
 #: src/components/ui/AppMenu.vue:233 src/pages/models/index.vue:59
-#: src/pages/models/index.vue:116 src/pages/models/results/detail.vue:203
+#: src/pages/models/index.vue:116 src/pages/models/results/detail.vue:205
 #: src/pages/models/results/list.vue:50
 msgid "Models"
 msgstr "Ereduak"
@@ -2031,6 +2031,10 @@ msgstr "Hautatu dena"
 msgid "Select Row"
 msgstr "Hautatu errenkada"
 
+#: src/composables/dataGrid/useTableAccessibility.js:41
+msgid "Filter by %s"
+msgstr "%s-(r)en arabera iragazi"
+
 #: src/composables/date.js:44
 msgid "Sunday"
 msgstr "Igandea"
@@ -2242,7 +2246,7 @@ msgstr "Harpidetza kendu"
 #: src/pages/devices/replacement.vue:219
 #: src/pages/devices/results/detail.vue:227
 #: src/pages/domains/results/detail.vue:217
-#: src/pages/drivers/results/detail.vue:154 src/pages/errors/index.vue:79
+#: src/pages/drivers/results/detail.vue:155 src/pages/errors/index.vue:79
 #: src/pages/errors/results/detail.vue:135
 #: src/pages/fault-definitions/results/detail.vue:178
 #: src/pages/faults/index.vue:79 src/pages/faults/results/detail.vue:150
@@ -2251,7 +2255,7 @@ msgstr "Harpidetza kendu"
 #: src/pages/logical-devices/results/detail.vue:130
 #: src/pages/manufacturers/results/detail.vue:46
 #: src/pages/migrations/index.vue:69 src/pages/models/index.vue:67
-#: src/pages/models/results/detail.vue:194 src/pages/notifications/index.vue:46
+#: src/pages/models/results/detail.vue:196 src/pages/notifications/index.vue:46
 #: src/pages/package-sets/results/detail.vue:177
 #: src/pages/packages-history/index.vue:46 src/pages/packages/index.vue:52
 #: src/pages/packages/results/detail.vue:170
@@ -2549,7 +2553,7 @@ msgstr "Gehitu gailu logikoa"
 
 #: src/pages/capabilities/results/detail.vue:50
 #: src/pages/devices/results/detail.vue:143
-#: src/pages/drivers/results/detail.vue:81
+#: src/pages/drivers/results/detail.vue:82
 #: src/pages/drivers/results/list.vue:104
 #: src/pages/logical-devices/results/detail.vue:58
 #: src/pages/logical-devices/results/list.vue:91
@@ -2946,7 +2950,7 @@ msgstr "Ez da gailurik hautatu"
 #: src/pages/devices/results/list.vue:94
 #: src/pages/drivers/results/detail.vue:33
 #: src/pages/drivers/results/list.vue:76
-#: src/pages/models/results/detail.vue:171
+#: src/pages/models/results/detail.vue:173
 msgid "Model"
 msgstr "Eredua"
 
@@ -3005,12 +3009,12 @@ msgstr "Domeinuko administratzaileak"
 msgid "Domains List"
 msgstr "Domeinuen zerrenda"
 
-#: src/pages/drivers/results/detail.vue:84
+#: src/pages/drivers/results/detail.vue:85
 #: src/pages/logical-devices/results/detail.vue:61
 msgid "Add Capability"
 msgstr "Gehitu gaitasuna"
 
-#: src/pages/drivers/results/detail.vue:129
+#: src/pages/drivers/results/detail.vue:130
 #: src/pages/drivers/results/list.vue:62
 msgid "Driver"
 msgstr "Gidaria"

@@ -125,7 +125,7 @@ const updateAttributes = async () => {
   if (!Array.isArray(localValue.value)) {
     localValue.value = []
   }
-  
+
   try {
     const enriched = await Promise.all(localValue.value.map(enrichAttribute))
     localValue.value = enriched
@@ -169,9 +169,13 @@ watch(
   { immediate: true },
 )
 
-watch(localValue, (val) => {
-  emit('update:model-value', val ?? [])
-}, { deep: true })
+watch(
+  localValue,
+  (val) => {
+    emit('update:model-value', val ?? [])
+  },
+  { deep: true },
+)
 
 onMounted(async () => {
   try {

@@ -90,7 +90,8 @@ const isActiveRoute = (optionTo) => {
   if (route.name === optionTo) return true
 
   // Only the primary menu items (dashboard/list) should catch related resource routes
-  const isPrimary = optionTo.endsWith('-list') || optionTo.endsWith('-dashboard')
+  const isPrimary =
+    optionTo.endsWith('-list') || optionTo.endsWith('-dashboard')
   if (!isPrimary) return false
 
   // Only highlight for generic resource actions.
@@ -106,10 +107,12 @@ const isActiveRoute = (optionTo) => {
     '-simulate',
     '-information',
     '-change-password',
-    '-label'
+    '-label',
   ]
-  
-  const actionMatch = genericActions.find(action => route.name.endsWith(action))
+
+  const actionMatch = genericActions.find((action) =>
+    route.name.endsWith(action),
+  )
   if (!actionMatch) return false
 
   // Resource base name matching
@@ -120,7 +123,8 @@ const isActiveRoute = (optionTo) => {
   const isMatch = (a, b) => {
     if (a === b) return true
     if (a + 's' === b || a === b + 's') return true
-    if (a.replace(/y$/, 'ies') === b || a === b.replace(/y$/, 'ies')) return true
+    if (a.replace(/y$/, 'ies') === b || a === b.replace(/y$/, 'ies'))
+      return true
     return false
   }
 
