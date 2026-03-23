@@ -162,6 +162,8 @@ import { useUiStore } from 'stores/ui'
 
 import EntitySelect from 'components/ui/EntitySelect'
 import ItemDetail from 'components/ui/ItemDetail'
+import OrderTextArea from 'components/ui/OrderTextArea'
+
 import { appIcon, modelIcon } from 'composables/element'
 
 const { $gettext } = useGettext()
