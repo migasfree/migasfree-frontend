@@ -1,4 +1,3 @@
-import { appIcon, techIcon } from 'composables/element'
 <template>
   <div>
     <!-- Template source toggle -->
@@ -117,6 +116,8 @@ import { appIcon, techIcon } from 'composables/element'
 
 <script setup>
 import { useGettext } from 'vue3-gettext'
+
+import { appIcon } from 'composables/element'
 
 const { $gettext } = useGettext()
 
