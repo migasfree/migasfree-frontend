@@ -60,7 +60,7 @@ onBeforeUnmount(() => {
   min-width: 0; /* Allows shrinking in flex container */
   position: relative;
   display: flex; /* Matches flex child behavior */
-  flex: 1; /* Automatically grow/shrink if needed, can be overridden */
+  flex: 0 1 auto; /* Automatically grow/shrink if needed, can be overridden */
   overflow: hidden;
 }
 

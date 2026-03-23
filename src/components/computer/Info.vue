@@ -95,7 +95,6 @@
               <TextTooltip
                 :text="fqdn"
                 text-class="text-subtitle1 opacity-70"
-                class="fqdn-text-tooltip"
               />
               <CopyToClipboard
                 :content="fqdn"
@@ -382,9 +381,5 @@ const saveName = async () => {
 
 [data-theme='dark'] .name-input :deep(.q-field__native) {
   color: var(--brand-tertiary);
-}
-
-.fqdn-text-tooltip {
-  flex: 0 1 auto;
 }
 </style>
