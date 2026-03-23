@@ -98,8 +98,8 @@ const LEVEL_COLORS = {
 const LEVEL_TEXT_COLORS = {
   critical: 'white',
   error: 'white',
-  warning: 'black',
-  info: 'black',
+  warning: 'white',
+  info: 'white',
   success: 'white',
 }
 
