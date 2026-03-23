@@ -2178,7 +2178,7 @@ msgid "Select Row"
 msgstr ""
 
 #: src/composables/dataGrid/useTableAccessibility.js:41
-msgid "Filter by %s"
+msgid "Filter by %{name}"
 msgstr ""
 
 #: src/composables/date.js:44

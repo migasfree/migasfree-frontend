@@ -2032,8 +2032,8 @@ msgid "Select Row"
 msgstr "Hautatu errenkada"
 
 #: src/composables/dataGrid/useTableAccessibility.js:41
-msgid "Filter by %s"
-msgstr "%s-(r)en arabera iragazi"
+msgid "Filter by %{name}"
+msgstr "%{name}-(r)en arabera iragazi"
 
 #: src/composables/date.js:44
 msgid "Sunday"

@@ -38,7 +38,7 @@ export function useTableAccessibility(tableRef) {
         const fieldName = name.replace('vgt-', '')
         select.setAttribute(
           'aria-label',
-          interpolate($gettext('Filter by %s'), [fieldName]),
+          interpolate($gettext('Filter by %{name}'), { name: fieldName }),
         )
       }
     })

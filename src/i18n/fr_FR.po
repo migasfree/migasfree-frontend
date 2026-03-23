@@ -2037,8 +2037,8 @@ msgid "Select Row"
 msgstr "Sélectionner la ligne"
 
 #: src/composables/dataGrid/useTableAccessibility.js:41
-msgid "Filter by %s"
-msgstr "Filtrer par %s"
+msgid "Filter by %{name}"
+msgstr "Filtrer par %{name}"
 
 #: src/composables/date.js:44
 msgid "Sunday"
