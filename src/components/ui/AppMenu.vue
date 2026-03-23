@@ -90,41 +90,41 @@ const isActiveRoute = (optionTo) => {
   if (route.name === optionTo) return true
 
   // Only the primary menu items (dashboard/list) should catch related resource routes
-  const isPrimary =
-    optionTo.endsWith('-list') || optionTo.endsWith('-dashboard')
+  const isPrimary = optionTo.endsWith('-list') || optionTo.endsWith('-dashboard')
   if (!isPrimary) return false
-
-  const routeParts = route.name.split('-')
-  const routeAction = routeParts[routeParts.length - 1]
 
   // Only highlight for generic resource actions.
   // Special tools (like -replacement) should have their own menu entries or exact match.
   const genericActions = [
-    'list',
-    'dashboard',
-    'detail',
-    'add',
-    'edit',
-    'events',
-    'hardware',
-    'simulate',
-    'information',
-    'change-password',
-    'label',
-    'password',
+    '-list',
+    '-dashboard',
+    '-detail',
+    '-add',
+    '-edit',
+    '-events',
+    '-hardware',
+    '-simulate',
+    '-information',
+    '-change-password',
+    '-label'
   ]
-  if (!genericActions.includes(routeAction)) return false
+  
+  const actionMatch = genericActions.find(action => route.name.endsWith(action))
+  if (!actionMatch) return false
 
   // Resource base name matching
-  // 'schedules-list' -> 'schedule' / 'schedules'
-  const baseName = optionTo.split('-')[0]
-  const routeBaseName = routeParts[0]
+  // Remove the action part from both to compare the resource base path
+  const routeBaseName = route.name.slice(0, -actionMatch.length)
+  const baseName = optionTo.replace(/-list$|-dashboard$/, '')
 
-  return (
-    routeBaseName === baseName ||
-    routeBaseName + 's' === baseName ||
-    routeBaseName === baseName + 's'
-  )
+  const isMatch = (a, b) => {
+    if (a === b) return true
+    if (a + 's' === b || a === b + 's') return true
+    if (a.replace(/y$/, 'ies') === b || a === b.replace(/y$/, 'ies')) return true
+    return false
+  }
+
+  return isMatch(routeBaseName, baseName)
 }
 
 const items = computed(() => {
