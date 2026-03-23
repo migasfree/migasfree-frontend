@@ -11,6 +11,7 @@
             :pk="element.id"
             :value="headerValue"
             :icon="headerIcon"
+            :hide-icon="!headerIcon"
             :tooltip="element.summary || element.description"
           />
           <span v-else class="vertical-middle">{{ elementText }}</span>
@@ -215,7 +216,7 @@ const headerIcon = computed(() => {
   if (props.model === 'features')
     return elementIcon(props.element.property_att.prefix)
   if (props.model === 'computers') return elementIcon(props.element.status)
-  return modelIcon(props.model)
+  return null
 })
 </script>
 

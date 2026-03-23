@@ -150,6 +150,7 @@ const props = defineProps({
   tooltip: { type: String, default: '' },
   icon: { type: String, default: '' },
   light: { type: Boolean, default: false },
+  hideIcon: { type: Boolean, default: false },
 })
 
 const router = useRouter()
@@ -194,7 +195,9 @@ const normalizeQuery = (obj) =>
 
 // --- Computed ---
 
-const resolvedIcon = computed(() => props.icon || modelIcon(props.model))
+const resolvedIcon = computed(() =>
+  props.hideIcon ? null : props.icon || modelIcon(props.model),
+)
 
 const link = computed(
   () => `/${normalizeModel(props.model)}/results/${props.pk}`,
