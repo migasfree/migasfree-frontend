@@ -88,6 +88,7 @@
 
         <span v-else-if="slotProps.column.field == 'computer.__str__'">
           <MigasLink
+            v-if="slotProps.row.computer"
             model="computers"
             :pk="slotProps.row.computer.id"
             :value="slotProps.row.computer.__str__"
@@ -157,7 +158,7 @@
         <span
           v-else-if="slotProps.column.field == 'synchronization.start_date'"
         >
-          <DateView :value="slotProps.row.synchronization.start_date" />
+          <DateView :value="slotProps.row.synchronization?.start_date" />
         </span>
 
         <span
