@@ -137,6 +137,7 @@ import { abbreviateNumber } from 'js-abbreviation-number'
 import pluralize from 'pluralize-esm'
 
 import { api } from 'boot/axios'
+import { format } from 'quasar'
 import { useUiStore } from 'stores/ui'
 import { modelIcon, useElement } from 'composables/element'
 import { MAX_PREFIX_LEN } from 'config/app.conf'
@@ -156,6 +157,7 @@ const props = defineProps({
 const router = useRouter()
 const uiStore = useUiStore()
 const { computerStatus, elementIcon } = useElement()
+const { capitalize } = format
 
 const rawRelations = ref(null)
 const resolvedRelations = ref([])
@@ -269,7 +271,7 @@ const buildRelationRoute = (item) => {
 const processRelations = (data) => {
   resolvedRelations.value = data.map((item) => ({
     count: item.count,
-    text: item.text,
+    text: capitalize(item.text),
     actions: item.actions,
     to: buildRelationRoute(item),
   }))
