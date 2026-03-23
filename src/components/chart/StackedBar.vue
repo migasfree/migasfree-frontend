@@ -262,6 +262,7 @@ import {
   MarkPointComponent,
   MarkLineComponent,
 } from 'echarts/components'
+import { LegacyGridContainLabel } from 'echarts/features'
 import { SVGRenderer } from 'echarts/renderers'
 
 import { useUiStore } from 'stores/ui'
@@ -285,6 +286,7 @@ echarts.use([
   LegendComponent,
   MarkPointComponent,
   MarkLineComponent,
+  LegacyGridContainLabel,
   SVGRenderer,
 ])
 
