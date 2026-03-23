@@ -2,6 +2,7 @@ import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 
 import { useUiStore } from 'stores/ui'
+import { useElement } from 'composables/element'
 
 export function useTableHandlers(deps) {
   const {
@@ -17,6 +18,7 @@ export function useTableHandlers(deps) {
   const route = useRoute()
   const { $gettext } = useGettext()
   const uiStore = useUiStore()
+  const { elementIcon } = useElement()
 
   const onPageChange = (params) => {
     updateParams({ page: params.currentPage })
@@ -158,14 +160,22 @@ export function useTableHandlers(deps) {
             id: options.productive.join(','),
             label: $gettext('productive'),
             children: Object.entries(options.productive).map(([, val]) => {
-              return { id: val, label: options.choices[val] }
+              return {
+                id: val,
+                label: options.choices[val],
+                icon: elementIcon(val),
+              }
             }),
           },
           {
             id: options.unproductive.join(','),
             label: $gettext('unproductive'),
             children: Object.entries(options.unproductive).map(([, val]) => {
-              return { id: val, label: options.choices[val] }
+              return {
+                id: val,
+                label: options.choices[val],
+                icon: elementIcon(val),
+              }
             }),
           },
         ],
@@ -173,6 +183,7 @@ export function useTableHandlers(deps) {
       {
         id: options.unsubscribed.join(','),
         label: $gettext('unsubscribed'),
+        icon: elementIcon('unsubscribed'),
       },
     ]
 
