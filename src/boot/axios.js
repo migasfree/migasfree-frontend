@@ -21,7 +21,7 @@ const getAcceptLanguage = (lang) => {
 export default boot(({ app, router }) => {
   let abortController = null
 
-  router.beforeEach(async (to, from, next) => {
+  router.beforeEach(async () => {
     // cancel any ongoing requests
     if (abortController) {
       abortController.abort()
@@ -31,8 +31,6 @@ export default boot(({ app, router }) => {
     // set new abortController
     abortController = new AbortController()
     api.defaults.signal = abortController.signal
-
-    next()
   })
 
   api.interceptors.request.use(

@@ -38,21 +38,15 @@ export default route(function (/* { store, ssrContext } */) {
     ),
   })
 
-  Router.beforeEach((to, from, next) => {
+  Router.beforeEach((to) => {
     // cancelSource.cancel('Operation canceled by the user')
 
     const authStore = useAuthStore()
 
     if (to.matched.some((item) => item.meta.authRequired)) {
-      if (authStore.loggedIn) {
-        next()
-      } else {
-        next({ name: 'login', query: { nextUrl: to.fullPath } })
+      if (!authStore.loggedIn) {
+        return { name: 'login', query: { nextUrl: to.fullPath } }
       }
-      // } else if (to.name === 'login' && authStore.loggedIn) {
-      //  next({name: 'home'})
-    } else {
-      next()
     }
   })
 
