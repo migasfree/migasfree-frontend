@@ -492,7 +492,8 @@ const fetchRelations = async () => {
 .popover-menu {
   border-radius: 16px !important;
   border: 1px solid var(--border);
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   background: rgba(var(--bg-card-rgb), 0.95);
   backdrop-filter: blur(10px);
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
