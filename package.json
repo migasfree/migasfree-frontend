@@ -67,7 +67,7 @@
     "@pinia/testing": "1.0.3",
     "@quasar/app-webpack": "4.4.2",
     "@quasar/quasar-app-extension-qmarkdown": "2.0.5",
-    "@storybook/addon-a11y": "10.3.2",
+    "@storybook/addon-a11y": "10.3.3",
     "@storybook/addon-links": "10.3.2",
     "@storybook/vue3": "10.3.2",
     "@storybook/vue3-webpack5": "8.6.18",
