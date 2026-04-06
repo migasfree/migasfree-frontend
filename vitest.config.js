@@ -25,7 +25,7 @@ export default defineConfig({
     },
     server: {
       deps: {
-        inline: ['@asamuzakjp/css-color', 'cssstyle'],
+        inline: ['@asamuzakjp/css-color', 'cssstyle', 'jsdom'],
       },
     },
   },
