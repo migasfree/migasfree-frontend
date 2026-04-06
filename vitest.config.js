@@ -27,10 +27,8 @@ export default defineConfig({
     threads: {
       singleThread: true,
     },
-    alias: {
-      '@asamuzakjp/css-color': fileURLToPath(
-        new URL('./test/mocks/css-color-mock.js', import.meta.url),
-      ),
+    deps: {
+      interopDefault: true,
     },
     server: {
       deps: {
@@ -50,6 +48,9 @@ export default defineConfig({
       boot: fileURLToPath(new URL('./src/boot', import.meta.url)),
       stores: fileURLToPath(new URL('./src/stores', import.meta.url)),
       '~assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
+      '@asamuzakjp/css-color': fileURLToPath(
+        new URL('./test/mocks/css-color-mock.js', import.meta.url),
+      ),
     },
     extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue'],
   },
