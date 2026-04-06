@@ -24,14 +24,17 @@ export default defineConfig({
       all: true,
     },
     pool: 'threads',
-    poolOptions: {
-      threads: {
-        singleThread: true,
-      },
+    threads: {
+      singleThread: true,
+    },
+    alias: {
+      '@asamuzakjp/css-color': fileURLToPath(
+        new URL('./test/mocks/css-color-mock.js', import.meta.url),
+      ),
     },
     server: {
       deps: {
-        inline: ['@asamuzakjp/css-color', 'cssstyle', 'jsdom'],
+        inline: ['quasar', 'vue-echarts', 'echarts', 'jsdom', 'cssstyle'],
       },
     },
   },
