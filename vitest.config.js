@@ -23,6 +23,11 @@ export default defineConfig({
       ],
       all: true,
     },
+    server: {
+      deps: {
+        inline: ['@asamuzakjp/css-color', 'cssstyle'],
+      },
+    },
   },
   resolve: {
     alias: {
