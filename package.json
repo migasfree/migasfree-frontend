@@ -80,7 +80,7 @@
     "css-loader": "7.1.4",
     "cypress": "15.12.0",
     "cypress-axe": "1.7.0",
-    "eslint": "10.1.0",
+    "eslint": "10.2.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.5",
     "eslint-plugin-security": "4.0.0",
@@ -97,7 +97,7 @@
     "sass-loader": "16.0.7",
     "storybook": "10.3.2",
     "style-loader": "4.0.0",
-    "vitest": "4.1.0",
+    "vitest": "4.1.2",
     "vitest-axe": "0.1.0",
     "vue-eslint-parser": "10.4.0",
     "webpack": "5.105.4"
