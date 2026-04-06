@@ -23,6 +23,12 @@ export default defineConfig({
       ],
       all: true,
     },
+    pool: 'threads',
+    poolOptions: {
+      threads: {
+        singleThread: true,
+      },
+    },
     server: {
       deps: {
         inline: ['@asamuzakjp/css-color', 'cssstyle', 'jsdom'],
