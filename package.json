@@ -1,5 +1,6 @@
 {
   "name": "migasfree-frontend",
+  "packageManager": "yarn@4.1.0",
   "version": "5.0",
   "type": "module",
   "description": "Systems Management System (frontend) (with Quasar framework)",
