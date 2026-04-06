@@ -28,17 +28,25 @@ jobs:
 
       - name: Install dependencies
         run: |
-          yarn
+          corepack enable
+          yarnpkg install
 
       - name: Validate code
         run: |
-          yarn lint
-          yarn format:check
-          yarn test:coverage
+          yarnpkg lint
+          yarnpkg format:check
+
+      - name: Build
+        run: |
+          yarnpkg build
+
+      - name: Test coverage
+        run: |
+          yarnpkg test:coverage
 
       - name: Security audit
         run: |
-          yarn audit --severity high
+          yarnpkg audit --severity high
         continue-on-error: true
 
   e2e:
@@ -54,12 +62,14 @@ jobs:
           node-version: 20.x
 
       - name: Install dependencies
-        run: yarn
+        run: |
+          corepack enable
+          yarnpkg install
 
       - name: Cypress run
         uses: cypress-io/github-action@v7
         with:
           install: false
-          start: yarn dev
+          start: yarnpkg dev
           wait-on: 'http://localhost:3002'
           browser: chrome
