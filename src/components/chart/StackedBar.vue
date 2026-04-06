@@ -198,10 +198,10 @@
               >
                 <q-list>
                   <q-item v-close-popup clickable @click="exportTable('csv')">
-                    <q-item-section>CSV</q-item-section>
+                    <q-item-section>{{ $gettext('CSV') }}</q-item-section>
                   </q-item>
                   <q-item v-close-popup clickable @click="exportTable('json')">
-                    <q-item-section>JSON</q-item-section>
+                    <q-item-section>{{ $gettext('JSON') }}</q-item-section>
                   </q-item>
                 </q-list>
                 <q-tooltip>{{ $gettext('Export') }}</q-tooltip>

@@ -16,7 +16,7 @@
           <q-icon name="mdi-file-image-outline" size="xs" aria-hidden="true" />
         </q-item-section>
 
-        <q-item-section>SVG</q-item-section>
+        <q-item-section>{{ $gettext('SVG') }}</q-item-section>
       </q-item>
 
       <q-item v-close-popup clickable @click="$emit('save-png')">
@@ -24,7 +24,7 @@
           <q-icon name="mdi-file-image-outline" size="xs" aria-hidden="true" />
         </q-item-section>
 
-        <q-item-section>PNG</q-item-section>
+        <q-item-section>{{ $gettext('PNG') }}</q-item-section>
       </q-item>
 
       <q-separator />
@@ -38,7 +38,7 @@
           />
         </q-item-section>
 
-        <q-item-section>CSV</q-item-section>
+        <q-item-section>{{ $gettext('CSV') }}</q-item-section>
       </q-item>
 
       <q-item v-close-popup clickable @click="$emit('export-data', 'json')">
@@ -46,7 +46,7 @@
           <q-icon :name="appIcon('json')" size="xs" aria-hidden="true" />
         </q-item-section>
 
-        <q-item-section>JSON</q-item-section>
+        <q-item-section>{{ $gettext('JSON') }}</q-item-section>
       </q-item>
     </q-list>
   </q-btn-dropdown>
