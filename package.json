@@ -44,7 +44,7 @@
     "axios": "1.14.0",
     "core-js": "3.49.0",
     "dayjs": "1.11.20",
-    "dompurify": "3.3.3",
+    "dompurify": "3.4.0",
     "echarts": "6.0.0",
     "js-abbreviation-number": "1.4.0",
     "leaflet": "1.9.4",
