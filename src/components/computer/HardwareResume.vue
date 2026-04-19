@@ -296,7 +296,7 @@ import useDate from 'composables/date'
 
 const props = defineProps({
   cid: {
-    type: Number,
+    type: [Number, String],
     required: true,
   },
   lastHardwareCapture: {
@@ -315,7 +315,7 @@ const props = defineProps({
     default: null,
   },
   architecture: {
-    type: Number,
+    type: [Number, String],
     required: false,
     default: 64,
   },
@@ -330,17 +330,17 @@ const props = defineProps({
     default: null,
   },
   ram: {
-    type: Number,
+    type: [Number, String],
     required: false,
     default: 0,
   },
   storage: {
-    type: Number,
+    type: [Number, String],
     required: false,
     default: 0,
   },
   disks: {
-    type: Number,
+    type: [Number, String],
     required: false,
     default: 0,
   },

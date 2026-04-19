@@ -267,7 +267,7 @@ import { appIcon } from 'composables/element'
 
 const props = defineProps({
   cid: {
-    type: Number,
+    type: [Number, String],
     required: true,
   },
   name: {
