@@ -49,7 +49,6 @@
     "leaflet": "1.9.4",
     "pinia": "3.0.4",
     "quasar": "2.19.3",
-    "text-clipper": "2.2.0",
     "v-code-diff": "1.13.1",
     "vue": "3.5.32",
     "vue-echarts": "8.0.1",

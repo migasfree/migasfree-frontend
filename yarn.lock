@@ -11715,7 +11715,6 @@ __metadata:
     sass-loader: "npm:16.0.7"
     storybook: "npm:8.6.18"
     style-loader: "npm:4.0.0"
-    text-clipper: "npm:2.2.0"
     v-code-diff: "npm:1.13.1"
     vite: "npm:7.3.2"
     vitest: "npm:4.1.4"
@@ -15599,13 +15598,6 @@ __metadata:
   bin:
     terser: bin/terser
   checksum: 10c0/ee7a76692cb39b1ed22c30ff366c33ff3c977d9bb769575338ff5664676168fcba59192fb5168ef80c7cd901ef5411a1b0351261f5eaa50decf0fc71f63bde75
-  languageName: node
-  linkType: hard
-
-"text-clipper@npm:2.2.0":
-  version: 2.2.0
-  resolution: "text-clipper@npm:2.2.0"
-  checksum: 10c0/cf982323172030b8c1808a99df4cc3e85ee0db466dadf8a720d4624ad52873f51ee6e16ec7310c6299d2dca35c3b0bfcdbe0f211d4de9c31c938bae6706126e2
   languageName: node
   linkType: hard
 

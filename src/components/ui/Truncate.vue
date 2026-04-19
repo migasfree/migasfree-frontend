@@ -1,30 +1,43 @@
 <template>
   <template v-if="!modelValue">
-    <div v-if="formatted"></div>
-    <div v-else></div>
+    <div></div>
   </template>
+
   <template v-else-if="modelValue.length <= len">
-    <pre v-if="formatted">{{ localValue }}</pre>
+    <pre v-if="formatted" class="pre-wrap">{{ localValue }}</pre>
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div v-else v-html="localValue"></div>
   </template>
-  <q-list v-else bordered>
-    <q-expansion-item>
+
+  <q-list v-else bordered class="truncate-list">
+    <q-expansion-item
+      header-class="truncate-header"
+      expand-icon-class="truncate-icon"
+    >
       <template #header>
-        <pre v-if="formatted" class="overflow">{{ truncatedValue }} …</pre>
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <div v-else class="overflow" v-html="truncatedValue"></div>
+        <div class="truncate-preview-container full-width">
+          <pre v-if="formatted" class="truncate-preview pre-wrap">{{
+            localValue
+          }}</pre>
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <div v-else class="truncate-preview" v-html="localValue"></div>
+          <div class="truncate-ellipsis text-primary text-weight-bold">…</div>
+        </div>
       </template>
-      <pre v-if="formatted">{{ localValue }}</pre>
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <div v-else v-html="localValue"></div>
+
+      <q-card>
+        <q-card-section>
+          <pre v-if="formatted" class="pre-wrap">{{ localValue }}</pre>
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <div v-else v-html="localValue"></div>
+        </q-card-section>
+      </q-card>
     </q-expansion-item>
   </q-list>
 </template>
 
 <script setup>
 import { computed } from 'vue'
-import clip from 'text-clipper'
 import DOMPurify from 'dompurify'
 
 const props = defineProps({
@@ -45,21 +58,9 @@ const props = defineProps({
 })
 
 const safeModelValue = computed(() => {
-  // Ensure we always have a string
   return props.modelValue !== null && props.modelValue !== undefined
     ? String(props.modelValue)
     : ''
-})
-
-const truncatedValue = computed(() => {
-  if (!safeModelValue.value) return ''
-
-  const clipped = clip(safeModelValue.value, props.len, {
-    html: true,
-    maxLines: 3,
-  })
-  // Sanitize the clipped value as well, just in case
-  return DOMPurify.sanitize(clipped)
 })
 
 const localValue = computed(() => {
@@ -72,3 +73,58 @@ const localValue = computed(() => {
   return DOMPurify.sanitize(content)
 })
 </script>
+
+<style scoped>
+.pre-wrap {
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+  font-family: inherit;
+}
+
+.truncate-list {
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(var(--brand-primary-rgb), 0.03);
+}
+
+.truncate-preview-container {
+  position: relative;
+  padding-right: 20px;
+}
+
+.truncate-preview {
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+}
+
+.truncate-ellipsis {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.9) 50%
+  );
+  padding-left: 10px;
+}
+
+[data-theme='dark'] .truncate-ellipsis {
+  background: linear-gradient(to right, transparent, rgba(30, 30, 30, 0.9) 50%);
+}
+
+.truncate-header {
+  min-height: 48px;
+  align-items: flex-start;
+}
+
+:deep(.truncate-icon) {
+  align-self: flex-start;
+  margin-top: 8px;
+}
+</style>
