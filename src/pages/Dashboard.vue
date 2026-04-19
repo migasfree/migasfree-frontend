@@ -178,7 +178,7 @@ import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useRouter } from 'vue-router'
 import { useMeta } from 'quasar'
-import pluralize from 'pluralize-esm'
+import { pluralize } from 'utils/format'
 
 import { useUiStore } from 'stores/ui'
 import { EVENTS_HISTORY_HOURS } from 'config/app.conf'

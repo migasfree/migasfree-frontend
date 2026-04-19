@@ -199,7 +199,7 @@ import {
   LTooltip,
 } from '@vue-leaflet/vue-leaflet'
 import 'leaflet/dist/leaflet.css'
-import pluralize from 'pluralize-esm'
+import { pluralize } from 'utils/format'
 import useMap from 'composables/map'
 import useCopyPaste from 'composables/copyPaste'
 import MicroInteractionButton from 'components/ui/MicroInteractionButton'

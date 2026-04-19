@@ -99,6 +99,11 @@ export default defineConfig((ctx) => {
           fileURLToPath(new URL('./src/config', import.meta.url)),
         )
 
+        chain.resolve.alias.set(
+          'utils',
+          fileURLToPath(new URL('./src/utils', import.meta.url)),
+        )
+
         const splitChunks = chain.optimization.get('splitChunks') || {}
         chain.optimization.splitChunks({
           ...splitChunks,

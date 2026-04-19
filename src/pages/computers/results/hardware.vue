@@ -253,9 +253,8 @@
 import { ref, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
-import { arrayToTree } from 'performant-array-to-tree'
+import { arrayToTree, abbreviateNumber } from 'utils/format'
 import { format, useMeta } from 'quasar'
-import { abbreviateNumber } from 'js-abbreviation-number'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'

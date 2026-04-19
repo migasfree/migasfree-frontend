@@ -133,8 +133,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { abbreviateNumber } from 'js-abbreviation-number'
-import pluralize from 'pluralize-esm'
+import { abbreviateNumber, pluralize } from 'utils/format'
 
 import { api } from 'boot/axios'
 import { format } from 'quasar'
