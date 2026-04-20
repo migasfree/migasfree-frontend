@@ -47,6 +47,11 @@ export default defineConfig({
       config: fileURLToPath(new URL('./src/config', import.meta.url)),
       boot: fileURLToPath(new URL('./src/boot', import.meta.url)),
       stores: fileURLToPath(new URL('./src/stores', import.meta.url)),
+      utils: fileURLToPath(new URL('./src/utils', import.meta.url)),
+      pages: fileURLToPath(new URL('./src/pages', import.meta.url)),
+      router: fileURLToPath(new URL('./src/router', import.meta.url)),
+      i18n: fileURLToPath(new URL('./src/i18n', import.meta.url)),
+      css: fileURLToPath(new URL('./src/css', import.meta.url)),
       '~assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
       '@asamuzakjp/css-color': fileURLToPath(
         new URL('./test/mocks/css-color-mock.js', import.meta.url),
