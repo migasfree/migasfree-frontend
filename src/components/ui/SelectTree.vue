@@ -76,7 +76,10 @@
                     prop.expanded ? 'mdi-chevron-down' : 'mdi-chevron-right'
                   "
                   size="sm"
-                  class="opacity-40"
+                  class="opacity-60 hover-scale expansion-toggle"
+                  @click.stop="
+                    tree?.setExpanded(prop.node[nodeKey], !prop.expanded)
+                  "
                 />
               </div>
             </template>
@@ -161,6 +164,20 @@ const collectExpandableKeys = (nodes) => {
   return keys
 }
 
+const findAncestorsKeys = (nodes, key, ancestors = []) => {
+  for (const node of nodes) {
+    if (String(node[props.nodeKey]) === String(key)) return ancestors
+    if (node.children) {
+      const found = findAncestorsKeys(node.children, key, [
+        ...ancestors,
+        node[props.nodeKey],
+      ])
+      if (found) return found
+    }
+  }
+  return null
+}
+
 const isExpandable = (prop) =>
   prop.expandable || prop.node.lazy || prop.node.children?.length > 0
 
@@ -182,7 +199,7 @@ const getNodeIcon = (prop) => {
 // --- Computed ---
 
 const selectedLabel = computed(() => {
-  if (!selectedKey.value) return ''
+  if (selectedKey.value === null || selectedKey.value === undefined) return ''
   const path = findPathByKey(props.options, selectedKey.value)
   return path ? path.join(' / ') : selectedKey.value
 })
@@ -190,18 +207,19 @@ const selectedLabel = computed(() => {
 // --- Actions ---
 
 const handleNodeClick = (prop) => {
-  const key = prop.node[props.nodeKey]
-
-  if (isExpandable(prop)) {
-    tree.value?.setExpanded(key, !prop.expanded)
-  } else {
-    selectedKey.value = key
-  }
+  selectedKey.value = prop.node[props.nodeKey]
 }
 
 const onMenuShow = () => {
   menuShowing.value = true
-  if (!props.defaultExpandAll) expandedKeys.value = []
+  if (!props.defaultExpandAll) {
+    if (selectedKey.value) {
+      const ancestors = findAncestorsKeys(props.options, selectedKey.value)
+      expandedKeys.value = ancestors || []
+    } else {
+      expandedKeys.value = []
+    }
+  }
 }
 
 const reset = () => {
@@ -339,8 +357,16 @@ watch(
   background: rgba(254, 252, 232, 0.15) !important;
 }
 
-.transition-transform {
-  transition: transform 0.3s ease;
+.expansion-toggle {
+  transition: all 0.2s ease;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.expansion-toggle:hover {
+  background: rgba(var(--brand-primary-rgb), 0.15);
+  transform: scale(1.1);
+  opacity: 1 !important;
 }
 
 .no-pointer-events {

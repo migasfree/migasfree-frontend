@@ -192,7 +192,14 @@ export function useTableHandlers(deps) {
         tableFilters.statusIn.items,
         route.query.status_in,
       )
-      if (selected) tableFilters.statusIn.selected = selected.label
+      if (selected) tableFilters.statusIn.selected = selected.id
+    } else if (model.value === 'computers') {
+      const productiveId = options.productive.join(',')
+      const selected = findById(tableFilters.statusIn.items, productiveId)
+      if (selected) {
+        tableFilters.statusIn.selected = selected.id
+        onStatusInFilter(selected)
+      }
     }
   }
 
