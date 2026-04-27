@@ -39,8 +39,8 @@ const { title, breadcrumbs, columns } = useListConfig(
   $gettext('Policies List'),
   [
     {
-      text: $gettext('Catalog'),
-      icon: appIcon('catalog'),
+      text: $gettext('Release'),
+      icon: appIcon('release'),
     },
   ],
   [
