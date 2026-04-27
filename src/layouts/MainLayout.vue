@@ -158,7 +158,7 @@
           </div>
         </transition>
 
-        <router-view />
+        <router-view :key="$route.fullPath + preferenceKey" />
       </div>
 
       <!-- SCROLLERS -->
@@ -258,6 +258,13 @@ const scopePreference = computed(() => {
 const hasPreference = computed(
   () => domainPreference.value || scopePreference.value,
 )
+const preferenceKey = computed(() => {
+  const d =
+    user.value?.domain_preference?.id ?? user.value?.domain_preference ?? 0
+  const s =
+    user.value?.scope_preference?.id ?? user.value?.scope_preference ?? 0
+  return `${d}-${s}`
+})
 
 // --- Actions ---
 
