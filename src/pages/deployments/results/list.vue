@@ -38,6 +38,22 @@
           ><q-tooltip>{{ $gettext('Frozen') }}</q-tooltip></q-icon
         >
       </template>
+
+      <template #cell-schedule_name="{ props }">
+        <MigasLink
+          v-if="props.row.schedule"
+          model="schedules"
+          :pk="props.row.schedule.id"
+          :value="props.row.schedule.name"
+        />
+
+        <template v-if="props.row.schedule_timeline">
+          <ScheduleProgress
+            :timeline="props.row.schedule_timeline"
+            class="q-mt-sm"
+          />
+        </template>
+      </template>
     </TableResults>
   </q-page>
 </template>
@@ -53,6 +69,8 @@ import { useUiStore } from 'stores/ui'
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
 import DateView from 'components/ui/DateView'
+import MigasLink from 'components/MigasLink'
+import ScheduleProgress from 'components/deployment/ScheduleProgress'
 
 import { appIcon } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'
