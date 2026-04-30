@@ -424,7 +424,7 @@ const loadFaults = async () => {
 
 const filterTags = async (val) => {
   const { data } = await smartRequest('/api/v1/token/tags/', {
-    params: { search: val.toLowerCase() },
+    search: val.toLowerCase(),
   })
 
   return data.results

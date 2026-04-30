@@ -217,11 +217,9 @@ const filterPackages = async (val) => {
   if (!props.element.project) return []
 
   const { data } = await smartRequest('/api/v1/token/packages/', {
-    params: {
-      search: val.toLowerCase(),
-      project__id: props.element.project.id,
-      store__isnull: false,
-    },
+    search: val.toLowerCase(),
+    project__id: props.element.project.id,
+    store__isnull: false,
   })
   return data.results
 }
@@ -230,10 +228,8 @@ const filterPackageSets = async (val) => {
   if (!props.element.project) return []
 
   const { data } = await smartRequest('/api/v1/token/package-sets/', {
-    params: {
-      search: val.toLowerCase(),
-      project__id: props.element.project.id,
-    },
+    search: val.toLowerCase(),
+    project__id: props.element.project.id,
   })
   return data.results
 }
