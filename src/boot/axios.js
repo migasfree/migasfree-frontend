@@ -108,6 +108,9 @@ export default boot(({ app, router }) => {
             break
 
           case 404:
+            console.warn(
+              `[ 404 ] Not Found: ${error.config.baseURL || ''}${error.config.url}`,
+            )
             router.push({ name: 'not-found' })
             break
 
@@ -119,21 +122,33 @@ export default boot(({ app, router }) => {
             })
             break
 
-          default:
-            console.error(
-              `Unexpected error: ${error.response.status}`,
-              error.message,
-            )
-            if ('data' in error.response)
-              console.error('Server response:', error.response.data)
+          default: {
+            const status = error.response.status
+            const data = error.response.data
+            let caption =
+              error.message || gettext.$gettext('An unexpected error occurred')
+
+            // If the response is HTML, we avoid showing the raw content
+            const isHtml = typeof data === 'string' && data.includes('<html')
+
+            if (isHtml) {
+              caption = gettext.$gettext(
+                'The server returned an HTML error page.',
+              )
+            } else if (data && typeof data === 'object') {
+              // Extract detail or first error message if it's a JSON response (DRF style)
+              caption = data.detail || data.error || data.message || caption
+            }
+
+            console.error(`Unexpected error: ${status}`, error.message)
+            if (data) console.error('Server response:', data)
 
             Notify.create({
               type: 'negative',
-              message: gettext.$gettext(`Error ${error.response.status}`),
-              caption:
-                error.message ||
-                gettext.$gettext('An unexpected error occurred'),
+              message: `${gettext.$gettext('Error')} ${status}`,
+              caption,
             })
+          }
         }
       } else if (error.request) {
         // The request was made but no response was received
