@@ -1,13 +1,12 @@
 import { SessionStorage, Notify } from 'quasar'
 import { boot } from 'quasar/wrappers'
 import axios from 'axios'
-import { parse, stringify } from 'qs'
+import { stringify } from 'qs'
 
 import { gettext } from 'boot/gettext'
 
 const api = axios.create({
   paramsSerializer: {
-    encode: parse,
     serialize: stringify,
   },
   baseURL: process.env.MIGASFREE_SERVER || 'http://localhost',
@@ -35,22 +34,35 @@ export default boot(({ app, router }) => {
 
   api.interceptors.request.use(
     (config) => {
-      const authToken = SessionStorage.getItem('auth.token')
+      try {
+        const authToken = SessionStorage.getItem('auth.token')
 
-      if (
-        authToken &&
-        typeof authToken === 'string' &&
-        !config.url.includes('/api/v1/public/')
-      )
-        config.headers.Authorization = `Token ${authToken}`
+        if (
+          authToken &&
+          typeof authToken === 'string' &&
+          authToken.trim() !== '' &&
+          !config.url.includes('/api/v1/public/')
+        ) {
+          config.headers.Authorization = `Token ${authToken}`
+        }
 
-      if (config.url.includes('/api/v1/public/')) config.withCredentials = false
+        if (config.url.includes('/api/v1/public/'))
+          config.withCredentials = false
 
-      const currentLang = app.config.globalProperties.$language.current
-      config.headers['Accept-Language'] = getAcceptLanguage(currentLang)
+        // Safe language detection
+        const currentLang =
+          app.config.globalProperties.$language?.current ||
+          SessionStorage.getItem('language') ||
+          'en_US'
 
-      if (process.env.NODE_ENV === 'development')
-        console.debug('[ REQUEST ]', config.url, config.params, config)
+        config.headers['Accept-Language'] = getAcceptLanguage(currentLang)
+
+        if (process.env.NODE_ENV === 'development') {
+          console.debug('[ REQUEST ]', config.url, config.params)
+        }
+      } catch (error) {
+        console.error('Error in axios request interceptor:', error)
+      }
 
       return config
     },

@@ -65,19 +65,13 @@ describe('WCAG AA Accessibility Audit', () => {
         // Uses the custom session-based login with mocks (no real backend needed)
         cy.login(user, password)
       })
-
-      // Intercept general API calls to prevent UI crashes in CI where backend is absent
-      cy.intercept('GET', '**/api/v1/token/**', { count: 0, results: [] })
-      cy.intercept('GET', '**/api/v1/public/**', { count: 0, results: [] })
-      cy.intercept('GET', '**/api/v1/stats/**', {})
     })
 
     const pages = [
       { name: 'Dashboard', path: '/' },
+      { name: 'Deployments', path: '/deployments/results' },
+      { name: 'Projects', path: '/projects/results' },
       { name: 'Computers', path: '/computers/results' },
-      { name: 'Packages', path: '/packages/results' },
-      { name: 'Models', path: '/models/results' },
-      { name: 'Users', path: '/users/results' },
     ]
 
     pages.forEach((page) => {

@@ -127,6 +127,10 @@ const isAlertsVisible = computed(
 // --- Data ---
 
 const updateData = (newData) => {
+  if (!Array.isArray(newData)) {
+    console.warn('Alerts.vue: newData is not an array', newData)
+    return
+  }
   alerts.value = newData.filter((item) => parseInt(item.result) > 0)
   totalAlerts.value = alerts.value.reduce(
     (acc, item) => acc + parseInt(item.result),
