@@ -7,26 +7,26 @@ import { gettext } from 'boot/gettext'
 import { useUiStore } from './ui.js'
 
 export const useAuthStore = defineStore('auth', () => {
-  const token = ref(SessionStorage.getItem('auth.token')) || ref('')
-  const loggedIn = ref(SessionStorage.getItem('auth.loggedIn')) || ref(false)
-  const user = ref(SessionStorage.getItem('auth.user')) || ref({})
-  const server = ref(SessionStorage.getItem('auth.server')) || ref({})
-  const domains =
-    ref(SessionStorage.getItem('auth.domains')) ||
-    ref([
+  const token = ref(SessionStorage.getItem('auth.token') || '')
+  const loggedIn = ref(SessionStorage.getItem('auth.loggedIn') || false)
+  const user = ref(SessionStorage.getItem('auth.user') || {})
+  const server = ref(SessionStorage.getItem('auth.server') || {})
+  const domains = ref(
+    SessionStorage.getItem('auth.domains') || [
       {
         id: 0,
         name: gettext.$gettext('All').toUpperCase(),
       },
-    ])
-  const scopes =
-    ref(SessionStorage.getItem('auth.scopes')) ||
-    ref([
+    ],
+  )
+  const scopes = ref(
+    SessionStorage.getItem('auth.scopes') || [
       {
         id: 0,
         name: gettext.$gettext('All').toLowerCase(),
       },
-    ])
+    ],
+  )
 
   const filteredScopes = computed(() => {
     if ('domain_preference' in user.value && user.value.domain_preference) {
@@ -153,7 +153,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     try {
       const response = await api.get('/api/v1/token/scopes/', {
-        user__id: user.id,
+        params: { user__id: user.value.id },
       })
       const results = response?.data?.results ?? []
 

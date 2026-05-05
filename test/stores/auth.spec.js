@@ -345,7 +345,7 @@ describe('Auth Store', () => {
       await store.loadScopes()
 
       expect(mockApiGet).toHaveBeenCalledWith('/api/v1/token/scopes/', {
-        user__id: undefined,
+        params: { user__id: undefined },
       })
     })
 
