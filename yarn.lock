@@ -3717,19 +3717,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-links@npm:8.6.18":
-  version: 8.6.18
-  resolution: "@storybook/addon-links@npm:8.6.18"
+"@storybook/addon-links@npm:10.3.5":
+  version: 10.3.5
+  resolution: "@storybook/addon-links@npm:10.3.5"
   dependencies:
     "@storybook/global": "npm:^5.0.0"
-    ts-dedent: "npm:^2.0.0"
   peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
-    storybook: ^8.6.18
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    storybook: ^10.3.5
   peerDependenciesMeta:
     react:
       optional: true
-  checksum: 10c0/ffdf884e5c146a27c5f1edcbbc4eaff8730bf66cc5b0b5c7feccc56eda57f8330b54437a3f696ae13584c8c2534c3adca896cd7385b0b763d083e0f548df6008
+  checksum: 10c0/777eaa23828a73ea253fe070b50157d3f8e31c577d25c4f5fbe72634b3d150f8c5a2d10478ee75f9dcc1fa9525d7ab97a678ed61ab4e74cfda7a9fb66bc2333a
   languageName: node
   linkType: hard
 
@@ -11285,7 +11284,7 @@ __metadata:
     "@quasar/extras": "npm:1.18.0"
     "@quasar/quasar-app-extension-qmarkdown": "npm:2.0.5"
     "@storybook/addon-a11y": "npm:8.6.18"
-    "@storybook/addon-links": "npm:8.6.18"
+    "@storybook/addon-links": "npm:10.3.5"
     "@storybook/vue3": "npm:8.6.18"
     "@storybook/vue3-webpack5": "npm:8.6.18"
     "@vitejs/plugin-vue": "npm:6.0.6"
