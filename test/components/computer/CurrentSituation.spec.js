@@ -186,7 +186,7 @@ describe('CurrentSituation.vue', () => {
     expect(mocks.smartRequest.smartRequest).toHaveBeenCalledWith(
       '/api/v1/token/tags/',
       {
-        params: { search: 'searchterm' },
+        search: 'searchterm',
       },
     )
     expect(results).toEqual([{ id: 2, name: 'Tag2' }])
