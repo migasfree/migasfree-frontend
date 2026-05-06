@@ -281,17 +281,18 @@ defineExpose({
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--neutral-100);
+  background: rgba(var(--brand-primary-rgb), 0.05);
   transition: all 0.2s ease;
 }
 
 .alert-item:hover .alert-icon-flat {
   transform: scale(1.05);
-  background: white;
+  background: rgba(var(--brand-primary-rgb), 0.1);
 }
 
 /* List items */
 .alerts-list {
+  background: transparent !important;
   padding: 8px 0;
 }
 
@@ -300,12 +301,11 @@ defineExpose({
 }
 
 .alert-item:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(var(--brand-primary-rgb), 0.05) !important;
 }
 
 .alert-msg {
-  font-weight: 600;
-  font-size: 0.9rem;
+  font-weight: 700;
 }
 
 .alert-value-badge {
@@ -332,19 +332,5 @@ defineExpose({
 
 [data-theme='dark'] .alert-item:hover {
   background: rgba(255, 255, 255, 0.05);
-}
-</style>
-
-<style>
-/* Portal styles (teleported menu) */
-.alerts-menu {
-  background: rgba(var(--bg-card-rgb), 0.9) !important;
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--border);
-  border-radius: 12px !important;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
-  margin-top: 8px !important;
-  min-width: 320px !important;
-  color: var(--text-main);
 }
 </style>

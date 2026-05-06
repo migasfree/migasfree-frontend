@@ -613,11 +613,48 @@ h1,
   color: var(--brand-on-primary);
 }
 
-/* --- Select Menus --- */
+/* --- Select Menus (Unified Glassmorphism Style) --- */
 .q-menu {
-  border-radius: 8px !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
-  border: 1px solid var(--border);
+  background: rgba(var(--bg-card-rgb), 0.8) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid rgba(var(--brand-primary-rgb), 0.08) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08) !important;
+  padding: 6px 0 !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+/* Portal menu variants */
+.scope-menu {
+  min-width: 220px !important;
+}
+
+.alerts-menu {
+  margin-top: 8px !important;
+  min-width: 320px !important;
+  color: var(--text-main);
+}
+
+/* Menu items geometry and interaction */
+.q-menu .q-item {
+  margin: 4px 8px !important;
+  border-radius: 10px !important;
+  color: var(--brand-primary) !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Hover state for items */
+.q-menu .q-item:hover {
+  background: rgba(var(--brand-primary-rgb), 0.05) !important;
+}
+
+/* Active item state */
+.q-menu .q-item.q-item--active {
+  background: rgba(var(--brand-primary-rgb), 0.1) !important;
+  color: var(--brand-primary) !important;
+  font-weight: 700 !important;
 }
 
 /* --- Interactive elements inside Fields (Links/Buttons as values) --- */
@@ -641,16 +678,19 @@ h1,
 }
 
 [data-theme='dark'] .q-menu {
-  background: var(--bg-card) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: var(--text-main) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5) !important;
 }
 
-[data-theme='dark'] .q-item {
-  color: var(--text-main);
+[data-theme='dark'] .q-menu .q-item {
+  color: #fefce8 !important;
 }
 
-[data-theme='dark'] .q-item--active {
+[data-theme='dark'] .q-menu .q-item:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+[data-theme='dark'] .q-menu .q-item.q-item--active {
   background: rgba(var(--brand-primary-rgb), 0.2) !important;
   color: var(--brand-tertiary) !important;
 }
