@@ -48,7 +48,10 @@ export const useUiStore = defineStore('ui', () => {
     const data = error?.response?.data
     if (data) {
       if (typeof data === 'string') {
-        message = data
+        const isHtml = data.includes('<html') || data.includes('<!DOCTYPE')
+        if (!isHtml) {
+          message = data
+        }
       } else if (Object.keys(data).length) {
         message = data[Object.keys(data)[0]]
       }
