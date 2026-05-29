@@ -571,10 +571,78 @@ const routes = [
       },
 
       {
-        path: '/imports',
-        name: 'imports',
-        component: () => import('pages/imports/index'),
-        meta: { requireSuperuser: true },
+        path: '/configs',
+        redirect: { name: 'configs-list' },
+      },
+      {
+        path: '/configs/results',
+        name: 'configs-list',
+        component: () => import('pages/configs/results/list'),
+      },
+      {
+        path: '/configs/add',
+        name: 'config-add',
+        component: () => import('pages/configs/results/detail'),
+      },
+      {
+        path: '/configs/results/:id',
+        name: 'config-detail',
+        component: () => import('pages/configs/results/detail'),
+      },
+
+      {
+        path: '/flavours',
+        redirect: { name: 'flavours-list' },
+      },
+      {
+        path: '/flavours/results',
+        name: 'flavours-list',
+        component: () => import('pages/flavours/results/list'),
+      },
+      {
+        path: '/flavours/add',
+        name: 'flavour-add',
+        component: () => import('pages/flavours/results/detail'),
+      },
+      {
+        path: '/flavours/results/:id',
+        name: 'flavour-detail',
+        component: () => import('pages/flavours/results/detail'),
+      },
+
+      {
+        path: '/releases',
+        redirect: { name: 'releases-list' },
+      },
+      {
+        path: '/releases/results',
+        name: 'releases-list',
+        component: () => import('pages/releases/results/list'),
+      },
+      {
+        path: '/releases/add',
+        name: 'release-add',
+        component: () => import('pages/releases/results/detail'),
+      },
+      {
+        path: '/releases/results/:id',
+        name: 'release-detail',
+        component: () => import('pages/releases/results/detail'),
+      },
+
+      {
+        path: '/builds',
+        redirect: { name: 'builds-list' },
+      },
+      {
+        path: '/builds/results',
+        name: 'builds-list',
+        component: () => import('pages/builds/results/list'),
+      },
+      {
+        path: '/builds/results/:id',
+        name: 'build-detail',
+        component: () => import('pages/builds/results/detail'),
       },
 
       {

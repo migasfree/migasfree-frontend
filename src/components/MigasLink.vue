@@ -174,6 +174,10 @@ const MODEL_ALIASES = {
   apps: 'applications',
   attributes: 'features',
   properties: 'formulas',
+  'mgi/config': 'configs',
+  'mgi/flavour': 'flavours',
+  'mgi/release': 'releases',
+  'mgi/build': 'builds',
 }
 
 const EXCLUDED_API_MODELS = new Set([

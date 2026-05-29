@@ -302,19 +302,39 @@ const items = computed(() => {
           to: 'policies-list',
           icon: modelIcon('catalog/policies'),
         },
-      ].concat(
-        authStore.user?.is_superuser
-          ? [
-              {
-                title: $gettext('Import Configuration'),
-                to: 'imports',
-                icon: appIcon('import'),
-                separatorBefore: true,
-              },
-            ]
-          : [],
-      ),
+      ],
     },
+    ...(authStore.user?.is_superuser
+      ? [
+          {
+            icon: appIcon('golden-images'),
+            title: $gettext('Golden Images'),
+            options: [
+              {
+                title: $gettext('Configurations'),
+                to: 'configs-list',
+                icon: modelIcon('mgi/config'),
+              },
+              {
+                title: $gettext('Flavours'),
+                to: 'flavours-list',
+                icon: modelIcon('mgi/flavour'),
+              },
+              {
+                title: $gettext('Releases'),
+                to: 'releases-list',
+                icon: modelIcon('mgi/release'),
+                separatorAfter: true,
+              },
+              {
+                title: $gettext('Builds'),
+                to: 'builds-list',
+                icon: modelIcon('mgi/build'),
+              },
+            ],
+          },
+        ]
+      : []),
     {
       icon: appIcon('data'),
       title: $gettext('Data'),

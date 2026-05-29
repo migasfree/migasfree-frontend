@@ -96,6 +96,7 @@ const APP_ICON = {
   json: 'mdi-code-json',
   image: 'mdi-image-multiple',
   script: 'mdi-file-code',
+  'golden-images': 'mdi-disc',
 }
 
 const TECH_ICON = {
@@ -157,6 +158,10 @@ const MODEL_ICON = {
   migrations: 'mdi-map-marker-right',
   messages: 'mdi-message-text',
   notifications: 'mdi-comment-text-outline',
+  'mgi/config': 'mdi-cog-outline',
+  'mgi/flavour': 'mdi-palette-swatch',
+  'mgi/release': 'mdi-tag-text-outline',
+  'mgi/build': 'mdi-hammer-wrench',
 }
 
 /**
@@ -238,6 +243,10 @@ export const useElement = () => {
     set: 'mdi-set-none',
     domain: 'mdi-web',
     tag: 'mdi-tag',
+    queued: 'mdi-clock-outline',
+    running: 'mdi-autorenew',
+    completed: 'mdi-check-bold',
+    failed: 'mdi-alert-circle-outline',
   }
 
   const STATUS_I18N = {
@@ -247,6 +256,10 @@ export const useElement = () => {
     reserved: $gettext('Reserved'),
     unknown: $gettext('Unknown'),
     unsubscribed: $gettext('Unsubscribed'),
+    queued: $gettext('Queued'),
+    running: $gettext('Running'),
+    completed: $gettext('Completed'),
+    failed: $gettext('Failed'),
   }
 
   const elementIcon = (value) => {
