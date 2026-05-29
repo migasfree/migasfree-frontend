@@ -708,16 +708,10 @@ const initConsole = async () => {
             term.writeln(
               '\r\n\x1b[1;32m✓ Synchronization completed successfully\x1b[0m',
             )
-            setTimeout(() => {
-              consoleDialogOpen.value = false
-            }, 2500)
           } else if (message.type === 'command_error') {
             term.writeln(
               `\r\n\x1b[1;31m✗ Synchronization failed: ${message.error}\x1b[0m`,
             )
-            setTimeout(() => {
-              consoleDialogOpen.value = false
-            }, 4000)
           } else if (message.status === 'closed') {
             term.writeln(
               '\r\n\x1b[1;33m✗ Connection closed by remote host\x1b[0m',
@@ -740,6 +734,11 @@ const initConsole = async () => {
       ws.onclose = () => {
         term.writeln('\r\n\x1b[1;33m✗ Connection disconnected\x1b[0m')
         isConnected.value = false
+        if (service === 'ssh') {
+          setTimeout(() => {
+            consoleDialogOpen.value = false
+          }, 1500)
+        }
       }
     } else if (service === 'vnc') {
       vncContainerRef.value.innerHTML = ''
