@@ -15,6 +15,10 @@
       @set-related="setRelated"
       @set-title="setTitle"
     >
+      <template v-if="element.id" #actions>
+        <ComputerRemoteAccess :cid="element.id" />
+      </template>
+
       <template #fields>
         <div class="row q-pb-md q-col-gutter-md">
           <div class="col-6 col-md col-sm-12 col-xs-12">
@@ -68,12 +72,6 @@
               :attributes="onlyAttributes"
               :loading="loadingSync"
             />
-          </div>
-        </div>
-
-        <div v-if="element.id" class="row q-pb-md q-col-gutter-md">
-          <div class="col-12">
-            <ComputerRemoteAccess :cid="element.id" />
           </div>
         </div>
 

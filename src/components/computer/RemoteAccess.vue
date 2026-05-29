@@ -1,120 +1,53 @@
 <template>
-  <q-card class="panel detail-card overflow-hidden shadow-2 rounded-borders">
-    <q-card-section class="q-pa-lg">
-      <!-- Header with Icon, Title and Status -->
-      <div class="panel-header row items-center justify-between q-mb-md">
-        <div class="row items-center gap-sm">
-          <q-icon
-            name="mdi-remote-desktop"
-            size="24px"
-            class="text-primary"
-            aria-hidden="true"
-          />
-          <h2 class="panel-title">{{ $gettext('Remote Access') }}</h2>
-        </div>
+  <div class="remote-access-compact row items-center gap-sm">
+    <!-- Spinner during initial fetch if status is not loaded yet -->
+    <q-spinner-dots
+      v-if="loading && !agentData.status"
+      color="primary"
+      size="24px"
+    />
 
-        <div class="row items-center gap-sm">
-          <q-spinner-dots v-if="loading && !agentData.status" color="primary" size="24px" />
-          <template v-else>
-            <!-- Dynamic Status Badge -->
-            <div :class="['status-badge', statusClass]">
-              <span class="status-dot"></span>
-              <span class="status-text">{{ statusLabel }}</span>
-            </div>
-          </template>
-
-          <q-btn
-            flat
-            round
-            dense
-            icon="mdi-refresh"
-            :loading="loading"
-            class="refresh-btn"
-            @click="fetchStatus"
-          >
-            <q-tooltip>{{ $gettext('Refresh status') }}</q-tooltip>
-          </q-btn>
-        </div>
+    <template v-else>
+      <!-- Status Badge -->
+      <div :class="['status-badge', statusClass]">
+        <span class="status-dot"></span>
+        <span class="status-text">{{ statusLabel }}</span>
+        <q-tooltip v-if="agentData.status === 'unknown' && agentData.error">
+          {{ agentData.error }}
+        </q-tooltip>
       </div>
 
-      <!-- Dynamic Content Sections -->
-      <div v-if="loading && !agentData.status" class="row justify-center q-pa-xl">
-        <q-spinner-dots color="primary" size="3em" />
-      </div>
-
-      <template v-else>
-        <!-- ONLINE STATE -->
-        <div
-          v-if="agentData.status === 'online'"
-          class="glass-panel q-pa-md row items-center justify-between shadow-1"
+      <!-- Action Connection Buttons (only shown when online) -->
+      <div v-if="agentData.status === 'online'" class="row items-center gap-xs">
+        <q-btn
+          v-for="service in agentData.services"
+          :key="service"
+          flat
+          dense
+          no-caps
+          class="action-btn text-weight-bold q-px-sm"
+          :icon="getServiceIcon(service)"
+          :label="service.toUpperCase()"
+          @click="connect(service)"
         >
-          <div class="col-12 col-md-8">
-            <div class="text-subtitle1 text-weight-medium text-primary">
-              {{ $gettext('Agent is ready for secure remote connections.') }}
-            </div>
-            <div class="text-caption text-mono q-mt-sm opacity-70 flex items-center gap-xs">
-              <q-icon name="mdi-server-network" size="16px" />
-              <span>Relay: {{ agentData.relay || '--' }}</span>
-            </div>
-          </div>
-          <div class="col-12 col-md-4 row justify-end q-gutter-sm q-mt-sm-md">
-            <q-btn
-              v-for="service in agentData.services"
-              :key="service"
-              flat
-              no-caps
-              class="action-btn text-weight-bold"
-              :icon="getServiceIcon(service)"
-              :label="service.toUpperCase()"
-              @click="connect(service)"
-            >
-              <q-tooltip>{{ $gettext('Open connection terminal') }}</q-tooltip>
-            </q-btn>
-          </div>
-        </div>
+          <q-tooltip>{{ $gettext('Open connection tunnel') }}</q-tooltip>
+        </q-btn>
 
-        <!-- OFFLINE STATE -->
-        <div v-else-if="agentData.status === 'offline'" class="solid-panel q-pa-md">
-          <div class="row items-center no-wrap">
-            <q-icon
-              name="mdi-cloud-off-outline"
-              size="32px"
-              class="opacity-40 q-mr-md"
-              aria-hidden="true"
-            />
-            <div>
-              <div class="text-subtitle1 text-weight-bold text-neutral-800">
-                {{ $gettext('Agent is currently offline') }}
-              </div>
-              <div class="text-body2 text-neutral-500 q-mt-xs">
-                {{ $gettext('The migasfree-agent service may not be running on this computer, or the computer is turned off.') }}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- UNKNOWN / ERROR STATE -->
-        <div v-else class="solid-panel q-pa-md theme-warning-border">
-          <div class="row items-center no-wrap">
-            <q-icon
-              name="mdi-alert-circle-outline"
-              size="32px"
-              class="text-warning q-mr-md"
-              aria-hidden="true"
-            />
-            <div>
-              <div class="text-subtitle1 text-weight-bold text-neutral-800">
-                {{ $gettext('Connection Status Unknown') }}
-              </div>
-              <div class="text-body2 text-neutral-500 q-mt-xs">
-                {{ agentData.error || $gettext('Could not retrieve status from the remote access manager.') }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </template>
-    </q-card-section>
-  </q-card>
+        <!-- SYNC Button is always available if the agent is online -->
+        <q-btn
+          flat
+          dense
+          no-caps
+          class="action-btn text-weight-bold q-px-sm"
+          icon="mdi-sync"
+          label="SYNC"
+          @click="connect('sync')"
+        >
+          <q-tooltip>{{ $gettext('Execute synchronization') }}</q-tooltip>
+        </q-btn>
+      </div>
+    </template>
+  </div>
 </template>
 
 <script setup>
@@ -161,7 +94,9 @@ const statusLabel = computed(() => {
 const fetchStatus = async () => {
   loading.value = true
   try {
-    const response = await api.get(`/api/v1/token/computers/${props.cid}/remote-access/`)
+    const response = await api.get(
+      `/api/v1/token/computers/${props.cid}/remote-access/`,
+    )
     agentData.value = {
       status: response.data.status,
       services: response.data.services || [],
@@ -191,6 +126,7 @@ const getServiceIcon = (service) => {
   if (norm === 'ssh') return 'mdi-console'
   if (norm === 'vnc') return 'mdi-monitor-eye'
   if (norm === 'rdp') return 'mdi-microsoft-windows'
+  if (norm === 'sync') return 'mdi-sync'
   return 'mdi-link'
 }
 
@@ -213,6 +149,11 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.remote-access-compact {
+  display: inline-flex;
+  align-items: center;
+}
+
 .gap-xs {
   gap: 4px;
 }
@@ -232,6 +173,7 @@ onUnmounted(() => {
   font-size: 0.85rem;
   letter-spacing: 0.02em;
   text-transform: uppercase;
+  transition: all 0.3s ease;
 }
 
 .status-badge--online {
@@ -282,36 +224,31 @@ onUnmounted(() => {
 /* Action Buttons Styling */
 .action-btn {
   background: rgba(var(--brand-primary-rgb), 0.05);
-  font-weight: 600;
+  color: var(--brand-primary);
+  font-weight: 700;
   border-radius: 8px;
+  padding: 4px 10px;
   transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid rgba(var(--brand-primary-rgb), 0.15);
 }
 
 .action-btn:hover {
-  background: rgba(var(--brand-primary-rgb), 0.12);
-  transform: scale(1.05);
+  background: var(--brand-primary);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(var(--brand-primary-rgb), 0.2);
 }
 
 [data-theme='dark'] .action-btn {
   background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 [data-theme='dark'] .action-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-/* Warning Border for error states */
-.theme-warning-border {
-  border: 1px solid var(--q-warning, #a16207) !important;
-  background: rgba(var(--q-warning-rgb, 161, 98, 7), 0.02);
-}
-
-/* Refresh Button rotation */
-.refresh-btn {
-  transition: transform 0.2s ease-in-out;
-}
-
-.refresh-btn:hover {
-  transform: rotate(30deg);
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
 }
 </style>
