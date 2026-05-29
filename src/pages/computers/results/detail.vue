@@ -71,6 +71,12 @@
           </div>
         </div>
 
+        <div v-if="element.id" class="row q-pb-md q-col-gutter-md">
+          <div class="col-12">
+            <ComputerRemoteAccess :cid="element.id" />
+          </div>
+        </div>
+
         <div class="row q-pb-md q-col-gutter-md">
           <div
             v-if="element.has_software_inventory"
@@ -112,6 +118,7 @@ import ComputerDevices from 'components/computer/Devices'
 import ComputerCurrentSituation from 'components/computer/CurrentSituation'
 import ComputerSynchronization from 'components/computer/Synchronization'
 import ComputerLocations from 'components/computer/Locations'
+import ComputerRemoteAccess from 'components/computer/RemoteAccess'
 
 import { appIcon, modelIcon, useElement } from 'composables/element'
 import useDate from 'composables/date'
