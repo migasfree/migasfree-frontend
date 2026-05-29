@@ -50,10 +50,7 @@
 
     <!-- Credentials / Confirmation Dialog -->
     <q-dialog v-model="dialogOpen" persistent>
-      <q-card
-        class="dialog-card shadow-24"
-        style="min-width: 380px; border-radius: 16px"
-      >
+      <q-card class="dialog-card shadow-24">
         <q-card-section class="row items-center q-pb-none">
           <div
             class="text-h6 text-weight-bold text-primary flex items-center gap-sm"
@@ -387,6 +384,8 @@ onUnmounted(() => {
 
 /* Premium Dialog Styling */
 .dialog-card {
+  min-width: 380px;
+  border-radius: 16px;
   background: var(--bg-surface, #ffffff);
   border: 1px solid rgba(var(--brand-primary-rgb), 0.08);
 }
