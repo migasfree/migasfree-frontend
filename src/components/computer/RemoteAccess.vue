@@ -605,6 +605,7 @@ const initConsole = async () => {
         fontFamily: 'JetBrains Mono, monospace',
         fontSize: 14,
         cursorBlink: true,
+        convertEol: true,
         theme: {
           background: '#121214',
           foreground: '#e4e4e7',
