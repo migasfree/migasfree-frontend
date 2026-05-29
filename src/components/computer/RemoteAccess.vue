@@ -28,7 +28,7 @@
           class="action-btn text-weight-bold q-px-sm"
           :icon="getServiceIcon(service)"
           :label="service.toUpperCase()"
-          @click="connect(service)"
+          @click="openConnectionDialog(service)"
         >
           <q-tooltip>{{ $gettext('Open connection tunnel') }}</q-tooltip>
         </q-btn>
@@ -41,12 +41,98 @@
           class="action-btn text-weight-bold q-px-sm"
           icon="mdi-sync"
           label="SYNC"
-          @click="connect('sync')"
+          @click="openConnectionDialog('sync')"
         >
           <q-tooltip>{{ $gettext('Execute synchronization') }}</q-tooltip>
         </q-btn>
       </div>
     </template>
+
+    <!-- Credentials / Confirmation Dialog -->
+    <q-dialog v-model="dialogOpen" persistent>
+      <q-card
+        class="dialog-card shadow-24"
+        style="min-width: 380px; border-radius: 16px"
+      >
+        <q-card-section class="row items-center q-pb-none">
+          <div
+            class="text-h6 text-weight-bold text-primary flex items-center gap-sm"
+          >
+            <q-icon :name="getServiceIcon(selectedService)" size="28px" />
+            <span>{{ getDialogTitle() }}</span>
+          </div>
+          <q-space />
+          <q-btn v-close-popup icon="close" flat round dense />
+        </q-card-section>
+
+        <q-card-section class="q-pt-md">
+          <!-- SSH / RDP Username Input -->
+          <div v-if="selectedService === 'ssh' || selectedService === 'rdp'">
+            <div class="text-subtitle2 q-mb-xs opacity-80">
+              {{ $gettext('Username') }}
+            </div>
+            <q-input
+              v-model="credentials.username"
+              dense
+              outlined
+              placeholder="e.g. root"
+              @keyup.enter="confirmConnection"
+            />
+            <div class="text-caption opacity-60 q-mt-xs">
+              {{ $gettext('Enter the remote user to connect with.') }}
+            </div>
+          </div>
+
+          <!-- VNC Password Input -->
+          <div v-else-if="selectedService === 'vnc'">
+            <div class="text-subtitle2 q-mb-xs opacity-80">
+              {{ $gettext('VNC Password') }}
+            </div>
+            <q-input
+              v-model="credentials.password"
+              dense
+              outlined
+              type="password"
+              placeholder="Password"
+              @keyup.enter="confirmConnection"
+            />
+            <div class="text-caption opacity-60 q-mt-xs">
+              {{ $gettext('Enter the VNC password of the remote system.') }}
+            </div>
+          </div>
+
+          <!-- SYNC Confirmation -->
+          <div v-else-if="selectedService === 'sync'">
+            <div class="text-body1">
+              {{
+                $gettext(
+                  'Are you sure you want to trigger a synchronization on this computer?',
+                )
+              }}
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-actions align="right" class="q-pb-md q-px-md">
+          <q-btn
+            v-close-popup
+            flat
+            no-caps
+            :label="$gettext('Cancel')"
+            color="grey-7"
+            class="text-weight-bold"
+          />
+          <q-btn
+            unelevated
+            no-caps
+            :label="getDialogActionLabel()"
+            color="primary"
+            class="text-weight-bold q-px-md"
+            @click="confirmConnection"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -74,6 +160,13 @@ const agentData = ref({
   services: [],
   relay: null,
   error: null,
+})
+
+const dialogOpen = ref(false)
+const selectedService = ref(null)
+const credentials = ref({
+  username: 'root',
+  password: '',
 })
 
 let pollingInterval = null
@@ -122,6 +215,7 @@ const fetchStatus = async () => {
 }
 
 const getServiceIcon = (service) => {
+  if (!service) return 'mdi-link'
   const norm = service.toLowerCase()
   if (norm === 'ssh') return 'mdi-console'
   if (norm === 'vnc') return 'mdi-monitor-eye'
@@ -130,9 +224,48 @@ const getServiceIcon = (service) => {
   return 'mdi-link'
 }
 
-const connect = (service) => {
-  const url = `/manager/v1/private/tunnel/console?agent=${props.cid}&service=${service.toLowerCase()}`
+const openConnectionDialog = (service) => {
+  selectedService.value = service
+  credentials.value.username = 'root'
+  credentials.value.password = ''
+  dialogOpen.value = true
+}
+
+const getDialogTitle = () => {
+  if (!selectedService.value) return ''
+  const norm = selectedService.value.toLowerCase()
+  if (norm === 'ssh') return $gettext('SSH Connection')
+  if (norm === 'rdp') return $gettext('RDP Connection')
+  if (norm === 'vnc') return $gettext('VNC Connection')
+  if (norm === 'sync') return $gettext('Trigger Synchronization')
+  return $gettext('Remote Connection')
+}
+
+const getDialogActionLabel = () => {
+  if (!selectedService.value) return $gettext('Connect')
+  const norm = selectedService.value.toLowerCase()
+  if (norm === 'sync') return $gettext('Synchronize')
+  return $gettext('Connect')
+}
+
+const confirmConnection = () => {
+  if (!selectedService.value) return
+
+  const service = selectedService.value.toLowerCase()
+  let url = `/manager/v1/private/tunnel/console?agent=${props.cid}&service=${service}`
+
+  if (service === 'ssh' || service === 'rdp') {
+    const user = credentials.value.username.trim()
+    if (!user) return
+    url += `&user=${encodeURIComponent(user)}`
+  } else if (service === 'vnc') {
+    const pwd = credentials.value.password.trim()
+    if (!pwd) return
+    url += `&user=${encodeURIComponent(pwd)}#password=${encodeURIComponent(pwd)}`
+  }
+
   window.open(url, '_blank')
+  dialogOpen.value = false
 }
 
 // Lifecycle Hooks (Polling setup)
@@ -250,5 +383,16 @@ onUnmounted(() => {
   color: #ffffff;
   border-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-1px);
+}
+
+/* Premium Dialog Styling */
+.dialog-card {
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid rgba(var(--brand-primary-rgb), 0.08);
+}
+[data-theme='dark'] .dialog-card {
+  background: #1e1e1e;
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
 }
 </style>
