@@ -49,7 +49,12 @@
     </template>
 
     <!-- Credentials / Confirmation Dialog -->
-    <q-dialog v-model="dialogOpen" persistent>
+    <q-dialog
+      v-model="dialogOpen"
+      persistent
+      @show="onDialogShow"
+      @keyup.enter="confirmConnection"
+    >
       <q-card class="dialog-card shadow-24">
         <q-card-section class="row items-center q-pb-none">
           <div
@@ -69,6 +74,7 @@
               {{ $gettext('Username') }}
             </div>
             <q-input
+              ref="usernameInput"
               v-model="credentials.username"
               dense
               outlined
@@ -86,6 +92,7 @@
               {{ $gettext('VNC Password') }}
             </div>
             <q-input
+              ref="passwordInput"
               v-model="credentials.password"
               dense
               outlined
@@ -130,13 +137,219 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <q-dialog
+      v-model="consoleDialogOpen"
+      maximized
+      persistent
+      @show="initConsole"
+      @hide="closeConsole"
+    >
+      <q-card class="console-card flex no-scroll">
+        <!-- Toolbar Header -->
+        <q-toolbar class="console-toolbar text-white">
+          <q-btn flat round dense icon="mdi-remote-desktop" class="q-mr-sm" />
+          <q-toolbar-title class="text-weight-bold title-text">
+            {{ agentData.name || $gettext('Computer') }} -
+            {{ selectedService ? selectedService.toUpperCase() : '' }}
+          </q-toolbar-title>
+
+          <!-- VNC Specific Tools -->
+          <template v-if="selectedService === 'vnc' && isConnected">
+            <q-btn flat round dense icon="mdi-keyboard-outline" class="q-mx-xs">
+              <q-menu anchor="bottom right" self="top right">
+                <q-list class="vnc-menu-list">
+                  <q-item v-close-popup clickable @click="sendCtrlAltDel">
+                    <q-item-section avatar>
+                      <q-icon name="mdi-keyboard-caps" />
+                    </q-item-section>
+                    <q-item-section>{{
+                      $gettext('Send Ctrl+Alt+Del')
+                    }}</q-item-section>
+                  </q-item>
+                  <q-item v-close-popup clickable @click="sendSuperKey">
+                    <q-item-section avatar>
+                      <q-icon name="mdi-microsoft-windows" />
+                    </q-item-section>
+                    <q-item-section>{{
+                      $gettext('Send Windows Key')
+                    }}</q-item-section>
+                  </q-item>
+                  <q-item v-close-popup clickable @click="toggleVncScaling">
+                    <q-item-section avatar>
+                      <q-icon
+                        :name="
+                          vncScaling ? 'mdi-fullscreen-exit' : 'mdi-fullscreen'
+                        "
+                      />
+                    </q-item-section>
+                    <q-item-section>{{
+                      vncScaling
+                        ? $gettext('Disable Scaling')
+                        : $gettext('Enable Scaling')
+                    }}</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+              <q-tooltip>{{ $gettext('VNC Controls') }}</q-tooltip>
+            </q-btn>
+
+            <!-- VNC Clipboard -->
+            <q-btn
+              flat
+              round
+              dense
+              icon="mdi-clipboard-text-outline"
+              class="q-mx-xs"
+            >
+              <q-menu
+                anchor="bottom right"
+                self="top right"
+                class="vnc-clipboard-menu"
+              >
+                <q-card class="vnc-clipboard-card">
+                  <q-card-section class="q-pa-sm">
+                    <q-input
+                      v-model="vncClipboardText"
+                      dense
+                      outlined
+                      autogrow
+                      :label="$gettext('Send text to remote')"
+                    />
+                  </q-card-section>
+                  <q-card-actions
+                    align="right"
+                    class="q-pt-none q-pb-sm q-px-sm"
+                  >
+                    <q-btn
+                      v-close-popup
+                      flat
+                      dense
+                      no-caps
+                      label="Send"
+                      color="primary"
+                      @click="sendVncClipboard"
+                    />
+                  </q-card-actions>
+                </q-card>
+              </q-menu>
+              <q-tooltip>{{ $gettext('Sync Clipboard') }}</q-tooltip>
+            </q-btn>
+          </template>
+
+          <q-space />
+
+          <!-- Connection Status -->
+          <div
+            :class="[
+              'console-status-badge',
+              isConnected ? 'status--connected' : 'status--connecting',
+            ]"
+          >
+            <span class="pulse-dot"></span>
+            <span class="status-lbl">{{
+              isConnected ? $gettext('CONNECTED') : $gettext('CONNECTING...')
+            }}</span>
+          </div>
+
+          <q-btn
+            flat
+            round
+            dense
+            :icon="isFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+            class="q-mx-sm"
+            @click="toggleFullscreen"
+          />
+          <q-btn
+            flat
+            round
+            dense
+            icon="close"
+            @click="consoleDialogOpen = false"
+          />
+        </q-toolbar>
+
+        <!-- Console View Area -->
+        <q-card-section class="console-container col relative-position bg-dark">
+          <!-- SSH / SYNC Terminal Container -->
+          <div
+            v-show="selectedService === 'ssh' || selectedService === 'sync'"
+            ref="terminalRef"
+            class="terminal-view"
+          ></div>
+
+          <!-- VNC Canvas Container -->
+          <div
+            v-show="selectedService === 'vnc'"
+            ref="vncContainerRef"
+            class="vnc-view"
+          ></div>
+
+          <!-- RDP Instruction Panel -->
+          <div
+            v-if="selectedService === 'rdp'"
+            class="rdp-view flex flex-center text-white q-pa-xl"
+          >
+            <q-card class="rdp-info-card text-center q-pa-lg">
+              <q-card-section>
+                <q-icon
+                  name="mdi-microsoft-windows"
+                  size="64px"
+                  class="text-primary q-mb-md"
+                />
+                <div class="text-h5 text-weight-bold q-mb-md">
+                  {{ $gettext('Remote RDP Connection') }}
+                </div>
+                <div class="text-body2 opacity-80 max-width-text q-mx-auto">
+                  {{
+                    $gettext(
+                      'To connect via RDP, copy and run the following command in your local system terminal:',
+                    )
+                  }}
+                </div>
+              </q-card-section>
+
+              <q-card-section class="command-block-section q-mt-md">
+                <code class="command-code">{{ rdpCommand }}</code>
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="mdi-content-copy"
+                  color="primary"
+                  class="copy-command-btn"
+                  @click="copyRdpCommand"
+                >
+                  <q-tooltip>{{ $gettext('Copy command') }}</q-tooltip>
+                </q-btn>
+              </q-card-section>
+
+              <q-card-section class="q-mt-md">
+                <div class="text-caption opacity-60">
+                  {{
+                    $gettext(
+                      'Make sure you have "migasfree-connect" utility installed on your local machine.',
+                    )
+                  }}
+                </div>
+              </q-card-section>
+            </q-card>
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { api } from 'boot/axios'
+import { useQuasar, SessionStorage } from 'quasar'
+import { Terminal } from 'xterm'
+import { FitAddon } from 'xterm-addon-fit'
+import RFB from '@novnc/novnc'
+import 'xterm/css/xterm.css'
 
 defineOptions({
   name: 'ComputerRemoteAccess',
@@ -150,6 +363,7 @@ const props = defineProps({
 })
 
 const { $gettext } = useGettext()
+const $q = useQuasar()
 
 const loading = ref(false)
 const agentData = ref({
@@ -157,6 +371,7 @@ const agentData = ref({
   services: [],
   relay: null,
   error: null,
+  name: '',
 })
 
 const dialogOpen = ref(false)
@@ -166,7 +381,40 @@ const credentials = ref({
   password: '',
 })
 
+// Input focus refs
+const usernameInput = ref(null)
+const passwordInput = ref(null)
+
+const onDialogShow = () => {
+  nextTick(() => {
+    if (selectedService.value === 'ssh' || selectedService.value === 'rdp') {
+      if (usernameInput.value) {
+        usernameInput.value.focus()
+      }
+    } else if (selectedService.value === 'vnc') {
+      if (passwordInput.value) {
+        passwordInput.value.focus()
+      }
+    }
+  })
+}
+
+// Embedded Console Refs
+const consoleDialogOpen = ref(false)
+const isConnected = ref(false)
+const isFullscreen = ref(false)
+const terminalRef = ref(null)
+const vncContainerRef = ref(null)
+const rdpCommand = ref('')
+const vncClipboardText = ref('')
+const vncScaling = ref(true)
+
 let pollingInterval = null
+let ws = null
+let term = null
+let fitAddon = null
+let rfb = null
+let resizeListener = null
 
 // Dynamic Badge Styling
 const statusClass = computed(() => {
@@ -192,6 +440,7 @@ const fetchStatus = async () => {
       services: response.data.services || [],
       relay: response.data.relay || null,
       error: response.data.error || null,
+      name: response.data.name || '',
     }
   } catch (err) {
     let errMsg = $gettext('Connection error')
@@ -205,6 +454,7 @@ const fetchStatus = async () => {
       services: [],
       relay: null,
       error: errMsg,
+      name: '',
     }
   } finally {
     loading.value = false
@@ -249,20 +499,336 @@ const confirmConnection = () => {
   if (!selectedService.value) return
 
   const service = selectedService.value.toLowerCase()
-  let url = `/manager/v1/private/tunnel/console?agent=${props.cid}&service=${service}`
-
   if (service === 'ssh' || service === 'rdp') {
     const user = credentials.value.username.trim()
     if (!user) return
-    url += `&user=${encodeURIComponent(user)}`
   } else if (service === 'vnc') {
     const pwd = credentials.value.password.trim()
     if (!pwd) return
-    url += `&user=${encodeURIComponent(pwd)}#password=${encodeURIComponent(pwd)}`
   }
 
-  window.open(url, '_blank')
   dialogOpen.value = false
+  consoleDialogOpen.value = true
+}
+
+// WebSocket URL builder
+const getWsUrl = (cid, service, token, user) => {
+  let wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+  let wsHost = window.location.host
+
+  const base = api.defaults.baseURL
+  if (base && (base.startsWith('http://') || base.startsWith('https://'))) {
+    const url = new URL(base)
+    wsProtocol = url.protocol === 'https:' ? 'wss:' : 'ws:'
+    wsHost = url.host
+  }
+
+  let url = `${wsProtocol}//${wsHost}/ws/tunnel/computers/${cid}/?token=${token}&service=${service}`
+  if (user) {
+    url += `&user=${encodeURIComponent(user)}`
+  }
+  return url
+}
+
+// RDP Setup
+const setupRdpInfo = () => {
+  const managerUrl = window.location.origin
+  const userPart = credentials.value.username.trim()
+    ? ` ${credentials.value.username.trim()}`
+    : ''
+  rdpCommand.value = `migasfree-connect -t rdp -a ${props.cid} -m ${managerUrl}${userPart}`
+  isConnected.value = true
+}
+
+const copyRdpCommand = () => {
+  navigator.clipboard
+    .writeText(rdpCommand.value)
+    .then(() => {
+      $q.notify({
+        type: 'positive',
+        message: $gettext('Command copied to clipboard'),
+        timeout: 2000,
+      })
+    })
+    .catch((err) => {
+      console.error('Failed to copy: ', err)
+    })
+}
+
+// Fullscreen
+const toggleFullscreen = () => {
+  const el = document.documentElement
+  if (!document.fullscreenElement) {
+    el.requestFullscreen()
+      .then(() => {
+        isFullscreen.value = true
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  } else {
+    document.exitFullscreen()
+    isFullscreen.value = false
+  }
+}
+
+// Console Initialization
+const initConsole = async () => {
+  isConnected.value = false
+  const token = SessionStorage.getItem('auth.token')
+  const service = selectedService.value.toLowerCase()
+
+  if (service === 'rdp') {
+    setupRdpInfo()
+    return
+  }
+
+  let userParam = ''
+  if (service === 'ssh') {
+    userParam = credentials.value.username.trim()
+  } else if (service === 'vnc') {
+    userParam = credentials.value.password.trim()
+  }
+
+  const wsUrl = getWsUrl(
+    props.cid,
+    service === 'sync' ? 'exec' : service,
+    token,
+    userParam,
+  )
+
+  try {
+    ws = new WebSocket(wsUrl)
+
+    if (service === 'ssh' || service === 'sync') {
+      term = new Terminal({
+        fontFamily: 'JetBrains Mono, monospace',
+        fontSize: 14,
+        cursorBlink: true,
+        theme: {
+          background: '#121214',
+          foreground: '#e4e4e7',
+          cursor: '#00cc66',
+          black: '#121214',
+          red: '#ff5555',
+          green: '#50fa7b',
+          yellow: '#f1fa8c',
+          blue: '#bd93f9',
+          magenta: '#ff79c6',
+          cyan: '#8be9fd',
+          white: '#bfbfbf',
+        },
+      })
+
+      fitAddon = new FitAddon()
+      term.loadAddon(fitAddon)
+      term.open(terminalRef.value)
+      fitAddon.fit()
+
+      const handleResize = () => {
+        if (fitAddon) {
+          fitAddon.fit()
+          if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.send(
+              JSON.stringify({
+                type: 'resize',
+                cols: term.cols,
+                rows: term.rows,
+              }),
+            )
+          }
+        }
+      }
+
+      resizeListener = handleResize
+      window.addEventListener('resize', resizeListener)
+
+      term.onResize((size) => {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+          ws.send(
+            JSON.stringify({
+              type: 'resize',
+              cols: size.cols,
+              rows: size.rows,
+            }),
+          )
+        }
+      })
+
+      term.onData((data) => {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+          const hexData = Array.from(data)
+            .map((char) => char.charCodeAt(0).toString(16).padStart(2, '0'))
+            .join('')
+          ws.send(JSON.stringify({ data: hexData }))
+        }
+      })
+
+      term.clear()
+      const connMsg =
+        service === 'ssh'
+          ? `→ Connecting to ${credentials.value.username.trim()}@Computer ${props.cid}...`
+          : `→ Connecting to execute Sync on Computer ${props.cid}...`
+      term.writeln(`\x1b[1;36m${connMsg}\x1b[0m`)
+
+      ws.onopen = () => {
+        isConnected.value = true
+        term.writeln('\x1b[1;32m✓ Connected to WebSocket Proxy!\x1b[0m')
+        term.writeln('')
+        term.focus()
+
+        if (service === 'sync') {
+          ws.send(
+            JSON.stringify({
+              type: 'execute_command',
+              command: 'migasfree sync',
+            }),
+          )
+        }
+
+        setTimeout(handleResize, 200)
+      }
+
+      ws.onmessage = (event) => {
+        try {
+          const message = JSON.parse(event.data)
+          if (message.type === 'data' && message.data) {
+            const hexData = message.data
+            const match = hexData.match(/.{1,2}/g)
+            if (match) {
+              const bytes = new Uint8Array(
+                match.map((byte) => parseInt(byte, 16)),
+              )
+              const text = new TextDecoder('utf-8').decode(bytes)
+              term.write(text)
+            }
+          } else if (message.type === 'output') {
+            term.write(message.data)
+          } else if (message.type === 'command_complete') {
+            term.writeln(
+              '\r\n\x1b[1;32m✓ Synchronization completed successfully\x1b[0m',
+            )
+            setTimeout(() => {
+              consoleDialogOpen.value = false
+            }, 2500)
+          } else if (message.type === 'command_error') {
+            term.writeln(
+              `\r\n\x1b[1;31m✗ Synchronization failed: ${message.error}\x1b[0m`,
+            )
+            setTimeout(() => {
+              consoleDialogOpen.value = false
+            }, 4000)
+          } else if (message.status === 'closed') {
+            term.writeln(
+              '\r\n\x1b[1;33m✗ Connection closed by remote host\x1b[0m',
+            )
+            isConnected.value = false
+          } else if (message.error) {
+            term.writeln(`\r\n\x1b[1;31m✗ Error: ${message.error}\x1b[0m`)
+          }
+        } catch (err) {
+          console.error(err)
+        }
+      }
+
+      ws.onerror = (error) => {
+        console.error(error)
+        term.writeln('\r\n\x1b[1;31m✗ WebSocket connection error\x1b[0m')
+        isConnected.value = false
+      }
+
+      ws.onclose = () => {
+        term.writeln('\r\n\x1b[1;33m✗ Connection disconnected\x1b[0m')
+        isConnected.value = false
+      }
+    } else if (service === 'vnc') {
+      vncContainerRef.value.innerHTML = ''
+      await new Promise((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(resolve)),
+      )
+
+      rfb = new RFB(vncContainerRef.value, wsUrl)
+
+      rfb.addEventListener('connect', () => {
+        isConnected.value = true
+        rfb.focus()
+        rfb.scaleViewport = vncScaling.value
+        rfb.resizeSession = false
+      })
+
+      rfb.addEventListener('disconnect', (e) => {
+        isConnected.value = false
+        if (e.detail.clean) {
+          console.log('Clean VNC disconnect')
+        } else {
+          console.error('VNC Disconnect Error', e)
+        }
+      })
+    }
+  } catch (err) {
+    console.error(err)
+    $q.notify({
+      type: 'negative',
+      message: $gettext('Failed to initialize connection'),
+      caption: err.message,
+    })
+  }
+}
+
+// Close Console
+const closeConsole = () => {
+  if (document.fullscreenElement) {
+    document.exitFullscreen()
+    isFullscreen.value = false
+  }
+
+  if (ws) {
+    ws.close()
+    ws = null
+  }
+  if (term) {
+    term.dispose()
+    term = null
+  }
+  if (fitAddon) {
+    fitAddon = null
+  }
+  if (rfb) {
+    rfb.disconnect()
+    rfb = null
+  }
+  if (resizeListener) {
+    window.removeEventListener('resize', resizeListener)
+    resizeListener = null
+  }
+  isConnected.value = false
+}
+
+// VNC Tool Helpers
+const sendCtrlAltDel = () => {
+  if (rfb) {
+    rfb.sendCtrlAltDel()
+  }
+}
+
+const sendSuperKey = () => {
+  if (rfb) {
+    rfb.sendKey(0xffeb)
+  }
+}
+
+const toggleVncScaling = () => {
+  if (rfb) {
+    vncScaling.value = !vncScaling.value
+    rfb.scaleViewport = vncScaling.value
+  }
+}
+
+const sendVncClipboard = () => {
+  if (rfb && vncClipboardText.value) {
+    rfb.clipboardPasteFrom(vncClipboardText.value)
+    vncClipboardText.value = ''
+  }
 }
 
 // Lifecycle Hooks (Polling setup)
@@ -393,5 +959,201 @@ onUnmounted(() => {
   background: #1e1e1e;
   border-color: rgba(255, 255, 255, 0.08);
   color: #ffffff;
+}
+
+/* Embedded Console Layout & Theme (Scenario C) */
+.console-card {
+  width: 100vw;
+  height: 100vh;
+  background: #121214;
+  display: flex;
+  flex-direction: column;
+}
+
+.console-toolbar {
+  background: #18181b;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  height: 56px;
+  min-height: 56px;
+}
+
+.title-text {
+  font-family: var(--font-family-ui, 'Dosis', sans-serif);
+  letter-spacing: 0.02em;
+  font-size: 1.1rem;
+}
+
+/* Connection Status Badge in Console Toolbar */
+.console-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-right: 8px;
+  border: 1px solid transparent;
+}
+
+.status--connecting {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.status--connected {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.status--connected .pulse-dot {
+  animation: pulse-green 1.5s infinite ease-in-out;
+}
+
+.status--connecting .pulse-dot {
+  animation: pulse-amber 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse-green {
+  0% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+@keyframes pulse-amber {
+  0% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0);
+  }
+  100% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+  }
+}
+
+/* Console Container */
+.console-container {
+  background: #121214;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* SSH & SYNC View */
+.terminal-view {
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.terminal-view :deep(.xterm) {
+  padding: 8px;
+}
+
+/* VNC View */
+.vnc-view {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.vnc-view :deep(canvas) {
+  max-width: 100%;
+  max-height: 100%;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+}
+
+/* RDP Styling */
+.rdp-view {
+  width: 100%;
+  height: 100%;
+}
+
+.rdp-info-card {
+  background: #1e1e24;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  max-width: 550px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+}
+
+.max-width-text {
+  max-width: 400px;
+}
+
+.command-block-section {
+  background: #121214;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+}
+
+.command-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  color: #a78bfa;
+  word-break: break-all;
+  text-align: left;
+}
+
+.copy-command-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.copy-command-btn:hover {
+  background: rgba(var(--brand-primary-rgb), 0.1);
+}
+
+/* VNC Specific Dropdown menus */
+.vnc-menu-list {
+  background: #1e1e24;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.vnc-menu-list .q-item {
+  min-width: 200px;
+}
+
+.vnc-menu-list .q-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.vnc-clipboard-card {
+  background: #1e1e24;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: 260px;
 }
 </style>

@@ -37,6 +37,7 @@
   "dependencies": {
     "@fontsource/dosis": "5.2.8",
     "@fontsource/jetbrains-mono": "5.2.8",
+    "@novnc/novnc": "1.7.0",
     "@quasar/extras": "1.18.0",
     "@vue-leaflet/vue-leaflet": "0.7.0",
     "@vue/compiler-sfc": "3.5.33",
@@ -55,7 +56,9 @@
     "vue-good-table-next": "0.2.2",
     "vue-router": "5.0.6",
     "vue3-ace-editor": "2.2.4",
-    "vue3-gettext": "4.0.0-beta.1"
+    "vue3-gettext": "4.0.0-beta.1",
+    "xterm": "5.3.0",
+    "xterm-addon-fit": "0.8.0"
   },
   "devDependencies": {
     "@cypress/vue": "6.0.3",
