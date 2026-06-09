@@ -8,16 +8,6 @@
       :model="model"
       :routes="routes"
     >
-      <!-- Custom rendering for Project column -->
-      <template #cell-project="{ props }">
-        <MigasLink
-          v-if="props.row.project"
-          model="projects"
-          :pk="props.row.project"
-          :value="`${$gettext('Project')} #${props.row.project}`"
-        />
-      </template>
-
       <!-- Custom rendering for Build Type badge -->
       <template #cell-build_type="{ props }">
         <q-badge
@@ -85,9 +75,17 @@ const { title, breadcrumbs, columns } = useListConfig(
   ],
   [
     {
+      field: 'project.id',
+      hidden: true,
+    },
+    {
       label: $gettext('Project'),
-      field: 'project',
-      sortable: true,
+      field: 'project.name',
+      filterOptions: {
+        enabled: true,
+        placeholder: $gettext('All'),
+        trigger: 'enter',
+      },
     },
     {
       label: $gettext('Template ID'),
