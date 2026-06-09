@@ -66,7 +66,7 @@ const model = 'mgi/release'
 const { title, breadcrumbs, columns } = useListConfig(
   model,
   $gettext('Releases'),
-  $gettext('MGI Releases'),
+  $gettext('Releases'),
   [
     {
       text: $gettext('Golden Images'),
@@ -74,11 +74,6 @@ const { title, breadcrumbs, columns } = useListConfig(
     },
   ],
   [
-    {
-      label: $gettext('Config'),
-      field: 'config',
-      sortable: true,
-    },
     {
       label: $gettext('Name'),
       field: 'name',
@@ -88,6 +83,11 @@ const { title, breadcrumbs, columns } = useListConfig(
         placeholder: $gettext('Filter'),
         trigger: 'enter',
       },
+    },
+    {
+      label: $gettext('Config'),
+      field: 'config',
+      sortable: true,
     },
     {
       label: $gettext('Created At'),

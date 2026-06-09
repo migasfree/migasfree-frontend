@@ -24,7 +24,7 @@
               size="sm"
               class="q-mr-sm color-primary"
             />
-            {{ $gettext('Release Details') }}
+            {{ $gettext('General') }}
           </div>
 
           <div class="row q-col-gutter-lg q-pt-sm">
