@@ -46,6 +46,7 @@
 
     <!-- CONTEXT MENU -->
     <q-btn
+      v-if="!hideMenu"
       flat
       round
       dense
@@ -151,6 +152,7 @@ const props = defineProps({
   icon: { type: String, default: '' },
   light: { type: Boolean, default: false },
   hideIcon: { type: Boolean, default: false },
+  hideMenu: { type: Boolean, default: false },
 })
 
 const router = useRouter()
