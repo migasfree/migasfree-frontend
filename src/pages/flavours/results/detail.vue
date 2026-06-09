@@ -34,7 +34,7 @@
                 :label="$gettext('Configuration')"
                 :options="configs"
                 option-value="id"
-                option-label="template_id"
+                :option-label="getConfigOptionLabel"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
               />
@@ -231,6 +231,15 @@ const routes = {
   detail: 'flavour-detail',
 }
 const model = 'mgi/flavour'
+
+const getConfigOptionLabel = (item) => {
+  if (!item) return ''
+  const projectName =
+    item.project && typeof item.project === 'object'
+      ? item.project.name
+      : item.project || ''
+  return projectName ? `${projectName} (${item.template_id})` : item.template_id
+}
 
 const element = reactive({
   id: 0,

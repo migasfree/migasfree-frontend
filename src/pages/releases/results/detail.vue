@@ -34,7 +34,7 @@
                 :label="$gettext('Configuration')"
                 :options="configs"
                 option-value="id"
-                option-label="template_id"
+                :option-label="getConfigOptionLabel"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
                 @update:model-value="onConfigChanged"
@@ -269,7 +269,7 @@ import { appIcon, modelIcon } from 'composables/element'
 const uiStore = useUiStore()
 const { $gettext } = useGettext()
 
-const title = ref($gettext('MGI Release'))
+const title = ref($gettext('Release'))
 const windowTitle = ref(title.value)
 useMeta(() => ({ title: windowTitle.value }))
 
@@ -279,6 +279,15 @@ const routes = {
   detail: 'release-detail',
 }
 const model = 'mgi/release'
+
+const getConfigOptionLabel = (item) => {
+  if (!item) return ''
+  const projectName =
+    item.project && typeof item.project === 'object'
+      ? item.project.name
+      : item.project || ''
+  return projectName ? `${projectName} (${item.template_id})` : item.template_id
+}
 
 const element = reactive({
   id: 0,
