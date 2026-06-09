@@ -37,7 +37,6 @@
                 :option-label="getConfigOptionLabel"
                 lazy-rules
                 :rules="[(val) => !!val || $gettext('* Required')]"
-                @update:model-value="onConfigChanged"
               />
             </div>
 
@@ -95,7 +94,7 @@
               no-caps
               :icon="appIcon('add')"
               class="q-px-md q-py-sm"
-              @click="openLaunchDialog"
+              @click="triggerBuild"
             >
               <span class="q-ml-xs text-weight-bold">{{
                 $gettext('Launch Build')
@@ -200,55 +199,6 @@
             </q-table>
           </q-card-section>
         </q-card>
-
-        <!-- Launch Compilation Dialog -->
-        <q-dialog v-model="launchDialog" persistent>
-          <q-card style="min-width: 420px; border-radius: 16px">
-            <q-card-section class="row items-center q-pb-none">
-              <div class="text-h6 text-weight-bold row items-center">
-                <q-icon
-                  name="mdi-play-circle-outline"
-                  size="sm"
-                  class="q-mr-sm text-primary"
-                />
-                {{ $gettext('Launch Compilation') }}
-              </div>
-              <q-space />
-              <q-btn v-close-popup flat round dense icon="close" />
-            </q-card-section>
-
-            <q-card-section class="q-pa-md">
-              <p class="text-body2 text-grey-8">
-                {{
-                  $gettext(
-                    'Select which flavour profile you want to trigger the system compilation for.',
-                  )
-                }}
-              </p>
-              <q-select
-                v-model="selectedFlavour"
-                :label="$gettext('System Flavour')"
-                :options="filteredFlavours"
-                option-value="id"
-                option-label="name"
-                filled
-                class="q-mt-md"
-              />
-            </q-card-section>
-
-            <q-card-actions align="right" class="q-pa-md bg-grey-1">
-              <q-btn v-close-popup flat :label="$gettext('Cancel')" no-caps />
-              <q-btn
-                color="primary"
-                push
-                :label="$gettext('Start Compilation')"
-                no-caps
-                :disabled="!selectedFlavour"
-                @click="triggerBuild"
-              />
-            </q-card-actions>
-          </q-card>
-        </q-dialog>
       </template>
     </ItemDetail>
   </q-page>
@@ -317,9 +267,6 @@ const configs = ref([])
 const builds = ref([])
 const flavoursList = ref([])
 
-const launchDialog = ref(false)
-const selectedFlavour = ref(null)
-
 const buildColumns = [
   { name: 'id', label: 'ID', field: 'id', align: 'left', sortable: true },
   { name: 'flavour', label: $gettext('Flavour'), align: 'left' },
@@ -339,15 +286,6 @@ const isValid = computed(() => {
     element.config !== undefined &&
     element.name !== undefined &&
     element.name.trim() !== ''
-  )
-})
-
-const filteredFlavours = computed(() => {
-  if (!element.config) return []
-  const cid =
-    typeof element.config === 'object' ? element.config.id : element.config
-  return flavoursList.value.filter(
-    (f) => f.config === cid || f.config?.id === cid,
   )
 })
 
@@ -380,33 +318,22 @@ const loadRelated = async () => {
   }
 }
 
-const onConfigChanged = () => {
-  selectedFlavour.value = null
-}
-
 const getFlavourName = (flavourId) => {
   const f = flavoursList.value.find((x) => x.id === flavourId)
   return f ? f.name : `${$gettext('Flavour')} #${flavourId}`
 }
 
-const openLaunchDialog = () => {
-  selectedFlavour.value = null
-  launchDialog.value = true
-}
-
 const triggerBuild = async () => {
   try {
-    const payload = {
-      release: element.id,
-      flavour: selectedFlavour.value.id,
-    }
-    const { data } = await api.post('/api/v1/token/mgi/build/', payload)
-
-    // Append the new build to our list
-    builds.value.unshift(data)
+    await api.post(`/api/v1/token/mgi/release/${element.id}/build/`)
 
     uiStore.notifySuccess($gettext('Compilation started successfully!'))
-    launchDialog.value = false
+
+    // Refresh builds list
+    const buildsResponse = await api.get(
+      `/api/v1/token/mgi/build/?release=${element.id}`,
+    )
+    builds.value = buildsResponse.data.results
   } catch (error) {
     uiStore.notifyError(error)
   }
