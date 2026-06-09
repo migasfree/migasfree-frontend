@@ -15,7 +15,6 @@
           model="mgi/config"
           :pk="props.row.config"
           :value="getConfigValue(props.row.config)"
-          :hide-menu="true"
         />
       </template>
     </TableResults>
