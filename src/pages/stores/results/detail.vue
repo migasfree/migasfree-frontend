@@ -13,6 +13,28 @@
       @reset-element="resetElement"
       @set-title="setTitle"
     >
+      <template #actions>
+        <q-btn
+          v-if="element.id"
+          class="q-ma-sm"
+          color="secondary"
+          :aria-label="$gettext('Add Package')"
+          :icon="appIcon('add')"
+          :icon-right="modelIcon('packages')"
+          @click="
+            $router.push({
+              name: 'package-add',
+              query: {
+                project_id: element.project?.id || element.project,
+                store_id: element.id,
+              },
+            })
+          "
+        >
+          <q-tooltip>{{ $gettext('Add Package') }}</q-tooltip>
+        </q-btn>
+      </template>
+
       <template #fields>
         <q-card-section>
           <div class="row q-pa-md q-gutter-md">

@@ -138,6 +138,7 @@
 
 <script setup>
 import { ref, reactive, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 import { api } from 'boot/axios'
@@ -147,6 +148,7 @@ import MigasLink from 'components/MigasLink'
 import SelectTree from 'components/ui/SelectTree'
 import { appIcon, modelIcon } from 'composables/element'
 
+const route = useRoute()
 const uiStore = useUiStore()
 const { $gettext } = useGettext()
 
@@ -258,6 +260,41 @@ const loadRelated = async () => {
       icon: modelIcon('projects'),
       lazy: true,
     }))
+
+    const pId = route.query.project_id
+    const sId = route.query.store_id
+
+    if (pId && sId) {
+      const { data: storeData } = await api.get('/api/v1/token/stores/', {
+        params: { project__id: pId },
+      })
+
+      const targetProject = projectStore.items.find(
+        (item) => item.id === Number(pId),
+      )
+      if (targetProject) {
+        targetProject.children = Object.values(storeData.results).map(
+          (item) => ({
+            id: `${pId}|${item.id}`,
+            label: item.name,
+            icon: modelIcon('stores'),
+            store_id: item.id,
+          }),
+        )
+        targetProject.lazy = false
+
+        const storeItem = targetProject.children.find(
+          (item) => item.store_id === Number(sId),
+        )
+        if (storeItem) {
+          projectStore.selected = storeItem.id
+          Object.assign(element, {
+            project: { id: Number(pId) },
+            store: { id: Number(sId) },
+          })
+        }
+      }
+    }
   } catch (error) {
     uiStore.notifyError(error)
   }

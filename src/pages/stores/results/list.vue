@@ -8,6 +8,26 @@
       :model="model"
       :routes="routes"
     >
+      <template #actions="{ props }">
+        <q-btn
+          class="q-ma-xs"
+          round
+          size="sm"
+          :icon="modelIcon('packages')"
+          color="secondary"
+          @click="
+            $router.push({
+              name: 'package-add',
+              query: {
+                project_id: props.row.project.id,
+                store_id: props.row.id,
+              },
+            })
+          "
+        >
+          <q-tooltip>{{ $gettext('Add Package') }}</q-tooltip>
+        </q-btn>
+      </template>
     </TableResults>
   </q-page>
 </template>
@@ -23,7 +43,7 @@ import { useUiStore } from 'stores/ui'
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
 
-import { appIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'
 
 const { $gettext } = useGettext()
