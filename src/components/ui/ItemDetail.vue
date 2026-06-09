@@ -3,19 +3,24 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <Header :title="originalTitle" :icon="titleIcon" :has-export-button="false">
-      <template v-if="element.id" #append>
-        <div class="header-metadata row items-center no-wrap">
-          <MigasLink
-            v-if="headerLink"
-            :model="model"
-            :pk="element.id"
-            :value="headerValue"
-            :icon="headerIcon"
-            :hide-icon="!headerIcon"
-            :tooltip="element.summary || element.description"
-          />
-          <span v-else class="vertical-middle">{{ elementText }}</span>
-        </div>
+      <template #append>
+        <slot name="append">
+          <div
+            v-if="element.id"
+            class="header-metadata row items-center no-wrap"
+          >
+            <MigasLink
+              v-if="headerLink"
+              :model="model"
+              :pk="element.id"
+              :value="headerValue"
+              :icon="headerIcon"
+              :hide-icon="!headerIcon"
+              :tooltip="element.summary || element.description"
+            />
+            <span v-else class="vertical-middle">{{ elementText }}</span>
+          </div>
+        </slot>
       </template>
 
       <template #actions>

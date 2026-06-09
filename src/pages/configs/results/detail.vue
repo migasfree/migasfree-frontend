@@ -9,25 +9,38 @@
       :element="element"
       :element-data="elementData"
       :is-valid="isValid"
+      :header-link="false"
       @load-related="loadRelated"
       @reset-element="resetElement"
       @set-title="setTitle"
     >
+      <template #append>
+        <div
+          v-if="element.id"
+          class="header-metadata row items-center no-wrap q-gutter-x-xs"
+        >
+          <MigasLink
+            v-if="element.project"
+            model="projects"
+            :pk="
+              typeof element.project === 'object'
+                ? element.project.id
+                : element.project
+            "
+            :value="
+              typeof element.project === 'object'
+                ? element.project.name
+                : String(element.project)
+            "
+          />
+          <span class="vertical-middle">({{ element.template_id }})</span>
+        </div>
+      </template>
+
       <template #fields>
         <!-- General Section -->
         <q-card-section>
-          <div
-            class="text-h5 q-mt-sm q-mb-md text-weight-medium row items-center"
-          >
-            <q-icon
-              name="mdi-information-outline"
-              size="sm"
-              class="q-mr-sm color-primary"
-            />
-            {{ $gettext('General Information') }}
-          </div>
-
-          <div class="row q-col-gutter-lg q-pt-sm">
+          <div v-if="!element.id" class="row q-col-gutter-lg q-pt-sm">
             <div class="col-12 col-md-6">
               <q-select
                 v-model="element.project"
@@ -202,13 +215,14 @@ import { useUiStore } from 'stores/ui'
 
 import ItemDetail from 'components/ui/ItemDetail'
 import CodeEditor from 'components/ui/CodeEditor'
+import MigasLink from 'components/MigasLink'
 
 import { appIcon, modelIcon } from 'composables/element'
 
 const uiStore = useUiStore()
 const { $gettext } = useGettext()
 
-const title = ref($gettext('MGI Configuration'))
+const title = ref($gettext('Configuration'))
 const windowTitle = ref(title.value)
 useMeta(() => ({ title: windowTitle.value }))
 

@@ -51,7 +51,6 @@ import { useListConfig } from 'composables/listConfig'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
-import MigasLink from 'components/MigasLink'
 
 import { appIcon } from 'composables/element'
 
@@ -66,7 +65,7 @@ const model = 'mgi/config'
 const { title, breadcrumbs, columns } = useListConfig(
   model,
   $gettext('Configurations'),
-  $gettext('MGI Configurations'),
+  $gettext('Configurations'),
   [
     {
       text: $gettext('Golden Images'),

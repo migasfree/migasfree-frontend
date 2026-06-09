@@ -31,7 +31,7 @@
             <div class="col-12 col-md-6">
               <q-select
                 v-model="element.config"
-                :label="$gettext('MGI Configuration')"
+                :label="$gettext('Configuration')"
                 :options="configs"
                 option-value="id"
                 option-label="template_id"
