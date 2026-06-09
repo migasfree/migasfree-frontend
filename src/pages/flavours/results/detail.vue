@@ -24,7 +24,7 @@
               size="sm"
               class="q-mr-sm color-primary"
             />
-            {{ $gettext('Flavour Details') }}
+            {{ $gettext('Details') }}
           </div>
 
           <div class="row q-col-gutter-lg q-pt-sm">
@@ -221,7 +221,7 @@ const uiStore = useUiStore()
 const { $gettext } = useGettext()
 const { attributeValue } = useElement()
 
-const title = ref($gettext('MGI Flavour'))
+const title = ref($gettext('Flavour'))
 const windowTitle = ref(title.value)
 useMeta(() => ({ title: windowTitle.value }))
 
