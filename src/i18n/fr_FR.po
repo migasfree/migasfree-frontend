@@ -741,7 +741,7 @@ msgstr "Périphériques / Connexion"
 msgid ""
 "To connect via RDP, copy and run the following command in your local system "
 "terminal:"
-msgstr ""
+msgstr "Pour vous connecter via RDP, copiez et exécutez la commande suivante dans le terminal de votre système local :"
 
 #: src/components/computer/RemoteAccess.vue:323
 msgid "Copy command"
@@ -751,7 +751,7 @@ msgstr ""
 msgid ""
 "Make sure you have \"migasfree-connect\" utility installed on your local "
 "machine."
-msgstr ""
+msgstr "Assurez-vous que l'utilitaire \"migasfree-connect\" est installé sur votre machine locale."
 
 #: src/components/computer/RemoteAccess.vue:427
 msgid "Online"
@@ -4165,39 +4165,30 @@ msgstr "Liste des utilisateurs"
 msgid "Invalid credentials"
 msgstr "Identifiants invalides"
 
-#, fuzzy
 #~ msgid "General Information"
 #~ msgstr "Informations matérielles"
 
-#, fuzzy
 #~ msgid "MGI Configuration"
 #~ msgstr "Configuration"
 
-#, fuzzy
 #~ msgid "MGI Configurations"
 #~ msgstr "Configurations"
 
-#, fuzzy
 #~ msgid "Flavour Details"
 #~ msgstr "Détails"
 
-#, fuzzy
 #~ msgid "Release Details"
 #~ msgstr "Publication"
 
-#, fuzzy
 #~ msgid "Launch Compilation"
 #~ msgstr "Synchronisation"
 
-#, fuzzy
 #~ msgid "Start Compilation"
 #~ msgstr "Démarrer l'importation"
 
-#, fuzzy
 #~ msgid "MGI Release"
 #~ msgstr "Publication"
 
-#, fuzzy
 #~ msgid "MGI Releases"
 #~ msgstr "Publication"
 

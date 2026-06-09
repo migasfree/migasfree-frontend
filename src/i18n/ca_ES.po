@@ -741,7 +741,7 @@ msgstr "Dispositius / Connexió"
 msgid ""
 "To connect via RDP, copy and run the following command in your local system "
 "terminal:"
-msgstr ""
+msgstr "Per connectar-vos via RDP, copieu i executeu la següent ordre al terminal del vostre sistema local:"
 
 #: src/components/computer/RemoteAccess.vue:323
 msgid "Copy command"
@@ -751,7 +751,7 @@ msgstr ""
 msgid ""
 "Make sure you have \"migasfree-connect\" utility installed on your local "
 "machine."
-msgstr ""
+msgstr "Assegureu-vos de tenir la utilitat \"migasfree-connect\" instal·lada a la vostra màquina local."
 
 #: src/components/computer/RemoteAccess.vue:427
 msgid "Online"
@@ -4161,39 +4161,30 @@ msgstr "Llista de usuaris/es"
 msgid "Invalid credentials"
 msgstr "Credencials invàlides"
 
-#, fuzzy
 #~ msgid "General Information"
 #~ msgstr "Informació del maquinari"
 
-#, fuzzy
 #~ msgid "MGI Configuration"
 #~ msgstr "Configuració"
 
-#, fuzzy
 #~ msgid "MGI Configurations"
 #~ msgstr "Configuracions"
 
-#, fuzzy
 #~ msgid "Flavour Details"
 #~ msgstr "Detalls"
 
-#, fuzzy
 #~ msgid "Release Details"
 #~ msgstr "Alliberament"
 
-#, fuzzy
 #~ msgid "Launch Compilation"
 #~ msgstr "Sincronització"
 
-#, fuzzy
 #~ msgid "Start Compilation"
 #~ msgstr "Iniciar importació"
 
-#, fuzzy
 #~ msgid "MGI Release"
 #~ msgstr "Alliberament"
 
-#, fuzzy
 #~ msgid "MGI Releases"
 #~ msgstr "Alliberament"
 

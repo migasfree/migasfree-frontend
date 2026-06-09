@@ -740,7 +740,7 @@ msgstr "Gailuak / Konexioa"
 msgid ""
 "To connect via RDP, copy and run the following command in your local system "
 "terminal:"
-msgstr ""
+msgstr "RDP bidez konektatzeko, kopiatu eta exekutatu hurrengo komandoa zure tokiko sistemaren terminalean:"
 
 #: src/components/computer/RemoteAccess.vue:323
 msgid "Copy command"
@@ -750,7 +750,7 @@ msgstr ""
 msgid ""
 "Make sure you have \"migasfree-connect\" utility installed on your local "
 "machine."
-msgstr ""
+msgstr "Ziurtatu \"migasfree-connect\" utilitatea zure tokiko makinan instalatuta duzula."
 
 #: src/components/computer/RemoteAccess.vue:427
 msgid "Online"
@@ -4164,39 +4164,30 @@ msgstr "Erabiltzaileen zerrenda"
 msgid "Invalid credentials"
 msgstr "Kredentzial baliogabeak"
 
-#, fuzzy
 #~ msgid "General Information"
 #~ msgstr "Hardwarearen informazioa"
 
-#, fuzzy
 #~ msgid "MGI Configuration"
 #~ msgstr "Konfigurazioa"
 
-#, fuzzy
 #~ msgid "MGI Configurations"
 #~ msgstr "Konfigurazioak"
 
-#, fuzzy
 #~ msgid "Flavour Details"
 #~ msgstr "Xehetasunak"
 
-#, fuzzy
 #~ msgid "Release Details"
 #~ msgstr "Askatasuna"
 
-#, fuzzy
 #~ msgid "Launch Compilation"
 #~ msgstr "Sinkronizazioa"
 
-#, fuzzy
 #~ msgid "Start Compilation"
 #~ msgstr "Hasi inportazioa"
 
-#, fuzzy
 #~ msgid "MGI Release"
 #~ msgstr "Askatasuna"
 
-#, fuzzy
 #~ msgid "MGI Releases"
 #~ msgstr "Askatasuna"
 
