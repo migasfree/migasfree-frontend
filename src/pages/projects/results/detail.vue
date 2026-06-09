@@ -15,6 +15,18 @@
     >
       <template #actions>
         <q-btn
+          v-if="element.id"
+          class="q-ma-sm"
+          color="secondary"
+          :aria-label="$gettext('Export to Local Template')"
+          :icon="appIcon('export')"
+          @click="exportToLocalTemplate"
+          ><q-tooltip>{{
+            $gettext('Export to Local Template')
+          }}</q-tooltip></q-btn
+        >
+
+        <q-btn
           v-if="element.id && !hasStores"
           class="q-ma-sm"
           :aria-label="$gettext('Create default stores')"
@@ -386,6 +398,19 @@ const createDefaultDeployments = async () => {
 
     deploymentCount.value = 2
     uiStore.notifySuccess($gettext('Data has been added!'))
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
+
+const exportToLocalTemplate = async () => {
+  try {
+    await api.post('/api/v1/token/projects/templates/export/', {
+      project_id: element.id,
+    })
+    uiStore.notifySuccess(
+      $gettext('Project successfully exported to local template!'),
+    )
   } catch (error) {
     uiStore.notifyError(error)
   }
