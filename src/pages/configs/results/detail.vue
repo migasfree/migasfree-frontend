@@ -21,19 +21,15 @@
         >
           <MigasLink
             v-if="element.project"
-            model="projects"
-            :pk="
-              typeof element.project === 'object'
-                ? element.project.id
-                : element.project
-            "
+            model="mgi/config"
+            :pk="element.id"
             :value="
               typeof element.project === 'object'
-                ? element.project.name
-                : String(element.project)
+                ? `${element.project.name} (${element.template_id})`
+                : `${element.project} (${element.template_id})`
             "
+            :hide-icon="true"
           />
-          <span class="vertical-middle">({{ element.template_id }})</span>
         </div>
       </template>
 
