@@ -29,6 +29,7 @@
                 : `${element.project} (${element.template_id})`
             "
             :hide-icon="true"
+            :tooltip="`${$gettext('Project')} (${$gettext('Template ID')})`"
           />
         </div>
       </template>

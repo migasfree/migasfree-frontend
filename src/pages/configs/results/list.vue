@@ -8,6 +8,20 @@
       :model="model"
       :routes="routes"
     >
+      <!-- Custom rendering for Config link -->
+      <template #cell-config="{ props }">
+        <MigasLink
+          model="mgi/config"
+          :pk="props.row.id"
+          :value="
+            props.row.project?.name
+              ? `${props.row.project.name} (${props.row.template_id})`
+              : props.row.template_id
+          "
+          :tooltip="`${$gettext('Project')} (${$gettext('Template ID')})`"
+        />
+      </template>
+
       <!-- Custom rendering for Build Type badge -->
       <template #cell-build_type="{ props }">
         <q-badge
@@ -51,6 +65,7 @@ import { useListConfig } from 'composables/listConfig'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
+import MigasLink from 'components/MigasLink'
 
 import { appIcon } from 'composables/element'
 
@@ -78,23 +93,8 @@ const { title, breadcrumbs, columns } = useListConfig(
       hidden: true,
     },
     {
-      label: $gettext('Project'),
-      field: 'project.name',
-      filterOptions: {
-        enabled: true,
-        placeholder: $gettext('All'),
-        trigger: 'enter',
-      },
-    },
-    {
-      label: $gettext('Template ID'),
-      field: 'template_id',
-      sortable: true,
-      filterOptions: {
-        enabled: true,
-        placeholder: $gettext('Filter'),
-        trigger: 'enter',
-      },
+      label: $gettext('Config'),
+      field: 'config',
     },
     {
       label: $gettext('Build Type'),

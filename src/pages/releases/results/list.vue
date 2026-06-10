@@ -15,6 +15,7 @@
           model="mgi/config"
           :pk="props.row.config"
           :value="getConfigValue(props.row.config)"
+          :tooltip="`${$gettext('Project')} (${$gettext('Template ID')})`"
         />
       </template>
     </TableResults>
