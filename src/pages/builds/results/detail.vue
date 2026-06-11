@@ -2,7 +2,11 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <Header :title="$gettext('Build')" :icon="modelIcon(model)" :has-export-button="false">
+    <Header
+      :title="$gettext('Build')"
+      :icon="modelIcon(model)"
+      :has-export-button="false"
+    >
       <template #append>
         <MigasLink
           v-if="build.id"
@@ -15,23 +19,17 @@
       <template #actions>
         <q-btn
           v-if="build.uri"
-          color="secondary"
-          push
+          color="primary"
           :icon="appIcon('download')"
           type="a"
           :href="build.uri"
           target="_blank"
           class="q-mr-sm"
         >
-          <span class="q-ml-xs">{{ $gettext('Download Image') }}</span>
+          <q-tooltip>{{ $gettext('Download Image') }}</q-tooltip>
         </q-btn>
-        <q-btn
-          color="primary"
-          push
-          :icon="appIcon('download')"
-          @click="downloadLogs"
-        >
-          <span class="q-ml-xs">{{ $gettext('Download Logs') }}</span>
+        <q-btn color="primary" :icon="appIcon('doc')" @click="downloadLogs">
+          <q-tooltip>{{ $gettext('Download Logs') }}</q-tooltip>
         </q-btn>
       </template>
     </Header>
@@ -253,7 +251,9 @@ const title = computed(() => {
 
 const breadcrumbDetailValue = computed(() => {
   if (projectName.value && releaseName.value && flavourName.value) {
-    return `${projectName.value} ${releaseName.value} ${flavourName.value}`.trim().replace(/\s+/g, ' ')
+    return `${projectName.value} ${releaseName.value} ${flavourName.value}`
+      .trim()
+      .replace(/\s+/g, ' ')
   }
   return `#${route.params.id}`
 })
