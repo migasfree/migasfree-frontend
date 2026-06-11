@@ -331,7 +331,10 @@ const loadBuild = async () => {
           `/api/v1/token/mgi/config/${relRes.data.config}/`,
         )
         if (confRes.data.project) {
-          projectName.value = confRes.data.project.name
+          const projRes = await api.get(
+            `/api/v1/token/projects/${confRes.data.project}/`,
+          )
+          projectName.value = projRes.data.name
         }
       }
     }

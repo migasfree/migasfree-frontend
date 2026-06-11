@@ -51,11 +51,16 @@ import { appIcon } from 'composables/element'
 const { $gettext } = useGettext()
 
 const configs = ref([])
+const projects = ref([])
 
 onMounted(async () => {
   try {
-    const { data } = await api.get('/api/v1/token/mgi/config/')
-    configs.value = data.results
+    const [configsRes, projectsRes] = await Promise.all([
+      api.get('/api/v1/token/mgi/config/'),
+      api.get('/api/v1/token/projects/'),
+    ])
+    configs.value = configsRes.data.results
+    projects.value = projectsRes.data.results
   } catch {
     // Ignore error
   }
@@ -64,10 +69,8 @@ onMounted(async () => {
 const getConfigValue = (configId) => {
   const conf = configs.value.find((c) => c.id === configId)
   if (!conf) return `#${configId}`
-  const projectName =
-    conf.project && typeof conf.project === 'object'
-      ? conf.project.name
-      : conf.project || ''
+  const p = projects.value.find((pr) => pr.id === conf.project)
+  const projectName = p ? p.name : ''
   return projectName ? `${projectName} (${conf.template_id})` : conf.template_id
 }
 

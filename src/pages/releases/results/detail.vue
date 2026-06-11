@@ -233,12 +233,15 @@ const routes = {
 }
 const model = 'mgi/release'
 
+const projects = ref([])
+
 const getConfigOptionLabel = (item) => {
   if (!item) return ''
-  const projectName =
-    item.project && typeof item.project === 'object'
-      ? item.project.name
-      : item.project || ''
+  let projectName = ''
+  if (item.project) {
+    const p = projects.value.find((pr) => pr.id === item.project)
+    projectName = p ? p.name : ''
+  }
   return projectName ? `${projectName} (${item.template_id})` : item.template_id
 }
 
@@ -293,13 +296,17 @@ const isValid = computed(() => {
 
 const loadRelated = async () => {
   try {
-    const configsResponse = await api.get('/api/v1/token/mgi/config/')
+    const [configsResponse, projectsResponse] = await Promise.all([
+      api.get('/api/v1/token/mgi/config/'),
+      api.get('/api/v1/token/projects/'),
+    ])
     configs.value = configsResponse.data.results
+    projects.value = projectsResponse.data.results
 
     if (element.id) {
       if (element.config) {
         const resolvedConf = configs.value.find(
-          (c) => c.id === element.config || c.id === element.config?.id,
+          (c) => c.id === element.config,
         )
         if (resolvedConf) {
           element.config = resolvedConf
@@ -326,13 +333,14 @@ const getFlavourName = (flavourId) => {
 }
 
 const getBuildLinkValue = (row) => {
-  const projectName =
-    element.config?.project && typeof element.config.project === 'object'
-      ? element.config.project.name
-      : element.config?.project || ''
-  const releaseName = element.name || ''
-  const flavourName = getFlavourName(row.flavour)
-  return `${projectName} ${releaseName} ${flavourName}`.trim().replace(/\s+/g, ' ')
+  let pName = ''
+  if (element.config?.project) {
+    const p = projects.value.find((pr) => pr.id === element.config.project)
+    pName = p ? p.name : ''
+  }
+  const relName = element.name || ''
+  const flavName = getFlavourName(row.flavour)
+  return `${pName} ${relName} ${flavName}`.trim().replace(/\s+/g, ' ')
 }
 
 const triggerBuild = async () => {

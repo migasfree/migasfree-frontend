@@ -91,17 +91,20 @@ const uiStore = useUiStore()
 const configs = ref([])
 const releases = ref([])
 const flavours = ref([])
+const projects = ref([])
 
 onMounted(async () => {
   try {
-    const [releasesResponse, flavoursResponse, configsResponse] = await Promise.all([
+    const [releasesResponse, flavoursResponse, configsResponse, projectsResponse] = await Promise.all([
       api.get('/api/v1/token/mgi/release/'),
       api.get('/api/v1/token/mgi/flavour/'),
       api.get('/api/v1/token/mgi/config/'),
+      api.get('/api/v1/token/projects/'),
     ])
     releases.value = releasesResponse.data.results
     flavours.value = flavoursResponse.data.results
     configs.value = configsResponse.data.results
+    projects.value = projectsResponse.data.results
   } catch {
     // Ignore error
   }
@@ -121,10 +124,9 @@ const getProjectName = (releaseId) => {
   const rel = releases.value.find((r) => r.id === releaseId)
   if (!rel || !rel.config) return ''
   const conf = configs.value.find((c) => c.id === rel.config)
-  if (!conf) return ''
-  return conf.project && typeof conf.project === 'object'
-    ? conf.project.name
-    : conf.project || ''
+  if (!conf || !conf.project) return ''
+  const p = projects.value.find((pr) => pr.id === conf.project)
+  return p ? p.name : ''
 }
 
 const getBuildLinkValue = (row) => {

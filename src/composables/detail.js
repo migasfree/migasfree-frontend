@@ -65,7 +65,7 @@ export default function useDetail(
       const projectName =
         el.project && typeof el.project === 'object'
           ? el.project.name
-          : el.project || ''
+          : ''
       return projectName ? `${projectName} (${el.template_id})` : el.template_id
     },
   }

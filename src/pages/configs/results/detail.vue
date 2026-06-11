@@ -23,11 +23,7 @@
             v-if="element.project"
             model="mgi/config"
             :pk="element.id"
-            :value="
-              typeof element.project === 'object'
-                ? `${element.project.name} (${element.template_id})`
-                : `${element.project} (${element.template_id})`
-            "
+            :value="`${resolvedProjectName} (${element.template_id})`"
             :hide-icon="true"
             :tooltip="`${$gettext('Project')} (${$gettext('Template ID')})`"
           />
@@ -266,6 +262,13 @@ const breadcrumbs = ref([
 
 const projects = ref([])
 
+const resolvedProjectName = computed(() => {
+  if (!element.project) return ''
+  if (typeof element.project === 'object') return element.project.name || ''
+  const p = projects.value.find((pr) => pr.id === element.project)
+  return p ? p.name : `#${element.project}`
+})
+
 const buildTypes = [
   { id: 'docker', name: $gettext('Docker (Linux)') },
   { id: 'qemu_win', name: $gettext('QEMU Unattended (Windows)') },
@@ -317,7 +320,7 @@ const loadRelated = async () => {
 
     if (element.id && element.project) {
       const resolved = projects.value.find(
-        (p) => p.id === element.project || p.id === element.project?.id,
+        (p) => p.id === element.project,
       )
       if (resolved) {
         element.project = resolved
