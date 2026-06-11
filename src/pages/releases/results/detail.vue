@@ -92,7 +92,7 @@
               color="primary"
               push
               no-caps
-              :icon="appIcon('add')"
+              :icon="appIcon('play')"
               class="q-px-md q-py-sm"
               @click="triggerBuild"
             >
@@ -117,12 +117,55 @@
                 $gettext('No compilations launched for this release.')
               "
             >
-              <!-- Flavour Cell -->
-              <template #body-cell-flavour="props">
+              <!-- Actions Cell -->
+              <template #body-cell-actions="props">
                 <q-td :props="props">
-                  <span class="text-weight-bold text-primary">{{
-                    getFlavourName(props.row.flavour)
-                  }}</span>
+                  <div class="row items-center q-gutter-x-xs no-wrap">
+                    <q-btn
+                      flat
+                      round
+                      size="sm"
+                      color="primary"
+                      :icon="appIcon('edit')"
+                      @click="
+                        $router.push({
+                          name: 'build-detail',
+                          params: { id: props.row.id },
+                        })
+                      "
+                    >
+                      <q-tooltip>{{
+                        $gettext('View Build Logs & Details')
+                      }}</q-tooltip>
+                    </q-btn>
+
+                    <q-btn
+                      v-if="props.row.uri"
+                      flat
+                      round
+                      size="sm"
+                      color="secondary"
+                      :icon="appIcon('download')"
+                      type="a"
+                      :href="props.row.uri"
+                      target="_blank"
+                    >
+                      <q-tooltip>{{
+                        $gettext('Download System Image')
+                      }}</q-tooltip>
+                    </q-btn>
+                  </div>
+                </q-td>
+              </template>
+
+              <!-- ID Cell -->
+              <template #body-cell-id="props">
+                <q-td :props="props">
+                  <MigasLink
+                    model="mgi/build"
+                    :pk="props.row.id"
+                    :value="getBuildLinkValue(props.row)"
+                  />
                 </q-td>
               </template>
 
@@ -150,50 +193,8 @@
               <!-- Created / Finished Cells -->
               <template #body-cell-started_at="props">
                 <q-td :props="props">
-                  <span v-if="props.row.started_at">{{
-                    formatDateTime(props.row.started_at)
-                  }}</span>
+                  <DateView v-if="props.row.started_at" :value="props.row.started_at" />
                   <span v-else class="text-grey-6">--</span>
-                </q-td>
-              </template>
-
-              <!-- Actions Cell -->
-              <template #body-cell-actions="props">
-                <q-td
-                  :props="props"
-                  class="row items-center q-gutter-x-sm no-wrap"
-                >
-                  <q-btn
-                    flat
-                    round
-                    color="primary"
-                    icon="mdi-text-box-search-outline"
-                    @click="
-                      $router.push({
-                        name: 'build-detail',
-                        params: { id: props.row.id },
-                      })
-                    "
-                  >
-                    <q-tooltip>{{
-                      $gettext('View Build Logs & Details')
-                    }}</q-tooltip>
-                  </q-btn>
-
-                  <q-btn
-                    v-if="props.row.uri"
-                    flat
-                    round
-                    color="secondary"
-                    icon="mdi-download"
-                    type="a"
-                    :href="props.row.uri"
-                    target="_blank"
-                  >
-                    <q-tooltip>{{
-                      $gettext('Download System Image')
-                    }}</q-tooltip>
-                  </q-btn>
                 </q-td>
               </template>
             </q-table>
@@ -213,6 +214,8 @@ import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
 
 import ItemDetail from 'components/ui/ItemDetail'
+import MigasLink from 'components/MigasLink'
+import DateView from 'components/ui/DateView'
 
 import { appIcon, modelIcon } from 'composables/element'
 
@@ -268,8 +271,8 @@ const builds = ref([])
 const flavoursList = ref([])
 
 const buildColumns = [
-  { name: 'id', label: 'ID', field: 'id', align: 'left', sortable: true },
-  { name: 'flavour', label: $gettext('Flavour'), align: 'left' },
+  { name: 'actions', label: $gettext('Actions'), align: 'left' },
+  { name: 'id', label: 'ID', align: 'left', sortable: true },
   { name: 'status', label: $gettext('Status'), align: 'center' },
   {
     name: 'started_at',
@@ -278,7 +281,6 @@ const buildColumns = [
     sortable: true,
   },
   { name: 'size', label: $gettext('Size'), align: 'left' },
-  { name: 'actions', label: $gettext('Actions'), align: 'right' },
 ]
 
 const isValid = computed(() => {
@@ -321,6 +323,16 @@ const loadRelated = async () => {
 const getFlavourName = (flavourId) => {
   const f = flavoursList.value.find((x) => x.id === flavourId)
   return f ? f.name : `${$gettext('Flavour')} #${flavourId}`
+}
+
+const getBuildLinkValue = (row) => {
+  const projectName =
+    element.config?.project && typeof element.config.project === 'object'
+      ? element.config.project.name
+      : element.config?.project || ''
+  const releaseName = element.name || ''
+  const flavourName = getFlavourName(row.flavour)
+  return `${projectName} ${releaseName} ${flavourName}`.trim().replace(/\s+/g, ' ')
 }
 
 const triggerBuild = async () => {

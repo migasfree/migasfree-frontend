@@ -8,23 +8,12 @@
       :model="model"
       :routes="routes"
     >
-      <!-- Custom rendering for Release parent link -->
-      <template #cell-release="{ props }">
+      <!-- Custom rendering for ID link -->
+      <template #cell-id="{ props }">
         <MigasLink
-          v-if="props.row.release"
-          model="mgi/release"
-          :pk="props.row.release"
-          :value="`${$gettext('Release')} #${props.row.release}`"
-        />
-      </template>
-
-      <!-- Custom rendering for Flavour link -->
-      <template #cell-flavour="{ props }">
-        <MigasLink
-          v-if="props.row.flavour"
-          model="mgi/flavour"
-          :pk="props.row.flavour"
-          :value="`${$gettext('Flavour')} #${props.row.flavour}`"
+          model="mgi/build"
+          :pk="props.row.id"
+          :value="getBuildLinkValue(props.row)"
         />
       </template>
 
@@ -39,21 +28,115 @@
           {{ getStatusLabel(props.row.status) }}
         </q-chip>
       </template>
+
+      <!-- Custom rendering for Started At date -->
+      <template #cell-started_at="{ props }">
+        <DateView :value="props.row.started_at" />
+      </template>
+
+      <!-- Custom rendering for Finished At date -->
+      <template #cell-finished_at="{ props }">
+        <DateView :value="props.row.finished_at" />
+      </template>
+
+      <!-- Custom rendering for actions -->
+      <template #actions="{ props }">
+        <q-btn
+          flat
+          round
+          size="sm"
+          color="primary"
+          :icon="appIcon('download')"
+          @click.stop="downloadLogs(props.row.id)"
+        >
+          <q-tooltip>{{ $gettext('Download Logs') }}</q-tooltip>
+        </q-btn>
+      </template>
     </TableResults>
   </q-page>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useListConfig } from 'composables/listConfig'
+import { api } from 'boot/axios'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
 import MigasLink from 'components/MigasLink'
+import DateView from 'components/ui/DateView'
+import { useUiStore } from 'stores/ui'
 
 import { appIcon } from 'composables/element'
 
 const { $gettext } = useGettext()
+const uiStore = useUiStore()
+
+const configs = ref([])
+const releases = ref([])
+const flavours = ref([])
+
+onMounted(async () => {
+  try {
+    const [releasesResponse, flavoursResponse, configsResponse] = await Promise.all([
+      api.get('/api/v1/token/mgi/release/'),
+      api.get('/api/v1/token/mgi/flavour/'),
+      api.get('/api/v1/token/mgi/config/'),
+    ])
+    releases.value = releasesResponse.data.results
+    flavours.value = flavoursResponse.data.results
+    configs.value = configsResponse.data.results
+  } catch {
+    // Ignore error
+  }
+})
+
+const getReleaseValue = (releaseId) => {
+  const rel = releases.value.find((r) => r.id === releaseId)
+  return rel ? rel.name : `#${releaseId}`
+}
+
+const getFlavourValue = (flavourId) => {
+  const fla = flavours.value.find((f) => f.id === flavourId)
+  return fla ? fla.name : `#${flavourId}`
+}
+
+const getProjectName = (releaseId) => {
+  const rel = releases.value.find((r) => r.id === releaseId)
+  if (!rel || !rel.config) return ''
+  const conf = configs.value.find((c) => c.id === rel.config)
+  if (!conf) return ''
+  return conf.project && typeof conf.project === 'object'
+    ? conf.project.name
+    : conf.project || ''
+}
+
+const getBuildLinkValue = (row) => {
+  const projectName = getProjectName(row.release)
+  const releaseName = getReleaseValue(row.release)
+  const flavourName = getFlavourValue(row.flavour)
+  return `${projectName} ${releaseName} ${flavourName}`.trim().replace(/\s+/g, ' ')
+}
+
+const downloadLogs = async (buildId) => {
+  try {
+    const { data } = await api.get(`/api/v1/token/mgi/build/${buildId}/`)
+    if (!data.log) {
+      uiStore.notifyWarning($gettext('No logs available for this build.'))
+      return
+    }
+    const blob = new Blob([data.log], { type: 'text/plain;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `build_${buildId}_log.txt`
+    link.click()
+    URL.revokeObjectURL(url)
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
 
 const routes = {
   detail: 'build-detail',
@@ -102,13 +185,8 @@ const { title, breadcrumbs, columns } = useListConfig(
   ],
   [
     {
-      label: $gettext('Release'),
-      field: 'release',
-      sortable: true,
-    },
-    {
-      label: $gettext('Flavour'),
-      field: 'flavour',
+      label: 'ID',
+      field: 'id',
       sortable: true,
     },
     {

@@ -2,14 +2,22 @@
   <q-page padding>
     <Breadcrumbs :items="breadcrumbs" />
 
-    <!-- Top Action bar & Title -->
-    <Header :title="title" :icon="modelIcon(model)" :has-export-button="false">
+    <Header :title="$gettext('Build')" :icon="modelIcon(model)" :has-export-button="false">
+      <template #append>
+        <MigasLink
+          v-if="build.id"
+          model="mgi/build"
+          :pk="build.id"
+          :value="breadcrumbDetailValue"
+          hide-icon
+        />
+      </template>
       <template #actions>
         <q-btn
           v-if="build.uri"
           color="secondary"
           push
-          icon="mdi-download"
+          :icon="appIcon('download')"
           type="a"
           :href="build.uri"
           target="_blank"
@@ -19,8 +27,8 @@
         </q-btn>
         <q-btn
           color="primary"
-          outline
-          icon="mdi-text-box-search-outline"
+          push
+          :icon="appIcon('download')"
           @click="downloadLogs"
         >
           <span class="q-ml-xs">{{ $gettext('Download Logs') }}</span>
@@ -58,19 +66,35 @@
             <!-- Release Version -->
             <div class="row items-center justify-between q-py-sm border-bottom">
               <span class="text-grey-8">{{ $gettext('Release') }}</span>
-              <span v-if="releaseName" class="text-weight-bold text-primary">
-                {{ releaseName }}
-              </span>
-              <q-spinner-dots v-else color="primary" size="1em" />
+              <MigasLink
+                v-if="build.release && releaseName"
+                model="mgi/release"
+                :pk="build.release"
+                :value="releaseName"
+              />
+              <q-spinner-dots
+                v-else-if="build.release"
+                color="primary"
+                size="1em"
+              />
+              <span v-else class="text-weight-medium text-grey-6">--</span>
             </div>
 
             <!-- Flavour Profile -->
             <div class="row items-center justify-between q-py-sm border-bottom">
               <span class="text-grey-8">{{ $gettext('Flavour') }}</span>
-              <span v-if="flavourName" class="text-weight-bold text-primary">
-                {{ flavourName }}
-              </span>
-              <q-spinner-dots v-else color="primary" size="1em" />
+              <MigasLink
+                v-if="build.flavour && flavourName"
+                model="mgi/flavour"
+                :pk="build.flavour"
+                :value="flavourName"
+              />
+              <q-spinner-dots
+                v-else-if="build.flavour"
+                color="primary"
+                size="1em"
+              />
+              <span v-else class="text-weight-medium text-grey-6">--</span>
             </div>
 
             <!-- Task ID -->
@@ -84,19 +108,15 @@
             <!-- Started At -->
             <div class="row items-center justify-between q-py-sm border-bottom">
               <span class="text-grey-8">{{ $gettext('Started At') }}</span>
-              <span class="text-weight-medium">
-                {{ build.started_at ? formatDateTime(build.started_at) : '--' }}
-              </span>
+              <DateView v-if="build.started_at" :value="build.started_at" />
+              <span v-else class="text-weight-medium text-grey-6">--</span>
             </div>
 
             <!-- Finished At -->
             <div class="row items-center justify-between q-py-sm border-bottom">
               <span class="text-grey-8">{{ $gettext('Finished At') }}</span>
-              <span class="text-weight-medium">
-                {{
-                  build.finished_at ? formatDateTime(build.finished_at) : '--'
-                }}
-              </span>
+              <DateView v-if="build.finished_at" :value="build.finished_at" />
+              <span v-else class="text-weight-medium text-grey-6">--</span>
             </div>
 
             <!-- File Size -->
@@ -210,6 +230,8 @@ import { useUiStore } from 'stores/ui'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
+import MigasLink from 'components/MigasLink'
+import DateView from 'components/ui/DateView'
 
 import { appIcon, modelIcon } from 'composables/element'
 
@@ -218,7 +240,23 @@ const uiStore = useUiStore()
 const { $gettext } = useGettext()
 
 const model = 'mgi/build'
-const title = computed(() => `${$gettext('Compilation')} #${route.params.id}`)
+const projectName = ref('')
+const releaseName = ref('')
+const flavourName = ref('')
+
+const title = computed(() => {
+  if (projectName.value && releaseName.value && flavourName.value) {
+    return `${$gettext('Build')}: ${projectName.value} ${releaseName.value} ${flavourName.value}`
+  }
+  return `${$gettext('Compilation')} #${route.params.id}`
+})
+
+const breadcrumbDetailValue = computed(() => {
+  if (projectName.value && releaseName.value && flavourName.value) {
+    return `${projectName.value} ${releaseName.value} ${flavourName.value}`.trim().replace(/\s+/g, ' ')
+  }
+  return `#${route.params.id}`
+})
 
 const windowTitle = ref($gettext('Compilation Detail'))
 useMeta(() => ({ title: windowTitle.value }))
@@ -235,9 +273,6 @@ const build = reactive({
   size: null,
   log: '',
 })
-
-const releaseName = ref('')
-const flavourName = ref('')
 
 const logSearchQuery = ref('')
 const autoscroll = ref(true)
@@ -256,10 +291,15 @@ const breadcrumbs = ref([
   {
     text: $gettext('Builds'),
     icon: modelIcon(model),
+  },
+  {
+    text: $gettext('Results'),
+    icon: appIcon('results'),
     to: 'builds-list',
   },
   {
-    text: title,
+    text: breadcrumbDetailValue,
+    icon: modelIcon(model),
   },
 ])
 
@@ -285,6 +325,15 @@ const loadBuild = async () => {
         `/api/v1/token/mgi/release/${build.release}/`,
       )
       releaseName.value = relRes.data.name
+
+      if (relRes.data.config) {
+        const confRes = await api.get(
+          `/api/v1/token/mgi/config/${relRes.data.config}/`,
+        )
+        if (confRes.data.project) {
+          projectName.value = confRes.data.project.name
+        }
+      }
     }
 
     if (build.flavour && !flavourName.value) {
@@ -295,7 +344,11 @@ const loadBuild = async () => {
     }
 
     // Adapt window title
-    windowTitle.value = `${$gettext('Compilation')} #${build.id} [${build.status.toUpperCase()}]`
+    if (projectName.value && releaseName.value && flavourName.value) {
+      windowTitle.value = `${$gettext('Build')}: ${projectName.value} ${releaseName.value} ${flavourName.value} [${build.status.toUpperCase()}]`
+    } else {
+      windowTitle.value = `${$gettext('Compilation')} #${build.id} [${build.status.toUpperCase()}]`
+    }
   } catch (error) {
     uiStore.notifyError(error)
   }
