@@ -42,11 +42,26 @@
       <!-- Custom rendering for actions -->
       <template #actions="{ props }">
         <q-btn
+          v-if="props.row.uri"
+          flat
+          round
+          size="sm"
+          color="secondary"
+          :icon="appIcon('download')"
+          type="a"
+          :href="props.row.uri"
+          target="_blank"
+          class="q-mr-sm"
+          @click.stop
+        >
+          <q-tooltip>{{ $gettext('Download Image') }}</q-tooltip>
+        </q-btn>
+        <q-btn
           flat
           round
           size="sm"
           color="primary"
-          :icon="appIcon('download')"
+          :icon="appIcon('doc')"
           @click.stop="downloadLogs(props.row.id)"
         >
           <q-tooltip>{{ $gettext('Download Logs') }}</q-tooltip>
