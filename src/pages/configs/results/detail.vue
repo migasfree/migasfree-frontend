@@ -319,9 +319,7 @@ const loadRelated = async () => {
     projects.value = data.results
 
     if (element.id && element.project) {
-      const resolved = projects.value.find(
-        (p) => p.id === element.project,
-      )
+      const resolved = projects.value.find((p) => p.id === element.project)
       if (resolved) {
         element.project = resolved
       }

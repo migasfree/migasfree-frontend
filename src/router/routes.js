@@ -572,7 +572,8 @@ const routes = [
 
       {
         path: '/configs',
-        redirect: { name: 'configs-list' },
+        name: 'configs-dashboard',
+        component: () => import('pages/configs/index'),
       },
       {
         path: '/configs/results',
@@ -592,7 +593,8 @@ const routes = [
 
       {
         path: '/flavours',
-        redirect: { name: 'flavours-list' },
+        name: 'flavours-dashboard',
+        component: () => import('pages/flavours/index'),
       },
       {
         path: '/flavours/results',
@@ -632,7 +634,8 @@ const routes = [
 
       {
         path: '/builds',
-        redirect: { name: 'builds-list' },
+        name: 'builds-dashboard',
+        component: () => import('pages/builds/index'),
       },
       {
         path: '/builds/results',

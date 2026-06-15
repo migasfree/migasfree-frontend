@@ -63,9 +63,7 @@ export default function useDetail(
     'mgi/config': (el) => {
       if (!el.id) return ''
       const projectName =
-        el.project && typeof el.project === 'object'
-          ? el.project.name
-          : ''
+        el.project && typeof el.project === 'object' ? el.project.name : ''
       return projectName ? `${projectName} (${el.template_id})` : el.template_id
     },
   }

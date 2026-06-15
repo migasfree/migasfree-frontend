@@ -10,7 +10,7 @@
     >
       <!-- Custom rendering for Config link -->
       <template #cell-config="{ props }">
-      <MigasLink
+        <MigasLink
           model="mgi/config"
           :pk="props.row.id"
           :value="getConfigDisplayValue(props.row)"

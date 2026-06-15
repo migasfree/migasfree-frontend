@@ -297,11 +297,13 @@ const isValid = computed(() => {
 
 const loadRelated = async () => {
   try {
-    const [configsResponse, tagsResponse, projectsResponse] = await Promise.all([
-      api.get('/api/v1/token/mgi/config/'),
-      api.get('/api/v1/token/tags/'),
-      api.get('/api/v1/token/projects/'),
-    ])
+    const [configsResponse, tagsResponse, projectsResponse] = await Promise.all(
+      [
+        api.get('/api/v1/token/mgi/config/'),
+        api.get('/api/v1/token/tags/'),
+        api.get('/api/v1/token/projects/'),
+      ],
+    )
 
     configs.value = configsResponse.data.results
     tagsOptions.value = tagsResponse.data.results
@@ -310,9 +312,7 @@ const loadRelated = async () => {
     if (element.id) {
       // Resolve MGI configuration
       if (element.config) {
-        const resolvedConf = configs.value.find(
-          (c) => c.id === element.config,
-        )
+        const resolvedConf = configs.value.find((c) => c.id === element.config)
         if (resolvedConf) {
           element.config = resolvedConf
         }

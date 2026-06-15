@@ -95,7 +95,12 @@ const projects = ref([])
 
 onMounted(async () => {
   try {
-    const [releasesResponse, flavoursResponse, configsResponse, projectsResponse] = await Promise.all([
+    const [
+      releasesResponse,
+      flavoursResponse,
+      configsResponse,
+      projectsResponse,
+    ] = await Promise.all([
       api.get('/api/v1/token/mgi/release/'),
       api.get('/api/v1/token/mgi/flavour/'),
       api.get('/api/v1/token/mgi/config/'),
@@ -133,7 +138,9 @@ const getBuildLinkValue = (row) => {
   const projectName = getProjectName(row.release)
   const releaseName = getReleaseValue(row.release)
   const flavourName = getFlavourValue(row.flavour)
-  return `${projectName} ${releaseName} ${flavourName}`.trim().replace(/\s+/g, ' ')
+  return `${projectName} ${releaseName} ${flavourName}`
+    .trim()
+    .replace(/\s+/g, ' ')
 }
 
 const downloadLogs = async (buildId) => {

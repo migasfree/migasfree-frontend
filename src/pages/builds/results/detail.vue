@@ -221,7 +221,7 @@ import {
 } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
-import { useMeta, date } from 'quasar'
+import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -241,13 +241,6 @@ const model = 'mgi/build'
 const projectName = ref('')
 const releaseName = ref('')
 const flavourName = ref('')
-
-const title = computed(() => {
-  if (projectName.value && releaseName.value && flavourName.value) {
-    return `${$gettext('Build')}: ${projectName.value} ${releaseName.value} ${flavourName.value}`
-  }
-  return `${$gettext('Compilation')} #${route.params.id}`
-})
 
 const breadcrumbDetailValue = computed(() => {
   if (projectName.value && releaseName.value && flavourName.value) {
@@ -434,10 +427,6 @@ const formatBytes = (bytes) => {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
   const i = Math.floor(Math.log(bytes) / Math.log(k))
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-}
-
-const formatDateTime = (val) => {
-  return date.formatDate(val, 'YYYY-MM-DD HH:mm:ss')
 }
 
 const getStatusColor = (status) => {

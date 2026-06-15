@@ -312,12 +312,12 @@ const items = computed(() => {
             options: [
               {
                 title: $gettext('Configurations'),
-                to: 'configs-list',
+                to: 'configs-dashboard',
                 icon: modelIcon('mgi/config'),
               },
               {
                 title: $gettext('Flavours'),
-                to: 'flavours-list',
+                to: 'flavours-dashboard',
                 icon: modelIcon('mgi/flavour'),
               },
               {
@@ -328,7 +328,7 @@ const items = computed(() => {
               },
               {
                 title: $gettext('Builds'),
-                to: 'builds-list',
+                to: 'builds-dashboard',
                 icon: modelIcon('mgi/build'),
               },
             ],

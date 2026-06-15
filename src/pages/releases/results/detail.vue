@@ -193,7 +193,10 @@
               <!-- Created / Finished Cells -->
               <template #body-cell-started_at="props">
                 <q-td :props="props">
-                  <DateView v-if="props.row.started_at" :value="props.row.started_at" />
+                  <DateView
+                    v-if="props.row.started_at"
+                    :value="props.row.started_at"
+                  />
                   <span v-else class="text-grey-6">--</span>
                 </q-td>
               </template>
@@ -208,7 +211,7 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useMeta, date } from 'quasar'
+import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -305,9 +308,7 @@ const loadRelated = async () => {
 
     if (element.id) {
       if (element.config) {
-        const resolvedConf = configs.value.find(
-          (c) => c.id === element.config,
-        )
+        const resolvedConf = configs.value.find((c) => c.id === element.config)
         if (resolvedConf) {
           element.config = resolvedConf
         }
@@ -365,10 +366,6 @@ const formatBytes = (bytes) => {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
   const i = Math.floor(Math.log(bytes) / Math.log(k))
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-}
-
-const formatDateTime = (val) => {
-  return date.formatDate(val, 'YYYY-MM-DD HH:mm:ss')
 }
 
 const getStatusColor = (status) => {
