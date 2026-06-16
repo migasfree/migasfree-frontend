@@ -1229,3 +1229,82 @@ h2 {
 .code-example {
   background-color: var(--bg-surface-variant);
 }
+
+/* =========================================
+   7. TELEPORTED DROPDOWNS & PORTAL OVERRIDES
+   ========================================= */
+
+/* Per-page pagination menu (moved from TablePagination.vue) */
+.per-page-menu {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid var(--border);
+}
+
+/* User account menu & select inputs (moved from UserAccount.vue) */
+.app-user-menu {
+  background: rgba(var(--bg-card-rgb), 0.9) !important;
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: 16px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+  margin-top: 8px !important;
+  min-width: 280px !important;
+  color: var(--text-main);
+  padding: 8px 0 !important;
+}
+
+/* Fix padding for label-less selects inside the user menu */
+.app-user-menu .q-field__native,
+.app-user-menu .q-field__input {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.app-user-menu .q-field__control {
+  min-height: 32px !important;
+}
+
+/* Select dropdown popup */
+.app-select-menu {
+  background: rgba(var(--bg-card-rgb), 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-radius: 12px !important;
+  border: 1px solid var(--border);
+  color: var(--text-main);
+}
+
+.app-select-menu .q-item {
+  font-weight: 500;
+}
+
+.app-select-menu .q-item--active {
+  color: var(--brand-primary) !important;
+  background: var(--neutral-100) !important;
+}
+
+/* Dark Mode: Portals */
+[data-theme='dark'] .app-select-menu .q-item--active {
+  color: var(--brand-tertiary) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Migas link popover menu (moved from MigasLink.vue) */
+.popover-menu {
+  border-radius: 16px !important;
+  border: 1px solid var(--border);
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: rgba(var(--bg-card-rgb), 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  max-width: 320px;
+}
+
+[data-theme='dark'] .popover-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme='dark'] .item-badge {
+  background: rgba(255, 255, 255, 0.1);
+}

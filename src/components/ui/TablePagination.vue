@@ -259,12 +259,3 @@ defineExpose({
   }
 }
 </style>
-
-<style>
-/* Global overrides for the per page menu */
-.per-page-menu {
-  border-radius: 12px !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
-  border: 1px solid var(--border);
-}
-</style>
