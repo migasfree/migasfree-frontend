@@ -8,7 +8,7 @@
 
 | Layer                         | Confidence | Status                          |
 | :---------------------------- | :--------- | :------------------------------ |
-| **Frontend Architecture**     | 95%        | ⚠️ Portal Styling Concerns      |
+| **Frontend Architecture**     | 100%       | ✅ Compliant                    |
 | **Infrastructure & Security** | 88%        | ⚠️ Vulnerable Core Dependencies |
 | **DevOps & Quality**          | 70%        | 🛑 Silent CI Audit Failures     |
 | **Documentation Standards**   | 90%        | ✅ Compliant                    |
@@ -54,15 +54,14 @@
   - `src/pages/connections/results/list.vue` (fetching device types)
 - **[Virtual Adversary]: Seed critique generated during codebase audit. Formalization recommended.**: While these metadata queries currently have small filter sizes, bypassing `smartRequest` introduces architectural inconsistency. If a filter query parameter (e.g., fetching projects filtered by a long list of computer scopes) grows beyond proxy and load-balancer limits (2000 characters), it will trigger an HTTP 414 URI Too Long error. All API queries should be uniformly routed through the `smartRequest` wrapper.
 
-#### ⚛️ Module B.4 - Style Scoping & Portal CSS Leakage
+#### ⚛️ Module B.4 - Style Scoping & Portal CSS Leakage (Remediated)
 
-- **Finding**: Unscoped `<style>` blocks targeting teleported dropdowns and menus are embedded in components:
+- **Finding**: Unscoped `<style>` blocks targeting teleported dropdowns and menus were embedded in components:
   - `src/components/ui/TablePagination.vue` (overriding `.per-page-menu`)
   - `src/components/ui/UserAccount.vue` (overriding `.app-user-menu` and `.app-select-menu`)
   - `src/components/MigasLink.vue` (overriding `.popover-menu`)
-- **Justification**: Since Quasar teleports dropdown portals outside the Vue component layout tree, standard `scoped` styles cannot reach them. However, putting them in unscoped blocks inside individual SFCs is an anti-pattern.
+- **Status**: Resolved. The unscoped CSS overrides have been removed from the SFCs and consolidated into the global stylesheet `src/css/style.css`.
 - **Exception**: `src/pages/computers/results/label.vue` uses an unscoped `<style>` block for `@media print` overrides. This is a justified layout exception as print style declarations must explicitly target layout wrapper elements.
-- **[Virtual Adversary]: Seed critique generated during codebase audit. Formalization recommended.**: SFC un-scoped styles contaminate the global CSS namespace. They create rendering race conditions (depending on component load order) and impede style optimizations. Following the `migasfree-ui-ux-expert` guideline, these styles must reside exclusively in the global stylesheet (`src/css/style.css`).
 
 ---
 
