@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
-import ProjectList from 'src/pages/projects/results/list.vue'
+import ProjectList from 'src/pages/configuration/projects/results/list.vue'
 import { createTestingPinia } from '@pinia/testing'
 
 // Mock dependencies

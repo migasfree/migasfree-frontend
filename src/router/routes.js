@@ -16,17 +16,17 @@ const routes = [
       {
         path: '/platforms/results',
         name: 'platforms-list',
-        component: () => import('pages/platforms/results/list'),
+        component: () => import('pages/configuration/platforms/results/list'),
       },
       {
         path: '/platforms/add',
         name: 'platform-add',
-        component: () => import('pages/platforms/results/detail'),
+        component: () => import('pages/configuration/platforms/results/detail'),
       },
       {
         path: '/platforms/results/:id',
         name: 'platform-detail',
-        component: () => import('pages/platforms/results/detail'),
+        component: () => import('pages/configuration/platforms/results/detail'),
       },
 
       {
@@ -36,17 +36,17 @@ const routes = [
       {
         path: '/projects/results',
         name: 'projects-list',
-        component: () => import('pages/projects/results/list'),
+        component: () => import('pages/configuration/projects/results/list'),
       },
       {
         path: '/projects/add',
         name: 'project-add',
-        component: () => import('pages/projects/results/detail'),
+        component: () => import('pages/configuration/projects/results/detail'),
       },
       {
         path: '/projects/results/:id',
         name: 'project-detail',
-        component: () => import('pages/projects/results/detail'),
+        component: () => import('pages/configuration/projects/results/detail'),
       },
 
       {
@@ -56,17 +56,17 @@ const routes = [
       {
         path: '/formulas/results',
         name: 'formulas-list',
-        component: () => import('pages/formulas/results/list'),
+        component: () => import('pages/configuration/formulas/results/list'),
       },
       {
         path: '/formulas/add',
         name: 'formula-add',
-        component: () => import('pages/formulas/results/detail'),
+        component: () => import('pages/configuration/formulas/results/detail'),
       },
       {
         path: '/formulas/results/:id',
         name: 'formula-detail',
-        component: () => import('pages/formulas/results/detail'),
+        component: () => import('pages/configuration/formulas/results/detail'),
       },
 
       {
@@ -76,17 +76,20 @@ const routes = [
       {
         path: '/singularities/results',
         name: 'singularities-list',
-        component: () => import('pages/singularities/results/list'),
+        component: () =>
+          import('pages/configuration/singularities/results/list'),
       },
       {
         path: '/singularities/add',
         name: 'singularity-add',
-        component: () => import('pages/singularities/results/detail'),
+        component: () =>
+          import('pages/configuration/singularities/results/detail'),
       },
       {
         path: '/singularities/results/:id',
         name: 'singularity-detail',
-        component: () => import('pages/singularities/results/detail'),
+        component: () =>
+          import('pages/configuration/singularities/results/detail'),
       },
 
       {
@@ -96,17 +99,17 @@ const routes = [
       {
         path: '/stamps/results',
         name: 'stamps-list',
-        component: () => import('pages/stamps/results/list'),
+        component: () => import('pages/configuration/stamps/results/list'),
       },
       {
         path: '/stamps/add',
         name: 'stamp-add',
-        component: () => import('pages/stamps/results/detail'),
+        component: () => import('pages/configuration/stamps/results/detail'),
       },
       {
         path: '/stamps/results/:id',
         name: 'stamp-detail',
-        component: () => import('pages/stamps/results/detail'),
+        component: () => import('pages/configuration/stamps/results/detail'),
       },
 
       {
@@ -116,17 +119,20 @@ const routes = [
       {
         path: '/attribute-sets/results',
         name: 'attribute-sets-list',
-        component: () => import('pages/attribute-sets/results/list'),
+        component: () =>
+          import('pages/configuration/attribute-sets/results/list'),
       },
       {
         path: '/attribute-sets/add',
         name: 'attribute-set-add',
-        component: () => import('pages/attribute-sets/results/detail'),
+        component: () =>
+          import('pages/configuration/attribute-sets/results/detail'),
       },
       {
         path: '/attribute-sets/results/:id',
         name: 'attribute-set-detail',
-        component: () => import('pages/attribute-sets/results/detail'),
+        component: () =>
+          import('pages/configuration/attribute-sets/results/detail'),
       },
 
       {
@@ -136,17 +142,20 @@ const routes = [
       {
         path: '/fault-definitions/results',
         name: 'fault-definitions-list',
-        component: () => import('pages/fault-definitions/results/list'),
+        component: () =>
+          import('pages/configuration/fault-definitions/results/list'),
       },
       {
         path: '/fault-definitions/add',
         name: 'fault-definition-add',
-        component: () => import('pages/fault-definitions/results/detail'),
+        component: () =>
+          import('pages/configuration/fault-definitions/results/detail'),
       },
       {
         path: '/fault-definitions/results/:id',
         name: 'fault-definition-detail',
-        component: () => import('pages/fault-definitions/results/detail'),
+        component: () =>
+          import('pages/configuration/fault-definitions/results/detail'),
       },
 
       {
@@ -156,22 +165,26 @@ const routes = [
       {
         path: '/user-profiles/results',
         name: 'user-profiles-list',
-        component: () => import('pages/user-profiles/results/list'),
+        component: () =>
+          import('pages/configuration/user-profiles/results/list'),
       },
       {
         path: '/user-profiles/add',
         name: 'user-profile-add',
-        component: () => import('pages/user-profiles/results/detail'),
+        component: () =>
+          import('pages/configuration/user-profiles/results/detail'),
       },
       {
         path: '/user-profiles/results/:id',
         name: 'user-profile-detail',
-        component: () => import('pages/user-profiles/results/detail'),
+        component: () =>
+          import('pages/configuration/user-profiles/results/detail'),
       },
       {
         path: '/user-profiles/results/:id/change-password',
         name: 'user-profile-change-password',
-        component: () => import('pages/user-profiles/results/changePassword'),
+        component: () =>
+          import('pages/configuration/user-profiles/results/changePassword'),
       },
 
       {
@@ -181,17 +194,17 @@ const routes = [
       {
         path: '/groups/results',
         name: 'groups-list',
-        component: () => import('pages/groups/results/list'),
+        component: () => import('pages/configuration/groups/results/list'),
       },
       {
         path: '/groups/add',
         name: 'group-add',
-        component: () => import('pages/groups/results/detail'),
+        component: () => import('pages/configuration/groups/results/detail'),
       },
       {
         path: '/groups/results/:id',
         name: 'group-detail',
-        component: () => import('pages/groups/results/detail'),
+        component: () => import('pages/configuration/groups/results/detail'),
       },
 
       {
@@ -201,17 +214,17 @@ const routes = [
       {
         path: '/domains/results',
         name: 'domains-list',
-        component: () => import('pages/domains/results/list'),
+        component: () => import('pages/configuration/domains/results/list'),
       },
       {
         path: '/domains/add',
         name: 'domain-add',
-        component: () => import('pages/domains/results/detail'),
+        component: () => import('pages/configuration/domains/results/detail'),
       },
       {
         path: '/domains/results/:id',
         name: 'domain-detail',
-        component: () => import('pages/domains/results/detail'),
+        component: () => import('pages/configuration/domains/results/detail'),
       },
 
       {
@@ -221,17 +234,17 @@ const routes = [
       {
         path: '/scopes/results',
         name: 'scopes-list',
-        component: () => import('pages/scopes/results/list'),
+        component: () => import('pages/configuration/scopes/results/list'),
       },
       {
         path: '/scopes/add',
         name: 'scope-add',
-        component: () => import('pages/scopes/results/detail'),
+        component: () => import('pages/configuration/scopes/results/detail'),
       },
       {
         path: '/scopes/results/:id',
         name: 'scope-detail',
-        component: () => import('pages/scopes/results/detail'),
+        component: () => import('pages/configuration/scopes/results/detail'),
       },
 
       {
@@ -241,38 +254,41 @@ const routes = [
       {
         path: '/manufacturers/results',
         name: 'manufacturers-list',
-        component: () => import('pages/manufacturers/results/list'),
+        component: () =>
+          import('pages/devices/devices/manufacturers/results/list'),
       },
       {
         path: '/manufacturers/add',
         name: 'manufacturer-add',
-        component: () => import('pages/manufacturers/results/detail'),
+        component: () =>
+          import('pages/devices/devices/manufacturers/results/detail'),
       },
       {
         path: '/manufacturers/results/:id',
         name: 'manufacturer-detail',
-        component: () => import('pages/manufacturers/results/detail'),
+        component: () =>
+          import('pages/devices/devices/manufacturers/results/detail'),
       },
 
       {
         path: '/models',
         name: 'models-dashboard',
-        component: () => import('pages/models/index'),
+        component: () => import('pages/devices/devices/models/index'),
       },
       {
         path: '/models/results',
         name: 'models-list',
-        component: () => import('pages/models/results/list'),
+        component: () => import('pages/devices/devices/models/results/list'),
       },
       {
         path: '/models/add',
         name: 'model-add',
-        component: () => import('pages/models/results/detail'),
+        component: () => import('pages/devices/devices/models/results/detail'),
       },
       {
         path: '/models/results/:id',
         name: 'model-detail',
-        component: () => import('pages/models/results/detail'),
+        component: () => import('pages/devices/devices/models/results/detail'),
       },
 
       {
@@ -282,43 +298,46 @@ const routes = [
       {
         path: '/capabilities/results',
         name: 'capabilities-list',
-        component: () => import('pages/capabilities/results/list'),
+        component: () =>
+          import('pages/devices/devices/capabilities/results/list'),
       },
       {
         path: '/capabilities/add',
         name: 'capability-add',
-        component: () => import('pages/capabilities/results/detail'),
+        component: () =>
+          import('pages/devices/devices/capabilities/results/detail'),
       },
       {
         path: '/capabilities/results/:id',
         name: 'capability-detail',
-        component: () => import('pages/capabilities/results/detail'),
+        component: () =>
+          import('pages/devices/devices/capabilities/results/detail'),
       },
 
       {
         path: '/devices',
         name: 'devices-dashboard',
-        component: () => import('pages/devices/index'),
+        component: () => import('pages/devices/devices/index'),
       },
       {
         path: '/devices/results',
         name: 'devices-list',
-        component: () => import('pages/devices/results/list'),
+        component: () => import('pages/devices/devices/results/list'),
       },
       {
         path: '/devices/add',
         name: 'device-add',
-        component: () => import('pages/devices/results/detail'),
+        component: () => import('pages/devices/devices/results/detail'),
       },
       {
         path: '/devices/results/:id',
         name: 'device-detail',
-        component: () => import('pages/devices/results/detail'),
+        component: () => import('pages/devices/devices/results/detail'),
       },
       {
         path: '/devices/replacement',
         name: 'devices-replacement',
-        component: () => import('pages/devices/replacement'),
+        component: () => import('pages/devices/devices/replacement'),
       },
 
       {
@@ -328,17 +347,17 @@ const routes = [
       {
         path: '/connections/results',
         name: 'connections-list',
-        component: () => import('pages/connections/results/list'),
+        component: () => import('pages/devices/connections/results/list'),
       },
       {
         path: '/connections/add',
         name: 'connection-add',
-        component: () => import('pages/connections/results/detail'),
+        component: () => import('pages/devices/connections/results/detail'),
       },
       {
         path: '/connections/results/:id',
         name: 'connection-detail',
-        component: () => import('pages/connections/results/detail'),
+        component: () => import('pages/devices/connections/results/detail'),
       },
 
       {
@@ -348,17 +367,17 @@ const routes = [
       {
         path: '/device-types/results',
         name: 'device-types-list',
-        component: () => import('pages/device-types/results/list'),
+        component: () => import('pages/devices/device-types/results/list'),
       },
       {
         path: '/device-types/add',
         name: 'device-type-add',
-        component: () => import('pages/device-types/results/detail'),
+        component: () => import('pages/devices/device-types/results/detail'),
       },
       {
         path: '/device-types/results/:id',
         name: 'device-type-detail',
-        component: () => import('pages/device-types/results/detail'),
+        component: () => import('pages/devices/device-types/results/detail'),
       },
 
       {
@@ -368,17 +387,17 @@ const routes = [
       {
         path: '/logical-devices/results',
         name: 'logical-devices-list',
-        component: () => import('pages/logical-devices/results/list'),
+        component: () => import('pages/devices/logical-devices/results/list'),
       },
       {
         path: '/logical-devices/add',
         name: 'logical-device-add',
-        component: () => import('pages/logical-devices/results/detail'),
+        component: () => import('pages/devices/logical-devices/results/detail'),
       },
       {
         path: '/logical-devices/results/:id',
         name: 'logical-device-detail',
-        component: () => import('pages/logical-devices/results/detail'),
+        component: () => import('pages/devices/logical-devices/results/detail'),
       },
 
       {
@@ -388,38 +407,38 @@ const routes = [
       {
         path: '/drivers/results',
         name: 'drivers-list',
-        component: () => import('pages/drivers/results/list'),
+        component: () => import('pages/devices/drivers/results/list'),
       },
       {
         path: '/driver/add',
         name: 'driver-add',
-        component: () => import('pages/drivers/results/detail'),
+        component: () => import('pages/devices/drivers/results/detail'),
       },
       {
         path: '/drivers/results/:id',
         name: 'driver-detail',
-        component: () => import('pages/drivers/results/detail'),
+        component: () => import('pages/devices/drivers/results/detail'),
       },
 
       {
         path: '/deployments',
         name: 'deployments-dashboard',
-        component: () => import('pages/deployments/index'),
+        component: () => import('pages/release/deployments/index'),
       },
       {
         path: '/deployments/results',
         name: 'deployments-list',
-        component: () => import('pages/deployments/results/list'),
+        component: () => import('pages/release/deployments/results/list'),
       },
       {
         path: '/deployments/add',
         name: 'deployment-add',
-        component: () => import('pages/deployments/results/detail'),
+        component: () => import('pages/release/deployments/results/detail'),
       },
       {
         path: '/deployments/results/:id',
         name: 'deployment-detail',
-        component: () => import('pages/deployments/results/detail'),
+        component: () => import('pages/release/deployments/results/detail'),
       },
 
       {
@@ -429,64 +448,64 @@ const routes = [
       {
         path: '/schedules/results',
         name: 'schedules-list',
-        component: () => import('pages/schedules/results/list'),
+        component: () => import('pages/configuration/schedules/results/list'),
       },
       {
         path: '/schedules/add',
         name: 'schedule-add',
-        component: () => import('pages/schedules/results/detail'),
+        component: () => import('pages/configuration/schedules/results/detail'),
       },
       {
         path: '/schedules/results/:id',
         name: 'schedule-detail',
-        component: () => import('pages/schedules/results/detail'),
+        component: () => import('pages/configuration/schedules/results/detail'),
       },
 
       {
         path: '/stores',
         name: 'stores-dashboard',
-        component: () => import('pages/stores/index'),
+        component: () => import('pages/release/stores/index'),
       },
       {
         path: '/stores/results',
         name: 'stores-list',
-        component: () => import('pages/stores/results/list'),
+        component: () => import('pages/release/stores/results/list'),
       },
       {
         path: '/stores/add',
         name: 'store-add',
-        component: () => import('pages/stores/results/detail'),
+        component: () => import('pages/release/stores/results/detail'),
       },
       {
         path: '/stores/results/:id',
         name: 'store-detail',
-        component: () => import('pages/stores/results/detail'),
+        component: () => import('pages/release/stores/results/detail'),
       },
 
       {
         path: '/packages',
         name: 'packages-dashboard',
-        component: () => import('pages/packages/index'),
+        component: () => import('pages/release/packages/index'),
       },
       {
         path: '/packages/results',
         name: 'packages-list',
-        component: () => import('pages/packages/results/list'),
+        component: () => import('pages/release/packages/results/list'),
       },
       {
         path: '/packages/add',
         name: 'package-add',
-        component: () => import('pages/packages/results/detail'),
+        component: () => import('pages/release/packages/results/detail'),
       },
       {
         path: '/packages/results/:id',
         name: 'package-detail',
-        component: () => import('pages/packages/results/detail'),
+        component: () => import('pages/release/packages/results/detail'),
       },
       {
         path: '/packages/results/:id/information',
         name: 'package-information',
-        component: () => import('pages/packages/results/information'),
+        component: () => import('pages/release/packages/results/information'),
       },
 
       {
@@ -496,38 +515,38 @@ const routes = [
       {
         path: '/package-sets/results',
         name: 'package-sets-list',
-        component: () => import('pages/package-sets/results/list'),
+        component: () => import('pages/release/package-sets/results/list'),
       },
       {
         path: '/package-sets/add',
         name: 'package-set-add',
-        component: () => import('pages/package-sets/results/detail'),
+        component: () => import('pages/release/package-sets/results/detail'),
       },
       {
         path: '/package-sets/results/:id',
         name: 'package-set-detail',
-        component: () => import('pages/package-sets/results/detail'),
+        component: () => import('pages/release/package-sets/results/detail'),
       },
 
       {
         path: '/applications',
         name: 'apps-dashboard',
-        component: () => import('pages/applications/index'),
+        component: () => import('pages/release/applications/index'),
       },
       {
         path: '/applications/results',
         name: 'apps-list',
-        component: () => import('pages/applications/results/list'),
+        component: () => import('pages/release/applications/results/list'),
       },
       {
         path: '/applications/add',
         name: 'app-add',
-        component: () => import('pages/applications/results/detail'),
+        component: () => import('pages/release/applications/results/detail'),
       },
       {
         path: '/applications/results/:id',
         name: 'app-detail',
-        component: () => import('pages/applications/results/detail'),
+        component: () => import('pages/release/applications/results/detail'),
       },
 
       {
@@ -537,17 +556,17 @@ const routes = [
       {
         path: '/categories/results',
         name: 'categories-list',
-        component: () => import('pages/categories/results/list'),
+        component: () => import('pages/release/categories/results/list'),
       },
       {
         path: '/categories/add',
         name: 'category-add',
-        component: () => import('pages/categories/results/detail'),
+        component: () => import('pages/release/categories/results/detail'),
       },
       {
         path: '/categories/results/:id',
         name: 'category-detail',
-        component: () => import('pages/categories/results/detail'),
+        component: () => import('pages/release/categories/results/detail'),
       },
 
       {
@@ -557,59 +576,59 @@ const routes = [
       {
         path: '/policies/results',
         name: 'policies-list',
-        component: () => import('pages/policies/results/list'),
+        component: () => import('pages/configuration/policies/results/list'),
       },
       {
         path: '/policies/add',
         name: 'policy-add',
-        component: () => import('pages/policies/results/detail'),
+        component: () => import('pages/configuration/policies/results/detail'),
       },
       {
         path: '/policies/results/:id',
         name: 'policy-detail',
-        component: () => import('pages/policies/results/detail'),
+        component: () => import('pages/configuration/policies/results/detail'),
       },
 
       {
         path: '/configs',
         name: 'configs-dashboard',
-        component: () => import('pages/configs/index'),
+        component: () => import('pages/golden-images/configs/index'),
       },
       {
         path: '/configs/results',
         name: 'configs-list',
-        component: () => import('pages/configs/results/list'),
+        component: () => import('pages/golden-images/configs/results/list'),
       },
       {
         path: '/configs/add',
         name: 'config-add',
-        component: () => import('pages/configs/results/detail'),
+        component: () => import('pages/golden-images/configs/results/detail'),
       },
       {
         path: '/configs/results/:id',
         name: 'config-detail',
-        component: () => import('pages/configs/results/detail'),
+        component: () => import('pages/golden-images/configs/results/detail'),
       },
 
       {
         path: '/flavours',
         name: 'flavours-dashboard',
-        component: () => import('pages/flavours/index'),
+        component: () => import('pages/golden-images/flavours/index'),
       },
       {
         path: '/flavours/results',
         name: 'flavours-list',
-        component: () => import('pages/flavours/results/list'),
+        component: () => import('pages/golden-images/flavours/results/list'),
       },
       {
         path: '/flavours/add',
         name: 'flavour-add',
-        component: () => import('pages/flavours/results/detail'),
+        component: () => import('pages/golden-images/flavours/results/detail'),
       },
       {
         path: '/flavours/results/:id',
         name: 'flavour-detail',
-        component: () => import('pages/flavours/results/detail'),
+        component: () => import('pages/golden-images/flavours/results/detail'),
       },
 
       {
@@ -619,90 +638,90 @@ const routes = [
       {
         path: '/releases/results',
         name: 'releases-list',
-        component: () => import('pages/releases/results/list'),
+        component: () => import('pages/golden-images/releases/results/list'),
       },
       {
         path: '/releases/add',
         name: 'release-add',
-        component: () => import('pages/releases/results/detail'),
+        component: () => import('pages/golden-images/releases/results/detail'),
       },
       {
         path: '/releases/results/:id',
         name: 'release-detail',
-        component: () => import('pages/releases/results/detail'),
+        component: () => import('pages/golden-images/releases/results/detail'),
       },
 
       {
         path: '/builds',
         name: 'builds-dashboard',
-        component: () => import('pages/builds/index'),
+        component: () => import('pages/golden-images/builds/index'),
       },
       {
         path: '/builds/results',
         name: 'builds-list',
-        component: () => import('pages/builds/results/list'),
+        component: () => import('pages/golden-images/builds/results/list'),
       },
       {
         path: '/builds/results/:id',
         name: 'build-detail',
-        component: () => import('pages/builds/results/detail'),
+        component: () => import('pages/golden-images/builds/results/detail'),
       },
 
       {
         path: '/computers',
         name: 'computers-dashboard',
-        component: () => import('pages/computers/index'),
+        component: () => import('pages/data/computers/index'),
       },
       {
         path: '/computers/results',
         name: 'computers-list',
-        component: () => import('pages/computers/results/list'),
+        component: () => import('pages/data/computers/results/list'),
       },
       {
         path: '/computers/results/:id',
         name: 'computer-detail',
-        component: () => import('pages/computers/results/detail'),
+        component: () => import('pages/data/computers/results/detail'),
       },
       {
         path: '/computers/results/:id/events',
         name: 'computer-events',
-        component: () => import('pages/computers/results/events'),
+        component: () => import('pages/data/computers/results/events'),
       },
       {
         path: '/computers/results/:id/sync/simulation',
         name: 'computer-simulate',
-        component: () => import('pages/computers/results/simulate'),
+        component: () => import('pages/data/computers/results/simulate'),
       },
       {
         path: '/computers/results/:id/hardware',
         name: 'computer-hardware',
-        component: () => import('pages/computers/results/hardware'),
+        component: () => import('pages/data/computers/results/hardware'),
       },
       {
         path: '/computers/replacement',
         name: 'computers-replacement',
-        component: () => import('pages/computers/replacement'),
+        component: () => import('pages/data/computers/replacement'),
       },
       {
         path: '/computers/software-compare',
         name: 'computers-software-compare',
-        component: () => import('pages/computers/softwareCompare'),
+        component: () => import('pages/data/computers/softwareCompare'),
       },
       {
         path: '/computers/results/:id/label',
         name: 'computer-label',
-        component: () => import('pages/computers/results/label.vue'),
+        component: () => import('pages/data/computers/results/label.vue'),
       },
 
       {
         path: '/packages-history',
         name: 'packages-history-dashboard',
-        component: () => import('pages/packages-history/index'),
+        component: () => import('pages/data/packages-history/index'),
       },
       {
         path: '/packages-history/results',
         name: 'packages-history-list',
-        component: () => import('pages/packages-history/results/list'),
+        component: () => import('pages/data/packages-history/results/list'),
       },
 
       {
@@ -712,70 +731,70 @@ const routes = [
       {
         path: '/users/results',
         name: 'users-list',
-        component: () => import('pages/users/results/list'),
+        component: () => import('pages/data/users/results/list'),
       },
       {
         path: '/users/results/:id',
         name: 'user-detail',
-        component: () => import('pages/users/results/detail'),
+        component: () => import('pages/data/users/results/detail'),
       },
 
       {
         path: '/features',
         name: 'attributes-dashboard',
-        component: () => import('pages/attributes/index'),
+        component: () => import('pages/data/attributes/index'),
       },
       {
         path: '/features',
         name: 'features-dashboard',
-        component: () => import('pages/attributes/index'),
+        component: () => import('pages/data/attributes/index'),
       },
       {
         path: '/features/results',
         name: 'attributes-list',
-        component: () => import('pages/attributes/results/list'),
+        component: () => import('pages/data/attributes/results/list'),
       },
       {
         path: '/features/results',
         name: 'features-list',
-        component: () => import('pages/attributes/results/list'),
+        component: () => import('pages/data/attributes/results/list'),
       },
       {
         path: '/features/results/:id',
         name: 'attribute-detail',
-        component: () => import('pages/attributes/results/detail'),
+        component: () => import('pages/data/attributes/results/detail'),
       },
       {
         path: '/features/results/:id',
         name: 'feature-detail',
-        component: () => import('pages/attributes/results/detail'),
+        component: () => import('pages/data/attributes/results/detail'),
       },
 
       {
         path: '/tags',
         name: 'tags-dashboard',
-        component: () => import('pages/tags/index'),
+        component: () => import('pages/release/tags/index'),
       },
       {
         path: '/tags/results',
         name: 'tags-list',
-        component: () => import('pages/tags/results/list'),
+        component: () => import('pages/release/tags/results/list'),
       },
       {
         path: '/tags/add',
         name: 'tag-add',
-        component: () => import('pages/tags/results/detail'),
+        component: () => import('pages/release/tags/results/detail'),
       },
       {
         path: '/tags/results/:id',
         name: 'tag-detail',
-        component: () => import('pages/tags/results/detail'),
+        component: () => import('pages/release/tags/results/detail'),
       },
 
       {
         path: '/syncs',
         name: 'syncs-dashboard',
-        component: () => import('pages/syncs/index'),
+        component: () => import('pages/data/syncs/index'),
       },
       {
         path: '/syncs',
@@ -784,13 +803,13 @@ const routes = [
       {
         path: '/syncs/results',
         name: 'syncs-list',
-        component: () => import('pages/syncs/results/list'),
+        component: () => import('pages/data/syncs/results/list'),
       },
 
       {
         path: '/errors',
         name: 'errors-dashboard',
-        component: () => import('pages/errors/index'),
+        component: () => import('pages/data/errors/index'),
       },
       {
         path: '/errors',
@@ -799,18 +818,18 @@ const routes = [
       {
         path: '/errors/results',
         name: 'errors-list',
-        component: () => import('pages/errors/results/list'),
+        component: () => import('pages/data/errors/results/list'),
       },
       {
         path: '/errors/results/:id',
         name: 'error-detail',
-        component: () => import('pages/errors/results/detail'),
+        component: () => import('pages/data/errors/results/detail'),
       },
 
       {
         path: '/faults',
         name: 'faults-dashboard',
-        component: () => import('pages/faults/index'),
+        component: () => import('pages/data/faults/index'),
       },
       {
         path: '/faults',
@@ -819,18 +838,18 @@ const routes = [
       {
         path: '/faults/results',
         name: 'faults-list',
-        component: () => import('pages/faults/results/list'),
+        component: () => import('pages/data/faults/results/list'),
       },
       {
         path: '/faults/results/:id',
         name: 'fault-detail',
-        component: () => import('pages/faults/results/detail'),
+        component: () => import('pages/data/faults/results/detail'),
       },
 
       {
         path: '/status-logs',
         name: 'status-logs-dashboard',
-        component: () => import('pages/status-logs/index'),
+        component: () => import('pages/data/status-logs/index'),
       },
       {
         path: '/status-logs',
@@ -839,13 +858,13 @@ const routes = [
       {
         path: '/status-logs/results',
         name: 'status-logs-list',
-        component: () => import('pages/status-logs/results/list'),
+        component: () => import('pages/data/status-logs/results/list'),
       },
 
       {
         path: '/migrations',
         name: 'migrations-dashboard',
-        component: () => import('pages/migrations/index'),
+        component: () => import('pages/data/migrations/index'),
       },
       {
         path: '/migrations',
@@ -854,7 +873,7 @@ const routes = [
       {
         path: '/migrations/results',
         name: 'migrations-list',
-        component: () => import('pages/migrations/results/list'),
+        component: () => import('pages/data/migrations/results/list'),
       },
 
       {
@@ -864,13 +883,13 @@ const routes = [
       {
         path: '/messages/results',
         name: 'messages-list',
-        component: () => import('pages/messages/results/list'),
+        component: () => import('pages/data/messages/results/list'),
       },
 
       {
         path: '/notifications',
         name: 'notifications-dashboard',
-        component: () => import('pages/notifications/index'),
+        component: () => import('pages/data/notifications/index'),
       },
       {
         path: '/notifications',
@@ -879,7 +898,7 @@ const routes = [
       {
         path: '/notifications/results',
         name: 'notifications-list',
-        component: () => import('pages/notifications/results/list'),
+        component: () => import('pages/data/notifications/results/list'),
       },
     ],
     meta: { authRequired: true },
