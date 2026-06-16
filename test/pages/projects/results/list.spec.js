@@ -73,8 +73,8 @@ describe('list.vue', () => {
         return Promise.resolve({
           data: {
             templates: [
-              { id: 'debian-12-desktop', base_os: 'debian' },
-              { id: 'ubuntu-24.04-server', base_os: 'ubuntu' },
+              { id: 'debian-12-desktop' },
+              { id: 'ubuntu-24.04-server' },
             ],
           },
         })
@@ -129,7 +129,7 @@ describe('list.vue', () => {
           'q-select': {
             template: `
               <div class="q-select-stub">
-                <slot name="option" :itemProps="{}" :opt="{ id: 'debian-12-desktop', base_os: 'debian' }" />
+                <slot name="option" :itemProps="{}" :opt="{ id: 'debian-12-desktop' }" />
                 <slot name="no-option" />
               </div>
             `,

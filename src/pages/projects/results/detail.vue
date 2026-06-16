@@ -130,20 +130,6 @@
                 ]"
               />
             </div>
-
-            <div class="col-4 col-md col-sm">
-              <q-input
-                v-model="element.base_os"
-                :label="$gettext('Base Operating System')"
-                :aria-label="$gettext('Base Operating System')"
-                lazy-rules
-                :rules="[
-                  (val) =>
-                    !(val && val.trim() !== '' && val.includes(' ')) ||
-                    $gettext('* No blank spaces allowed'),
-                ]"
-              />
-            </div>
           </div>
 
           <div class="row q-pa-md q-gutter-md">
@@ -271,10 +257,6 @@ const isValid = computed(() => {
     element.name !== undefined &&
     element.name.trim() !== '' &&
     !element.name.includes(' ') &&
-    (element.base_os === undefined ||
-      element.base_os === null ||
-      element.base_os.trim() === '' ||
-      !element.base_os.includes(' ')) &&
     element.platform !== undefined &&
     element.pms !== undefined &&
     element.architecture !== undefined &&
@@ -285,7 +267,6 @@ const isValid = computed(() => {
 const elementData = () => {
   return {
     name: element.name,
-    base_os: element.base_os,
     architecture: Array.isArray(element.architecture)
       ? element.architecture.join(' ')
       : '',
@@ -346,7 +327,6 @@ const resetElement = () => {
     id: 0,
     auto_register_computers: false,
     name: undefined,
-    base_os: undefined,
     platform: undefined,
     pms: undefined,
     architecture: undefined,

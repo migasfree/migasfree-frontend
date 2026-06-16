@@ -10,7 +10,6 @@ describe('Project Detail Page', () => {
       platform: { id: 1, name: 'Platform_1' },
       pms: 'apt',
       architecture: 'amd64',
-      base_os: 'Linux',
     }).as('getProject')
 
     cy.intercept('GET', '**/api/v1/token/platforms/', {

@@ -143,9 +143,6 @@
                       <q-item-label class="text-weight-bold">{{
                         scope.opt.id
                       }}</q-item-label>
-                      <q-item-label v-if="scope.opt.base_os" caption>
-                        {{ $gettext('Base OS:') }} {{ scope.opt.base_os }}
-                      </q-item-label>
                     </q-item-section>
                   </q-item>
                 </template>
