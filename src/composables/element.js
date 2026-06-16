@@ -225,7 +225,7 @@ export const techIcon = (concept) => {
  *
  * @example
  * const { elementIcon, computerStatus, humanMacAddress } = useElement()
- * elementIcon('intended') // "mdi-heart-pulse"
+ * elementIcon('assigned') // "mdi-heart-pulse"
  * computerStatus('reserved') // "Reserved" (translated)
  * humanMacAddress('001122334455') // "00:11:22:33:44:55"
  */
@@ -233,7 +233,7 @@ export const useElement = () => {
   const { $gettext } = useGettext()
 
   const ELEMENT_ICON = {
-    intended: 'mdi-heart-pulse',
+    assigned: 'mdi-heart-pulse',
     available: 'mdi-cart',
     'in repair': 'mdi-wrench',
     reserved: 'mdi-lock-clock',
@@ -250,7 +250,7 @@ export const useElement = () => {
   }
 
   const STATUS_I18N = {
-    intended: $gettext('Intended'),
+    assigned: $gettext('Assigned'),
     available: $gettext('Available'),
     'in repair': $gettext('In repair'),
     reserved: $gettext('Reserved'),

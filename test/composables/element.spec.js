@@ -51,7 +51,7 @@ describe('element.js', () => {
         // Since we mock $gettext to return identity, we expect the key
         // But logic is: if in STATUS_I18N, return translation.
         // STATUS_I18N keys are lowercase.
-        expect(computerStatus('intended')).toBe('Intended')
+        expect(computerStatus('assigned')).toBe('Assigned')
         expect(computerStatus('Reserved')).toBe('Reserved') // Case insensitive lookup
       })
 

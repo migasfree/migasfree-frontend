@@ -101,13 +101,13 @@ const url = { name: 'computers-list' }
 
 const statusUrl = computed(() => {
   return Object.assign({}, url, {
-    query: { status_in: 'intended,reserved,unknown,in repair,available' },
+    query: { status_in: 'assigned,reserved,unknown,in repair,available' },
   })
 })
 
 const productiveUrl = computed(() => {
   return Object.assign({}, url, {
-    query: { status_in: 'intended,reserved,unknown' },
+    query: { status_in: 'assigned,reserved,unknown' },
   })
 })
 

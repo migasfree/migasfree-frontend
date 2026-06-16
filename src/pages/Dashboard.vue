@@ -228,7 +228,7 @@ const monthlySyncsContainer = ref(null)
 const productiveUrl = computed(() => {
   return {
     name: 'computers-list',
-    query: { status_in: 'intended,reserved,unknown' },
+    query: { status_in: 'assigned,reserved,unknown' },
   }
 })
 
