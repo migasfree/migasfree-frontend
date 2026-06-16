@@ -41,9 +41,10 @@
 
 - **Finding**: Full compliance. No direct DOM manipulation methods (`document.getElementById`, `document.querySelector`) are present in `src/`. Vue 3 template refs (`ref`) are correctly leveraged.
 
-#### ⚛️ Module B.3 - Migasfree Specifics & smartRequest Bypass
+#### ⚛️ Module B.3 - Migasfree Specifics & smartRequest Bypass (Remediated)
 
-- **Finding**: Multiple list templates directly call `api.get` instead of the centralized `smartRequest` composable to populate dropdown options:
+- **Finding**: Multiple list templates directly call `api.get` instead of the centralized `smartRequest` composable to populate dropdown options.
+- **Status**: Resolved. Refactored all 8 target list views to route metadata and dropdown query calls through the `smartRequest` composable:
   - `src/pages/attributes/results/list.vue` (fetching formulas)
   - `src/pages/packages-history/results/list.vue` (fetching projects)
   - `src/pages/releases/results/list.vue` (fetching config and projects)
@@ -52,7 +53,6 @@
   - `src/pages/formulas/results/list.vue` (fetching properties and languages)
   - `src/pages/tags/results/list.vue` (fetching stamps)
   - `src/pages/connections/results/list.vue` (fetching device types)
-- **[Virtual Adversary]: Seed critique generated during codebase audit. Formalization recommended.**: While these metadata queries currently have small filter sizes, bypassing `smartRequest` introduces architectural inconsistency. If a filter query parameter (e.g., fetching projects filtered by a long list of computer scopes) grows beyond proxy and load-balancer limits (2000 characters), it will trigger an HTTP 414 URI Too Long error. All API queries should be uniformly routed through the `smartRequest` wrapper.
 
 #### ⚛️ Module B.4 - Style Scoping & Portal CSS Leakage (Remediated)
 
