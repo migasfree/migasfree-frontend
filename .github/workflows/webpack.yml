@@ -46,7 +46,7 @@ jobs:
 
       - name: Security audit
         run: |
-          yarnpkg audit --severity high
+          yarnpkg npm audit --severity high
         continue-on-error: true
 
   e2e:
