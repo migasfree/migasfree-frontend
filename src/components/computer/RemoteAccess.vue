@@ -346,10 +346,10 @@ import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { api } from 'boot/axios'
 import { useQuasar, SessionStorage } from 'quasar'
-import { Terminal } from 'xterm'
-import { FitAddon } from 'xterm-addon-fit'
+import { Terminal } from '@xterm/xterm'
+import { FitAddon } from '@xterm/addon-fit'
 import RFB from '@novnc/novnc'
-import 'xterm/css/xterm.css'
+import '@xterm/xterm/css/xterm.css'
 
 defineOptions({
   name: 'ComputerRemoteAccess',
