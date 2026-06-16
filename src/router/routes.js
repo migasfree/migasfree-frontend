@@ -254,41 +254,38 @@ const routes = [
       {
         path: '/manufacturers/results',
         name: 'manufacturers-list',
-        component: () =>
-          import('pages/devices/devices/manufacturers/results/list'),
+        component: () => import('pages/devices/manufacturers/results/list'),
       },
       {
         path: '/manufacturers/add',
         name: 'manufacturer-add',
-        component: () =>
-          import('pages/devices/devices/manufacturers/results/detail'),
+        component: () => import('pages/devices/manufacturers/results/detail'),
       },
       {
         path: '/manufacturers/results/:id',
         name: 'manufacturer-detail',
-        component: () =>
-          import('pages/devices/devices/manufacturers/results/detail'),
+        component: () => import('pages/devices/manufacturers/results/detail'),
       },
 
       {
         path: '/models',
         name: 'models-dashboard',
-        component: () => import('pages/devices/devices/models/index'),
+        component: () => import('pages/devices/models/index'),
       },
       {
         path: '/models/results',
         name: 'models-list',
-        component: () => import('pages/devices/devices/models/results/list'),
+        component: () => import('pages/devices/models/results/list'),
       },
       {
         path: '/models/add',
         name: 'model-add',
-        component: () => import('pages/devices/devices/models/results/detail'),
+        component: () => import('pages/devices/models/results/detail'),
       },
       {
         path: '/models/results/:id',
         name: 'model-detail',
-        component: () => import('pages/devices/devices/models/results/detail'),
+        component: () => import('pages/devices/models/results/detail'),
       },
 
       {
@@ -298,20 +295,17 @@ const routes = [
       {
         path: '/capabilities/results',
         name: 'capabilities-list',
-        component: () =>
-          import('pages/devices/devices/capabilities/results/list'),
+        component: () => import('pages/devices/capabilities/results/list'),
       },
       {
         path: '/capabilities/add',
         name: 'capability-add',
-        component: () =>
-          import('pages/devices/devices/capabilities/results/detail'),
+        component: () => import('pages/devices/capabilities/results/detail'),
       },
       {
         path: '/capabilities/results/:id',
         name: 'capability-detail',
-        component: () =>
-          import('pages/devices/devices/capabilities/results/detail'),
+        component: () => import('pages/devices/capabilities/results/detail'),
       },
 
       {
