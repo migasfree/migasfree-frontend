@@ -33,7 +33,7 @@ import { onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useListConfig } from 'composables/listConfig'
 
-import { api } from 'boot/axios'
+import { useSmartRequest } from 'composables/smartRequest'
 import { useUiStore } from 'stores/ui'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
@@ -44,6 +44,7 @@ import { useFilterHelper } from 'composables/filterHelper'
 
 const { $gettext } = useGettext()
 const uiStore = useUiStore()
+const { smartRequest } = useSmartRequest()
 
 const routes = {
   add: 'connection-add',
@@ -97,7 +98,7 @@ const { setFilterItems } = useFilterHelper(columns)
 
 const loadFilters = async () => {
   try {
-    const response = await api.get('/api/v1/token/devices/types/')
+    const response = await smartRequest('/api/v1/token/devices/types/')
 
     setFilterItems(
       'device_type.name',

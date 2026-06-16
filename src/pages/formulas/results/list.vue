@@ -42,7 +42,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useListConfig } from 'composables/listConfig'
 
-import { api } from 'boot/axios'
+import { useSmartRequest } from 'composables/smartRequest'
 import { useUiStore } from 'stores/ui'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
@@ -52,6 +52,7 @@ import { appIcon } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'
 
 const uiStore = useUiStore()
+const { smartRequest } = useSmartRequest()
 const { $gettext } = useGettext()
 
 const kind = ref({})
@@ -133,8 +134,8 @@ const { setFilterItems } = useFilterHelper(columns)
 const loadFilters = async () => {
   try {
     const [kindResponse, languagesResponse] = await Promise.all([
-      api.get('/api/v1/token/properties/kind/'),
-      api.get('/api/v1/public/languages/'),
+      smartRequest('/api/v1/token/properties/kind/'),
+      smartRequest('/api/v1/public/languages/'),
     ])
 
     kind.value = kindResponse.data

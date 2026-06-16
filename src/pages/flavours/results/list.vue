@@ -40,7 +40,7 @@
 import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useListConfig } from 'composables/listConfig'
-import { api } from 'boot/axios'
+import { useSmartRequest } from 'composables/smartRequest'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
@@ -49,6 +49,7 @@ import MigasLink from 'components/MigasLink'
 import { appIcon } from 'composables/element'
 
 const { $gettext } = useGettext()
+const { smartRequest } = useSmartRequest()
 
 const configs = ref([])
 const projects = ref([])
@@ -56,8 +57,8 @@ const projects = ref([])
 onMounted(async () => {
   try {
     const [configsRes, projectsRes] = await Promise.all([
-      api.get('/api/v1/token/mgi/config/'),
-      api.get('/api/v1/token/projects/'),
+      smartRequest('/api/v1/token/mgi/config/'),
+      smartRequest('/api/v1/token/projects/'),
     ])
     configs.value = configsRes.data.results
     projects.value = projectsRes.data.results

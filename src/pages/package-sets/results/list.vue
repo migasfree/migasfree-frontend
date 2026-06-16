@@ -18,7 +18,7 @@ import { onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useListConfig } from 'composables/listConfig'
 
-import { api } from 'boot/axios'
+import { useSmartRequest } from 'composables/smartRequest'
 import { useUiStore } from 'stores/ui'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
@@ -29,6 +29,7 @@ import { useFilterHelper } from 'composables/filterHelper'
 
 const uiStore = useUiStore()
 const { $gettext } = useGettext()
+const { smartRequest } = useSmartRequest()
 
 const routes = {
   add: 'package-set-add',
@@ -97,8 +98,8 @@ const { setFilterItems } = useFilterHelper(columns)
 const loadFilters = async () => {
   try {
     const [projectsResponse, storesResponse] = await Promise.all([
-      api.get('/api/v1/token/projects/'),
-      api.get('/api/v1/token/stores/'),
+      smartRequest('/api/v1/token/projects/'),
+      smartRequest('/api/v1/token/stores/'),
     ])
 
     setFilterItems(

@@ -50,7 +50,7 @@ import { onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useListConfig } from 'composables/listConfig'
 
-import { api } from 'boot/axios'
+import { useSmartRequest } from 'composables/smartRequest'
 import { useUiStore } from 'stores/ui'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
@@ -64,6 +64,7 @@ import { useFilterHelper } from 'composables/filterHelper'
 const { $gettext } = useGettext()
 const uiStore = useUiStore()
 const { elementIcon } = useElement()
+const { smartRequest } = useSmartRequest()
 
 const model = 'packages-history'
 const moreFilters = ['installDateRange', 'uninstallDateRange', 'uninstallDate']
@@ -142,7 +143,7 @@ const { setFilterItems } = useFilterHelper(columns)
 
 const loadFilters = async () => {
   try {
-    const response = await api.get('/api/v1/token/projects/')
+    const response = await smartRequest('/api/v1/token/projects/')
 
     setFilterItems(
       'package.project.name',
