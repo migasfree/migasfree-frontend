@@ -622,7 +622,10 @@ h1,
   border-radius: 16px !important;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08) !important;
   padding: 6px 0 !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  transition:
+    opacity 0.15s ease,
+    background-color 0.3s ease,
+    box-shadow 0.3s ease !important;
 }
 
 /* Portal menu variants */
