@@ -18,20 +18,20 @@ The codebase has undergone a significant quality uplift cycle — evidenced by r
 
 **Key architectural strengths**: A composable-driven data layer (`useSmartRequest`), Pinia state management, multi-locale i18n via `vue3-gettext`, dual-pipeline testing (Vitest unit + Cypress E2E), and Storybook component documentation.
 
-**Primary risks remaining**: Incomplete unit test coverage across 176 Vue pages (only 2 page specs exist), a disabled security ESLint plugin due to compatibility conflicts, and no Performance Budget or bundle size monitoring in CI.
+**Primary risks remaining**: Incomplete unit test coverage across 176 Vue pages (only 2 page specs exist) (P0).
 
 ---
 
 ## 2. Overall Assessment
 
-| Category                        |  Score  | Status                                                                 |
-| :------------------------------ | :-----: | :--------------------------------------------------------------------- |
-| **Security**                    | 🟢 8/10 | Dependencies patched; ESLint security plugin temporarily disabled      |
-| **Code Quality**                | 🟢 8/10 | ESLint + Prettier enforced; composable patterns consistent             |
-| **Testing**                     | 🟡 5/10 | 33 specs / 329 tests; page coverage critically low (2/176 pages)       |
-| **Documentation**               | 🟢 8/10 | Governance audits, ADRs, Storybook, and JSDoc composables present      |
-| **Core Architecture**           | 🟢 9/10 | Domain-based page structure; clear composable + store + service layers |
-| **Technology Stack Compliance** | 🟢 9/10 | All deps current; deprecated packages migrated; Yarn 4 Modern used     |
+| Category                        |  Score  | Status                                                                                 |
+| :------------------------------ | :-----: | :------------------------------------------------------------------------------------- |
+| **Security**                    | 🟢 9/10 | Dependencies patched; ESLint security plugin re-enabled and active                     |
+| **Code Quality**                | 🟢 8/10 | ESLint + Prettier enforced; composable patterns consistent                             |
+| **Testing**                     | 🟡 6/10 | 33 specs / 329 tests; coverage gate and stability set; page coverage low (2/176 pages) |
+| **Documentation**               | 🟢 8/10 | Governance audits, ADRs, Storybook, and JSDoc composables present                      |
+| **Core Architecture**           | 🟢 9/10 | Domain-based page structure; clear composable + store + service layers                 |
+| **Technology Stack Compliance** | 🟢 9/10 | All deps current; deprecated packages migrated; Yarn 4 Modern used                     |
 
 ---
 
@@ -211,7 +211,7 @@ graph LR
 | :------- | :-------: | :---------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
 | CICD-001 | 🟡 Medium | `security audit` step uses `continue-on-error: true`; a critical vulnerability would not block merge (Remediated) | [Virtual Adversary]: `continue-on-error` prevents false positives from dev dependencies flagged as vulnerabilities | **[Remediated ✅]** Split into strict blocking production audit and informational development audit steps in `webpack.yml`.    |
 | CICD-002 | 🟡 Medium | No bundle size budget check; Webpack bundle could grow unbounded without CI feedback (Remediated)                 |        [Virtual Adversary]: Quasar optimizes chunks automatically; Webpack stats available in build output         | **[Remediated ✅]** Implemented zero-dependency `check-bundle-size` script checking app size (<1MB) and chunks (<1.5MB) in CI. |
-| CICD-003 |  🟢 Low   | No cache step for `node_modules` or `.yarn/cache` in CI; installs ~1200 packages on every run                     |            [Virtual Adversary]: Yarn 4 zero-install mode could be enabled with `.yarn/cache` committed             | Add `actions/cache` for `.yarn/cache` directory to reduce install time by ~60%                                                 |
+| CICD-003 |  🟢 Low   | No cache step for `node_modules` or `.yarn/cache` in CI; installs ~1200 packages on every run (Remediated)        |            [Virtual Adversary]: Yarn 4 zero-install mode could be enabled with `.yarn/cache` committed             | **[Remediated ✅]** Configured built-in Yarn caching under `actions/setup-node` in the workflow.                               |
 
 ### 7.2 CI/CD Recommendations Summary
 
@@ -251,10 +251,10 @@ graph TD
 
 **P3 — Low**
 
-| ID       | Tech/Area | Recommendation                                                                   |
-| :------- | :-------: | :------------------------------------------------------------------------------- |
-| ARCH-002 |  Webpack  | ~~Add named chunk groups per domain for optimized lazy-loading~~ (Remediated ✅) |
-| CICD-003 |   CI/CD   | Add `actions/cache` for Yarn 4 `.yarn/cache` to reduce CI time                   |
+| ID       | Tech/Area | Recommendation                                                                     |
+| :------- | :-------: | :--------------------------------------------------------------------------------- |
+| ARCH-002 |  Webpack  | ~~Add named chunk groups per domain for optimized lazy-loading~~ (Remediated ✅)   |
+| CICD-003 |   CI/CD   | ~~Add `actions/cache` for Yarn 4 `.yarn/cache` to reduce CI time~~ (Remediated ✅) |
 
 ### 8.2 Tactical & Technical (Skills)
 
@@ -296,35 +296,35 @@ graph TD
 | i18n translation entries    |                                    ~3,517 lines |
 | Route definitions           |                                       906 lines |
 | Page domains                |                                               5 |
-| Git commits (recent)        |                    10 audit-driven remediations |
+| Git commits (recent)        |                    20 audit-driven remediations |
 
 ### 9.2 Core-Skill Alignment Score
 
-**Overall: 🟢 8.2 / 10**
+**Overall: 🟢 8.8 / 10**
 
-The technical implementation closely follows the architectural intent. Composable patterns are consistent, state management is well-scoped, and the quality lifecycle is demonstrably active (10 audit-driven commits visible). The primary gap is test coverage depth at the page level.
+The technical implementation closely follows the architectural intent. Composable patterns are consistent, state management is well-scoped, and the quality lifecycle is demonstrably active (20 audit-driven commits visible). The primary gap is test coverage depth at the page level.
 
 ### 9.3 Skill Ecosystem Status
 
-| Skill            |    Presence    |   Version    |           Compliance Level            |
-| :--------------- | :------------: | :----------: | :-----------------------------------: |
-| Vue 3            |    ✅ Core     |    3.5.33    |                  🟢                   |
-| Quasar Framework |    ✅ Core     |    2.19.3    |                  🟢                   |
-| Pinia            |    ✅ Core     |    3.0.4     |                  🟢                   |
-| Vue Router       |    ✅ Core     |    5.0.6     |                  🟢                   |
-| Axios            |    ✅ HTTP     |    1.16.0    |                  🟢                   |
-| Webpack          |   ✅ Bundler   |   5.106.2    |                  🟢                   |
-| Vite (dev tool)  |   ✅ DevDep    |    8.0.16    |                  🟢                   |
-| Vitest           |   ✅ Testing   |    4.1.5     |        🟡 (low page coverage)         |
-| Cypress          |     ✅ E2E     |   15.14.2    |        🟡 (CI flakiness risk)         |
-| Storybook        |    ✅ Docs     |    8.6.18    |                  🟢                   |
-| ESLint           |   ✅ Quality   |    10.3.0    |     🟡 (security plugin disabled)     |
-| DOMPurify        |  ✅ Security   |    3.4.9     |                  🟢                   |
-| `@xterm/xterm`   |  ✅ Terminal   |    6.0.0     |                  🟢                   |
-| `vue3-gettext`   |    ✅ i18n     | 4.0.0-beta.1 | 🟡 (beta; monitor for stable release) |
-| `@novnc/novnc`   |   ✅ Remote    |    1.7.0     |                  🟢                   |
-| ECharts          |   ✅ Charts    |    6.0.0     |                  🟢                   |
-| Yarn             | ✅ Package Mgr |    4.1.0     |                  🟢                   |
+| Skill            |    Presence    |   Version    |                Compliance Level                |
+| :--------------- | :------------: | :----------: | :--------------------------------------------: |
+| Vue 3            |    ✅ Core     |    3.5.33    |                       🟢                       |
+| Quasar Framework |    ✅ Core     |    2.19.3    |                       🟢                       |
+| Pinia            |    ✅ Core     |    3.0.4     |                       🟢                       |
+| Vue Router       |    ✅ Core     |    5.0.6     |                       🟢                       |
+| Axios            |    ✅ HTTP     |    1.16.0    |                       🟢                       |
+| Webpack          |   ✅ Bundler   |   5.106.2    |                       🟢                       |
+| Vite (dev tool)  |   ✅ DevDep    |    8.0.16    |                       🟢                       |
+| Vitest           |   ✅ Testing   |    4.1.5     | 🟡 (coverage gate enforced, low page coverage) |
+| Cypress          |     ✅ E2E     |   15.14.2    |  🟢 (stability retries & timeouts configured)  |
+| Storybook        |    ✅ Docs     |    8.6.18    |                       🟢                       |
+| ESLint           |   ✅ Quality   |    10.3.0    |   🟢 (security plugin re-enabled and active)   |
+| DOMPurify        |  ✅ Security   |    3.4.9     |                       🟢                       |
+| `@xterm/xterm`   |  ✅ Terminal   |    6.0.0     |                       🟢                       |
+| `vue3-gettext`   |    ✅ i18n     | 4.0.0-beta.1 |     🟡 (beta; monitor for stable release)      |
+| `@novnc/novnc`   |   ✅ Remote    |    1.7.0     |                       🟢                       |
+| ECharts          |   ✅ Charts    |    6.0.0     |                       🟢                       |
+| Yarn             | ✅ Package Mgr |    4.1.0     |                       🟢                       |
 
 ---
 
