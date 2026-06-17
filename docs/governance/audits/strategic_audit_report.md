@@ -207,11 +207,11 @@ graph LR
 
 #### ⚠️ 7.1.2 CI/CD Concerns
 
-| ID       | Severidad | Hallazgo (Crítica)                                                                                   |                                           Contraargumentación (Defensa)                                            | Recomendación Final                                                                                                  |
-| :------- | :-------: | :--------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------- |
-| CICD-001 | 🟡 Medium | `security audit` step uses `continue-on-error: true`; a critical vulnerability would not block merge | [Virtual Adversary]: `continue-on-error` prevents false positives from dev dependencies flagged as vulnerabilities | Create two audit steps: one strict (prod-only `--environment production`) that blocks, one informational for devDeps |
-| CICD-002 | 🟡 Medium | No bundle size budget check; Webpack bundle could grow unbounded without CI feedback                 |        [Virtual Adversary]: Quasar optimizes chunks automatically; Webpack stats available in build output         | Add `webpack-bundle-analyzer` or `bundlesize` step; define a budget (e.g., initial JS ≤ 500 KB)                      |
-| CICD-003 |  🟢 Low   | No cache step for `node_modules` or `.yarn/cache` in CI; installs ~1200 packages on every run        |            [Virtual Adversary]: Yarn 4 zero-install mode could be enabled with `.yarn/cache` committed             | Add `actions/cache` for `.yarn/cache` directory to reduce install time by ~60%                                       |
+| ID       | Severidad | Hallazgo (Crítica)                                                                                                |                                           Contraargumentación (Defensa)                                            | Recomendación Final                                                                                                         |
+| :------- | :-------: | :---------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------- |
+| CICD-001 | 🟡 Medium | `security audit` step uses `continue-on-error: true`; a critical vulnerability would not block merge (Remediated) | [Virtual Adversary]: `continue-on-error` prevents false positives from dev dependencies flagged as vulnerabilities | **[Remediated ✅]** Split into strict blocking production audit and informational development audit steps in `webpack.yml`. |
+| CICD-002 | 🟡 Medium | No bundle size budget check; Webpack bundle could grow unbounded without CI feedback                              |        [Virtual Adversary]: Quasar optimizes chunks automatically; Webpack stats available in build output         | Add `webpack-bundle-analyzer` or `bundlesize` step; define a budget (e.g., initial JS ≤ 500 KB)                             |
+| CICD-003 |  🟢 Low   | No cache step for `node_modules` or `.yarn/cache` in CI; installs ~1200 packages on every run                     |            [Virtual Adversary]: Yarn 4 zero-install mode could be enabled with `.yarn/cache` committed             | Add `actions/cache` for `.yarn/cache` directory to reduce install time by ~60%                                              |
 
 ### 7.2 CI/CD Recommendations Summary
 
@@ -244,10 +244,10 @@ graph TD
 
 **P2 — Medium**
 
-| ID       | Tech/Area | Recommendation                                                      |
-| :------- | :-------: | :------------------------------------------------------------------ |
-| ARCH-004 | Dashboard | Decompose `Dashboard.vue` (12 KB) into domain stat widgets          |
-| CICD-001 |   CI/CD   | Split security audit into blocking (prod) + informational (devDeps) |
+| ID       | Tech/Area | Recommendation                                                                          |
+| :------- | :-------: | :-------------------------------------------------------------------------------------- |
+| ARCH-004 | Dashboard | Decompose `Dashboard.vue` (12 KB) into domain stat widgets                              |
+| CICD-001 |   CI/CD   | ~~Split security audit into blocking (prod) + informational (devDeps)~~ (Remediated ✅) |
 
 **P3 — Low**
 

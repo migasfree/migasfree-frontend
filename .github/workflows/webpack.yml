@@ -44,9 +44,13 @@ jobs:
         run: |
           yarnpkg test:coverage
 
-      - name: Security audit
+      - name: Security audit (production)
         run: |
-          yarnpkg npm audit --severity high
+          yarnpkg npm audit --severity high --environment production
+
+      - name: Security audit (development)
+        run: |
+          yarnpkg npm audit --severity high --environment development
         continue-on-error: true
 
   e2e:
