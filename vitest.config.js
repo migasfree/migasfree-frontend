@@ -22,6 +22,9 @@ export default defineConfig({
         'src/main.js',
       ],
       all: true,
+      thresholds: {
+        lines: 14,
+      },
     },
     pool: 'threads',
     threads: {
