@@ -72,4 +72,5 @@ jobs:
           install: false
           start: yarnpkg dev
           wait-on: 'http://localhost:3002'
+          wait-on-timeout: 120
           browser: chrome

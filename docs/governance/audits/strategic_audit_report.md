@@ -175,11 +175,11 @@ graph TD
 
 #### ⚠️ 6.1.2 Testing Concerns
 
-| ID       |  Severidad  | Hallazgo (Crítica)                                                                                                         |                              Contraargumentación (Defensa)                              | Recomendación Final                                                                                                                                   |
-| :------- | :---------: | :------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| TEST-001 | 🔴 Critical | 2 page specs / 176 page files = 1.1% page coverage. Business logic in list/detail views is invisible to regression testing | [Virtual Adversary]: Cypress E2E runs on full application; provides functional coverage | Add minimum page spec requirement per domain to CI; target ≥ 1 list + 1 detail spec per domain (10 specs minimum)                                     |
-| TEST-002 |  🟡 Medium  | No coverage threshold enforced in `vitest.config.js`; `test:coverage` passes regardless of percentage (Remediated)         |     [Virtual Adversary]: Coverage gates can create false confidence if set too low      | **[Remediated ✅]** Implemented realistic guardrail threshold `coverage: { thresholds: { lines: 14 } }` in `vitest.config.js` to prevent regressions. |
-| TEST-003 |  🟡 Medium  | Cypress E2E requires live server (`wait-on: 'http://localhost:3002'`); CI flakiness risk if server startup is slow         |       [Virtual Adversary]: `cypress-io/github-action@v7` handles retries natively       | Add `wait-on-timeout: 120` and `--retries 2` to Cypress CI step                                                                                       |
+| ID       |  Severidad  | Hallazgo (Crítica)                                                                                                              |                              Contraargumentación (Defensa)                              | Recomendación Final                                                                                                                                   |
+| :------- | :---------: | :------------------------------------------------------------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| TEST-001 | 🔴 Critical | 2 page specs / 176 page files = 1.1% page coverage. Business logic in list/detail views is invisible to regression testing      | [Virtual Adversary]: Cypress E2E runs on full application; provides functional coverage | Add minimum page spec requirement per domain to CI; target ≥ 1 list + 1 detail spec per domain (10 specs minimum)                                     |
+| TEST-002 |  🟡 Medium  | No coverage threshold enforced in `vitest.config.js`; `test:coverage` passes regardless of percentage (Remediated)              |     [Virtual Adversary]: Coverage gates can create false confidence if set too low      | **[Remediated ✅]** Implemented realistic guardrail threshold `coverage: { thresholds: { lines: 14 } }` in `vitest.config.js` to prevent regressions. |
+| TEST-003 |  🟡 Medium  | Cypress E2E requires live server (`wait-on: 'http://localhost:3002'`); CI flakiness risk if server startup is slow (Remediated) |       [Virtual Adversary]: `cypress-io/github-action@v7` handles retries natively       | **[Remediated ✅]** Added `wait-on-timeout: 120` to Cypress workflow and configured `retries: { runMode: 2, openMode: 0 }` in `cypress.config.js`.    |
 
 ### 6.2 Testing Recommendations Summary
 
@@ -263,7 +263,7 @@ graph TD
 | ID       | Tech/Area | Recommendation                                                                            |
 | :------- | :-------: | :---------------------------------------------------------------------------------------- |
 | VUE-002  |  ESLint   | ~~Restore `eslint-plugin-security` (v10-compatible fork or alternative)~~ (Remediated ✅) |
-| TEST-003 |  Cypress  | Add `wait-on-timeout: 120` and `--retries 2` to E2E CI step                               |
+| TEST-003 |  Cypress  | ~~Add `wait-on-timeout: 120` and `--retries 2` to E2E CI step~~ (Remediated ✅)           |
 
 **P2 — Medium**
 
