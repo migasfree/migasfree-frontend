@@ -144,7 +144,7 @@ graph LR
 | ID      | Severidad | Hallazgo (Crítica)                                                                                                                                 |                                Contraargumentación (Defensa)                                 | Recomendación Final                                                                                                                                                                         |
 | :------ | :-------: | :------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | VUE-001 | 🟡 Medium | Mixed Composition API (`<script setup>`) and Options API across legacy components; inconsistent patterns increase onboarding friction (Remediated) |      [Virtual Adversary]: Both APIs are valid in Vue 3; interoperability is guaranteed       | **[Remediated ✅]** Established Composition API migration guideline in `docs/how-to/contributing.md`. Audited codebase: 100% of components (176/176) are fully migrated to `<script setup>` |
-| VUE-002 | 🟡 Medium | `eslint-plugin-security` disabled in `eslint.config.js` due to ESLint v10 compatibility issue                                                      |         [Virtual Adversary]: Tracked with a `// TODO` comment; upstream fix pending          | Pin `eslint-plugin-security` to a v10-compatible fork or replace with `eslint-plugin-no-unsanitized` until upstream resolves                                                                |
+| VUE-002 | 🟡 Medium | `eslint-plugin-security` disabled in `eslint.config.js` due to ESLint v10 compatibility issue (Remediated)                                         |         [Virtual Adversary]: Tracked with a `// TODO` comment; upstream fix pending          | **[Remediated ✅]** Retained ESLint v10.3.0 and enabled `eslint-plugin-security@4.0.0` in `eslint.config.js`, confirming full compatibility and successful static analysis execution.       |
 | VUE-003 |  🟢 Low   | Quasar `app-webpack` v4.4.5 uses Webpack 5.106 rather than Vite; larger dev server startup time vs Quasar CLI Vite mode                            | [Virtual Adversary]: Webpack provides more mature code-splitting and bundle analysis tooling | Evaluate migration to `@quasar/app-vite` in next major iteration for faster HMR                                                                                                             |
 
 ### 5.2 Vue + Quasar Recommendations Summary
@@ -260,10 +260,10 @@ graph TD
 
 **P1 — High**
 
-| ID       | Tech/Area | Recommendation                                                        |
-| :------- | :-------: | :-------------------------------------------------------------------- |
-| VUE-002  |  ESLint   | Restore `eslint-plugin-security` (v10-compatible fork or alternative) |
-| TEST-003 |  Cypress  | Add `wait-on-timeout: 120` and `--retries 2` to E2E CI step           |
+| ID       | Tech/Area | Recommendation                                                                            |
+| :------- | :-------: | :---------------------------------------------------------------------------------------- |
+| VUE-002  |  ESLint   | ~~Restore `eslint-plugin-security` (v10-compatible fork or alternative)~~ (Remediated ✅) |
+| TEST-003 |  Cypress  | Add `wait-on-timeout: 120` and `--retries 2` to E2E CI step                               |
 
 **P2 — Medium**
 
