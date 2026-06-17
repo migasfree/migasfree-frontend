@@ -85,12 +85,12 @@ graph TD
 
 #### ⚠️ 4.1.2 Architecture Concerns
 
-| ID       | Severidad | Hallazgo (Crítica)                                                                                                            |                                 Contraargumentación (Defensa)                                 | Recomendación Final                                                                                                                    |
-| :------- | :-------: | :---------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------- |
-| ARCH-001 | 🟡 Medium | `routes.js` is a monolithic 906-line file; all 43+ page routes in a single export make maintenance error-prone (Remediated)   |   [Virtual Adversary]: The flat structure is simple and avoids module resolution complexity   | **[Remediated ✅]** Split into 5 domain route modules (`configuration.js`, `devices.js`, etc.) and compose in `routes.js` using spread |
-| ARCH-002 | 🟡 Medium | No route-level lazy-loading grouping; each component is an independent chunk, increasing HTTP round-trips on first navigation |       [Virtual Adversary]: Webpack code-splitting is already active via dynamic imports       | Group related routes with named webpack chunks: `/* webpackChunkName: "configuration" */`                                              |
-| ARCH-003 |  🟠 High  | Page unit test coverage: 2 specs for 176 `.vue` pages (1.1%). Regressions in page logic are undetectable                      | [Virtual Adversary]: E2E Cypress tests provide integration coverage as a compensating control | Define a page test minimum (e.g., at least list + detail spec per domain); add to CI coverage gate                                     |
-| ARCH-004 | 🟡 Medium | `Dashboard.vue` (12 KB) is a God Component handling stats, charts, and layout in one file                                     |       [Virtual Adversary]: Dashboard complexity is inherent to a fleet management tool        | Decompose into domain dashboard widgets: `ComputerStats.vue`, `DeploymentStats.vue`, etc.                                              |
+| ID       | Severidad | Hallazgo (Crítica)                                                                                                                         |                                 Contraargumentación (Defensa)                                 | Recomendación Final                                                                                                                               |
+| :------- | :-------: | :----------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------ |
+| ARCH-001 | 🟡 Medium | `routes.js` is a monolithic 906-line file; all 43+ page routes in a single export make maintenance error-prone (Remediated)                |   [Virtual Adversary]: The flat structure is simple and avoids module resolution complexity   | **[Remediated ✅]** Split into 5 domain route modules (`configuration.js`, `devices.js`, etc.) and compose in `routes.js` using spread            |
+| ARCH-002 | 🟡 Medium | No route-level lazy-loading grouping; each component is an independent chunk, increasing HTTP round-trips on first navigation (Remediated) |       [Virtual Adversary]: Webpack code-splitting is already active via dynamic imports       | **[Remediated ✅]** Add named chunk groups per domain (`configuration`, `devices`, `release`, `golden-images`, `data`) for optimized lazy-loading |
+| ARCH-003 |  🟠 High  | Page unit test coverage: 2 specs for 176 `.vue` pages (1.1%). Regressions in page logic are undetectable                                   | [Virtual Adversary]: E2E Cypress tests provide integration coverage as a compensating control | Define a page test minimum (e.g., at least list + detail spec per domain); add to CI coverage gate                                                |
+| ARCH-004 | 🟡 Medium | `Dashboard.vue` (12 KB) is a God Component handling stats, charts, and layout in one file                                                  |       [Virtual Adversary]: Dashboard complexity is inherent to a fleet management tool        | Decompose into domain dashboard widgets: `ComputerStats.vue`, `DeploymentStats.vue`, etc.                                                         |
 
 #### Code Examples
 
@@ -251,10 +251,10 @@ graph TD
 
 **P3 — Low**
 
-| ID       | Tech/Area | Recommendation                                                 |
-| :------- | :-------: | :------------------------------------------------------------- |
-| ARCH-002 |  Webpack  | Add named chunk groups per domain for optimized lazy-loading   |
-| CICD-003 |   CI/CD   | Add `actions/cache` for Yarn 4 `.yarn/cache` to reduce CI time |
+| ID       | Tech/Area | Recommendation                                                                   |
+| :------- | :-------: | :------------------------------------------------------------------------------- |
+| ARCH-002 |  Webpack  | ~~Add named chunk groups per domain for optimized lazy-loading~~ (Remediated ✅) |
+| CICD-003 |   CI/CD   | Add `actions/cache` for Yarn 4 `.yarn/cache` to reduce CI time                   |
 
 ### 8.2 Tactical & Technical (Skills)
 
