@@ -426,6 +426,7 @@ const formatBytes = (bytes) => {
   const k = 1024
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
   const i = Math.floor(Math.log(bytes) / Math.log(k))
+  // eslint-disable-next-line security/detect-object-injection
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
@@ -436,6 +437,7 @@ const getStatusColor = (status) => {
     completed: 'green-8',
     failed: 'red-8',
   }
+  // eslint-disable-next-line security/detect-object-injection
   return colors[status] || 'grey-7'
 }
 
@@ -446,6 +448,7 @@ const getStatusIcon = (status) => {
     completed: 'mdi-check-circle-outline',
     failed: 'mdi-alert-circle-outline',
   }
+  // eslint-disable-next-line security/detect-object-injection
   return icons[status] || 'mdi-help-circle'
 }
 
@@ -456,6 +459,7 @@ const getStatusLabel = (status) => {
     completed: $gettext('Completed'),
     failed: $gettext('Failed'),
   }
+  // eslint-disable-next-line security/detect-object-injection
   return labels[status] || status
 }
 </script>
