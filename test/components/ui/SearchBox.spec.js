@@ -154,4 +154,35 @@ describe('SearchBox.vue', () => {
     const wrapper = createWrapper()
     expect(wrapper.vm.selectedRoute).toBe('computers-list')
   })
+
+  it('triggers search when a scope option is selected', async () => {
+    const wrapper = createWrapper()
+    wrapper.vm.searchText = 'test query'
+
+    // Find all rendered scope items
+    const items = wrapper.findAll('.q-item')
+    expect(items.length).toBe(wrapper.vm.options.length)
+
+    // Click the second item (Attributes)
+    await items[1].trigger('click')
+
+    expect(mockPush).toHaveBeenCalledWith({
+      name: 'features-list',
+      query: { search: 'test query' },
+    })
+  })
+
+  it('triggers search when enter key is pressed even if search query is empty', async () => {
+    const wrapper = createWrapper()
+    wrapper.vm.searchText = ''
+    wrapper.vm.selectedScope = { route: 'computers-list', icon: 'mdi-laptop' }
+
+    const input = wrapper.find('.q-input')
+    await input.trigger('keydown', { key: 'Enter' })
+
+    expect(mockPush).toHaveBeenCalledWith({
+      name: 'computers-list',
+      query: { search: '' },
+    })
+  })
 })

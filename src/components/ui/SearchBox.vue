@@ -22,7 +22,7 @@
             clickable
             class="scope-item"
             :active="selectedScope.id === scope.id"
-            @click="selectedScope = scope"
+            @click="selectScope(scope)"
           >
             <q-item-section avatar>
               <q-icon :name="scope.icon" size="20px" />
@@ -136,9 +136,12 @@ const selectedScope = ref(searchScopes[0])
 
 const handleSearch = () => {
   const query = searchText.value.trim()
-  if (query) {
-    router.push({ name: selectedScope.value.route, query: { search: query } })
-  }
+  router.push({ name: selectedScope.value.route, query: { search: query } })
+}
+
+const selectScope = (scope) => {
+  selectedScope.value = scope
+  handleSearch()
 }
 
 defineExpose({
