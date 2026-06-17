@@ -1,9 +1,18 @@
 <template>
   <q-list class="menu-list" tag="ul">
     <template v-for="(item, index) in items" :key="index">
-      <li class="menu-group-li">
+      <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
+      <li
+        class="menu-group-li"
+        role="group"
+        @mouseenter="onGroupHover(index)"
+        @mouseleave="onGroupLeave"
+        @focusin="onGroupHover(index)"
+        @focusout="onGroupLeave"
+      >
         <!-- Group Item (First Level) -->
         <q-expansion-item
+          :ref="(el) => setGroupRef(index, el)"
           :icon="item.icon"
           :label="item.title"
           group="first-level"
@@ -66,13 +75,13 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useAuthStore } from 'stores/auth'
 import { appIcon, modelIcon } from 'composables/element'
 
-defineProps({
+const props = defineProps({
   mini: {
     type: Boolean,
     default: false,
@@ -82,6 +91,74 @@ defineProps({
 const route = useRoute()
 const { $gettext } = useGettext()
 const authStore = useAuthStore()
+
+// --- Hover-intent auto-expansion ---
+
+const groupRefs = {}
+const hoveredGroupIndex = ref(-1)
+let hoverTimer = null
+
+const setGroupRef = (index, el) => {
+  if (el) {
+    /* eslint-disable-next-line security/detect-object-injection */
+    groupRefs[index] = el
+  }
+}
+
+const expandGroup = (idx) => {
+  if (idx >= 0 && groupRefs[idx]) {
+     
+    groupRefs[idx].show() // eslint-disable-line security/detect-object-injection
+  }
+}
+
+const onGroupHover = (index) => {
+  hoveredGroupIndex.value = index
+
+  // When sidebar is expanded, auto-open the hovered group with debounce
+  if (!props.mini) {
+    clearTimeout(hoverTimer)
+    hoverTimer = setTimeout(() => expandGroup(index), 200)
+  }
+}
+
+const onGroupLeave = () => {
+  hoveredGroupIndex.value = -1
+  clearTimeout(hoverTimer)
+}
+
+onBeforeUnmount(() => {
+  clearTimeout(hoverTimer)
+})
+
+const findActiveGroupIndex = () => {
+  if (!route.name) return -1
+  const menuItems = items.value
+  for (let i = 0; i < menuItems.length; i++) {
+    const group = menuItems[i] // eslint-disable-line security/detect-object-injection
+    if (group.options.some((opt) => isActiveRoute(opt.to))) {
+      return i
+    }
+  }
+  return -1
+}
+
+// When sidebar transitions from mini → expanded:
+// - If hovering a group icon → open that group
+// - If hovering blank area → keep previous state
+watch(
+  () => props.mini,
+  (isMini, wasMini) => {
+    if (wasMini && !isMini && hoveredGroupIndex.value >= 0) {
+      nextTick(() => expandGroup(hoveredGroupIndex.value))
+    }
+  },
+)
+
+// On initial mount, expand the group matching the current route
+onMounted(() => {
+  nextTick(() => expandGroup(findActiveGroupIndex()))
+})
 
 const isActiveRoute = (optionTo) => {
   if (!route.name) return false
