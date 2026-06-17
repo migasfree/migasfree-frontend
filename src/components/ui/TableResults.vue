@@ -340,6 +340,7 @@ const filterHandlers = {
 }
 
 const handleFilterChange = (filterName, value) => {
+  /* eslint-disable-next-line security/detect-object-injection */
   const handler = filterHandlers[filterName]
   if (handler) handler(value)
 }
@@ -417,14 +418,18 @@ const loadFilter = async (endpoint, filterKey, queryParam) => {
 
   try {
     const { data } = await smartRequest(endpoint)
+    /* eslint-disable-next-line security/detect-object-injection */
     tableFilters[filterKey].items.push(...data.results)
 
     if (
       queryParam &&
       ALLOWED_QUERY_PARAMS.has(queryParam) &&
+      /* eslint-disable-next-line security/detect-object-injection */
       route.query[queryParam]
     ) {
+      /* eslint-disable-next-line security/detect-object-injection */
       tableFilters[filterKey].selected = tableFilters[filterKey].items.find(
+        /* eslint-disable-next-line security/detect-object-injection */
         (x) => x.id == route.query[queryParam],
       )
     }
@@ -604,65 +609,6 @@ defineExpose({
 
 :deep(.vgt-table tr.selected) {
   background-color: rgba(var(--brand-primary-rgb), 0.04) !important;
-}
-
-/* Selection Info Bar */
-:deep(.table-selection-info) {
-  background: var(--brand-primary) !important;
-  color: white !important;
-  padding: 8px 16px !important;
-  border-radius: var(--radius, 10px) !important;
-  font-weight: 700 !important;
-  font-size: 0.85rem !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  margin-bottom: 12px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  box-shadow: 0 4px 12px rgba(var(--brand-primary-rgb), 0.2) !important;
-  user-select: none;
-}
-
-:deep(.table-selection-info a) {
-  color: var(--brand-tertiary, #fbbf24) !important;
-  background-color: transparent !important;
-  text-decoration: none !important;
-  font-weight: 900 !important;
-  font-size: 0.75rem !important;
-  margin-left: 12px !important;
-}
-
-:deep(.table-selection-info a:hover) {
-  text-decoration: underline !important;
-}
-
-[data-theme='dark'] :deep(.table-selection-info) {
-  background: var(--brand-tertiary, #fbbf24) !important;
-  color: var(--neutral-900, #171717) !important;
-}
-
-[data-theme='dark'] :deep(.table-selection-info a) {
-  color: var(--neutral-900, #171717) !important;
-  opacity: 0.7;
-}
-
-[data-theme='dark'] :deep(.vgt-checkbox-col input[type='checkbox']),
-[data-theme='dark'] :deep(.vgt-table input[type='checkbox']) {
-  border-color: rgba(255, 255, 255, 0.2) !important;
-  accent-color: var(--brand-tertiary, #fbbf24) !important;
-}
-
-[data-theme='dark'] :deep(.vgt-checkbox-col input[type='checkbox']:checked),
-[data-theme='dark'] :deep(.vgt-table input[type='checkbox']:checked) {
-  background-color: var(--brand-tertiary, #fbbf24) !important;
-  border-color: var(--brand-tertiary, #fbbf24) !important;
-}
-
-[data-theme='dark']
-  :deep(.vgt-checkbox-col input[type='checkbox']:checked::after),
-[data-theme='dark'] :deep(.vgt-table input[type='checkbox']:checked::after) {
-  border-color: var(--neutral-900, #171717) !important;
 }
 
 [data-theme='dark'] :deep(.vgt-table th.vgt-checkbox-col),

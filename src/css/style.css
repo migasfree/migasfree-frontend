@@ -953,12 +953,16 @@ h1,
 }
 
 [data-theme='dark'] .vgt-table input[type='checkbox'] {
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 [data-theme='dark'] .vgt-table input[type='checkbox']:checked {
-  background-color: var(--brand-primary);
-  border-color: var(--brand-primary);
+  background-color: var(--brand-tertiary, #feda00) !important;
+  border-color: var(--brand-tertiary, #feda00) !important;
+}
+
+[data-theme='dark'] .vgt-table input[type='checkbox']:checked::after {
+  border-color: #1a1210 !important;
 }
 
 /* --- VGT Legacy Fixes --- */
@@ -969,11 +973,46 @@ h1,
 
 .vgt-selection-info-row {
   padding: 8px 16px !important;
-  background: inherit !important;
-  color: inherit !important;
+  background: var(--brand-primary) !important;
+  color: var(--brand-on-primary) !important;
+  border-radius: var(--radius, 10px);
+  margin-bottom: 12px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 12px rgba(var(--brand-primary-rgb), 0.2);
+  user-select: none;
 }
 
-.vgt-selection-info-row a,
+.vgt-selection-info-row a {
+  color: var(--brand-tertiary, #fbbf24) !important;
+  background-color: transparent !important;
+  text-decoration: none !important;
+  font-weight: 900 !important;
+  font-size: 0.75rem !important;
+  margin-left: 12px !important;
+  text-transform: uppercase;
+}
+
+.vgt-selection-info-row a:hover {
+  text-decoration: underline !important;
+}
+
+[data-theme='dark'] .vgt-selection-info-row {
+  background: var(--brand-tertiary, #feda00) !important;
+  color: #1a1210 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme='dark'] .vgt-selection-info-row a {
+  color: #1a1210 !important;
+  opacity: 0.85;
+}
+
 .vgt-wrap__footer .footer__navigation__page-btn {
   background-color: var(--brand-primary) !important;
   color: var(--brand-on-primary) !important;
@@ -987,7 +1026,7 @@ h1,
   position: relative;
 }
 
-.vgt-selection-info-row a:before {
+.vgt-wrap__footer .footer__navigation__page-btn:before {
   transition: box-shadow 0.2s ease;
   content: '';
   display: block;
