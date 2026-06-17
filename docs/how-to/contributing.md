@@ -23,6 +23,22 @@ We use **ESLint** and **Prettier** to maintain code consistency.
   yarn format
   ```
 
+## Coding Standards
+
+### Vue 3 Components & Architecture
+
+All components must adhere to the following standards to ensure consistency, performance, and maintainability:
+
+1. **Composition API (`<script setup>`)**: All new and modified component files must use the Vue 3 **Composition API** with `<script setup>` syntax. Legacy Options API is deprecated.
+2. **Reactivity Patterns**:
+   - Prefer `ref()` for primitive values or simple state.
+   - Use `computed()` for values derived from state/props. Avoid setting state inside computed properties.
+   - Avoid direct DOM manipulation or using raw selectors (`document.getElementById`). Always use template refs (`const myRef = ref(null)`).
+3. **Quasar Composables**:
+   - Access global application and routing states using Quasar's native composables (`useQuasar`, `useRoute`, `useRouter`, etc.) instead of accessing raw instances or prototypes.
+4. **Data Fetching**:
+   - Always leverage the custom `useSmartRequest` composable rather than calling raw HTTP APIs directly. This ensures auto-fallback between `GET` and `POST` methods based on query string length constraints.
+
 ## Testing
 
 We use **Vitest** for unit and component testing.

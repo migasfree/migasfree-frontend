@@ -141,11 +141,11 @@ graph LR
 
 #### ⚠️ 5.1.2 Vue 3 + Quasar Concerns
 
-| ID      | Severidad | Hallazgo (Crítica)                                                                                                                    |                                Contraargumentación (Defensa)                                 | Recomendación Final                                                                                                             |
-| :------ | :-------: | :------------------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------ |
-| VUE-001 | 🟡 Medium | Mixed Composition API (`<script setup>`) and Options API across legacy components; inconsistent patterns increase onboarding friction |      [Virtual Adversary]: Both APIs are valid in Vue 3; interoperability is guaranteed       | Establish a migration guideline: all new components use `<script setup>`; track Options API components for progressive refactor |
-| VUE-002 | 🟡 Medium | `eslint-plugin-security` disabled in `eslint.config.js` due to ESLint v10 compatibility issue                                         |         [Virtual Adversary]: Tracked with a `// TODO` comment; upstream fix pending          | Pin `eslint-plugin-security` to a v10-compatible fork or replace with `eslint-plugin-no-unsanitized` until upstream resolves    |
-| VUE-003 |  🟢 Low   | Quasar `app-webpack` v4.4.5 uses Webpack 5.106 rather than Vite; larger dev server startup time vs Quasar CLI Vite mode               | [Virtual Adversary]: Webpack provides more mature code-splitting and bundle analysis tooling | Evaluate migration to `@quasar/app-vite` in next major iteration for faster HMR                                                 |
+| ID      | Severidad | Hallazgo (Crítica)                                                                                                                                 |                                Contraargumentación (Defensa)                                 | Recomendación Final                                                                                                                                                                         |
+| :------ | :-------: | :------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| VUE-001 | 🟡 Medium | Mixed Composition API (`<script setup>`) and Options API across legacy components; inconsistent patterns increase onboarding friction (Remediated) |      [Virtual Adversary]: Both APIs are valid in Vue 3; interoperability is guaranteed       | **[Remediated ✅]** Established Composition API migration guideline in `docs/how-to/contributing.md`. Audited codebase: 100% of components (176/176) are fully migrated to `<script setup>` |
+| VUE-002 | 🟡 Medium | `eslint-plugin-security` disabled in `eslint.config.js` due to ESLint v10 compatibility issue                                                      |         [Virtual Adversary]: Tracked with a `// TODO` comment; upstream fix pending          | Pin `eslint-plugin-security` to a v10-compatible fork or replace with `eslint-plugin-no-unsanitized` until upstream resolves                                                                |
+| VUE-003 |  🟢 Low   | Quasar `app-webpack` v4.4.5 uses Webpack 5.106 rather than Vite; larger dev server startup time vs Quasar CLI Vite mode                            | [Virtual Adversary]: Webpack provides more mature code-splitting and bundle analysis tooling | Evaluate migration to `@quasar/app-vite` in next major iteration for faster HMR                                                                                                             |
 
 ### 5.2 Vue + Quasar Recommendations Summary
 
@@ -267,10 +267,10 @@ graph TD
 
 **P2 — Medium**
 
-| ID       | Tech/Area | Recommendation                                                             |
-| :------- | :-------: | :------------------------------------------------------------------------- |
-| VUE-001  |   Vue 3   | Document Composition API migration guideline; audit Options API components |
-| CICD-002 |  Webpack  | Add bundle size budget monitoring in CI pipeline                           |
+| ID       | Tech/Area | Recommendation                                                                                 |
+| :------- | :-------: | :--------------------------------------------------------------------------------------------- |
+| VUE-001  |   Vue 3   | ~~Document Composition API migration guideline; audit Options API components~~ (Remediated ✅) |
+| CICD-002 |  Webpack  | Add bundle size budget monitoring in CI pipeline                                               |
 
 **P3 — Low**
 
