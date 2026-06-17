@@ -25,6 +25,7 @@
     "test:coverage": "vitest run --coverage",
     "dev": "quasar dev",
     "build": "quasar build",
+    "check-bundle-size": "node test/check-bundle-size.js",
     "postinstall": "quasar prepare",
     "prepare": "husky",
     "gettext:extract": "vue-gettext-extract",

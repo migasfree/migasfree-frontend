@@ -1,8 +1,8 @@
-import configurationRoutes from './domains/configuration'
-import devicesRoutes from './domains/devices'
-import releaseRoutes from './domains/release'
-import goldenImagesRoutes from './domains/golden-images'
-import dataRoutes from './domains/data'
+import configurationRoutes from './domains/configuration.js'
+import devicesRoutes from './domains/devices.js'
+import releaseRoutes from './domains/release.js'
+import goldenImagesRoutes from './domains/golden-images.js'
+import dataRoutes from './domains/data.js'
 
 const routes = [
   {

@@ -207,11 +207,11 @@ graph LR
 
 #### ⚠️ 7.1.2 CI/CD Concerns
 
-| ID       | Severidad | Hallazgo (Crítica)                                                                                                |                                           Contraargumentación (Defensa)                                            | Recomendación Final                                                                                                         |
-| :------- | :-------: | :---------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------- |
-| CICD-001 | 🟡 Medium | `security audit` step uses `continue-on-error: true`; a critical vulnerability would not block merge (Remediated) | [Virtual Adversary]: `continue-on-error` prevents false positives from dev dependencies flagged as vulnerabilities | **[Remediated ✅]** Split into strict blocking production audit and informational development audit steps in `webpack.yml`. |
-| CICD-002 | 🟡 Medium | No bundle size budget check; Webpack bundle could grow unbounded without CI feedback                              |        [Virtual Adversary]: Quasar optimizes chunks automatically; Webpack stats available in build output         | Add `webpack-bundle-analyzer` or `bundlesize` step; define a budget (e.g., initial JS ≤ 500 KB)                             |
-| CICD-003 |  🟢 Low   | No cache step for `node_modules` or `.yarn/cache` in CI; installs ~1200 packages on every run                     |            [Virtual Adversary]: Yarn 4 zero-install mode could be enabled with `.yarn/cache` committed             | Add `actions/cache` for `.yarn/cache` directory to reduce install time by ~60%                                              |
+| ID       | Severidad | Hallazgo (Crítica)                                                                                                |                                           Contraargumentación (Defensa)                                            | Recomendación Final                                                                                                            |
+| :------- | :-------: | :---------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| CICD-001 | 🟡 Medium | `security audit` step uses `continue-on-error: true`; a critical vulnerability would not block merge (Remediated) | [Virtual Adversary]: `continue-on-error` prevents false positives from dev dependencies flagged as vulnerabilities | **[Remediated ✅]** Split into strict blocking production audit and informational development audit steps in `webpack.yml`.    |
+| CICD-002 | 🟡 Medium | No bundle size budget check; Webpack bundle could grow unbounded without CI feedback (Remediated)                 |        [Virtual Adversary]: Quasar optimizes chunks automatically; Webpack stats available in build output         | **[Remediated ✅]** Implemented zero-dependency `check-bundle-size` script checking app size (<1MB) and chunks (<1.5MB) in CI. |
+| CICD-003 |  🟢 Low   | No cache step for `node_modules` or `.yarn/cache` in CI; installs ~1200 packages on every run                     |            [Virtual Adversary]: Yarn 4 zero-install mode could be enabled with `.yarn/cache` committed             | Add `actions/cache` for `.yarn/cache` directory to reduce install time by ~60%                                                 |
 
 ### 7.2 CI/CD Recommendations Summary
 
@@ -270,7 +270,7 @@ graph TD
 | ID       | Tech/Area | Recommendation                                                                                 |
 | :------- | :-------: | :--------------------------------------------------------------------------------------------- |
 | VUE-001  |   Vue 3   | ~~Document Composition API migration guideline; audit Options API components~~ (Remediated ✅) |
-| CICD-002 |  Webpack  | Add bundle size budget monitoring in CI pipeline                                               |
+| CICD-002 |  Webpack  | ~~Add bundle size budget monitoring in CI pipeline~~ (Remediated ✅)                           |
 
 **P3 — Low**
 
