@@ -68,15 +68,21 @@
           ></div>
         </q-item-section>
         <q-item-section>
-          <q-item-label class="text-caption text-weight-bold text-grey-9">
+          <q-item-label
+            class="text-caption text-weight-bold"
+            :class="isDark ? 'text-grey-4' : 'text-grey-9'"
+          >
             {{ child.name }}
           </q-item-label>
         </q-item-section>
         <q-item-section side>
           <div class="row items-center q-gutter-x-sm">
-            <span class="text-caption text-weight-bold text-grey-9">{{
-              child.value
-            }}</span>
+            <span
+              class="text-caption text-weight-bold"
+              :class="isDark ? 'text-grey-4' : 'text-grey-9'"
+            >
+              {{ child.value }}
+            </span>
             <q-badge v-if="dataTotal > 0" color="grey-4" text-color="grey-10">
               {{ getPercentage(child.value) }}%
             </q-badge>

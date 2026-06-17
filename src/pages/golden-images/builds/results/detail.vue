@@ -474,6 +474,12 @@ const getStatusLabel = (status) => {
   background: rgba(var(--bg-card-rgb), 0.4);
   backdrop-filter: blur(10px);
 }
+[data-theme='dark'] .metrics-card .text-grey-8 {
+  color: #b0bec5 !important;
+}
+[data-theme='dark'] .metrics-card .text-grey-9 {
+  color: #cfd8dc !important;
+}
 
 .border-bottom {
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);

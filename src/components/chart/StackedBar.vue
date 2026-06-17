@@ -161,7 +161,10 @@
             class="q-mb-sm"
             aria-hidden="true"
           />
-          <div class="text-subtitle1 text-grey-9">
+          <div
+            class="text-subtitle1"
+            :class="isDark ? 'text-grey-4' : 'text-grey-9'"
+          >
             {{ $gettext('No data available.') }}
           </div>
         </div>
