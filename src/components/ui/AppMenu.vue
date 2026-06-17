@@ -106,9 +106,10 @@ const setGroupRef = (index, el) => {
 }
 
 const expandGroup = (idx) => {
+  /* eslint-disable-next-line security/detect-object-injection */
   if (idx >= 0 && groupRefs[idx]) {
-     
-    groupRefs[idx].show() // eslint-disable-line security/detect-object-injection
+    /* eslint-disable-next-line security/detect-object-injection */
+    groupRefs[idx].show()
   }
 }
 
