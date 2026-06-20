@@ -6,18 +6,19 @@
         class="menu-group-li"
         role="group"
         @mouseenter="onGroupHover(index)"
-        @mouseleave="onGroupLeave"
+        @mouseleave="onGroupLeave(index)"
         @focusin="onGroupHover(index)"
-        @focusout="onGroupLeave"
+        @focusout="onGroupLeave(index)"
       >
-        <!-- Group Item (First Level) -->
+        <!-- Group Item (First Level) — no group attr = no auto-collapse -->
         <q-expansion-item
           :ref="(el) => setGroupRef(index, el)"
+          :model-value="expandedGroups.has(index)"
           :icon="item.icon"
           :label="item.title"
-          group="first-level"
           class="menu-group"
           header-class="text-weight-medium menu-group-header"
+          @update:model-value="(val) => onHeaderClick(index, val)"
         >
           <template v-if="mini" #header>
             <q-item-section avatar>
@@ -75,7 +76,15 @@
 </template>
 
 <script setup>
-import { computed, ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
+import {
+  computed,
+  ref,
+  reactive,
+  watch,
+  nextTick,
+  onMounted,
+  onBeforeUnmount,
+} from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useAuthStore } from 'stores/auth'
@@ -92,11 +101,17 @@ const route = useRoute()
 const { $gettext } = useGettext()
 const authStore = useAuthStore()
 
-// --- Hover-intent auto-expansion ---
+// --- Expansion state machine ---
+// expandedGroups: which groups are currently open (reactive Set)
+// userCollapsed: groups the user explicitly collapsed (click) — hover won't re-open them
+const expandedGroups = reactive(new Set())
+const userCollapsed = reactive(new Set())
 
 const groupRefs = {}
 const hoveredGroupIndex = ref(-1)
 let hoverTimer = null
+let recentlyWasMini = false
+let recentlyWasMiniTimer = null
 
 const setGroupRef = (index, el) => {
   if (el) {
@@ -105,31 +120,54 @@ const setGroupRef = (index, el) => {
   }
 }
 
-const expandGroup = (idx) => {
-  /* eslint-disable-next-line security/detect-object-injection */
-  if (idx >= 0 && groupRefs[idx]) {
-    /* eslint-disable-next-line security/detect-object-injection */
-    groupRefs[idx].show()
+/**
+ * Called when the user clicks the expansion header.
+ * User intent always prevails.
+ * In mini mode: "go to this section" — only this group opens.
+ * In expanded mode: additive toggle.
+ */
+const onHeaderClick = (index, expanded) => {
+  if (expanded) {
+    if (props.mini || recentlyWasMini) {
+      // Click from mini mode = focused reset: only this section
+      expandedGroups.clear()
+      userCollapsed.clear()
+      recentlyWasMini = false
+    }
+    expandedGroups.add(index)
+    userCollapsed.delete(index)
+  } else {
+    expandedGroups.delete(index)
+    userCollapsed.add(index)
   }
 }
 
+/**
+ * Hover enters a group: expand it additively (don't collapse others).
+ * If the user explicitly collapsed this group, respect that decision.
+ */
 const onGroupHover = (index) => {
   hoveredGroupIndex.value = index
 
-  // When sidebar is expanded, auto-open the hovered group with debounce
   if (!props.mini) {
     clearTimeout(hoverTimer)
-    hoverTimer = setTimeout(() => expandGroup(index), 200)
+    hoverTimer = setTimeout(() => {
+      if (!userCollapsed.has(index)) {
+        expandedGroups.add(index)
+      }
+    }, 200)
   }
 }
 
-const onGroupLeave = () => {
+const onGroupLeave = (index) => {
   hoveredGroupIndex.value = -1
   clearTimeout(hoverTimer)
+  userCollapsed.delete(index)
 }
 
 onBeforeUnmount(() => {
   clearTimeout(hoverTimer)
+  clearTimeout(recentlyWasMiniTimer)
 })
 
 const findActiveGroupIndex = () => {
@@ -144,22 +182,65 @@ const findActiveGroupIndex = () => {
   return -1
 }
 
-// When sidebar transitions from mini → expanded:
-// - If hovering a group icon → open that group
-// - If hovering blank area → keep previous state
+/**
+ * Reset to "clean" state: only the active route's group is expanded.
+ * Clears all user-collapsed flags so the slate is clean.
+ */
+const resetToActiveGroup = () => {
+  expandedGroups.clear()
+  userCollapsed.clear()
+  const activeIdx = findActiveGroupIndex()
+  if (activeIdx >= 0) {
+    expandedGroups.add(activeIdx)
+  }
+}
+
+// When sidebar goes mini → clear all (content is hidden in mini CSS anyway)
+// When sidebar expands from mini → show only the relevant group
 watch(
   () => props.mini,
   (isMini, wasMini) => {
-    if (wasMini && !isMini && hoveredGroupIndex.value >= 0) {
-      nextTick(() => expandGroup(hoveredGroupIndex.value))
+    if (!wasMini && isMini) {
+      // Expanded → Mini: clear everything
+      expandedGroups.clear()
+      userCollapsed.clear()
+      recentlyWasMini = false
+    } else if (wasMini && !isMini) {
+      // Mini → Expanded: mark transition for click handler
+      recentlyWasMini = true
+      clearTimeout(recentlyWasMiniTimer)
+      recentlyWasMiniTimer = setTimeout(() => {
+        recentlyWasMini = false
+      }, 500)
+
+      // Show only the hovered group, or fall back to active route's group
+      const target =
+        hoveredGroupIndex.value >= 0
+          ? hoveredGroupIndex.value
+          : findActiveGroupIndex()
+      if (target >= 0) {
+        expandedGroups.add(target)
+      }
     }
   },
 )
 
-// On initial mount, expand the group matching the current route
+// On initial mount, expand only the active route's group
 onMounted(() => {
-  nextTick(() => expandGroup(findActiveGroupIndex()))
+  nextTick(() => resetToActiveGroup())
 })
+
+// When route changes, ensure the new active group is expanded
+watch(
+  () => route.name,
+  () => {
+    const activeIdx = findActiveGroupIndex()
+    if (activeIdx >= 0) {
+      expandedGroups.add(activeIdx)
+      userCollapsed.delete(activeIdx)
+    }
+  },
+)
 
 const isActiveRoute = (optionTo) => {
   if (!route.name) return false
