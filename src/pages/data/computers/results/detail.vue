@@ -7,34 +7,80 @@
       :model="model"
       :routes="routes"
       :element="element"
-      :is-valid="false"
+      :element-data="elementData"
+      :is-valid="isValid"
       :add-button="false"
-      :continue-button="false"
-      :save-button="false"
+      :continue-button="isSuperUser"
+      :save-button="isSuperUser"
       :borderless="true"
       @set-related="setRelated"
+      @update-related="setRelated"
       @set-title="setTitle"
     >
       <template v-if="element.id" #actions>
+        <q-btn
+          :icon="appIcon('events')"
+          flat
+          round
+          color="primary"
+          :to="{
+            name: 'computer-events',
+            params: { id: element.id },
+          }"
+        >
+          <q-tooltip>{{ $gettext('Events') }}</q-tooltip>
+        </q-btn>
+
+        <q-btn
+          :icon="appIcon('simulate')"
+          flat
+          round
+          color="primary"
+          :to="{
+            name: 'computer-simulate',
+            params: { id: element.id },
+          }"
+        >
+          <q-tooltip>{{ $gettext('Simulate synchronization') }}</q-tooltip>
+        </q-btn>
+
+        <q-btn
+          :icon="appIcon('identification')"
+          flat
+          round
+          color="primary"
+          :to="{
+            name: 'computer-label',
+            params: { id: element.id },
+          }"
+        >
+          <q-tooltip>{{ $gettext('Identification') }}</q-tooltip>
+        </q-btn>
+
         <ComputerRemoteAccess :cid="element.id" />
       </template>
 
       <template #fields>
         <div class="row q-pb-md q-col-gutter-md">
-          <div class="col-6 col-md col-sm-12 col-xs-12">
-            <ComputerInfo
+          <div class="col-12 col-md-6 col-sm-12 col-xs-12">
+            <ComputerIdentity
               :cid="element.id"
               :name="element.name"
               :fqdn="element.fqdn"
-              :project="element.project"
               :created-at="element.created_at"
-              :ip-address="element.ip_address"
-              :forwarded-ip-address="element.forwarded_ip_address"
+              :status="element.status"
+              :comment="element.comment"
+              :tags="element.tags"
+              :status-options="statusOptions"
+              :is-super-user="isSuperUser"
               @update:name="(val) => (element.name = val)"
+              @update:status="(val) => (element.status = val)"
+              @update:comment="(val) => (element.comment = val)"
+              @update:tags="(val) => (element.tags = val)"
             />
           </div>
 
-          <div class="col-6 col-md col-sm-12 col-xs-12">
+          <div class="col-12 col-md-6 col-sm-12 col-xs-12">
             <ComputerHardwareResume
               :cid="element.id"
               :last-hardware-capture="showDate(element.last_hardware_capture)"
@@ -52,42 +98,43 @@
         </div>
 
         <div class="row q-pb-md q-col-gutter-md">
-          <div class="col-6 col-md col-sm-12 col-xs-12">
-            <ComputerCurrentSituation
+          <div class="col-12 col-md-6 col-sm-12 col-xs-12">
+            <ComputerTelemetry
               :cid="element.id"
-              :status="element.status"
-              :comment="element.comment"
-              :tags="element.tags"
-              :attribute-sets="onlyAttributeSets"
-              :domains="onlyDomains"
-              @updated="onCurrentSituationUpdated"
-            />
-          </div>
-
-          <div class="col-6 col-md col-sm-12 col-xs-12">
-            <ComputerSynchronization
-              :cid="element.id"
+              :project="element.project"
+              :platform="
+                element.project && element.project.platform
+                  ? element.project.platform
+                  : null
+              "
+              :ip-address="element.ip_address"
+              :forwarded-ip-address="element.forwarded_ip_address"
               :sync-user="element.sync_user"
               :sync-info="syncInfo"
+              :loading-sync="loadingSync"
               :attributes="onlyAttributes"
-              :loading="loadingSync"
+              :attribute-sets="onlyAttributeSets"
+              :domains="onlyDomains"
+              :errors="errors"
+              :faults="faults"
             />
           </div>
+
+          <!-- Card 4: Software & Devices -->
+          <div class="col-12 col-md-6 col-sm-12 col-xs-12">
+            <div class="q-gutter-y-md">
+              <div v-if="element.has_software_inventory">
+                <ComputerSoftware :cid="element.id" />
+              </div>
+
+              <div v-if="element.id">
+                <ComputerDevices :cid="element.id" />
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="row q-pb-md q-col-gutter-md">
-          <div
-            v-if="element.has_software_inventory"
-            class="col-6 col-md col-sm-12 col-xs-12"
-          >
-            <ComputerSoftware :cid="element.id" />
-          </div>
-
-          <div v-if="element.id" class="col-6 col-md col-sm-12 col-xs-12">
-            <ComputerDevices :cid="element.id" />
-          </div>
-        </div>
-
+        <!-- Card 5: Locations Map -->
         <div v-if="markers.length > 0" class="row q-pb-md q-col-gutter-md">
           <div class="col col-md col-sm-12">
             <ComputerLocations :markers="markers" />
@@ -99,22 +146,22 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useRoute } from 'vue-router'
 import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
+import { useAuthStore } from 'stores/auth'
 
 import ItemDetail from 'components/ui/ItemDetail'
 
-import ComputerInfo from 'components/computer/Info'
+import ComputerIdentity from 'components/computer/Identity'
 import ComputerHardwareResume from 'components/computer/HardwareResume'
 import ComputerSoftware from 'components/computer/Software'
 import ComputerDevices from 'components/computer/Devices'
-import ComputerCurrentSituation from 'components/computer/CurrentSituation'
-import ComputerSynchronization from 'components/computer/Synchronization'
+import ComputerTelemetry from 'components/computer/Telemetry'
 import ComputerLocations from 'components/computer/Locations'
 import ComputerRemoteAccess from 'components/computer/RemoteAccess'
 
@@ -124,6 +171,7 @@ import useDate from 'composables/date'
 const { $gettext } = useGettext()
 const route = useRoute()
 const uiStore = useUiStore()
+const authStore = useAuthStore()
 const { elementIcon, attributeValue } = useElement()
 const { showDate } = useDate()
 
@@ -142,15 +190,30 @@ useMeta(() => ({ title: windowTitle.value }))
 
 const loadingSync = ref(false)
 
-const status = ref([])
+const statusOptions = ref([])
 const syncInfo = reactive({})
 const onlyAttributes = ref([])
 const onlyAttributeSets = ref([])
 const onlyDomains = ref([])
-const errors = reactive({})
-const faults = reactive({})
+const errors = reactive({ unchecked: 0, total: 0 })
+const faults = reactive({ unchecked: 0, total: 0 })
 
 const markers = ref([])
+
+const isSuperUser = computed(() => authStore.user.is_superuser)
+
+const isValid = computed(() => {
+  return element.name !== undefined && element.name.trim() !== ''
+})
+
+const elementData = () => {
+  return {
+    name: element.name,
+    status: element.status,
+    comment: element.comment,
+    tags: element.tags ? element.tags.map((t) => t.id) : [],
+  }
+}
 
 const breadcrumbs = ref([
   {
@@ -198,6 +261,11 @@ const loadSyncInfo = async () => {
     }
 
     const badgePromises = []
+    onlyAttributeSets.value = []
+    onlyDomains.value = []
+    onlyAttributes.value = []
+    markers.value = []
+
     for (const [, val] of Object.entries(response.data.sync_attributes)) {
       if (val.property_att.prefix === 'SET') {
         badgePromises.push(
@@ -269,8 +337,9 @@ const getComputerStatus = async () => {
     const response = await api.get(`/api/v1/token/${model}/status/`)
     const { choices } = response.data
 
+    statusOptions.value = []
     Object.entries(choices).forEach(([key, val]) => {
-      status.value.push({
+      statusOptions.value.push({
         label: val,
         value: key,
         icon: elementIcon(key),
@@ -288,28 +357,24 @@ const setRelated = () => {
 
   getComputerStatus()
 
-  Object.entries(element.tags).map(([, val]) => {
-    if (val.latitude !== null) {
-      markers.value.push({
-        id: val.id,
-        model: 'tags',
-        lat: val.latitude,
-        lng: val.longitude,
-        tooltip: attributeValue(val),
-        description: val.description ? val.description : null,
-      })
-    }
-  })
+  if (element.tags) {
+    Object.entries(element.tags).map(([, val]) => {
+      if (val.latitude !== null) {
+        markers.value.push({
+          id: val.id,
+          model: 'tags',
+          lat: val.latitude,
+          lng: val.longitude,
+          tooltip: attributeValue(val),
+          description: val.description ? val.description : null,
+        })
+      }
+    })
+  }
 }
 
 const setTitle = (value) => {
   windowTitle.value = value
-}
-
-const onCurrentSituationUpdated = (data) => {
-  element.status = data.status
-  element.comment = data.comment
-  element.tags = data.tags
 }
 </script>
 
@@ -321,25 +386,5 @@ const onCurrentSituationUpdated = (data) => {
   width: 100%;
   aspect-ratio: 16 / 9;
   height: 400px;
-}
-
-/* Counter mini-cards */
-.counter-card {
-  border: 1px solid rgba(128, 128, 128, 0.2);
-}
-.counter-row {
-  display: flex;
-  align-items: center;
-  transition: background-color 0.2s ease;
-  color: inherit;
-}
-.counter-row:hover {
-  background-color: rgba(128, 128, 128, 0.15);
-}
-.counter-row--alert {
-  background-color: rgba(var(--q-negative-rgb, 198, 40, 40), 0.1);
-}
-.counter-row--alert:hover {
-  background-color: rgba(var(--q-negative-rgb, 198, 40, 40), 0.2);
 }
 </style>
