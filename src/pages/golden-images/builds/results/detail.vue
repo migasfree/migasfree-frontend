@@ -153,7 +153,7 @@
 
       <!-- Right Column: Interactive Log Terminal -->
       <div class="col-12 col-md-8">
-        <q-card class="terminal-card shadow-2 rounded-borders flex column">
+        <q-card class="terminal-card shadow-2 rounded-borders">
           <!-- Terminal Header Tools -->
           <q-card-section
             class="terminal-header row items-center justify-between q-py-sm q-px-md no-wrap"
@@ -198,7 +198,7 @@
           <!-- Console Terminal Output -->
           <div
             ref="logTerminal"
-            class="terminal-body font-monospace q-pa-md flex-grow-1"
+            class="terminal-body font-monospace q-pa-md"
           >
             <template v-if="filteredLogLines.length > 0">
               <div
@@ -454,7 +454,7 @@ const startPolling = () => {
       build.status !== 'running'
     ) {
       stopPolling()
-      await fetchLogs()
+      await fetchAllLogs()
       await loadBuild()
     }
   }, 3000)
@@ -469,12 +469,12 @@ const stopPolling = () => {
 
 onMounted(async () => {
   await loadBuild()
+  await fetchStatus()
   if (
     build.status === 'queued' ||
     build.status === 'building' ||
     build.status === 'running'
   ) {
-    await fetchStatus()
     nextStart = 0
     logLines.value = []
     await fetchLogs()
@@ -618,6 +618,9 @@ const getStatusLabel = (status) => {
 
 /* Retro dark terminal styling */
 .terminal-card {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
   background: #0d0e15;
   border: 1px solid #1e2030;
   border-radius: 20px;
@@ -657,6 +660,7 @@ const getStatusLabel = (status) => {
 }
 
 .terminal-body {
+  flex-grow: 1;
   overflow-y: auto;
   color: #a6accd;
   background: #0d0e15;
