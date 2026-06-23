@@ -393,6 +393,7 @@ const fetchStatus = async () => {
     updateWindowTitle()
   } catch (error) {
     console.error('Error fetching build status:', error)
+    updateWindowTitle()
   }
 }
 
@@ -415,8 +416,8 @@ const fetchAllLogs = async () => {
   let hasMore = true
   nextStart = 0
   logLines.value = []
-  while (hasMore) {
-    try {
+  try {
+    while (hasMore) {
       const { data } = await api.get(
         `/api/v1/token/mgi/build/${route.params.id}/logs/`,
         { params: { start: nextStart } }
@@ -431,10 +432,14 @@ const fetchAllLogs = async () => {
       } else {
         hasMore = false
       }
-    } catch (error) {
-      console.error('Error fetching all logs:', error)
-      hasMore = false
     }
+  } catch (error) {
+    console.error('Error fetching all logs from manager:', error)
+  }
+
+  // Fallback to build.log from database if manager has no logs or is unavailable
+  if (logLines.value.length === 0 && build.log) {
+    logLines.value = build.log.split('\n')
   }
 }
 
@@ -464,16 +469,24 @@ const stopPolling = () => {
 
 onMounted(async () => {
   await loadBuild()
-  await fetchStatus()
   if (
     build.status === 'queued' ||
     build.status === 'building' ||
     build.status === 'running'
   ) {
+    await fetchStatus()
     nextStart = 0
     logLines.value = []
     await fetchLogs()
-    startPolling()
+    if (
+      build.status === 'queued' ||
+      build.status === 'building' ||
+      build.status === 'running'
+    ) {
+      startPolling()
+    } else {
+      await fetchAllLogs()
+    }
   } else {
     await fetchAllLogs()
   }
