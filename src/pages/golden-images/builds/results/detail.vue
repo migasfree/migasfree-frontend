@@ -61,6 +61,29 @@
               </q-chip>
             </div>
 
+            <!-- Progress & Build Message -->
+            <div
+              v-if="build.status === 'building' || (buildProgress !== null && buildProgress !== 0)"
+              class="q-py-md border-bottom"
+            >
+              <div class="row items-center justify-between q-mb-sm">
+                <span class="text-grey-8">{{ $gettext('Progress') }}</span>
+                <span class="text-weight-bold text-primary font-monospace">{{ buildProgress }}%</span>
+              </div>
+              <q-linear-progress
+                :value="buildProgress / 100"
+                color="primary"
+                track-color="grey-3"
+                stripe
+                animated
+                class="q-mb-sm rounded-borders"
+                style="height: 8px"
+              />
+              <div v-if="buildMessage" class="text-caption text-grey-7 italic text-center q-mt-xs">
+                {{ buildMessage }}
+              </div>
+            </div>
+
             <!-- Release Version -->
             <div class="row items-center justify-between q-py-sm border-bottom">
               <span class="text-grey-8">{{ $gettext('Release') }}</span>
@@ -190,7 +213,7 @@
                 <span class="line-text">{{ line }}</span>
               </div>
             </template>
-            <div v-else-if="build.log" class="text-grey-6 text-center q-pa-xl">
+            <div v-else-if="logLines.length > 0" class="text-grey-6 text-center q-pa-xl">
               {{ $gettext('No matching log entries found.') }}
             </div>
             <div
@@ -267,6 +290,11 @@ const build = reactive({
   log: '',
 })
 
+const buildProgress = ref(0)
+const buildMessage = ref('')
+const logLines = ref([])
+let nextStart = 0
+
 const logSearchQuery = ref('')
 const autoscroll = ref(true)
 const logTerminal = ref(null)
@@ -297,14 +325,22 @@ const breadcrumbs = ref([
 ])
 
 const filteredLogLines = computed(() => {
-  if (!build.log) return []
-  const lines = build.log.split('\n')
+  if (logLines.value.length === 0) return []
+  const lines = logLines.value
   if (!logSearchQuery.value) return lines
   const q = logSearchQuery.value.toLowerCase()
   return lines.filter((line) => line.toLowerCase().includes(q))
 })
 
 let pollingInterval = null
+
+const updateWindowTitle = () => {
+  if (projectName.value && releaseName.value && flavourName.value) {
+    windowTitle.value = `${$gettext('Build')}: ${projectName.value} ${releaseName.value} ${flavourName.value} [${build.status.toUpperCase()}]`
+  } else {
+    windowTitle.value = `${$gettext('Compilation')} #${build.id} [${build.status.toUpperCase()}]`
+  }
+}
 
 const loadBuild = async () => {
   try {
@@ -339,25 +375,84 @@ const loadBuild = async () => {
       flavourName.value = flaRes.data.name
     }
 
-    // Adapt window title
-    if (projectName.value && releaseName.value && flavourName.value) {
-      windowTitle.value = `${$gettext('Build')}: ${projectName.value} ${releaseName.value} ${flavourName.value} [${build.status.toUpperCase()}]`
-    } else {
-      windowTitle.value = `${$gettext('Compilation')} #${build.id} [${build.status.toUpperCase()}]`
-    }
+    updateWindowTitle()
   } catch (error) {
     uiStore.notifyError(error)
+  }
+}
+
+const fetchStatus = async () => {
+  try {
+    const { data } = await api.get(
+      `/api/v1/token/mgi/build/${route.params.id}/status/`,
+    )
+    build.status = data.status
+    build.task_id = data.task_id
+    buildProgress.value = data.progress
+    buildMessage.value = data.message
+    updateWindowTitle()
+  } catch (error) {
+    console.error('Error fetching build status:', error)
+  }
+}
+
+const fetchLogs = async () => {
+  try {
+    const { data } = await api.get(
+      `/api/v1/token/mgi/build/${route.params.id}/logs/`,
+      { params: { start: nextStart } }
+    )
+    if (data.logs && data.logs.length > 0) {
+      logLines.value.push(...data.logs)
+    }
+    nextStart = data.next_start
+  } catch (error) {
+    console.error('Error fetching build logs:', error)
+  }
+}
+
+const fetchAllLogs = async () => {
+  let hasMore = true
+  nextStart = 0
+  logLines.value = []
+  while (hasMore) {
+    try {
+      const { data } = await api.get(
+        `/api/v1/token/mgi/build/${route.params.id}/logs/`,
+        { params: { start: nextStart } }
+      )
+      if (data.logs && data.logs.length > 0) {
+        logLines.value.push(...data.logs)
+        const previousStart = nextStart
+        nextStart = data.next_start
+        if (nextStart <= previousStart) {
+          hasMore = false
+        }
+      } else {
+        hasMore = false
+      }
+    } catch (error) {
+      console.error('Error fetching all logs:', error)
+      hasMore = false
+    }
   }
 }
 
 const startPolling = () => {
   if (pollingInterval) return
   pollingInterval = setInterval(async () => {
-    await loadBuild()
-    if (build.status !== 'queued' && build.status !== 'running') {
+    await fetchStatus()
+    await fetchLogs()
+    if (
+      build.status !== 'queued' &&
+      build.status !== 'building' &&
+      build.status !== 'running'
+    ) {
       stopPolling()
+      await fetchLogs()
+      await loadBuild()
     }
-  }, 4000)
+  }, 3000)
 }
 
 const stopPolling = () => {
@@ -369,8 +464,18 @@ const stopPolling = () => {
 
 onMounted(async () => {
   await loadBuild()
-  if (build.status === 'queued' || build.status === 'running') {
+  await fetchStatus()
+  if (
+    build.status === 'queued' ||
+    build.status === 'building' ||
+    build.status === 'running'
+  ) {
+    nextStart = 0
+    logLines.value = []
+    await fetchLogs()
     startPolling()
+  } else {
+    await fetchAllLogs()
   }
 })
 
@@ -394,7 +499,7 @@ watch(
 )
 
 const downloadLogs = () => {
-  const blob = new Blob([build.log], { type: 'text/plain;charset=utf-8' })
+  const blob = new Blob([logLines.value.join('\n')], { type: 'text/plain;charset=utf-8' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
@@ -434,8 +539,10 @@ const getStatusColor = (status) => {
   const colors = {
     queued: 'orange-7',
     running: 'blue-8',
+    building: 'blue-8',
     completed: 'green-8',
     failed: 'red-8',
+    cancelled: 'grey-8',
   }
   // eslint-disable-next-line security/detect-object-injection
   return colors[status] || 'grey-7'
@@ -445,8 +552,10 @@ const getStatusIcon = (status) => {
   const icons = {
     queued: 'mdi-clock-outline',
     running: 'mdi-sync',
+    building: 'mdi-sync',
     completed: 'mdi-check-circle-outline',
     failed: 'mdi-alert-circle-outline',
+    cancelled: 'mdi-close-circle-outline',
   }
   // eslint-disable-next-line security/detect-object-injection
   return icons[status] || 'mdi-help-circle'
@@ -456,8 +565,10 @@ const getStatusLabel = (status) => {
   const labels = {
     queued: $gettext('Queued'),
     running: $gettext('Running'),
+    building: $gettext('Building'),
     completed: $gettext('Completed'),
     failed: $gettext('Failed'),
+    cancelled: $gettext('Cancelled'),
   }
   // eslint-disable-next-line security/detect-object-injection
   return labels[status] || status
