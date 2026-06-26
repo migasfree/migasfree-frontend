@@ -45,7 +45,7 @@
                 size="sm"
                 class="q-mr-sm color-primary"
               />
-              {{ $gettext('Compilation Metrics') }}
+              {{ $gettext('Metrics') }}
             </div>
 
             <!-- Status Indicator -->
@@ -156,6 +156,21 @@
               </span>
             </div>
           </q-card-section>
+
+          <q-separator />
+
+          <q-card-actions class="q-pa-md justify-end">
+            <q-btn
+              flat
+              round
+              :icon="appIcon('delete')"
+              :color="$q.dark.isActive ? 'white' : 'negative'"
+              :class="{ 'reversed-delete': $q.dark.isActive }"
+              @click="confirmRemove = true"
+            >
+              <q-tooltip>{{ $gettext('Delete') }}</q-tooltip>
+            </q-btn>
+          </q-card-actions>
         </q-card>
       </div>
 
@@ -237,6 +252,12 @@
         </q-card>
       </div>
     </div>
+
+    <RemoveDialog
+      v-model="confirmRemove"
+      @confirmed="removeBuild"
+      @canceled="confirmRemove = false"
+    />
   </q-page>
 </template>
 
@@ -250,7 +271,7 @@ import {
   nextTick,
   watch,
 } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -261,10 +282,12 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import MigasLink from 'components/MigasLink'
 import DateView from 'components/ui/DateView'
+import RemoveDialog from 'components/ui/RemoveDialog'
 
 import { appIcon, modelIcon } from 'composables/element'
 
 const route = useRoute()
+const router = useRouter()
 const uiStore = useUiStore()
 const { $gettext } = useGettext()
 
@@ -300,6 +323,18 @@ let nextStart = 0
 const logSearchQuery = ref('')
 const autoscroll = ref(true)
 const logTerminal = ref(null)
+
+const confirmRemove = ref(false)
+
+const removeBuild = async () => {
+  try {
+    await api.delete(`/api/v1/token/mgi/build/${route.params.id}/`)
+    uiStore.notifySuccess($gettext('Build deleted successfully.'))
+    router.push({ name: 'builds-list' })
+  } catch (error) {
+    uiStore.notifyError(error)
+  }
+}
 
 const breadcrumbs = ref([
   {
@@ -436,7 +471,7 @@ const fetchAllLogs = async () => {
 const isFinishedStatus = (status) => {
   if (!status) return false
   const s = status.toLowerCase()
-  return ['completed', 'failed', 'cancelled'].includes(s)
+  return ['completed', 'failed', 'cancelled', 'error'].includes(s)
 }
 
 const startPolling = () => {
@@ -539,7 +574,7 @@ const getStatusColor = (status) => {
   if (!status) return 'grey-7'
   const s = status.toLowerCase()
   if (s === 'completed') return 'green-8'
-  if (s === 'failed') return 'red-8'
+  if (s === 'failed' || s === 'error') return 'red-8'
   if (s === 'cancelled') return 'grey-8'
   if (s === 'queued') return 'orange-7'
   return 'blue-8'
@@ -549,7 +584,7 @@ const getStatusIcon = (status) => {
   if (!status) return 'mdi-help-circle'
   const s = status.toLowerCase()
   if (s === 'completed') return 'mdi-check-circle-outline'
-  if (s === 'failed') return 'mdi-alert-circle-outline'
+  if (s === 'failed' || s === 'error') return 'mdi-alert-circle-outline'
   if (s === 'cancelled') return 'mdi-close-circle-outline'
   if (s === 'queued') return 'mdi-clock-outline'
   return 'mdi-sync'
@@ -562,7 +597,7 @@ const getStatusLabel = (status) => {
   if (s === 'running') return $gettext('Running')
   if (s === 'building') return $gettext('Building')
   if (s === 'completed') return $gettext('Completed')
-  if (s === 'failed') return $gettext('Failed')
+  if (s === 'failed' || s === 'error') return $gettext('Failed')
   if (s === 'cancelled') return $gettext('Cancelled')
   if (s === 'fetching') return $gettext('Fetching')
   return status
