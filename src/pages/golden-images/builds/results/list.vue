@@ -258,7 +258,7 @@ const getStatusLabel = (status) => {
 const { title, breadcrumbs, columns } = useListConfig(
   model,
   $gettext('Builds'),
-  $gettext('MGI Builds'),
+  $gettext('Builds'),
   [
     {
       text: $gettext('Golden Images'),

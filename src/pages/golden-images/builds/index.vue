@@ -90,7 +90,7 @@
     <div class="row q-pb-md">
       <div class="col-12">
         <StackedBarChart
-          :title="$gettext('MGI Builds / Month')"
+          :title="$gettext('Builds / Month')"
           end-point="/api/v1/token/stats/mgi/builds/month/"
           month-selector
           @get-link="goTo"
@@ -101,7 +101,7 @@
     <div class="row q-col-gutter-md">
       <div class="col-12 col-md-6">
         <PieChart
-          :title="$gettext('MGI Builds / Status')"
+          :title="$gettext('Builds / Status')"
           end-point="/api/v1/token/stats/mgi/build-status/"
           :url="url"
           @get-link="goTo"

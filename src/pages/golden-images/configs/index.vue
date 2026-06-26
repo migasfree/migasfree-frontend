@@ -14,7 +14,7 @@
     <div class="row q-col-gutter-md q-pb-md">
       <div class="col-12 col-md-6">
         <PieChart
-          :title="$gettext('MGI Configurations / Build Type')"
+          :title="$gettext('Configurations / Build Type')"
           end-point="/api/v1/token/stats/mgi/build-types/"
           :url="url"
           @get-link="goTo"
