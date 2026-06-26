@@ -443,11 +443,12 @@ const startPolling = () => {
   if (pollingInterval) return
   pollingInterval = setInterval(async () => {
     await fetchStatus()
-    await fetchLogs()
     if (isFinishedStatus(build.status)) {
       stopPolling()
       await fetchAllLogs()
       await loadBuild()
+    } else {
+      await fetchLogs()
     }
   }, 3000)
 }
