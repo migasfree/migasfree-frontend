@@ -433,16 +433,18 @@ const fetchAllLogs = async () => {
   }
 }
 
+const isFinishedStatus = (status) => {
+  if (!status) return false
+  const s = status.toLowerCase()
+  return ['completed', 'failed', 'cancelled'].includes(s)
+}
+
 const startPolling = () => {
   if (pollingInterval) return
   pollingInterval = setInterval(async () => {
     await fetchStatus()
     await fetchLogs()
-    if (
-      build.status !== 'queued' &&
-      build.status !== 'building' &&
-      build.status !== 'running'
-    ) {
+    if (isFinishedStatus(build.status)) {
       stopPolling()
       await fetchAllLogs()
       await loadBuild()
@@ -460,19 +462,11 @@ const stopPolling = () => {
 onMounted(async () => {
   await loadBuild()
   await fetchStatus()
-  if (
-    build.status === 'queued' ||
-    build.status === 'building' ||
-    build.status === 'running'
-  ) {
+  if (!isFinishedStatus(build.status)) {
     nextStart = 0
     logLines.value = []
     await fetchLogs()
-    if (
-      build.status === 'queued' ||
-      build.status === 'building' ||
-      build.status === 'running'
-    ) {
+    if (!isFinishedStatus(build.status)) {
       startPolling()
     } else {
       await fetchAllLogs()
@@ -541,42 +535,36 @@ const formatBytes = (bytes) => {
 }
 
 const getStatusColor = (status) => {
-  const colors = {
-    queued: 'orange-7',
-    running: 'blue-8',
-    building: 'blue-8',
-    completed: 'green-8',
-    failed: 'red-8',
-    cancelled: 'grey-8',
-  }
-  // eslint-disable-next-line security/detect-object-injection
-  return colors[status] || 'grey-7'
+  if (!status) return 'grey-7'
+  const s = status.toLowerCase()
+  if (s === 'completed') return 'green-8'
+  if (s === 'failed') return 'red-8'
+  if (s === 'cancelled') return 'grey-8'
+  if (s === 'queued') return 'orange-7'
+  return 'blue-8'
 }
 
 const getStatusIcon = (status) => {
-  const icons = {
-    queued: 'mdi-clock-outline',
-    running: 'mdi-sync',
-    building: 'mdi-sync',
-    completed: 'mdi-check-circle-outline',
-    failed: 'mdi-alert-circle-outline',
-    cancelled: 'mdi-close-circle-outline',
-  }
-  // eslint-disable-next-line security/detect-object-injection
-  return icons[status] || 'mdi-help-circle'
+  if (!status) return 'mdi-help-circle'
+  const s = status.toLowerCase()
+  if (s === 'completed') return 'mdi-check-circle-outline'
+  if (s === 'failed') return 'mdi-alert-circle-outline'
+  if (s === 'cancelled') return 'mdi-close-circle-outline'
+  if (s === 'queued') return 'mdi-clock-outline'
+  return 'mdi-sync'
 }
 
 const getStatusLabel = (status) => {
-  const labels = {
-    queued: $gettext('Queued'),
-    running: $gettext('Running'),
-    building: $gettext('Building'),
-    completed: $gettext('Completed'),
-    failed: $gettext('Failed'),
-    cancelled: $gettext('Cancelled'),
-  }
-  // eslint-disable-next-line security/detect-object-injection
-  return labels[status] || status
+  if (!status) return ''
+  const s = status.toLowerCase()
+  if (s === 'queued') return $gettext('Queued')
+  if (s === 'running') return $gettext('Running')
+  if (s === 'building') return $gettext('Building')
+  if (s === 'completed') return $gettext('Completed')
+  if (s === 'failed') return $gettext('Failed')
+  if (s === 'cancelled') return $gettext('Cancelled')
+  if (s === 'fetching') return $gettext('Fetching')
+  return status
 }
 </script>
 
