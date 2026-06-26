@@ -60,12 +60,6 @@ export default function useDetail(
     packages: (el) => (el.id ? el.fullname : ''),
     'devices/drivers': (el) => (el.id ? el.name.split('/').reverse()[0] : ''),
     computers: (el) => (el.id ? el.__str__ : ''),
-    'mgi/config': (el) => {
-      if (!el.id) return ''
-      const projectName =
-        el.project && typeof el.project === 'object' ? el.project.name : ''
-      return projectName ? `${projectName} (${el.template_id})` : el.template_id
-    },
   }
 
   const elementText = computed(() => {
@@ -73,7 +67,7 @@ export default function useDetail(
     return formatter
       ? formatter(element)
       : element.id
-        ? element.name || element.__str__
+        ? element.__str__ || element.name
         : ''
   })
 

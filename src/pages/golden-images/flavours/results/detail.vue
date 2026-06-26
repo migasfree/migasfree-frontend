@@ -232,16 +232,9 @@ const routes = {
 }
 const model = 'mgi/flavour'
 
-const projects = ref([])
-
 const getConfigOptionLabel = (item) => {
   if (!item) return ''
-  let projectName = ''
-  if (item.project) {
-    const p = projects.value.find((pr) => pr.id === item.project)
-    projectName = p ? p.name : ''
-  }
-  return projectName ? `${projectName} (${item.template_id})` : item.template_id
+  return item.__str__ || item.template_id || ''
 }
 
 const element = reactive({
@@ -297,17 +290,13 @@ const isValid = computed(() => {
 
 const loadRelated = async () => {
   try {
-    const [configsResponse, tagsResponse, projectsResponse] = await Promise.all(
-      [
-        api.get('/api/v1/token/mgi/config/'),
-        api.get('/api/v1/token/tags/'),
-        api.get('/api/v1/token/projects/'),
-      ],
-    )
+    const [configsResponse, tagsResponse] = await Promise.all([
+      api.get('/api/v1/token/mgi/config/'),
+      api.get('/api/v1/token/tags/'),
+    ])
 
     configs.value = configsResponse.data.results
     tagsOptions.value = tagsResponse.data.results
-    projects.value = projectsResponse.data.results
 
     if (element.id) {
       // Resolve MGI configuration

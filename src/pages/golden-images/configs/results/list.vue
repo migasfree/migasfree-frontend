@@ -13,7 +13,7 @@
         <MigasLink
           model="mgi/config"
           :pk="props.row.id"
-          :value="getConfigDisplayValue(props.row)"
+          :value="props.row.__str__"
           :tooltip="`${$gettext('Project')} (${$gettext('Template ID')})`"
         />
       </template>
@@ -56,10 +56,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useListConfig } from 'composables/listConfig'
-import { api } from 'boot/axios'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
@@ -68,24 +66,6 @@ import MigasLink from 'components/MigasLink'
 import { appIcon } from 'composables/element'
 
 const { $gettext } = useGettext()
-
-const projects = ref([])
-
-onMounted(async () => {
-  try {
-    const { data } = await api.get('/api/v1/token/projects/')
-    projects.value = data.results
-  } catch {
-    // Ignore error
-  }
-})
-
-const getConfigDisplayValue = (row) => {
-  if (!row.project) return row.template_id
-  const p = projects.value.find((pr) => pr.id === row.project)
-  const projectName = p ? p.name : ''
-  return projectName ? `${projectName} (${row.template_id})` : row.template_id
-}
 
 const routes = {
   add: 'config-add',

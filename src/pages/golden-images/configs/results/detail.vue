@@ -20,10 +20,10 @@
           class="header-metadata row items-center no-wrap q-gutter-x-xs"
         >
           <MigasLink
-            v-if="element.project"
+            v-if="element.id"
             model="mgi/config"
             :pk="element.id"
-            :value="`${resolvedProjectName} (${element.template_id})`"
+            :value="element.__str__"
             :hide-icon="true"
             :tooltip="`${$gettext('Project')} (${$gettext('Template ID')})`"
           />
@@ -261,13 +261,6 @@ const breadcrumbs = ref([
 ])
 
 const projects = ref([])
-
-const resolvedProjectName = computed(() => {
-  if (!element.project) return ''
-  if (typeof element.project === 'object') return element.project.name || ''
-  const p = projects.value.find((pr) => pr.id === element.project)
-  return p ? p.name : `#${element.project}`
-})
 
 const buildTypes = [
   { id: 'docker', name: $gettext('Docker (Linux)') },

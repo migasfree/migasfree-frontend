@@ -164,7 +164,7 @@
                   <MigasLink
                     model="mgi/build"
                     :pk="props.row.id"
-                    :value="getBuildLinkValue(props.row)"
+                    :value="props.row.__str__"
                   />
                 </q-td>
               </template>
@@ -190,7 +190,7 @@
                 </q-td>
               </template>
 
-              <!-- Created / Finished Cells -->
+              <!-- Finished / Finished Cells -->
               <template #body-cell-started_at="props">
                 <q-td :props="props">
                   <DateView
@@ -236,16 +236,9 @@ const routes = {
 }
 const model = 'mgi/release'
 
-const projects = ref([])
-
 const getConfigOptionLabel = (item) => {
   if (!item) return ''
-  let projectName = ''
-  if (item.project) {
-    const p = projects.value.find((pr) => pr.id === item.project)
-    projectName = p ? p.name : ''
-  }
-  return projectName ? `${projectName} (${item.template_id})` : item.template_id
+  return item.__str__ || item.template_id || ''
 }
 
 const element = reactive({
@@ -274,7 +267,6 @@ const breadcrumbs = ref([
 
 const configs = ref([])
 const builds = ref([])
-const flavoursList = ref([])
 
 const buildColumns = [
   { name: 'actions', label: $gettext('Actions'), align: 'left' },
@@ -299,12 +291,8 @@ const isValid = computed(() => {
 
 const loadRelated = async () => {
   try {
-    const [configsResponse, projectsResponse] = await Promise.all([
-      api.get('/api/v1/token/mgi/config/'),
-      api.get('/api/v1/token/projects/'),
-    ])
+    const configsResponse = await api.get('/api/v1/token/mgi/config/')
     configs.value = configsResponse.data.results
-    projects.value = projectsResponse.data.results
 
     if (element.id) {
       if (element.config) {
@@ -314,34 +302,15 @@ const loadRelated = async () => {
         }
       }
 
-      // Fetch related builds and flavours
-      const [buildsResponse, flavoursResponse] = await Promise.all([
-        api.get(`/api/v1/token/mgi/build/?release=${element.id}`),
-        api.get('/api/v1/token/mgi/flavour/'),
-      ])
-
+      // Fetch related builds
+      const buildsResponse = await api.get(
+        `/api/v1/token/mgi/build/?release=${element.id}`,
+      )
       builds.value = buildsResponse.data.results
-      flavoursList.value = flavoursResponse.data.results
     }
   } catch (error) {
     uiStore.notifyError(error)
   }
-}
-
-const getFlavourName = (flavourId) => {
-  const f = flavoursList.value.find((x) => x.id === flavourId)
-  return f ? f.name : `${$gettext('Flavour')} #${flavourId}`
-}
-
-const getBuildLinkValue = (row) => {
-  let pName = ''
-  if (element.config?.project) {
-    const p = projects.value.find((pr) => pr.id === element.config.project)
-    pName = p ? p.name : ''
-  }
-  const relName = element.name || ''
-  const flavName = getFlavourName(row.flavour)
-  return `${pName} ${relName} ${flavName}`.trim().replace(/\s+/g, ' ')
 }
 
 const triggerBuild = async () => {

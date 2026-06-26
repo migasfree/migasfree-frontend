@@ -63,12 +63,17 @@
 
             <!-- Progress & Build Message -->
             <div
-              v-if="build.status === 'building' || (buildProgress !== null && buildProgress !== 0)"
+              v-if="
+                build.status === 'building' ||
+                (buildProgress !== null && buildProgress !== 0)
+              "
               class="q-py-md border-bottom"
             >
               <div class="row items-center justify-between q-mb-sm">
                 <span class="text-grey-8">{{ $gettext('Progress') }}</span>
-                <span class="text-weight-bold text-primary font-monospace">{{ buildProgress }}%</span>
+                <span class="text-weight-bold text-primary font-monospace"
+                  >{{ buildProgress }}%</span
+                >
               </div>
               <q-linear-progress
                 :value="buildProgress / 100"
@@ -79,7 +84,10 @@
                 class="q-mb-sm rounded-borders"
                 style="height: 8px"
               />
-              <div v-if="buildMessage" class="text-caption text-grey-7 italic text-center q-mt-xs">
+              <div
+                v-if="buildMessage"
+                class="text-caption text-grey-7 italic text-center q-mt-xs"
+              >
                 {{ buildMessage }}
               </div>
             </div>
@@ -196,10 +204,7 @@
           </q-card-section>
 
           <!-- Console Terminal Output -->
-          <div
-            ref="logTerminal"
-            class="terminal-body font-monospace q-pa-md"
-          >
+          <div ref="logTerminal" class="terminal-body font-monospace q-pa-md">
             <template v-if="filteredLogLines.length > 0">
               <div
                 v-for="(line, idx) in filteredLogLines"
@@ -213,7 +218,10 @@
                 <span class="line-text">{{ line }}</span>
               </div>
             </template>
-            <div v-else-if="logLines.length > 0" class="text-grey-6 text-center q-pa-xl">
+            <div
+              v-else-if="logLines.length > 0"
+              class="text-grey-6 text-center q-pa-xl"
+            >
               {{ $gettext('No matching log entries found.') }}
             </div>
             <div
@@ -261,17 +269,11 @@ const uiStore = useUiStore()
 const { $gettext } = useGettext()
 
 const model = 'mgi/build'
-const projectName = ref('')
 const releaseName = ref('')
 const flavourName = ref('')
 
 const breadcrumbDetailValue = computed(() => {
-  if (projectName.value && releaseName.value && flavourName.value) {
-    return `${projectName.value} ${releaseName.value} ${flavourName.value}`
-      .trim()
-      .replace(/\s+/g, ' ')
-  }
-  return `#${route.params.id}`
+  return build.__str__ || `#${route.params.id}`
 })
 
 const windowTitle = ref($gettext('Compilation Detail'))
@@ -335,8 +337,8 @@ const filteredLogLines = computed(() => {
 let pollingInterval = null
 
 const updateWindowTitle = () => {
-  if (projectName.value && releaseName.value && flavourName.value) {
-    windowTitle.value = `${$gettext('Build')}: ${projectName.value} ${releaseName.value} ${flavourName.value} [${build.status.toUpperCase()}]`
+  if (build.__str__) {
+    windowTitle.value = `${$gettext('Build')}: ${build.__str__} [${build.status.toUpperCase()}]`
   } else {
     windowTitle.value = `${$gettext('Compilation')} #${build.id} [${build.status.toUpperCase()}]`
   }
@@ -353,26 +355,14 @@ const loadBuild = async () => {
       const relRes = await api.get(
         `/api/v1/token/mgi/release/${build.release}/`,
       )
-      releaseName.value = relRes.data.name
-
-      if (relRes.data.config) {
-        const confRes = await api.get(
-          `/api/v1/token/mgi/config/${relRes.data.config}/`,
-        )
-        if (confRes.data.project) {
-          const projRes = await api.get(
-            `/api/v1/token/projects/${confRes.data.project}/`,
-          )
-          projectName.value = projRes.data.name
-        }
-      }
+      releaseName.value = relRes.data.__str__
     }
 
     if (build.flavour && !flavourName.value) {
       const flaRes = await api.get(
         `/api/v1/token/mgi/flavour/${build.flavour}/`,
       )
-      flavourName.value = flaRes.data.name
+      flavourName.value = flaRes.data.__str__
     }
 
     updateWindowTitle()
@@ -401,7 +391,7 @@ const fetchLogs = async () => {
   try {
     const { data } = await api.get(
       `/api/v1/token/mgi/build/${route.params.id}/logs/`,
-      { params: { start: nextStart } }
+      { params: { start: nextStart } },
     )
     if (data.logs && data.logs.length > 0) {
       logLines.value.push(...data.logs)
@@ -420,7 +410,7 @@ const fetchAllLogs = async () => {
     while (hasMore) {
       const { data } = await api.get(
         `/api/v1/token/mgi/build/${route.params.id}/logs/`,
-        { params: { start: nextStart } }
+        { params: { start: nextStart } },
       )
       if (data.logs && data.logs.length > 0) {
         logLines.value.push(...data.logs)
@@ -512,7 +502,9 @@ watch(
 )
 
 const downloadLogs = () => {
-  const blob = new Blob([logLines.value.join('\n')], { type: 'text/plain;charset=utf-8' })
+  const blob = new Blob([logLines.value.join('\n')], {
+    type: 'text/plain;charset=utf-8',
+  })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url

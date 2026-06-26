@@ -52,16 +52,11 @@ const { $gettext } = useGettext()
 const { smartRequest } = useSmartRequest()
 
 const configs = ref([])
-const projects = ref([])
 
 onMounted(async () => {
   try {
-    const [configsRes, projectsRes] = await Promise.all([
-      smartRequest('/api/v1/token/mgi/config/'),
-      smartRequest('/api/v1/token/projects/'),
-    ])
+    const configsRes = await smartRequest('/api/v1/token/mgi/config/')
     configs.value = configsRes.data.results
-    projects.value = projectsRes.data.results
   } catch {
     // Ignore error
   }
@@ -69,10 +64,7 @@ onMounted(async () => {
 
 const getConfigValue = (configId) => {
   const conf = configs.value.find((c) => c.id === configId)
-  if (!conf) return `#${configId}`
-  const p = projects.value.find((pr) => pr.id === conf.project)
-  const projectName = p ? p.name : ''
-  return projectName ? `${projectName} (${conf.template_id})` : conf.template_id
+  return conf ? conf.__str__ : `#${configId}`
 }
 
 const routes = {

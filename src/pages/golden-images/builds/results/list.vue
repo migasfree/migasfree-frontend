@@ -13,7 +13,7 @@
         <MigasLink
           model="mgi/build"
           :pk="props.row.id"
-          :value="getBuildLinkValue(props.row)"
+          :value="props.row.__str__"
         />
       </template>
 
@@ -72,7 +72,6 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useListConfig } from 'composables/listConfig'
 import { api } from 'boot/axios'
@@ -87,61 +86,6 @@ import { appIcon } from 'composables/element'
 
 const { $gettext } = useGettext()
 const uiStore = useUiStore()
-
-const configs = ref([])
-const releases = ref([])
-const flavours = ref([])
-const projects = ref([])
-
-onMounted(async () => {
-  try {
-    const [
-      releasesResponse,
-      flavoursResponse,
-      configsResponse,
-      projectsResponse,
-    ] = await Promise.all([
-      api.get('/api/v1/token/mgi/release/'),
-      api.get('/api/v1/token/mgi/flavour/'),
-      api.get('/api/v1/token/mgi/config/'),
-      api.get('/api/v1/token/projects/'),
-    ])
-    releases.value = releasesResponse.data.results
-    flavours.value = flavoursResponse.data.results
-    configs.value = configsResponse.data.results
-    projects.value = projectsResponse.data.results
-  } catch {
-    // Ignore error
-  }
-})
-
-const getReleaseValue = (releaseId) => {
-  const rel = releases.value.find((r) => r.id === releaseId)
-  return rel ? rel.name : `#${releaseId}`
-}
-
-const getFlavourValue = (flavourId) => {
-  const fla = flavours.value.find((f) => f.id === flavourId)
-  return fla ? fla.name : `#${flavourId}`
-}
-
-const getProjectName = (releaseId) => {
-  const rel = releases.value.find((r) => r.id === releaseId)
-  if (!rel || !rel.config) return ''
-  const conf = configs.value.find((c) => c.id === rel.config)
-  if (!conf || !conf.project) return ''
-  const p = projects.value.find((pr) => pr.id === conf.project)
-  return p ? p.name : ''
-}
-
-const getBuildLinkValue = (row) => {
-  const projectName = getProjectName(row.release)
-  const releaseName = getReleaseValue(row.release)
-  const flavourName = getFlavourValue(row.flavour)
-  return `${projectName} ${releaseName} ${flavourName}`
-    .trim()
-    .replace(/\s+/g, ' ')
-}
 
 const downloadLogs = async (buildId) => {
   try {
