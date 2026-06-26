@@ -295,7 +295,7 @@ msgstr "Establecer como predeterminado"
 
 #: src/components/computer/Devices.vue:93
 msgid "Select which of the assigned devices is the primary for this computer."
-msgstr ""
+msgstr "Selecciona cuál de los dispositivos asignados es el principal para este ordenador."
 "Selecciona cuál de los dispositivos asignados es el primario para este "
 "ordenador.Selecciona cuál de los dispositivos asignados es el principal para "
 "este ordenador."
@@ -759,7 +759,7 @@ msgstr "Comparar software"
 
 #: src/components/computer/Telemetry.vue:7
 msgid "Telemetry"
-msgstr ""
+msgstr "Telemetría"
 
 #: src/components/computer/Telemetry.vue:31 src/components/ui/AppMenu.vue:544
 #: src/pages/data/computers/results/events.vue:88
@@ -2818,7 +2818,7 @@ msgstr "Listado de plataformas"
 
 #: src/pages/configuration/policies/results/detail.vue:43
 msgid "If you uncheck this field, the policy is disabled for all computers."
-msgstr ""
+msgstr "Si desmarcas este campo, la directiva se desactivará para todos los ordenadores."
 "Si desmarcas este campo, la política se deshabilita para todos los "
 "ordenadores.Si desmarcas esta casilla, la política se deshabilitará para "
 "todos los ordenadores.Si desmarca este campo, la política está deshabilitada "
@@ -3220,7 +3220,7 @@ msgstr "Ordenadores físicos que entran al sistema por año"
 
 #: src/pages/data/computers/replacement.vue:15
 msgid "This procedure changes status, tags and devices between two computers."
-msgstr ""
+msgstr "Este procedimiento cambia el estado, etiquetas y dispositivos entre dos ordenadores."
 "Este procedimiento intercambia el estado, las etiquetas y los dispositivos "
 "entre dos ordenadores.Este procedimiento intercambia estados, etiquetas y "
 "dispositivos entre dos ordenadores.Este procedimiento intercambia el estado, "
@@ -3693,7 +3693,7 @@ msgstr "Dispositivos / Fabricante"
 
 #: src/pages/devices/devices/replacement.vue:15
 msgid "This procedure switches assigned computers between two devices."
-msgstr ""
+msgstr "Este procedimiento intercambia los ordenadores asignados entre dos dispositivos."
 "Este procedimiento intercambia los ordenadores asignados entre dos "
 "dispositivos.Este procedimiento intercambia los ordenadores asignados entre "
 "dos dispositivos.Este procedimiento intercambia los ordenadores asignados "
@@ -3860,7 +3860,7 @@ msgstr "Compilaciones (Builds)"
 #: src/pages/golden-images/releases/results/detail.vue:154
 #: src/pages/golden-images/releases/results/detail.vue:318
 msgid "Publish"
-msgstr ""
+msgstr "Publicar"
 
 #: src/pages/golden-images/builds/results/detail.vue:36
 #: src/pages/golden-images/builds/results/detail.vue:369
@@ -3869,7 +3869,7 @@ msgstr ""
 #: src/pages/golden-images/releases/results/detail.vue:168
 #: src/pages/golden-images/releases/results/detail.vue:318
 msgid "Unpublish"
-msgstr ""
+msgstr "Despublicar"
 
 #: src/pages/golden-images/builds/results/detail.vue:47
 #: src/pages/golden-images/builds/results/list.vue:58
@@ -3883,11 +3883,11 @@ msgstr "Descargar Registros (Logs)"
 
 #: src/pages/golden-images/builds/results/detail.vue:66
 msgid "Metrics"
-msgstr ""
+msgstr "Métricas"
 
 #: src/pages/golden-images/builds/results/detail.vue:91
 msgid "Progress"
-msgstr ""
+msgstr "Progreso"
 
 #: src/pages/golden-images/builds/results/detail.vue:132
 #: src/pages/golden-images/flavours/results/detail.vue:224
@@ -3979,7 +3979,7 @@ msgstr "Cancelar"
 
 #: src/pages/golden-images/builds/results/detail.vue:655
 msgid "Fetching"
-msgstr ""
+msgstr "Obteniendo"
 
 #: src/pages/golden-images/builds/results/list.vue:199
 msgid "No logs available for this build."
@@ -4151,7 +4151,7 @@ msgstr "Compilaciones de imágenes (Builds)"
 
 #: src/pages/golden-images/releases/results/detail.vue:84
 msgid "Manage, monitor, and launch new build tasks for this release version."
-msgstr ""
+msgstr "Gestionar, supervisar y lanzar nuevas tareas de build para esta versión de lanzamiento."
 "Gestiona, monitoriza y lanza nuevas tareas de compilación para esta versión."
 
 #: src/pages/golden-images/releases/results/detail.vue:100
