@@ -210,6 +210,7 @@
 
 <script setup>
 import { ref, reactive, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useMeta } from 'quasar'
 
@@ -223,6 +224,7 @@ import DateView from 'components/ui/DateView'
 import { appIcon, modelIcon } from 'composables/element'
 
 const uiStore = useUiStore()
+const router = useRouter()
 const { $gettext } = useGettext()
 
 const title = ref($gettext('Release'))
@@ -315,11 +317,35 @@ const loadRelated = async () => {
 
 const triggerBuild = async () => {
   try {
-    await api.post(`/api/v1/token/mgi/release/${element.id}/build/`)
+    const { data } = await api.post(
+      `/api/v1/token/mgi/release/${element.id}/build/`,
+    )
+    const taskId = data.task_id
 
     uiStore.notifySuccess($gettext('Compilation started successfully!'))
 
-    // Refresh builds list
+    // Poll until the Build record appears in the database (created async by the worker)
+    const MAX_RETRIES = 10
+    const RETRY_INTERVAL = 2000
+
+    for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+      await new Promise((resolve) => setTimeout(resolve, RETRY_INTERVAL))
+
+      const buildsResponse = await api.get(
+        `/api/v1/token/mgi/build/?task_id=${encodeURIComponent(taskId)}`,
+      )
+
+      const results = buildsResponse.data.results
+      if (results && results.length > 0) {
+        router.push({
+          name: 'build-detail',
+          params: { id: results[0].id },
+        })
+        return
+      }
+    }
+
+    // Fallback: refresh the builds table if the record never appeared
     const buildsResponse = await api.get(
       `/api/v1/token/mgi/build/?release=${element.id}`,
     )
