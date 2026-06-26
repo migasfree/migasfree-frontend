@@ -18,6 +18,24 @@
       </template>
       <template #actions>
         <q-btn
+          v-if="build.status === 'completed' && !build.published"
+          color="positive"
+          :icon="appIcon('publish')"
+          class="q-mr-sm"
+          @click="togglePublish"
+        >
+          <q-tooltip>{{ $gettext('Publish') }}</q-tooltip>
+        </q-btn>
+        <q-btn
+          v-if="build.status === 'completed' && build.published"
+          color="negative"
+          :icon="appIcon('unpublish')"
+          class="q-mr-sm"
+          @click="togglePublish"
+        >
+          <q-tooltip>{{ $gettext('Unpublish') }}</q-tooltip>
+        </q-btn>
+        <q-btn
           v-if="build.uri"
           color="primary"
           :icon="appIcon('download')"
@@ -274,7 +292,7 @@ import {
 } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
-import { useMeta } from 'quasar'
+import { useMeta, useQuasar } from 'quasar'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -291,6 +309,7 @@ const route = useRoute()
 const router = useRouter()
 const uiStore = useUiStore()
 const { $gettext } = useGettext()
+const $q = useQuasar()
 
 const model = 'mgi/build'
 const releaseName = ref('')
@@ -335,6 +354,39 @@ const removeBuild = async () => {
   } catch (error) {
     uiStore.notifyError(error)
   }
+}
+
+const togglePublish = () => {
+  const isPublishing = !build.published
+  const message = isPublishing
+    ? $gettext('Are you sure you want to publish this build image?')
+    : $gettext('Are you sure you want to unpublish this build image?')
+
+  $q.dialog({
+    message,
+    ok: {
+      color: isPublishing ? 'positive' : 'negative',
+      label: isPublishing ? $gettext('Publish') : $gettext('Unpublish'),
+    },
+    cancel: {
+      flat: true,
+      label: $gettext('Cancel'),
+    },
+    persistent: true,
+  }).onOk(async () => {
+    try {
+      const url = `/api/v1/token/mgi/build/${route.params.id}/${isPublishing ? 'publish' : 'unpublish'}/`
+      await api.post(url)
+      uiStore.notifySuccess(
+        isPublishing
+          ? $gettext('Build published successfully!')
+          : $gettext('Build unpublished successfully!'),
+      )
+      await loadBuild()
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
+  })
 }
 
 const breadcrumbs = ref([

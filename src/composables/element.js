@@ -68,6 +68,8 @@ const APP_ICON = {
   logout: 'mdi-power-standby',
   identification: 'mdi-card-account-details-outline',
   import: 'mdi-database-import',
+  publish: 'mdi-cloud-upload-outline',
+  unpublish: 'mdi-cloud-off-outline',
 
   // UI Structural & Navigation
   menu: 'mdi-menu',

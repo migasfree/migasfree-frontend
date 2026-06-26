@@ -140,6 +140,34 @@
                     </q-btn>
 
                     <q-btn
+                      v-if="
+                        props.row.status === 'completed' && !props.row.published
+                      "
+                      flat
+                      round
+                      size="sm"
+                      color="positive"
+                      :icon="appIcon('publish')"
+                      class="q-mr-xs"
+                      @click.stop="togglePublish(props.row)"
+                    >
+                      <q-tooltip>{{ $gettext('Publish') }}</q-tooltip>
+                    </q-btn>
+                    <q-btn
+                      v-if="
+                        props.row.status === 'completed' && props.row.published
+                      "
+                      flat
+                      round
+                      size="sm"
+                      color="negative"
+                      :icon="appIcon('unpublish')"
+                      class="q-mr-xs"
+                      @click.stop="togglePublish(props.row)"
+                    >
+                      <q-tooltip>{{ $gettext('Unpublish') }}</q-tooltip>
+                    </q-btn>
+                    <q-btn
                       v-if="props.row.uri"
                       flat
                       round
@@ -266,6 +294,43 @@ const confirmRemove = (buildId) => {
     try {
       await api.delete(`/api/v1/token/mgi/build/${buildId}/`)
       uiStore.notifySuccess($gettext('Item deleted!'))
+      // Refresh related builds
+      const buildsResponse = await api.get(
+        `/api/v1/token/mgi/build/?release=${element.id}`,
+      )
+      builds.value = buildsResponse.data.results
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
+  })
+}
+
+const togglePublish = (row) => {
+  const isPublishing = !row.published
+  const message = isPublishing
+    ? $gettext('Are you sure you want to publish this build image?')
+    : $gettext('Are you sure you want to unpublish this build image?')
+
+  $q.dialog({
+    message,
+    ok: {
+      color: isPublishing ? 'positive' : 'negative',
+      label: isPublishing ? $gettext('Publish') : $gettext('Unpublish'),
+    },
+    cancel: {
+      flat: true,
+      label: $gettext('Cancel'),
+    },
+    persistent: true,
+  }).onOk(async () => {
+    try {
+      const url = `/api/v1/token/mgi/build/${row.id}/${isPublishing ? 'publish' : 'unpublish'}/`
+      await api.post(url)
+      uiStore.notifySuccess(
+        isPublishing
+          ? $gettext('Build published successfully!')
+          : $gettext('Build unpublished successfully!'),
+      )
       // Refresh related builds
       const buildsResponse = await api.get(
         `/api/v1/token/mgi/build/?release=${element.id}`,
