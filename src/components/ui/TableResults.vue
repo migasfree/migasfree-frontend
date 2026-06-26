@@ -82,7 +82,7 @@
           <MigasLink
             :model="model"
             :pk="slotProps.row.id"
-            :value="slotProps.row.name"
+            :value="slotProps.row.__str__ || slotProps.row.name"
           />
         </span>
 
