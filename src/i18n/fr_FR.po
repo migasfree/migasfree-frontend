@@ -46,7 +46,7 @@ msgstr "Une erreur inattendue s'est produite"
 
 #: src/boot/axios.js:135
 msgid "The server returned an HTML error page."
-msgstr ""
+msgstr "Le serveur a renvoyé une page d'erreur HTML."
 
 #: src/boot/axios.js:148 src/pages/data/errors/results/detail.vue:121
 msgid "Error"
@@ -58,7 +58,7 @@ msgstr "Erreur réseau"
 
 #: src/boot/axios.js:159
 msgid "Unable to connect to the server. Please check your connection."
-msgstr ""
+msgstr "Impossible de se connecter au serveur. Veuillez vérifier votre connexion."
 "Impossible de se connecter au serveur. Veuillez vérifier votre "
 "connexion.Impossible de se connecter au serveur. Veuillez vérifier votre "
 "connexion."
@@ -295,7 +295,7 @@ msgstr "Définir par défaut"
 
 #: src/components/computer/Devices.vue:93
 msgid "Select which of the assigned devices is the primary for this computer."
-msgstr ""
+msgstr "Sélectionnez lequel des périphériques attribués est le principal pour cet ordinateur."
 "Sélectionnez lequel des périphériques attribués est le périphérique "
 "principal pour cet ordinateur."
 
@@ -501,11 +501,11 @@ msgstr "Google Maps"
 
 #: src/components/computer/RemoteAccess.vue:33
 msgid "Open connection tunnel"
-msgstr "Champs de connexion"
+msgstr "Ouvrir le tunnel de connexion"
 
 #: src/components/computer/RemoteAccess.vue:46
 msgid "Execute synchronization"
-msgstr "Simuler la synchronisation"
+msgstr "Exécuter la synchronisation"
 
 #: src/components/computer/RemoteAccess.vue:74
 #: src/pages/configuration/user-profiles/results/detail.vue:59
@@ -515,19 +515,19 @@ msgstr "Nom d'utilisateur"
 
 #: src/components/computer/RemoteAccess.vue:85
 msgid "Enter the remote user to connect with."
-msgstr ""
+msgstr "Saisissez l'utilisateur distant avec lequel vous connecter."
 
 #: src/components/computer/RemoteAccess.vue:92
 msgid "VNC Password"
-msgstr "Nouveau mot de passe"
+msgstr "Mot de passe VNC"
 
 #: src/components/computer/RemoteAccess.vue:104
 msgid "Enter the VNC password of the remote system."
-msgstr ""
+msgstr "Saisissez le mot de passe VNC du système distant."
 
 #: src/components/computer/RemoteAccess.vue:112
 msgid "Are you sure you want to trigger a synchronization on this computer?"
-msgstr "Êtes-vous sûr de vouloir supprimer cet élément ?"
+msgstr "Êtes-vous sûr de vouloir lancer une synchronisation sur cet ordinateur ?"
 
 #: src/components/computer/RemoteAccess.vue:153
 #: src/components/computer/ReplacementInfo.vue:7
@@ -551,43 +551,43 @@ msgstr "Ordinateur"
 
 #: src/components/computer/RemoteAccess.vue:167
 msgid "Send Ctrl+Alt+Del"
-msgstr ""
+msgstr "Envoyer Ctrl+Alt+Suppr"
 
 #: src/components/computer/RemoteAccess.vue:175
 msgid "Send Windows Key"
-msgstr ""
+msgstr "Envoyer la touche Windows"
 
 #: src/components/computer/RemoteAccess.vue:188
 msgid "Disable Scaling"
-msgstr "Désactiver"
+msgstr "Désactiver la mise à l'échelle"
 
 #: src/components/computer/RemoteAccess.vue:189
 msgid "Enable Scaling"
-msgstr "Activer"
+msgstr "Activer la mise à l'échelle"
 
 #: src/components/computer/RemoteAccess.vue:194
 msgid "VNC Controls"
-msgstr ""
+msgstr "Contrôles VNC"
 
 #: src/components/computer/RemoteAccess.vue:217
 msgid "Send text to remote"
-msgstr ""
+msgstr "Envoyer du texte au système distant"
 
 #: src/components/computer/RemoteAccess.vue:236
 msgid "Sync Clipboard"
-msgstr ""
+msgstr "Synchroniser le presse-papiers"
 
 #: src/components/computer/RemoteAccess.vue:251
 msgid "CONNECTED"
-msgstr ""
+msgstr "CONNECTÉ"
 
 #: src/components/computer/RemoteAccess.vue:251
 msgid "CONNECTING..."
-msgstr ""
+msgstr "CONNEXION EN COURS..."
 
 #: src/components/computer/RemoteAccess.vue:301
 msgid "Remote RDP Connection"
-msgstr "Périphériques / Connexion"
+msgstr "Connexion RDP distante"
 
 #: src/components/computer/RemoteAccess.vue:305
 msgid ""
@@ -599,7 +599,7 @@ msgstr ""
 
 #: src/components/computer/RemoteAccess.vue:323
 msgid "Copy command"
-msgstr ""
+msgstr "Copier la commande"
 
 #: src/components/computer/RemoteAccess.vue:330
 msgid ""
@@ -611,11 +611,11 @@ msgstr ""
 
 #: src/components/computer/RemoteAccess.vue:427
 msgid "Online"
-msgstr ""
+msgstr "En ligne"
 
 #: src/components/computer/RemoteAccess.vue:428
 msgid "Offline"
-msgstr ""
+msgstr "Hors ligne"
 
 #: src/components/computer/RemoteAccess.vue:429 src/composables/element.js:259
 msgid "Unknown"
@@ -623,44 +623,44 @@ msgstr "Inconnu"
 
 #: src/components/computer/RemoteAccess.vue:446
 msgid "Connection error"
-msgstr "Connexion"
+msgstr "Erreur de connexion"
 
 #: src/components/computer/RemoteAccess.vue:484
 msgid "SSH Connection"
-msgstr "Connexion"
+msgstr "Connexion SSH"
 
 #: src/components/computer/RemoteAccess.vue:485
 msgid "RDP Connection"
-msgstr "Connexion"
+msgstr "Connexion RDP"
 
 #: src/components/computer/RemoteAccess.vue:486
 msgid "VNC Connection"
-msgstr "Connexion"
+msgstr "Connexion VNC"
 
 #: src/components/computer/RemoteAccess.vue:487
 msgid "Trigger Synchronization"
-msgstr "Synchronisation"
+msgstr "Lancer la synchronisation"
 
 #: src/components/computer/RemoteAccess.vue:488
 msgid "Remote Connection"
-msgstr "Connexion"
+msgstr "Connexion à distance"
 
 #: src/components/computer/RemoteAccess.vue:492
 #: src/components/computer/RemoteAccess.vue:495
 msgid "Connect"
-msgstr "Connexion"
+msgstr "Se connecter"
 
 #: src/components/computer/RemoteAccess.vue:494
 msgid "Synchronize"
-msgstr "Synchronisation"
+msgstr "Synchroniser"
 
 #: src/components/computer/RemoteAccess.vue:549
 msgid "Command copied to clipboard"
-msgstr "Contenu copié dans le presse-papiers"
+msgstr "Commande copiée dans le presse-papiers"
 
 #: src/components/computer/RemoteAccess.vue:772
 msgid "Failed to initialize connection"
-msgstr ""
+msgstr "Échec de l'initialisation de la connexion"
 
 #: src/components/computer/ReplacementInfo.vue:47
 #: src/components/ui/AppMenu.vue:310
@@ -758,7 +758,7 @@ msgstr "Comparaison de logiciels"
 
 #: src/components/computer/Telemetry.vue:7
 msgid "Telemetry"
-msgstr ""
+msgstr "Télémétrie"
 
 #: src/components/computer/Telemetry.vue:31 src/components/ui/AppMenu.vue:544
 #: src/pages/data/computers/results/events.vue:88
@@ -1552,7 +1552,7 @@ msgstr "Politiques"
 #: src/pages/golden-images/releases/results/detail.vue:373
 #: src/pages/golden-images/releases/results/list.vue:68
 msgid "Golden Images"
-msgstr ""
+msgstr "Images dorées"
 
 #: src/components/ui/AppMenu.vue:473
 #: src/pages/data/computers/results/hardware.vue:224
@@ -1569,14 +1569,14 @@ msgstr "Configurations"
 #: src/pages/golden-images/flavours/results/list.vue:86
 #: src/pages/golden-images/flavours/results/list.vue:87
 msgid "Flavours"
-msgstr ""
+msgstr "Variantes (Flavours)"
 
 #: src/components/ui/AppMenu.vue:483
 #: src/pages/golden-images/releases/results/detail.vue:377
 #: src/pages/golden-images/releases/results/list.vue:64
 #: src/pages/golden-images/releases/results/list.vue:65
 msgid "Releases"
-msgstr "Publication"
+msgstr "Versions (Releases)"
 
 #: src/components/ui/AppMenu.vue:489
 #: src/pages/golden-images/builds/index.vue:134
@@ -1584,7 +1584,7 @@ msgstr "Publication"
 #: src/pages/golden-images/builds/results/list.vue:260
 #: src/pages/golden-images/builds/results/list.vue:261
 msgid "Builds"
-msgstr ""
+msgstr "Compilations (Builds)"
 
 #: src/components/ui/AppMenu.vue:499 src/pages/data/attributes/index.vue:51
 #: src/pages/data/attributes/results/detail.vue:176
@@ -1706,7 +1706,7 @@ msgstr "Confirmer l'exportation"
 
 #: src/components/ui/Header.vue:80
 msgid "Do you want to export so many results? This might take a while."
-msgstr ""
+msgstr "Voulez-vous exporter autant de résultats ? Cela peut prendre un certain temps."
 "Voulez-vous exporter autant de résultats ? Cela peut prendre un certain "
 "temps.Voulez-vous exporter autant de résultats ? Cela peut prendre un "
 "certain temps."
@@ -2350,21 +2350,21 @@ msgstr "Désabonné"
 #: src/pages/golden-images/builds/results/list.vue:249
 #: src/pages/golden-images/releases/results/detail.vue:509
 msgid "Queued"
-msgstr ""
+msgstr "En file d'attente"
 
 #: src/composables/element.js:262
 #: src/pages/golden-images/builds/results/detail.vue:650
 #: src/pages/golden-images/builds/results/list.vue:250
 #: src/pages/golden-images/releases/results/detail.vue:510
 msgid "Running"
-msgstr ""
+msgstr "En cours d'exécution"
 
 #: src/composables/element.js:263 src/pages/golden-images/builds/index.vue:66
 #: src/pages/golden-images/builds/results/detail.vue:652
 #: src/pages/golden-images/builds/results/list.vue:251
 #: src/pages/golden-images/releases/results/detail.vue:511
 msgid "Completed"
-msgstr "Ordinateur"
+msgstr "Terminé"
 
 #: src/composables/element.js:264
 #: src/pages/golden-images/builds/results/detail.vue:653
@@ -2373,7 +2373,7 @@ msgstr "Ordinateur"
 #: src/pages/golden-images/releases/results/detail.vue:512
 #: src/pages/golden-images/releases/results/detail.vue:513
 msgid "Failed"
-msgstr ""
+msgstr "Échoué"
 
 #: src/composables/listConfig.js:39 src/layouts/MainLayout.vue:40
 #: src/pages/configuration/attribute-sets/results/detail.vue:162
@@ -2820,7 +2820,7 @@ msgstr "Liste des plateformes"
 
 #: src/pages/configuration/policies/results/detail.vue:43
 msgid "If you uncheck this field, the policy is disabled for all computers."
-msgstr ""
+msgstr "Si vous décochez ce champ, la stratégie est désactivée pour tous les ordinateurs."
 "Si vous décochez cette case, la politique sera désactivée pour tous les "
 "ordinateurs.Si vous décochez ce champ, la politique est désactivée pour tous "
 "les ordinateurs."
@@ -2873,7 +2873,7 @@ msgstr "Exclusif"
 #: src/pages/configuration/projects/results/detail.vue:21
 #: src/pages/configuration/projects/results/detail.vue:25
 msgid "Export to Local Template"
-msgstr "Télécharger un modèle personnalisé"
+msgstr "Exporter vers un modèle local"
 
 #: src/pages/configuration/projects/results/detail.vue:32
 #: src/pages/configuration/projects/results/detail.vue:36
@@ -3221,7 +3221,7 @@ msgstr "Ordinateurs physiques entrant dans le système par année"
 
 #: src/pages/data/computers/replacement.vue:15
 msgid "This procedure changes status, tags and devices between two computers."
-msgstr ""
+msgstr "Cette procédure modifie le statut, les étiquettes et les périphériques entre deux ordinateurs."
 "Cette procédure échange les statuts, les étiquettes et les périphériques "
 "entre deux ordinateurs.Cette procédure échange le statut, les étiquettes et "
 "les périphériques entre deux ordinateurs."
@@ -3693,7 +3693,7 @@ msgstr "Périphériques / Fabricant"
 
 #: src/pages/devices/devices/replacement.vue:15
 msgid "This procedure switches assigned computers between two devices."
-msgstr ""
+msgstr "Cette procédure échange les ordinateurs attribués entre deux périphériques."
 "Cette procédure échange les ordinateurs assignés entre deux "
 "périphériques.Cette procédure échange les ordinateurs assignés entre deux "
 "périphériques."
@@ -3819,17 +3819,17 @@ msgstr "Durée"
 
 #: src/pages/golden-images/builds/index.vue:41
 msgid "Average Image Size"
-msgstr ""
+msgstr "Taille moyenne de l'image"
 
 #: src/pages/golden-images/builds/index.vue:60
 msgid "Metrics by Build Type"
-msgstr ""
+msgstr "Métriques par type de build"
 
 #: src/pages/golden-images/builds/index.vue:65
 #: src/pages/golden-images/configs/results/detail.vue:72
 #: src/pages/golden-images/configs/results/list.vue:96
 msgid "Build Type"
-msgstr ""
+msgstr "Type de build"
 
 #: src/pages/golden-images/builds/index.vue:67
 msgid "Avg Duration"
@@ -3850,7 +3850,7 @@ msgstr "Par statut"
 #: src/pages/golden-images/builds/results/detail.vue:6
 #: src/pages/golden-images/builds/results/detail.vue:429
 msgid "Build"
-msgstr ""
+msgstr "Compilation"
 
 #: src/pages/golden-images/builds/results/detail.vue:27
 #: src/pages/golden-images/builds/results/detail.vue:369
@@ -3859,7 +3859,7 @@ msgstr ""
 #: src/pages/golden-images/releases/results/detail.vue:154
 #: src/pages/golden-images/releases/results/detail.vue:318
 msgid "Publish"
-msgstr ""
+msgstr "Publier"
 
 #: src/pages/golden-images/builds/results/detail.vue:36
 #: src/pages/golden-images/builds/results/detail.vue:369
@@ -3868,73 +3868,73 @@ msgstr ""
 #: src/pages/golden-images/releases/results/detail.vue:168
 #: src/pages/golden-images/releases/results/detail.vue:318
 msgid "Unpublish"
-msgstr ""
+msgstr "Dépublier"
 
 #: src/pages/golden-images/builds/results/detail.vue:47
 #: src/pages/golden-images/builds/results/list.vue:58
 msgid "Download Image"
-msgstr "Télécharger"
+msgstr "Télécharger l'image"
 
 #: src/pages/golden-images/builds/results/detail.vue:50
 #: src/pages/golden-images/builds/results/list.vue:69
 msgid "Download Logs"
-msgstr "URL de téléchargement"
+msgstr "Télécharger les journaux (Logs)"
 
 #: src/pages/golden-images/builds/results/detail.vue:66
 msgid "Metrics"
-msgstr ""
+msgstr "Métriques"
 
 #: src/pages/golden-images/builds/results/detail.vue:91
 msgid "Progress"
-msgstr ""
+msgstr "Progression"
 
 #: src/pages/golden-images/builds/results/detail.vue:132
 #: src/pages/golden-images/flavours/results/detail.vue:224
 msgid "Flavour"
-msgstr ""
+msgstr "Variante (Flavour)"
 
 #: src/pages/golden-images/builds/results/detail.vue:149
 msgid "Task ID"
-msgstr ""
+msgstr "ID de la tâche"
 
 #: src/pages/golden-images/builds/results/detail.vue:157
 #: src/pages/golden-images/builds/results/list.vue:280
 #: src/pages/golden-images/releases/results/detail.vue:392
 msgid "Started At"
-msgstr "Date de début"
+msgstr "Démarré le"
 
 #: src/pages/golden-images/builds/results/detail.vue:164
 #: src/pages/golden-images/builds/results/list.vue:285
 msgid "Finished At"
-msgstr "Terminer l'édition"
+msgstr "Terminé le"
 
 #: src/pages/golden-images/builds/results/detail.vue:171
 msgid "Image Size"
-msgstr ""
+msgstr "Taille de l'image"
 
 #: src/pages/golden-images/builds/results/detail.vue:208
 msgid "mgi_builder.log"
-msgstr ""
+msgstr "mgi_builder.log"
 
 #: src/pages/golden-images/builds/results/detail.vue:219
 msgid "Filter logs..."
-msgstr "Filtrer"
+msgstr "Filtrer les journaux..."
 
 #: src/pages/golden-images/builds/results/detail.vue:234
 msgid "Auto-scroll"
-msgstr ""
+msgstr "Défilement automatique"
 
 #: src/pages/golden-images/builds/results/detail.vue:259
 msgid "No matching log entries found."
-msgstr "Aucune relation trouvée"
+msgstr "Aucun journal correspondant trouvé."
 
 #: src/pages/golden-images/builds/results/detail.vue:267
 msgid "Waiting for build engine log pipeline..."
-msgstr ""
+msgstr "En attente du flux de journaux du moteur de build..."
 
 #: src/pages/golden-images/builds/results/detail.vue:322
 msgid "Compilation Detail"
-msgstr ""
+msgstr "Détail de la compilation"
 
 #: src/pages/golden-images/builds/results/detail.vue:352
 msgid "Build deleted successfully."
@@ -3966,11 +3966,11 @@ msgstr "Compilation démarrée avec succès !"
 
 #: src/pages/golden-images/builds/results/detail.vue:431
 msgid "Compilation"
-msgstr "Configuration"
+msgstr "Compilation"
 
 #: src/pages/golden-images/builds/results/detail.vue:651
 msgid "Building"
-msgstr ""
+msgstr "Compilation en cours"
 
 #: src/pages/golden-images/builds/results/detail.vue:654
 msgid "Cancelled"
@@ -3978,7 +3978,7 @@ msgstr "Annuler"
 
 #: src/pages/golden-images/builds/results/detail.vue:655
 msgid "Fetching"
-msgstr ""
+msgstr "Récupération"
 
 #: src/pages/golden-images/builds/results/list.vue:199
 msgid "No logs available for this build."
@@ -3994,91 +3994,91 @@ msgstr "Configurations"
 #: src/pages/golden-images/flavours/results/list.vue:18
 #: src/pages/golden-images/releases/results/list.vue:18
 msgid "Template ID"
-msgstr "Source du modèle"
+msgstr "ID de modèle"
 
 #: src/pages/golden-images/configs/results/detail.vue:50
 msgid "No projects available"
-msgstr "Aucune donnée disponible."
+msgstr "Aucun projet disponible"
 
 #: src/pages/golden-images/configs/results/detail.vue:84
 #: src/pages/golden-images/configs/results/list.vue:106
 msgid "Image Format"
-msgstr ""
+msgstr "Format d'image"
 
 #: src/pages/golden-images/configs/results/detail.vue:98
 #: src/pages/golden-images/configs/results/list.vue:101
 msgid "Base OS"
-msgstr "URL de base"
+msgstr "OS de base"
 
 #: src/pages/golden-images/configs/results/detail.vue:115
 msgid "System Blueprint"
-msgstr ""
+msgstr "Plan du système (Blueprint)"
 
 #: src/pages/golden-images/configs/results/detail.vue:121
 msgid "Partition Schema (YAML)"
-msgstr ""
+msgstr "Schéma de partitionnement (YAML)"
 
 #: src/pages/golden-images/configs/results/detail.vue:128
 msgid "Provisioning Script"
-msgstr ""
+msgstr "Script de provisionnement"
 
 #: src/pages/golden-images/configs/results/detail.vue:141
 msgid "Docker Build Configuration"
-msgstr "Configuration d'importation"
+msgstr "Configuration de compilation Docker"
 
 #: src/pages/golden-images/configs/results/detail.vue:146
 msgid "Dockerfile"
-msgstr ""
+msgstr "Dockerfile"
 
 #: src/pages/golden-images/configs/results/detail.vue:158
 msgid "Windows QEMU Configuration"
-msgstr "Configuration"
+msgstr "Configuration QEMU Windows"
 
 #: src/pages/golden-images/configs/results/detail.vue:165
 msgid "Disk Size (GB)"
-msgstr ""
+msgstr "Taille du disque (Go)"
 
 #: src/pages/golden-images/configs/results/detail.vue:170
 msgid "Disk size must be at least 20 GB"
-msgstr ""
+msgstr "La taille du disque doit être d'au moins 20 Go"
 
 #: src/pages/golden-images/configs/results/detail.vue:178
 msgid "Autounattend Template (XML)"
-msgstr ""
+msgstr "Modèle Autounattend (XML)"
 
 #: src/pages/golden-images/configs/results/detail.vue:187
 msgid "SetupComplete Script"
-msgstr ""
+msgstr "Script SetupComplete"
 
 #: src/pages/golden-images/configs/results/detail.vue:266
 msgid "Docker (Linux)"
-msgstr ""
+msgstr "Docker (Linux)"
 
 #: src/pages/golden-images/configs/results/detail.vue:267
 msgid "QEMU Unattended (Windows)"
-msgstr ""
+msgstr "QEMU Unattended (Windows)"
 
 #: src/pages/golden-images/configs/results/detail.vue:268
 msgid "QEMU Preseed/Kickstart (Linux)"
-msgstr ""
+msgstr "QEMU Preseed/Kickstart (Linux)"
 
 #: src/pages/golden-images/configs/results/detail.vue:272
 msgid "RAW (.raw)"
-msgstr ""
+msgstr "RAW (.raw)"
 
 #: src/pages/golden-images/configs/results/detail.vue:273
 msgid "WIM (.wim)"
-msgstr ""
+msgstr "WIM (.wim)"
 
 #: src/pages/golden-images/configs/results/detail.vue:274
 msgid "SquashFS (.squashfs)"
-msgstr ""
+msgstr "SquashFS (.squashfs)"
 
 #: src/pages/golden-images/configs/results/list.vue:92
 #: src/pages/golden-images/flavours/results/list.vue:106
 #: src/pages/golden-images/releases/results/list.vue:84
 msgid "Config"
-msgstr "Confirmer"
+msgstr "Configuration"
 
 #: src/pages/golden-images/flavours/index.vue:17
 msgid "Flavours / Enabled"
@@ -4086,55 +4086,55 @@ msgstr "Déploiements / Activés"
 
 #: src/pages/golden-images/flavours/results/detail.vue:46
 msgid "Flavour Name"
-msgstr "Nom de l'ordinateur"
+msgstr "Nom de la variante"
 
 #: src/pages/golden-images/flavours/results/detail.vue:58
 msgid "System Hostname"
-msgstr ""
+msgstr "Nom d'hôte du système"
 
 #: src/pages/golden-images/flavours/results/detail.vue:100
 msgid "Credentials & Localization"
-msgstr ""
+msgstr "Identifiants et localisation"
 
 #: src/pages/golden-images/flavours/results/detail.vue:107
 msgid "Default User"
-msgstr "Périphérique par défaut"
+msgstr "Utilisateur par défaut"
 
 #: src/pages/golden-images/flavours/results/detail.vue:117
 msgid "Default Password"
-msgstr "Nouveau mot de passe"
+msgstr "Mot de passe par défaut"
 
 #: src/pages/golden-images/flavours/results/detail.vue:128
 msgid "System Timezone"
-msgstr ""
+msgstr "Fuseau horaire du système"
 
 #: src/pages/golden-images/flavours/results/detail.vue:140
 msgid "Associated Tags"
-msgstr "Étiquettes disponibles"
+msgstr "Étiquettes associées"
 
 #: src/pages/golden-images/flavours/results/detail.vue:166
 msgid "Keyboard & System Console"
-msgstr ""
+msgstr "Clavier et console système"
 
 #: src/pages/golden-images/flavours/results/detail.vue:173
 msgid "Keymap"
-msgstr ""
+msgstr "Mappage clavier (Keymap)"
 
 #: src/pages/golden-images/flavours/results/detail.vue:181
 msgid "Keyboard Model"
-msgstr "Par modèle"
+msgstr "Modèle de clavier"
 
 #: src/pages/golden-images/flavours/results/detail.vue:189
 msgid "Charmap"
-msgstr ""
+msgstr "Table de caractères (Charmap)"
 
 #: src/pages/golden-images/flavours/results/detail.vue:197
 msgid "Codeset"
-msgstr "Code"
+msgstr "Jeu de codes"
 
 #: src/pages/golden-images/flavours/results/list.vue:111
 msgid "Hostname"
-msgstr "Nom d'utilisateur"
+msgstr "Nom d'hôte"
 
 #: src/pages/golden-images/releases/results/detail.vue:46
 msgid "Release Version"
@@ -4150,7 +4150,7 @@ msgstr "Compilations d'images (Builds)"
 
 #: src/pages/golden-images/releases/results/detail.vue:84
 msgid "Manage, monitor, and launch new build tasks for this release version."
-msgstr ""
+msgstr "Gérer, surveiller et lancer de nouvelles tâches de build pour cette version de publication."
 "Gérez, surveillez et lancez de nouvelles tâches de compilation pour cette "
 "version."
 

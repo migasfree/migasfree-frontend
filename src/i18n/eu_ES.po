@@ -49,7 +49,7 @@ msgstr "Ustekabeko errore bat gertatu da"
 
 #: src/boot/axios.js:135
 msgid "The server returned an HTML error page."
-msgstr ""
+msgstr "Zerbitzariak HTML errore-orri bat itzuli du."
 
 #: src/boot/axios.js:148 src/pages/data/errors/results/detail.vue:121
 msgid "Error"
@@ -295,7 +295,7 @@ msgstr "Ezarri lehenetsi gisa"
 
 #: src/components/computer/Devices.vue:93
 msgid "Select which of the assigned devices is the primary for this computer."
-msgstr ""
+msgstr "Hautatu esleitutako gailuetatik zein den ordenagailu honen gailu nagusia."
 "Hautatu esleitutako gailuetatik zein den ordenagailu honen gailu nagusia."
 
 #: src/components/computer/Devices.vue:113
@@ -500,11 +500,11 @@ msgstr "Google Maps"
 
 #: src/components/computer/RemoteAccess.vue:33
 msgid "Open connection tunnel"
-msgstr "Konexio-eremuak"
+msgstr "Konexio-tunela ireki"
 
 #: src/components/computer/RemoteAccess.vue:46
 msgid "Execute synchronization"
-msgstr "Simulatu sinkronizazioa"
+msgstr "Sinkronizazioa exekutatu"
 
 #: src/components/computer/RemoteAccess.vue:74
 #: src/pages/configuration/user-profiles/results/detail.vue:59
@@ -514,19 +514,19 @@ msgstr "Erabiltzaile izena"
 
 #: src/components/computer/RemoteAccess.vue:85
 msgid "Enter the remote user to connect with."
-msgstr ""
+msgstr "Sartu konektatzeko urruneko erabiltzailea."
 
 #: src/components/computer/RemoteAccess.vue:92
 msgid "VNC Password"
-msgstr "Pasahitz berria"
+msgstr "VNC pasahitza"
 
 #: src/components/computer/RemoteAccess.vue:104
 msgid "Enter the VNC password of the remote system."
-msgstr ""
+msgstr "Sartu urruneko sistemaren VNC pasahitza."
 
 #: src/components/computer/RemoteAccess.vue:112
 msgid "Are you sure you want to trigger a synchronization on this computer?"
-msgstr "¿Ziur elementu hau kendu nahi duzula?"
+msgstr "¿Ziur ordenagailu honetan sinkronizazio bat abiarazi nahi duzula?"
 
 #: src/components/computer/RemoteAccess.vue:153
 #: src/components/computer/ReplacementInfo.vue:7
@@ -550,43 +550,43 @@ msgstr "Ordenagailua"
 
 #: src/components/computer/RemoteAccess.vue:167
 msgid "Send Ctrl+Alt+Del"
-msgstr ""
+msgstr "Bidali Ctrl+Alt+Supr"
 
 #: src/components/computer/RemoteAccess.vue:175
 msgid "Send Windows Key"
-msgstr ""
+msgstr "Bidali Windows tekla"
 
 #: src/components/computer/RemoteAccess.vue:188
 msgid "Disable Scaling"
-msgstr "Desgaitu"
+msgstr "Eskalatzea desgaitu"
 
 #: src/components/computer/RemoteAccess.vue:189
 msgid "Enable Scaling"
-msgstr "Gaitu"
+msgstr "Eskalatzea gaitu"
 
 #: src/components/computer/RemoteAccess.vue:194
 msgid "VNC Controls"
-msgstr ""
+msgstr "VNC kontrolak"
 
 #: src/components/computer/RemoteAccess.vue:217
 msgid "Send text to remote"
-msgstr ""
+msgstr "Bidali testua urrunekoari"
 
 #: src/components/computer/RemoteAccess.vue:236
 msgid "Sync Clipboard"
-msgstr ""
+msgstr "Sinkronizatu arbelean"
 
 #: src/components/computer/RemoteAccess.vue:251
 msgid "CONNECTED"
-msgstr ""
+msgstr "KONEKTATUTA"
 
 #: src/components/computer/RemoteAccess.vue:251
 msgid "CONNECTING..."
-msgstr ""
+msgstr "KONEKTATZEN..."
 
 #: src/components/computer/RemoteAccess.vue:301
 msgid "Remote RDP Connection"
-msgstr "Gailuak / Konexioa"
+msgstr "Urruneko RDP konexioa"
 
 #: src/components/computer/RemoteAccess.vue:305
 msgid ""
@@ -598,7 +598,7 @@ msgstr ""
 
 #: src/components/computer/RemoteAccess.vue:323
 msgid "Copy command"
-msgstr ""
+msgstr "Kopiatu komandoa"
 
 #: src/components/computer/RemoteAccess.vue:330
 msgid ""
@@ -610,11 +610,11 @@ msgstr ""
 
 #: src/components/computer/RemoteAccess.vue:427
 msgid "Online"
-msgstr ""
+msgstr "Linean"
 
 #: src/components/computer/RemoteAccess.vue:428
 msgid "Offline"
-msgstr ""
+msgstr "Deskonektatuta"
 
 #: src/components/computer/RemoteAccess.vue:429 src/composables/element.js:259
 msgid "Unknown"
@@ -622,44 +622,44 @@ msgstr "Ezezaguna"
 
 #: src/components/computer/RemoteAccess.vue:446
 msgid "Connection error"
-msgstr "Konexioa"
+msgstr "Konexio-errorea"
 
 #: src/components/computer/RemoteAccess.vue:484
 msgid "SSH Connection"
-msgstr "Konexioa"
+msgstr "SSH konexioa"
 
 #: src/components/computer/RemoteAccess.vue:485
 msgid "RDP Connection"
-msgstr "Konexioa"
+msgstr "RDP konexioa"
 
 #: src/components/computer/RemoteAccess.vue:486
 msgid "VNC Connection"
-msgstr "Konexioa"
+msgstr "VNC konexioa"
 
 #: src/components/computer/RemoteAccess.vue:487
 msgid "Trigger Synchronization"
-msgstr "Sinkronizazioa"
+msgstr "Sinkronizazioa abiarazi"
 
 #: src/components/computer/RemoteAccess.vue:488
 msgid "Remote Connection"
-msgstr "Konexioa"
+msgstr "Urruneko konexioa"
 
 #: src/components/computer/RemoteAccess.vue:492
 #: src/components/computer/RemoteAccess.vue:495
 msgid "Connect"
-msgstr "Konexioa"
+msgstr "Konektatu"
 
 #: src/components/computer/RemoteAccess.vue:494
 msgid "Synchronize"
-msgstr "Sinkronizazioa"
+msgstr "Sinkronizatu"
 
 #: src/components/computer/RemoteAccess.vue:549
 msgid "Command copied to clipboard"
-msgstr "Edukia arbelean kopiatu da"
+msgstr "Komandoa arbelean kopiatu da"
 
 #: src/components/computer/RemoteAccess.vue:772
 msgid "Failed to initialize connection"
-msgstr ""
+msgstr "Ezin izan da konexioa hasieratu"
 
 #: src/components/computer/ReplacementInfo.vue:47
 #: src/components/ui/AppMenu.vue:310
@@ -757,7 +757,7 @@ msgstr "Softwarearen alderaketa"
 
 #: src/components/computer/Telemetry.vue:7
 msgid "Telemetry"
-msgstr ""
+msgstr "Telemetria"
 
 #: src/components/computer/Telemetry.vue:31 src/components/ui/AppMenu.vue:544
 #: src/pages/data/computers/results/events.vue:88
@@ -1551,7 +1551,7 @@ msgstr "Politikak"
 #: src/pages/golden-images/releases/results/detail.vue:373
 #: src/pages/golden-images/releases/results/list.vue:68
 msgid "Golden Images"
-msgstr ""
+msgstr "Irudi Nagusiak"
 
 #: src/components/ui/AppMenu.vue:473
 #: src/pages/data/computers/results/hardware.vue:224
@@ -1568,14 +1568,14 @@ msgstr "Konfigurazioak"
 #: src/pages/golden-images/flavours/results/list.vue:86
 #: src/pages/golden-images/flavours/results/list.vue:87
 msgid "Flavours"
-msgstr ""
+msgstr "Zaporeak (Flavours)"
 
 #: src/components/ui/AppMenu.vue:483
 #: src/pages/golden-images/releases/results/detail.vue:377
 #: src/pages/golden-images/releases/results/list.vue:64
 #: src/pages/golden-images/releases/results/list.vue:65
 msgid "Releases"
-msgstr "Askatasuna"
+msgstr "Bertsioak (Releases)"
 
 #: src/components/ui/AppMenu.vue:489
 #: src/pages/golden-images/builds/index.vue:134
@@ -1583,7 +1583,7 @@ msgstr "Askatasuna"
 #: src/pages/golden-images/builds/results/list.vue:260
 #: src/pages/golden-images/builds/results/list.vue:261
 msgid "Builds"
-msgstr ""
+msgstr "Eraikitzeak (Builds)"
 
 #: src/components/ui/AppMenu.vue:499 src/pages/data/attributes/index.vue:51
 #: src/pages/data/attributes/results/detail.vue:176
@@ -2346,21 +2346,21 @@ msgstr "Harpidetza kendu"
 #: src/pages/golden-images/builds/results/list.vue:249
 #: src/pages/golden-images/releases/results/detail.vue:509
 msgid "Queued"
-msgstr ""
+msgstr "Ilaran"
 
 #: src/composables/element.js:262
 #: src/pages/golden-images/builds/results/detail.vue:650
 #: src/pages/golden-images/builds/results/list.vue:250
 #: src/pages/golden-images/releases/results/detail.vue:510
 msgid "Running"
-msgstr ""
+msgstr "Exekutatzen"
 
 #: src/composables/element.js:263 src/pages/golden-images/builds/index.vue:66
 #: src/pages/golden-images/builds/results/detail.vue:652
 #: src/pages/golden-images/builds/results/list.vue:251
 #: src/pages/golden-images/releases/results/detail.vue:511
 msgid "Completed"
-msgstr "Ordenagailua"
+msgstr "Osatua"
 
 #: src/composables/element.js:264
 #: src/pages/golden-images/builds/results/detail.vue:653
@@ -2369,7 +2369,7 @@ msgstr "Ordenagailua"
 #: src/pages/golden-images/releases/results/detail.vue:512
 #: src/pages/golden-images/releases/results/detail.vue:513
 msgid "Failed"
-msgstr ""
+msgstr "Huts egin du"
 
 #: src/composables/listConfig.js:39 src/layouts/MainLayout.vue:40
 #: src/pages/configuration/attribute-sets/results/detail.vue:162
@@ -2816,7 +2816,7 @@ msgstr "Plataformen zerrenda"
 
 #: src/pages/configuration/policies/results/detail.vue:43
 msgid "If you uncheck this field, the policy is disabled for all computers."
-msgstr ""
+msgstr "Eremu hau desmarkatzen baduzu, politika desgaitu egingo da ordenagailu guztientzat."
 "Lauki hau desmarkatzen baduzu, politika ordenagailu guztientzat desgaituko "
 "da.Eremu hau desmarkatzen baduzu, politika desgaituta dago ordenagailu "
 "guztietan."
@@ -2869,7 +2869,7 @@ msgstr "Esklusiboa"
 #: src/pages/configuration/projects/results/detail.vue:21
 #: src/pages/configuration/projects/results/detail.vue:25
 msgid "Export to Local Template"
-msgstr "Txantiloi pertsonalizatua igo"
+msgstr "Txantiloi lokalera esportatu"
 
 #: src/pages/configuration/projects/results/detail.vue:32
 #: src/pages/configuration/projects/results/detail.vue:36
@@ -3128,7 +3128,7 @@ msgstr "Langileak al dira?"
 
 #: src/pages/configuration/user-profiles/results/detail.vue:193
 msgid "Indicates whether the user can enter this administration site."
-msgstr ""
+msgstr "Erabiltzailea administrazio-gune honetan sartu daitekeen adierazten du."
 "Erabiltzailea administrazio-gune honetan sar daitekeen adierazten "
 "du.Erabiltzailea administrazio gune honetan sar daitekeen ala ez adierazten "
 "du."
@@ -3220,7 +3220,7 @@ msgstr "Urtean sisteman ordenagailu fisikoak sartzen dira"
 
 #: src/pages/data/computers/replacement.vue:15
 msgid "This procedure changes status, tags and devices between two computers."
-msgstr ""
+msgstr "Prozedura honek bi ordenagailuren arteko egoera, etiketak eta gailuak aldatzen ditu."
 "Prozedura honek egoera, etiketak eta gailuak bi ordenagailuren artean "
 "trukatzen ditu.Prozedura honek egoera, etiketak eta gailuak aldatzen ditu bi "
 "ordenagailuren artean."
@@ -3692,7 +3692,7 @@ msgstr "Gailuak / Fabrikatzailea"
 
 #: src/pages/devices/devices/replacement.vue:15
 msgid "This procedure switches assigned computers between two devices."
-msgstr ""
+msgstr "Prozedura honek bi gailuren artean esleitutako ordenagailuak aldatzen ditu."
 "Prozedura honek esleitutako ordenagailuak bi gailuren artean trukatzen "
 "ditu.Prozedura honek esleitutako ordenagailuak bi gailuren artean aldatzen "
 "ditu."
@@ -3818,17 +3818,17 @@ msgstr "Iraupena"
 
 #: src/pages/golden-images/builds/index.vue:41
 msgid "Average Image Size"
-msgstr ""
+msgstr "Batez besteko irudi-tamaina"
 
 #: src/pages/golden-images/builds/index.vue:60
 msgid "Metrics by Build Type"
-msgstr ""
+msgstr "Metrikak eraikitze motaren arabera"
 
 #: src/pages/golden-images/builds/index.vue:65
 #: src/pages/golden-images/configs/results/detail.vue:72
 #: src/pages/golden-images/configs/results/list.vue:96
 msgid "Build Type"
-msgstr ""
+msgstr "Eraikitze mota"
 
 #: src/pages/golden-images/builds/index.vue:67
 msgid "Avg Duration"
@@ -3849,7 +3849,7 @@ msgstr "Egoeraren arabera"
 #: src/pages/golden-images/builds/results/detail.vue:6
 #: src/pages/golden-images/builds/results/detail.vue:429
 msgid "Build"
-msgstr ""
+msgstr "Eraikitzea"
 
 #: src/pages/golden-images/builds/results/detail.vue:27
 #: src/pages/golden-images/builds/results/detail.vue:369
@@ -3858,7 +3858,7 @@ msgstr ""
 #: src/pages/golden-images/releases/results/detail.vue:154
 #: src/pages/golden-images/releases/results/detail.vue:318
 msgid "Publish"
-msgstr ""
+msgstr "Argitaratu"
 
 #: src/pages/golden-images/builds/results/detail.vue:36
 #: src/pages/golden-images/builds/results/detail.vue:369
@@ -3867,73 +3867,73 @@ msgstr ""
 #: src/pages/golden-images/releases/results/detail.vue:168
 #: src/pages/golden-images/releases/results/detail.vue:318
 msgid "Unpublish"
-msgstr ""
+msgstr "Desargitaratu"
 
 #: src/pages/golden-images/builds/results/detail.vue:47
 #: src/pages/golden-images/builds/results/list.vue:58
 msgid "Download Image"
-msgstr "Deskargatu"
+msgstr "Irudia deskargatu"
 
 #: src/pages/golden-images/builds/results/detail.vue:50
 #: src/pages/golden-images/builds/results/list.vue:69
 msgid "Download Logs"
-msgstr "Deskarga URL-a"
+msgstr "Erregistroak deskargatu"
 
 #: src/pages/golden-images/builds/results/detail.vue:66
 msgid "Metrics"
-msgstr ""
+msgstr "Metrikak"
 
 #: src/pages/golden-images/builds/results/detail.vue:91
 msgid "Progress"
-msgstr ""
+msgstr "Progresioa"
 
 #: src/pages/golden-images/builds/results/detail.vue:132
 #: src/pages/golden-images/flavours/results/detail.vue:224
 msgid "Flavour"
-msgstr ""
+msgstr "Zaporea"
 
 #: src/pages/golden-images/builds/results/detail.vue:149
 msgid "Task ID"
-msgstr ""
+msgstr "Ataza-IDa"
 
 #: src/pages/golden-images/builds/results/detail.vue:157
 #: src/pages/golden-images/builds/results/list.vue:280
 #: src/pages/golden-images/releases/results/detail.vue:392
 msgid "Started At"
-msgstr "Hasiera data"
+msgstr "Hasiera"
 
 #: src/pages/golden-images/builds/results/detail.vue:164
 #: src/pages/golden-images/builds/results/list.vue:285
 msgid "Finished At"
-msgstr "Amaitu edizioa"
+msgstr "Amaiera"
 
 #: src/pages/golden-images/builds/results/detail.vue:171
 msgid "Image Size"
-msgstr ""
+msgstr "Irudiaren tamaina"
 
 #: src/pages/golden-images/builds/results/detail.vue:208
 msgid "mgi_builder.log"
-msgstr ""
+msgstr "mgi_builder.log"
 
 #: src/pages/golden-images/builds/results/detail.vue:219
 msgid "Filter logs..."
-msgstr "Iragazkia"
+msgstr "Erregistroak iragazi..."
 
 #: src/pages/golden-images/builds/results/detail.vue:234
 msgid "Auto-scroll"
-msgstr ""
+msgstr "Desplazamendu automatikoa"
 
 #: src/pages/golden-images/builds/results/detail.vue:259
 msgid "No matching log entries found."
-msgstr "Ez da erlaziorik aurkitu"
+msgstr "Ez da bat datorren erregistrorik aurkitu."
 
 #: src/pages/golden-images/builds/results/detail.vue:267
 msgid "Waiting for build engine log pipeline..."
-msgstr ""
+msgstr "Eraikitze-motorraren erregistro-bidearen zain..."
 
 #: src/pages/golden-images/builds/results/detail.vue:322
 msgid "Compilation Detail"
-msgstr ""
+msgstr "Eraikitze xehetasuna"
 
 #: src/pages/golden-images/builds/results/detail.vue:352
 msgid "Build deleted successfully."
@@ -3965,11 +3965,11 @@ msgstr "Konpilazioa arrakastaz hasi da!"
 
 #: src/pages/golden-images/builds/results/detail.vue:431
 msgid "Compilation"
-msgstr "Konfigurazioa"
+msgstr "Konpilazioa"
 
 #: src/pages/golden-images/builds/results/detail.vue:651
 msgid "Building"
-msgstr ""
+msgstr "Eraikitzen"
 
 #: src/pages/golden-images/builds/results/detail.vue:654
 msgid "Cancelled"
@@ -3977,7 +3977,7 @@ msgstr "Utzi"
 
 #: src/pages/golden-images/builds/results/detail.vue:655
 msgid "Fetching"
-msgstr ""
+msgstr "Eskuratzen"
 
 #: src/pages/golden-images/builds/results/list.vue:199
 msgid "No logs available for this build."
@@ -3993,91 +3993,91 @@ msgstr "Konfigurazioak"
 #: src/pages/golden-images/flavours/results/list.vue:18
 #: src/pages/golden-images/releases/results/list.vue:18
 msgid "Template ID"
-msgstr "Txantiloi-iturria"
+msgstr "Txantiloi IDa"
 
 #: src/pages/golden-images/configs/results/detail.vue:50
 msgid "No projects available"
-msgstr "Ez dago daturik."
+msgstr "Ez dago proiekturik erabilgarri"
 
 #: src/pages/golden-images/configs/results/detail.vue:84
 #: src/pages/golden-images/configs/results/list.vue:106
 msgid "Image Format"
-msgstr ""
+msgstr "Irudi formatua"
 
 #: src/pages/golden-images/configs/results/detail.vue:98
 #: src/pages/golden-images/configs/results/list.vue:101
 msgid "Base OS"
-msgstr "Oinarrizko URLa"
+msgstr "Oinarrizko SE"
 
 #: src/pages/golden-images/configs/results/detail.vue:115
 msgid "System Blueprint"
-msgstr ""
+msgstr "Sistemaren diseinua (Blueprint)"
 
 #: src/pages/golden-images/configs/results/detail.vue:121
 msgid "Partition Schema (YAML)"
-msgstr ""
+msgstr "Partizio-eskema (YAML)"
 
 #: src/pages/golden-images/configs/results/detail.vue:128
 msgid "Provisioning Script"
-msgstr ""
+msgstr "Hornikuntza-skripta"
 
 #: src/pages/golden-images/configs/results/detail.vue:141
 msgid "Docker Build Configuration"
-msgstr "Inportazioaren konfigurazioa"
+msgstr "Docker eraikitze-konfigurazioa"
 
 #: src/pages/golden-images/configs/results/detail.vue:146
 msgid "Dockerfile"
-msgstr ""
+msgstr "Dockerfile"
 
 #: src/pages/golden-images/configs/results/detail.vue:158
 msgid "Windows QEMU Configuration"
-msgstr "Konfigurazioa"
+msgstr "Windows QEMU konfigurazioa"
 
 #: src/pages/golden-images/configs/results/detail.vue:165
 msgid "Disk Size (GB)"
-msgstr ""
+msgstr "Diskoaren tamaina (GB)"
 
 #: src/pages/golden-images/configs/results/detail.vue:170
 msgid "Disk size must be at least 20 GB"
-msgstr ""
+msgstr "Diskoaren tamainak gutxienez 20 GB izan behar du"
 
 #: src/pages/golden-images/configs/results/detail.vue:178
 msgid "Autounattend Template (XML)"
-msgstr ""
+msgstr "Autounattend txantiloia (XML)"
 
 #: src/pages/golden-images/configs/results/detail.vue:187
 msgid "SetupComplete Script"
-msgstr ""
+msgstr "SetupComplete skripta"
 
 #: src/pages/golden-images/configs/results/detail.vue:266
 msgid "Docker (Linux)"
-msgstr ""
+msgstr "Docker (Linux)"
 
 #: src/pages/golden-images/configs/results/detail.vue:267
 msgid "QEMU Unattended (Windows)"
-msgstr ""
+msgstr "QEMU Unattended (Windows)"
 
 #: src/pages/golden-images/configs/results/detail.vue:268
 msgid "QEMU Preseed/Kickstart (Linux)"
-msgstr ""
+msgstr "QEMU Preseed/Kickstart (Linux)"
 
 #: src/pages/golden-images/configs/results/detail.vue:272
 msgid "RAW (.raw)"
-msgstr ""
+msgstr "RAW (.raw)"
 
 #: src/pages/golden-images/configs/results/detail.vue:273
 msgid "WIM (.wim)"
-msgstr ""
+msgstr "WIM (.wim)"
 
 #: src/pages/golden-images/configs/results/detail.vue:274
 msgid "SquashFS (.squashfs)"
-msgstr ""
+msgstr "SquashFS (.squashfs)"
 
 #: src/pages/golden-images/configs/results/list.vue:92
 #: src/pages/golden-images/flavours/results/list.vue:106
 #: src/pages/golden-images/releases/results/list.vue:84
 msgid "Config"
-msgstr "Berretsi"
+msgstr "Konfigurazioa"
 
 #: src/pages/golden-images/flavours/index.vue:17
 msgid "Flavours / Enabled"
@@ -4085,55 +4085,55 @@ msgstr "Inplementazioak / Gaituta"
 
 #: src/pages/golden-images/flavours/results/detail.vue:46
 msgid "Flavour Name"
-msgstr "Ordenagailuaren izena"
+msgstr "Zaporearen izena"
 
 #: src/pages/golden-images/flavours/results/detail.vue:58
 msgid "System Hostname"
-msgstr ""
+msgstr "Sistemaren ostalari-izena"
 
 #: src/pages/golden-images/flavours/results/detail.vue:100
 msgid "Credentials & Localization"
-msgstr ""
+msgstr "Kredentzialak eta kokapena"
 
 #: src/pages/golden-images/flavours/results/detail.vue:107
 msgid "Default User"
-msgstr "Gailu lehenetsia"
+msgstr "Erabiltzaile lehenetsia"
 
 #: src/pages/golden-images/flavours/results/detail.vue:117
 msgid "Default Password"
-msgstr "Pasahitz berria"
+msgstr "Pasahitz lehenetsia"
 
 #: src/pages/golden-images/flavours/results/detail.vue:128
 msgid "System Timezone"
-msgstr ""
+msgstr "Sistemaren ordu-eremua"
 
 #: src/pages/golden-images/flavours/results/detail.vue:140
 msgid "Associated Tags"
-msgstr "Etiketak erabilgarri"
+msgstr "Lotutako etiketak"
 
 #: src/pages/golden-images/flavours/results/detail.vue:166
 msgid "Keyboard & System Console"
-msgstr ""
+msgstr "Teklatua eta sistemaren kontsola"
 
 #: src/pages/golden-images/flavours/results/detail.vue:173
 msgid "Keymap"
-msgstr ""
+msgstr "Teklatu-mapa (Keymap)"
 
 #: src/pages/golden-images/flavours/results/detail.vue:181
 msgid "Keyboard Model"
-msgstr "Ereduaren arabera"
+msgstr "Teklatu-eredua"
 
 #: src/pages/golden-images/flavours/results/detail.vue:189
 msgid "Charmap"
-msgstr ""
+msgstr "Karaktere-mapa (Charmap)"
 
 #: src/pages/golden-images/flavours/results/detail.vue:197
 msgid "Codeset"
-msgstr "Kodea"
+msgstr "Kode multzoa"
 
 #: src/pages/golden-images/flavours/results/list.vue:111
 msgid "Hostname"
-msgstr "Erabiltzaile izena"
+msgstr "Ostalari-izena"
 
 #: src/pages/golden-images/releases/results/detail.vue:46
 msgid "Release Version"
@@ -4149,7 +4149,7 @@ msgstr "Irudien konpilazioak (Builds)"
 
 #: src/pages/golden-images/releases/results/detail.vue:84
 msgid "Manage, monitor, and launch new build tasks for this release version."
-msgstr ""
+msgstr "Kudeatu, monitorizatu eta abiarazi eraikitze-zeregin berriak argitalpen-bertsio honetarako."
 "Kudeatu, monitorizatu eta abiarazi konpilazio ataza berriak bertsio "
 "honetarako."
 
