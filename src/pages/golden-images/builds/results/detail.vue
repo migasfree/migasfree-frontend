@@ -157,20 +157,22 @@
             </div>
           </q-card-section>
 
-          <q-separator />
+          <template v-if="isFinishedStatus(build.status)">
+            <q-separator />
 
-          <q-card-actions class="q-pa-md justify-end">
-            <q-btn
-              flat
-              round
-              :icon="appIcon('delete')"
-              :color="$q.dark.isActive ? 'white' : 'negative'"
-              :class="{ 'reversed-delete': $q.dark.isActive }"
-              @click="confirmRemove = true"
-            >
-              <q-tooltip>{{ $gettext('Delete') }}</q-tooltip>
-            </q-btn>
-          </q-card-actions>
+            <q-card-actions class="q-pa-md justify-end">
+              <q-btn
+                flat
+                round
+                :icon="appIcon('delete')"
+                :color="$q.dark.isActive ? 'white' : 'negative'"
+                :class="{ 'reversed-delete': $q.dark.isActive }"
+                @click="confirmRemove = true"
+              >
+                <q-tooltip>{{ $gettext('Delete') }}</q-tooltip>
+              </q-btn>
+            </q-card-actions>
+          </template>
         </q-card>
       </div>
 

@@ -3,6 +3,7 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <TableResults
+      ref="tableResults"
       :title="title"
       :columns="columns"
       :model="model"
@@ -62,9 +63,21 @@
           size="sm"
           color="primary"
           :icon="appIcon('doc')"
+          class="q-mr-sm"
           @click.stop="downloadLogs(props.row.id)"
         >
           <q-tooltip>{{ $gettext('Download Logs') }}</q-tooltip>
+        </q-btn>
+        <q-btn
+          v-if="isFinishedStatus(props.row.status)"
+          flat
+          round
+          size="sm"
+          color="negative"
+          :icon="appIcon('delete')"
+          @click.stop="confirmRemove(props.row.id)"
+        >
+          <q-tooltip>{{ $gettext('Delete') }}</q-tooltip>
         </q-btn>
       </template>
     </TableResults>
@@ -72,7 +85,9 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
+import { useQuasar } from 'quasar'
 import { useListConfig } from 'composables/listConfig'
 import { api } from 'boot/axios'
 
@@ -86,6 +101,39 @@ import { appIcon } from 'composables/element'
 
 const { $gettext } = useGettext()
 const uiStore = useUiStore()
+const $q = useQuasar()
+
+const tableResults = ref(null)
+
+const isFinishedStatus = (status) => {
+  if (!status) return false
+  const s = status.toLowerCase()
+  return ['completed', 'failed', 'cancelled', 'error'].includes(s)
+}
+
+const confirmRemove = (buildId) => {
+  $q.dialog({
+    message: $gettext('Are you sure you want to remove this item?'),
+    ok: {
+      color: 'negative',
+      label: $gettext('Delete'),
+      icon: appIcon('delete'),
+    },
+    cancel: {
+      flat: true,
+      label: $gettext('Cancel'),
+    },
+    persistent: true,
+  }).onOk(async () => {
+    try {
+      await api.delete(`/api/v1/token/mgi/build/${buildId}/`)
+      uiStore.notifySuccess($gettext('Item deleted!'))
+      tableResults.value.loadItems()
+    } catch (error) {
+      uiStore.notifyError(error)
+    }
+  })
+}
 
 const downloadLogs = async (buildId) => {
   try {
@@ -112,33 +160,42 @@ const routes = {
 const model = 'mgi/build'
 
 const getStatusColor = (status) => {
+  if (!status) return 'grey-7'
+  const s = status.toLowerCase()
   const colors = {
     queued: 'orange-7',
     running: 'blue-8',
     completed: 'green-8',
     failed: 'red-8',
+    error: 'red-8',
   }
-  return colors[status] || 'grey-7'
+  return colors[s] || 'grey-7'
 }
 
 const getStatusIcon = (status) => {
+  if (!status) return 'mdi-help-circle'
+  const s = status.toLowerCase()
   const icons = {
     queued: 'mdi-clock-outline',
     running: 'mdi-sync',
     completed: 'mdi-check-circle-outline',
     failed: 'mdi-alert-circle-outline',
+    error: 'mdi-alert-circle-outline',
   }
-  return icons[status] || 'mdi-help-circle'
+  return icons[s] || 'mdi-help-circle'
 }
 
 const getStatusLabel = (status) => {
+  if (!status) return ''
+  const s = status.toLowerCase()
   const labels = {
     queued: $gettext('Queued'),
     running: $gettext('Running'),
     completed: $gettext('Completed'),
     failed: $gettext('Failed'),
+    error: $gettext('Failed'),
   }
-  return labels[status] || status
+  return labels[s] || status
 }
 
 const { title, breadcrumbs, columns } = useListConfig(
