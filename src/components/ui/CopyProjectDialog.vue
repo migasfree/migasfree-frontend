@@ -468,15 +468,45 @@ watch(
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.25);
+  box-shadow: 0 4px 12px rgba(var(--brand-primary-rgb), 0.2);
 }
 
 .bg-primary-gradient {
-  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+  background: linear-gradient(
+    135deg,
+    var(--brand-primary) 0%,
+    var(--brand-secondary) 100%
+  );
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #1976d2 0%, #0d47a1 100%);
+  background: linear-gradient(
+    135deg,
+    var(--brand-primary) 0%,
+    var(--brand-secondary) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme='dark'] .icon-wrapper {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme='dark'] .bg-primary-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--neutral-300) 0%,
+    var(--neutral-100) 100%
+  );
+}
+
+[data-theme='dark'] .text-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--brand-primary) 0%,
+    var(--neutral-700) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -514,15 +544,19 @@ watch(
   transition: background 0.15s ease;
 }
 .item-row:hover {
-  background: rgba(25, 118, 210, 0.04);
+  background: rgba(var(--brand-primary-rgb), 0.05);
+}
+
+[data-theme='dark'] .item-row:hover {
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .bg-primary-light {
-  background-color: rgba(25, 118, 210, 0.05);
+  background-color: rgba(var(--brand-primary-rgb), 0.05);
 }
 
 .border-primary-light {
-  border: 1px solid rgba(25, 118, 210, 0.12);
+  border: 1px solid rgba(var(--brand-primary-rgb), 0.12);
 }
 
 .premium-progress {
@@ -533,12 +567,19 @@ watch(
 .submit-copy-btn {
   width: 56px;
   height: 56px;
-  box-shadow: 0 4px 14px rgba(25, 118, 210, 0.3);
+  box-shadow: 0 4px 14px rgba(var(--brand-primary-rgb), 0.3);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .submit-copy-btn:hover:not([disabled]) {
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
+  box-shadow: 0 6px 20px rgba(var(--brand-primary-rgb), 0.4);
+}
+
+[data-theme='dark'] .submit-copy-btn {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+[data-theme='dark'] .submit-copy-btn:hover:not([disabled]) {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
 }
 
 .premium-scrollbar::-webkit-scrollbar {
