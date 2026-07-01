@@ -486,6 +486,7 @@ watch(
     var(--brand-secondary) 100%
   );
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -508,6 +509,7 @@ watch(
     var(--neutral-700) 100%
   );
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
