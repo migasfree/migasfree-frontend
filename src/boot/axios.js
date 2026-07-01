@@ -79,8 +79,13 @@ export default boot(({ app, router }) => {
     },
 
     (error) => {
-      if (error.code === 'ERR_CANCELED') {
-        console.debug('Cancelled request')
+      if (
+        axios.isCancel(error) ||
+        error.code === 'ERR_CANCELED' ||
+        error.name === 'CanceledError' ||
+        error.message === 'canceled'
+      ) {
+        console.debug('Cancelled request:', error.message)
         return Promise.reject(error)
       }
 

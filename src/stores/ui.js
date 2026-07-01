@@ -19,6 +19,15 @@ export const useUiStore = defineStore('ui', () => {
   }
 
   const notifyError = (error) => {
+    if (
+      error?.__CANCEL__ ||
+      error?.code === 'ERR_CANCELED' ||
+      error?.name === 'CanceledError' ||
+      error?.message === 'canceled'
+    ) {
+      return
+    }
+
     let message = typeof error === 'string' ? error : (error?.message ?? '')
 
     const status = error?.response?.status
