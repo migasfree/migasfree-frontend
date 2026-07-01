@@ -23,6 +23,7 @@ Use `yarn` for package management.
 - **Run E2E Tests**: `yarn cypress:run`
 - **Lint Code**: `yarn lint`
 - **Format Code**: `yarn format`
+- **Internationalization (i18n)**: `yarn gettext:all` (Extracts new strings, auto-translates empty/fuzzy entries, and compiles them).
 
 ## 3. Code Style & Conventions
 
@@ -32,6 +33,7 @@ Use `yarn` for package management.
 - **CSS**: Use Quasar utility classes (`q-pa-md`, `text-primary`) and SASS variables found in `src/css/quasar.variables.sass`.
 - **Icons**: Material Design Icons (`mdi-*`) are the standard.
 - **Strict Mode**: Avoid `any` types (if using TS, though this is JS) and implicit conversions.
+- **Internationalization**: Use `vue-gettext` with `$gettext()`. Run `yarn gettext:all` to automatically extract, translate (handling fuzzy strings), and compile after adding new UI strings.
 
 ## 4. Architecture Standards
 
