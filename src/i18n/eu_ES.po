@@ -856,9 +856,8 @@ msgid "Last Synchronization"
 msgstr "Sinkronizazioa"
 
 #: src/components/computer/Telemetry.vue:305
-#, fuzzy
 msgid "Sync User"
-msgstr "Sinkronizazioak"
+msgstr "Sinkronizatu erabiltzailea"
 
 #: src/components/computer/Telemetry.vue:374
 #: src/components/computer/Telemetry.vue:383 src/components/ui/AppMenu.vue:528
@@ -1678,9 +1677,8 @@ msgid "Notifications"
 msgstr "Jakinarazpenak"
 
 #: src/components/ui/CopyProjectDialog.vue:34
-#, fuzzy
 msgid "Source Project"
-msgstr "Dendak / Proiektua"
+msgstr "Iturria Proiektua"
 
 #: src/components/ui/CopyProjectDialog.vue:75
 msgid "No items found in source project."
@@ -1692,23 +1690,20 @@ msgid "Select All"
 msgstr "Hautatu dena"
 
 #: src/components/ui/CopyProjectDialog.vue:114
-#, fuzzy
 msgid "Destination Project"
-msgstr "Migrazioak / Proiektua"
+msgstr "Helmuga Proiektua"
 
 #: src/components/ui/CopyProjectDialog.vue:132
 msgid "Destination project must be different from source project"
 msgstr "Helmuga-proiektuak sorburu-proiektuaren desberdina izan behar du"
 
 #: src/components/ui/CopyProjectDialog.vue:147
-#, fuzzy
 msgid "Copying..."
-msgstr "Lanean..."
+msgstr "Kopiatzen..."
 
 #: src/components/ui/CopyProjectDialog.vue:384
-#, fuzzy
 msgid "%{count} items copied successfully."
-msgstr "Konpilazioa arrakastaz hasi da!"
+msgstr "%{count} elementu behar bezala kopiatu dira."
 
 #: src/components/ui/CopyProjectDialog.vue:393
 msgid "Skipped (already existed in target): %{names}"
@@ -3350,9 +3345,8 @@ msgid "Telemetry"
 msgstr "Telemetria"
 
 #: src/pages/data/computers/results/detail.vue:206
-#, fuzzy
 msgid "No Software Inventory"
-msgstr "Software Inbentarioaren arabera"
+msgstr "Ez dago software inbentariorik"
 
 #: src/pages/data/computers/results/detail.vue:210
 msgid "This computer does not have software inventory enabled."
@@ -3832,24 +3826,20 @@ msgid "Driver"
 msgstr "Gidaria"
 
 #: src/pages/devices/drivers/results/list.vue:19
-#, fuzzy
 msgid "Copy Drivers"
-msgstr "Gidariak"
+msgstr "Kopiatu kontrolatzaileak"
 
 #: src/pages/devices/drivers/results/list.vue:40
-#, fuzzy
 msgid "Copy Drivers to Project"
-msgstr "Dendak / Proiektua"
+msgstr "Kopiatu kontrolatzaileak proiektuan"
 
 #: src/pages/devices/drivers/results/list.vue:41
-#, fuzzy
 msgid "Drivers to Copy"
-msgstr "Gidarien zerrenda"
+msgstr "Kopiatu beharreko kontrolatzaileak"
 
 #: src/pages/devices/drivers/results/list.vue:69
-#, fuzzy
 msgid "Unnamed"
-msgstr "Erabiltzaile izena"
+msgstr "Izenik gabe"
 
 #: src/pages/devices/drivers/results/list.vue:119
 msgid "Drivers List"
@@ -4182,7 +4172,7 @@ msgstr "Konfigurazioa"
 
 #: src/pages/golden-images/flavours/index.vue:17
 msgid "Flavours / Enabled"
-msgstr "Inplementazioak / Gaituta"
+msgstr "Zaporeak / Gaituta"
 
 #: src/pages/golden-images/flavours/results/detail.vue:46
 msgid "Flavour Name"
@@ -4293,9 +4283,8 @@ msgstr "Mesedez, sartu zure kredentzialak"
 
 #: src/pages/release/applications/index.vue:13
 #: src/pages/release/applications/results/list.vue:20
-#, fuzzy
 msgid "Copy Applications"
-msgstr "Aplikazioak"
+msgstr "Kopiatu Aplikazioak"
 
 #: src/pages/release/applications/index.vue:23
 msgid "Applications / Category"
@@ -4311,15 +4300,13 @@ msgstr "Aplikazioak / Proiektua"
 
 #: src/pages/release/applications/index.vue:54
 #: src/pages/release/applications/results/list.vue:46
-#, fuzzy
 msgid "Copy Applications to Project"
-msgstr "Aplikazioak / Proiektua"
+msgstr "Kopiatu aplikazioak proiektuan"
 
 #: src/pages/release/applications/index.vue:55
 #: src/pages/release/applications/results/list.vue:47
-#, fuzzy
 msgid "Applications to Copy"
-msgstr "Aplikazioak / Kategoria"
+msgstr "Kopiatzeko aplikazioak"
 
 #: src/pages/release/applications/results/detail.vue:39
 #: src/pages/release/applications/results/list.vue:130
@@ -4387,17 +4374,16 @@ msgstr "Aplikazio-kategorien zerrenda"
 
 #: src/pages/release/deployments/index.vue:13
 #: src/pages/release/deployments/results/list.vue:20
-#, fuzzy
 msgid "Copy Deployments"
-msgstr "Hedapenak"
+msgstr "Kopiatu hedapenak"
 
 #: src/pages/release/deployments/index.vue:23
 msgid "Enabled Deployments"
-msgstr "Gaitutako inplementazioak"
+msgstr "Gaitutako hedapenak"
 
 #: src/pages/release/deployments/index.vue:32
 msgid "Deployments / Enabled"
-msgstr "Inplementazioak / Gaituta"
+msgstr "Hedapenak / Gaituta"
 
 #: src/pages/release/deployments/index.vue:41
 msgid "Deployments / Schedule"
@@ -4405,15 +4391,13 @@ msgstr "Hedapenak / Programazioa"
 
 #: src/pages/release/deployments/index.vue:53
 #: src/pages/release/deployments/results/list.vue:74
-#, fuzzy
 msgid "Copy Deployments to Project"
-msgstr "Aplikazioak / Proiektua"
+msgstr "Kopiatu hedapenak proiektuan"
 
 #: src/pages/release/deployments/index.vue:54
 #: src/pages/release/deployments/results/list.vue:75
-#, fuzzy
 msgid "Deployments to Copy"
-msgstr "Inplementazioen zerrenda"
+msgstr "Kopiatzeko hedapenak"
 
 #: src/pages/release/deployments/results/detail.vue:22
 #: src/pages/release/deployments/results/detail.vue:26
@@ -4464,19 +4448,16 @@ msgid "Package Set"
 msgstr "Pakete multzoa"
 
 #: src/pages/release/package-sets/results/list.vue:20
-#, fuzzy
 msgid "Copy Package Sets"
-msgstr "Pakete multzoak"
+msgstr "Kopiatu pakete multzoak"
 
 #: src/pages/release/package-sets/results/list.vue:29
-#, fuzzy
 msgid "Copy Package Sets to Project"
-msgstr "Paketeak / Proiektua"
+msgstr "Kopiatu pakete multzoak proiektuan"
 
 #: src/pages/release/package-sets/results/list.vue:30
-#, fuzzy
 msgid "Package Sets to Copy"
-msgstr "Pakete multzoen zerrenda"
+msgstr "Kopiatzeko pakete multzoak"
 
 #: src/pages/release/package-sets/results/list.vue:94
 msgid "Package Sets List"
