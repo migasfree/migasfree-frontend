@@ -7,7 +7,13 @@
       :icon="titleIcon"
       :add-route="addRoute"
       :has-export-button="false"
-    />
+    >
+      <template #actions>
+        <q-btn color="secondary" :icon="appIcon('copy')" @click="openCopyModal">
+          <q-tooltip>{{ $gettext('Copy Deployments') }}</q-tooltip>
+        </q-btn>
+      </template>
+    </Header>
 
     <SearchFilter v-model="searchText" class="q-pb-md" @search="search" />
 
@@ -39,6 +45,15 @@
         />
       </div>
     </div>
+
+    <!-- Copy Deployments Dialog -->
+    <CopyDeploymentDialog
+      v-model="showCopyModal"
+      :icon="titleIcon"
+      :get-items="getDeploymentsToCopy"
+      :copy-item="copyDeployment"
+      @copied="onDeploymentsCopied"
+    />
   </q-page>
 </template>
 
@@ -53,8 +68,10 @@ import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
 import PieChart from 'components/chart/Pie'
+import CopyDeploymentDialog from 'components/ui/CopyDeploymentDialog'
 
 import { appIcon, modelIcon } from 'composables/element'
+import { useCopyDeployments } from 'composables/copyDeployments'
 
 const router = useRouter()
 const { $gettext } = useGettext()
@@ -62,6 +79,13 @@ const { $gettext } = useGettext()
 const titleIcon = modelIcon('deployments')
 const title = $gettext('Deployments')
 useMeta({ title })
+
+const { showCopyModal, openCopyModal, getDeploymentsToCopy, copyDeployment } =
+  useCopyDeployments()
+
+const onDeploymentsCopied = () => {
+  // Stats auto-refresh on next poll; no manual reload needed for pie charts
+}
 
 const searchText = ref('')
 const addRoute = 'deployment-add'

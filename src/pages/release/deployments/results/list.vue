@@ -3,12 +3,23 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <TableResults
+      ref="tableResultsRef"
       :title="title"
       :columns="columns"
       :model="model"
       :routes="routes"
       :more-filters="moreFilters"
     >
+      <template #header-actions>
+        <q-btn
+          class="q-ma-xs"
+          color="secondary"
+          :icon="appIcon('copy')"
+          @click="openCopyModal"
+        >
+          <q-tooltip>{{ $gettext('Copy Deployments') }}</q-tooltip>
+        </q-btn>
+      </template>
       <template #actions="{ props }">
         <q-btn
           v-if="props.row.source === 'I'"
@@ -55,11 +66,20 @@
         </template>
       </template>
     </TableResults>
+
+    <!-- Copy Deployments Dialog -->
+    <CopyDeploymentDialog
+      v-model="showCopyModal"
+      :icon="modelIcon('deployments')"
+      :get-items="getDeploymentsToCopy"
+      :copy-item="copyDeployment"
+      @copied="onDeploymentsCopied"
+    />
   </q-page>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useListConfig } from 'composables/listConfig'
 
@@ -72,11 +92,22 @@ import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 import ScheduleProgress from 'components/deployment/ScheduleProgress'
 
-import { appIcon } from 'composables/element'
+import CopyDeploymentDialog from 'components/ui/CopyDeploymentDialog'
+
+import { appIcon, modelIcon } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'
+import { useCopyDeployments } from 'composables/copyDeployments'
 
 const { $gettext } = useGettext()
 const uiStore = useUiStore()
+
+const tableResultsRef = ref(null)
+const { showCopyModal, openCopyModal, getDeploymentsToCopy, copyDeployment } =
+  useCopyDeployments()
+
+const onDeploymentsCopied = () => {
+  tableResultsRef.value?.loadItems()
+}
 
 const routes = {
   add: 'deployment-add',
