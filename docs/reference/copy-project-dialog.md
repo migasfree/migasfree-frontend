@@ -114,3 +114,39 @@ const parseDeploymentResult = (result) => {
   return { success: true, skipped: false, skippedName: null }
 }
 ```
+
+### Custom Parsing & Slot Case with Extra Metadata (Package Sets)
+
+Uses custom result mapping similar to Deployments, but renders inline metadata (the originating store name) inside the item selection row.
+
+```html
+<CopyProjectDialog
+  v-model="showCopyModal"
+  :icon="modelIcon('package-sets')"
+  :title="$gettext('Copy Package Sets to Project')"
+  :items-label="$gettext('Package Sets to Copy')"
+  :get-items="getPackageSetsToCopy"
+  :copy-item="copyPackageSet"
+  :parse-item-result="parsePackageSetResult"
+  @copied="onPackageSetsCopied"
+>
+  <template #item-extra="{ item }">
+    <span v-if="item.store" class="text-caption text-grey-6 q-ml-sm">
+      ({{ item.store }})
+    </span>
+  </template>
+</CopyProjectDialog>
+```
+
+```javascript
+const parsePackageSetResult = (result) => {
+  if (result && result.created === false) {
+    return {
+      success: false,
+      skipped: true,
+      skippedName: result.skipped_name || '',
+    }
+  }
+  return { success: true, skipped: false, skippedName: null }
+}
+```
