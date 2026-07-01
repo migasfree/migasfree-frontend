@@ -17,101 +17,105 @@
         </div>
       </div>
 
-      <!-- Hero Section: Name & FQDN -->
-      <div class="glass-panel q-pa-md q-mb-md">
-        <div class="row items-center no-wrap full-width">
-          <div class="col overflow-hidden">
-            <!-- Edit Mode -->
-            <div
-              v-if="isSuperUser && editing"
-              class="row items-center no-wrap full-width"
-            >
-              <q-input
-                ref="nameInput"
-                v-model="editValue"
-                dense
-                borderless
-                class="col name-input"
-                :placeholder="$gettext('Computer Name')"
-                @keyup.enter="saveName"
-                @keyup.esc="cancelEdit"
-              />
-              <div class="row no-wrap q-ml-sm">
-                <q-btn
-                  flat
-                  round
-                  dense
-                  icon="check"
-                  color="positive"
-                  :loading="loading"
-                  @click="saveName"
+      <!-- Hero Section & Status Row -->
+      <div class="row q-col-gutter-md q-mb-md items-stretch">
+        <!-- Hero Section: Name & FQDN -->
+        <div class="col-12 col-sm-6">
+          <div
+            class="glass-panel q-pa-md full-height flex column justify-center"
+          >
+            <div class="row items-center no-wrap full-width">
+              <div class="col overflow-hidden">
+                <!-- Edit Mode -->
+                <div
+                  v-if="isSuperUser && editing"
+                  class="row items-center no-wrap full-width"
                 >
-                  <q-tooltip>{{ $gettext('Save') }}</q-tooltip>
-                </q-btn>
-                <q-btn
-                  flat
-                  round
-                  dense
-                  icon="close"
-                  color="negative"
-                  @click="cancelEdit"
-                >
-                  <q-tooltip>{{ $gettext('Cancel') }}</q-tooltip>
-                </q-btn>
-              </div>
-            </div>
+                  <q-input
+                    ref="nameInput"
+                    v-model="editValue"
+                    dense
+                    borderless
+                    class="col name-input"
+                    :placeholder="$gettext('Computer Name')"
+                    @keyup.enter="saveName"
+                    @keyup.esc="cancelEdit"
+                  />
+                  <div class="row no-wrap q-ml-sm">
+                    <q-btn
+                      flat
+                      round
+                      dense
+                      icon="check"
+                      color="positive"
+                      :loading="loading"
+                      @click="saveName"
+                    >
+                      <q-tooltip>{{ $gettext('Save') }}</q-tooltip>
+                    </q-btn>
+                    <q-btn
+                      flat
+                      round
+                      dense
+                      icon="close"
+                      color="negative"
+                      @click="cancelEdit"
+                    >
+                      <q-tooltip>{{ $gettext('Cancel') }}</q-tooltip>
+                    </q-btn>
+                  </div>
+                </div>
 
-            <!-- Display Mode -->
-            <div v-else class="row items-center no-wrap name-display-group">
-              <div class="text-h4 text-weight-medium q-mr-sm">
-                <TextTooltip :text="name" />
-              </div>
-              <q-btn
-                v-if="isSuperUser"
-                flat
-                round
-                dense
-                icon="mdi-pencil-outline"
-                class="edit-trigger opacity-40"
-                @click="startEdit"
-              >
-                <q-tooltip>{{ $gettext('Edit name') }}</q-tooltip>
-              </q-btn>
-              <CopyToClipboard
-                :content="name"
-                size="md"
-                flat
-                class="opacity-40"
-              />
-            </div>
+                <!-- Display Mode -->
+                <div v-else class="row items-center no-wrap name-display-group">
+                  <div class="text-h4 text-weight-medium q-mr-sm">
+                    <TextTooltip :text="name" />
+                  </div>
+                  <q-btn
+                    v-if="isSuperUser"
+                    flat
+                    round
+                    dense
+                    icon="mdi-pencil-outline"
+                    class="edit-trigger opacity-40"
+                    @click="startEdit"
+                  >
+                    <q-tooltip>{{ $gettext('Edit name') }}</q-tooltip>
+                  </q-btn>
+                  <CopyToClipboard
+                    :content="name"
+                    size="md"
+                    flat
+                    class="opacity-40"
+                  />
+                </div>
 
-            <!-- FQDN -->
-            <div v-if="fqdn" class="row items-center no-wrap q-mt-sm">
-              <q-icon
-                name="mdi-dns-outline"
-                size="16px"
-                class="q-mr-xs opacity-50"
-                aria-hidden="true"
-              />
-              <TextTooltip
-                :text="fqdn"
-                text-class="text-subtitle1 opacity-70"
-              />
-              <CopyToClipboard
-                :content="fqdn"
-                size="sm"
-                flat
-                class="q-ml-xs opacity-30"
-              />
+                <!-- FQDN -->
+                <div v-if="fqdn" class="row items-center no-wrap q-mt-sm">
+                  <q-icon
+                    name="mdi-dns-outline"
+                    size="16px"
+                    class="q-mr-xs opacity-50"
+                    aria-hidden="true"
+                  />
+                  <TextTooltip
+                    :text="fqdn"
+                    text-class="text-subtitle1 opacity-70"
+                  />
+                  <CopyToClipboard
+                    :content="fqdn"
+                    size="sm"
+                    flat
+                    class="q-ml-xs opacity-30"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Other editable fields -->
-      <div class="row q-col-gutter-md">
         <!-- Status -->
-        <div class="col-12 col-sm-6">
+        <div class="col-12 col-sm-6 flex items-center">
           <q-select
             :model-value="status"
             emit-value
@@ -122,6 +126,7 @@
             :options="statusOptions"
             :readonly="!isSuperUser"
             behavior="menu"
+            class="full-width"
             @update:model-value="emit('update:status', $event)"
           >
             <template #option="scope">
@@ -159,9 +164,12 @@
             </template>
           </q-select>
         </div>
+      </div>
 
+      <!-- Other editable fields -->
+      <div class="row q-col-gutter-md">
         <!-- Tags -->
-        <div class="col-12 col-sm-6">
+        <div class="col-12">
           <FilteredMultiSelect
             :model-value="tags"
             :label="$gettext('Tags')"

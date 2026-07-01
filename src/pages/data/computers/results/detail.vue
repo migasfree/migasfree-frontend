@@ -61,94 +61,173 @@
       </template>
 
       <template #fields>
-        <div class="row q-pb-md q-col-gutter-md">
-          <div class="col-12 col-md-6 col-sm-12 col-xs-12">
-            <ComputerIdentity
-              :cid="element.id"
-              :name="element.name"
-              :fqdn="element.fqdn"
-              :created-at="element.created_at"
-              :status="element.status"
-              :comment="element.comment"
-              :tags="element.tags"
-              :status-options="statusOptions"
-              :is-super-user="isSuperUser"
-              @update:name="(val) => (element.name = val)"
-              @update:status="(val) => (element.status = val)"
-              @update:comment="(val) => (element.comment = val)"
-              @update:tags="(val) => (element.tags = val)"
-            />
-          </div>
+        <!-- Tabs Header -->
+        <q-tabs
+          v-model="activeTab"
+          dense
+          class="computer-tabs text-grey-7 q-mb-md"
+          active-color="primary"
+          indicator-color="primary"
+          align="left"
+          narrow-indicator
+          no-caps
+        >
+          <q-tab
+            name="general"
+            :label="$gettext('General')"
+            :icon="appIcon('identification')"
+          />
+          <q-tab
+            name="hardware"
+            :label="$gettext('Hardware')"
+            :icon="appIcon('hardware')"
+          />
+          <q-tab
+            name="telemetry"
+            :label="$gettext('Telemetry')"
+            :icon="appIcon('telemetry')"
+          />
+          <q-tab
+            name="software"
+            :label="$gettext('Software')"
+            :icon="modelIcon('packages')"
+          />
+        </q-tabs>
 
-          <div class="col-12 col-md-6 col-sm-12 col-xs-12">
-            <ComputerHardwareResume
-              :cid="element.id"
-              :last-hardware-capture="showDate(element.last_hardware_capture)"
-              :product="element.product"
-              :product-system="element.product_system"
-              :architecture="element.architecture"
-              :uuid="element.uuid"
-              :cpu="element.cpu"
-              :ram="element.ram"
-              :storage="element.storage"
-              :disks="element.disks"
-              :mac-address="element.mac_address"
-            />
-          </div>
-        </div>
+        <q-separator class="q-mb-lg" />
 
-        <div class="row q-pb-md q-col-gutter-md">
-          <div class="col-12 col-md-6 col-sm-12 col-xs-12">
-            <ComputerTelemetry
-              :cid="element.id"
-              :project="element.project"
-              :platform="
-                element.project && element.project.platform
-                  ? element.project.platform
-                  : null
-              "
-              :ip-address="element.ip_address"
-              :forwarded-ip-address="element.forwarded_ip_address"
-              :sync-user="element.sync_user"
-              :sync-info="syncInfo"
-              :loading-sync="loadingSync"
-              :attributes="onlyAttributes"
-              :attribute-sets="onlyAttributeSets"
-              :domains="onlyDomains"
-              :errors="errors"
-              :faults="faults"
-            />
-          </div>
-
-          <!-- Card 4: Software & Devices -->
-          <div class="col-12 col-md-6 col-sm-12 col-xs-12">
-            <div class="q-gutter-y-md">
-              <div v-if="element.has_software_inventory">
-                <ComputerSoftware :cid="element.id" />
+        <!-- Tab Panels -->
+        <q-tab-panels
+          v-model="activeTab"
+          animated
+          class="transparent q-pa-none"
+        >
+          <!-- Tab 1: General -->
+          <q-tab-panel name="general" class="q-pa-none">
+            <div class="row q-col-gutter-y-md">
+              <div class="col-12">
+                <ComputerIdentity
+                  :cid="element.id"
+                  :name="element.name"
+                  :fqdn="element.fqdn"
+                  :created-at="element.created_at"
+                  :status="element.status"
+                  :comment="element.comment"
+                  :tags="element.tags"
+                  :status-options="statusOptions"
+                  :is-super-user="isSuperUser"
+                  @update:name="(val) => (element.name = val)"
+                  @update:status="(val) => (element.status = val)"
+                  @update:comment="(val) => (element.comment = val)"
+                  @update:tags="(val) => (element.tags = val)"
+                />
               </div>
 
-              <div v-if="element.id">
+              <div v-if="markers.length > 0" class="col-12">
+                <ComputerLocations :markers="markers" />
+              </div>
+            </div>
+          </q-tab-panel>
+
+          <!-- Tab 2: Hardware -->
+          <q-tab-panel name="hardware" class="q-pa-none">
+            <div class="row q-col-gutter-md justify-center">
+              <div class="col-12 col-md-6 col-sm-12 col-xs-12">
+                <ComputerHardwareResume
+                  :cid="element.id"
+                  :last-hardware-capture="
+                    showDate(element.last_hardware_capture)
+                  "
+                  :product="element.product"
+                  :product-system="element.product_system"
+                  :architecture="element.architecture"
+                  :uuid="element.uuid"
+                  :cpu="element.cpu"
+                  :ram="element.ram"
+                  :storage="element.storage"
+                  :disks="element.disks"
+                  :mac-address="element.mac_address"
+                />
+              </div>
+
+              <div class="col-12 col-md-6 col-sm-12 col-xs-12">
                 <ComputerDevices :cid="element.id" />
               </div>
             </div>
-          </div>
-        </div>
+          </q-tab-panel>
 
-        <!-- Card 5: Locations Map -->
-        <div v-if="markers.length > 0" class="row q-pb-md q-col-gutter-md">
-          <div class="col col-md col-sm-12">
-            <ComputerLocations :markers="markers" />
-          </div>
-        </div>
+          <!-- Tab 3: Telemetry -->
+          <q-tab-panel name="telemetry" class="q-pa-none">
+            <div class="row justify-center">
+              <div class="col-12">
+                <ComputerTelemetry
+                  :cid="element.id"
+                  :project="element.project"
+                  :platform="
+                    element.project && element.project.platform
+                      ? element.project.platform
+                      : null
+                  "
+                  :ip-address="element.ip_address"
+                  :forwarded-ip-address="element.forwarded_ip_address"
+                  :sync-user="element.sync_user"
+                  :sync-info="syncInfo"
+                  :loading-sync="loadingSync"
+                  :attributes="onlyAttributes"
+                  :attribute-sets="onlyAttributeSets"
+                  :domains="onlyDomains"
+                  :errors="errors"
+                  :faults="faults"
+                />
+              </div>
+            </div>
+          </q-tab-panel>
+
+          <!-- Tab 4: Software -->
+          <q-tab-panel name="software" class="q-pa-none">
+            <div class="row justify-center">
+              <div class="col-12">
+                <div v-if="activeTab === 'software'">
+                  <div v-if="element.has_software_inventory">
+                    <ComputerSoftware :cid="element.id" />
+                  </div>
+                  <div
+                    v-else
+                    class="flex flex-center q-pa-xl text-grey-6 text-center"
+                  >
+                    <div class="q-pa-lg glass-panel text-center">
+                      <q-icon
+                        :name="modelIcon('packages')"
+                        size="4em"
+                        class="q-mb-md text-primary"
+                        style="opacity: 0.6"
+                      />
+                      <div class="text-h6 text-primary">
+                        {{ $gettext('No Software Inventory') }}
+                      </div>
+                      <div class="text-body2 q-mt-sm opacity-60">
+                        {{
+                          $gettext(
+                            'This computer does not have software inventory enabled.',
+                          )
+                        }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </q-tab-panel>
+        </q-tab-panels>
       </template>
     </ItemDetail>
   </q-page>
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useMeta } from 'quasar'
 
 import { api } from 'boot/axios'
@@ -170,6 +249,7 @@ import useDate from 'composables/date'
 
 const { $gettext } = useGettext()
 const route = useRoute()
+const router = useRouter()
 const uiStore = useUiStore()
 const authStore = useAuthStore()
 const { elementIcon, attributeValue } = useElement()
@@ -187,6 +267,21 @@ const element = reactive({
 const title = ref($gettext('Computer'))
 const windowTitle = ref(title.value)
 useMeta(() => ({ title: windowTitle.value }))
+
+const activeTab = ref(route.query.tab || 'general')
+
+watch(activeTab, (newTab) => {
+  router.replace({ query: { ...route.query, tab: newTab } })
+})
+
+watch(
+  () => route.query.tab,
+  (newTab) => {
+    if (newTab && newTab !== activeTab.value) {
+      activeTab.value = newTab
+    }
+  },
+)
 
 const loadingSync = ref(false)
 
@@ -386,5 +481,51 @@ const setTitle = (value) => {
   width: 100%;
   aspect-ratio: 16 / 9;
   height: 400px;
+}
+
+.computer-tabs {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  border: 1px solid rgba(var(--brand-primary-rgb), 0.05);
+  padding: 4px;
+}
+
+[data-theme='dark'] .computer-tabs {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.computer-tabs :deep(.q-tab) {
+  min-height: 44px;
+  font-weight: 700;
+  border-radius: 8px;
+  margin: 0 4px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--neutral-500);
+}
+
+.computer-tabs :deep(.q-tab:hover) {
+  background: rgba(var(--brand-primary-rgb), 0.05);
+  color: var(--brand-primary);
+}
+
+[data-theme='dark'] .computer-tabs :deep(.q-tab:hover) {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--brand-tertiary);
+}
+
+.computer-tabs :deep(.q-tab--active) {
+  background: rgba(var(--brand-primary-rgb), 0.08);
+  color: var(--brand-primary);
+}
+
+[data-theme='dark'] .computer-tabs :deep(.q-tab--active) {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--brand-tertiary);
+}
+
+.computer-tabs :deep(.q-tab__indicator) {
+  display: none;
 }
 </style>

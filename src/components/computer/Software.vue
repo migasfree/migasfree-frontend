@@ -20,7 +20,7 @@
       <!-- Main Layout: 2 Columns -->
       <div class="row q-col-gutter-xl">
         <!-- INVENTORY COLUMN -->
-        <div class="col-12 col-xl-6">
+        <div class="col-12 col-md-6">
           <div class="software-column flex column q-gutter-y-sm">
             <div class="row items-center justify-between q-mb-sm">
               <div class="row items-center q-gutter-x-sm">
@@ -148,7 +148,7 @@
         </div>
 
         <!-- HISTORY COLUMN -->
-        <div class="col-12 col-xl-6">
+        <div class="col-12 col-md-6">
           <div class="software-column flex column q-gutter-y-sm">
             <div class="row items-center justify-between q-mb-sm">
               <div class="row items-center q-gutter-x-sm">
@@ -425,7 +425,14 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, nextTick, useTemplateRef } from 'vue'
+import {
+  ref,
+  reactive,
+  computed,
+  nextTick,
+  useTemplateRef,
+  onMounted,
+} from 'vue'
 import { useRouter } from 'vue-router'
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
@@ -653,6 +660,11 @@ const deleteHistory = async (key = null) => {
 
 const getAddCount = (c) => c.filter((x) => x.mode === '+').length
 const getRemoveCount = (c) => c.filter((x) => x.mode === '-').length
+
+onMounted(() => {
+  loadSoftwareInventory()
+  loadSoftwareHistory()
+})
 </script>
 
 <style scoped>

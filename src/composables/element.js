@@ -70,6 +70,7 @@ const APP_ICON = {
   import: 'mdi-database-import',
   publish: 'mdi-cloud-upload-outline',
   unpublish: 'mdi-cloud-off-outline',
+  telemetry: 'mdi-pulse',
 
   // UI Structural & Navigation
   menu: 'mdi-menu',
