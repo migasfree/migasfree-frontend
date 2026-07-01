@@ -222,18 +222,3 @@ onMounted(async () => {
   await loadFilters()
 })
 </script>
-
-<style scoped>
-.copy-modal-card {
-  min-width: 500px;
-  max-width: 90vw;
-  border-radius: 16px;
-}
-.border-rounded {
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 8px;
-}
-.border-bottom {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}
-</style>

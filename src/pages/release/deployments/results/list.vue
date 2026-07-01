@@ -68,13 +68,33 @@
     </TableResults>
 
     <!-- Copy Deployments Dialog -->
-    <CopyDeploymentDialog
+    <CopyProjectDialog
       v-model="showCopyModal"
       :icon="modelIcon('deployments')"
+      :title="$gettext('Copy Deployments to Project')"
+      :items-label="$gettext('Deployments to Copy')"
       :get-items="getDeploymentsToCopy"
       :copy-item="copyDeployment"
+      :parse-item-result="parseDeploymentResult"
       @copied="onDeploymentsCopied"
-    />
+    >
+      <template #item-extra="{ item }">
+        <q-badge
+          v-if="item.enabled"
+          color="green-1"
+          text-color="green-8"
+          class="q-ml-sm text-weight-bold"
+          label="enabled"
+        />
+        <q-badge
+          v-else
+          color="red-1"
+          text-color="red-8"
+          class="q-ml-sm text-weight-bold"
+          label="disabled"
+        />
+      </template>
+    </CopyProjectDialog>
   </q-page>
 </template>
 
@@ -92,7 +112,7 @@ import DateView from 'components/ui/DateView'
 import MigasLink from 'components/MigasLink'
 import ScheduleProgress from 'components/deployment/ScheduleProgress'
 
-import CopyDeploymentDialog from 'components/ui/CopyDeploymentDialog'
+import CopyProjectDialog from 'components/ui/CopyProjectDialog'
 
 import { appIcon, modelIcon } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'
@@ -104,6 +124,17 @@ const uiStore = useUiStore()
 const tableResultsRef = ref(null)
 const { showCopyModal, openCopyModal, getDeploymentsToCopy, copyDeployment } =
   useCopyDeployments()
+
+const parseDeploymentResult = (result) => {
+  if (result && result.created === false) {
+    return {
+      success: false,
+      skipped: true,
+      skippedName: result.skipped_name || '',
+    }
+  }
+  return { success: true, skipped: false, skippedName: null }
+}
 
 const onDeploymentsCopied = () => {
   tableResultsRef.value?.loadItems()
