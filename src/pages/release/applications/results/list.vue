@@ -3,12 +3,24 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <TableResults
+      ref="tableResultsRef"
       :title="title"
       :columns="columns"
       :model="model"
       :routes="routes"
       :more-filters="moreFilters"
     >
+      <template #header-actions>
+        <q-btn
+          class="q-ma-xs"
+          color="secondary"
+          :icon="appIcon('copy')"
+          @click="openCopyModal"
+        >
+          <q-tooltip>{{ $gettext('Copy Applications') }}</q-tooltip>
+        </q-btn>
+      </template>
+
       <template #cell-score="{ props }">
         <q-rating
           v-model="props.row.score"
@@ -26,11 +38,22 @@
         />
       </template>
     </TableResults>
+
+    <!-- Copy Applications Dialog -->
+    <CopyProjectDialog
+      v-model="showCopyModal"
+      :icon="modelIcon('catalog/apps')"
+      :title="$gettext('Copy Applications to Project')"
+      :items-label="$gettext('Applications to Copy')"
+      :get-items="getAppsToCopy"
+      :copy-item="copyApp"
+      @copied="onAppsCopied"
+    />
   </q-page>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useListConfig } from 'composables/listConfig'
 
@@ -40,9 +63,11 @@ import { useUiStore } from 'stores/ui'
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
 import MigasLink from 'components/MigasLink'
+import CopyProjectDialog from 'components/ui/CopyProjectDialog'
 
-import { appIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'
+import { useCopyApplications } from 'composables/copyApplications'
 
 const { $gettext } = useGettext()
 const uiStore = useUiStore()
@@ -142,6 +167,14 @@ const loadFilters = async () => {
   } catch (error) {
     uiStore.notifyError(error)
   }
+}
+
+const tableResultsRef = ref(null)
+const { showCopyModal, openCopyModal, getAppsToCopy, copyApp } =
+  useCopyApplications()
+
+const onAppsCopied = () => {
+  tableResultsRef.value?.loadItems()
 }
 
 onMounted(async () => {

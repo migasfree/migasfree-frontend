@@ -7,7 +7,13 @@
       :icon="titleIcon"
       :has-export-button="false"
       :add-route="addRoute"
-    />
+    >
+      <template #actions>
+        <q-btn color="secondary" :icon="appIcon('copy')" @click="openCopyModal">
+          <q-tooltip>{{ $gettext('Copy Applications') }}</q-tooltip>
+        </q-btn>
+      </template>
+    </Header>
 
     <SearchFilter v-model="searchText" class="q-pb-md" @search="search" />
 
@@ -40,6 +46,17 @@
         />
       </div>
     </div>
+
+    <!-- Copy Applications Dialog -->
+    <CopyProjectDialog
+      v-model="showCopyModal"
+      :icon="titleIcon"
+      :title="$gettext('Copy Applications to Project')"
+      :items-label="$gettext('Applications to Copy')"
+      :get-items="getAppsToCopy"
+      :copy-item="copyApp"
+      @copied="onAppsCopied"
+    />
   </q-page>
 </template>
 
@@ -57,8 +74,10 @@ import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
 import PieChart from 'components/chart/Pie'
 import StackedBarChart from 'components/chart/StackedBar'
+import CopyProjectDialog from 'components/ui/CopyProjectDialog'
 
 import { appIcon, modelIcon } from 'composables/element'
+import { useCopyApplications } from 'composables/copyApplications'
 
 const router = useRouter()
 const { $gettext } = useGettext()
@@ -124,7 +143,14 @@ const search = (value) => {
   router.push(Object.assign(url, { query: { search: value } }))
 }
 
-onMounted(async () => {
+const { showCopyModal, openCopyModal, getAppsToCopy, copyApp } =
+  useCopyApplications()
+
+const onAppsCopied = () => {
+  loadProjectStats()
+}
+
+const loadProjectStats = async () => {
   try {
     const {
       data: { x_labels, data, total },
@@ -154,5 +180,9 @@ onMounted(async () => {
   } catch (error) {
     uiStore.notifyError(error)
   }
+}
+
+onMounted(async () => {
+  await loadProjectStats()
 })
 </script>

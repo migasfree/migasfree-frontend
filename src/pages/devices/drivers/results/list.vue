@@ -3,13 +3,25 @@
     <Breadcrumbs :items="breadcrumbs" />
 
     <TableResults
+      ref="tableResultsRef"
       :title="title"
       :columns="columns"
       :model="model"
       :routes="routes"
     >
+      <template #header-actions>
+        <q-btn
+          class="q-ma-xs"
+          color="secondary"
+          :icon="appIcon('copy')"
+          @click="openCopyModal"
+        >
+          <q-tooltip>{{ $gettext('Copy Drivers') }}</q-tooltip>
+        </q-btn>
+      </template>
+
       <template #cell-name="{ props }">
-        {{ props.row.name.split('/').reverse()[0] }}
+        {{ getDriverDisplayName(props.row.name) }}
       </template>
 
       <template #cell-model_name="{ props }">
@@ -20,11 +32,22 @@
         />
       </template>
     </TableResults>
+
+    <!-- Copy Drivers Dialog -->
+    <CopyProjectDialog
+      v-model="showCopyModal"
+      :icon="modelIcon('devices/drivers')"
+      :title="$gettext('Copy Drivers to Project')"
+      :items-label="$gettext('Drivers to Copy')"
+      :get-items="getDriversToCopy"
+      :copy-item="copyDriver"
+      @copied="onDriversCopied"
+    />
   </q-page>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useListConfig } from 'composables/listConfig'
 
@@ -34,12 +57,55 @@ import { useUiStore } from 'stores/ui'
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
 import MigasLink from 'components/MigasLink'
+import CopyProjectDialog from 'components/ui/CopyProjectDialog'
 
-import { appIcon } from 'composables/element'
+import { appIcon, modelIcon } from 'composables/element'
 import { useFilterHelper } from 'composables/filterHelper'
 
 const { $gettext } = useGettext()
 const uiStore = useUiStore()
+
+const getDriverDisplayName = (name) => {
+  return (name || '').split('/').reverse()[0] || $gettext('Unnamed')
+}
+
+const tableResultsRef = ref(null)
+const showCopyModal = ref(false)
+
+const openCopyModal = () => {
+  showCopyModal.value = true
+}
+
+const getDriversToCopy = async (projectId) => {
+  const { data } = await api.get('/api/v1/token/devices/drivers/', {
+    params: {
+      project__id: projectId,
+      page_size: 10000,
+    },
+  })
+  const list = data.results || []
+  return list.map((driver) => ({
+    id: driver.id,
+    label: `${getDriverDisplayName(driver.name)} [${driver.model.name} (${driver.model.manufacturer.name})]`,
+    original: driver,
+  }))
+}
+
+const copyDriver = async (item, destinationProjectId) => {
+  const driver = item.original
+  const payload = {
+    name: driver.name,
+    model: driver.model.id,
+    project: destinationProjectId,
+    capability: driver.capability.id,
+    packages_to_install: driver.packages_to_install || [],
+  }
+  await api.post('/api/v1/token/devices/drivers/', payload)
+}
+
+const onDriversCopied = () => {
+  tableResultsRef.value?.loadItems()
+}
 
 const routes = {
   add: 'driver-add',
@@ -156,3 +222,18 @@ onMounted(async () => {
   await loadFilters()
 })
 </script>
+
+<style scoped>
+.copy-modal-card {
+  min-width: 500px;
+  max-width: 90vw;
+  border-radius: 16px;
+}
+.border-rounded {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+}
+.border-bottom {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+</style>
