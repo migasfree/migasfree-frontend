@@ -857,9 +857,8 @@ msgid "Last Synchronization"
 msgstr "Sincronització"
 
 #: src/components/computer/Telemetry.vue:305
-#, fuzzy
 msgid "Sync User"
-msgstr "Sincronitzacions"
+msgstr "Sincronitza l'usuari"
 
 #: src/components/computer/Telemetry.vue:374
 #: src/components/computer/Telemetry.vue:383 src/components/ui/AppMenu.vue:528
@@ -1679,9 +1678,8 @@ msgid "Notifications"
 msgstr "Notificacions"
 
 #: src/components/ui/CopyProjectDialog.vue:34
-#, fuzzy
 msgid "Source Project"
-msgstr "Magatzem / Projecte"
+msgstr "Projecte Font"
 
 #: src/components/ui/CopyProjectDialog.vue:75
 msgid "No items found in source project."
@@ -1693,23 +1691,20 @@ msgid "Select All"
 msgstr "Seleccionar-ho tot"
 
 #: src/components/ui/CopyProjectDialog.vue:114
-#, fuzzy
 msgid "Destination Project"
-msgstr "Migracions / Projecte"
+msgstr "Projecte de destinació"
 
 #: src/components/ui/CopyProjectDialog.vue:132
 msgid "Destination project must be different from source project"
 msgstr "El projecte de destinació ha de ser diferent del projecte d'origen"
 
 #: src/components/ui/CopyProjectDialog.vue:147
-#, fuzzy
 msgid "Copying..."
-msgstr "Treballant..."
+msgstr "S'està copiant..."
 
 #: src/components/ui/CopyProjectDialog.vue:384
-#, fuzzy
 msgid "%{count} items copied successfully."
-msgstr "Compilació iniciada amb èxit!"
+msgstr "%{count} elements copiats correctament."
 
 #: src/components/ui/CopyProjectDialog.vue:393
 msgid "Skipped (already existed in target): %{names}"
@@ -3345,9 +3340,8 @@ msgid "Telemetry"
 msgstr "Telemetria"
 
 #: src/pages/data/computers/results/detail.vue:206
-#, fuzzy
 msgid "No Software Inventory"
-msgstr "Per inventari de programari"
+msgstr "No hi ha inventari de programari"
 
 #: src/pages/data/computers/results/detail.vue:210
 msgid "This computer does not have software inventory enabled."
@@ -3828,24 +3822,20 @@ msgid "Driver"
 msgstr "Controlador"
 
 #: src/pages/devices/drivers/results/list.vue:19
-#, fuzzy
 msgid "Copy Drivers"
-msgstr "Controladors"
+msgstr "Copiar els controladors"
 
 #: src/pages/devices/drivers/results/list.vue:40
-#, fuzzy
 msgid "Copy Drivers to Project"
-msgstr "Magatzem / Projecte"
+msgstr "Copia els controladors al projecte"
 
 #: src/pages/devices/drivers/results/list.vue:41
-#, fuzzy
 msgid "Drivers to Copy"
-msgstr "Llista de controladors"
+msgstr "Controladors per copiar"
 
 #: src/pages/devices/drivers/results/list.vue:69
-#, fuzzy
 msgid "Unnamed"
-msgstr "Nom d’usuari"
+msgstr "Sense nom"
 
 #: src/pages/devices/drivers/results/list.vue:119
 msgid "Drivers List"
@@ -4289,9 +4279,8 @@ msgstr "Per favor, ingressi les seves credencials"
 
 #: src/pages/release/applications/index.vue:13
 #: src/pages/release/applications/results/list.vue:20
-#, fuzzy
 msgid "Copy Applications"
-msgstr "Aplicacions"
+msgstr "Copiar aplicacions"
 
 #: src/pages/release/applications/index.vue:23
 msgid "Applications / Category"
@@ -4307,15 +4296,13 @@ msgstr "Aplicacions / Projecte"
 
 #: src/pages/release/applications/index.vue:54
 #: src/pages/release/applications/results/list.vue:46
-#, fuzzy
 msgid "Copy Applications to Project"
-msgstr "Aplicacions / Projecte"
+msgstr "Copia les aplicacions al projecte"
 
 #: src/pages/release/applications/index.vue:55
 #: src/pages/release/applications/results/list.vue:47
-#, fuzzy
 msgid "Applications to Copy"
-msgstr "Aplicacions / Categoria"
+msgstr "Aplicacions per copiar"
 
 #: src/pages/release/applications/results/detail.vue:39
 #: src/pages/release/applications/results/list.vue:130
@@ -4383,9 +4370,8 @@ msgstr "Llista de categories d'aplicacions"
 
 #: src/pages/release/deployments/index.vue:13
 #: src/pages/release/deployments/results/list.vue:20
-#, fuzzy
 msgid "Copy Deployments"
-msgstr "Desplegaments"
+msgstr "Copia els desplegaments"
 
 #: src/pages/release/deployments/index.vue:23
 msgid "Enabled Deployments"
@@ -4401,15 +4387,13 @@ msgstr "Desplegaments / Calendari"
 
 #: src/pages/release/deployments/index.vue:53
 #: src/pages/release/deployments/results/list.vue:74
-#, fuzzy
 msgid "Copy Deployments to Project"
-msgstr "Aplicacions / Projecte"
+msgstr "Copia els desplegaments al projecte"
 
 #: src/pages/release/deployments/index.vue:54
 #: src/pages/release/deployments/results/list.vue:75
-#, fuzzy
 msgid "Deployments to Copy"
-msgstr "Llista de desplegaments"
+msgstr "Desplegaments per copiar"
 
 #: src/pages/release/deployments/results/detail.vue:22
 #: src/pages/release/deployments/results/detail.vue:26
@@ -4460,19 +4444,16 @@ msgid "Package Set"
 msgstr "Conjunt de paquets"
 
 #: src/pages/release/package-sets/results/list.vue:20
-#, fuzzy
 msgid "Copy Package Sets"
-msgstr "Conjunts de paquets"
+msgstr "Copiar conjunts de paquets"
 
 #: src/pages/release/package-sets/results/list.vue:29
-#, fuzzy
 msgid "Copy Package Sets to Project"
-msgstr "Paquets / projecte"
+msgstr "Copia els conjunts de paquets al projecte"
 
 #: src/pages/release/package-sets/results/list.vue:30
-#, fuzzy
 msgid "Package Sets to Copy"
-msgstr "Llista de conjunts de paquets"
+msgstr "Conjunts de paquets per copiar"
 
 #: src/pages/release/package-sets/results/list.vue:94
 msgid "Package Sets List"
