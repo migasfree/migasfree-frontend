@@ -9,7 +9,7 @@
       :add-route="addRoute"
     >
       <template #actions>
-        <q-btn color="secondary" :icon="appIcon('copy')" @click="openCopyModal">
+        <q-btn v-if="isSuperUser" color="secondary" :icon="appIcon('copy')" @click="openCopyModal">
           <q-tooltip>{{ $gettext('Copy Applications') }}</q-tooltip>
         </q-btn>
       </template>
@@ -61,13 +61,14 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useMeta, useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
+import { useAuthStore } from 'stores/auth'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
@@ -83,6 +84,9 @@ const router = useRouter()
 const { $gettext } = useGettext()
 const $q = useQuasar()
 const uiStore = useUiStore()
+const authStore = useAuthStore()
+
+const isSuperUser = computed(() => authStore.user?.is_superuser)
 
 const titleIcon = modelIcon('catalog/apps')
 const title = $gettext('Applications')

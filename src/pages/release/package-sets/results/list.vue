@@ -12,6 +12,7 @@
     >
       <template #header-actions>
         <q-btn
+          v-if="isSuperUser"
           class="q-ma-xs"
           color="secondary"
           :icon="appIcon('copy')"
@@ -43,12 +44,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useListConfig } from 'composables/listConfig'
 
 import { useSmartRequest } from 'composables/smartRequest'
 import { useUiStore } from 'stores/ui'
+import { useAuthStore } from 'stores/auth'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
@@ -61,6 +63,9 @@ import { useCopyPackageSets } from 'composables/copyPackageSets'
 const uiStore = useUiStore()
 const { $gettext } = useGettext()
 const { smartRequest } = useSmartRequest()
+const authStore = useAuthStore()
+
+const isSuperUser = computed(() => authStore.user?.is_superuser)
 
 const tableResultsRef = ref(null)
 const { showCopyModal, openCopyModal, getPackageSetsToCopy, copyPackageSet } =

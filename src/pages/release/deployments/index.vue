@@ -9,7 +9,7 @@
       :has-export-button="false"
     >
       <template #actions>
-        <q-btn color="secondary" :icon="appIcon('copy')" @click="openCopyModal">
+        <q-btn v-if="isSuperUser" color="secondary" :icon="appIcon('copy')" @click="openCopyModal">
           <q-tooltip>{{ $gettext('Copy Deployments') }}</q-tooltip>
         </q-btn>
       </template>
@@ -84,6 +84,8 @@ import { useMeta } from 'quasar'
 import { useRouter } from 'vue-router'
 import _merge from 'lodash/merge'
 
+import { useAuthStore } from 'stores/auth'
+
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import Header from 'components/ui/Header'
 import SearchFilter from 'components/ui/SearchFilter'
@@ -95,6 +97,9 @@ import { useCopyDeployments } from 'composables/copyDeployments'
 
 const router = useRouter()
 const { $gettext } = useGettext()
+const authStore = useAuthStore()
+
+const isSuperUser = computed(() => authStore.user?.is_superuser)
 
 const titleIcon = modelIcon('deployments')
 const title = $gettext('Deployments')

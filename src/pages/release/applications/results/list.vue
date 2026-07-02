@@ -12,6 +12,7 @@
     >
       <template #header-actions>
         <q-btn
+          v-if="isSuperUser"
           class="q-ma-xs"
           color="secondary"
           :icon="appIcon('copy')"
@@ -53,12 +54,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useListConfig } from 'composables/listConfig'
 
 import { api } from 'boot/axios'
 import { useUiStore } from 'stores/ui'
+import { useAuthStore } from 'stores/auth'
 
 import Breadcrumbs from 'components/ui/Breadcrumbs'
 import TableResults from 'components/ui/TableResults'
@@ -71,6 +73,9 @@ import { useCopyApplications } from 'composables/copyApplications'
 
 const { $gettext } = useGettext()
 const uiStore = useUiStore()
+const authStore = useAuthStore()
+
+const isSuperUser = computed(() => authStore.user?.is_superuser)
 
 const routes = {
   add: 'app-add',
