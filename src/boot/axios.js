@@ -116,7 +116,14 @@ export default boot(({ app, router }) => {
             console.warn(
               `[ 404 ] Not Found: ${error.config.baseURL || ''}${error.config.url}`,
             )
-            router.push({ name: 'not-found' })
+            // Skip global redirection for secondary actions (logs, status, relations)
+            if (
+              !error.config.url.includes('/status/') &&
+              !error.config.url.includes('/logs/') &&
+              !error.config.url.includes('/relations/')
+            ) {
+              router.push({ name: 'not-found' })
+            }
             break
 
           case 500:
