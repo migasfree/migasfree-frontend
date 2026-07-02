@@ -428,7 +428,7 @@ const updateWindowTitle = () => {
   if (build.__str__) {
     windowTitle.value = `${$gettext('Build')}: ${build.__str__} [${build.status.toUpperCase()}]`
   } else {
-    windowTitle.value = `${$gettext('Compilation')} #${build.id} [${build.status.toUpperCase()}]`
+    windowTitle.value = `${$gettext('Build')} #${build.id} [${build.status.toUpperCase()}]`
   }
 }
 
