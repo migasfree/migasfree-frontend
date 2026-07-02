@@ -402,6 +402,7 @@ const breadcrumbs = ref([
   {
     text: $gettext('Builds'),
     icon: modelIcon(model),
+    to: 'builds-dashboard',
   },
   {
     text: $gettext('Results'),
