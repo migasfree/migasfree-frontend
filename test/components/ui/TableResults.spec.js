@@ -325,6 +325,14 @@ describe('TableResults.vue', () => {
   })
 
   describe('action buttons visibility', () => {
+    it('hasDeleteAction respects hasDelete prop if provided', () => {
+      const wrapper1 = createWrapper({ hasDelete: false })
+      expect(wrapper1.vm.hasDeleteAction).toBe(false)
+
+      const wrapper2 = createWrapper({ hasDelete: true })
+      expect(wrapper2.vm.hasDeleteAction).toBe(true)
+    })
+
     it('hasDeleteAction returns true for syncs model', () => {
       const wrapper = createWrapper({ model: 'syncs' })
       expect(wrapper.vm.hasDeleteAction).toBe(true)

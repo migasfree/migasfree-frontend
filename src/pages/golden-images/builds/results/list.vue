@@ -8,6 +8,7 @@
       :columns="columns"
       :model="model"
       :routes="routes"
+      :has-delete="false"
     >
       <!-- Custom rendering for ID link -->
       <template #cell-id="{ props }">

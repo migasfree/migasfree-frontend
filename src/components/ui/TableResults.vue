@@ -246,6 +246,7 @@ const props = defineProps({
   routes: { type: Object, default: () => ({}) },
   columnParams: { type: Object, default: () => ({}) },
   moreFilters: { type: Array, default: () => [] },
+  hasDelete: { type: Boolean, default: null },
 })
 
 defineEmits(['post-remove'])
@@ -368,9 +369,10 @@ const ENABLEABLE_MODELS = new Set([
   'catalog/policies',
 ])
 
-const hasDeleteAction = computed(
-  () => !!detailRoute.value || DELETABLE_MODELS.has(props.model),
-)
+const hasDeleteAction = computed(() => {
+  if (props.hasDelete !== null) return props.hasDelete
+  return !!detailRoute.value || DELETABLE_MODELS.has(props.model)
+})
 const hasCheckActions = computed(() => CHECKABLE_MODELS.has(props.model))
 const hasEnableActions = computed(() => ENABLEABLE_MODELS.has(props.model))
 
