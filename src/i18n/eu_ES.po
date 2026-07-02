@@ -3902,7 +3902,7 @@ msgstr "Ordenagailua"
 
 #: src/pages/golden-images/builds/index.vue:28
 msgid "Average Duration"
-msgstr "Iraupena"
+msgstr "Batez besteko iraupena"
 
 #: src/pages/golden-images/builds/index.vue:41
 msgid "Average Image Size"
@@ -3920,19 +3920,19 @@ msgstr "Eraikitze mota"
 
 #: src/pages/golden-images/builds/index.vue:67
 msgid "Avg Duration"
-msgstr "Iraupena"
+msgstr "Batez besteko iraupena"
 
 #: src/pages/golden-images/builds/index.vue:68
 msgid "Avg Size"
-msgstr "Tamaina"
+msgstr "Batez besteko tamaina"
 
 #: src/pages/golden-images/builds/index.vue:93
 msgid "Builds / Month"
-msgstr "Matxurak / Hilabetea"
+msgstr "Eraikitzeak / Hilabetea"
 
 #: src/pages/golden-images/builds/index.vue:104
 msgid "Builds / Status"
-msgstr "Egoeraren arabera"
+msgstr "Eraikitzeak / Egoera"
 
 #: src/pages/golden-images/builds/results/detail.vue:6
 #: src/pages/golden-images/builds/results/detail.vue:429
@@ -4025,7 +4025,7 @@ msgstr "Eraikitze xehetasuna"
 
 #: src/pages/golden-images/builds/results/detail.vue:352
 msgid "Build deleted successfully."
-msgstr "Konpilazioa arrakastaz hasi da!"
+msgstr "Eraikitzea arrakastaz ezabatu da."
 
 #: src/pages/golden-images/builds/results/detail.vue:362
 #: src/pages/golden-images/builds/results/list.vue:165
@@ -4069,7 +4069,7 @@ msgstr "Eskuratzen"
 
 #: src/pages/golden-images/builds/results/list.vue:199
 msgid "No logs available for this build."
-msgstr "Ez dago txantiloirik eskuragarri jatorri honetarako"
+msgstr "Ez dago erregistrorik erabilgarri eraikitze honetarako."
 
 #: src/pages/golden-images/configs/index.vue:17
 msgid "Configurations / Build Type"

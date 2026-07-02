@@ -3898,7 +3898,7 @@ msgstr "Ordinador"
 
 #: src/pages/golden-images/builds/index.vue:28
 msgid "Average Duration"
-msgstr "Durada"
+msgstr "Durada mitjana"
 
 #: src/pages/golden-images/builds/index.vue:41
 msgid "Average Image Size"
@@ -3916,19 +3916,19 @@ msgstr "Tipus de compilació"
 
 #: src/pages/golden-images/builds/index.vue:67
 msgid "Avg Duration"
-msgstr "Durada"
+msgstr "Durada mitjana"
 
 #: src/pages/golden-images/builds/index.vue:68
 msgid "Avg Size"
-msgstr "Tamany"
+msgstr "Mida mitjana"
 
 #: src/pages/golden-images/builds/index.vue:93
 msgid "Builds / Month"
-msgstr "Falles / Mes"
+msgstr "Compilacions / Mes"
 
 #: src/pages/golden-images/builds/index.vue:104
 msgid "Builds / Status"
-msgstr "Per estat"
+msgstr "Compilacions / Estat"
 
 #: src/pages/golden-images/builds/results/detail.vue:6
 #: src/pages/golden-images/builds/results/detail.vue:429
@@ -4021,7 +4021,7 @@ msgstr "Detalls de la compilació"
 
 #: src/pages/golden-images/builds/results/detail.vue:352
 msgid "Build deleted successfully."
-msgstr "Compilació iniciada amb èxit!"
+msgstr "Compilació esborrada amb èxit."
 
 #: src/pages/golden-images/builds/results/detail.vue:362
 #: src/pages/golden-images/builds/results/list.vue:165
@@ -4065,7 +4065,7 @@ msgstr "Obtenint"
 
 #: src/pages/golden-images/builds/results/list.vue:199
 msgid "No logs available for this build."
-msgstr "No hi ha plantilles disponibles per a aquest origen"
+msgstr "No hi ha logs disponibles per a aquesta compilació."
 
 #: src/pages/golden-images/configs/index.vue:17
 msgid "Configurations / Build Type"

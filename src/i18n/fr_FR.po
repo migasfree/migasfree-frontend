@@ -3905,7 +3905,7 @@ msgstr "Ordinateur"
 
 #: src/pages/golden-images/builds/index.vue:28
 msgid "Average Duration"
-msgstr "Durée"
+msgstr "Durée moyenne"
 
 #: src/pages/golden-images/builds/index.vue:41
 msgid "Average Image Size"
@@ -3923,19 +3923,19 @@ msgstr "Type de build"
 
 #: src/pages/golden-images/builds/index.vue:67
 msgid "Avg Duration"
-msgstr "Durée"
+msgstr "Durée moyenne"
 
 #: src/pages/golden-images/builds/index.vue:68
 msgid "Avg Size"
-msgstr "Taille"
+msgstr "Taille moyenne"
 
 #: src/pages/golden-images/builds/index.vue:93
 msgid "Builds / Month"
-msgstr "Défauts / Mois"
+msgstr "Builds / Mois"
 
 #: src/pages/golden-images/builds/index.vue:104
 msgid "Builds / Status"
-msgstr "Par statut"
+msgstr "Builds / Statut"
 
 #: src/pages/golden-images/builds/results/detail.vue:6
 #: src/pages/golden-images/builds/results/detail.vue:429
@@ -4028,7 +4028,7 @@ msgstr "Détail de la compilation"
 
 #: src/pages/golden-images/builds/results/detail.vue:352
 msgid "Build deleted successfully."
-msgstr "Compilation démarrée avec succès !"
+msgstr "Compilation supprimée avec succès."
 
 #: src/pages/golden-images/builds/results/detail.vue:362
 #: src/pages/golden-images/builds/results/list.vue:165
@@ -4072,7 +4072,7 @@ msgstr "Récupération"
 
 #: src/pages/golden-images/builds/results/list.vue:199
 msgid "No logs available for this build."
-msgstr "Aucun modèle disponible pour cette origine"
+msgstr "Aucun log disponible pour cette compilation."
 
 #: src/pages/golden-images/configs/index.vue:17
 msgid "Configurations / Build Type"
