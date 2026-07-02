@@ -9,7 +9,12 @@
       :add-route="addRoute"
     >
       <template #actions>
-        <q-btn v-if="isSuperUser" color="secondary" :icon="appIcon('copy')" @click="openCopyModal">
+        <q-btn
+          v-if="isSuperUser"
+          color="secondary"
+          :icon="appIcon('copy')"
+          @click="openCopyModal"
+        >
           <q-tooltip>{{ $gettext('Copy Applications') }}</q-tooltip>
         </q-btn>
       </template>

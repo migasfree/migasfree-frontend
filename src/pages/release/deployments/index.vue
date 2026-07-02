@@ -9,7 +9,12 @@
       :has-export-button="false"
     >
       <template #actions>
-        <q-btn v-if="isSuperUser" color="secondary" :icon="appIcon('copy')" @click="openCopyModal">
+        <q-btn
+          v-if="isSuperUser"
+          color="secondary"
+          :icon="appIcon('copy')"
+          @click="openCopyModal"
+        >
           <q-tooltip>{{ $gettext('Copy Deployments') }}</q-tooltip>
         </q-btn>
       </template>
