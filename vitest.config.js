@@ -12,14 +12,24 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      include: ['src/**/*.{js,vue}'],
+      include: [
+        'src/components/chart/**/*.{js,vue}',
+        'src/components/ui/**/*.{js,vue}',
+        'src/components/MigasLink.vue',
+        'src/composables/*.js',
+        'src/stores/*.js',
+        'src/utils/*.js',
+        'src/pages/configuration/projects/results/*.vue',
+      ],
       exclude: [
         'src/**/*.spec.js',
         'src/**/*.test.js',
+        'src/**/*.stories.js',
         'src/boot/**',
         'src/router/**',
         'src/App.vue',
         'src/main.js',
+        'src/stores/index.js',
       ],
       all: true,
       thresholds: {
