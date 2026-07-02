@@ -296,10 +296,7 @@ msgstr "Establir com a predeterminat"
 
 #: src/components/computer/Devices.vue:93
 msgid "Select which of the assigned devices is the primary for this computer."
-msgstr ""
-"Selecciona quin dels dispositius assignats és el principal per a aquest "
-"ordinador.Selecciona quin dels dispositius assignats és el principal per a "
-"aquest ordinador."
+msgstr "Selecciona quin dels dispositius assignats és el principal per a aquest ordinador."
 
 #: src/components/computer/Devices.vue:113
 #: src/components/computer/Identity.vue:234

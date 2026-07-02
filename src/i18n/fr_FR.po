@@ -297,10 +297,7 @@ msgstr "Définir par défaut"
 
 #: src/components/computer/Devices.vue:93
 msgid "Select which of the assigned devices is the primary for this computer."
-msgstr ""
-"Sélectionnez lequel des périphériques attribués est le principal pour cet "
-"ordinateur.Sélectionnez lequel des périphériques attribués est le "
-"périphérique principal pour cet ordinateur."
+msgstr "Sélectionnez lequel des périphériques attribués est le principal pour cet ordinateur."
 
 #: src/components/computer/Devices.vue:113
 #: src/components/computer/Identity.vue:234

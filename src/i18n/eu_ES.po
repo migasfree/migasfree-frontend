@@ -296,10 +296,7 @@ msgstr "Ezarri lehenetsi gisa"
 
 #: src/components/computer/Devices.vue:93
 msgid "Select which of the assigned devices is the primary for this computer."
-msgstr ""
-"Hautatu esleitutako gailuetatik zein den ordenagailu honen gailu "
-"nagusia.Hautatu esleitutako gailuetatik zein den ordenagailu honen gailu "
-"nagusia."
+msgstr "Hautatu esleitutako gailuetatik zein den ordenagailu honen gailu nagusia."
 
 #: src/components/computer/Devices.vue:113
 #: src/components/computer/Identity.vue:234
