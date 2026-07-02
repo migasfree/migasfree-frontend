@@ -50,7 +50,10 @@ describe('format utils', () => {
         { customId: 'b', customParent: 'a' },
       ]
 
-      const tree = arrayToTree(flat, { id: 'customId', parentId: 'customParent' })
+      const tree = arrayToTree(flat, {
+        id: 'customId',
+        parentId: 'customParent',
+      })
 
       expect(tree).toHaveLength(1)
       expect(tree[0].customId).toBe('a')

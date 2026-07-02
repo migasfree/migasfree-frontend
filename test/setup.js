@@ -10,7 +10,6 @@ global.ResizeObserver = class ResizeObserver {
 // Mock HTMLCanvasElement getContext to prevent JSDOM warnings when packages like echarts use canvas
 HTMLCanvasElement.prototype.getContext = () => null
 
-
 // Global stubs for Quasar components to avoid resolution warnings
 config.global.stubs = {
   'q-icon': { template: '<div class="q-icon" />' },
